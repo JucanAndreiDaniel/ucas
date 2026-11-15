@@ -23,6 +23,7 @@
  * component, read through their type.  Each executed instruction goes to
  * the animation (anim.c) with its cost under the active model.
  */
+#include "lperm.h"
 #include "ucas.h"
 #include "calc.h"
 #include "fuse.h"
@@ -10643,6 +10644,7 @@ float_pass(const char *text, int *changed)
 #include "spv_dword.inc"	/* fp64 as f32 pairs, the driver's folds */
 #include "spv_mem.inc"	/* memory kinds: what their prices make worth doing */
 #include "spv_sg.inc"	/* subgroups: run, priced, and written by simplify */
+#include "spv_lperm.inc"	/* shuffles by a lane map as exchanges by xor */
 #include "spv_tex.inc"	/* constant table reads through the texture unit */
 
 /* ---- advice: values that change less often than the shader runs ---- */
@@ -14951,8 +14953,9 @@ spirv_simplify(const char *src, double budget, int nofile)
 		double gain;
 		int line, algebra, trivial, dot;
 	} *rl = xcalloc(MAXLOG, sizeof *rl);
-	struct dotlog dotl[32], idl[32], sgl[32];
-	int ndotlog = 0, nidlog = 0, nsglog = 0, ntex = 0, ntexw = 0;
+	struct dotlog dotl[32], idl[32], sgl[32], lpl[32];
+	int ndotlog = 0, nidlog = 0, nsglog = 0, ntex = 0, ntexw = 0, nlplog = 0;
+	struct sbuf lprep = {0};
 	struct texrd trd[16];
 	struct sbuf texrep = {0};
 	double before = 0, after = 0;
@@ -15263,6 +15266,22 @@ spirv_simplify(const char *src, double budget, int nofile)
 		nrw += nd;
 		SP.proved += nd;
 	}
+	/* shuffles by an affine lane map as exchanges by xor (lperm.c) */
+	{
+		int nd = lp_pass(&lprep, lpl, 32), q;
+		for (q = 0; q < nd && nlog < MAXLOG; q++) {
+			struct rwlog *L = &rl[nlog++];
+			snprintf(L->from, sizeof L->from, "%s", lpl[q].from);
+			snprintf(L->to, sizeof L->to, "%s", lpl[q].to);
+			L->why = "a shuffle's lane map as exchanges by xor";
+			L->gain = lpl[q].gain;
+			L->line = lpl[q].line;
+			L->dot = 3;
+		}
+		nlplog = nd;
+		nrw += nd;
+		SP.proved += nd;
+	}
 	/* conversions of integers to f32 by the bits: decided here, written
 	 * after the passes that read conversions */
 	i2f_pass();
@@ -15439,8 +15458,8 @@ spirv_simplify(const char *src, double budget, int nofile)
 			nal += rl[i].algebra;
 		printf("simplify: %d SPIR-V instructions, %d rewrite%s proved by SAT "
 		    "(bit-precise: equal for every input)", SP.orig_nin, nrw - nal -
-		    ndotrw - nidlog - nsglog, nrw - nal - ndotrw - nidlog - nsglog ==
-		    1 ? "" : "s");
+		    ndotrw - nidlog - nsglog - nlplog, nrw - nal - ndotrw - nidlog -
+		    nsglog - nlplog == 1 ? "" : "s");
 		if (nal)
 			printf(" and %d by algebra mod 2^w", nal);
 		if (ndotrw)
@@ -15466,6 +15485,9 @@ spirv_simplify(const char *src, double budget, int nofile)
 		if (nsglog)
 			printf(", %d sum%s of bits over the lanes made a ballot's bit "
 			    "count (derived, below)", nsglog, nsglog == 1 ? "" : "s");
+		if (nlplog)
+			printf(", %d shuffle%s by a lane map made exchanges by xor "
+			    "(derived, below)", nlplog, nlplog == 1 ? "" : "s");
 		if (ntexw)
 			printf(", %d table read%s made a read through the texture "
 			    "unit (below)", ntexw, ntexw == 1 ? "" : "s");
@@ -15552,6 +15574,23 @@ spirv_simplify(const char *src, double budget, int nofile)
 		rep_int("sums", dotund.n);
 		rep_num("gain", dotund.gain);
 		rep_str("needs", "SPV_KHR_integer_dot_product");
+		rep_end();
+	}
+	if (nlplog) {
+		rep_list("lane_maps");
+		for (i = 0; i < nlplog; i++) {
+			rep_obj(NULL);
+			rep_str("from", lpl[i].from);
+			rep_str("to", lpl[i].to);
+			rep_int("line", lpl[i].line);
+			rep_num("cost_before", lpl[i].before);
+			rep_num("cost_after", lpl[i].after);
+			rep_str("holds_where", lpl[i].desc);
+			rep_str("derivation", lpl[i].proof);
+			rep_end();
+			free(lpl[i].desc);
+			free(lpl[i].proof);
+		}
 		rep_end();
 	}
 	if (nsglog) {
@@ -15803,6 +15842,25 @@ spirv_simplify(const char *src, double budget, int nofile)
 		}
 	}
 	free(sgrep.p);
+	if (lprep.n) {
+		printf("  subgroup shuffles by a lane map (an affine map of the "
+		    "lane's bits as exchanges by xor and selects), under %s:\n",
+		    sym_str(model_active()->name));
+		fputs(lprep.p, stdout);
+		if (nlplog) {
+			char why[200];
+			int v = dw_validate(out.p ? out.p : "", why, sizeof why);
+			if (v == 1)
+				printf("  spirv-val accepts the written module\n");
+			else if (v == 0)
+				printf("  spirv-val REJECTS the written module: %s\n",
+				    why);
+			else
+				printf("  spirv-as and spirv-val cannot run here: the "
+				    "written module is not validated\n");
+		}
+	}
+	free(lprep.p);
 	if (texrep.n)
 		fputs(texrep.p, stdout);
 	free(texrep.p);
