@@ -16,7 +16,7 @@ simplify: 75 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal f
       ->  1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor)   (cost 7 -> 5)
       (line 9: b.d[i] = subgroupShuffle(x, l ^ ((l & 1u) << 1u)) + 1.0;)
       the lane read, %33 xor (%33 & 1) << 1, is affine over the lane's bits within blocks of 4 lanes (SAT, every 32-bit lane: its low 2 bits mapped, the others kept); rank(I xor A) = 1 stages, composed on every lane of the block
-      holds for every lane active, in a subgroup whose size is a multiple of 4 (a quad's lanes exchange)
+      holds for every lane active (it runs before any branch of the entry point), in a subgroup whose size is a multiple of 4 (a quad's lanes exchange)
   spirv-val accepts the written module
   proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
 float simplify: 0 rewrites of float instructions applied, each with a derivation (no sampling)
@@ -54,3 +54,20 @@ simplify: 73 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal f
       (line 9: b.d[i] = subgroupShuffle(x, l ^ ((l & 1u) << 2u));)
       the lane map %31 xor (%31 & 1) << 2 is 1 stage: lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor) (5 against 7 under rdna2), exchanges within blocks of 8 lanes: proposed, not written, as it needs subgroups of 8 lanes or more (the pipeline's requiredSubgroupSize)
   proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  optimized with spirv-opt -O (what follows is beyond that)
+> use rdna2
+cost model: rdna2
+> spvsimplify nofile nofunctions
+simplify: 84 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under rdna2 (each instruction once): 7 -> 7 (+0.0%)
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  subgroup shuffles by a lane map (an affine map of the lane's bits as exchanges by xor and selects), under rdna2:
+    %49 = OpGroupNonUniformShuffle %float %uint_3 %30 %47
+      (line 10: b.d[i] = subgroupShuffle(x, l ^ ((l & 1u) << 1u)) + 1.0;)
+      the lane map %33 xor (%33 & 1) << 1 is 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor) (5 against 7 under rdna2), but it is not in the entry point's first straight run of code: an exchange needs its partner lane active; left as it is
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 0 rewrites of float instructions applied, each with a derivation (no sampling)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under rdna2 (each component counted; step = compare + select, mix = subtract + fma): 2.375 -> 2.375 (+0.0%)
+  nothing applied: no cheaper float form could be proved
