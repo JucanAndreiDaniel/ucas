@@ -187,6 +187,7 @@ inline annotations: `range isqrt(x: u4)`.
 | `foldproof F [model m]` | the float round trips the model says its driver folds, and their rounding as integer arithmetic no fold reaches, proved equal (see "Driver folds") |
 | `banks F [, G ...] [size N] [elem B] [model m]` | the bank-conflict degree of shared-memory index expressions over a warp, and an index swizzle that lowers it, proved to keep the indices apart (see "Memory kinds") |
 | `mma [m16n8k16\|m16n8k8] [f32\|f16] [chain N \| tile TM TN TK] [model m] [all] [validate] [nofile] [seed N]` | a warp's matrix product (a tensor core's HMMA: PTX's mma.sync with f16 A and B) on a GPU without a matrix unit: the dataflows priced under the model, the cheapest proved over the 32 lanes with its error bound, written as GLSL (see "A warp's matrix product without a matrix unit") |
+| `ozaki F [slices N] [tol T] [seed S] [model m]` | Ozaki's scheme: a float sum of products with ranged factors as integer dot products, each factor scaled to an integer and sliced into the model's lanes, one integer sum a weight, with a derived error bound, a sampled check, taken within T where cheaper (see "Dot products") |
 | `intatomic F [count N] [tol T] [global] [model m]` | a float atomic add as an integer atomic add on fixed point, when its addend is proved exact there (or within tol) and the model prices that lower (see "Memory kinds") |
 | `texalu F [tol E] [under m]` | table reads and weighted sums of neighbouring entries, and a function of few input bits as its table, as reads through the texture unit, where the model prices them lower, each proved, with what the pipeline needs for it (see "The texture unit as an ALU") |
 | `texenc T [rows W] [tol E]` | a constant table as BC4 blocks: endpoints, selectors and bytes, exact or within E, every pair of endpoints tried; `texenc T, U` two tables of one shape as BC5; `texenc T [, U] astc BWxBH [srgb]` as ASTC blocks, two tables in a block's two planes; `texenc T [, U] eac` as R11_EAC (two as RG11_EAC), every header tried; `texenc T [, U] etc2 [srgb]` in the red channel of RGB8_ETC2 (two as RGBA8_ETC2_EAC; `srgb` the sRGB formats), every encoding of the channel tried; `texenc T [, U] bc7 [srgb]` in BC7's red (two in red and alpha); `texenc T bc6h` numbers of a half float's range in BC6H's red (see "Tables as compressed textures") |
@@ -2834,9 +2835,45 @@ whose f32 evaluation is exact (nothing reaches 24 bits of its grid), is
 four bytes times half of the bytes of a word, `f32(a) * 0.5 * f32(x &
 255) + ...`, goes 41 -> 13 under gt1030 and 22 -> 8 under rdna2; a model
 without dot forms is told the grid and the bound; a factor off any
-binary grid (a division by 3) gets nothing (tests/fdotint.ucas).  A
-factor wider than a lane is not split into slices (Ozaki's scheme): not
-yet.
+binary grid (a division by 3) gets nothing (tests/fdotint.ucas).
+
+A factor wider than a lane is sliced (Ozaki's splitting): k = sum_j
+((k >> wj) & (2^w - 1)) 2^(wj) for the low slices and k >> w(s - 1)
+(arithmetic) for the top one, exact in two's complement, and a product
+of sliced factors is its slices' cross products moved up by w(i + j).
+dot.c takes `(a * b) << k` as a product of weight 2^k: the products of
+one weight share a dot, moved up once.  Each lane width the model has a
+form of (and one less, for forms whose lanes are signed only) is tried,
+and none: the cheapest proved is kept.  i32 may wrap on the way, which
+changes no sum that fits it.  Under a model whose float operations cost
+8, `f32(a)*f32(b) + f32(c)*f32(d)` with a, c of 12 bits and b, d bytes
+is `udot4x8(a, b) + udot4x8(c, d) + (udot4x8(a >> 8, b) << 8) + ...`:
+20 -> 14 (tests/ozaki.ucas).
+
+**Ozaki's scheme.**  `ozaki F [slices N] [tol T] [seed S] [model M]`
+takes a float sum of products whose factors are on no grid but have
+bounds from the parameters' ranges (x: f32 in -1..1).  Each factor is
+scaled by a power of two to an integer of p bits, k = i32(x 2^-g)
+(truncated: |x - k 2^g| < 2^g), and sliced into N slices of a lane's
+width; the products of the slices of each weight are one integer sum,
+laid into the model's dot forms and proved for any integers k of those
+bits (free i32 parameters, the conversions put back after), then
+converted and scaled: `sum_d f32(S_d) 2^(G + wd)`.  p is the most bits
+(at most N w - 1, at most 30) that keep every weight's sum inside i32.
+The error, against the exact sum, is derived:
+
+	sum_i (2^gx |Y| + |X| 2^gy + 2^(gx + gy)) + the conversions of the
+	weights' sums past 2^24 + the f32 adds of the weights (gamma)
+
+where a factor's truncation is none once its grid is its own (an f16 on
+2^-24, an integer on 1).  Random points of the domain check it (sampled,
+labelled so).  It is taken where the bound is within T and the model
+prices it below the sum as written.  For four f32 in -1..1, two slices
+of 8 bits give 2.5e-4, three 2.9e-6 (6.1e-7 seen); under the models
+here it costs more than the f32 multiply-adds it replaces (a scheme for
+units whose integer products far outrun their float ones), and it says
+so.  JSON `{"cmd": "ozaki", ...}`; English "ozaki's scheme for f with 3
+slices within 1e-5".
 
 **Winograd's inner product.**  `sum x_k y_k = sum_j (x_2j + y_2j+1)
 (x_2j+1 + y_2j) - xi - eta`, xi the sum of x_2j x_2j+1 (a row's) and eta
@@ -4313,11 +4350,10 @@ bit-identical to it.
 integer operations (the exponent rebias: three operations a half) does
 not beat `conv` on gt1030 (3), rdna2 (1, and fdot2 needs none) or
 mali_g715 (1.28 against 1.87 an integer operation).  Integer dot
-products on block-scaled mantissas (Ozaki's splitting) need two int8
-slices for an f16's 11 bits, four products for one, and an alignment of
-several integer operations an element; with 16-bit lanes one slice, but
-A and B aligned apart truncate more than the tensor core; no model here
-prices them below the f32 multiply-adds.  Winograd's inner product
+products on block-scaled mantissas (Ozaki's splitting, `ozaki` above)
+need two int8 slices for an f16's 11 bits, four products for one, and an
+alignment of several integer operations an element; no model here prices
+them below the f32 multiply-adds.  Winograd's inner product
 trades multiplies for adds, which cost the same here.  A recursive
 doubling of B's words among the 8 lanes that need the same ones wants
 each lane's k order by g, where A's words want it by t (their quad): the
@@ -4346,11 +4382,30 @@ by the index.  The cheapest under the model is taken, each priced by
 its expression's cover; the stages are proved by composing them on every
 lane (a finite domain, every point), and in `find` again for any value
 per lane: with a free word in each lane, spelled out lane by lane, lane l
-ends with the word of lane map(l).  A map that is not affine (a
-rotation) is one shuffle; a permutation network for any map (Benes, 2
-log2 W - 1 stages whose selects read a table of the lanes) is not tried:
-under rdna2 9 such stages would cost about 50 against a shuffle's 4 to
-10.
+ends with the word of lane map(l).
+
+**Maps that are not affine.**  A map that sends each lane's value to one
+lane at most (a permutation; or part of one, an unread lane taking a
+source the others leave, its own first) goes through a Benes network:
+2 log2 W - 1 stages, by lane xor 2^b for the bits in an order, the
+first and the last on the outer bit.  The looping algorithm routes it:
+the two lanes of a pair by that bit go to different halves, and so do
+two values whose destinations are such a pair; the constraints are even
+cycles, coloured in turn; each half is routed the same way on the other
+bits, at once.  A lane pair swaps or not together, so a stage's lanes
+are a table, taken where `(T >> lane) & 1` (a shift, an and, a compare
+and the select); a table that is a parity of the lane's bits is written
+as one, an empty stage is dropped and a full one is an exchange in every
+lane.  Every order of the bits is routed (120 for 32 lanes) and the
+cheapest kept; the stages are proved as the affine ones.  A map that
+copies a lane to two has no such route and stays a shuffle.  Under
+rdna2 `[5, 2, 7, 0, 3, 6, 1, 4][lane]` over 8 lanes is 3 stages (2 of
+the 5 empty), 12 against a shuffle by its table's 10.875; under a model
+where a shuffle costs 20 the stages are taken, and `find` writes them
+(`sg_shuffle(x*lane, (lane * 5) & 31)` 29 -> 21; a table index too).
+Every permutation of a quad is affine (all 24), so a Benes network only
+helps from 8 lanes; `simplify` writes stages within quads only, so it
+proposes none for SPIR-V yet.
 
 `lperm INDEX [lanes N] [model M]` shows the plan for an index written
 in `lane` (tests/lperm.ucas):
@@ -4360,12 +4415,12 @@ in `lane` (tests/lperm.ucas):
 lperm: the lane map lane xor (lane & 1) << 1 over 32 lanes
   map: 0 3 2 1 4 7 6 5 8 11 10 9 12 15 14 13 16 19 18 17 20 23 22 21 24 27 26 25 28 31 30 29
   affine: lane -> A lane xor 0, A's columns (lane bit j goes to) 3 2 4 8 16; rank(I xor A) = 1
-  stages: 1, cost 5
+  stages: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor), cost 5
   one shuffle by the index: cost 7
   chosen under rdna2: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor), cost 5
   proved: the stages composed lane by lane give the map on every one of the 32 lanes (...)
 > lperm lane xor (lane & 1) << 1              (gt1030: no cheaper exchange by xor)
-  stages: 1, cost 10 (not the cheapest)
+  stages: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle), cost 10 (not the cheapest)
   one shuffle by the index: cost 8
   chosen under gt1030: one shuffle by an index (sg_shuffle), cost 8
 ```

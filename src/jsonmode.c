@@ -1137,6 +1137,16 @@ static const struct jcmd cmds[] = {
 	    IO("rows", " rows %s", "rows sharing a column's correction (1)"),
 	    IO("cols", " cols %s", "columns sharing a row's correction (1)"),
 	    NUO("tol", " tol %s", "floats: the absolute error allowed")}},
+	{"ozaki", "ozaki", 1, 0, "Ozaki's scheme: a float sum of products "
+	    "whose factors have ranges as integer dot products, each factor "
+	    "scaled to an integer by a power of two and sliced into the "
+	    "model's lanes, with a derived error bound and a sampled check",
+	    {F("function", " %s", "a float sum of products, its factors ranged "
+	    "(x: f32 in -1..1)"), IO("slices", " slices %s", "slices a factor "
+	    "(2): more bits, a smaller error"), NUO("tol", " tol %s", "the "
+	    "absolute error allowed: taken within it"), IO("seed", " seed %s",
+	    "the check's seed (1)"), NMO("model", " model %s", "the model (the "
+	    "active one)")}},
 };
 #define NCMDS (int)(sizeof cmds / sizeof cmds[0])
 

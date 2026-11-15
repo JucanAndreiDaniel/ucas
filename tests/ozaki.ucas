@@ -1,0 +1,17 @@
+# Ozaki: a factor wider than a lane sliced into lanes (exact, find), and
+# floats on no grid scaled to integers and sliced, with a derived bound
+model dearfloat : gt1030 { fadd: 8, fmul: 8, conv: 1 }
+use dearfloat
+f(a: u16 in 0..4095, b: u8, c: u16 in 0..4095, d: u8) = f32(a)*f32(b) + f32(c)*f32(d)
+find f 1
+use gt1030
+find f 1
+g(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1, d: f32 in -1..1) = a*b + c*d
+model dearf : rdna2 { fadd: 30, fmul: 30 }
+ozaki g model dearf tol 1e-3
+ozaki g model dearf tol 1e-5
+ozaki g model dearf slices 3 tol 1e-5
+ozaki g model gt1030
+h(a: f16 in -1..1, b: f16 in -1..1, c: f16 in -1..1, d: f16 in -1..1) = f32(a)*f32(b) + f32(c)*f32(d)
+ozaki h model dearf slices 4
+ozaki's scheme for g with 3 slices within 1e-5
