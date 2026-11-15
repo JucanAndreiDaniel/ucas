@@ -12,6 +12,8 @@ SRCS+=	fuse.c irw.c idrw.c npn.c egraph.c
 SRCS+=	ifx.c
 # lanes packed in a word, worked on all at once: more rewrites for find
 SRCS+=	swar.c
+# a warp's matrix product (a tensor core's MMA) without a matrix unit
+SRCS+=	mma.c
 # graphics fixed function (blending, logic ops, stencil) as compute
 SRCS+=	rop.c
 # the texture unit's fixed function as operations
