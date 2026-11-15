@@ -4307,6 +4307,19 @@ otherwise.  English: "the lane map lane xor (lane & 1) << 1 as xor
 stages under rdna2"; JSON `{"cmd": "lperm", "args": {"index": "lane xor
 3", "model": "rdna2"}}`.
 
+`simplify` writes them into a SPIR-V module (src/spv_lperm.inc): an
+OpGroupNonUniformShuffle whose index reads only SubgroupLocalInvocationId
+becomes the stages, each an OpGroupNonUniformShuffleXor and an OpSelect
+on the lane's bits, where the model prices them below the shuffle and
+the index's instructions.  The map is read in the smallest block of 2^b
+lanes it keeps every lane in, and SAT proves the index that map on the
+lane's low b bits, its other bits kept, for every 32-bit lane; written
+where the block is a quad (b <= 2: a subgroup of quad operations has at
+least 4 lanes), every lane active, and proposed, not written, for a
+larger block, which needs the pipeline's subgroup size
+(tests/lperm_spv.ucas: `subgroupShuffle(x, l ^ ((l & 1u) << 1u))` 7 -> 5
+under rdna2, spirv-val accepts the module; left under gt1030).
+
 For C callers (mma.c), src/lperm.h:
 
 ```
