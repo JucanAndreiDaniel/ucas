@@ -368,6 +368,91 @@ glsl_stage(const char *src, int has_main)
  * src (GLSL) to SPIR-V assembly in out; 1 on success, else 0 with the
  * compiler's errors in notes
  */
+/*
+ * Where each line of the last GLSL compiled came from, by its #line
+ * directives (a preprocessed shader's "#line N \"file\"": the line after
+ * it is file's line N): line k of the text is lo_line[k] of lo_file[k],
+ * the file NULL before the first directive.
+ */
+static const char **lo_file;
+static int *lo_line, lo_n;
+static char **lo_names;
+static int lo_nn;
+
+static void
+line_origins(const char *src)
+{
+	const char *l = src, *file = NULL;
+	int k = 1, at = 0, i;
+
+	for (i = 0; i < lo_nn; i++)
+		free(lo_names[i]);
+	free(lo_names);
+	free(lo_file);
+	free(lo_line);
+	lo_names = NULL;
+	lo_nn = 0;
+	lo_n = 1;
+	for (const char *c = src; *c; c++)
+		lo_n += *c == '\n';
+	lo_file = calloc((size_t)lo_n + 1, sizeof *lo_file);
+	lo_line = calloc((size_t)lo_n + 1, sizeof *lo_line);
+	if (lo_file == NULL || lo_line == NULL) {
+		lo_n = 0;
+		return;
+	}
+	while (l != NULL && *l && k <= lo_n) {
+		const char *e = strchr(l, '\n'), *c = l;
+
+		lo_file[k] = file;
+		lo_line[k] = file != NULL ? at : 0;
+		while (*c == ' ' || *c == '\t')
+			c++;
+		if (*c == '#') {
+			c++;
+			while (*c == ' ' || *c == '\t')
+				c++;
+			if (!strncmp(c, "line", 4) && (c[4] == ' ' || c[4] == '\t')) {
+				char *q;
+				long n = strtol(c + 4, &q, 10);
+				while (*q == ' ' || *q == '\t')
+					q++;
+				if (n > 0 && *q == '"') {
+					const char *qe = strchr(q + 1, '"');
+					char **g = qe ? realloc(lo_names,
+					    ((size_t)lo_nn + 1) * sizeof *g) : NULL;
+					if (g != NULL) {
+						lo_names = g;
+						lo_names[lo_nn] = strndup(q + 1,
+						    (size_t)(qe - q - 1));
+						if (lo_names[lo_nn] != NULL)
+							file = lo_names[lo_nn++];
+					}
+				}
+				if (n > 0)
+					at = (int)n - 1;
+			}
+		}
+		at++;
+		k++;
+		l = e ? e + 1 : NULL;
+	}
+}
+
+/*
+ * The file and line that line ln of the last GLSL compiled came from, by
+ * its #line directives: 0 when it names no file
+ */
+int
+glsl_line_origin(int ln, const char **file, int *line)
+{
+	if (ln <= 0 || ln > lo_n || lo_file == NULL || lo_file[ln] == NULL)
+		return 0;
+	*file = lo_file[ln];
+	*line = lo_line[ln];
+	return 1;
+}
+
 int
 glsl_to_spvasm(const char *src, struct sbuf *out, struct sbuf *notes)
 {
@@ -377,10 +462,12 @@ glsl_to_spvasm(const char *src, struct sbuf *out, struct sbuf *notes)
 	    strstr(src, "void main") != NULL;
 
 	stage = glsl_stage(src, has_main);
+	line_origins(src);
 	sb_puts(&body, src);
 	{
 		/* #line directives blanked: the lines reported are the text's own
-		 * (a preprocessed shader names its included files there) */
+		 * (a preprocessed shader names its included files there), and
+		 * line_origins keeps the file and line each names beside them */
 		char *l = body.p;
 		while (l != NULL && *l) {
 			char *e = strchr(l, '\n'), *c = l;

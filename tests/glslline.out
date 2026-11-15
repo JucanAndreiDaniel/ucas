@@ -1,0 +1,18 @@
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  top: called from a compute shader's main(), its arguments read from a buffer
+  low: called from a compute shader's main(), its arguments read from a buffer
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify
+simplify: 70 SPIR-V instructions, 2 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 6 -> 3 (-50.0%)
+  by kind:
+       2  equals its operand                            -3
+  rewrites:
+    %61 = OpExtInst %uint %2 UClamp %60 %uint_0 %uint_15
+      ->  %60   (equals its operand; -2)
+      (line 4, main.comp:40: uint low(uint x) { return clamp(x & 15u, 0u, 15u); })
+    %56 = OpExtInst %uint %2 UMin %55 %uint_255
+      ->  %55   (equals its operand; -1)
+      (line 2, bytes.glsl:1: uint top(uint x) { return min(x >> 24u, 255u); })
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  wrote simplified.spvasm

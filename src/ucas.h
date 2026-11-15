@@ -970,6 +970,7 @@ void spirv_overdraw_opt(double k);	/* advice: fragments a pixel gets */	/* repor
 void spirv_fn_opts(int mode);	/* function level: 0 too, 1 alone, 2 not */
 /* glslc.c: GLSL (a snippet is completed) to SPIR-V assembly */
 int glsl_to_spvasm(const char *src, struct sbuf *out, struct sbuf *notes);
+int glsl_line_origin(int ln, const char **file, int *line);
 int glsl_like(const char *code, const char *lang);
 /* codelang.c: a code block's language, from its tag and its content;
  * *unclear: 1 untagged and could be either, 2 a ```c block of GLSL */

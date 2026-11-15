@@ -6657,9 +6657,18 @@ src_line(int ln, char *b, size_t n)
 		t++;
 	{
 		size_t len = strcspn(t, "\n");
+		const char *file, *base;
+		int fl;
+
 		if (len > 90)
 			len = 90;
-		snprintf(b, n, "      (line %d: %.*s)\n", ln, (int)len, t);
+		/* a preprocessed shader's #line: the file and line it came from */
+		if (glsl_line_origin(ln, &file, &fl)) {
+			base = strrchr(file, '/') ? strrchr(file, '/') + 1 : file;
+			snprintf(b, n, "      (line %d, %s:%d: %.*s)\n", ln, base, fl,
+			    (int)len, t);
+		} else
+			snprintf(b, n, "      (line %d: %.*s)\n", ln, (int)len, t);
 	}
 }
 

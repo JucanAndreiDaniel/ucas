@@ -1,0 +1,9 @@
+# simplify on a preprocessed shader: its #line directives name the files the lines came from (glslangValidator -E
+# writes them for each #include), and each rewrite says the file and line beside the text's own
+simplify
+```glsl
+#line 1 "/src/texture/inc/bytes.glsl"
+uint top(uint x) { return min(x >> 24u, 255u); }
+#line 40 "/src/texture/main.comp"
+uint low(uint x) { return clamp(x & 15u, 0u, 15u); }
+```
