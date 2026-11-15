@@ -186,6 +186,7 @@ inline annotations: `range isqrt(x: u4)`.
 | `dword cases [P]` | the bounds of DWPlusFP and AccurateDWPlusDW whatever cancels, and of DWTimesDW3 and DWDivFP3, by the case analysis ucas runs at P bits (24): the cases, the largest bound and its case; at 3 to 5 bits also every operand pair of that format in a window run against them (see "fp64 without fp64").  English: "the case analysis of the double-word additions at 4 bits" |
 | `foldproof F [model m]` | the float round trips the model says its driver folds, and their rounding as integer arithmetic no fold reaches, proved equal (see "Driver folds") |
 | `banks F [, G ...] [size N] [elem B] [model m]` | the bank-conflict degree of shared-memory index expressions over a warp, and an index swizzle that lowers it, proved to keep the indices apart (see "Memory kinds") |
+| `mma [m16n8k16\|m16n8k8] [f32\|f16] [model m] [all] [validate] [nofile] [seed N]` | a warp's matrix product (a tensor core's HMMA: PTX's mma.sync with f16 A and B) on a GPU without a matrix unit: the dataflows priced under the model, the cheapest proved over the 32 lanes with its error bound, written as GLSL (see "A warp's matrix product without a matrix unit") |
 | `intatomic F [count N] [tol T] [global] [model m]` | a float atomic add as an integer atomic add on fixed point, when its addend is proved exact there (or within tol) and the model prices that lower (see "Memory kinds") |
 | `texalu F [tol E] [under m]` | table reads and weighted sums of neighbouring entries, and a function of few input bits as its table, as reads through the texture unit, where the model prices them lower, each proved, with what the pipeline needs for it (see "The texture unit as an ALU") |
 | `texenc T [rows W] [tol E]` | a constant table as BC4 blocks: endpoints, selectors and bytes, exact or within E, every pair of endpoints tried; `texenc T, U` two tables of one shape as BC5; `texenc T [, U] astc BWxBH [srgb]` as ASTC blocks, two tables in a block's two planes; `texenc T [, U] eac` as R11_EAC (two as RG11_EAC), every header tried; `texenc T [, U] etc2 [srgb]` in the red channel of RGB8_ETC2 (two as RGBA8_ETC2_EAC; `srgb` the sRGB formats), every encoding of the channel tried; `texenc T [, U] bc7 [srgb]` in BC7's red (two in red and alpha); `texenc T bc6h` numbers of a half float's range in BC6H's red (see "Tables as compressed textures") |
@@ -4051,6 +4052,124 @@ that, both arms and a select, 41.6), at 3.2% 14.3 against 41.6
 Not there yet: a segmented scan under
 `sg_active`; an exact value for inputs read in the other lanes (they
 need more than a function's 8 parameters).
+
+### A warp's matrix product without a matrix unit
+
+`mma` writes a tensor core's matrix product for a GPU that has
+subgroups and no matrix unit (no VK_KHR_cooperative_matrix): D = A B + C
+on fragments spread over a warp's 32 lanes as PTX's
+`mma.sync.aligned.m16n8k16.row.col` (or `m16n8k8`) lays them out, f16 A
+and B, f32 or f16 C and D, which is what a recompiler of NVIDIA's HMMA
+has to reproduce lane for lane (src/mma.c).  With g = lane / 4 and t =
+lane % 4, A's register j holds row g + 8 (j & 1), columns 2t + 8 (j >> 1)
+and the next; B's register j column g, rows 2t + 8j and the next; an f32
+C's register j row g + 8 (j >> 1), column 2t + (j & 1).
+
+Nothing names a strategy.  A dataflow is where each product is formed
+and how its operands get there, and the search runs over all of them
+that it can describe:
+
+- **output-stationary**: a lane forms the products of its own elements
+  of D, fetching the words of A's rows and B's columns it needs.  The
+  order of the k words in a lane is a search variable (k ^ a xor of the
+  lane's bits), which lets lanes that need the same words fetch
+  different ones first and take the rest from each other by a xor
+  shuffle;
+- **A-stationary**, **B-stationary**: a lane forms every product its own
+  words of A (or B) take part in, fetching only the other operand, and
+  the partial sums meet by a butterfly over the lane bits that tell them
+  apart, summed at a lane chosen from D's owner or the element's index.
+  Which partial sum sits in which register is a search variable (a xor
+  of the lane's bits): a butterfly needs the same registers sent from
+  every lane, and only some assignments allow it, which the search
+  finds (for m16n8k16 under gt1030 column j ^ 2t, with no selects);
+  B-stationary has none for PTX's layouts, and the report says so;
+
+and for each fetched operand: by exchanges of the packed words, of the
+words unpacked to f32 first (twice the exchanges, fewer conversions), or
+through a slot of shared memory (stored register-major or lane-major,
+its bank conflicts counted over the model's banks).  Every fetch first
+looks for the word already at hand in another lane that a xor reaches,
+or for two such pieces either side of a lane bit with a select between
+them.  Each exchange is classified by the lane map it is: a xor of a
+constant (`subgroupShuffleXor`, or a quad swap), a broadcast within the
+quad (`subgroupQuadBroadcast`), or a shuffle by an index computed from
+the lane's bits (an index that is another's xor a constant costs one
+operation).
+
+The model's prices decide.  Three classes are new, absent unless a model
+lists them: `sg_shuffle_xor` and `sg_quad` (each priced as `sg_shuffle`
+where the model lists neither: they are shuffles) and `fdot2`, two f16
+products added into an f32 (OpFDot2MixAcc32VALVE of
+SPV_VALVE_mixed_float_dot_product, AMD's v_dot2_f32_f16), used on packed
+words in place of two unpacks and two multiply-adds.  rdna2 lists
+estimates for all three (DPP and v_permlanex16 are VALU modifiers, 1;
+v_dot2_f32_f16 is full rate, 1); gt1030 measured a shuffle by xor, a
+broadcast and a quad swap at the same 4.00 as any shuffle, so it lists
+none.  An unpack or a pack of f16 is a `conv` each, a product or a
+multiply-add an `fmul`, a sum an `fadd`, a subgroup barrier
+`sg_barrier` (`barrier` where the model has none), shared memory
+`load_shared`, `store_shared` and `bank_conflict`.  A model without
+`sg_shuffle` (mali_g715) gets the shared-memory dataflows only, with a
+workgroup barrier.
+
+The chosen dataflow is **proved** by running it on symbols in all 32
+lanes: each element of D must come out as exactly its K products and
+its C, each once (a product of elements that do not meet, or a term
+counted twice, fails it).  Every listed dataflow is proved, not only the
+chosen.  A product of two f16 is exact in f32 (22 significant bits, its
+exponent within f32's normals), so only the sums round; the run also
+counts the roundings each term goes through (h), which gives the bound
+|D - (A B + C)| <= gamma_h (sum_k |A_ik B_kj| + |C_ij|), gamma_h = h u /
+(1 - h u), u = 2^-24, then an f16 D's own rounding.  A butterfly's sums
+are shallower than a chain: under gt1030 the chosen m16n8k16 has h = 6
+where each lane's chain of 16 multiply-adds has 16.  Then (a secondary,
+sampled check) the plan runs on 64 random sets of fragments in f32
+against the exact sums, and the error is reported as a fraction of the
+bound.  The GLSL's index and address expressions are checked to give
+their lane maps in every lane as they are written; `validate` compiles
+it in a compute shader of 32 lanes with glslangValidator and checks it
+with spirv-val.
+
+```
+> mma
+mma m16n8k16: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k16.row.col lays them out, f16 A and B, f32 C and D, 32 lanes, under gt1030 (8440 dataflows tried)
+  each of D's 128 elements is a sum of 16 products of f16 and its C
+   1. 306       A-stationary; B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, depth 6
+   2. 326       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles, depth 6
+   3. 338       output-stationary; A: 24 xor shuffles (unpacked); B: 32 shuffles (unpacked); k order by lane, depth 16
+   ...
+  B-stationary: none possible: no assignment of the partial sums to registers (a xor of the lane's bits) lets a butterfly send and read them from the same registers in every lane
+  reference, each word fetched from the lane that holds it: 401 (output-stationary; A: 16 shuffles; B: 16 shuffles, depth 16); the chosen is 1.31x cheaper
+  chosen: A-stationary; B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, cost 306
+  ...
+  bound: |D - (A B + C)| <= gamma_6 (sum_k |A_ik B_kj| + |C_ij|), gamma_6 = 6 u / (1 - 6 u) = 3.576e-07, u = 2^-24
+  ...
+> mma model rdna2
+   1. 121       output-stationary; A: 12 xor shuffles; B: 16 shuffles; 32 fdot2; k order by lane, depth 16
+   2. 137       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
+```
+
+Under gt1030 an unpack (`conv`, 3) is dearer than a shuffle's share, so
+B's words are unpacked once in their own lanes and shuffled as f32;
+under sm86 (conversions at 16 a clock) more so (1.95x); under rdna2,
+with `fdot2`, nothing is unpacked and each lane sums its own elements,
+taking A's words from its quad by xor (the k order starting at the
+lane's own).  The output is a GLSL function, `void
+mma_m16n8k16_f32(uint a[4], uint b[2], float c[4], out float d[4])` (f16
+C and D: `uint c[2]`, `out uint d[2]`), written to `NAME.glsl` with a
+header that says what it is and what was proved; it is for the
+invocation's own 32 lanes of a subgroup of 32 or 64 (`gl_SubgroupInvocationID
+& 31`, a shuffle's index ORed with the others' base), every lane active.
+`all` lists every family and fetch's best; `seed` the random check's.
+JSON: `{"cmd": "mma", "args": {"shape": "m16n8k8", "accumulator": "f16",
+"model": "rdna2"}}`; English: "emulate hmma m16n8k8 with f16 accumulators
+on rdna2", "tensor core mma without cooperative matrices under sm86".
+
+The cost is that of one product in isolation: a GEMM that multiplies
+one B fragment by several A ones can fetch B's words once for all of
+them (the A-stationary flows then leave only the products and the
+butterfly to each), which the price does not count.
 
 ### A catalogue of instructions
 

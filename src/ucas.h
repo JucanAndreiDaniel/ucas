@@ -517,6 +517,14 @@ enum {
 	 * execution barrier (sg.c), absent unless listed */
 	C_SG_CLUSTER2, C_SG_CLUSTER4, C_SG_CLUSTER8, C_SG_CLUSTER16,
 	C_SG_CLUSTER32, C_SG_PART, C_SG_PADD, C_SG_BARRIER,
+	/*
+	 * A shuffle whose lane map is a xor of a constant (a butterfly), and
+	 * a quad's broadcast or swap: what a shuffle costs where the model
+	 * lists neither (mma.c); a dot product of two pairs of f16 added
+	 * into an f32 (OpFDot2MixAcc32VALVE, v_dot2_f32_f16).  Absent unless
+	 * listed.
+	 */
+	C_SG_SHUFXOR, C_SG_QUAD, C_FDOT2,
 	C_NCLASS
 };
 #define C_SG_FIRST C_SG_BALLOT

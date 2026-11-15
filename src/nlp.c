@@ -40,6 +40,7 @@
 #include "img.h"
 #include "dword.h"
 #include "memk.h"
+#include "mma.h"
 #include "stoch.h"
 
 #include <ctype.h>
@@ -7520,6 +7521,12 @@ translate(const char *sent)
 			emit(r);
 			return 1;
 		}
+		/* a warp's matrix product without a matrix unit (mma.c) */
+		if ((r = mma_nlp_raw(sent)) != NULL) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
 	}
 	{
 		/* stochastic search, identity testing (stoch.c) */
@@ -7783,6 +7790,8 @@ static const char *const ucas_cmds[] = {"show", "table", "range", "domain",
 	"dword", "foldproof",
 	/* memk.c */
 	"banks", "intatomic",
+	/* mma.c */
+	"mma", "hmma",
 	/* stoch.c */
 	"stoke", "pit", "phash",
 	/* find.c: the snippet database, rules from the enumeration */
@@ -8009,6 +8018,12 @@ nlp_is_english(const char *s, size_t n)
 	if ((n - i > 6 && !strncmp(s + i, "banks ", 6)) ||
 	    (n - i > 10 && !strncmp(s + i, "intatomic ", 10)))
 		return 0;
+	/* mma.c: "mma m16n8k8 f16 model rdna2" is ucas */
+	if ((n - i == 3 && !strncmp(s + i, "mma", 3)) ||
+	    (n - i > 4 && !strncmp(s + i, "mma ", 4)) ||
+	    (n - i == 4 && !strncmp(s + i, "hmma", 4)) ||
+	    (n - i > 5 && !strncmp(s + i, "hmma ", 5)))
+		return 0;
 	if (n - i > 7 && !strncmp(s + i, "texalu ", 7))
 		return 0;	/* texalu F tol E under M (texalu.c) */
 	/* the simplify request's translation: its words and the names it
@@ -8044,6 +8059,9 @@ nlp_is_english(const char *s, size_t n)
 			memcpy(line, s + i, n - i);
 			line[n - i] = 0;
 			if (memk_nlp_raw(line) != NULL)
+				return 1;
+			if (mma_nlp_raw(line) != NULL &&
+			    strncmp(line, "mma", 3) && strncmp(line, "hmma", 4))
 				return 1;
 		}
 	}

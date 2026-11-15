@@ -1,0 +1,251 @@
+> mma model rdna2 validate nofile
+mma m16n8k16: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k16.row.col lays them out, f16 A and B, f32 C and D, 32 lanes, under rdna2 (8440 dataflows tried)
+  each of D's 128 elements is a sum of 16 products of f16 and its C
+   1. 121       output-stationary; A: 12 xor shuffles; B: 16 shuffles; 32 fdot2; k order by lane, depth 16
+   2. 137       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
+   3. 190.25    output-stationary; A: 16 shuffles; B: 4 loads from shared memory (register-major), 12 xor shuffles; 32 fdot2; k order by lane, depth 16
+   4. 202.25    output-stationary; A: 8 xor shuffles, 8 shuffles; B: 8 loads from shared memory (lane-major), 8 xor shuffles; 32 fdot2; k order by lane, depth 16
+   5. 203.25    output-stationary; A: 8 loads from shared memory (register-major), 8 xor shuffles; B: 8 xor shuffles, 8 shuffles; 32 fdot2; k order by lane, depth 16
+   6. 205       output-stationary; A: 24 xor shuffles (unpacked); B: 16 shuffles; k order by lane, depth 16
+  (14 more: mma ... all)
+  B-stationary: none possible: no assignment of the partial sums to registers (a xor of the lane's bits) lets a butterfly send and read them from the same registers in every lane
+  reference, each word fetched from the lane that holds it: 123 (output-stationary; A: 16 quad broadcasts; B: 16 shuffles; 32 fdot2, depth 16); the chosen is 1.02x cheaper
+  chosen: output-stationary; A: 12 xor shuffles; B: 16 shuffles; 32 fdot2; k order by lane, cost 121
+    28 exchanges, 0 loads and 0 stores of shared memory (bank conflicts at most 1-way), 0 barriers, 0 unpacks, 32 fdot2, 0 adds
+    8 shuffle indices, 12 integer operations
+  proof: the plan run on symbols in all 32 lanes gives every element of D as exactly its 16 products and its C, each once (exhaustive over the lanes)
+  bound: |D - (A B + C)| <= gamma_16 (sum_k |A_ik B_kj| + |C_ij|), gamma_16 = 16 u / (1 - 16 u) = 9.537e-07, u = 2^-24
+    a product of two f16 is exact in f32 (22 significant bits, exponents within f32's normals), so only the sums round: each term through at most 16 roundings (an fdot2 counted as two)
+  holds when: every lane of the warp active, the warp a subgroup of 32 or 32 aligned lanes of a larger one; the f32 sums round to nearest; an fdot2 rounds at most twice (SPV_VALVE_mixed_float_dot_product leaves its rounding to the device)
+  check: 64 random sets of fragments in f32 against the exact sums: within the bound, the largest error 0.402 of the bound (sampled, not a proof)
+  validate: a compute shader of 32 lanes calling it passes glslangValidator and spirv-val
+  GLSL (mma_m16n8k16_f32.glsl):
+    // D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k16.row.col
+    // lays them out (f16 A and B, f32 C and D), for a GPU without a matrix unit.
+    // ucas mma m16n8k16 f32 under rdna2: output-stationary; A: 12 xor shuffles; B: 16 shuffles; 32 fdot2; k order by lane;
+    // cost 121 (each word fetched from its lane: 123).
+    // Proved over the 32 lanes: each element of D is its 16 products and C, each once;
+    // |D - (A B + C)| <= gamma_16 (sum_k |A_ik B_kj| + |C_ij|), u = 2^-24.
+    #extension GL_KHR_shader_subgroup_basic : require
+    #extension GL_KHR_shader_subgroup_shuffle : require
+    #extension GL_EXT_spirv_intrinsics : require
+    #extension GL_EXT_shader_explicit_arithmetic_types_float16 : require
+    // OpFDot2MixAcc32VALVE: a.x * b.x + a.y * b.y + c in f32
+    spirv_instruction(extensions = ["SPV_VALVE_mixed_float_dot_product"], capabilities = [6912], id = 6916)
+    float mma_fdot2(f16vec2 a, f16vec2 b, float c);
+    void mma_m16n8k16_f32(uint a[4], uint b[2], float c[4], out float d[4])
+    {
+    	uint lane = gl_SubgroupInvocationID & 31u;
+    	uint base = gl_SubgroupInvocationID & ~31u;
+    	float v0 = c[0];
+    	float v1 = c[1];
+    	float v2 = c[2];
+    	float v3 = c[3];
+    	uint v4 = a[0];
+    	uint v5 = b[0];
+    	uint i0 = base | ((lane & 3u) ^ ((lane & 3u) << 3u));
+    	uint v6 = subgroupShuffle(v5, i0);
+    	float v7 = mma_fdot2(unpackFloat2x16(v4), unpackFloat2x16(v6), v0);
+    	uint i1 = i0 ^ 4u;
+    	uint v8 = subgroupShuffle(v5, i1);
+    	float v9 = mma_fdot2(unpackFloat2x16(v4), unpackFloat2x16(v8), v1);
+    	uint v10 = a[1];
+    	float v11 = mma_fdot2(unpackFloat2x16(v10), unpackFloat2x16(v6), v2);
+    	float v12 = mma_fdot2(unpackFloat2x16(v10), unpackFloat2x16(v8), v3);
+    	uint v13 = subgroupShuffleXor(v4, 1u);
+    	uint i3 = i0 ^ 1u;
+    	uint v14 = subgroupShuffle(v5, i3);
+    	float v15 = mma_fdot2(unpackFloat2x16(v13), unpackFloat2x16(v14), v7);
+    	uint i4 = i0 ^ 5u;
+    	uint v16 = subgroupShuffle(v5, i4);
+    	float v17 = mma_fdot2(unpackFloat2x16(v13), unpackFloat2x16(v16), v9);
+    	uint v18 = subgroupShuffleXor(v10, 1u);
+    	float v19 = mma_fdot2(unpackFloat2x16(v18), unpackFloat2x16(v14), v11);
+    	float v20 = mma_fdot2(unpackFloat2x16(v18), unpackFloat2x16(v16), v12);
+    	uint v21 = subgroupShuffleXor(v4, 2u);
+    	uint i6 = i0 ^ 2u;
+    	uint v22 = subgroupShuffle(v5, i6);
+    	float v23 = mma_fdot2(unpackFloat2x16(v21), unpackFloat2x16(v22), v15);
+    	uint i7 = i0 ^ 6u;
+    	uint v24 = subgroupShuffle(v5, i7);
+    	float v25 = mma_fdot2(unpackFloat2x16(v21), unpackFloat2x16(v24), v17);
+    	uint v26 = subgroupShuffleXor(v10, 2u);
+    	float v27 = mma_fdot2(unpackFloat2x16(v26), unpackFloat2x16(v22), v19);
+    	float v28 = mma_fdot2(unpackFloat2x16(v26), unpackFloat2x16(v24), v20);
+    	uint v29 = subgroupShuffleXor(v4, 3u);
+    	uint i9 = i0 ^ 3u;
+    	uint v30 = subgroupShuffle(v5, i9);
+    	float v31 = mma_fdot2(unpackFloat2x16(v29), unpackFloat2x16(v30), v23);
+    	uint i10 = i0 ^ 7u;
+    	uint v32 = subgroupShuffle(v5, i10);
+    	float v33 = mma_fdot2(unpackFloat2x16(v29), unpackFloat2x16(v32), v25);
+    	uint v34 = subgroupShuffleXor(v10, 3u);
+    	float v35 = mma_fdot2(unpackFloat2x16(v34), unpackFloat2x16(v30), v27);
+    	float v36 = mma_fdot2(unpackFloat2x16(v34), unpackFloat2x16(v32), v28);
+    	uint v37 = a[2];
+    	uint v38 = b[1];
+    	uint v39 = subgroupShuffle(v38, i0);
+    	float v40 = mma_fdot2(unpackFloat2x16(v37), unpackFloat2x16(v39), v31);
+    	uint v41 = subgroupShuffle(v38, i1);
+    	float v42 = mma_fdot2(unpackFloat2x16(v37), unpackFloat2x16(v41), v33);
+    	uint v43 = a[3];
+    	float v44 = mma_fdot2(unpackFloat2x16(v43), unpackFloat2x16(v39), v35);
+    	float v45 = mma_fdot2(unpackFloat2x16(v43), unpackFloat2x16(v41), v36);
+    	uint v46 = subgroupShuffleXor(v37, 1u);
+    	uint v47 = subgroupShuffle(v38, i3);
+    	float v48 = mma_fdot2(unpackFloat2x16(v46), unpackFloat2x16(v47), v40);
+    	uint v49 = subgroupShuffle(v38, i4);
+    	float v50 = mma_fdot2(unpackFloat2x16(v46), unpackFloat2x16(v49), v42);
+    	uint v51 = subgroupShuffleXor(v43, 1u);
+    	float v52 = mma_fdot2(unpackFloat2x16(v51), unpackFloat2x16(v47), v44);
+    	float v53 = mma_fdot2(unpackFloat2x16(v51), unpackFloat2x16(v49), v45);
+    	uint v54 = subgroupShuffleXor(v37, 2u);
+    	uint v55 = subgroupShuffle(v38, i6);
+    	float v56 = mma_fdot2(unpackFloat2x16(v54), unpackFloat2x16(v55), v48);
+    	uint v57 = subgroupShuffle(v38, i7);
+    	float v58 = mma_fdot2(unpackFloat2x16(v54), unpackFloat2x16(v57), v50);
+    	uint v59 = subgroupShuffleXor(v43, 2u);
+    	float v60 = mma_fdot2(unpackFloat2x16(v59), unpackFloat2x16(v55), v52);
+    	float v61 = mma_fdot2(unpackFloat2x16(v59), unpackFloat2x16(v57), v53);
+    	uint v62 = subgroupShuffleXor(v37, 3u);
+    	uint v63 = subgroupShuffle(v38, i9);
+    	float v64 = mma_fdot2(unpackFloat2x16(v62), unpackFloat2x16(v63), v56);
+    	uint v65 = subgroupShuffle(v38, i10);
+    	float v66 = mma_fdot2(unpackFloat2x16(v62), unpackFloat2x16(v65), v58);
+    	uint v67 = subgroupShuffleXor(v43, 3u);
+    	float v68 = mma_fdot2(unpackFloat2x16(v67), unpackFloat2x16(v63), v60);
+    	float v69 = mma_fdot2(unpackFloat2x16(v67), unpackFloat2x16(v65), v61);
+    	d[0] = v64;
+    	d[1] = v66;
+    	d[2] = v68;
+    	d[3] = v69;
+    }
+  (nofile: mma_m16n8k16_f32.glsl, 4914 bytes, checksum c5d50eeb)
+> mma m16n8k8 f16 model mali_g715 validate nofile
+mma m16n8k8: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8.row.col lays them out, f16 A and B, f16 C and D, 32 lanes, under mali_g715 (1720 dataflows tried)
+  each of D's 128 elements is a sum of 8 products of f16 and its C
+   1. 563.14    output-stationary; A: 6 loads from shared memory (register-major); B: 8 loads from shared memory (register-major); k order by lane, depth 8
+   2. 563.14    output-stationary; A: 6 loads from shared memory (register-major); B: 8 loads from shared memory (lane-major); k order by lane, depth 8
+   3. 578.1     output-stationary; A: 6 loads from shared memory (lane-major); B: 8 loads from shared memory (register-major); k order by lane, depth 8
+   4. 578.1     output-stationary; A: 6 loads from shared memory (lane-major); B: 8 loads from shared memory (lane-major); k order by lane, depth 8
+  A-stationary: none possible: its exchanges need subgroup shuffles, which the model does not list (sg_shuffle)
+  B-stationary: none possible: no assignment of the partial sums to registers (a xor of the lane's bits) lets a butterfly send and read them from the same registers in every lane
+  chosen: output-stationary; A: 6 loads from shared memory (register-major); B: 8 loads from shared memory (register-major); k order by lane, cost 563.14
+    0 exchanges, 14 loads and 3 stores of shared memory (bank conflicts at most 1-way), 2 barriers, 36 unpacks, 32 multiply-adds, 0 adds, 2 packs
+  proof: the plan run on symbols in all 32 lanes gives every element of D as exactly its 8 products and its C, each once (exhaustive over the lanes)
+  bound: |D - (A B + C)| <= gamma_8 (sum_k |A_ik B_kj| + |C_ij|), gamma_8 = 8 u / (1 - 8 u) = 4.768e-07, u = 2^-24; then D's f16 rounding, 2^-11 |D| (2^-25 below the normals)
+    a product of two f16 is exact in f32 (22 significant bits, exponents within f32's normals), so only the sums round: each term through at most 8 roundings
+  holds when: every invocation of the workgroup calls it (a workgroup barrier), each warp 32 consecutive invocations; the f32 sums round to nearest
+  check: 64 random sets of fragments in f32 against the exact sums: within the bound, the largest error 0.985 of the bound (sampled, not a proof)
+  validate: a compute shader of 32 lanes calling it passes glslangValidator and spirv-val
+  GLSL (mma_m16n8k8_f16.glsl):
+    // D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8.row.col
+    // lays them out (f16 A and B, f16 C and D), for a GPU without a matrix unit.
+    // ucas mma m16n8k8 f16 under mali_g715: output-stationary; A: 6 loads from shared memory (register-major); B: 8 loads from shared memory (register-major); k order by lane;
+    // cost 563.14 (each word fetched from its lane: 0).
+    // Proved over the 32 lanes: each element of D is its 8 products and C, each once;
+    // |D - (A B + C)| <= gamma_8 (sum_k |A_ik B_kj| + |C_ij|), then D's f16 rounding, u = 2^-24.
+    #ifndef MMA_WARPS
+    #define MMA_WARPS 1  // the workgroup's warps of 32
+    #endif
+    shared uint mma_slot[MMA_WARPS * 96u];
+    void mma_m16n8k8_f16(uint a[2], uint b[1], uint c[2], out uint d[2])
+    {
+    	uint lane = gl_LocalInvocationIndex & 31u;
+    	uint slot = (gl_LocalInvocationIndex >> 5) * 96u;
+    	barrier();
+    	uint v1 = a[0];
+    	mma_slot[slot + (lane)] = v1;
+    	uint v3 = a[1];
+    	mma_slot[slot + (lane ^ 32u)] = v3;
+    	uint v5 = b[0];
+    	mma_slot[slot + (lane ^ 64u)] = v5;
+    	barrier();
+    	uint v8 = c[0];
+    	float v9 = unpackHalf2x16(v8).x;
+    	float v10 = unpackHalf2x16(v8).y;
+    	uint v11 = c[1];
+    	float v12 = unpackHalf2x16(v11).x;
+    	float v13 = unpackHalf2x16(v11).y;
+    	uint v14 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 64u)];
+    	float v15 = unpackHalf2x16(v1).x;
+    	float v16 = unpackHalf2x16(v14).x;
+    	float v17 = fma(v15, v16, v9);
+    	float v18 = unpackHalf2x16(v1).y;
+    	float v19 = unpackHalf2x16(v14).y;
+    	float v20 = fma(v18, v19, v17);
+    	uint v21 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 68u)];
+    	float v22 = unpackHalf2x16(v21).x;
+    	float v23 = fma(v15, v22, v10);
+    	float v24 = unpackHalf2x16(v21).y;
+    	float v25 = fma(v18, v24, v23);
+    	float v26 = unpackHalf2x16(v3).x;
+    	float v27 = fma(v26, v16, v12);
+    	float v28 = unpackHalf2x16(v3).y;
+    	float v29 = fma(v28, v19, v27);
+    	float v30 = fma(v26, v22, v13);
+    	float v31 = fma(v28, v24, v30);
+    	uint v32 = mma_slot[slot + (lane ^ 1u)];
+    	uint v33 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 65u)];
+    	float v34 = unpackHalf2x16(v32).x;
+    	float v35 = unpackHalf2x16(v33).x;
+    	float v36 = fma(v34, v35, v20);
+    	float v37 = unpackHalf2x16(v32).y;
+    	float v38 = unpackHalf2x16(v33).y;
+    	float v39 = fma(v37, v38, v36);
+    	uint v40 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 69u)];
+    	float v41 = unpackHalf2x16(v40).x;
+    	float v42 = fma(v34, v41, v25);
+    	float v43 = unpackHalf2x16(v40).y;
+    	float v44 = fma(v37, v43, v42);
+    	uint v45 = mma_slot[slot + (lane ^ 33u)];
+    	float v46 = unpackHalf2x16(v45).x;
+    	float v47 = fma(v46, v35, v29);
+    	float v48 = unpackHalf2x16(v45).y;
+    	float v49 = fma(v48, v38, v47);
+    	float v50 = fma(v46, v41, v31);
+    	float v51 = fma(v48, v43, v50);
+    	uint v52 = mma_slot[slot + (lane ^ 2u)];
+    	uint v53 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 66u)];
+    	float v54 = unpackHalf2x16(v52).x;
+    	float v55 = unpackHalf2x16(v53).x;
+    	float v56 = fma(v54, v55, v39);
+    	float v57 = unpackHalf2x16(v52).y;
+    	float v58 = unpackHalf2x16(v53).y;
+    	float v59 = fma(v57, v58, v56);
+    	uint v60 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 70u)];
+    	float v61 = unpackHalf2x16(v60).x;
+    	float v62 = fma(v54, v61, v44);
+    	float v63 = unpackHalf2x16(v60).y;
+    	float v64 = fma(v57, v63, v62);
+    	uint v65 = mma_slot[slot + (lane ^ 34u)];
+    	float v66 = unpackHalf2x16(v65).x;
+    	float v67 = fma(v66, v55, v49);
+    	float v68 = unpackHalf2x16(v65).y;
+    	float v69 = fma(v68, v58, v67);
+    	float v70 = fma(v66, v61, v51);
+    	float v71 = fma(v68, v63, v70);
+    	uint v72 = mma_slot[slot + (lane ^ 3u)];
+    	uint v73 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 67u)];
+    	float v74 = unpackHalf2x16(v72).x;
+    	float v75 = unpackHalf2x16(v73).x;
+    	float v76 = fma(v74, v75, v59);
+    	float v77 = unpackHalf2x16(v72).y;
+    	float v78 = unpackHalf2x16(v73).y;
+    	float v79 = fma(v77, v78, v76);
+    	uint v80 = mma_slot[slot + ((lane & 3u) ^ ((lane & 3u) << 3u) ^ 71u)];
+    	float v81 = unpackHalf2x16(v80).x;
+    	float v82 = fma(v74, v81, v64);
+    	float v83 = unpackHalf2x16(v80).y;
+    	float v84 = fma(v77, v83, v82);
+    	uint v85 = mma_slot[slot + (lane ^ 35u)];
+    	float v86 = unpackHalf2x16(v85).x;
+    	float v87 = fma(v86, v75, v69);
+    	float v88 = unpackHalf2x16(v85).y;
+    	float v89 = fma(v88, v78, v87);
+    	float v90 = fma(v86, v81, v71);
+    	float v91 = fma(v88, v83, v90);
+    	d[0] = packHalf2x16(vec2(v79, v84));
+    	d[1] = packHalf2x16(vec2(v89, v91));
+    }
+  (nofile: mma_m16n8k8_f16.glsl, 4310 bytes, checksum 30634d32)

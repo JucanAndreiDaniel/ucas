@@ -30,6 +30,7 @@
 #include "props.h"
 #include "dword.h"
 #include "memk.h"
+#include "mma.h"
 #include "stoch.h"
 #include "numsearch.h"
 #include "ring.h"
@@ -2447,13 +2448,19 @@ static const char prelude[] =
      * the saturating forms cost the same: v_dot4_u32_u8, v_dot4_i32_i8
      * (4 x 8 bits), v_dot8_u32_u4, v_dot8_i32_i4 (8 x 4 bits).  No mixed
      * signedness (RDNA3's v_dot4_i32_iu8) and no 2 x 16-bit integer dot.
+     * A shuffle by a xor of a constant and a quad's broadcast or swap are
+     * a DPP or v_permlanex16 modifier on a VALU move (sg_shuffle_xor,
+     * sg_quad 1), where a shuffle at any index is ds_bpermute through the
+     * LDS crossbar (gt1030's 4, kept); v_dot2_f32_f16 adds two f16
+     * products into an f32 at full rate (fdot2 1).
      */
     "model rdna2 : gt1030 {\n"
     "  iadd: 1, logic: 1, shift: 1, imul: 4, cmp: 1.375, minmax: 1,\n"
     "  bitcnt: 1, conv: 1, fdiv: 3, fsqrt: 4, ftrans: 4, f64: 16,\n"
     "  dot4x8: none, dot4x8sat: none,\n"
     "  udot4x8: 1, sdot4x8: 1, udot4x8sat: 1, sdot4x8sat: 1,\n"
-    "  udot8x4: 1, sdot8x4: 1, udot8x4sat: 1, sdot8x4sat: 1\n"
+    "  udot8x4: 1, sdot8x4: 1, udot8x4sat: 1, sdot8x4sat: 1,\n"
+    "  sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1\n"
     "  folds none\n"
     "}\n"
     /*
@@ -3601,6 +3608,9 @@ statement(struct P *p)
 			return;
 		/* banks, intatomic: the memory side of a model (memk.c) */
 		if (memk_command(p))
+			return;
+		/* mma: a warp's matrix product without a matrix unit (mma.c) */
+		if (mma_command(p))
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))

@@ -1,0 +1,11 @@
+# a warp's matrix product without a matrix unit (mma.c): PTX's
+# mma.sync fragments, the dataflows priced under the model, the cheapest
+# proved over the 32 lanes, with its error bound and its GLSL
+mma nofile
+mma m16n8k8 f16 nofile all
+mma model rdna2 nofile
+mma m16n8k8 model mali_g715 nofile
+mma m16n8k8 f16 model sm86 nofile seed 7
+model noshuffle : gt1030 { sg_shuffle: none }
+mma m16n8k8 model noshuffle nofile
+emulate hmma m16n8k8 with f16 accumulators on rdna2 nofile
