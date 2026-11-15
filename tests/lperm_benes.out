@@ -1,0 +1,72 @@
+> lperm [5,2,7,0,3,6,1,4][lane] lanes 8 model rdna2
+lperm: the lane map [5, 2, 7, 0, 3, 6, 1, 4][lane] over 8 lanes
+  map: 5 2 7 0 3 6 1 4
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 in the lanes of 0xf5 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor), cost 12 (not the cheapest)
+  one shuffle by the index: cost 10.875
+  chosen under rdna2: one shuffle by an index (sg_shuffle), cost 10.875
+> lperm (lane + 4) & 31 model rdna2
+lperm: the lane map lane + 4 & 0x1f over 32 lanes
+  map: 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 0 1 2 3
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0xf000f (sg_shuffle_xor); lane xor 8 where lane & 4 is 0 (sg_shuffle_xor); lane xor 4 in every lane (sg_shuffle_xor), cost 12 (not the cheapest)
+  one shuffle by the index: cost 6
+  chosen under rdna2: one shuffle by an index (sg_shuffle), cost 6
+> model dearshuf : rdna2 { sg_shuffle: 20 }
+> lperm [5,2,7,0,3,6,1,4][lane] lanes 8 model dearshuf
+lperm: the lane map [5, 2, 7, 0, 3, 6, 1, 4][lane] over 8 lanes
+  map: 5 2 7 0 3 6 1 4
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 in the lanes of 0xf5 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor), cost 12
+  one shuffle by the index: cost 26.875
+  chosen under dearshuf: 3 stages (a Benes network: the map is not affine): lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 in the lanes of 0xf5 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor), cost 12
+  proved: the stages composed lane by lane give the map on every one of the 8 lanes (lane l ends with the value of lane g_1(...g_n(l)), by the shuffle's and the select's definitions)
+> lperm [0,0,2,3,4,5,6,7][lane] lanes 8 model dearshuf
+lperm: the lane map [0, 0, 2, 3, 4, 5, 6, 7][lane] over 8 lanes
+  map: 0 0 2 3 4 5 6 7
+  not affine over F2, and it copies a lane to two: one shuffle by its index
+  one shuffle by the index: cost 26.875
+  chosen under dearshuf: one shuffle by an index (sg_shuffle), cost 26.875
+> lperm (lane * 5) & 31 model dearshuf
+lperm: the lane map 5lane & 0x1f over 32 lanes
+  map: 0 5 10 15 20 25 30 3 8 13 18 23 28 1 6 11 16 21 26 31 4 9 14 19 24 29 2 7 12 17 22 27
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x52945294 (sg_shuffle_xor); lane xor 8 in the lanes of 0xc6c6c6c6 (sg_shuffle_xor); lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor), cost 17
+  one shuffle by the index: cost 25
+  chosen under dearshuf: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x52945294 (sg_shuffle_xor); lane xor 8 in the lanes of 0xc6c6c6c6 (sg_shuffle_xor); lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor), cost 17
+  proved: the stages composed lane by lane give the map on every one of the 32 lanes (lane l ends with the value of lane g_1(...g_n(l)), by the shuffle's and the select's definitions)
+> use dearshuf
+cost model: dearshuf
+> f(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle(x * lane, (lane * 5) & 31)
+> find f 1
+find f: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from dearshuf
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 28  sg_shuffle(x*lane, u32(5f32(lane)) & 0x1f) the integer arithmetic 5lane on f32 (derived; checked on a sample)
+      holds where every value in it is an integer in [0, 155], inside (-2^24, 2^24) (interval arithmetic over the parameters' ranges)
+      f32 holds every integer below 2^24 in magnitude: each operand converts exactly, and each +, -, * has an exact result that is such an integer, so no operation rounds (a*b + c contracted into one fma rounds a*b + c once: the same integer)
+      the result converts back exactly: it is an integer inside u32
+  dot products under dearshuf (sums of products laid into lanes; cost 29 as written):
+  cost 26  sg_shuffle(x*lane, udot4x8(lane, 5) & 0x1f)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: lane * 5
+           lane in 0..31 (proved range)
+           udot4x8's sum is in 0..155: it does not wrap
+           proved by SAT: 14555 AIG nodes, 0 conflicts
+  subgroup forms under dearshuf (each derived, with what it holds under; cost 29 as written):
+  cost 21  lane & 1 != 0 ? sg_shuffle(0xc6c6c6c6 >> lane & 1 != 0 ? sg_shuffle(t1, lane xor 8) : t1, lane xor 4) : 0xc6c6c6c6 >> lane & 1 != 0 ? sg_shuffle(t1, lane xor 8) : 0x52945294 >> lane & 1 != 0 ? sg_shuffle(x*lane, lane xor 0x10) : x*lane where t1 = 0x52945294 >> lane & 1 != 0 ? sg_shuffle(x*lane, lane xor 0x10) : x*lane
+           sg_shuffle(x*lane, 5lane & 0x1f): the lane it reads is 5lane & 0x1f, a permutation of the lanes, not affine over their bits, so 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x52945294 (sg_shuffle_xor); lane xor 8 in the lanes of 0xc6c6c6c6 (sg_shuffle_xor); lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); proved for any value per lane (with a free word in each lane, the stages give lane l the word of lane 5lane & 0x1f, for each of the 32 lanes)
+           holds in a full subgroup (all 32 lanes active); needs shuffle (GL_KHR_shader_subgroup_shuffle)
+           proved by its derivation, each step above
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g(x: u32 uniform, lane: u32 in 0..7) = sg_shuffle(x * lane, [5,2,7,0,3,6,1,4][lane])
+> find g 1
+find g: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from dearshuf
+  subgroup forms under dearshuf (each derived, with what it holds under; cost 30.875 as written):
+  cost 16  sg_shuffle(0xf5 >> lane & 1 != 0 ? sg_shuffle(t1, lane xor 2) : t1, lane xor 1) where t1 = lane & 1 != 0 ? sg_shuffle(x*lane, lane xor 4) : x*lane
+           sg_shuffle(x*lane, [5, 2, 7, 0, 3, 6, 1, 4][lane]): the lane it reads is [5, 2, 7, 0, 3, 6, 1, 4][lane], a permutation of the lanes, not affine over their bits, so 3 stages (a Benes network: the map is not affine): lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 in the lanes of 0xf5 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor); proved for any value per lane (with a free word in each lane, the stages give lane l the word of lane [5, 2, 7, 0, 3, 6, 1, 4][lane], for each of the 8 lanes)
+           holds in a full subgroup (all 8 lanes active); needs shuffle (GL_KHR_shader_subgroup_shuffle)
+           proved by its derivation, each step above
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> use gt1030
+cost model: gt1030

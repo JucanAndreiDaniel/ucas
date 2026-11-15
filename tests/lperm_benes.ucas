@@ -1,0 +1,15 @@
+# lane maps that are not affine: a Benes network of exchanges by xor,
+# its stages' lanes a table, routed in every order of the bits, priced
+# and proved; a map that copies a lane to two stays a shuffle
+lperm [5,2,7,0,3,6,1,4][lane] lanes 8 model rdna2
+lperm (lane + 4) & 31 model rdna2
+model dearshuf : rdna2 { sg_shuffle: 20 }
+lperm [5,2,7,0,3,6,1,4][lane] lanes 8 model dearshuf
+lperm [0,0,2,3,4,5,6,7][lane] lanes 8 model dearshuf
+lperm (lane * 5) & 31 model dearshuf
+use dearshuf
+f(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle(x * lane, (lane * 5) & 31)
+find f 1
+g(x: u32 uniform, lane: u32 in 0..7) = sg_shuffle(x * lane, [5,2,7,0,3,6,1,4][lane])
+find g 1
+use gt1030
