@@ -35,6 +35,38 @@ lp_lane_load(int id)
 	return V.id[res_of(idx(I->opnd[1]))].builtin == B_SUBLANE;
 }
 
+/*
+ * Instruction k runs with every lane that entered the entry point: it is
+ * in an entry point's function, with no conditional branch, switch or
+ * loop before it there (an exchange reads its partner lane, which must
+ * be active; a shuffle by an index reads only the lane it names).
+ */
+static int
+lp_uniform(int k)
+{
+	int j, f = -1, e;
+
+	for (j = k; j >= 0; j--) {
+		const char *op = V.in[j].op;
+		if (!strcmp(op, "OpFunction")) {
+			f = V.in[j].res;
+			break;
+		}
+		if (!strcmp(op, "OpBranchConditional") || !strcmp(op, "OpSwitch") ||
+		    !strcmp(op, "OpLoopMerge") || !strcmp(op, "OpKill") ||
+		    !strcmp(op, "OpTerminateInvocation") ||
+		    !strcmp(op, "OpDemoteToHelperInvocation"))
+			return 0;
+	}
+	if (f < 0)
+		return 0;
+	for (e = 0; e < V.nin; e++)
+		if (!strcmp(V.in[e].op, "OpEntryPoint") && V.in[e].nop >= 2 &&
+		    res_of(idx(V.in[e].opnd[1])) == f)
+			return 1;
+	return 0;
+}
+
 /* the smallest block 2^b (b >= 1) an affine map keeps its lanes in */
 static int
 lp_block(const struct lperm_plan *p)
@@ -125,6 +157,16 @@ lp_pass(struct sbuf *rep, struct dotlog *log, int maxlog)
 		if (!(after < before - 1e-9)) {
 			sb_printf(rep, "    %s\n%s      the lane map %s is %s: %g "
 			    "against %g under %s: left as it is\n", I->text, sl,
+			    shared_str(c.f.body, 100), sb_str(&d), after, before,
+			    sym_str(m->name));
+			free(d.p);
+			continue;
+		}
+		if (!lp_uniform(k)) {
+			sb_printf(rep, "    %s\n%s      the lane map %s is %s (%g "
+			    "against %g under %s), but it is not in the entry point's "
+			    "first straight run of code: an exchange needs its partner "
+			    "lane active; left as it is\n", I->text, sl,
 			    shared_str(c.f.body, 100), sb_str(&d), after, before,
 			    sym_str(m->name));
 			free(d.p);
@@ -262,8 +304,9 @@ lp_pass(struct sbuf *rep, struct dotlog *log, int maxlog)
 			    "%d stages, composed on every lane of the block", shared_str(
 			    c.f.body, 100), 1 << b, b, pb.rank);
 			log[n].proof = p2.p;
-			log[n].desc = strdup("every lane active, in a subgroup whose "
-			    "size is a multiple of 4 (a quad's lanes exchange)");
+			log[n].desc = strdup("every lane active (it runs before any "
+			    "branch of the entry point), in a subgroup whose size is a "
+			    "multiple of 4 (a quad's lanes exchange)");
 		}
 		sb_printf(rep, "    %s\n      ->  %s   (cost %g -> %g)\n%s      %s\n"
 		    "      holds for %s\n", I->text, to, before, after, sl,

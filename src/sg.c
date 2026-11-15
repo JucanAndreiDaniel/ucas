@@ -4296,7 +4296,14 @@ lperms(struct sgf *g, nid cur, float *cost)
 	nid nd[MAXSGN], lp = lane_param(g->f);
 	int n = gather_all(cur, 2, nd), i, l, lslot = -1;
 	int fresh = cur == g->f->body && !g->proved;
+	uint8_t *seen = xcalloc(N.n, 1);
+	nid am = active_mask_in(g->f->body, seen);
 
+	free(seen);
+	/* an exchange reads its partner lane: with lanes masked off
+	 * (sg_active) the stages may read one that is not there */
+	if (am)
+		return cur;
 	if (lp)
 		lslot = (int)N.ki[N.op[lp] == O_CAST ? N.a[lp] : lp];
 	for (i = 0; i < n; i++) {
