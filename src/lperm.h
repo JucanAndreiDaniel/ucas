@@ -24,6 +24,18 @@
  * butterflies are the case A = I (unconditional exchanges only); a
  * broadcast within groups of 2^j lanes is a singular A.
  *
+ * A map that is not affine but takes each lane's value to at most one
+ * lane (a permutation, or a part of one: an unread lane's source is any
+ * the others leave) goes through a Benes network over the lane bits, in
+ * an order searched: 2 n - 1 stages of exchanges by lane xor 2^b, the
+ * outer bit first and last, each lane pair swapping or not by the
+ * looping algorithm (two subnetworks, the pairs of sources and of
+ * destinations given different ones, recursively).  A stage's lanes are
+ * then a table (taken where (T >> lane) & 1); a table that is a parity
+ * of the lane's bits is written as one, an empty one is dropped and a
+ * full one is an exchange in every lane.  A map that copies a lane to
+ * two has no such route, and stays one shuffle.
+ *
  * Besides the stages: no data movement where the map is the identity; a
  * quad's broadcast (map[l] = (l & ~3) | i), one sg_quad; and one
  * shuffle by an index, the price given or (for an affine map) that of
@@ -49,14 +61,19 @@ enum { LPX_XOR, LPX_QUAD, LPX_SHUF };
 struct lperm_stage {
 	uint8_t k;	/* exchange with lane xor k */
 	uint8_t m, e;	/* taken where parity(lane & m) ^ e; m 0, e 1: always */
+	uint8_t istab;	/* taken where (tab >> lane) & 1 instead */
 	uint8_t how;	/* LPX_*: the class its exchange is priced by */
+	uint64_t tab;
 	double price;	/* the exchange, and the select and predicate */
 };
+/* a stage every lane takes: the exchange alone, no select */
+#define LPERM_ALWAYS(s) (!(s)->m && !(s)->istab)
 
 struct lperm_plan {
 	int w, bits;		/* lanes (a power of two), log2 */
 	int kind;		/* LPH_*: the cheapest */
 	int affine;		/* the map is affine on its defined lanes */
+	int benes;		/* the stages are a Benes network's (not affine) */
 	uint8_t col[6], c;	/* map[l] = A l ^ c, col[j] = A e_j */
 	int rank;		/* rank(I ^ A): the fewest conditional stages */
 	int nst;

@@ -67,6 +67,22 @@ lp_uniform(int k)
 	return 0;
 }
 
+/* the smallest block 2^b (b >= 1) a map keeps its lanes in: lane l
+ * reads a lane of l's block of 2^b */
+static int
+lp_block_map(const int16_t *map, int w)
+{
+	int b, l;
+
+	for (b = 1; (1 << b) < w; b++) {
+		for (l = 0; l < w && (map[l] < 0 || map[l] >> b == l >> b); l++)
+			;
+		if (l == w)
+			return b;
+	}
+	return b;
+}
+
 /* the smallest block 2^b (b >= 1) an affine map keeps its lanes in */
 static int
 lp_block(const struct lperm_plan *p)
@@ -137,14 +153,15 @@ lp_pass(struct sbuf *rep, struct dotlog *log, int maxlog)
 			map[l] = (int16_t)(ok ? (int)v : -1);
 		}
 		if (!ok || lperm_plan(m, map, W, -1, &pl) == LPH_NONE ||
-		    !pl.affine || pl.kind == LPH_IDENTITY)
+		    pl.kind == LPH_IDENTITY || (!pl.affine && !pl.benes))
 			continue;
 		src_line(ins_line(k), sl, sizeof sl);
-		b = lp_block(&pl);
+		b = pl.affine ? lp_block(&pl) : lp_block_map(map, W);
 		lperm_plan(m, map, 1 << b, -1, &pb);
 		if (pb.kind == LPH_SHUFFLE && pb.nst && isfinite(pb.stages_price))
 			pb.kind = LPH_STAGES;	/* priced against the module below */
-		if (pb.kind != LPH_STAGES || (pb.nst == 1 && !pb.st[0].m)) {
+		if (pb.kind != LPH_STAGES || (pb.nst == 1 &&
+		    LPERM_ALWAYS(&pb.st[0]))) {
 			/* a shuffle by lane xor k, or a quad's broadcast: the
 			 * same instruction with its index, priced so already */
 			continue;
@@ -228,9 +245,54 @@ lp_pass(struct sbuf *rep, struct dotlog *log, int maxlog)
 			if (sh < 0)
 				break;
 			snprintf(shtok, sizeof shtok, "%s", V.id[sh].tok);
-			if (!s->m) {
+			if (LPERM_ALWAYS(s)) {
 				cur = sh;
 				snprintf(curtok, sizeof curtok, "%s", shtok);
+				continue;
+			}
+			if (s->istab) {
+				/* taken where (T >> (lane & (2^b - 1))) & 1: the stages
+				 * repeat in every block of 2^b lanes */
+				int tk = const_id(lt, (int64_t)s->tab), bm = const_id(lt,
+				    (1 << b) - 1), one = const_id(lt, 1), lo, shr, an;
+				char t1[64], t2[64];
+				if (tk < 0 || bm < 0 || one < 0) {
+					c.fail = 1;
+					break;
+				}
+				o[0] = lanetok;
+				o[1] = V.id[bm].tok;
+				lo = dot_ins(&c, "OpBitwiseAnd", lt, o, 2);
+				if (lo < 0)
+					break;
+				snprintf(t1, sizeof t1, "%s", V.id[tk].tok);
+				snprintf(t2, sizeof t2, "%s", V.id[lo].tok);
+				o[0] = t1;
+				o[1] = t2;
+				shr = dot_ins(&c, "OpShiftRightLogical", lt, o, 2);
+				if (shr < 0)
+					break;
+				snprintf(t1, sizeof t1, "%s", V.id[shr].tok);
+				snprintf(t2, sizeof t2, "%s", V.id[one].tok);
+				o[0] = t1;
+				o[1] = t2;
+				an = dot_ins(&c, "OpBitwiseAnd", lt, o, 2);
+				if (an < 0)
+					break;
+				snprintf(t1, sizeof t1, "%s", V.id[an].tok);
+				o[0] = t1;
+				o[1] = ztok;
+				cond = dot_ins(&c, "OpINotEqual", bt, o, 2);
+				if (cond < 0)
+					break;
+				snprintf(t1, sizeof t1, "%s", V.id[cond].tok);
+				o[0] = t1;
+				o[1] = shtok;
+				o[2] = curtok;
+				cur = dot_ins(&c, "OpSelect", rt, o, 3);
+				if (cur < 0)
+					break;
+				snprintf(curtok, sizeof curtok, "%s", V.id[cur].tok);
 				continue;
 			}
 			{
@@ -298,11 +360,18 @@ lp_pass(struct sbuf *rep, struct dotlog *log, int maxlog)
 		log[n].line = ins_line(k);
 		{
 			struct sbuf p2 = {0};
-			sb_printf(&p2, "the lane read, %s, is affine over the lane's "
-			    "bits within blocks of %d lanes (SAT, every 32-bit lane: "
-			    "its low %d bits mapped, the others kept); rank(I xor A) = "
-			    "%d stages, composed on every lane of the block", shared_str(
-			    c.f.body, 100), 1 << b, b, pb.rank);
+			if (pb.benes)
+				sb_printf(&p2, "the lane read, %s, permutes the lanes within "
+				    "blocks of %d lanes, not affinely (SAT, every 32-bit "
+				    "lane: its low %d bits mapped, the others kept); a Benes "
+				    "network's %d stages, composed on every lane of the block",
+				    shared_str(c.f.body, 100), 1 << b, b, pb.nst);
+			else
+				sb_printf(&p2, "the lane read, %s, is affine over the lane's "
+				    "bits within blocks of %d lanes (SAT, every 32-bit lane: "
+				    "its low %d bits mapped, the others kept); rank(I xor A) "
+				    "= %d stages, composed on every lane of the block",
+				    shared_str(c.f.body, 100), 1 << b, b, pb.rank);
 			log[n].proof = p2.p;
 			log[n].desc = strdup("every lane active (it runs before any "
 			    "branch of the entry point), in a subgroup whose size is a "
