@@ -1,0 +1,10 @@
+# ETC2's planar mode (ScarletNX's etc2_encode.glsl, et_pl_err): texel (x, y) decodes to
+# ((4 - x - y) eo + x eh + y ev + 2) >> 2, clamped to 0..255, of three corner values 0..255. Where x + y <= 4 the
+# weights are a rounded convex combination and the clamp never bites: 13 of the 16 texels need none.
+p0(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255, x: i32 in 0..3, y: i32 in 0..3) = min(max((4 * eo + y * (ev - eo) + x * (eh - eo) + 2) >> 2, 0), 255) where x + y <= 4
+p1(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255, x: i32 in 0..3, y: i32 in 0..3) = (4 * eo + y * (ev - eo) + x * (eh - eo) + 2) >> 2 where x + y <= 4
+equiv p0 p1
+# and where x + y > 4, the three texels (3, 2), (2, 3) and (3, 3), it does bite, either way
+q0(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255) = min(max((4 * eo + 3 * (ev - eo) + 3 * (eh - eo) + 2) >> 2, 0), 255)
+q1(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255) = (4 * eo + 3 * (ev - eo) + 3 * (eh - eo) + 2) >> 2
+equiv q0 q1

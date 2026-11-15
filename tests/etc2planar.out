@@ -1,0 +1,8 @@
+> p0(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255, x: i32 in 0..3, y: i32 in 0..3) = min(max((4 * eo + y * (ev - eo) + x * (eh - eo) + 2) >> 2, 0), 255) where x + y <= 4
+> p1(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255, x: i32 in 0..3, y: i32 in 0..3) = (4 * eo + y * (ev - eo) + x * (eh - eo) + 2) >> 2 where x + y <= 4
+> equiv p0 p1
+p0 and p1 are equal on the domain of p0 (proved by SAT: 12218 AIG nodes, 5573 conflicts)
+> q0(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255) = min(max((4 * eo + 3 * (ev - eo) + 3 * (eh - eo) + 2) >> 2, 0), 255)
+> q1(eo: i32 in 0..255, eh: i32 in 0..255, ev: i32 in 0..255) = (4 * eo + 3 * (ev - eo) + 3 * (eh - eo) + 2) >> 2
+> equiv q0 q1
+q0 and q1 differ at 9598 points of the sample, e.g. eo=255, eh=0, ev=2: 0 vs -126
