@@ -46,6 +46,7 @@
 #include "winograd.h"
 #include "fdot.h"
 #include "stoch.h"
+#include "adamfit.h"
 
 #include <ctype.h>
 #include <math.h>
@@ -7557,6 +7558,15 @@ translate(const char *sent)
 		}
 	}
 	{
+		/* shapes fitted by Adam (adamfit.c) */
+		const char *r = adamfit_nlp_raw(sent);
+		if (r) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
+	}
+	{
 		/* stochastic search, identity testing (stoch.c) */
 		const char *r = stoch_nlp_raw(sent);
 		if (r) {
@@ -7822,6 +7832,8 @@ static const char *const ucas_cmds[] = {"show", "table", "range", "domain",
 	"mma", "hmma", "ozaki",
 	/* stoch.c */
 	"stoke", "pit", "phash",
+	/* adamfit.c */
+	"adamfit",
 	/* find.c: the snippet database, rules from the enumeration */
 	"snippets", "rules", "rule", NULL};
 static const char *const cmd_followers[] = {"of", "the", "a", "an", "me",
@@ -8107,7 +8119,8 @@ nlp_is_english(const char *s, size_t n)
 			return r;
 	}
 	/* stoch.c: "stoke f steps 9", "pit f g", "phash f" are ucas ... */
-	if ((n - i > 6 && !strncmp(s + i, "stoke ", 6)) ||
+	if ((n - i > 8 && !strncmp(s + i, "adamfit ", 8)) ||
+	    (n - i > 6 && !strncmp(s + i, "stoke ", 6)) ||
 	    (n - i > 4 && !strncmp(s + i, "pit ", 4)) ||
 	    (n - i > 6 && !strncmp(s + i, "phash ", 6)) ||
 	    (n - i > 14 && !strncmp(s + i, "snippets grow", 13) &&
@@ -8122,7 +8135,8 @@ nlp_is_english(const char *s, size_t n)
 		if (n - i < sizeof line) {
 			memcpy(line, s + i, n - i);
 			line[n - i] = 0;
-			if (stoch_nlp_raw(line) != NULL)
+			if (stoch_nlp_raw(line) != NULL ||
+			    adamfit_nlp_raw(line) != NULL)
 				return 1;
 		}
 	}

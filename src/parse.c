@@ -36,6 +36,7 @@
 #include "winograd.h"
 #include "fdot.h"
 #include "stoch.h"
+#include "adamfit.h"
 #include "numsearch.h"
 #include "ring.h"
 #include "absalg.h"
@@ -3059,6 +3060,9 @@ help(void)
 "    [relative|absolute] [odd|even|nosym] [keep endpoints|x1, x2..]\n"
 "    [weight W] [at c] [fma|nofma] [norefine] [list n] [name p] [c]\n"
 "  approx more [n]\n"
+"  adamfit F [in a..b] [as f32|f64|real] [ops + - * / fma sqrt exp log ...]\n"
+"    [count n] [size n] [steps n] [lr r] [restarts n] [wcost w] [werr w]\n"
+"    [error e|ulp u] [auto] [list n] [seed k] [seconds s] [name p] [nocert]\n"
 "  animate [hillis|blelloch|sequential] scan [n N] [fps F] [seconds S]\n"
 "    [random [seed K] | values a, b, ...] [f32] [MODEL] [to NAME]\n"
 "  plot F, G ... [x in a..b] [y in c..d] [deriv] [tangent a] [logx|logy]\n"
@@ -3664,6 +3668,9 @@ statement(struct P *p)
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))
+			return;
+		/* adamfit: shapes fitted by Adam, priced, certified (adamfit.c) */
+		if (adamfit_command(p))
 			return;
 		/* approx (approx.c) */
 		if (is_kw(p, "approx") && !func_find(tsym(p, p->i))) {

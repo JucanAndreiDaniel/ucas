@@ -364,6 +364,11 @@ static const struct jcmd cmds[] = {
 	    "as f64 keep endpoints\"")}},
 	{"approx_more", "approx more", 1, 0, "more candidates of the last "
 	    "approx", {IO("n", " %s", "how many")}},
+	{"adamfit", "adamfit", 1, 0, "expression shapes fitted by Adam, "
+	    "ranked by 0.8 cost + 0.5 error (weights changeable), the best "
+	    "certified", {FN, IVO("in", " in %s", "the interval"),
+	    TO("options", " %s", "adamfit options as in the CLI: \"count 3000 "
+	    "as f64 auto wcost 1\"")}},
 	/* loops */
 	{"closed", "closed", 1, 0, "closed forms of sums, products, loops",
 	    {FN}},

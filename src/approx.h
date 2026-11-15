@@ -71,6 +71,9 @@ struct fitres {
 	int iters;
 	const char *why;
 };
+/* approx's price of an expression under the active model: each shared
+ * subterm once (adamfit.c) */
+double approx_price(nid body);
 int fit_run(const struct fitprob *pb, struct fitres *r);
 ld fit_eval(const struct fitprob *pb, const struct fitres *r, ld x);
 void fit_measure(const struct fitprob *pb, struct fitres *r);

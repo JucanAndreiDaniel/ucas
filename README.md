@@ -888,6 +888,108 @@ moved by a power of two, a target with an operation that has no interval
 rule (lambertw, atan2), and a relative bound where the target is 0
 beyond the fit's factor, or where the candidate is not 0 with it.
 
+### Structure search with Adam (adamfit)
+
+```
+> adamfit sin(x) in 0..1.5707963
+adamfit sin(x) on [0, 1.57079625] as f32: 2000 shapes of up to 9 nodes, ops + - * / fma sqrt
+  score = 0.8 * cost / 4 (sin(x)'s cost under gt1030) + 0.5 * log2(1 + error / 1e-07)
+  [    1/2000] score 10.399  cost 1  error ~0.138  0.724621713 * x  (odd)
+  ... 200/2000 shapes, 168 fitted, best score 8.653, front (cost/error): 1/0.138, 2/0.0533, 4/0.00534, 11/0.00251
+  [stage 2 74/96] score 3.476  cost 10  error 6.74e-07  ((((-0.000183636163) * x * x + 0.00830632448) * x * x + ...
+  #   score   cost  measured      certified          shape
+  1   3.620   10    6.74e-07      <= 8.45e-07        (((c0 * x * x + c1) * x * x + c2) * x * x + c3) * x (odd)
+      af1(x) = ((((-0.000183636163) * x * x + 0.00830632448) * x * x + (-0.166648284)) * x * x + 0.999996603) * x
+```
+
+`approx` fits the forms it knows (polynomials, rationals, range
+reductions) well; `adamfit` searches for the form.  It writes thousands
+of expression shapes over x and trainable constants, fits each shape's
+constants by gradient descent, and ranks them by one score that weighs
+what a shape costs against how far it errs:
+
+    score = wcost * cost / C0 + werr * log2(1 + error / tol)
+
+with `wcost` 0.8 and `werr` 0.5 by default, C0 the target's own cost
+under the active model (so 1 is "as dear as F"), and tol the error unit:
+1 ulp for a relative error in f32 or f64, else `error e` (1e-7 in f32,
+1e-15 in f64).  The error term counts doublings past tol, so an order of
+magnitude of accuracy is worth about 1.7 points, and a shape twice as
+dear as F 1.6.
+
+**The shapes.**  Every polynomial in Horner form with up to 8 constants,
+plain, odd (x P(x x)) and even (P(x x)), the rationals P/Q of up to 8
+constants, P(x) sqrt(x) and P(sqrt(x)) when sqrt is enabled, then random
+expressions of the grammar (`ops`: + - * / fma sqrt by default; exp log
+sin cos abs on request) of up to `size` nodes (9), until `count` (2000)
+different shapes.  Shapes are told apart by a canonical text (the
+operands of + and * and fma's product in order); an operation on
+constants alone, x - x and x / x are not written.
+
+**The fit.**  Each shape is a small network whose weights are its
+constants.  The loss is (1/p) log sum |r_t|^p over the sample, r_t the
+residual weighted as the metric is (relative unless F is 0 in the
+interval, or `relative`/`absolute`): p = 2 for the first 40% of the
+steps, then 8, a smooth way to the largest error that stays scale free
+(its gradient is the same for errors of 1e-3 and 1e-9).  One reverse
+sweep gives the gradient, and Adam (b1 0.9, b2 0.999, step `lr` 0.05
+decaying linearly to a tenth) takes `steps` (200) steps from `restarts`
+(3) starts: all constants 0.5, then normal deviates; the best point seen
+is kept.  Stage 1 does this for every shape on 66 points.  Stage 2 takes
+the best shapes at each cost (three per cost, so shapes with many
+constants, which Adam leaves far from their optimum, are judged by their
+best) and then the best scores, a quarter of `count` up to 96, and fits
+them again on 257 points: Adam ten times longer with p up to 32, then a
+polish from where Adam stops, Levenberg-Marquardt on the squares (the
+Jacobian by forward-mode derivatives) and Lawson's reweighting (each
+point's weight times its error, again) towards the smallest largest
+error.  On sin's odd degree-5 shape that lands on the minimax error
+(6.78e-05 absolute on [0, pi/2]).  The points are spread by smoothstep
+and the default operations use + - * / and sqrt only, so a seed gives
+the same run on every libm.
+
+**Prices and errors.**  Every shape is priced as `cost` prices any
+expression under the active model (each shared subterm once, approx's
+rules), with its constants rounded to the format.  The stage-2 shapes
+are defined in the format, measured with the IEEE evaluator against a
+long double reference on 8192 points, and the listed ones get a bound
+that holds on the whole interval (`acert.c`, as approx's "certified"
+lines); the score of a certified candidate uses the bound, so the list
+is ranked by proven errors.  A candidate with an operation that has no
+interval rule (log, for instance) is listed with its measured error and
+the reason it is not certified.  The listed ones are defined as `af1`,
+`af2` ... (`name p`), for `error`, `cost`, `show` and the rest.
+
+**Feedback.**  While it runs, each shape that beats the best score so
+far is printed as it is found (its training error marked `~`, an
+estimate), every tenth of the shapes a line gives the front of cost
+against error, and stage 2 prints each better measured candidate.
+Inside a JSON request those lines go to stderr as well, prefixed
+`ucas: adamfit: `, so a client can show them while the answer is
+pending.  `auto` prints none of it: only the closest candidates.
+
+| option | |
+|--------|--|
+| `as f32`, `as f64`, `as real` | the format (default: the parameter's float type, else f32) |
+| `ops + - * / fma sqrt exp log sin cos abs` | the operations shapes may use (+ - * / fma sqrt) |
+| `count N`, `size N` | shapes to write (2000) and the nodes of a random one (9) |
+| `steps N`, `restarts N`, `lr R` | Adam's steps per start (200), starts (3) and step (0.05) |
+| `wcost W`, `werr W` | the score's weights (0.8, 0.5) |
+| `error e`, `ulp u` | the error unit tol |
+| `relative`, `absolute` | the error to minimise |
+| `auto` | no feedback while it runs: the closest candidates only |
+| `list N`, `name p` | how many to certify and list (6), their names (`af`) |
+| `seed K`, `seconds S` | the seed (`UCAS_SEED`, else 1); a time limit for stage 1 |
+| `nocert` | measured errors only |
+
+In English: `fit sin(x) on 0..1 with adam`, `adam fit exp(x) in 0..1`,
+`search for cheap approximations of sqrt(x) from 1 to 4 by gradient
+descent`, `train expressions for log(x) over 1..2`, `... and just report
+the closest` (auto).  JSON: `{"cmd": "adamfit", "args": {"f": "cos(x)",
+"in": [0, 1], "options": "count 300 auto"}}`, the candidates in
+`result.candidates` (`name`, `expr`, `shape`, `kind`, `cost`, `error`,
+`certified`, `bound`, `score`).  tests/adamfit.ucas, tests/json/adamfit.
+
 ### Probabilistic rounding error
 
 `error G ~ F`, for a float G, adds how much of the error rounding can

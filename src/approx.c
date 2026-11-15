@@ -916,6 +916,13 @@ price(nid body)
 	return sum;
 }
 
+/* the price of an expression as approx gives it (adamfit.c too) */
+double
+approx_price(nid body)
+{
+	return price(body);
+}
+
 /* an f32 division in e (measured at a GPU's division) */
 static int
 has_fdiv(nid e, uint8_t *seen)

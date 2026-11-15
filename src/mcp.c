@@ -50,7 +50,7 @@ static const struct group groups[] = {
 	    "gate networks (with a proof of minimality), cheaper equivalent "
 	    "implementations, polynomial/rational approximations.",
 	    "show table parse range domain wrap crit equiv fit error cost rop "
-	    "gates find more approx approx_more dword foldproof banks intatomic mma "
+	    "gates find more approx approx_more adamfit dword foldproof banks intatomic mma "
 	    "stoke pit phash"},
 	{"calculus", "Calculus",
 	    "Derivatives (higher, partial, mixed), gradient, Hessian, "

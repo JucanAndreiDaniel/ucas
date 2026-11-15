@@ -37,6 +37,8 @@ SRCS+=	stoch.c
 SRCS+=	numsearch.c rounderr.c qmc.c
 # a derived bound on an approximation over its whole interval
 SRCS+=	acert.c
+# expression shapes fitted by Adam, priced and certified
+SRCS+=	adamfit.c
 # calc2: derivatives and their conditions, limits, series, Wronskians
 SRCS+=	calc2.c
 # complex, quaternion, octonion and Cayley-Dickson numbers
