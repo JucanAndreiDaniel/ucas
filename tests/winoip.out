@@ -1,0 +1,50 @@
+> d4(a0: i32, a1: i32, a2: i32, a3: i32, b0: i32, b1: i32, b2: i32, b3: i32) = a0*b0 + a1*b1 + a2*b2 + a3*b3
+> winograd d4
+winograd d4: 4 products as 2 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (xi + eta)
+  xi = a0*a1 + a2*a3 (a row's), eta = b0*b1 + b2*b3 (a column's)
+  identity: (x_2j + y_2j+1)(x_2j+1 + y_2j) = x_2j x_2j+1 + x_2j y_2j + x_2j+1 y_2j+1 + y_2j y_2j+1, so the pairs less xi and eta leave sum x_k y_k: both sides expanded as polynomials agree modulo 2^W (exact, any operands)
+  per output 12 against 12 as written; xi 6, eta 6
+  a 1 x 1 block: 24 against 12 as written: not cheaper
+> winograd d4 rows 64 cols 64
+winograd d4: 4 products as 2 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (xi + eta)
+  xi = a0*a1 + a2*a3 (a row's), eta = b0*b1 + b2*b3 (a column's)
+  identity: (x_2j + y_2j+1)(x_2j+1 + y_2j) = x_2j x_2j+1 + x_2j y_2j + x_2j+1 y_2j+1 + y_2j y_2j+1, so the pairs less xi and eta leave sum x_k y_k: both sides expanded as polynomials agree modulo 2^W (exact, any operands)
+  per output 12 against 12 as written; xi 6, eta 6
+  a 64 x 64 block: 49920 against 49152 as written: not cheaper
+> use rdna2
+cost model: rdna2
+> winograd d4 rows 64 cols 64
+winograd d4: 4 products as 2 pair products and two corrections, under rdna2
+  per output: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (xi + eta)
+  xi = a0*a1 + a2*a3 (a row's), eta = b0*b1 + b2*b3 (a column's)
+  identity: (x_2j + y_2j+1)(x_2j+1 + y_2j) = x_2j x_2j+1 + x_2j y_2j + x_2j+1 y_2j+1 + y_2j y_2j+1, so the pairs less xi and eta leave sum x_k y_k: both sides expanded as polynomials agree modulo 2^W (exact, any operands)
+  per output 14 against 16 as written; xi 8, eta 8
+  a 64 x 64 block: 58368 against 65536 as written: cheaper
+> winograd's inner product of d4 for 64 rows and 64 columns
+  ucas: winograd d4 rows 64 cols 64
+winograd d4: 4 products as 2 pair products and two corrections, under rdna2
+  per output: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (xi + eta)
+  xi = a0*a1 + a2*a3 (a row's), eta = b0*b1 + b2*b3 (a column's)
+  identity: (x_2j + y_2j+1)(x_2j+1 + y_2j) = x_2j x_2j+1 + x_2j y_2j + x_2j+1 y_2j+1 + y_2j y_2j+1, so the pairs less xi and eta leave sum x_k y_k: both sides expanded as polynomials agree modulo 2^W (exact, any operands)
+  per output 14 against 16 as written; xi 8, eta 8
+  a 64 x 64 block: 58368 against 65536 as written: cheaper
+> use gt1030
+cost model: gt1030
+> fd(a0: f32 in -1..1, a1: f32 in -1..1, b0: f32 in -1..1, b1: f32 in -1..1) = a0*b0 + a1*b1
+> winograd fd rows 64 cols 64
+winograd fd: 2 products as 1 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) - (xi + eta)
+  xi = a0*a1 (a row's), eta = b0*b1 (a column's)
+  floats: the same algebra, not the same roundings; |computed - exact| <= gamma_4 (sum |x_2j + y_2j+1| |x_2j+1 + y_2j| + sum |x x| + sum |y y|) <= 1.43051e-06 over the parameters' ranges
+  not offered: floats need a tolerance (tol T)
+  per output 4 against 2 as written; xi 1, eta 1
+  a 64 x 64 block: 16512 against 8192 as written: not offered
+> winograd fd rows 64 cols 64 tol 1e-5
+winograd fd: 2 products as 1 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) - (xi + eta)
+  xi = a0*a1 (a row's), eta = b0*b1 (a column's)
+  floats: the same algebra, not the same roundings; |computed - exact| <= gamma_4 (sum |x_2j + y_2j+1| |x_2j+1 + y_2j| + sum |x x| + sum |y y|) <= 1.43051e-06 over the parameters' ranges
+  per output 4 against 2 as written; xi 1, eta 1
+  a 64 x 64 block: 16512 against 8192 as written: not cheaper

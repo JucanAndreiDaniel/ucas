@@ -1126,6 +1126,14 @@ static const struct jcmd cmds[] = {
 	    " samples %s", "random blocks checked (256)"), IO("seed",
 	    " seed %s", "the check's seed (1)"), BO("cancel", " cancel",
 	    "blocks whose first product the last cancels")}},
+	{"winograd", "winograd", 1, 0, "Winograd's inner product: a sum of "
+	    "products as half the multiplies plus a row's and a column's "
+	    "corrections, priced for a block of outputs that share them, "
+	    "proved by expansion (integers) or with a derived bound (floats)",
+	    {F("function", " %s", "a sum of an even number of products"),
+	    IO("rows", " rows %s", "rows sharing a column's correction (1)"),
+	    IO("cols", " cols %s", "columns sharing a row's correction (1)"),
+	    NUO("tol", " tol %s", "floats: the absolute error allowed")}},
 };
 #define NCMDS (int)(sizeof cmds / sizeof cmds[0])
 

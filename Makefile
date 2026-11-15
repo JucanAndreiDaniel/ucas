@@ -119,6 +119,8 @@ SRCS+=	f16x.c
 SRCS+=	tcdot.c
 # an exact float sum of products as an integer dot product (fdot.h)
 SRCS+=	fdot.c
+# Winograd's inner product, priced for shared corrections (winograd.h)
+SRCS+=	winograd.c
 .PATH:	${.CURDIR}/src
 MAN=
 

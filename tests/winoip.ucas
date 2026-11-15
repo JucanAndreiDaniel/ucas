@@ -1,0 +1,15 @@
+# Winograd's 1968 inner product (src/winograd.c): sum x_k y_k as the
+# pairs (x_2j + y_2j+1)(x_2j+1 + y_2j) less a row's xi and a column's eta,
+# priced for a block of outputs that share them.  Integers: a ring
+# identity, exact modulo 2^W (both sides expanded); floats: a derived
+# bound, offered within a tolerance.
+d4(a0: i32, a1: i32, a2: i32, a3: i32, b0: i32, b1: i32, b2: i32, b3: i32) = a0*b0 + a1*b1 + a2*b2 + a3*b3
+winograd d4
+winograd d4 rows 64 cols 64
+use rdna2
+winograd d4 rows 64 cols 64
+winograd's inner product of d4 for 64 rows and 64 columns
+use gt1030
+fd(a0: f32 in -1..1, a1: f32 in -1..1, b0: f32 in -1..1, b1: f32 in -1..1) = a0*b0 + a1*b1
+winograd fd rows 64 cols 64
+winograd fd rows 64 cols 64 tol 1e-5
