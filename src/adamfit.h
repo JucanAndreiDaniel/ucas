@@ -18,5 +18,7 @@
 struct P;
 int adamfit_command(struct P *p);		/* parse.c */
 const char *adamfit_nlp_raw(const char *sent);	/* nlp.c */
+/* the statement is adamfit on a code block: no SPIR-V note (nlp.c) */
+int adamfit_wants_glsl(const char *stmt);
 
 #endif

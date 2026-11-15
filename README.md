@@ -960,6 +960,66 @@ interval rule (log, for instance) is listed with its measured error and
 the reason it is not certified.  The listed ones are defined as `af1`,
 `af2` ... (`name p`), for `error`, `cost`, `show` and the rest.
 
+**Several parameters, code, integers.**  The target can be a ucas
+function or expression of up to 4 parameters, or a function of a C or
+GLSL code block after the statement (`adamfit NAME`, else the block's
+last function that is not main):
+
+```
+adamfit luma r in 0..255, g in 0..255
+```glsl
+uint luma(uint r, uint g) { return (r * 77u + g * 150u + 64u) / 255u; }
+```
+  1   1.000   10    0             exact (exhaustive) u32((C0 * i32(r) + C1 * i32(g) + B) >> s) (fixed)
+      af1(r, g) = u32((19790 * i32(r) + 38551 * i32(g) + 16433) >> 16)
+```
+
+Code is sampled natively: a harness that calls the function is
+compiled with the host's `cc` (`UCAS_CC`; `-ffp-contract=off -fwrapv`, so
+binary32 and binary64 operations happen as written) and run on the
+samples.  GLSL's scalar subset (float, double, int, uint, bool and their
+built-ins: min, max, clamp, mix, step, smoothstep, fract, mod, the
+exponentials and trigonometry, fma, the bit casts and bit counts) runs as
+C through a shim: constructor casts become C casts, float literals get
+their `f`, and the overloaded built-ins are `_Generic`.  Vectors,
+matrices, samplers and out parameters are refused.  C that ucas lowers to
+one value (`c lower`) also gives its cost as C0 and a target for proofs;
+otherwise C0 is 8 unless `cref C` gives it.  A float parameter needs a
+range (`x in a..b`, or `in a..b` for all); an integer one defaults to its
+type's.
+
+**What the error rests on.**  A domain of at most 2^22 points (integer
+parameters, or the floats of one interval) is enumerated: the error is
+measured on every point, which proves it (`exhaustive`).  A larger one is
+sampled with 65536 independent uniform points (`sampled`), and the line
+says what that supports: with all N points within e, the part of the
+domain (by measure) that errs more is at most q = 1 - 10^(-6/N) (0.021%
+for N = 65536) with probability 1 - 10^-6.  Training points are spread by
+smoothstep (one parameter) or are scrambled Sobol points with the box's
+corners (several).  One real or float parameter of a ucas target gets
+`acert`'s certificate as before.
+
+**Integer results** (of integer parameters) are searched among
+fixed-point forms `T((C_0 m_0 + ... + B) >> s)` over up to 4 monomials
+of the parameters (degree 3 for one parameter, 2 for two, 1 for more), in
+i32 when the interval bound of the sum fits, else i64.  Each form's real
+relaxation is fitted by Adam and solved by Levenberg-Marquardt (it is
+linear in its constants); then every shift gets the rounded integers, the
+best four shifts a CMA-ES search over C and B on the exact integer error
+(`budget N` evaluations each, 1500; an even stride of at most 8192 points
+of an enumerated domain, else the training sample), B is moved into the
+interval where every measuring point is exact when there is one, and for
+forms of one or two monomials the coefficients near the relaxation (within
+64, or 8) are tried at every shift for an exact form.  Every evaluated
+form counts in the line `N integer forms evaluated`; `(x: u16) / 3` comes
+out as `(43691 x + 21845) >> 17`, exact, and `(x*y + 127) / 255` on u8 as
+`(257 x y + 32871) >> 16`, both on all 65536 points.  A candidate of a
+target ucas can evaluate (a ucas function, or C that lowers) on a domain
+too large to enumerate is proved by SAT: equality when it is exact, else
+max(|F - G| - e, 0) == 0 (`equiv`'s machinery: it may give up on wide
+multipliers, and then the result stays sampled and says so).  An integer
+result of float parameters is not searched yet.
+
 **Feedback.**  While it runs, each shape that beats the best score so
 far is printed as it is found (its training error marked `~`, an
 estimate), every tenth of the shapes a line gives the front of cost
@@ -980,9 +1040,13 @@ pending.  `auto` prints none of it: only the closest candidates.
 | `auto` | no feedback while it runs: the closest candidates only |
 | `list N`, `name p` | how many to certify and list (6), their names (`af`) |
 | `seed K`, `seconds S` | the seed (`UCAS_SEED`, else 1); a time limit for stage 1 |
-| `nocert` | measured errors only |
+| `nocert` | measured errors only (no certificate, no SAT) |
+| `x in a..b`, `in a..b` | a parameter's range; all parameters' |
+| `cref C` | the target's cost when ucas cannot price it (code that does not lower) |
+| `budget N` | integer forms: CMA-ES evaluations per shift (1500) |
 
-In English: `fit sin(x) on 0..1 with adam`, `adam fit exp(x) in 0..1`,
+In English: `fit sin(x) on 0..1 with adam`, `fit this with adam` (a code
+block), `adam fit exp(x) in 0..1`,
 `search for cheap approximations of sqrt(x) from 1 to 4 by gradient
 descent`, `train expressions for log(x) over 1..2`, `... and just report
 the closest` (auto).  JSON: `{"cmd": "adamfit", "args": {"f": "cos(x)",

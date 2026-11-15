@@ -3,5 +3,38 @@
 adamfit cos(x) in 0..1 count 160 steps 40 auto list 3
 adamfit sin(x) in 0..0.5 count 100 steps 40 wcost 2 werr 0.2 list 2
 fit exp(x) on 0..1 with adam count 100 steps 30 list 2 and just report the closest
-adamfit x*y in 0..1
+adamfit x*y in 0..1 count 40 steps 20 auto list 1
+adamfit p*q*r*s*t in 0..1
 adamfit cos(x) in 0..1 ops sqrt
+# integers: fixed-point forms, exact ones proved on every point
+adamfit (x: u16) / 3 auto list 2
+mul8(x: u8, y: u8) = u8((u16(x) * u16(y) + 127) / 255)
+adamfit mul8 auto list 1 budget 300
+# two float parameters, measured on independent uniform points
+hyp(x: f32 in 0..1, y: f32 in 0..1) = sqrt(x*x + y*y)
+adamfit hyp count 60 steps 30 auto list 1
+# code, sampled natively: C (it lowers: its cost), GLSL's scalar subset
+adamfit quant v in 0..4095 auto list 1
+```c
+#include <stdint.h>
+uint32_t quant(uint32_t v) { return (v * 1000u) / 4095u; }
+```
+adamfit luma r in 0..255, g in 0..255 auto list 1 budget 300
+```glsl
+#version 450
+uint luma(uint r, uint g)
+{
+    return (r * 77u + g * 150u + 64u) / 255u;
+}
+```
+adamfit tonemap x in 0..4 count 120 steps 30 auto list 1
+```glsl
+float tonemap(float x)
+{
+    return clamp(x * (2.51 * x + 0.03) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
+}
+```
+adamfit f
+```glsl
+vec2 f(vec2 p) { return p; }
+```

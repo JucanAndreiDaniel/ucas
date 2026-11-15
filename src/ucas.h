@@ -1048,6 +1048,9 @@ void run_text(const char *src, const char *file, int echo);
 extern const char *code_block;     /* a fenced block after the statement */
 extern char code_block_lang[24];
 extern int code_block_used;
+/* the GLSL a block was before it was compiled to SPIR-V for the command
+ * (adamfit samples the GLSL itself), or NULL */
+extern const char *code_block_glsl;
 
 #include "report.h"	/* structured results for the JSON frontend */
 

@@ -2844,6 +2844,7 @@ handle(const struct jv *rq)
 	check_args(&r);
 	if (!r.ecode) {
 		code_block = NULL;
+		code_block_glsl = NULL;
 		code_block_lang[0] = 0;
 		code_block_used = 0;
 		if (!strcmp(cmd, "define"))
@@ -2942,6 +2943,7 @@ handle(const struct jv *rq)
 				if (glsl_to_spvasm(code, &glsl, &nt)) {
 					printf("  note: the code was compiled to SPIR-V "
 					    "with glslangValidator\n%s", nt.p ? nt.p : "");
+					code_block_glsl = code;
 					code_block = glsl.p;
 				} else
 					printf("  note: the GLSL did not compile:\n%s",
@@ -2964,6 +2966,7 @@ handle(const struct jv *rq)
 		} else
 			run_stmts(src.p, echo);
 		code_block = NULL;
+		code_block_glsl = NULL;
 	}
 	text = cap_end();
 	text = rep_text_cap(text);

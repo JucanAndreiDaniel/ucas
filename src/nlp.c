@@ -8340,6 +8340,7 @@ nlp_is_english(const char *s, size_t n)
 const char *code_block;
 char code_block_lang[24];
 int code_block_used;
+const char *code_block_glsl;
 static struct sbuf code_buf;
 
 /*
@@ -9375,9 +9376,11 @@ run_text(const char *src, const char *file, int echo)
 				    "tag it ```glsl\n", code_block_lang);
 			sb_clear(&spv);
 			if (glsl_to_spvasm(code_block, &spv, &notes)) {
-				printf("  note: the ```%s block was compiled to SPIR-V with "
-				    "glslangValidator\n%s", code_block_lang[0] ?
-				    code_block_lang : "glsl", notes.p ? notes.p : "");
+				if (!adamfit_wants_glsl(piece.p))
+					printf("  note: the ```%s block was compiled to SPIR-V "
+					    "with glslangValidator\n%s", code_block_lang[0] ?
+					    code_block_lang : "glsl", notes.p ? notes.p : "");
+				code_block_glsl = code_block;
 				code_block = spv.p;
 				snprintf(code_block_lang, sizeof code_block_lang, "spv");
 			} else
@@ -9404,6 +9407,7 @@ run_text(const char *src, const char *file, int echo)
 			    "exec and simplify take SPIR-V, c optimize takes C)\n",
 			    code_block_lang);
 		code_block = NULL;
+		code_block_glsl = NULL;
 		if (next == NULL || *next == 0 || nlp_asked)
 			break;
 		for (c = rest; c < next; c++)
