@@ -9,3 +9,11 @@ mma m16n8k8 f16 model sm86 nofile seed 7
 model noshuffle : gt1030 { sg_shuffle: none }
 mma m16n8k8 model noshuffle nofile
 emulate hmma m16n8k8 with f16 accumulators on rdna2 nofile
+# a tile of HMMAs: a chain (each one's D the next's C) defers the k-split
+# flows' butterfly to its end; HMMAs sharing a fragment fetch it once
+mma chain 2 nofile
+mma tile 2 1 1 model rdna2 nofile
+mma tile 1 2 1 m16n8k8 model mali_g715 nofile
+# 64- and 128-bit shared accesses, where a model prices them
+model wide : mali_g715 { load_shared_x4: 16.25, store_shared_x4: 26.94, load_shared_x2: 16.25, store_shared_x2: 26.94 }
+mma m16n8k8 model wide nofile

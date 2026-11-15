@@ -45,6 +45,7 @@
  * bound checked (a secondary check, sampled).
  */
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,12 +62,18 @@ void deliver_file(const char *name, const char *type, const char *data,
     size_t n, int nofile);	/* anim.c */
 
 #define ML 32		/* the lanes of a warp */
-#define MAXI 1024	/* a plan's instructions */
-#define MAXT 384	/* its lane maps and address maps */
-#define MAXF 512	/* the values it knows the lanes' contents of */
-#define MAXS 64		/* partial sums a lane, in the stationary flows */
-#define NTERM (16 * 16 * 8 + 16 * 8)	/* products and C's elements */
-#define NWD ((NTERM + 63) / 64)
+#define MAXI 2048	/* a plan's instructions */
+#define MAXT 512	/* its lane maps and address maps */
+#define MAXF 1024	/* the values it knows the lanes' contents of */
+#define MAXS 128	/* partial sums a lane, in the stationary flows */
+#define MAXTILE 4	/* HMMAs in a tile */
+#define MAXRA 16	/* registers of A in a tile, of B, of C */
+#define MAXRB 8
+#define MAXRC 16
+#define MAXOUT 16	/* D's elements a lane */
+/* products and C's elements: M K N <= 16 16 8 MAXTILE, M N <= 16 8 4 */
+#define NTERM (16 * 16 * 8 * MAXTILE + 16 * 8 * MAXTILE)
+#define NWDMAX ((NTERM + 63) / 64)
 
 /* ---- the fragments ---- */
 
@@ -75,13 +82,16 @@ struct pos {
 };
 
 struct shape {
-	char name[16];
-	int M, N, K, f32;
-	int na, nb, nc;			/* registers of A, B, C (and D) */
-	int8_t ar[ML][4][2], ak[ML][4][2];	/* A: row, column (k) */
-	int8_t bk[ML][2][2], bc[ML][2][2];	/* B: row (k), column */
-	int8_t cr[ML][4][2], cc[ML][4][2];	/* C, D: row, column */
-	struct pos aown[16][16], bown[16][8], cown[16][8];
+	char name[24];
+	int M, N, K, f32, k16;
+	int tm, tn, tk;			/* the tile's HMMAs along M, N, K */
+	int na, nb, nc, nout;		/* registers of A, B, C (and D); D's
+					 * elements a lane */
+	int nwd;			/* words of a set of terms */
+	int8_t ar[ML][MAXRA][2], ak[ML][MAXRA][2];	/* A: row, column (k) */
+	int8_t bk[ML][MAXRB][2], bc[ML][MAXRB][2];	/* B: row (k), column */
+	int8_t cr[ML][MAXRC][2], cc[ML][MAXRC][2];	/* C, D: row, column */
+	struct pos aown[64][64], bown[64][32], cown[64][32];
 };
 
 /*
@@ -89,47 +99,70 @@ struct shape {
  * g + 8 (j & 1), columns 2t + 8 (j >> 1) and the next; B's register j
  * column g, rows 2t + 8j and the next; an f32 C's register j row
  * g + 8 (j >> 1), column 2t + (j & 1); an f16 C's register j row g + 8j,
- * columns 2t and 2t + 1.
+ * columns 2t and 2t + 1.  A tile of tm x tn x tk HMMAs is one product of
+ * 16 tm x 8 tn x K tk: the HMMA (mi, ni, ki) reads A's registers from
+ * (mi tk + ki) na0, B's from (ki tn + ni) nb0, and accumulates into C's
+ * from (mi tn + ni) nc0, the k tiles chained (D of one the next's C).
  */
 static void
-shape_build(struct shape *s, int k16, int f32)
+shape_build(struct shape *s, int k16, int f32, int tm, int tn, int tk)
 {
-	int l, r, h;
+	int l, r, h, na0 = k16 ? 4 : 2, nb0 = k16 ? 2 : 1, nc0 = f32 ? 4 : 2;
+	int K0 = k16 ? 16 : 8, mi, ni, ki;
 
 	memset(s, 0, sizeof *s);
-	s->M = 16;
-	s->N = 8;
-	s->K = k16 ? 16 : 8;
+	s->tm = tm;
+	s->tn = tn;
+	s->tk = tk;
+	s->k16 = k16;
+	s->M = 16 * tm;
+	s->N = 8 * tn;
+	s->K = K0 * tk;
 	s->f32 = f32;
-	s->na = k16 ? 4 : 2;
-	s->nb = k16 ? 2 : 1;
-	s->nc = f32 ? 4 : 2;
-	snprintf(s->name, sizeof s->name, "m16n8k%d", s->K);
+	s->na = na0 * tm * tk;
+	s->nb = nb0 * tk * tn;
+	s->nc = nc0 * tm * tn;
+	s->nout = 4 * tm * tn;
+	s->nwd = (s->M * s->K * s->N + s->M * s->N + 63) / 64;
+	if (tm * tn * tk == 1)
+		snprintf(s->name, sizeof s->name, "m16n8k%d", K0);
+	else
+		snprintf(s->name, sizeof s->name, "m%dn%dk%d", s->M, s->N, s->K);
 	for (l = 0; l < ML; l++) {
 		int g = l >> 2, t = l & 3;
-		for (r = 0; r < s->na; r++)
-			for (h = 0; h < 2; h++) {
-				struct pos p = {(int8_t)l, (int8_t)r, (int8_t)h};
-				s->ar[l][r][h] = (int8_t)(g + 8 * (r & 1));
-				s->ak[l][r][h] = (int8_t)(2 * t + h + 8 * (r >> 1));
-				s->aown[s->ar[l][r][h]][s->ak[l][r][h]] = p;
-			}
-		for (r = 0; r < s->nb; r++)
-			for (h = 0; h < 2; h++) {
-				struct pos p = {(int8_t)l, (int8_t)r, (int8_t)h};
-				s->bk[l][r][h] = (int8_t)(2 * t + h + 8 * r);
-				s->bc[l][r][h] = (int8_t)g;
-				s->bown[s->bk[l][r][h]][s->bc[l][r][h]] = p;
-			}
-		for (r = 0; r < s->nc; r++)
-			for (h = 0; h < (f32 ? 1 : 2); h++) {
-				struct pos p = {(int8_t)l, (int8_t)r, (int8_t)h};
-				s->cr[l][r][h] = (int8_t)(f32 ? g + 8 * (r >> 1) :
-				    g + 8 * r);
-				s->cc[l][r][h] = (int8_t)(f32 ? 2 * t + (r & 1) :
-				    2 * t + h);
-				s->cown[s->cr[l][r][h]][s->cc[l][r][h]] = p;
-			}
+		for (mi = 0; mi < tm; mi++)
+			for (ki = 0; ki < tk; ki++)
+				for (r = 0; r < na0; r++)
+					for (h = 0; h < 2; h++) {
+						int R = (mi * tk + ki) * na0 + r;
+						struct pos p = {(int8_t)l, (int8_t)R, (int8_t)h};
+						s->ar[l][R][h] = (int8_t)(16 * mi + g + 8 * (r & 1));
+						s->ak[l][R][h] = (int8_t)(K0 * ki + 2 * t + h +
+						    8 * (r >> 1));
+						s->aown[s->ar[l][R][h]][s->ak[l][R][h]] = p;
+					}
+		for (ki = 0; ki < tk; ki++)
+			for (ni = 0; ni < tn; ni++)
+				for (r = 0; r < nb0; r++)
+					for (h = 0; h < 2; h++) {
+						int R = (ki * tn + ni) * nb0 + r;
+						struct pos p = {(int8_t)l, (int8_t)R, (int8_t)h};
+						s->bk[l][R][h] = (int8_t)(K0 * ki + 2 * t + h + 8 * r);
+						s->bc[l][R][h] = (int8_t)(8 * ni + g);
+						s->bown[s->bk[l][R][h]][s->bc[l][R][h]] = p;
+					}
+		for (mi = 0; mi < tm; mi++)
+			for (ni = 0; ni < tn; ni++)
+				for (r = 0; r < nc0; r++)
+					for (h = 0; h < (f32 ? 1 : 2); h++) {
+						int R = (mi * tn + ni) * nc0 + r;
+						struct pos p = {(int8_t)l, (int8_t)R, (int8_t)h};
+						s->cr[l][R][h] = (int8_t)(16 * mi + (f32 ? g + 8 *
+						    (r >> 1) : g + 8 * r));
+						s->cc[l][R][h] = (int8_t)(8 * ni + (f32 ? 2 * t +
+						    (r & 1) : 2 * t + h));
+						s->cown[s->cr[l][R][h]][s->cc[l][R][h]] = p;
+					}
 	}
 }
 
@@ -142,26 +175,32 @@ enum { XK_XOR, XK_QUAD, XK_SHUF };
 enum { OA, OB, OC };		/* operands */
 enum { WA, WB, WP };		/* what an exchange carries: A, B, a partial sum */
 enum { T_SHUF, T_SHUFU, T_STAGE0, T_STAGE1, T_N };
-enum { F_OUT, F_ASTAT, F_BSTAT };
+enum { F_OUT, F_ASTAT, F_BSTAT, F_BLOCK, F_N };
 
 struct ins {
 	uint8_t op, vt, opnd, reg, half, xk, what;
 	int16_t a, b, c, tab, xm;
+	/* a shared access widened: the leader's width (2, 4; 0 none), a
+	 * member's leader (+1; 0 none) and component */
+	uint8_t vw, vc;
+	int16_t vl;
 };
 
 struct mplan {
 	int n, nt;
-	struct ins in[MAXI];
-	int16_t tab[MAXT][ML];
 	/* what it is */
-	int fam, trans[2], perm[5], order[5], nord;
+	int fam, trans[2], perm[5], order[5], nord, q[5];
+	int lb[5], sk[5];	/* F_BLOCK: the lane bits' iteration bits, skew */
 	int bad;
 	double cost;
 	/* the tally */
 	int nx[3][3], nlds, nsts, nbar, nunpk, nfma, ndot2, nfadd, npack, nsel;
-	int nidx, idxops, maxdeg;
+	int nidx, idxops, maxdeg, nwide;
 	/* from the proof */
 	int depth, proved;
+	/* (last: not cleared for each plan tried) */
+	struct ins in[MAXI];
+	int16_t tab[MAXT][ML];
 };
 
 struct bld {
@@ -169,12 +208,20 @@ struct bld {
 	const struct shape *s;
 	const struct model *m;
 	int fdot2;
-	int own[3][4];
-	int nf;
-	int16_t fv[MAXF];
-	int32_t fid[MAXF][ML];
+	int own[3][MAXRA];
+	int nf, ne;
 	int staged[2];
 	int noreuse;	/* the reference: each word fetched from its owner */
+	/* (last: not cleared for each plan tried) */
+	int16_t fv[MAXF];
+	int32_t fid[MAXF][ML];
+	/* the values at hand by contents: (value k, lane) holding ident x,
+	 * a list from ihead[x] (-1 ends it; igen[x] != gen: empty) */
+	int32_t ihead[8192], enext[MAXF * ML];
+	uint32_t igen[8192], gen;
+	int16_t ek[MAXF * ML];
+	int8_t el[MAXF * ML];
+	int16_t vk[MAXI];	/* a value's k, or -1 */
 };
 
 static int unp[MAXI][2];	/* a word's unpacked halves, -1 */
@@ -377,7 +424,7 @@ emit(struct bld *b, int op, int vt, int a, int bb, int c)
 static int32_t
 mkid(int opnd, int lane, int reg, int hs)
 {
-	return opnd << 12 | lane << 6 | reg << 2 | hs;
+	return opnd << 11 | lane << 6 | reg << 2 | hs;
 }
 
 static void
@@ -387,19 +434,36 @@ know(struct bld *b, int v, const int32_t *id)
 		b->p->bad = 1;
 		return;
 	}
+	int l;
+
 	b->fv[b->nf] = (int16_t)v;
-	memcpy(b->fid[b->nf++], id, sizeof b->fid[0]);
+	b->vk[v] = (int16_t)b->nf;
+	memcpy(b->fid[b->nf], id, sizeof b->fid[0]);
+	for (l = 0; l < ML; l++) {
+		int x = id[l];
+		if (b->igen[x] != b->gen) {
+			b->igen[x] = b->gen;
+			b->ihead[x] = -1;
+		}
+		b->ek[b->ne] = (int16_t)b->nf;
+		b->el[b->ne] = (int8_t)l;
+		b->enext[b->ne] = b->ihead[x];
+		b->ihead[x] = b->ne++;
+	}
+	b->nf++;
+}
+
+/* the first entry of ident x's list, -1 */
+static int
+first(const struct bld *b, int32_t x)
+{
+	return b->igen[x] == b->gen ? b->ihead[x] : -1;
 }
 
 static const int32_t *
 known(const struct bld *b, int v)
 {
-	int k;
-
-	for (k = 0; k < b->nf; k++)
-		if (b->fv[k] == v)
-			return b->fid[k];
-	return NULL;
+	return v < MAXI && b->vk[v] >= 0 ? b->fid[b->vk[v]] : NULL;
 }
 
 static int
@@ -538,7 +602,7 @@ static void
 piece_best(struct bld *b, int opnd, const int8_t *sl, const int8_t *rg,
     int hs, const int32_t *id, uint32_t mask, struct piece *pc)
 {
-	int l, k, q, l0 = __builtin_ctz(mask), uni = 1, isx = 1, isq = 1;
+	int l, k, q, e, l0 = __builtin_ctz(mask), uni = 1, isx = 1, isq = 1;
 	int xm = sl[l0] ^ l0, qi = sl[l0] & 3, full = mask == 0xffffffffu;
 	double pr;
 
@@ -583,11 +647,12 @@ piece_best(struct bld *b, int opnd, const int8_t *sl, const int8_t *rg,
 	}
 	if (b->noreuse)
 		return;
-	for (k = 0; k < b->nf; k++) {
-		const int32_t *f = b->fid[k];
-		for (q = 0; q < ML; q++) {
-			if (f[l0 ^ q] != id[l0])
-				continue;
+	for (e = first(b, id[l0]); e >= 0; e = b->enext[e]) {
+		const int32_t *f;
+		k = b->ek[e];
+		f = b->fid[k];
+		q = b->el[e] ^ l0;	/* lane l reads lane l ^ q */
+		{
 			for (l = l0 + 1; l < ML; l++)
 				if ((mask >> l & 1) && f[l ^ q] != id[l])
 					break;
@@ -669,9 +734,9 @@ fetch(struct bld *b, int opnd, const int8_t *sl, const int8_t *rg, int hs)
 
 	for (l = 0; l < ML; l++)
 		id[l] = mkid(opnd, sl[l], rg[l], hs);
-	for (k = 0; k < b->nf; k++)
-		if (!memcmp(b->fid[k], id, sizeof id))
-			return b->fv[k];
+	for (k = first(b, id[0]); k >= 0; k = b->enext[k])
+		if (b->el[k] == 0 && !memcmp(b->fid[b->ek[k]], id, sizeof id))
+			return b->fv[b->ek[k]];
 	piece_best(b, opnd, sl, rg, hs, id, 0xffffffffu, &whole);
 	best = whole.cost;
 	for (bit = 0; bit < 5 && !b->noreuse; bit++) {
@@ -793,12 +858,12 @@ d_out(struct bld *b, const int *val)
 	int o, v;
 
 	if (b->s->f32)
-		for (o = 0; o < 4; o++) {
+		for (o = 0; o < b->s->nc; o++) {
 			v = emit(b, I_OUT, VNONE, val[o], -1, -1);
 			b->p->in[v].reg = (uint8_t)o;
 		}
 	else
-		for (o = 0; o < 2; o++) {
+		for (o = 0; o < b->s->nc; o++) {
 			v = emit(b, I_OUT, VNONE, val[2 * o], val[2 * o + 1], -1);
 			b->p->in[v].reg = (uint8_t)o;
 			b->p->npack++;
@@ -829,8 +894,14 @@ static void
 bld_init(struct bld *b, struct mplan *p, const struct shape *s,
     const struct model *m)
 {
-	memset(b, 0, sizeof *b);
-	memset(p, 0, sizeof *p);
+	uint32_t gen = b->gen + 1;
+
+	memset(b, 0, offsetof(struct bld, fv));
+	memset(p, 0, offsetof(struct mplan, in));
+	b->gen = gen;
+	if (gen == 1)
+		memset(b->igen, 0, sizeof b->igen);
+	memset(b->vk, -1, sizeof b->vk);
 	b->p = p;
 	b->s = s;
 	b->m = m;
@@ -847,16 +918,16 @@ gen_out(struct bld *b)
 {
 	const struct shape *s = b->s;
 	struct mplan *p = b->p;
-	int o, l, kw, nk = s->K / 2, acc[4];
+	int o, l, kw, nk = s->K / 2, acc[MAXOUT];
 	int ua = p->trans[OA] == T_SHUFU, ub = p->trans[OB] == T_SHUFU;
 
 	b->staged[OA] = p->trans[OA] >= T_STAGE0;
 	b->staged[OB] = p->trans[OB] >= T_STAGE0;
 	stage_setup(b);
-	for (o = 0; o < 4; o++)
+	for (o = 0; o < s->nout; o++)
 		acc[o] = c_value(b, o);
 	for (kw = 0; kw < nk; kw++)
-		for (o = 0; o < 4; o++) {
+		for (o = 0; o < s->nout; o++) {
 			int8_t sla[ML], rga[ML], slb[ML], rgb[ML];
 			for (l = 0; l < ML; l++) {
 				int r, c, k = 2 * (kw ^ xperm(p->perm, l));
@@ -882,11 +953,14 @@ gen_out(struct bld *b)
 
 /* ---- the stationary flows' partial sums and their butterfly ---- */
 
+#define GS 32	/* registers in a group of the stationary operand */
+#define NG 16	/* groups */
+
 struct red {
 	int ns, nst, bit[5], nsend[5];
-	int8_t from[5][MAXS], to[5][MAXS];
-	int8_t oslot[4];
-	int16_t ohold[4][ML];
+	int16_t from[5][MAXS], to[5][MAXS];
+	int16_t oslot[MAXOUT];
+	int16_t ohold[MAXOUT][ML];
 	int16_t key[MAXS][ML];	/* r * N + c of each partial sum */
 };
 
@@ -904,7 +978,7 @@ stat_keys(const struct shape *s, int X, const int *L, struct red *R,
 	*ng = 0;
 	for (r = 0; r < nx; r++) {
 		for (g = 0; g < *ng; g++) {
-			int r0 = grp[g * 4];
+			int r0 = grp[g * GS];
 			for (l = 0; l < ML; l++)
 				if ((X == OA ? s->ar[l][r][0] != s->ar[l][r0][0] :
 				    s->bc[l][r][0] != s->bc[l][r0][0]))
@@ -913,10 +987,12 @@ stat_keys(const struct shape *s, int X, const int *L, struct red *R,
 				break;
 		}
 		if (g == *ng) {
+			if (g == NG)
+				return 0;
 			gof[g] = 0;
 			(*ng)++;
 		}
-		grp[g * 4 + gof[g]++] = r;
+		grp[g * GS + gof[g]++] = r;
 	}
 	R->ns = *ng * ny;
 	if (R->ns > MAXS)
@@ -927,8 +1003,8 @@ stat_keys(const struct shape *s, int X, const int *L, struct red *R,
 				int y = j ^ xperm(L, l), x, rr, cc;
 				if (y >= ny)
 					return 0;
-				x = X == OA ? s->ar[l][grp[g * 4]][0] :
-				    s->bc[l][grp[g * 4]][0];
+				x = X == OA ? s->ar[l][grp[g * GS]][0] :
+				    s->bc[l][grp[g * GS]][0];
 				rr = X == OA ? x : y;
 				cc = X == OA ? y : x;
 				R->key[g * ny + j][l] = (int16_t)(rr * s->N + cc);
@@ -959,8 +1035,8 @@ static int
 red_plan(const struct shape *s, struct red *R, const int *order, int nord,
     const int *Q, int *bmp)
 {
-	static uint32_t hold[256];
-	static int16_t redl[256];
+	static uint32_t hold[16 * 8 * MAXTILE];
+	static int16_t redl[16 * 8 * MAXTILE];
 	int nkey = s->M * s->N, k, l, sl, st, i, live[MAXS];
 	int bm = -1;
 
@@ -1034,15 +1110,15 @@ red_plan(const struct shape *s, struct red *R, const int *order, int nord,
 					return 0;
 				to = s2;
 			}
-			R->from[st][R->nsend[st]] = (int8_t)sl;
-			R->to[st][R->nsend[st]++] = (int8_t)to;
+			R->from[st][R->nsend[st]] = (int16_t)sl;
+			R->to[st][R->nsend[st]++] = (int16_t)to;
 		}
 		for (sl = 0; sl < R->ns; sl++)
 			if (send[sl])
 				live[sl] = 0;
 	}
 	/* D's elements: the slot of each, the same in every lane */
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < s->nout; i++) {
 		int slot = -1;
 		for (l = 0; l < ML; l++) {
 			int r, c, h;
@@ -1057,53 +1133,20 @@ red_plan(const struct shape *s, struct red *R, const int *order, int nord,
 			slot = sl;
 			R->ohold[i][l] = (int16_t)h;
 		}
-		R->oslot[i] = (int8_t)slot;
+		R->oslot[i] = (int16_t)slot;
 	}
 	return 1;
 }
 
-/*
- * X-stationary: lane l forms the products of its own words of X with
- * the other operand's, the partial sums of one group of X's registers
- * (one row of A, one column of B) in slots j, then the butterfly.
- */
+/* the butterfly of the partial sums in val (slots), then D: each element
+ * read from its holder, plus C */
 static void
-gen_stat(struct bld *b, const struct red *R, int X)
+red_finish(struct bld *b, const struct red *R, int *val)
 {
 	const struct shape *s = b->s;
 	struct mplan *p = b->p;
-	int Y = 1 - X, grp[16], ng, gof[4], g, j, l, q, val[MAXS], st, i;
-	int ny = X == OA ? s->N : s->M, uy = p->trans[Y] == T_SHUFU;
-	struct red R2;
+	int st, i, l;
 
-	b->staged[Y] = p->trans[Y] >= T_STAGE0;
-	stat_keys(s, X, p->perm, &R2, grp, &ng, gof);
-	stage_setup(b);
-	for (g = 0; g < ng; g++)
-		for (j = 0; j < ny; j++) {
-			int acc = -1;
-			for (q = 0; q < gof[g]; q++) {
-				int rho = grp[g * 4 + q], xw = own(b, X, rho);
-				int8_t sy[ML], ry[ML];
-				for (l = 0; l < ML; l++) {
-					int y = j ^ xperm(p->perm, l), k;
-					struct pos py;
-					k = X == OA ? s->ak[l][rho][0] : s->bk[l][rho][0];
-					py = X == OA ? s->bown[k][y] : s->aown[y][k];
-					sy[l] = py.lane;
-					ry[l] = py.reg;
-				}
-				if (X == OA)
-					acc = dot_fetch(b, acc, xw, NULL, NULL, 0, -1, sy, ry,
-					    uy);
-				else
-					acc = dot_fetch(b, acc, -1, sy, ry, uy, xw, NULL, NULL,
-					    0);
-				if (p->bad)
-					return;
-			}
-			val[g * ny + j] = acc;
-		}
 	for (st = 0; st < R->nst; st++)
 		for (i = 0; i < R->nsend[st]; i++) {
 			int16_t t[ML];
@@ -1120,8 +1163,8 @@ gen_stat(struct bld *b, const struct red *R, int X)
 			p->nfadd++;
 		}
 	{
-		int out[4];
-		for (i = 0; i < 4; i++) {
+		int out[MAXOUT];
+		for (i = 0; i < s->nout; i++) {
 			int v = val[R->oslot[i]], xm, k;
 			k = classify(R->ohold[i], &xm);
 			if (k == -2) {
@@ -1142,6 +1185,52 @@ gen_stat(struct bld *b, const struct red *R, int X)
 		}
 		d_out(b, out);
 	}
+}
+
+
+/*
+ * X-stationary: lane l forms the products of its own words of X with
+ * the other operand's, the partial sums of one group of X's registers
+ * (one row of A, one column of B) in slots j, then the butterfly.
+ */
+static void
+gen_stat(struct bld *b, const struct red *R, int X)
+{
+	const struct shape *s = b->s;
+	struct mplan *p = b->p;
+	int Y = 1 - X, grp[NG * GS], ng, gof[NG], g, j, l, q, val[MAXS];
+	int ny = X == OA ? s->N : s->M, uy = p->trans[Y] == T_SHUFU;
+	struct red R2;
+
+	b->staged[Y] = p->trans[Y] >= T_STAGE0;
+	stat_keys(s, X, p->perm, &R2, grp, &ng, gof);
+	stage_setup(b);
+	for (g = 0; g < ng; g++)
+		for (j = 0; j < ny; j++) {
+			int acc = -1;
+			for (q = 0; q < gof[g]; q++) {
+				int rho = grp[g * GS + q], xw = own(b, X, rho);
+				int8_t sy[ML], ry[ML];
+				for (l = 0; l < ML; l++) {
+					int y = j ^ xperm(p->perm, l), k;
+					struct pos py;
+					k = X == OA ? s->ak[l][rho][0] : s->bk[l][rho][0];
+					py = X == OA ? s->bown[k][y] : s->aown[y][k];
+					sy[l] = py.lane;
+					ry[l] = py.reg;
+				}
+				if (X == OA)
+					acc = dot_fetch(b, acc, xw, NULL, NULL, 0, -1, sy, ry,
+					    uy);
+				else
+					acc = dot_fetch(b, acc, -1, sy, ry, uy, xw, NULL, NULL,
+					    0);
+				if (p->bad)
+					return;
+			}
+			val[g * ny + j] = acc;
+		}
+	red_finish(b, R, val);
 }
 
 /* ---- prices ---- */
@@ -1192,15 +1281,116 @@ idx_parent(const struct mplan *p, int tab, const uint8_t *seen)
 	return -1;
 }
 
+/* What-if: the widened accesses a model does not list, priced as one
+ * 32-bit access (else they are not used). */
+static int whatif_vec;
+
+static double
+vec_price(const struct model *m, int store, int w)
+{
+	int k = store ? (w == 4 ? C_STS_X4 : C_STS_X2) : (w == 4 ? C_LDS_X4 :
+	    C_LDS_X2);
+
+	if (avail(m, k))
+		return price(m, k);
+	if (whatif_vec)
+		return price(m, store ? C_STORE_SHARED : C_LOAD_SHARED);
+	return INFINITY;
+}
+
+/*
+ * Shared accesses of consecutive words, aligned, made one access of 64 or
+ * 128 bits where the model prices that below the separate ones: a load's
+ * group led by its first, a store's by its last (its words are all
+ * computed there).  The proof and the run see the separate accesses.
+ */
+static void
+widen(struct mplan *p, const struct model *m)
+{
+	int i, j, w, l, o, d;
+
+	for (w = 4; w >= 2; w /= 2)
+		for (i = 0; i < p->n; i++) {
+			struct ins *x = &p->in[i];
+			int mem[4], ok = 1, st = x->op == I_STS;
+			double one, sep;
+			if ((x->op != I_LDS && x->op != I_STS) || x->vw || x->vl)
+				continue;
+			for (l = 0; l < ML && ok; l++)
+				ok = p->tab[x->tab][l] % w == 0 && (p->tab[x->tab][l] & 3) ==
+				    (p->tab[x->tab][0] & 3);
+			if (!ok)
+				continue;
+			mem[0] = i;
+			for (o = 1; o < w && ok; o++) {
+				mem[o] = -1;
+				for (j = 0; j < p->n && mem[o] < 0; j++) {
+					const struct ins *y = &p->in[j];
+					if (y->op != x->op || y->vw || y->vl || j == i)
+						continue;
+					for (l = 0; l < ML && p->tab[y->tab][l] ==
+					    p->tab[x->tab][l] + o; l++)
+						;
+					if (l == ML)
+						mem[o] = j;
+				}
+				ok = mem[o] >= 0;
+			}
+			if (!ok)
+				continue;
+			one = vec_price(m, st, w);
+			sep = w * price(m, st ? C_STORE_SHARED : C_LOAD_SHARED);
+			if (!(one < sep))
+				continue;
+			/* the leader: a load's first, a store's last */
+			d = mem[0];
+			for (o = 1; o < w; o++)
+				if (st ? mem[o] > d : mem[o] < d)
+					d = mem[o];
+			for (o = 0; o < w; o++) {
+				p->in[mem[o]].vc = (uint8_t)o;
+				if (mem[o] == d)
+					p->in[mem[o]].vw = (uint8_t)w;
+				else
+					p->in[mem[o]].vl = (int16_t)(d + 1);
+			}
+			/* the leader's own component: its word's place */
+			(void)l;
+		}
+}
+
+/* an address already computed that this one is a constant past (the
+ * access's immediate offset: no operation), or -1 */
+static int
+addr_parent(const struct mplan *p, int tab, const uint8_t *seen)
+{
+	int t, l;
+
+	for (t = 0; t < p->nt; t++) {
+		int c;
+		if (seen[t] != 2 || t == tab)
+			continue;
+		c = p->tab[tab][0] - p->tab[t][0];
+		for (l = 1; l < ML && p->tab[tab][l] - p->tab[t][l] == c; l++)
+			;
+		if (l == ML)
+			return t;
+	}
+	return -1;
+}
+
 static void
 plan_price(struct mplan *p, const struct shape *s, const struct model *m)
 {
 	static uint8_t seen[MAXT];
+
+	widen(p, m);
+	{
 	double c = 0, pr;
 	int i, ops, lane = 0, selbits = 0;
 
 	memset(seen, 0, sizeof seen);
-	p->nidx = p->idxops = p->nsts = p->nbar = 0;
+	p->nidx = p->idxops = p->nsts = p->nbar = p->nwide = 0;
 	for (i = 0; i < p->n; i++) {
 		const struct ins *x = &p->in[i];
 		switch (x->op) {
@@ -1226,11 +1416,21 @@ plan_price(struct mplan *p, const struct shape *s, const struct model *m)
 		case I_LDS:
 			lane = 1;
 			if (!seen[x->tab]) {
+				if (addr_parent(p, x->tab, seen) < 0) {
+					c += aff_price(m, p->tab[x->tab], &ops) + price(m, C_IADD);
+					p->idxops += ops + 1;
+				}
 				seen[x->tab] = 2;	/* an address: no shuffle index */
-				c += aff_price(m, p->tab[x->tab], &ops) + price(m, C_IADD);
-				p->idxops += ops + 1;
 			}
-			if (x->op == I_STS) {
+			if (x->vl)
+				break;	/* in its leader's access */
+			if (x->vw) {
+				c += vec_price(m, x->op == I_STS, x->vw) + (degree(m,
+				    p->tab[x->tab]) - 1) * price(m, C_BANK_CONFLICT);
+				p->nwide++;
+				if (x->op == I_STS)
+					p->nsts++;
+			} else if (x->op == I_STS) {
 				c += price(m, C_STORE_SHARED) + (degree(m, p->tab[x->tab]) -
 				    1) * price(m, C_BANK_CONFLICT);
 				p->nsts++;
@@ -1272,6 +1472,7 @@ plan_price(struct mplan *p, const struct shape *s, const struct model *m)
 	if (p->nsts)
 		c += price(m, C_SHIFT) + price(m, C_IMUL);	/* the warp's slot */
 	p->cost = c;
+	}
 }
 
 /* ---- the proof: the plan run on symbols over the 32 lanes ---- */
@@ -1281,25 +1482,29 @@ struct sv {
 	int16_t d;
 };
 static struct sv SV[MAXI][ML];
-static uint64_t (*SB)[ML][NWD];
+/* the sets of terms of the f32 values, nwd words a lane: grown as needed */
+static uint64_t *SBP;
+static size_t SBN;
+static int vfx[MAXI], nwd;
+#define BITS(i, l) (SBP + ((size_t)vfx[i] * ML + (size_t)(l)) * (size_t)nwd)
 
 static uint16_t
 tag(int opnd, int r, int c)
 {
-	return (uint16_t)(opnd << 8 | r << 4 | c);
+	return (uint16_t)(opnd << 12 | r << 6 | c);
 }
 
 static int
 prod_term(const struct shape *s, int ta, int tb)
 {
-	if (ta >> 8 == OB) {
+	if (ta >> 12 == OB) {
 		int t = ta;
 		ta = tb;
 		tb = t;
 	}
-	if (ta >> 8 != OA || tb >> 8 != OB || (ta & 15) != (tb >> 4 & 15))
+	if (ta >> 12 != OA || tb >> 12 != OB || (ta & 63) != (tb >> 6 & 63))
 		return -1;
-	return ((ta >> 4 & 15) * s->K + (ta & 15)) * s->N + (tb & 15);
+	return ((ta >> 6 & 63) * s->K + (ta & 63)) * s->N + (tb & 63);
 }
 
 static int
@@ -1325,20 +1530,31 @@ bit_add(uint64_t *b, int k)
 static int
 prove(struct mplan *p, const struct shape *s, struct sbuf *why)
 {
-	static struct sv mem[256];
-	static int8_t memw[256];
+	static struct sv mem[1024];
+	static int8_t memw[1024];
+	size_t need;
+	int nvf = 0;
 	int i, l, k, j, depth = 0;
 
-	if (SB == NULL && (SB = calloc(MAXI, sizeof *SB)) == NULL)
-		fail("mma: out of memory");
+	nwd = s->nwd;
+	for (i = 0; i < p->n; i++)
+		vfx[i] = p->in[i].vt == VF ? nvf++ : -1;
+	need = (size_t)nvf * ML * (size_t)nwd;
+	if (need > SBN) {
+		uint64_t *q = realloc(SBP, need * sizeof *SBP);
+		if (q == NULL)
+			fail("mma: out of memory");
+		SBP = q;
+		SBN = need;
+	}
 	memset(memw, 0, sizeof memw);
 	for (i = 0; i < p->n; i++) {
 		const struct ins *x = &p->in[i];
 		for (l = 0; l < ML; l++) {
 			struct sv *v = &SV[i][l];
-			uint64_t *b = SB[i][l];
+			uint64_t *b = x->vt == VF ? BITS(i, l) : NULL;
 			if (x->vt == VF)
-				memset(b, 0, sizeof SB[0][0]);
+				memset(b, 0, (size_t)nwd * 8);
 			switch (x->op) {
 			case I_IN:
 				for (j = 0; j < 2; j++)
@@ -1355,7 +1571,7 @@ prove(struct mplan *p, const struct shape *s, struct sbuf *why)
 			case I_XCH:
 				*v = SV[x->a][p->tab[x->tab][l]];
 				if (x->vt == VF)
-					memcpy(b, SB[x->a][p->tab[x->tab][l]], sizeof SB[0][0]);
+					memcpy(b, BITS(x->a, p->tab[x->tab][l]), (size_t)nwd * 8);
 				break;
 			case I_STS:
 				k = p->tab[x->tab][l];
@@ -1378,7 +1594,7 @@ prove(struct mplan *p, const struct shape *s, struct sbuf *why)
 			case I_UNPK:
 				v->t[0] = SV[x->a][l].t[x->half];
 				if (x->vt == VF) {
-					bit_add(b, c_term(s, v->t[0] >> 4 & 15, v->t[0] & 15));
+					bit_add(b, c_term(s, v->t[0] >> 6 & 63, v->t[0] & 63));
 					v->d = 0;
 				}
 				break;
@@ -1386,13 +1602,13 @@ prove(struct mplan *p, const struct shape *s, struct sbuf *why)
 				k = l >> x->xm & 1 ? x->b : x->a;
 				*v = SV[k][l];
 				if (x->vt == VF)
-					memcpy(b, SB[k][l], sizeof SB[0][0]);
+					memcpy(b, BITS(k, l), (size_t)nwd * 8);
 				break;
 			case I_MUL:
 			case I_FMA:
 			case I_DOT2:
 				if (x->c >= 0)
-					memcpy(b, SB[x->c][l], sizeof SB[0][0]);
+					memcpy(b, BITS(x->c, l), (size_t)nwd * 8);
 				if (x->op == I_DOT2) {
 					for (j = 0; j < 2; j++)
 						if (!bit_add(b, prod_term(s, SV[x->a][l].t[j],
@@ -1407,24 +1623,24 @@ prove(struct mplan *p, const struct shape *s, struct sbuf *why)
 				}
 				break;
 			case I_FADD:
-				for (k = 0; k < NWD; k++) {
-					if (SB[x->a][l][k] & SB[x->b][l][k])
+				for (k = 0; k < nwd; k++) {
+					if (BITS(x->a, l)[k] & BITS(x->b, l)[k])
 						goto bad;
-					b[k] = SB[x->a][l][k] | SB[x->b][l][k];
+					b[k] = BITS(x->a, l)[k] | BITS(x->b, l)[k];
 				}
 				v->d = (int16_t)((SV[x->a][l].d > SV[x->b][l].d ?
 				    SV[x->a][l].d : SV[x->b][l].d) + 1);
 				break;
 			case I_OUT:
 				for (j = 0; j < (s->f32 ? 1 : 2); j++) {
-					uint64_t want[NWD];
+					uint64_t want[NWDMAX];
 					int r = s->cr[l][x->reg][j], c = s->cc[l][x->reg][j];
 					int src = j ? x->b : x->a, kk;
 					memset(want, 0, sizeof want);
 					for (kk = 0; kk < s->K; kk++)
 						bit_add(want, (r * s->K + kk) * s->N + c);
 					bit_add(want, c_term(s, r, c));
-					if (memcmp(want, SB[src][l], sizeof want)) {
+					if (memcmp(want, BITS(src, l), (size_t)nwd * 8)) {
 						sb_printf(why, "lane %d's D[%d][%d] is not the sum "
 						    "of its %d products and C", l, r, c, s->K);
 						return 0;
@@ -1493,10 +1709,10 @@ struct nv {
 static struct nv NV[MAXI][ML];
 
 static void
-run(const struct mplan *p, const struct shape *s, uint32_t A[ML][4],
-    uint32_t B[ML][2], uint32_t C[ML][4], uint32_t D[ML][4])
+run(const struct mplan *p, const struct shape *s, uint32_t A[ML][MAXRA],
+    uint32_t B[ML][MAXRB], uint32_t C[ML][MAXRC], uint32_t D[ML][MAXRC])
 {
-	static uint32_t mem[256];
+	static uint32_t mem[1024];
 	int i, l;
 
 	for (i = 0; i < p->n; i++) {
@@ -1586,7 +1802,7 @@ static double
 check(const struct mplan *p, const struct shape *s, int n, uint64_t seed,
     int *bad)
 {
-	static uint32_t A[ML][4], B[ML][2], C[ML][4], D[ML][4];
+	static uint32_t A[ML][MAXRA], B[ML][MAXRB], C[ML][MAXRC], D[ML][MAXRC];
 	uint64_t st = seed * 0x9e3779b97f4a7c15ULL + 1;
 	double worst = 0;
 	int it, l, r, c, k, e = s->f32 ? 8 : 3;
@@ -1646,10 +1862,10 @@ check(const struct mplan *p, const struct shape *s, int n, uint64_t seed,
 /* ---- the search ---- */
 
 /* the best plan of each family and fetch: [family][trans A][trans B] */
-static struct mplan *best[3][T_N][T_N];
+static struct mplan *best[F_N][T_N][T_N];
 static struct mplan cur, ref;
 static long tried;
-static int feasible[3], shaped[3];	/* priced; a butterfly that fits */
+static int feasible[F_N], shaped[F_N];	/* priced; a butterfly that fits */
 
 static int
 better(const struct mplan *a, const struct mplan *b)
@@ -1748,17 +1964,394 @@ next_order(int *ord, int n)
 	return 1;
 }
 
+/* ---- blocked: a lane's share of the iteration space ---- */
+
+/*
+ * The iteration space of a tile is its points (r, c, k word): ar bits of
+ * the row, then ac of the column, then ak of the k word (each point two
+ * products, the halves of an A word and a B word).  Lane bit i is the
+ * iteration bit lb[i]; the other bits are the lane's slots, in order;
+ * and a lane bit set xors sk[i] into the point's row and column bits (a
+ * skew, so that a butterfly sends the same registers from every lane).
+ * A lane sums its slots that differ in k word bits; the lanes that hold
+ * one (r, c) differ in the lane bits that are k word bits, and those
+ * partial sums meet by red_plan's butterfly.  Output-stationary and
+ * A-stationary are two of these maps; the search sees all of them.
+ */
+struct bmap {
+	int lb[5], sk[5];
+};
+
+struct ispace {
+	int ar, ac, ak, nb, smask, rcmask, nslot;
+};
+
+static int
+ilog2(int v)
+{
+	int n = 0;
+
+	while (1 << n < v)
+		n++;
+	return n;
+}
+
+static void
+isp_init(const struct shape *s, const struct bmap *B, struct ispace *I)
+{
+	int i, used = 0;
+
+	I->ar = ilog2(s->M);
+	I->ac = ilog2(s->N);
+	I->ak = ilog2(s->K / 2);
+	I->nb = I->ar + I->ac + I->ak;
+	for (i = 0; i < 5; i++)
+		used |= 1 << B->lb[i];
+	I->smask = ((1 << I->nb) - 1) & ~used;
+	I->rcmask = (1 << (I->ar + I->ac)) - 1;
+	I->nslot = 1 << (I->nb - 5);
+}
+
+/* slot j's point in lane l */
+static int
+blk_point(const struct ispace *I, const struct bmap *B, int l, int j)
+{
+	int p = 0, i, q = 0;
+
+	for (i = 0; i < I->nb; i++)
+		if (I->smask >> i & 1)
+			p |= (j >> q++ & 1) << i;
+	for (i = 0; i < 5; i++)
+		if (l >> i & 1)
+			p ^= 1 << B->lb[i] ^ B->sk[i];
+	return p;
+}
+
+/* the partial sum slot j adds into: its row and column bits, packed */
+static int
+blk_part(const struct ispace *I, int j)
+{
+	int i, q = 0, k = 0, ps = 0;
+
+	for (i = 0; i < I->nb; i++)
+		if (I->smask >> i & 1) {
+			if (I->rcmask >> i & 1)
+				ps |= (j >> q & 1) << k++;
+			q++;
+		}
+	return ps;
+}
+
+static void
+blk_rck(const struct ispace *I, int p, int *r, int *c, int *kw)
+{
+	*r = p & ((1 << I->ar) - 1);
+	*c = p >> I->ar & ((1 << I->ac) - 1);
+	*kw = p >> (I->ar + I->ac);
+}
+
+static int
+blk_keys(const struct shape *s, const struct bmap *B, struct red *R)
+{
+	struct ispace I;
+	int j, l;
+
+	isp_init(s, B, &I);
+	R->ns = 1 << popc((unsigned)(I.smask & I.rcmask));
+	if (R->ns > MAXS)
+		return 0;
+	for (j = 0; j < I.nslot; j++)
+		for (l = 0; l < ML; l++) {
+			int r, c, kw;
+			blk_rck(&I, blk_point(&I, B, l, j), &r, &c, &kw);
+			R->key[blk_part(&I, j)][l] = (int16_t)(r * s->N + c);
+		}
+	return 1;
+}
+
+static void
+gen_block(struct bld *b, const struct bmap *B, const struct red *R)
+{
+	const struct shape *s = b->s;
+	struct mplan *p = b->p;
+	struct ispace I;
+	int j, l, val[MAXS];
+	int ua = p->trans[OA] == T_SHUFU, ub = p->trans[OB] == T_SHUFU;
+
+	isp_init(s, B, &I);
+	for (j = 0; j < R->ns; j++)
+		val[j] = -1;
+	b->staged[OA] = p->trans[OA] >= T_STAGE0;
+	b->staged[OB] = p->trans[OB] >= T_STAGE0;
+	stage_setup(b);
+	for (j = 0; j < I.nslot && !p->bad; j++) {
+		int8_t sla[ML], rga[ML], slb[ML], rgb[ML], ps = (int8_t)blk_part(&I, j);
+		for (l = 0; l < ML; l++) {
+			int r, c, kw;
+			struct pos pa, pb;
+			blk_rck(&I, blk_point(&I, B, l, j), &r, &c, &kw);
+			pa = s->aown[r][2 * kw];
+			pb = s->bown[2 * kw][c];
+			sla[l] = pa.lane;
+			rga[l] = pa.reg;
+			slb[l] = pb.lane;
+			rgb[l] = pb.reg;
+		}
+		val[ps] = dot_fetch(b, val[ps], -1, sla, rga, ua, -1, slb, rgb, ub);
+	}
+	if (!p->bad)
+		red_finish(b, R, val);
+}
+
+static uint64_t
+tab_hash(const int8_t *a, const int8_t *b2)
+{
+	uint64_t h = 1469598103934665603ULL;
+	int l;
+
+	for (l = 0; l < ML; l++)
+		h = (h ^ (uint64_t)(uint8_t)a[l] << 8 ^ (uint8_t)b2[l]) *
+		    1099511628211ULL;
+	return h;
+}
+
+/* a quick price of a map: its distinct words fetched as shuffles, its
+ * butterfly, without the skew */
+static double
+blk_est(const struct shape *s, const struct model *m, const struct bmap *B)
+{
+	static uint64_t seen[2][1024];
+	struct ispace I;
+	int j, l, o, n[2] = {0, 0}, nk = 0, i, ns;
+	double fc = 0, conv2 = avail(m, C_FDOT2) ? 0 : 2 * price(m, C_CONV);
+
+	isp_init(s, B, &I);
+	for (j = 0; j < I.nslot; j++)
+		for (o = 0; o < 2; o++) {
+			int8_t sl[ML], rg[ML];
+			int self = 1, k;
+			uint64_t h;
+			for (l = 0; l < ML; l++) {
+				int r, c, kw;
+				struct pos q;
+				blk_rck(&I, blk_point(&I, B, l, j), &r, &c, &kw);
+				q = o == 0 ? s->aown[r][2 * kw] : s->bown[2 * kw][c];
+				sl[l] = q.lane;
+				rg[l] = q.reg;
+				self &= q.lane == l && q.reg == rg[0];
+			}
+			if (self)
+				continue;
+			h = tab_hash(sl, rg) | 1;
+			if (j == 0 && o == 0)
+				memset(seen, 0, sizeof seen);
+			for (k = (int)(h >> 20 & 1023); seen[o][k] && seen[o][k] != h;
+			    k = (k + 1) & 1023)
+				;
+			if (!seen[o][k]) {
+				seen[o][k] = h;
+				n[o]++;
+				int16_t t[ML];
+				int xk, xm, uni = 1;
+				double x;
+				for (l = 0; l < ML; l++) {
+					t[l] = sl[l];
+					uni &= rg[l] == rg[0];
+				}
+				xk = classify(t, &xm);
+				x = xk >= 0 ? xch_price(m, xk, xm) : price(m, C_SG_SHUF);
+				if (!uni)	/* by a select of two, at least */
+					x = 2 * x + price(m, C_SELECT);
+				fc += x + conv2 < 2 * x ? x + conv2 : 2 * x;
+			}
+		}
+	for (i = 0; i < 5; i++)
+		nk += B->lb[i] >= I.ar + I.ac;
+	ns = 1 << popc((unsigned)(I.smask & I.rcmask));
+	return fc + ns * (1.0 - 1.0 / (1 << nk)) * (xch_price(m, XK_XOR, 1) +
+	    price(m, C_FADD));
+}
+
+#define NTOP 48
+#define NFIN 4	/* maps tried with every fetch */
+
+static void
+search_block(const struct shape *s, const struct model *m, struct bld *b)
+{
+	static struct bmap top[NTOP];
+	static struct red R;
+	double tope[NTOP];
+	struct bmap B;
+	struct ispace I;
+	int ntop = 0, nb, i, t, a0, a1, a2, a3, a4, within;
+	struct ivec { int v[5], n; };
+	static struct bmap fin[NFIN];
+	static struct ivec fin_o[NFIN], fin_q[NFIN];
+	double fin_c[NFIN];
+
+
+	for (i = 0; i < NFIN; i++)
+		fin_c[i] = INFINITY;
+
+	memset(&B, 0, sizeof B);
+	isp_init(s, &B, &I);
+	nb = I.nb;
+	/* the lanes share out one HMMA's bits (16 rows, 8 columns, its k
+	 * words); a tile's own bits are slots */
+	within = 15 | 7 << I.ar | ((s->k16 ? 7 : 3) << (I.ar + I.ac));
+	for (a0 = 0; a0 < nb; a0++)
+	for (a1 = 0; a1 < nb; a1++)
+	for (a2 = 0; a2 < nb; a2++)
+	for (a3 = 0; a3 < nb; a3++)
+	for (a4 = 0; a4 < nb; a4++) {
+		double e;
+		int u = 1 << a0 | 1 << a1 | 1 << a2 | 1 << a3 | 1 << a4;
+		if (popc((unsigned)u) != 5 || (u & ~within))
+			continue;
+		B.lb[0] = a0;
+		B.lb[1] = a1;
+		B.lb[2] = a2;
+		B.lb[3] = a3;
+		B.lb[4] = a4;
+		if (1 << popc((unsigned)(I.rcmask & ~u)) > MAXS)
+			continue;
+		e = blk_est(s, m, &B);
+		if (ntop == NTOP && e >= tope[NTOP - 1])
+			continue;
+		/* one of each price among ties of the same split of the lane
+		 * bits over rows, columns and k */
+		{
+			int dup = 0, sig = 0, q;
+			for (i = 0; i < 5; i++)
+				sig += B.lb[i] < I.ar ? 1 : B.lb[i] < I.ar + I.ac ? 8 : 64;
+			for (q = 0; q < ntop && !dup; q++) {
+				int sig2 = 0;
+				for (i = 0; i < 5; i++)
+					sig2 += top[q].lb[i] < I.ar ? 1 : top[q].lb[i] < I.ar +
+					    I.ac ? 8 : 64;
+				dup = sig2 == sig && tope[q] == e;
+			}
+			if (dup)
+				continue;
+		}
+		for (i = ntop < NTOP ? ntop++ : NTOP - 1; i > 0 && tope[i - 1] > e;
+		    i--) {
+			tope[i] = tope[i - 1];
+			top[i] = top[i - 1];
+		}
+		tope[i] = e;
+		top[i] = B;
+	}
+	for (t = 0; t < ntop; t++) {
+		int kl[5], nkl = 0, rcb[16], nrc = 0, ch[5], bm, ord[5], nord, Q[5];
+		int nkb = 0, found, tries, nz;
+		B = top[t];
+		isp_init(s, &B, &I);
+		while (1 << nkb < s->M * s->N)
+			nkb++;
+		for (i = 0; i < 5; i++)
+			if (B.lb[i] >= I.ar + I.ac)
+				kl[nkl++] = i;
+		for (i = 0; i < I.ar + I.ac; i++)
+			if (I.smask >> i & 1)
+				rcb[nrc++] = i;
+		/* the skew: each k lane bit xors one row or column slot bit in */
+		memset(ch, 0, sizeof ch);
+		for (;;) {
+			memset(B.sk, 0, sizeof B.sk);
+			nz = 0;
+			for (i = 0; i < nkl; i++) {
+				B.sk[kl[i]] = ch[i] ? 1 << rcb[ch[i] - 1] : 0;
+				nz += ch[i] != 0;
+			}
+			found = 0;
+			if (nz <= 2 && blk_keys(s, &B, &R) && red_plan(s, &R, ord, -1, NULL, &bm)
+			    != 0) {
+				nord = 0;
+				for (i = 0; i < 5; i++)
+					if (bm >> i & 1)
+						ord[nord++] = i;
+				memset(Q, -1, sizeof Q);
+				tries = 0;
+				do {
+					do {
+						tries++;
+						if (red_plan(s, &R, ord, nord, Q, &bm) == 1) {
+							found = 1;
+							break;
+						}
+					} while (next_order(ord, nord));
+				} while (!found && tries < 24 && next_q(Q, bm, nkb));
+			}
+			if (found) {
+				/* priced with shuffles of packed words alone, here */
+				shaped[F_BLOCK] = 1;
+				bld_init(b, &cur, s, m);
+				cur.fam = F_BLOCK;
+				gen_block(b, &B, &R);
+				if (!cur.bad)
+					plan_price(&cur, s, m);
+				if (!cur.bad && cur.cost < fin_c[NFIN - 1]) {
+					int q2;
+					for (q2 = NFIN - 1; q2 > 0 && fin_c[q2 - 1] > cur.cost;
+					    q2--) {
+						fin_c[q2] = fin_c[q2 - 1];
+						fin[q2] = fin[q2 - 1];
+						fin_o[q2] = fin_o[q2 - 1];
+						fin_q[q2] = fin_q[q2 - 1];
+					}
+					fin_c[q2] = cur.cost;
+					fin[q2] = B;
+					memcpy(fin_o[q2].v, ord, sizeof ord);
+					fin_o[q2].n = nord;
+					memcpy(fin_q[q2].v, Q, sizeof Q);
+				}
+			}
+			for (i = 0; i < nkl; i++) {
+				if (++ch[i] <= nrc)
+					break;
+				ch[i] = 0;
+			}
+			if (i == nkl)
+				break;
+		}
+	}
+	/* the best maps, with every way to fetch */
+	for (t = 0; t < NFIN && isfinite(fin_c[t]); t++) {
+		int ta, tb, bm;
+		B = fin[t];
+		blk_keys(s, &B, &R);
+		if (red_plan(s, &R, fin_o[t].v, fin_o[t].n, fin_q[t].v, &bm) != 1)
+			continue;
+		for (ta = 0; ta < T_N; ta++)
+			for (tb = 0; tb < T_N; tb++) {
+				bld_init(b, &cur, s, m);
+				cur.fam = F_BLOCK;
+				cur.trans[OA] = ta;
+				cur.trans[OB] = tb;
+				memcpy(cur.lb, B.lb, sizeof B.lb);
+				memcpy(cur.sk, B.sk, sizeof B.sk);
+				memcpy(cur.order, fin_o[t].v, sizeof cur.order);
+				cur.nord = fin_o[t].n;
+				gen_block(b, &B, &R);
+				if (!cur.bad)
+					plan_price(&cur, s, m);
+				keep(&cur);
+			}
+	}
+}
+
 static void
 search(const struct shape *s, const struct model *m)
 {
-	struct bld b;
+	static struct bld b;
 	int P[5], ta, tb, X, i;
 	struct red R;
 
 	tried = 0;
 	memset(feasible, 0, sizeof feasible);
 	memset(shaped, 0, sizeof shaped);
-	for (X = 0; X < 3; X++)
+	for (X = 0; X < F_N; X++)
 		for (ta = 0; ta < T_N; ta++)
 			for (tb = 0; tb < T_N; tb++)
 				if (best[X][ta][tb]) {
@@ -1787,11 +2380,13 @@ search(const struct shape *s, const struct model *m)
 					plan_price(&cur, s, m);
 				keep(&cur);
 			}
-	while (next_perm(P, s->K / 2, 2));
+	while (next_perm(P, s->K / 2 < 8 ? s->K / 2 : 8, 2));
 	/* X-stationary, slot j's other index j ^ perm(l) */
 	for (X = OA; X <= OB; X++) {
-		int ny = X == OA ? s->N : s->M, grp[16], ng, gof[4], Q[5];
-		int nkb = 7;	/* r * N + c: 3 bits of c, 4 of r */
+		int ny = X == OA ? s->N : s->M, grp[NG * GS], ng, gof[NG], Q[5];
+		int nkb = 0;	/* the bits of r * N + c */
+		while (1 << nkb < s->M * s->N)
+			nkb++;
 		memset(P, 0, sizeof P);
 		do {
 			int bm, ord[5], nord = 0, r;
@@ -1825,14 +2420,18 @@ search(const struct shape *s, const struct model *m)
 				}
 			} while (next_order(ord, nord));
 			} while (next_q(Q, bm, nkb));
-		} while (next_perm(P, ny, ny > 8 ? 2 : 3));
+		} while (next_perm(P, ny < 16 ? ny : 16, ny > 8 ? 2 : 3));
 	}
+	/* blocked: any share of the iteration space */
+	search_block(s, m, &b);
 }
 
 /* ---- words ---- */
 
-static const char *const famname[3] = {"output-stationary",
-	"A-stationary", "B-stationary"};
+static const struct shape *txt_shape;	/* plan_text's */
+
+static const char *const famname[F_N] = {"output-stationary",
+	"A-stationary", "B-stationary", "blocked"};
 
 static void
 plan_text(struct sbuf *b, const struct mplan *p, const struct model *m)
@@ -1844,6 +2443,22 @@ plan_text(struct sbuf *b, const struct mplan *p, const struct model *m)
 		if (p->in[i].op == I_LDS)
 			nl[p->in[i].opnd]++;
 	sb_printf(b, "%s", famname[p->fam]);
+	if (p->fam == F_BLOCK && txt_shape != NULL) {
+		struct ispace I;
+		struct bmap B;
+		int i, nr = 0, nc = 0, nk = 0;
+		memcpy(B.lb, p->lb, sizeof B.lb);
+		isp_init(txt_shape, &B, &I);
+		for (i = 0; i < 5; i++)
+			if (p->lb[i] < I.ar)
+				nr++;
+			else if (p->lb[i] < I.ar + I.ac)
+				nc++;
+			else
+				nk++;
+		sb_printf(b, " (a lane: %d rows x %d columns x %d of k)",
+		    txt_shape->M >> nr, txt_shape->N >> nc, txt_shape->K >> nk);
+	}
 	for (w = 0; w < 3; w++) {
 		int n[4] = {0, 0, 0, 0};
 		double pr;
@@ -1857,8 +2472,16 @@ plan_text(struct sbuf *b, const struct mplan *p, const struct model *m)
 		sb_printf(b, "; %s:", what[w]);
 		any = 0;
 		if (w < 2 && nl[w]) {
-			sb_printf(b, " %d loads from shared memory (%s)", nl[w],
+			int acc = 0;
+			for (i = 0; i < p->n; i++)
+				if (p->in[i].op == I_LDS && p->in[i].opnd == w &&
+				    !p->in[i].vl)
+					acc++;
+			sb_printf(b, " %d loads from shared memory (%s", nl[w],
 			    p->trans[w] == T_STAGE0 ? "register-major" : "lane-major");
+			if (acc < nl[w])
+				sb_printf(b, ", in %d wide accesses", acc);
+			sb_printf(b, ")");
 			any = 1;
 		}
 		{
@@ -1895,7 +2518,7 @@ glsl(struct sbuf *o, const struct mplan *p, const struct shape *s,
 {
 	static uint8_t idx[MAXT];
 	int i, quad = 0, shuf = 0, dot2 = 0, stage = 0, sw = stage_words(s);
-	int sgbar;
+	int sgbar, vec = 0;
 	double pr;
 
 	for (i = 0; i < p->n; i++) {
@@ -1907,6 +2530,7 @@ glsl(struct sbuf *o, const struct mplan *p, const struct shape *s,
 		}
 		dot2 |= x->op == I_DOT2;
 		stage |= x->op == I_STS;
+		vec |= x->vw != 0;
 	}
 	/* a subgroup barrier where the warp is within one subgroup (it
 	 * exchanges, or the model has one), else the workgroup's */
@@ -1931,13 +2555,14 @@ glsl(struct sbuf *o, const struct mplan *p, const struct shape *s,
 	if (stage)
 		sb_printf(o, "#ifndef MMA_WARPS\n#define MMA_WARPS 1  "
 		    "// the workgroup's warps of 32\n#endif\n"
-		    "shared uint mma_slot[MMA_WARPS * %du];\n", sw);
+		    "%s[MMA_WARPS * %du];\n", vec ? "shared uvec4 mma_slot4" :
+		    "shared uint mma_slot", vec ? sw / 4 : sw);
 	if (s->f32)
-		sb_printf(o, "void %s(uint a[%d], uint b[%d], float c[4], "
-		    "out float d[4])\n{\n", fname, s->na, s->nb);
+		sb_printf(o, "void %s(uint a[%d], uint b[%d], float c[%d], "
+		    "out float d[%d])\n{\n", fname, s->na, s->nb, s->nc, s->nc);
 	else
-		sb_printf(o, "void %s(uint a[%d], uint b[%d], uint c[2], "
-		    "out uint d[2])\n{\n", fname, s->na, s->nb);
+		sb_printf(o, "void %s(uint a[%d], uint b[%d], uint c[%d], "
+		    "out uint d[%d])\n{\n", fname, s->na, s->nb, s->nc, s->nc);
 	sb_printf(o, "\tuint lane = %s & 31u;\n", sgbar ?
 	    "gl_SubgroupInvocationID" : "gl_LocalInvocationIndex");
 	if (shuf)
@@ -1982,14 +2607,62 @@ glsl(struct sbuf *o, const struct mplan *p, const struct shape *s,
 				sb_printf(o, "subgroupShuffle(v%d, i%d);\n", x->a, x->tab);
 			break;
 		case I_STS:
-			sb_printf(o, "\tmma_slot[slot + (");
-			aff_text(o, p->tab[x->tab]);
-			sb_printf(o, ")] = v%d;\n", x->a);
-			break;
 		case I_LDS:
-			sb_printf(o, "\tuint v%d = mma_slot[slot + (", i);
-			aff_text(o, p->tab[x->tab]);
-			sb_printf(o, ")];\n");
+			if (!idx[x->tab]) {
+				int par = addr_parent(p, x->tab, idx);
+				if (par < 0) {
+					sb_printf(o, "\tuint a%d = slot + (", x->tab);
+					aff_text(o, p->tab[x->tab]);
+					sb_printf(o, ");\n");
+				}
+				idx[x->tab] = 2;
+			}
+			{
+				int par = addr_parent(p, x->tab, idx), off = 0;
+				char at[48];
+				if (par >= 0 && par != x->tab)
+					off = p->tab[x->tab][0] - p->tab[par][0];
+				else
+					par = x->tab;
+				if (off)
+					snprintf(at, sizeof at, "a%d + %du", par, off);
+				else
+					snprintf(at, sizeof at, "a%d", par);
+				if (!vec) {
+					if (x->op == I_STS)
+						sb_printf(o, "\tmma_slot[%s] = v%d;\n", at, x->a);
+					else
+						sb_printf(o, "\tuint v%d = mma_slot[%s];\n", i, at);
+				} else if (x->vl) {
+					if (x->op == I_LDS)
+						sb_printf(o, "\tuint v%d = q%d[%d];\n", i, x->vl - 1,
+						    x->vc);
+				} else if (x->vw && x->op == I_LDS) {
+					sb_printf(o, "\tuvec%d q%d = mma_slot4[(%s) >> 2u]%s;\n",
+					    x->vw, i, at, x->vw == 4 ? "" :
+					    p->tab[x->tab][0] & 2 ? ".zw" : ".xy");
+					sb_printf(o, "\tuint v%d = q%d[%d];\n", i, i, x->vc);
+				} else if (x->vw) {
+					int comp[4], j2;
+					comp[x->vc] = x->a;
+					for (j2 = 0; j2 < p->n; j2++)
+						if (p->in[j2].vl == i + 1)
+							comp[p->in[j2].vc] = p->in[j2].a;
+					if (x->vw == 4)
+						sb_printf(o, "\tmma_slot4[(%s) >> 2u] = uvec4(v%d, v%d, "
+						    "v%d, v%d);\n", at, comp[0], comp[1], comp[2],
+						    comp[3]);
+					else
+						sb_printf(o, "\tmma_slot4[(%s) >> 2u].%s = uvec2(v%d, "
+						    "v%d);\n", at, p->tab[x->tab][0] & 2 ? "zw" :
+						    "xy", comp[0], comp[1]);
+				} else if (x->op == I_STS)
+					sb_printf(o, "\tmma_slot4[(%s) >> 2u][(%s) & 3u] = v%d;\n",
+					    at, at, x->a);
+				else
+					sb_printf(o, "\tuint v%d = mma_slot4[(%s) >> 2u][(%s) & "
+					    "3u];\n", i, at, at);
+			}
 			break;
 		case I_BAR:
 			sb_printf(o, "\t%s();\n", sgbar ? "subgroupBarrier" : "barrier");
@@ -2053,21 +2726,22 @@ validate(const char *fn, const char *src, const struct shape *s,
 	    "layout(std430, binding = 0) buffer IO { uint ab[]; } io;\n"
 	    "void main()\n{\n\tuint i = gl_LocalInvocationIndex;\n"
 	    "\tuint a[%d], b[%d];\n", src, s->na, s->nb);
-	sb_printf(&w, "\tfor (int k = 0; k < %d; k++) a[k] = io.ab[i * 16u + "
+	sb_printf(&w, "\tfor (int k = 0; k < %d; k++) a[k] = io.ab[i * 64u + "
 	    "uint(k)];\n", s->na);
-	sb_printf(&w, "\tfor (int k = 0; k < %d; k++) b[k] = io.ab[i * 16u + 4u "
+	sb_printf(&w, "\tfor (int k = 0; k < %d; k++) b[k] = io.ab[i * 64u + 16u "
 	    "+ uint(k)];\n", s->nb);
 	if (s->f32)
-		sb_printf(&w, "\tfloat c[4], d[4];\n\tfor (int k = 0; k < 4; k++) "
-		    "c[k] = uintBitsToFloat(io.ab[i * 16u + 8u + uint(k)]);\n"
-		    "\t%s(a, b, c, d);\n\tfor (int k = 0; k < 4; k++) "
-		    "io.ab[i * 16u + 12u + uint(k)] = floatBitsToUint(d[k]);\n}\n",
-		    fn);
+		sb_printf(&w, "\tfloat c[%d], d[%d];\n\tfor (int k = 0; k < %d; "
+		    "k++) c[k] = uintBitsToFloat(io.ab[i * 64u + 24u + uint(k)]);\n"
+		    "\t%s(a, b, c, d);\n\tfor (int k = 0; k < %d; k++) "
+		    "io.ab[i * 64u + 40u + uint(k)] = floatBitsToUint(d[k]);\n}\n",
+		    s->nc, s->nc, s->nc, fn, s->nc);
 	else
-		sb_printf(&w, "\tuint c[2], d[2];\n\tfor (int k = 0; k < 2; k++) "
-		    "c[k] = io.ab[i * 16u + 8u + uint(k)];\n"
-		    "\t%s(a, b, c, d);\n\tfor (int k = 0; k < 2; k++) "
-		    "io.ab[i * 16u + 12u + uint(k)] = d[k];\n}\n", fn);
+		sb_printf(&w, "\tuint c[%d], d[%d];\n\tfor (int k = 0; k < %d; "
+		    "k++) c[k] = io.ab[i * 64u + 24u + uint(k)];\n"
+		    "\t%s(a, b, c, d);\n\tfor (int k = 0; k < %d; k++) "
+		    "io.ab[i * 64u + 40u + uint(k)] = d[k];\n}\n", s->nc, s->nc,
+		    s->nc, fn, s->nc);
 	/* the extensions go first */
 	{
 		struct sbuf v = {0};
@@ -2123,23 +2797,38 @@ cmp_plan(const void *a, const void *b)
 }
 
 static void
-mma_run(int k16, int f32, const struct model *m, int all, int val,
-    int nofile, uint64_t seed)
+mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
+    int all, int val, int nofile, uint64_t seed)
 {
 	static struct shape S;
-	struct mplan *list[3 * T_N * T_N], *p;
+	struct mplan *list[F_N * T_N * T_N], *p;
 	struct sbuf why = {0}, t = {0}, g = {0};
 	int n = 0, i, ta, tb, f, shown, bad, nterm;
-	char fname[48], file[64];
-	double worst;
+	char fname[48], file[64], base[16];
+	double worst, per;
 
-	shape_build(&S, k16, f32);
+	double single = 0;
+
+	snprintf(base, sizeof base, "m16n8k%d", k16 ? 16 : 8);
+	if (tm * tn * tk > 1) {
+		/* the HMMAs one at a time, each the best alone */
+		shape_build(&S, k16, f32, 1, 1, 1);
+		search(&S, m);
+		single = INFINITY;
+		for (f = 0; f < F_N; f++)
+			for (ta = 0; ta < T_N; ta++)
+				for (tb = 0; tb < T_N; tb++)
+					if (best[f][ta][tb] && best[f][ta][tb]->cost < single)
+						single = best[f][ta][tb]->cost;
+	}
+	shape_build(&S, k16, f32, tm, tn, tk);
+	txt_shape = &S;
 	if (!avail(m, C_SG_SHUF) && !(isfinite(price(m, C_LOAD_SHARED)) &&
 	    isfinite(price(m, C_STORE_SHARED))))
 		fail("mma: %s has neither subgroup shuffles (sg_shuffle) nor "
 		    "shared memory to move the fragments with", sym_str(m->name));
 	search(&S, m);
-	for (f = 0; f < 3; f++)
+	for (f = 0; f < F_N; f++)
 		for (ta = 0; ta < T_N; ta++)
 			for (tb = 0; tb < T_N; tb++)
 				if (best[f][ta][tb])
@@ -2160,10 +2849,19 @@ mma_run(int k16, int f32, const struct model *m, int all, int val,
 	nterm = S.K;
 	snprintf(fname, sizeof fname, "mma_%s_%s", S.name, f32 ? "f32" : "f16");
 	rep_begin("mma");
+	per = tm * tn * tk;
 	printf("mma %s: D = A B + C on a warp's fragments as PTX's "
 	    "mma.sync.aligned.%s.row.col lays them out, f16 A and B, %s C and "
-	    "D, 32 lanes, under %s (%ld dataflows tried)\n", S.name, S.name,
+	    "D, 32 lanes, under %s (%ld dataflows tried)\n", S.name, base,
 	    f32 ? "f32" : "f16", sym_str(m->name), tried);
+	if (per > 1)
+		printf("  a tile of %d x %d x %d HMMAs (%s): %s; the costs are the "
+		    "tile's, each HMMA's a %gth of them\n", tm, tn, tk, base,
+		    tk > 1 && tm * tn == 1 ? "a chain, each one's D the next one's C"
+		    : tk > 1 ? "chains along k, sharing fragments along m and n" :
+		    tm > 1 && tn > 1 ? "sharing their A and B fragments" : tm > 1 ?
+		    "one B fragment times several A ones" :
+		    "one A fragment times several B ones", per);
 	rep_str("shape", S.name);
 	rep_str("accumulator", f32 ? "f32" : "f16");
 	rep_str("model", sym_str(m->name));
@@ -2175,8 +2873,13 @@ mma_run(int k16, int f32, const struct model *m, int all, int val,
 	for (i = 0; i < shown; i++) {
 		sb_clear(&t);
 		plan_text(&t, list[i], m);
-		printf("  %2d. %-9g %s, depth %d\n", i + 1, list[i]->cost, sb_str(&t),
-		    list[i]->depth);
+		if (per > 1)
+			printf("  %2d. %-9g (%g an HMMA) %s, depth %d\n", i + 1,
+			    list[i]->cost, list[i]->cost / per, sb_str(&t),
+			    list[i]->depth);
+		else
+			printf("  %2d. %-9g %s, depth %d\n", i + 1, list[i]->cost,
+			    sb_str(&t), list[i]->depth);
 		rep_obj(NULL);
 		rep_num("cost", list[i]->cost);
 		rep_str("dataflow", sb_str(&t));
@@ -2186,7 +2889,7 @@ mma_run(int k16, int f32, const struct model *m, int all, int val,
 	rep_end();
 	if (shown < n)
 		printf("  (%d more: mma ... all)\n", n - shown);
-	for (f = 0; f < 3; f++)
+	for (f = 0; f < F_N; f++)
 		if (!feasible[f])
 			printf("  %s: none possible: %s\n", famname[f], f == F_OUT ||
 			    shaped[f] ? "its exchanges need subgroup shuffles, which "
@@ -2194,6 +2897,12 @@ mma_run(int k16, int f32, const struct model *m, int all, int val,
 			    "the partial sums to registers (a xor of the lane's bits) "
 			    "lets a butterfly send and read them from the same "
 			    "registers in every lane");
+	if (per > 1 && isfinite(single)) {
+		printf("  the %g HMMAs one at a time, each the best alone: %g (%g "
+		    "each); the tile is %.2fx cheaper\n", per, single * per, single,
+		    single * per / list[0]->cost);
+		rep_num("separate_cost", single * per);
+	}
 	if (!ref.bad) {
 		sb_clear(&why);
 		if (!prove(&ref, &S, &why))
@@ -2312,6 +3021,32 @@ mma_run(int k16, int f32, const struct model *m, int all, int val,
 	}
 	rep_str("glsl", sb_str(&g));
 	deliver_file(file, "text/plain", sb_str(&g), g.n, nofile);
+	/* what measuring the wide shared accesses could change */
+	if (!(avail(m, C_LDS_X2) && avail(m, C_LDS_X4) && avail(m, C_STS_X2) &&
+	    avail(m, C_STS_X4)) && isfinite(price(m, C_LOAD_SHARED))) {
+		double chosen = p->cost, wb = INFINITY;
+		struct mplan *w = NULL;
+		whatif_vec = 1;
+		search(&S, m);
+		whatif_vec = 0;
+		for (f = 0; f < F_N; f++)
+			for (ta = 0; ta < T_N; ta++)
+				for (tb = 0; tb < T_N; tb++)
+					if (best[f][ta][tb] && best[f][ta][tb]->cost < wb) {
+						wb = best[f][ta][tb]->cost;
+						w = best[f][ta][tb];
+					}
+		if (w != NULL && wb < chosen * 0.995) {
+			sb_clear(&t);
+			plan_text(&t, w, m);
+			printf("  what if: were a 64- or 128-bit shared access priced as "
+			    "one 32-bit access (load_shared_x2, load_shared_x4, "
+			    "store_shared_x2, store_shared_x4, which %s does not list): "
+			    "%g, %.2fx cheaper (%s)\n", sym_str(m->name), wb, chosen / wb,
+			    sb_str(&t));
+			rep_num("whatif_wide_cost", wb);
+		}
+	}
 	free(why.p);
 	free(t.p);
 	free(g.p);
@@ -2323,7 +3058,8 @@ mma_command(struct P *p)
 	char w[48];
 	uint32_t at = cmdp_pos(p);
 	struct model *m = model_active();
-	int k16 = 1, f32 = 1, all = 0, val = 0, nofile = 0;
+	int k16 = 1, f32 = 1, all = 0, val = 0, nofile = 0, tm = 1, tn = 1, tk = 1;
+	char which;
 	int64_t v;
 	uint64_t seed = 1;
 
@@ -2349,7 +3085,33 @@ mma_command(struct P *p)
 			val = 1;
 		else if (cmdp_kw(p, "nofile"))
 			nofile = 1;
-		else if (cmdp_kw(p, "seed")) {
+		else if (cmdp_kw(p, "chain")) {
+			if (!cmdp_int(p, &v) || v < 1 || v > MAXTILE)
+				fail("mma: chain N, 1 to %d HMMAs each one's D the next "
+				    "one's C", MAXTILE);
+			tk = (int)v;
+		} else if (cmdp_kw(p, "tile")) {
+			int64_t a, b2, c2;
+			if (!cmdp_int(p, &a) || !cmdp_int(p, &b2) || !cmdp_int(p, &c2) ||
+			    a < 1 || b2 < 1 || c2 < 1 || a * b2 * c2 > MAXTILE)
+				fail("mma: tile TM TN TK, HMMAs along m, n and k, at most "
+				    "%d in all", MAXTILE);
+			tm = (int)a;
+			tn = (int)b2;
+			tk = (int)c2;
+		} else if ((which = cmdp_kw(p, "tm") ? 'm' : cmdp_kw(p, "tn") ? 'n' :
+		    cmdp_kw(p, "tk") ? 'k' : 0) != 0) {
+			/* one of a tile's counts (the JSON frontend's form) */
+			if (!cmdp_int(p, &v) || v < 1 || v > MAXTILE)
+				fail("mma: tm, tn, tk N: 1 to %d HMMAs along m, n, k",
+				    MAXTILE);
+			if (which == 'm')
+				tm = (int)v;
+			else if (which == 'n')
+				tn = (int)v;
+			else
+				tk = (int)v;
+		} else if (cmdp_kw(p, "seed")) {
 			if (!cmdp_int(p, &v) || v < 0)
 				fail("mma: seed N, a whole number");
 			seed = (uint64_t)v;
@@ -2360,12 +3122,14 @@ mma_command(struct P *p)
 				fail("mma: unknown model (see 'models')");
 		} else {
 			cmdp_fail_here(p);
-			fail("mma [m16n8k16 | m16n8k8] [f32 | f16] [model M] [all] "
-			    "[validate] [nofile] [seed N]");
+			fail("mma [m16n8k16 | m16n8k8] [f32 | f16] [chain N | tile TM TN "
+			    "TK] [model M] [all] [validate] [nofile] [seed N]");
 		}
 	}
 	notes_flush();
-	mma_run(k16, f32, m, all, val, nofile, seed);
+	if (tm * tn * tk > MAXTILE)
+		fail("mma: a tile of at most %d HMMAs", MAXTILE);
+	mma_run(k16, f32, tm, tn, tk, m, all, val, nofile, seed);
 	return 1;
 }
 

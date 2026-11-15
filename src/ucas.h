@@ -525,6 +525,12 @@ enum {
 	 * listed.
 	 */
 	C_SG_SHUFXOR, C_SG_QUAD, C_FDOT2,
+	/*
+	 * A load or a store of shared memory 64 or 128 bits wide (two or
+	 * four consecutive words, aligned) by each lane: absent unless
+	 * listed, where mma.c prices it as that many 32-bit accesses.
+	 */
+	C_LDS_X2, C_LDS_X4, C_STS_X2, C_STS_X4,
 	C_NCLASS
 };
 #define C_SG_FIRST C_SG_BALLOT
