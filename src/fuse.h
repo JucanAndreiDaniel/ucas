@@ -58,7 +58,7 @@ struct fusion {
 	nid pat;		/* over O_VAR slots 0..np-1; 0 for a lut */
 	int lut;		/* inputs of a lut fusion, else 0 */
 	int nt;			/* cost: k + sum tmul[i] * class tcls[i] */
-	int8_t tcls[FUSE_MAXT];
+	int16_t tcls[FUSE_MAXT];	/* a class (C_NCLASS passes 127) */
 	float tmul[FUSE_MAXT];
 	float k;
 	uint64_t users;		/* a modifier: the classes that absorb it */
