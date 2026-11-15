@@ -41,6 +41,8 @@ model rdna2 { iadd: 1, logic: 1, shift: 1, imul: 4, idiv: 28.5, idivk: 8.75, cmp
   fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
   fuse fneg(a: float) = -a : 0 in fadd fmul
   fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  fuse dpp_xor(v: any, lane: lane, k: const u4) = sg_shuffle(v, lane xor k) : 0 in iadd fadd fmul
+  fuse dpp_quad(v: any, lane: lane, i: const u2) = sg_shuffle(v, lane & 0xfffffffc | i) : 0 in iadd fadd fmul
 model skl { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
 model skx { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
 model glc { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 15, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 2, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 18, fpow: 54, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 15, sdivk: 5, irem: 15, iremk: 5, srem: 15, sremk: 5, sudot4x8: 11, sdot2x16: 11, sudot4x8sat: 11, sdot2x16sat: 11 }

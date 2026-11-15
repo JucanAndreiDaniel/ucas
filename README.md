@@ -1990,6 +1990,34 @@ cost of sh under gt1030: 6 (3 operations, shared subterms counted once)
     imad             1 x 3     = 3  (a*b + c; saves 1)
 ```
 
+The classes `sg_shuffle_xor` and `sg_quad` are fusions of the shuffle
+they price, where a model lists them: `sg_shuffle(v, lane xor k)` costs
+`sg_shuffle_xor` (k a constant), and `sg_quad` where k is below 4 or the
+lane is the quad's, `(lane & ~3) | i` with i below 4; the xor or the or
+that forms the index goes with it (`cost` lists them as `sg_shuffle_xor`,
+`sg_quad_swap` and `sg_quad_broadcast`).  An input `k: const uN` is a
+constant in [0, 2^N).  A source modifier (`in`) may hold operations
+inside its pattern, used only there, which go with it: so a model says
+that an exchange is an operand of the add or multiply that reads it
+(AMD's DPP), and the cover prices `sg_shuffle_xor(v, k) + x`,
+`fma(sg_shuffle_xor(v, k), y, z)` or a quad's broadcast into a `+` as
+the arithmetic alone.  rdna2 has two such estimates, `fuse dpp_xor(v: any,
+lane: lane, k: const u4) = sg_shuffle(v, lane xor k) : 0 in fadd fmul
+iadd` (DPP16's row_xmask) and `dpp_quad` (quad_perm); a xor of 16 is not
+one (v_permlanex16 is an instruction of its own), and an exchange with
+another use stays (tests/dppfuse.ucas):
+
+```
+> xa(x: f32 uniform, y: f32, lane: u32 in 0..31) = sg_shuffle_xor(x * f32(lane), 1) + y
+> cost xa model rdna2                         (10 under gt1030)
+cost of xa under rdna2: 3 (5 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    dpp_xor          1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+```
+
 ### Rewrites the prices make worthwhile
 
 `find` (and `simplify` on SPIR-V) also try identities that hold on the

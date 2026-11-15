@@ -2461,6 +2461,16 @@ static const char prelude[] =
     "  udot4x8: 1, sdot4x8: 1, udot4x8sat: 1, sdot4x8sat: 1,\n"
     "  udot8x4: 1, sdot8x4: 1, udot8x4sat: 1, sdot8x4sat: 1,\n"
     "  sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1\n"
+    /*
+     * ESTIMATES (from the RDNA2 ISA guide, not measured): DPP16 makes a
+     * row's xor (row_xmask, k < 16) or a quad's permutation (quad_perm) a
+     * source modifier of a VOP1/VOP2 add, multiply or fmac (its
+     * multiplicand), so the exchange costs nothing where every use of
+     * it is one of those.  The cover also lets it into the addend of a
+     * contracted fma, which v_fmac_f32 cannot take (an approximation).
+     */
+    "  fuse dpp_xor(v: any, lane: lane, k: const u4) = "
+    "sg_shuffle(v, lane xor k) : 0 in fadd fmul iadd\n"
     "  fuse dpp_quad(v: any, lane: lane, i: const u2) = "
     "sg_shuffle(v, (lane & 4294967292) | i) : 0 in fadd fmul iadd\n"
     "  folds none\n"
