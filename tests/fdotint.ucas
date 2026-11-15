@@ -1,0 +1,17 @@
+# An exact float sum of products as an integer dot product (src/fdot.c):
+# every factor on a binary grid (converted integers, binary constants),
+# the f32 sum exact, so it is 2^G times an integer sum, which dot.c lays
+# into the lanes of the model's dot forms; f32(dot) * 2^G, exact below
+# 2^24.  Kept where the model prices it lower.
+q(a: u8, b: u8, c: u8, d: u8, x: u32) = f32(a) * 0.5 * f32(x & 255) + f32(b) * 0.5 * f32((x >> 8) & 255) + f32(c) * 0.5 * f32((x >> 16) & 255) + f32(d) * 0.5 * f32(x >> 24)
+find q 1
+use rdna2
+find q 1
+# a model without dot forms: said, not rewritten
+model nodot : gt1030 { dot4x8: none, dot4x8sat: none }
+use nodot
+find q 1
+use gt1030
+# a factor off any binary grid (a division by 3): nothing
+r(a: u8, b: u8, x: u32) = f32(a) / 3.0 * f32(x & 255) + f32(b) * f32((x >> 8) & 255)
+find r 1

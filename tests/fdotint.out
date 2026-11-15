@@ -1,0 +1,158 @@
+> q(a: u8, b: u8, c: u8, d: u8, x: u32) = f32(a) * 0.5 * f32(x & 255) + f32(b) * 0.5 * f32((x >> 8) & 255) + f32(c) * 0.5 * f32((x >> 16) & 255) + f32(d) * 0.5 * f32(x >> 24)
+> find q 1
+find q: rewrites by identities the model prices lower (cost 41 as written, under gt1030)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*(asfloat(x >> 0x18 | 0x4b000000) - 8388608) the conversion f32(x >> 0x18) by the bits of 2^23 (derived)
+      holds where x >> 0x18 in [0, 255], inside [0, 2^23)
+      0 <= (x >> 0x18) < 2^23: (x >> 0x18) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 0x18), the f32 2^23 + (x >> 0x18) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 0x18) - 2^23 = (x >> 0x18) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 0x18) is exact below 2^24: both are (x >> 0x18)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5(asfloat(u32(d) | 0x4b000000) - 8388608)*f32(x >> 0x18) the conversion f32(d) by the bits of 2^23 (derived)
+      holds where d in [0, 255], inside [0, 2^23)
+      0 <= d < 2^23: d | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa d, the f32 2^23 + d exactly (one unit in the last place there is 1)
+      2^23 + d - 2^23 = d is an integer below 2^24, an f32: the subtraction does not round
+      f32(d) is exact below 2^24: both are d
+  cost 39  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*(asfloat(x >> 0x10 & 0xff | 0x4b000000) - 8388608) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x >> 0x10 & 0xff) by the bits of 2^23 (derived)
+      holds where x >> 0x10 & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x >> 0x10 & 0xff) < 2^23: (x >> 0x10 & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 0x10 & 0xff), the f32 2^23 + (x >> 0x10 & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 0x10 & 0xff) - 2^23 = (x >> 0x10 & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 0x10 & 0xff) is exact below 2^24: both are (x >> 0x10 & 0xff)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5(asfloat(u32(c) | 0x4b000000) - 8388608)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(c) by the bits of 2^23 (derived)
+      holds where c in [0, 255], inside [0, 2^23)
+      0 <= c < 2^23: c | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa c, the f32 2^23 + c exactly (one unit in the last place there is 1)
+      2^23 + c - 2^23 = c is an integer below 2^24, an f32: the subtraction does not round
+      f32(c) is exact below 2^24: both are c
+  cost 39  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x >> 8 & 0xff) by the bits of 2^23 (derived)
+      holds where x >> 8 & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x >> 8 & 0xff) < 2^23: (x >> 8 & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 8 & 0xff), the f32 2^23 + (x >> 8 & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 8 & 0xff) - 2^23 = (x >> 8 & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 8 & 0xff) is exact below 2^24: both are (x >> 8 & 0xff)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5(asfloat(u32(b) | 0x4b000000) - 8388608)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(b) by the bits of 2^23 (derived)
+      holds where b in [0, 255], inside [0, 2^23)
+      0 <= b < 2^23: b | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa b, the f32 2^23 + b exactly (one unit in the last place there is 1)
+      2^23 + b - 2^23 = b is an integer below 2^24, an f32: the subtraction does not round
+      f32(b) is exact below 2^24: both are b
+  cost 39  0.5f32(a)*(asfloat(x & 0xff | 0x4b000000) - 8388608) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x & 0xff) by the bits of 2^23 (derived)
+      holds where x & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x & 0xff) < 2^23: (x & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x & 0xff), the f32 2^23 + (x & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x & 0xff) - 2^23 = (x & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x & 0xff) is exact below 2^24: both are (x & 0xff)
+  cost 40  0.5(asfloat(u32(a) | 0x4b000000) - 8388608)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(a) by the bits of 2^23 (derived)
+      holds where a in [0, 255], inside [0, 2^23)
+      0 <= a < 2^23: a | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa a, the f32 2^23 + a exactly (one unit in the last place there is 1)
+      2^23 + a - 2^23 = a is an integer below 2^24, an f32: the subtraction does not round
+      f32(a) is exact below 2^24: both are a
+  cost 30  0.5(asfloat(u32(a) | 0x4b000000) - 8388608)*(asfloat(x & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(b) | 0x4b000000) - 8388608)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(c) | 0x4b000000) - 8388608)*(asfloat(x >> 0x10 & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(d) |… (67 more characters) all of them: the conversion f32(x >> 0x10 & 0xff) by the bits of 2^23, then the conversion f32(x >> 8 & 0xff) by the bits of 2^23, then the conversion f32(x & 0xff) by the bits of 2^23, then the conversion f32(x >> 0x18) by the bits of 2^23, then the conversion f32(d) by the bits of 2^23, then the conversion f32(c) by the bits of 2^23, then the conversion f32(b) by the bits of 2^23, then the conversion f32(a) by the bits of 2^23 (derived)
+  float dot products under gt1030 (an exact float sum of products as an integer dot, scaled once; cost 41 as written):
+  cost 13  0.5f32(i32(udot4x8(u32(i32(a)) | u32(i32(b)) << 8 | u32(i32(c)) << 16 | u32(i32(d)) << 24, x)))
+           every factor is k 2^g, k an integer (fix_grid: converted integers, binary constants, + - * keep a grid), and the f32 sum is exact: no step reaches 24 bits of its grid
+           so the sum is 2^-1 times the integer sum i32(a)*i32(x & 0xff) + i32(b)*i32(x >> 8 & 0xff) + i32(c)*i32(x >> 0x10 & 0xff) + i32(d)*i32(x >> 0x18), each term's k's multiplied and moved up to the grid 2^-1; that sum is below 260100 in magnitude: inside i32, and below 2^24, so f32 holds it and the conversion is exact; times 2^-1, a power of two, exact
+           the integer sum as dot products (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: i32(a) * i32(x & 0xff), lane 1: i32(b) * i32(x >> 8 & 0xff), lane 2: i32(c) * i32(x >> 0x10 & 0xff), lane 3: i32(d) * i32(x >> 0x18)
+           i32(a) in 0..255 (proved range)
+           i32(x & 0xff) is bits 0..7 of x: lane 0 as it is
+           i32(b) in 0..255 (proved range)
+           i32(x >> 8 & 0xff) is bits 8..15 of x: lane 1 as it is
+           i32(c) in 0..255 (proved range)
+           i32(x >> 0x10 & 0xff) is bits 16..23 of x: lane 2 as it is
+           i32(d) in 0..255 (proved range)
+           i32(x >> 0x18) is bits 24..31 of x: lane 3 as it is
+           udot4x8's sum is in 0..260100: it does not wrap
+           integer sum proved by SAT: 2606 AIG nodes, 0 conflicts; checked on a sample of the domain
+> use rdna2
+cost model: rdna2
+> find q 1
+find q: derived, but not cheaper under rdna2 (cost 23, as written 22): the conversion f32(x >> 0x18) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 23, as written 22): the conversion f32(d) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 22, as written 22): the conversion f32(x >> 0x10 & 0xff) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 23, as written 22): the conversion f32(c) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 22, as written 22): the conversion f32(x >> 8 & 0xff) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 23, as written 22): the conversion f32(b) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 22, as written 22): the conversion f32(x & 0xff) by the bits of 2^23
+find q: derived, but not cheaper under rdna2 (cost 23, as written 22): the conversion f32(a) by the bits of 2^23
+  float dot products under rdna2 (an exact float sum of products as an integer dot, scaled once; cost 22 as written):
+  cost 8   0.5f32(i32(udot4x8(u32(i32(a)) | u32(i32(b)) << 8 | u32(i32(c)) << 16 | u32(i32(d)) << 24, x)))
+           every factor is k 2^g, k an integer (fix_grid: converted integers, binary constants, + - * keep a grid), and the f32 sum is exact: no step reaches 24 bits of its grid
+           so the sum is 2^-1 times the integer sum i32(a)*i32(x & 0xff) + i32(b)*i32(x >> 8 & 0xff) + i32(c)*i32(x >> 0x10 & 0xff) + i32(d)*i32(x >> 0x18), each term's k's multiplied and moved up to the grid 2^-1; that sum is below 260100 in magnitude: inside i32, and below 2^24, so f32 holds it and the conversion is exact; times 2^-1, a power of two, exact
+           the integer sum as dot products (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: i32(a) * i32(x & 0xff), lane 1: i32(b) * i32(x >> 8 & 0xff), lane 2: i32(c) * i32(x >> 0x10 & 0xff), lane 3: i32(d) * i32(x >> 0x18)
+           i32(a) in 0..255 (proved range)
+           i32(x & 0xff) is bits 0..7 of x: lane 0 as it is
+           i32(b) in 0..255 (proved range)
+           i32(x >> 8 & 0xff) is bits 8..15 of x: lane 1 as it is
+           i32(c) in 0..255 (proved range)
+           i32(x >> 0x10 & 0xff) is bits 16..23 of x: lane 2 as it is
+           i32(d) in 0..255 (proved range)
+           i32(x >> 0x18) is bits 24..31 of x: lane 3 as it is
+           udot4x8's sum is in 0..260100: it does not wrap
+           integer sum proved by SAT: 2606 AIG nodes, 0 conflicts; checked on a sample of the domain
+> model nodot : gt1030 { dot4x8: none, dot4x8sat: none }
+> use nodot
+cost model: nodot
+> find q 1
+find q: rewrites by identities the model prices lower (cost 41 as written, under nodot)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*(asfloat(x >> 0x18 | 0x4b000000) - 8388608) the conversion f32(x >> 0x18) by the bits of 2^23 (derived)
+      holds where x >> 0x18 in [0, 255], inside [0, 2^23)
+      0 <= (x >> 0x18) < 2^23: (x >> 0x18) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 0x18), the f32 2^23 + (x >> 0x18) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 0x18) - 2^23 = (x >> 0x18) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 0x18) is exact below 2^24: both are (x >> 0x18)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5(asfloat(u32(d) | 0x4b000000) - 8388608)*f32(x >> 0x18) the conversion f32(d) by the bits of 2^23 (derived)
+      holds where d in [0, 255], inside [0, 2^23)
+      0 <= d < 2^23: d | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa d, the f32 2^23 + d exactly (one unit in the last place there is 1)
+      2^23 + d - 2^23 = d is an integer below 2^24, an f32: the subtraction does not round
+      f32(d) is exact below 2^24: both are d
+  cost 39  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*(asfloat(x >> 0x10 & 0xff | 0x4b000000) - 8388608) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x >> 0x10 & 0xff) by the bits of 2^23 (derived)
+      holds where x >> 0x10 & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x >> 0x10 & 0xff) < 2^23: (x >> 0x10 & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 0x10 & 0xff), the f32 2^23 + (x >> 0x10 & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 0x10 & 0xff) - 2^23 = (x >> 0x10 & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 0x10 & 0xff) is exact below 2^24: both are (x >> 0x10 & 0xff)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5(asfloat(u32(c) | 0x4b000000) - 8388608)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(c) by the bits of 2^23 (derived)
+      holds where c in [0, 255], inside [0, 2^23)
+      0 <= c < 2^23: c | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa c, the f32 2^23 + c exactly (one unit in the last place there is 1)
+      2^23 + c - 2^23 = c is an integer below 2^24, an f32: the subtraction does not round
+      f32(c) is exact below 2^24: both are c
+  cost 39  0.5f32(a)*f32(x & 0xff) + 0.5f32(b)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x >> 8 & 0xff) by the bits of 2^23 (derived)
+      holds where x >> 8 & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x >> 8 & 0xff) < 2^23: (x >> 8 & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 8 & 0xff), the f32 2^23 + (x >> 8 & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 8 & 0xff) - 2^23 = (x >> 8 & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 8 & 0xff) is exact below 2^24: both are (x >> 8 & 0xff)
+  cost 40  0.5f32(a)*f32(x & 0xff) + 0.5(asfloat(u32(b) | 0x4b000000) - 8388608)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(b) by the bits of 2^23 (derived)
+      holds where b in [0, 255], inside [0, 2^23)
+      0 <= b < 2^23: b | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa b, the f32 2^23 + b exactly (one unit in the last place there is 1)
+      2^23 + b - 2^23 = b is an integer below 2^24, an f32: the subtraction does not round
+      f32(b) is exact below 2^24: both are b
+  cost 39  0.5f32(a)*(asfloat(x & 0xff | 0x4b000000) - 8388608) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(x & 0xff) by the bits of 2^23 (derived)
+      holds where x & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x & 0xff) < 2^23: (x & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x & 0xff), the f32 2^23 + (x & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x & 0xff) - 2^23 = (x & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x & 0xff) is exact below 2^24: both are (x & 0xff)
+  cost 40  0.5(asfloat(u32(a) | 0x4b000000) - 8388608)*f32(x & 0xff) + 0.5f32(b)*f32(x >> 8 & 0xff) + 0.5f32(c)*f32(x >> 0x10 & 0xff) + 0.5f32(d)*f32(x >> 0x18) the conversion f32(a) by the bits of 2^23 (derived)
+      holds where a in [0, 255], inside [0, 2^23)
+      0 <= a < 2^23: a | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa a, the f32 2^23 + a exactly (one unit in the last place there is 1)
+      2^23 + a - 2^23 = a is an integer below 2^24, an f32: the subtraction does not round
+      f32(a) is exact below 2^24: both are a
+  cost 30  0.5(asfloat(u32(a) | 0x4b000000) - 8388608)*(asfloat(x & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(b) | 0x4b000000) - 8388608)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(c) | 0x4b000000) - 8388608)*(asfloat(x >> 0x10 & 0xff | 0x4b000000) - 8388608) + 0.5(asfloat(u32(d) |… (67 more characters) all of them: the conversion f32(x >> 0x10 & 0xff) by the bits of 2^23, then the conversion f32(x >> 8 & 0xff) by the bits of 2^23, then the conversion f32(x & 0xff) by the bits of 2^23, then the conversion f32(x >> 0x18) by the bits of 2^23, then the conversion f32(d) by the bits of 2^23, then the conversion f32(c) by the bits of 2^23, then the conversion f32(b) by the bits of 2^23, then the conversion f32(a) by the bits of 2^23 (derived)
+  float dot products: nodot has no dot product forms (the sum is exact on the grid 2^-1, an integer sum below 260100)
+> use gt1030
+cost model: gt1030
+> r(a: u8, b: u8, x: u32) = f32(a) / 3.0 * f32(x & 255) + f32(b) * f32((x >> 8) & 255)
+> find r 1
+find r: rewrites by identities the model prices lower (cost 21 as written, under gt1030)
+  cost 19  f32(a)/3*f32(x & 0xff) + f32(b)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) the conversion f32(x >> 8 & 0xff) by the bits of 2^23 (derived)
+      holds where x >> 8 & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x >> 8 & 0xff) < 2^23: (x >> 8 & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x >> 8 & 0xff), the f32 2^23 + (x >> 8 & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x >> 8 & 0xff) - 2^23 = (x >> 8 & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x >> 8 & 0xff) is exact below 2^24: both are (x >> 8 & 0xff)
+  cost 20  f32(a)/3*f32(x & 0xff) + (asfloat(u32(b) | 0x4b000000) - 8388608)*f32(x >> 8 & 0xff) the conversion f32(b) by the bits of 2^23 (derived)
+      holds where b in [0, 255], inside [0, 2^23)
+      0 <= b < 2^23: b | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa b, the f32 2^23 + b exactly (one unit in the last place there is 1)
+      2^23 + b - 2^23 = b is an integer below 2^24, an f32: the subtraction does not round
+      f32(b) is exact below 2^24: both are b
+  cost 19  f32(a)/3*(asfloat(x & 0xff | 0x4b000000) - 8388608) + f32(b)*f32(x >> 8 & 0xff) the conversion f32(x & 0xff) by the bits of 2^23 (derived)
+      holds where x & 0xff in [0, 255], inside [0, 2^23)
+      0 <= (x & 0xff) < 2^23: (x & 0xff) | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa (x & 0xff), the f32 2^23 + (x & 0xff) exactly (one unit in the last place there is 1)
+      2^23 + (x & 0xff) - 2^23 = (x & 0xff) is an integer below 2^24, an f32: the subtraction does not round
+      f32(x & 0xff) is exact below 2^24: both are (x & 0xff)
+  cost 20  (asfloat(u32(a) | 0x4b000000) - 8388608)/3*f32(x & 0xff) + f32(b)*f32(x >> 8 & 0xff) the conversion f32(a) by the bits of 2^23 (derived)
+      holds where a in [0, 255], inside [0, 2^23)
+      0 <= a < 2^23: a | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa a, the f32 2^23 + a exactly (one unit in the last place there is 1)
+      2^23 + a - 2^23 = a is an integer below 2^24, an f32: the subtraction does not round
+      f32(a) is exact below 2^24: both are a
+  cost 15  (asfloat(u32(a) | 0x4b000000) - 8388608)/3*(asfloat(x & 0xff | 0x4b000000) - 8388608) + (asfloat(u32(b) | 0x4b000000) - 8388608)*(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) all of them: the conversion f32(x >> 8 & 0xff) by the bits of 2^23, then the conversion f32(x & 0xff) by the bits of 2^23, then the conversion f32(b) by the bits of 2^23, then the conversion f32(a) by the bits of 2^23 (derived)

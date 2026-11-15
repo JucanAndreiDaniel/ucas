@@ -753,6 +753,12 @@ grid_of(const struct func *f, nid n, struct sbuf *why, int depth)
 			if (N.op[n] == O_AND && N.op[N.b[n]] == O_CONST &&
 			    N.ki[N.b[n]] >= 0)
 				r.mag = (double)N.ki[N.b[n]];
+			/* an unsigned shift right by a constant: the type's
+			 * bits less those shifted out */
+			if (N.op[n] == O_SHR && N.op[N.b[n]] == O_CONST &&
+			    TYK(t) == K_UINT && N.ki[N.b[n]] >= 0 &&
+			    N.ki[N.b[n]] < 64)
+				r.mag = (double)(it.mask >> N.ki[N.b[n]]);
 			return r;
 		}
 	}

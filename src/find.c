@@ -23,6 +23,7 @@
 #include "texalu.h"
 #include "stoch.h"
 
+#include "fdot.h"
 #include <math.h>
 #include <setjmp.h>
 #include <stdlib.h>
@@ -2569,6 +2570,10 @@ cmd_find(struct func *f, int want, const uint8_t *opsel, int maxcost,
 		said += dword_find(f);
 		said += sfu_find(f);
 		said += pack_find(f);
+		/* exact float dots as integer dots (another section may have
+		 * counted below 0) */
+		if (fdot_find(f) > 0)
+			said = said > 0 ? said + 1 : 1;
 		if (N.fl[f->body] & NF_SG) {
 			/* a float value per lane: its subgroup forms (#204) */
 			printf("find %s: a float value per lane: the subgroup forms "

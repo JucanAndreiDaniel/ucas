@@ -117,6 +117,8 @@ SRCS+=	lperm.c
 SRCS+=	f16x.c
 # a tensor core's block FMA as an operation over the bits (tcdot.h)
 SRCS+=	tcdot.c
+# an exact float sum of products as an integer dot product (fdot.h)
+SRCS+=	fdot.c
 .PATH:	${.CURDIR}/src
 MAN=
 
