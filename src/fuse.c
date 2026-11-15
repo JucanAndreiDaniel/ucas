@@ -120,7 +120,7 @@ wants_ranges(const struct model *m)
 	for (i = 0; i < nfz; i++)
 		if (fz[i].model == m->name)
 			for (k = 0; k < fz[i].np; k++)
-				if (fz[i].pbits[k])
+				if (fz[i].pbits[k] && fz[i].pkind[k] == FP_INT)
 					return 1;
 	return 0;
 }
@@ -137,9 +137,9 @@ fuse_text(struct sbuf *b, const struct fusion *f)
 		sb_putc(b, '(');
 		for (i = 0; i < f->np; i++)
 			if (f->pbits[i])
-				sb_printf(b, "%s%s: %c%d", i ? ", " : "",
-				    sym_str(f->pname[i]), f->psgn[i] ? 's' : 'u',
-				    f->pbits[i]);
+				sb_printf(b, "%s%s: %s%c%d", i ? ", " : "",
+				    sym_str(f->pname[i]), f->pkind[i] == FP_CONST ?
+				    "const " : "", f->psgn[i] ? 's' : 'u', f->pbits[i]);
 			else
 				sb_printf(b, "%s%s: %s", i ? ", " : "",
 				    sym_str(f->pname[i]), pkname[f->pkind[i]]);
@@ -379,6 +379,14 @@ pat_lowclosed(nid P)
 	return 0;
 }
 
+/* a shuffle of an input of any type: it moves the value, whatever it is */
+static int
+any_moved(const struct fusion *f, nid P)
+{
+	return N.op[P] == O_SGSHUF && N.op[N.a[P]] == O_VAR && N.ki[N.a[P]] >= 0
+	    && N.ki[N.a[P]] < f->np && f->pkind[N.ki[N.a[P]]] == FP_ANY;
+}
+
 static int
 fmatch(const struct fgraph *g, const struct fusion *f, nid P, int i,
     int root, struct mst *s)
@@ -413,6 +421,10 @@ fmatch(const struct fgraph *g, const struct fusion *f, nid P, int i,
 		case FP_CONST:
 			if (!g->isk[i])
 				return 0;
+			/* const uN: a constant in [0, 2^N) */
+			if (f->pbits[sl] && (g->fp[i] || g->kv[i] < 0 ||
+			    g->kv[i] >= 1LL << f->pbits[sl]))
+				return 0;
 			break;
 		case FP_LANE:
 			if (!g->islane[i])
@@ -434,8 +446,8 @@ fmatch(const struct fgraph *g, const struct fusion *f, nid P, int i,
 		return 0;
 	/* a compare is inside a pattern only where the pattern has one (a
 	 * ballot of it) */
-	if ((g->fp[i] != 0) != (TY_FP(N.ty[P]) != 0) || g->isbool[i] !=
-	    (N.ty[P] == TY_BOOL))
+	if (((g->fp[i] != 0) != (TY_FP(N.ty[P]) != 0) || g->isbool[i] !=
+	    (N.ty[P] == TY_BOOL)) && !any_moved(f, P))
 		return 0;
 	/* a model's fusions are 32-bit instructions: an operation it prices
 	 * by a 64-bit class is several of them */
@@ -565,6 +577,65 @@ cut_cone(const struct fgraph *g, int root, const struct cut *c, int *out,
 
 enum { CH_PLAIN, CH_PAT, CH_LUT };
 
+/*
+ * The classes that are a shuffle of a given lane map, as the fusions
+ * they are (a model that lists the class has them; nothing else does):
+ *   sg_shuffle_xor:    sg_shuffle(v, lane xor k)          : sg_shuffle_xor
+ *   sg_quad_swap:      sg_shuffle(v, lane xor k), k < 4   : sg_quad
+ *   sg_quad_broadcast: sg_shuffle(v, (lane & ~3) | i), i < 4 : sg_quad
+ * The index is the instruction's (a butterfly's, a quad's): the lane xor
+ * k it would be computed by goes with it.
+ */
+static struct fusion bif[3];
+
+static void
+builtin_init(void)
+{
+	ty_t u = TY(K_UINT, 32);
+	nid v = mk_var(0, sym_cstr("v"), TY_INT);
+	nid l = mk_var(1, sym_cstr("lane"), u);
+	nid k = mk_var(2, sym_cstr("k"), u);
+	nid w = mk_const_i(TY_LIT, 32);
+	static const char *const nm[] = {"sg_shuffle_xor", "sg_quad_swap",
+	    "sg_quad_broadcast"};
+	int j;
+
+	if (bif[0].name)
+		return;
+	for (j = 0; j < 3; j++) {
+		struct fusion *f = &bif[j];
+		f->name = sym_cstr(nm[j]);
+		f->np = 3;
+		f->pname[0] = sym_cstr("v");
+		f->pname[1] = sym_cstr("lane");
+		f->pname[2] = sym_cstr(j == 2 ? "i" : "k");
+		f->pkind[0] = FP_ANY;
+		f->pkind[1] = FP_LANE;
+		f->pkind[2] = FP_CONST;
+		f->pbits[2] = j ? 2 : 0;
+		f->nt = 1;
+		f->tcls[0] = (int16_t)(j ? C_SG_QUAD : C_SG_SHUFXOR);
+		f->tmul[0] = 1;
+		f->pat = mk_sg(O_SGSHUF, v, j < 2 ? mk_bin(O_XOR, l, k) :
+		    mk_bin(O_OR, mk_bin(O_AND, l, mk_const_i(u, 0xfffffffcLL)), k),
+		    w);
+	}
+}
+
+static void
+builtin_add(const struct model *m, struct fgraph *g)
+{
+	int j;
+
+	if (!cclass_available(m, C_SG_SHUFXOR) &&
+	    !cclass_available(m, C_SG_QUAD))
+		return;
+	builtin_init();
+	for (j = 0; j < 3 && g->nfl < MAXFUSE; j++)
+		if (cclass_available(m, bif[j].tcls[0]))
+			g->fl[g->nfl++] = &bif[j];
+}
+
 float
 fg_cover(const struct model *m, struct fgraph *g)
 {
@@ -587,6 +658,7 @@ fg_cover(const struct model *m, struct fgraph *g)
 			}
 			g->fl[g->nfl++] = &fz[i];
 		}
+	builtin_add(m, g);
 	/* modifiers: their own price when every use absorbs them */
 	for (q = 0; q < g->nfl; q++) {
 		const struct fusion *f = g->fl[q];
@@ -606,12 +678,20 @@ fg_cover(const struct model *m, struct fgraph *g)
 			if (bad[i] || g->pinned[i] || g->uses[i] < 1 || g->isk[i])
 				continue;
 			mst_init(&s);
-			if (!fmatch(g, f, f->pat, i, i, &s) || s.ninter)
+			if (!fmatch(g, f, f->pat, i, i, &s))
 				continue;
 			c = fuse_price(m, f, g->f64[i]);
 			if (c < g->own[i]) {
+				int l;
 				g->own[i] = c;
 				g->fz[i] = q;
+				/* what the pattern holds inside (a shuffle's lane
+				 * xor k) goes with it: used only there */
+				for (l = 0; l < s.ninter; l++) {
+					g->own[s.inter[l]] = 0;
+					g->fz[s.inter[l]] = q;
+					g->by[s.inter[l]] = i;
+				}
 			}
 		}
 		free(bad);

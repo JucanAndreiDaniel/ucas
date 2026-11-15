@@ -109,7 +109,14 @@ sg_expr_of(const struct sins *I, int W, int *cls)
 	}
 	if (O("Broadcast") || O("BroadcastFirst") || O("Shuffle") ||
 	    O("ShuffleXor") || O("ShuffleUp") || O("ShuffleDown")) {
-		nid at = O("BroadcastFirst") ? mk_const_i(u, 0) : O("ShuffleXor") ?
+		nid at;
+		/* a constant mask or delta is the instruction's own: the
+		 * model's classes of a lane map (sg_shuffle_xor) see it */
+		int d = I->nop > 3 ? opid(I, 3) : -1;
+		if (d >= 0 && V.id[d].kind == K_CONST && !V.id[d].spec &&
+		    V.id[d].c[0] < 64)
+			i = mk_const_i(u, (int64_t)V.id[d].c[0]);
+		at = O("BroadcastFirst") ? mk_const_i(u, 0) : O("ShuffleXor") ?
 		    mk_bin(O_XOR, l, i) : O("ShuffleUp") ? mk_bin(O_SUB, l, i) :
 		    O("ShuffleDown") ? mk_bin(O_ADD, l, i) : i;
 		*cls = C_SG_SHUF;
@@ -123,8 +130,13 @@ sg_expr_of(const struct sins *I, int W, int *cls)
 			if (d < 0 || V.id[d].kind != K_CONST || V.id[d].c[0] > 2)
 				return 0;
 			at = mk_bin(O_XOR, l, mk_const_i(u, (int64_t)V.id[d].c[0] + 1));
-		} else
+		} else {
+			int d = I->nop > 3 ? opid(I, 3) : -1;
+			if (d >= 0 && V.id[d].kind == K_CONST && !V.id[d].spec &&
+			    V.id[d].c[0] < 4)
+				i = mk_const_i(u, (int64_t)V.id[d].c[0]);
 			at = mk_bin(O_OR, mk_bin(O_AND, l, mk_const_i(u, ~3u)), i);
+		}
 		*cls = C_SG_SHUF;
 		return mk_sg(O_SGSHUF, v, at, w);
 	}

@@ -2461,6 +2461,8 @@ static const char prelude[] =
     "  udot4x8: 1, sdot4x8: 1, udot4x8sat: 1, sdot4x8sat: 1,\n"
     "  udot8x4: 1, sdot8x4: 1, udot8x4sat: 1, sdot8x4sat: 1,\n"
     "  sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1\n"
+    "  fuse dpp_quad(v: any, lane: lane, i: const u2) = "
+    "sg_shuffle(v, (lane & 4294967292) | i) : 0 in fadd fmul iadd\n"
     "  folds none\n"
     "}\n"
     /*
@@ -2655,6 +2657,20 @@ parse_fuse(struct P *p, struct model *m)
 				    "as a function's lane parameter is: %s: lane",
 				    sym_str(tmp.p[tmp.np].name));
 			adv(p);
+			/* const uN: a constant in [0, 2^N) */
+			if (k == FP_CONST && pk(p) == T_ID) {
+				int bits = 0;
+				size_t q;
+				s = ttext(p, p->i, &n);
+				for (q = 1; q < n && s[q] >= '0' && s[q] <= '9' &&
+				    bits <= FUSE_MAXBITS; q++)
+					bits = bits * 10 + (s[q] - '0');
+				if (s[0] == 'u' && n > 1 && q == n && bits >= 1 &&
+				    bits <= FUSE_MAXBITS) {
+					f.pbits[tmp.np] = (uint8_t)bits;
+					adv(p);
+				}
+			}
 			f.pkind[tmp.np] = (uint8_t)k;
 			tmp.p[tmp.np].ty = k == FP_FLOAT ? TY_F32 : TY_INT;
 			/*
@@ -2723,7 +2739,7 @@ parse_fuse(struct P *p, struct model *m)
 		if (f.nt == FUSE_MAXT)
 			fail("a fusion's cost has at most %d classes", FUSE_MAXT);
 		adv(p);
-		f.tcls[f.nt] = (int8_t)k;
+		f.tcls[f.nt] = (int16_t)k;
 		f.tmul[f.nt++] = (float)mul;
 	} while (accept(p, T_PLUS));
 	for (;;) {
