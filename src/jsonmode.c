@@ -344,7 +344,10 @@ static const struct jcmd cmds[] = {
 	    "the 32 lanes with its error bound, as GLSL",
 	    {{"shape", P_ENUM, 0, " %s", "the product's shape (m16n8k16)",
 	    "m16n8k16|m16n8k8"}, {"accumulator", P_ENUM, 0, " %s", "C and D's "
-	    "type (f32)", "f32|f16"}, NMO("model", " model %s", "the model "
+	    "type (f32)", "f32|f16"}, IO("tm", " tm %s", "HMMAs in the tile along "
+	    "m, sharing B (1)"), IO("tn", " tn %s", "along n, sharing A (1)"),
+	    IO("tk", " tk %s", "along k, a chain: each one's D the next one's C "
+	    "(1); tm tn tk at most 4"), NMO("model", " model %s", "the model "
 	    "(the active one)"), BO("all", " all", "every dataflow's best, not "
 	    "the first six"), BO("validate", " validate", "compile the GLSL "
 	    "with glslangValidator and spirv-val"), BO("nofile", " nofile",
