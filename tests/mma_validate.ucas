@@ -2,3 +2,7 @@
 # glslangValidator and checked by spirv-val
 mma model rdna2 validate nofile
 mma m16n8k8 f16 model mali_g715 validate nofile
+# 64- and 128-bit shared accesses (uvec4 slots), and a tile of two
+model wide : mali_g715 { load_shared_x4: 16.25, store_shared_x4: 26.94, load_shared_x2: 16.25, store_shared_x2: 26.94 }
+mma m16n8k8 f16 model wide validate nofile
+mma m16n8k8 tile 2 1 1 model rdna2 validate nofile

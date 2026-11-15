@@ -186,7 +186,7 @@ inline annotations: `range isqrt(x: u4)`.
 | `dword cases [P]` | the bounds of DWPlusFP and AccurateDWPlusDW whatever cancels, and of DWTimesDW3 and DWDivFP3, by the case analysis ucas runs at P bits (24): the cases, the largest bound and its case; at 3 to 5 bits also every operand pair of that format in a window run against them (see "fp64 without fp64").  English: "the case analysis of the double-word additions at 4 bits" |
 | `foldproof F [model m]` | the float round trips the model says its driver folds, and their rounding as integer arithmetic no fold reaches, proved equal (see "Driver folds") |
 | `banks F [, G ...] [size N] [elem B] [model m]` | the bank-conflict degree of shared-memory index expressions over a warp, and an index swizzle that lowers it, proved to keep the indices apart (see "Memory kinds") |
-| `mma [m16n8k16\|m16n8k8] [f32\|f16] [model m] [all] [validate] [nofile] [seed N]` | a warp's matrix product (a tensor core's HMMA: PTX's mma.sync with f16 A and B) on a GPU without a matrix unit: the dataflows priced under the model, the cheapest proved over the 32 lanes with its error bound, written as GLSL (see "A warp's matrix product without a matrix unit") |
+| `mma [m16n8k16\|m16n8k8] [f32\|f16] [chain N \| tile TM TN TK] [model m] [all] [validate] [nofile] [seed N]` | a warp's matrix product (a tensor core's HMMA: PTX's mma.sync with f16 A and B) on a GPU without a matrix unit: the dataflows priced under the model, the cheapest proved over the 32 lanes with its error bound, written as GLSL (see "A warp's matrix product without a matrix unit") |
 | `intatomic F [count N] [tol T] [global] [model m]` | a float atomic add as an integer atomic add on fixed point, when its addend is proved exact there (or within tol) and the model prices that lower (see "Memory kinds") |
 | `texalu F [tol E] [under m]` | table reads and weighted sums of neighbouring entries, and a function of few input bits as its table, as reads through the texture unit, where the model prices them lower, each proved, with what the pipeline needs for it (see "The texture unit as an ALU") |
 | `texenc T [rows W] [tol E]` | a constant table as BC4 blocks: endpoints, selectors and bytes, exact or within E, every pair of endpoints tried; `texenc T, U` two tables of one shape as BC5; `texenc T [, U] astc BWxBH [srgb]` as ASTC blocks, two tables in a block's two planes; `texenc T [, U] eac` as R11_EAC (two as RG11_EAC), every header tried; `texenc T [, U] etc2 [srgb]` in the red channel of RGB8_ETC2 (two as RGBA8_ETC2_EAC; `srgb` the sRGB formats), every encoding of the channel tried; `texenc T [, U] bc7 [srgb]` in BC7's red (two in red and alpha); `texenc T bc6h` numbers of a half float's range in BC6H's red (see "Tables as compressed textures") |
@@ -4248,10 +4248,83 @@ JSON: `{"cmd": "mma", "args": {"shape": "m16n8k8", "accumulator": "f16",
 "model": "rdna2"}}`; English: "emulate hmma m16n8k8 with f16 accumulators
 on rdna2", "tensor core mma without cooperative matrices under sm86".
 
-The cost is that of one product in isolation: a GEMM that multiplies
-one B fragment by several A ones can fetch B's words once for all of
-them (the A-stationary flows then leave only the products and the
-butterfly to each), which the price does not count.
+**Tiles of HMMAs.**  A program rarely issues one HMMA alone: a GEMM's
+k loop chains them (each one's D the next one's C), and its m and n
+loops multiply one fragment by several.  `chain N` (N HMMAs along k)
+and `tile TM TN TK` (at most 4 in all) make the tile one product of
+16 TM x 8 TN x K TK, its registers those of the HMMAs in order (A's of
+HMMA (mi, ki) from (mi TK + ki) 4, B's of (ki, ni) from (ki TN + ni) 2,
+C's and D's of (mi, ni) from (mi TN + ni) 4), and the same search runs
+on it: a chain's k-split flows sum their partial sums over the whole
+chain and run the butterfly and add C once, and a fragment two HMMAs
+share is fetched once.  The report gives the cost an HMMA and the
+HMMAs one at a time, each the best alone:
+
+| model | chain 4 | tile 2 1 1 (B shared) | tile 2 2 1 | tile 2 1 2 |
+|---|---|---|---|---|
+| gt1030 | 1.24x | 1.34x | | 1.58x |
+| rdna2 | 1.15x | 1.47x | | |
+| sm86 | | | 1.64x | |
+| mali_g715 | 1.10x | | 1.98x | |
+
+and a chain's sums are shallower (h = 18 for four m16n8k16 where each
+lane's chain of 64 multiply-adds has 64).
+
+**Blocked dataflows.**  The flows above are points of one space: a
+tile's iteration space is its bits of row, column and k word, and a
+dataflow gives each lane bit one of them (the lane's share), the rest
+being the lane's slots, with a skew (a lane bit xoring a row or column
+bit in) so that the butterfly over the lane bits that are k bits sends
+the same registers from every lane.  `blocked` searches that space: a
+quick price of every assignment of the lane bits (30240 for one HMMA:
+its words fetched, by kind, and its butterfly), then the skews and the
+butterfly's targets for the best, then every way to fetch for the best
+four.  For PTX's fragments it finds A-stationary (a lane: 2 rows x 8
+columns x 4 of k) and nothing cheaper under any model here: a lane's
+own A rows and B column both come from lane bits 2-4, so a share that
+splits them (4 rows x 4 columns x 4 of k, 22 words moved on paper
+against 28) fetches more, not less.
+
+**Memory.**  An address that is another's plus a constant is that
+access's immediate offset, at no operation (mali_g715's integer
+operations are dear: its m16n8k16 went from 1056 to 872).  Two or four
+consecutive words a lane loads or stores in shared memory, aligned, are
+one access of 64 or 128 bits where the model prices that lower:
+`load_shared_x2`, `load_shared_x4`, `store_shared_x2`,
+`store_shared_x4`, absent unless listed (as that many 32-bit
+accesses); the GLSL then declares its slots `uvec4`.  No model here has
+measured them, so the report says what they would change: "what if: were
+a 64- or 128-bit shared access priced as one 32-bit access": under
+mali_g715 2.03x (A from its quad in 128-bit loads, B in 64-bit ones),
+under rdna2 1.26x (B through shared memory instead of ds_bpermute),
+under gt1030 nothing.  Those are the accesses to measure.
+
+**Numerics.**  On Ampere (sm_80/86) an f16 HMMA with an f32 accumulator
+is not an FMA chain: each output is two 8-term block FMAs (Khattak and
+Mikaitis 2025, arXiv 2512.07004; Valpey et al. 2025, arXiv
+2502.15999): exact products aligned to the largest exponent among them
+and C, the bits shifted out truncated, one normalisation, an f32
+result truncated.  Its error is relative to the largest term, where
+these sums' gamma_h bound is relative to the sum of their magnitudes:
+an emulation here is at least as accurate as the instruction, not
+bit-identical to it.
+
+**Ruled out, with the reasons under these models.**  An f16 unpack by
+integer operations (the exponent rebias: three operations a half) does
+not beat `conv` on gt1030 (3), rdna2 (1, and fdot2 needs none) or
+mali_g715 (1.28 against 1.87 an integer operation).  Integer dot
+products on block-scaled mantissas (Ozaki's splitting) need two int8
+slices for an f16's 11 bits, four products for one, and an alignment of
+several integer operations an element; with 16-bit lanes one slice, but
+A and B aligned apart truncate more than the tensor core; no model here
+prices them below the f32 multiply-adds.  Winograd's inner product
+trades multiplies for adds, which cost the same here.  A recursive
+doubling of B's words among the 8 lanes that need the same ones wants
+each lane's k order by g, where A's words want it by t (their quad): the
+k of a product must agree, so A's fetches become shuffles and selects.
+
+The cost is that of one product or tile in isolation; registers are not
+counted (a tile's partial sums take more of them).
 
 ### Lane maps as exchanges by xor
 

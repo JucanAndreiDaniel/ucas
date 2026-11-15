@@ -53,6 +53,7 @@ const char *const cclass_name[C_NCLASS] = {
 	"sg_cluster2", "sg_cluster4", "sg_cluster8", "sg_cluster16",
 	"sg_cluster32", "sg_partition", "sg_partadd", "sg_barrier",
 	"sg_shuffle_xor", "sg_quad", "fdot2",
+	"load_shared_x2", "load_shared_x4", "store_shared_x2", "store_shared_x4",
 };
 
 /*
