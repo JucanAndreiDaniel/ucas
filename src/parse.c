@@ -33,6 +33,7 @@
 #include "mma.h"
 #include "lperm.h"
 #include "tcdot.h"
+#include "winograd.h"
 #include "stoch.h"
 #include "numsearch.h"
 #include "ring.h"
@@ -3653,6 +3654,9 @@ statement(struct P *p)
 			return;
 		/* tcdot: a tensor core's block FMA, its bound (tcdot.c) */
 		if (tcdot_command(p))
+			return;
+		/* winograd: the inner product in half the multiplies */
+		if (winograd_command(p))
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))

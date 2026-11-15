@@ -2838,6 +2838,24 @@ binary grid (a division by 3) gets nothing (tests/fdotint.ucas).  A
 factor wider than a lane is not split into slices (Ozaki's scheme): not
 yet.
 
+**Winograd's inner product.**  `sum x_k y_k = sum_j (x_2j + y_2j+1)
+(x_2j+1 + y_2j) - xi - eta`, xi the sum of x_2j x_2j+1 (a row's) and eta
+of y_2j y_2j+1 (a column's): half the multiplies of each output where a
+matrix product shares xi along a row and eta down a column, and more for
+one output alone.  `scheme F more` lists the form for one output, with
+A and B given (see "Polynomials in fewer multiplications"); `winograd F
+[rows R] [cols C] [tol T]` decides for an R x C block, pricing it both
+ways from the expressions' covers with each correction paid once a row
+or a column (src/winograd.c).  For
+integers it is a ring identity, exact modulo 2^W (both sides expanded as
+polynomials); for floats the roundings differ, and with n/2 pairs the
+result is within gamma_(n/2+3) (sum |x_2j + y_2j+1| |x_2j+1 + y_2j| +
+sum |x x| + sum |y y|) of the exact sum (the standard model, bounded
+over the parameters' ranges), offered only within the tolerance T.  Four
+products of i32 over a 64 x 64 block: 49920 against 49152 under gt1030
+(the IMADs make the products cheap), 58368 against 65536 under rdna2
+(imul 4); a block of 1 is never cheaper (tests/winoip.ucas).
+
 ### Memory kinds
 
 A model can price memory by kind, and say how its shared memory is

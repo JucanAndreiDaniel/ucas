@@ -1614,8 +1614,8 @@ static const char *const ucas_cmds[] = {"texalu", "texenc", "show", "table", "ra
 	"mma", "hmma",
 	/* stoch.c */
 	"stoke", "pit", "phash", "snippets", "rules", "rule",
-	/* lperm.c, tcdot.c */
-	"lperm", "tcdot",
+	/* lperm.c, tcdot.c, winograd.c */
+	"lperm", "tcdot", "winograd",
 	NULL};
 
 static const char *

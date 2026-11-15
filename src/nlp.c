@@ -43,6 +43,7 @@
 #include "mma.h"
 #include "lperm.h"
 #include "tcdot.h"
+#include "winograd.h"
 #include "stoch.h"
 
 #include <ctype.h>
@@ -7541,6 +7542,12 @@ translate(const char *sent)
 			emit(r);
 			return 1;
 		}
+		/* Winograd's inner product (winograd.c) */
+		if ((r = winograd_nlp_raw(sent)) != NULL) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
 	}
 	{
 		/* stochastic search, identity testing (stoch.c) */
@@ -8080,6 +8087,8 @@ nlp_is_english(const char *s, size_t n)
 			if (lperm_nlp_raw(line) != NULL)
 				return 1;
 			if (tcdot_nlp_raw(line) != NULL)
+				return 1;
+			if (winograd_nlp_raw(line) != NULL)
 				return 1;
 		}
 	}
