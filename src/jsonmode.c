@@ -1119,6 +1119,13 @@ static const struct jcmd cmds[] = {
 	    "(\"lane xor (lane & 1) << 1\")"), IO("lanes", " lanes %s",
 	    "the subgroup's size (the lane's range, else the model's warp)"),
 	    NMO("model", " model %s", "the model (the active one)")}},
+	{"tcdot", "tcdot", 1, 0, "a tensor core's block FMA (f16 products, "
+	    "f32 accumulate, Ampere's model): its semantics, its derived error "
+	    "bound relative to the largest term, and a sampled check",
+	    {IO("n", " n %s", "products in the block (8)"), IO("samples",
+	    " samples %s", "random blocks checked (256)"), IO("seed",
+	    " seed %s", "the check's seed (1)"), BO("cancel", " cancel",
+	    "blocks whose first product the last cancels")}},
 };
 #define NCMDS (int)(sizeof cmds / sizeof cmds[0])
 

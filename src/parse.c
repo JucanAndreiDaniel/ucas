@@ -32,6 +32,7 @@
 #include "memk.h"
 #include "mma.h"
 #include "lperm.h"
+#include "tcdot.h"
 #include "stoch.h"
 #include "numsearch.h"
 #include "ring.h"
@@ -1104,6 +1105,14 @@ ident(struct P *p)
 	}
 	if ((r = calc_ident(p)) != 0)
 		return r;
+	/* a tensor core's block FMA (tcdot.c) */
+	if (n == 6 && !memcmp(s, "tc_dot", 6) && pk2(p) == T_LP &&
+	    !func_find(name)) {
+		adv(p);
+		if (parse_args(p, args, 3) != 3)
+			fail("tc_dot(A, B, c): two tables of f16 and an f32");
+		return tc_dot_call(args[0], args[1], args[2]);
+	}
 	/* type conversion: u8(x), f32(x), f16(x), real(n) */
 	if (pk2(p) == T_LP && ty_parse(s, n, &ct)) {
 		adv(p);
@@ -3641,6 +3650,9 @@ statement(struct P *p)
 			return;
 		/* lperm: a lane map as xor exchange stages (lperm.c) */
 		if (lperm_command(p))
+			return;
+		/* tcdot: a tensor core's block FMA, its bound (tcdot.c) */
+		if (tcdot_command(p))
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))
