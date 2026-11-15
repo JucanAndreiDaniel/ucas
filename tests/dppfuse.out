@@ -1,0 +1,132 @@
+> models
+model gt1030 (active) { iadd: 1, logic: 1, shift: 2, imul: 3, idiv: 28.5, idivk: 8.75, cmp: 2.375, select: 1.625, minmax: 1, bitcnt: 3, conv: 3, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 32.375, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 1, dot4x8sat: 6.5, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  folds f32 -> f16 -> f32
+model sm75 { iadd: 1, logic: 1, shift: 1, imul: 1, idiv: 28.5, idivk: 8.75, cmp: 1.375, select: 1.625, minmax: 1, bitcnt: 4, conv: 4, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 32, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 1, dot4x8sat: 6.5, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+model sm86 { iadd: 2, logic: 2, shift: 2, imul: 2, idiv: 28.5, idivk: 8.75, cmp: 2.75, select: 1.625, minmax: 2, bitcnt: 8, conv: 8, bitcast: 0, fadd: 1, fmul: 1, fdiv: 6, fsqrt: 8, ftrans: 8, fpow: 8, f64: 64, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 2, dot4x8sat: 13, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+model rdna2 { iadd: 1, logic: 1, shift: 1, imul: 4, idiv: 28.5, idivk: 8.75, cmp: 1.375, select: 1.625, minmax: 1, bitcnt: 1, conv: 1, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 16, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, udot4x8: 1, sdot4x8: 1, udot8x4: 1, sdot8x4: 1, udot4x8sat: 1, sdot4x8sat: 1, udot8x4sat: 1, sdot8x4sat: 1, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25, sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  fuse dpp_xor(v: any, lane: lane, k: const u4) = sg_shuffle(v, lane xor k) : 0 in iadd fadd fmul
+  fuse dpp_quad(v: any, lane: lane, i: const u2) = sg_shuffle(v, lane & 0xfffffffc | i) : 0 in iadd fadd fmul
+model mali_g715 { iadd: 1.87, logic: 1.83, shift: 1.87, imul: 7.57, idiv: 36.82, idivk: 18.23, cmp: 0.87, select: 1.62, minmax: 1.83, bitcnt: 5.59, conv: 1.28, bitcast: 0, fadd: 1, fmul: 1.01, fdiv: 6.17, fsqrt: 14.44, ftrans: 7.3, fpow: 14.88, f64: 1, load: 16.25, branch: 23.17, diverge: 14.45, barrier: 20.04, atomic_shared: 118.07, atomic_global: 146.52, store: 26.94, sdiv: 36.82, sdivk: 18.23, irem: 36.82, iremk: 18.23, srem: 36.82, sremk: 18.23 }
+model skl { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model skx { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model glc { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 15, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 2, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 18, fpow: 54, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 15, sdivk: 5, irem: 15, iremk: 5, srem: 15, sremk: 5, sudot4x8: 11, sdot2x16: 11, sudot4x8sat: 11, sdot2x16sat: 11 }
+model rpl { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 15, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 2, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 18, fpow: 54, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 15, sdivk: 5, irem: 15, iremk: 5, srem: 15, sremk: 5, sudot4x8: 11, sdot2x16: 11, sudot4x8sat: 11, sdot2x16sat: 11 }
+model zen4 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 14, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 1, conv: 4, bitcast: 3, fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1, load: 4, branch: 1, diverge: 6.5, barrier: 33, atomic_shared: 8, atomic_global: 8, store: 1, sdiv: 14, sdivk: 5, irem: 14, iremk: 5, srem: 14, sremk: 5, sudot4x8: 10, sdot2x16: 10, sudot4x8sat: 10, sdot2x16sat: 10 }
+model x86v2 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model x86v3 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model x86v4 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+> xa(x: f32 uniform, y: f32, lane: u32 in 0..31) = sg_shuffle_xor(x * f32(lane), 1) + y
+> cost xa
+cost of xa under gt1030: 10 (5 operations, shared subterms counted once)
+  logic            1 x 1     = 1
+  conv             1 x 3     = 3
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  sg_shuffle       1 x 4     = 4
+> cost xa model rdna2
+cost of xa under rdna2: 3 (5 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    dpp_xor          1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+> xm(x: f32 uniform, y: f32, z: f32, lane: u32 in 0..31) = fma(sg_shuffle_xor(x * f32(lane), 2), y, z)
+> cost xm model rdna2
+cost of xm under rdna2: 3 (5 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fmul             2 x 1     = 2
+  fused by the model (one instruction for several operations):
+    dpp_xor          1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+> xc(x: f32 uniform, y: f32, z: f32, lane: u32 in 0..31) = sg_shuffle_xor(x * f32(lane), 5) * y + z
+> cost xc model rdna2
+cost of xc under rdna2: 3 (6 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    dpp_xor          1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)
+> xi(x: u32 uniform, y: u32, lane: u32 in 0..31) = sg_quad_swap_d(x + lane) + y
+> cost xi model rdna2
+cost of xi under rdna2: 2 (4 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  fused by the model (one instruction for several operations):
+    dpp_xor          1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+> xb(x: f32 uniform, y: f32, lane: u32 in 0..31) = sg_quad_broadcast(x * f32(lane), 3) + y
+> cost xb model rdna2
+cost of xb under rdna2: 3 (6 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    dpp_quad         1 x 0     = 0  (sg_shuffle(v, lane & 0xfffffffc | i), a source modifier; saves 6)
+> x16(x: f32 uniform, y: f32, lane: u32 in 0..31) = sg_shuffle_xor(x * f32(lane), 16) + y
+> cost x16 model rdna2
+cost of x16 under rdna2: 4 (5 operations, shared subterms counted once)
+  conv             1 x 1     = 1
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    sg_shuffle_xor   1 x 1     = 1  (sg_shuffle(v, lane xor k); saves 4)
+> xs(x: f32 uniform, y: f32, lane: u32 in 0..31) = { t = sg_shuffle_xor(x * f32(lane), 1); t + y + sqrt(t) }
+> cost xs model rdna2
+cost of xs under rdna2: 9 (7 operations, shared subterms counted once)
+  shared subterms (named once, used below):
+    t1 = sg_shuffle(x*f32(lane), lane xor 1)
+  conv             1 x 1     = 1
+  fadd             2 x 1     = 2
+  fmul             1 x 1     = 1
+  fsqrt            1 x 4     = 4
+  fused by the model (one instruction for several operations):
+    sg_shuffle_xor   1 x 1     = 1  (sg_shuffle(v, lane xor k); saves 4)
+> model dppish : gt1030 { sg_shuffle_xor: 2
+    fuse bfadd(v: any, lane: lane, k: const u2) = sg_shuffle(v, lane xor k) : 0 in fadd }
+> cost xa model dppish
+cost of xa under dppish: 5 (5 operations, shared subterms counted once)
+  conv             1 x 3     = 3
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    bfadd            1 x 0     = 0  (sg_shuffle(v, lane xor k), a source modifier; saves 5)
+> cost x16 model dppish
+cost of x16 under dppish: 7 (5 operations, shared subterms counted once)
+  conv             1 x 3     = 3
+  fadd             1 x 1     = 1
+  fmul             1 x 1     = 1
+  fused by the model (one instruction for several operations):
+    sg_shuffle_xor   1 x 2     = 2  (sg_shuffle(v, lane xor k); saves 3)
