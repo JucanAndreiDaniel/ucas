@@ -41,6 +41,7 @@
 #include "dword.h"
 #include "memk.h"
 #include "mma.h"
+#include "lperm.h"
 #include "stoch.h"
 
 #include <ctype.h>
@@ -7527,6 +7528,12 @@ translate(const char *sent)
 			emit(r);
 			return 1;
 		}
+		/* a lane map as xor exchange stages (lperm.c) */
+		if ((r = lperm_nlp_raw(sent)) != NULL) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
 	}
 	{
 		/* stochastic search, identity testing (stoch.c) */
@@ -8062,6 +8069,8 @@ nlp_is_english(const char *s, size_t n)
 				return 1;
 			if (mma_nlp_raw(line) != NULL &&
 			    strncmp(line, "mma", 3) && strncmp(line, "hmma", 4))
+				return 1;
+			if (lperm_nlp_raw(line) != NULL)
 				return 1;
 		}
 	}
