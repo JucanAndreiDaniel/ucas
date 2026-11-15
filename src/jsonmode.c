@@ -1111,6 +1111,14 @@ static const struct jcmd cmds[] = {
 	    "b over GF(2^m): count (Koblitz, naive), FIPS parameters checked",
 	    {TX("curve", " %s", "K-163, B-163, K-233, or \"[a, b] over "
 	    "GF(2^13) poly 4 3 1 0\""), TXO("mul", " mul %s", "k: k G")}},
+	{"lperm", "lperm", 1, 0, "a subgroup's lane map (a shuffle's index "
+	    "as a function of lane) as the cheapest proved realisation under "
+	    "the model: exchanges by xor and selects on the lane's bits, a "
+	    "quad's broadcast, or one shuffle",
+	    {E("index", " %s", "the lane read, an expression of lane "
+	    "(\"lane xor (lane & 1) << 1\")"), IO("lanes", " lanes %s",
+	    "the subgroup's size (the lane's range, else the model's warp)"),
+	    NMO("model", " model %s", "the model (the active one)")}},
 };
 #define NCMDS (int)(sizeof cmds / sizeof cmds[0])
 

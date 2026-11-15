@@ -1,0 +1,44 @@
+# Lane maps as xor exchange stages (src/lperm.c): a shuffle whose index is
+# an F2-affine function of the lane, lane -> A lane xor c, is rank(I xor A)
+# stages, each a shuffle by lane xor k and a select on a parity of the
+# lane's bits, plus at most one exchange in every lane for c.  Priced by
+# the model's sg_shuffle_xor and sg_quad (absent unless listed), kept only
+# where cheaper than one shuffle by the index.
+lperm lane xor (lane & 1) << 1
+lperm lane xor (lane & 1) << 1 model rdna2
+lperm lane xor 3 model rdna2
+lperm lane & 28 model rdna2
+lperm (lane & 28) | 2 model rdna2
+# a transpose of the lane's bits: four stages, dearer than the shuffle
+lperm (lane & 3) * 8 + (lane >> 2) model rdna2
+# a singular map: a broadcast within pairs of the odd lane, and the
+# lane's own pair swapped within groups of 8
+lperm (lane | 1) xor ((lane & 4) >> 1) model rdna2
+# not affine: one shuffle
+lperm (lane + 1) % 32 model rdna2
+# where the model has no shuffle at all (mali_g715): nothing
+lperm lane xor (lane & 1) << 1 lanes 16 model mali_g715
+# the classes are fusions of the shuffle where a model lists them:
+# sg_shuffle(v, lane xor k) costs sg_shuffle_xor, k < 4 or a quad's
+# broadcast sg_quad, the xor that forms the index with it
+xr(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle_xor(x + lane, 1)
+cost xr
+cost xr model rdna2
+xq(x: u32 uniform, lane: u32 in 0..31) = sg_quad_broadcast(x + lane, 2)
+cost xq model rdna2
+# find writes the stages where the whole function gets cheaper; proved
+# for any value per lane (a free word in each lane)
+f(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle(x * lane + 3, lane xor ((lane & 1) << 1))
+use rdna2
+find f 1
+use gt1030
+find f 1
+use rdna2
+g(x: f32 uniform, lane: u32 in 0..31) = sg_shuffle(x * f32(lane), lane xor ((lane & 1) << 1)) + 1.0
+find g 1
+h(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle(x * lane, (lane & 3) * 8 + (lane >> 2))
+find h 1
+use gt1030
+# English
+the lane map lane xor (lane & 1) << 1 as xor stages under rdna2
+decompose the lane permutation (lane & 3) * 4 + (lane >> 2) into butterflies for 16 lanes under rdna2

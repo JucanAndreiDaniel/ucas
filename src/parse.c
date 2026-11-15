@@ -31,6 +31,7 @@
 #include "dword.h"
 #include "memk.h"
 #include "mma.h"
+#include "lperm.h"
 #include "stoch.h"
 #include "numsearch.h"
 #include "ring.h"
@@ -3637,6 +3638,9 @@ statement(struct P *p)
 			return;
 		/* mma: a warp's matrix product without a matrix unit (mma.c) */
 		if (mma_command(p))
+			return;
+		/* lperm: a lane map as xor exchange stages (lperm.c) */
+		if (lperm_command(p))
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))

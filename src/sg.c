@@ -70,6 +70,7 @@
 #include "fuse.h"
 #include "irw.h"
 #include "sg.h"
+#include "lperm.h"
 
 #include <math.h>
 #include <setjmp.h>
@@ -4224,6 +4225,149 @@ reductions(struct sgf *g, nid cur, float *cost)
 	return cur;
 }
 
+/* ---- lane maps as xor exchange stages (lperm.c) ---- */
+
+/* e reads no value but the lane: lane parameter slot lslot, or the bound
+ * lane; *bound says which it read */
+static int
+lane_only(nid e, int lslot, int *bound, int depth)
+{
+	if (e == 0)
+		return 1;
+	if (depth > 64)
+		return 0;
+	switch (N.op[e]) {
+	case O_CONST:
+		return 1;
+	case O_VAR:
+		if (N.ki[e] == SG_LANE_SLOT) {
+			*bound |= 1;
+			return 1;
+		}
+		if (lslot >= 0 && N.ki[e] == lslot) {
+			*bound |= 2;
+			return 1;
+		}
+		return 0;
+	case O_TABLE: case O_LOOP: case O_UNDEF:
+		return 0;
+	}
+	if (IS_SG(N.op[e]) || opinfo[N.op[e]].arity == 0)
+		return 0;
+	return lane_only(N.a[e], lslot, bound, depth + 1) &&
+	    lane_only(N.b[e], lslot, bound, depth + 1) &&
+	    lane_only(N.c[e], lslot, bound, depth + 1);
+}
+
+/*
+ * The plan's stages run on a free word in each lane give lane l the word
+ * of lane map[l], for every lane: spelled out lane by lane (sg_lower), the
+ * selects on the lane's bits and the shuffles of a table of the words
+ * fold to one word.  A proof for any value per lane.
+ */
+static int
+lperm_proved(const struct lperm_plan *p, const int16_t *map)
+{
+	nid e[SG_MAXW], v, r;
+	int l;
+
+	for (l = 0; l < p->w; l++)
+		e[l] = mk_var((uint32_t)(LEAF0 + l), sym_cstr("v"), TY(K_UINT, 32));
+	v = mk_index(mk_table(e, (uint32_t)p->w), sg_lane());
+	for (l = 0; l < p->w; l++) {
+		if (map[l] < 0)
+			continue;
+		r = sg_lower_once(lperm_expr(p, v, mk_const_i(TY(K_UINT, 32), l)));
+		if (N.op[r] != O_VAR || N.ki[r] != LEAF0 + map[l])
+			return 0;
+	}
+	return 1;
+}
+
+/*
+ * A shuffle whose index is a function of the lane alone reads a lane map;
+ * where the map is affine over the lane's bits and the model prices the
+ * exchanges by xor (and the selects) below the shuffle and its index, it
+ * is written as those stages (lperm.c), or as a quad's broadcast.
+ */
+static nid
+lperms(struct sgf *g, nid cur, float *cost)
+{
+	nid nd[MAXSGN], lp = lane_param(g->f);
+	int n = gather_all(cur, 2, nd), i, l, lslot = -1;
+	int fresh = cur == g->f->body && !g->proved;
+
+	if (lp)
+		lslot = (int)N.ki[N.op[lp] == O_CAST ? N.a[lp] : lp];
+	for (i = 0; i < n; i++) {
+		nid x = nd[i], idx = N.b[x], at, cand, sub[SG_LANE_SLOT + 1];
+		int W = sg_width(x), bound = 0, ok = 1;
+		int16_t map[SG_MAXW];
+		struct lperm_plan pl;
+		struct sbuf t = {0};
+		float c;
+
+		if (W < 2 || W > SG_MAXW || (W & (W - 1)) || is_const(idx) ||
+		    !lane_only(idx, lslot, &bound, 0) || bound == 3 || !bound)
+			continue;
+		at = bound == 1 ? sg_lane() : lp;
+		memset(sub, 0, sizeof sub);
+		sub[SG_LANE_SLOT] = mk_var(0, sym_cstr("lane"), TY(K_UINT, 32));
+		if (bound == 1)
+			idx = subst(idx, sub, SG_LANE_SLOT + 1);
+		for (l = 0; l < W && ok; l++) {
+			double v = eval_const_at(idx, bound == 1 ? 0 : lslot, l, &ok);
+			ok = ok && v >= 0 && v < W && v == floor(v);
+			map[l] = (int16_t)(ok ? (int)v : -1);
+		}
+		/* a shuffle, or one exchange by xor or in the quad, is as
+		 * written: the cover prices it by its class already */
+		if (ok && lperm_plan(g->m, map, W, -1, &pl) == LPH_SHUFFLE &&
+		    pl.nst && isfinite(pl.stages_price))
+			pl.kind = LPH_STAGES;	/* priced in the function below */
+		if (!ok || pl.kind == LPH_NONE || pl.kind == LPH_SHUFFLE || (pl.kind == LPH_STAGES && pl.nst == 1 && !pl.st[0].m))
+			continue;
+		cand = sg_replaced(cur, x, lperm_expr(&pl, N.a[x], at));
+		if (!cand)
+			continue;
+		c = price(g, cand);
+		if (!(c < *cost)) {
+			if (pl.kind == LPH_STAGES)
+				note_dear(g, "a shuffle's lane map as exchanges by xor",
+				    c, *cost);
+			continue;
+		}
+		if (pl.kind == LPH_STAGES && !lperm_proved(&pl, map))
+			continue;
+		lperm_text(&t, &pl);
+		sb_printf(&g->why, "%s: the lane it reads is %s, ", shared_str(x,
+		    80), node_str(N.b[x]));
+		if (pl.kind == LPH_STAGES) {
+			sb_printf(&g->why, "affine over the lane's bits (lane -> A "
+			    "lane xor %d, A's columns", pl.c);
+			for (l = 0; l < pl.bits; l++)
+				sb_printf(&g->why, " %d", pl.col[l]);
+			sb_printf(&g->why, "; rank(I xor A) = %d, the fewest "
+			    "conditional exchanges), so %s; proved for any value per "
+			    "lane (with a free word in each lane, the stages give lane l "
+			    "the word of lane %s, for each of the %d lanes)\n", pl.rank,
+			    sb_str(&t), node_str(N.b[x]), W);
+		} else
+			sb_printf(&g->why, "%s\n", sb_str(&t));
+		free(t.p);
+		cur = cand;
+		*cost = c;
+		n = gather_all(cur, 2, nd);
+		i = -1;
+		/* each step proved for any value per lane: the whole is */
+		if (fresh) {
+			g->proved = cur;
+			g->bycons = 1;
+		}
+	}
+	return cur;
+}
+
 void
 sg_find(const struct func *f)
 {
@@ -4243,6 +4387,7 @@ sg_find(const struct func *f)
 		/* of floats only the derivatives: the rest reads integers */
 		before = cost = price(&g, cur);
 		cur = derivs(&g, cur, &cost);
+		cur = lperms(&g, cur, &cost);
 		if (cur == f->body)
 			printf("  no fine derivative here is cheaper under %s (cost "
 			    "%g as written)\n", mn, (double)before);
@@ -4266,6 +4411,8 @@ sg_find(const struct func *f)
 		cur = sums_and_scans(&g, cur, &cost);
 	if (N.fl[cur] & NF_SG)
 		cur = reductions(&g, cur, &cost);
+	if (N.fl[cur] & NF_SG)
+		cur = lperms(&g, cur, &cost);
 	cur = tables(&g, cur, &cost);
 	if (cur == f->body)
 		cur = funcs_as_tables(&g, cur, &cost);

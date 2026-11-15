@@ -111,6 +111,8 @@ img.o img.pieo: img.c img.h third_party/stb_image.h
 	${CC} ${CFLAGS:N-W*} -w -fPIE -c ${.CURDIR}/src/img.c -o ${.TARGET}
 # homological algebra: spaces, (co)homology, exact couples (homalg.h)
 SRCS+=	simp.c cx.c excouple.c homalg_cmd.c reduce.c
+# lane maps as xor exchange stages, priced and proved (lperm.h)
+SRCS+=	lperm.c
 .PATH:	${.CURDIR}/src
 MAN=
 

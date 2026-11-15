@@ -4199,6 +4199,76 @@ one B fragment by several A ones can fetch B's words once for all of
 them (the A-stationary flows then leave only the products and the
 butterfly to each), which the price does not count.
 
+### Lane maps as exchanges by xor
+
+A shuffle reads a lane map, lane l takes the value of lane map(l).
+Where the map is affine over the lane's bits, `map(l) = A l xor c` over
+F2, it is a sequence of conditional exchanges (src/lperm.c): stage i is a
+shuffle by `lane xor k_i` (sg_shuffle_xor, or sg_quad for k_i below 4)
+and a select on a parity of the lane's bits, `parity(lane & m_i) xor
+e_i`, which takes the exchanged value or keeps the lane's own.  Stage i
+multiplies the map's linear part by `I xor k_i m_i^T`, a matrix of rank
+one, so rank(I xor A) stages are needed, and the search takes a stage
+only where it lowers the rank of what is left by one: the fewest stages,
+and among those the cheapest it finds (a beam over the stages' prices,
+not an exhaustive minimum); c is reached by the stages' e_i or one
+exchange in every lane.  A butterfly is A = I (exchanges in every lane
+only), a broadcast within groups a singular A.  Besides the stages: the
+identity (nothing), a quad's broadcast (one `sg_quad`), and one shuffle
+by the index.  The cheapest under the model is taken, each priced by
+its expression's cover; the stages are proved by composing them on every
+lane (a finite domain, every point), and in `find` again for any value
+per lane: with a free word in each lane, spelled out lane by lane, lane l
+ends with the word of lane map(l).  A map that is not affine (a
+rotation) is one shuffle; a permutation network for any map (Benes, 2
+log2 W - 1 stages whose selects read a table of the lanes) is not tried:
+under rdna2 9 such stages would cost about 50 against a shuffle's 4 to
+10.
+
+`lperm INDEX [lanes N] [model M]` shows the plan for an index written
+in `lane` (tests/lperm.ucas):
+
+```
+> lperm lane xor (lane & 1) << 1 model rdna2
+lperm: the lane map lane xor (lane & 1) << 1 over 32 lanes
+  map: 0 3 2 1 4 7 6 5 8 11 10 9 12 15 14 13 16 19 18 17 20 23 22 21 24 27 26 25 28 31 30 29
+  affine: lane -> A lane xor 0, A's columns (lane bit j goes to) 3 2 4 8 16; rank(I xor A) = 1
+  stages: 1, cost 5
+  one shuffle by the index: cost 7
+  chosen under rdna2: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor), cost 5
+  proved: the stages composed lane by lane give the map on every one of the 32 lanes (...)
+> lperm lane xor (lane & 1) << 1              (gt1030: no cheaper exchange by xor)
+  stages: 1, cost 10 (not the cheapest)
+  one shuffle by the index: cost 8
+  chosen under gt1030: one shuffle by an index (sg_shuffle), cost 8
+```
+
+A transpose of the lane's bits (`(lane & 3) * 8 + (lane >> 2)`) takes 4
+stages, 28 under rdna2 against the shuffle's 9; `lane & 28` is the
+quad's broadcast, 1.  `find` writes the stages for a shuffle whose index
+is a function of the lane alone, where the whole function is cheaper
+(`sg_shuffle(x*lane + 3, lane xor (lane & 1) << 1)`: 11 -> 9 under
+rdna2, the same for a float value), and says "derived, but not cheaper"
+otherwise.  English: "the lane map lane xor (lane & 1) << 1 as xor
+stages under rdna2"; JSON `{"cmd": "lperm", "args": {"index": "lane xor
+3", "model": "rdna2"}}`.
+
+For C callers (mma.c), src/lperm.h:
+
+```
+double lperm_price(const struct model *m, const int16_t map[32], int *stages);
+int lperm_plan(const struct model *m, const int16_t *map, int w,
+    double idx_price, struct lperm_plan *p);
+nid lperm_expr(const struct lperm_plan *p, nid v, nid at);
+```
+
+`map[l]` is the lane l reads, -1 where its result is not read (the fit
+then takes the identity's values there); `lperm_price` is the cheapest
+proved realisation's price for 32 lanes (INFINITY where none) and its
+stage count; `lperm_plan` fills the stages `{k, m, e, how}`, the affine
+form, the three prices and which was chosen; `idx_price` is what a
+shuffle's index costs (< 0: the affine index's own price).
+
 ### A catalogue of instructions
 
 Targets have single instructions for things the base operations take
