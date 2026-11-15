@@ -1,0 +1,136 @@
+> model dearfloat : gt1030 { fadd: 8, fmul: 8, conv: 1 }
+> use dearfloat
+cost model: dearfloat
+> f(a: u16 in 0..4095, b: u8, c: u16 in 0..4095, d: u8) = f32(a)*f32(b) + f32(c)*f32(d)
+> find f 1
+find f: derived, but not cheaper under dearfloat (cost 28, as written 20): the conversion f32(d) by the bits of 2^23
+find f: derived, but not cheaper under dearfloat (cost 28, as written 20): the conversion f32(c) by the bits of 2^23
+find f: derived, but not cheaper under dearfloat (cost 28, as written 20): the conversion f32(b) by the bits of 2^23
+find f: derived, but not cheaper under dearfloat (cost 28, as written 20): the conversion f32(a) by the bits of 2^23
+  float dot products under dearfloat (an exact float sum of products as an integer dot, scaled once; cost 20 as written):
+  cost 14  f32(i32(udot4x8(i32(a), i32(b))) + i32(udot4x8(i32(c), i32(d))) + (i32(udot4x8(i32(a) >> 8, i32(b))) << 8) + (i32(udot4x8(i32(c) >> 8, i32(d))) << 8))
+           every factor is k 2^g, k an integer (fix_grid: converted integers, binary constants, + - * keep a grid), and the f32 sum is exact: no step reaches 24 bits of its grid
+           so the sum is 2^0 times the integer sum (i32(a) & 0xff)*i32(b) + ((i32(a) >> 8)*i32(b) << 8) + (i32(c) & 0xff)*i32(d) + ((i32(c) >> 8)*i32(d) << 8), each term's k's multiplied and moved up to the grid 2^0; that sum is below 2.08845e+06 in magnitude: inside i32, and below 2^24, so f32 holds it and the conversion is exact; times 2^0, a power of two, exact
+           factors wider than a lane sliced into lanes of 8 bits (Ozaki): k = the sum of (k >> 8j) & 255 times 2^(8j), the top slice k >> 8(s - 1) (arithmetic), exact in two's complement; 2 slices more than the factors; each product the sum of its slices' products moved up by 8(i + j); i32 wraps modulo 2^32 on the way, which changes no sum that fits
+           the integer sum as dot products (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (i32(a) & 0xff) * i32(b)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (i32(c) & 0xff) * i32(d)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (i32(a) >> 8) * i32(b)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (i32(c) >> 8) * i32(d)
+           i32(a) & 0xff is bits 0..7 of i32(a): lane 0 as it is
+           i32(b) in 0..255 (proved range)
+           the word's other lanes meet zero lanes
+           i32(c) & 0xff is bits 0..7 of i32(c): lane 0 as it is
+           i32(d) in 0..255 (proved range)
+           the word's other lanes meet zero lanes
+           i32(a) >> 8 in 0..15 (proved range)
+           i32(c) >> 8 in 0..15 (proved range)
+           udot4x8's sum is in 0..65025: it does not wrap; udot4x8's sum is in 0..65025: it does not wrap; udot4x8's sum is in 0..3825: it does not wrap; udot4x8's sum is in 0..3825: it does not wrap
+           integer sum proved by SAT: 2269 AIG nodes, 7079 conflicts; checked on a sample of the domain
+> use gt1030
+cost model: gt1030
+> find f 1
+find f: rewrites by identities the model prices lower (cost 14 as written, under gt1030)
+  cost 13  f32(a)*f32(b) + f32(c)*(asfloat(u32(d) | 0x4b000000) - 8388608) the conversion f32(d) by the bits of 2^23 (derived)
+      holds where d in [0, 255], inside [0, 2^23)
+      0 <= d < 2^23: d | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa d, the f32 2^23 + d exactly (one unit in the last place there is 1)
+      2^23 + d - 2^23 = d is an integer below 2^24, an f32: the subtraction does not round
+      f32(d) is exact below 2^24: both are d
+  cost 13  f32(a)*f32(b) + (asfloat(u32(c) | 0x4b000000) - 8388608)*f32(d) the conversion f32(c) by the bits of 2^23 (derived)
+      holds where c in [0, 4095], inside [0, 2^23)
+      0 <= c < 2^23: c | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa c, the f32 2^23 + c exactly (one unit in the last place there is 1)
+      2^23 + c - 2^23 = c is an integer below 2^24, an f32: the subtraction does not round
+      f32(c) is exact below 2^24: both are c
+  cost 13  f32(a)*(asfloat(u32(b) | 0x4b000000) - 8388608) + f32(c)*f32(d) the conversion f32(b) by the bits of 2^23 (derived)
+      holds where b in [0, 255], inside [0, 2^23)
+      0 <= b < 2^23: b | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa b, the f32 2^23 + b exactly (one unit in the last place there is 1)
+      2^23 + b - 2^23 = b is an integer below 2^24, an f32: the subtraction does not round
+      f32(b) is exact below 2^24: both are b
+  cost 13  (asfloat(u32(a) | 0x4b000000) - 8388608)*f32(b) + f32(c)*f32(d) the conversion f32(a) by the bits of 2^23 (derived)
+      holds where a in [0, 4095], inside [0, 2^23)
+      0 <= a < 2^23: a | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa a, the f32 2^23 + a exactly (one unit in the last place there is 1)
+      2^23 + a - 2^23 = a is an integer below 2^24, an f32: the subtraction does not round
+      f32(a) is exact below 2^24: both are a
+  cost 10  (asfloat(u32(a) | 0x4b000000) - 8388608)*(asfloat(u32(b) | 0x4b000000) - 8388608) + (asfloat(u32(c) | 0x4b000000) - 8388608)*(asfloat(u32(d) | 0x4b000000) - 8388608) all of them: the conversion f32(d) by the bits of 2^23, then the conversion f32(c) by the bits of 2^23, then the conversion f32(b) by the bits of 2^23, then the conversion f32(a) by the bits of 2^23 (derived)
+  float dot products: derived, but not cheaper under gt1030 (cost 16, as written 14): f32(i32(udot4x8(i32(a), i32(b))) + i32(udot4x8(i32(c), i32(d))) + (i32(udot4x8(i32(a) >> 8, i32(b))) << 8) + (i32(udot4x8(i32(c) >> 8, i32(d))) << 8))
+> g(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1, d: f32 in -1..1) = a*b + c*d
+> model dearf : rdna2 { fadd: 30, fmul: 30 }
+> ozaki g model dearf tol 1e-3
+ozaki g under dearf: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 254, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 254, error at most 0.06299
+  as written: cost 60; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32(i32(udot4x8(u32(t1 & 0xff) | u32(t3 & 0xff) << 8, u32(t2 & 0xff) | u32(t4 & 0xff) << 8))) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(… (61 more characters)
+    the integer sum (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (k0 & 0xff) * (k1 & 0xff), lane 1: (k2 & 0xff) * (k3 & 0xff)
+      k0 & 0xff in 0..255 (proved range)
+      k1 & 0xff in 0..255 (proved range)
+      k2 & 0xff in 0..255 (proved range)
+      k3 & 0xff in 0..255 (proved range)
+      udot4x8's sum is in 0..130050: it does not wrap
+    proved: the integer sum's dots by sat; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> within tol, but not cheaper under dearf (254 against 60)
+> ozaki g model dearf tol 1e-5
+ozaki g under dearf: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 254, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 254, error at most 0.06299
+  as written: cost 60; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32(i32(udot4x8(u32(t1 & 0xff) | u32(t3 & 0xff) << 8, u32(t2 & 0xff) | u32(t4 & 0xff) << 8))) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(… (61 more characters)
+    the integer sum (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (k0 & 0xff) * (k1 & 0xff), lane 1: (k2 & 0xff) * (k3 & 0xff)
+      k0 & 0xff in 0..255 (proved range)
+      k1 & 0xff in 0..255 (proved range)
+      k2 & 0xff in 0..255 (proved range)
+      k3 & 0xff in 0..255 (proved range)
+      udot4x8's sum is in 0..130050: it does not wrap
+    proved: the integer sum's dots by sat; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> not taken: its error bound 0.0002451 is past tol 1e-05 (more slices, more bits: slices N)
+> ozaki g model dearf slices 3 tol 1e-5
+ozaki g under dearf: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 3 slices: factors of 24 bits (|k| <= 2^23), 5 weights each inside i32: cost 357, error at most 2.891e-06
+  lanes of  4 bits, 3 slices: factors of 12 bits (|k| <= 2^11), 5 weights each inside i32: cost 357, error at most 0.003911
+  as written: cost 60; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 5.68434189e-14f32(i32(udot4x8(t5 | t6 << 8, t7 | t8 << 8))) + 1.45519152e-11f32(i32(udot4x8(t5 | u32(t9) << 8 | t6 << 16 | u32(t10) << 24, u32(t11) | t7 << 8 | u32(t12) << 16 | t8 << 24))) + 3.7252903e-09f32(i32(udot4x8(u32(t9) | u32(t10) << 8, u32(t11) | u32(t12) << 8)) + ((t1 & 0xff)*(t2 >> 0x10) … (507 more characters)
+    the integer sum (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (k0 & 0xff) * (k1 & 0xff), lane 1: (k2 & 0xff) * (k3 & 0xff)
+      k0 & 0xff in 0..255 (proved range)
+      k1 & 0xff in 0..255 (proved range)
+      k2 & 0xff in 0..255 (proved range)
+      k3 & 0xff in 0..255 (proved range)
+      udot4x8's sum is in 0..130050: it does not wrap
+    proved: the integer sum's dots by sat; the rest is the derivation above
+  check: 4096 random points, the largest error 6.111e-07, within the bound 2.891e-06 (sampled, not a proof)
+  -> within tol, but not cheaper under dearf (357 against 60)
+> ozaki g model gt1030
+ozaki g under gt1030: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 64, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 64, error at most 0.06299
+  as written: cost 2; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(16384a), t2 = i32(16384b), t3 = i32(163… (22 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> an approximation: give tol T, the error allowed, to take it
+> h(a: f16 in -1..1, b: f16 in -1..1, c: f16 in -1..1, d: f16 in -1..1) = f32(a)*f32(b) + f32(c)*f32(d)
+> ozaki h model dearf slices 4
+ozaki h under dearf: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 4 slices: factors of 31 bits (|k| <= 2^30), 7 weights each inside i32: cost 467, error at most 2.951e-06
+  lanes of  4 bits, 4 slices: factors of 16 bits (|k| <= 2^15), 7 weights each inside i32: cost 472, error at most 0.0002478
+  as written: cost 64; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.46944695e-18f32(i32(udot4x8(t5 | t6 << 8, t7 | t8 << 8))) + 8.8817842e-16f32(i32(udot4x8(t10 | t6 << 16 | u32(t11) << 24, u32(t12) | t7 << 8 | u32(t13) << 16 | t8 << 24))) + 2.27373675e-13f32(i32(udot4x8sat(u32(t13) | t15, u32(t11) | t8 << 8, udot4x8sat(t10 | u32(t16) << 16 | t6 << 24, t18 | t7 <<… (1109 more characters)
+    the integer sum (dot.c): udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (k0 & 0xff) * (k1 & 0xff), lane 1: (k2 & 0xff) * (k3 & 0xff)
+      k0 & 0xff in 0..255 (proved range)
+      k1 & 0xff in 0..255 (proved range)
+      k2 & 0xff in 0..255 (proved range)
+      k3 & 0xff in 0..255 (proved range)
+      udot4x8's sum is in 0..130050: it does not wrap
+    proved: the integer sum's dots by sat; the rest is the derivation above
+  check: 4096 random points, the largest error 5.96e-08, within the bound 2.951e-06 (sampled, not a proof)
+  -> an approximation: give tol T, the error allowed, to take it
+> ozaki's scheme for g with 3 slices within 1e-5
+  ucas: ozaki g slices 3 tol 1e-5
+ozaki g under gt1030: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 3 slices: factors of 24 bits (|k| <= 2^23), 5 weights each inside i32: cost 114, error at most 2.891e-06
+  lanes of  4 bits, 3 slices: factors of 12 bits (|k| <= 2^11), 5 weights each inside i32: cost 114, error at most 0.003911
+  as written: cost 2; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 5.68434189e-14f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 1.45519152e-11f32((t1 & 0xff)*t7 + t5*(t2 & 0xff) + (t3 & 0xff)*t8 + t6*(t4 & 0xff)) + 3.7252903e-09f32((t1 & 0xff)*(t2 >> 0x10) + t5*t7 + (t1 >> 0x10)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 0x10) + t6*t8 + (t3 >> 0x10)*(t4 & 0xff)) + … (332 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 6.111e-07, within the bound 2.891e-06 (sampled, not a proof)
+  -> within tol, but not cheaper under gt1030 (114 against 2)
