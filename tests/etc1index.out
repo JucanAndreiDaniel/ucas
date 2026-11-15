@@ -1,0 +1,17 @@
+> c0(v: i32 in 0..255, t: i32 in 0..7, k: i32 in 0..3) = min(max(v + m, 0), 255)
+    where A = [2, 5, 9, 13, 18, 24, 33, 47][t], B = [8, 17, 29, 42, 60, 80, 106, 183][t],
+> c1(v: i32 in 0..255, t: i32 in 0..7, k: i32 in 0..3) = v + m
+    where A = [2, 5, 9, 13, 18, 24, 33, 47][t], B = [8, 17, 29, 42, 60, 80, 106, 183][t],
+> equiv c0 c1
+c0 and c1 are equal on the domain of c0 (exhaustive)
+  domain: v in 8..255 by the where clause (7936 points enumerated)
+> d0(pr: i32, pg: i32, pb: i32, r: i32, g: i32, b: i32, m: i32) = (r + m - pr)*(r + m - pr) + (g + m - pg)*(g + m - pg) + (b + m - pb)*(b + m - pb)
+> d1(pr: i32, pg: i32, pb: i32, r: i32, g: i32, b: i32, m: i32) = (r - pr)*(r - pr) + (g - pg)*(g - pg) + (b - pb)*(b - pb) + m*(3*m - 2*(pr + pg + pb - r - g - b))
+> equiv d0 d1
+d0 and d1 are equal on the domain of d0 (proved by algebra: both sides expand to one polynomial in r, m, pr, g, pg, b, pb mod 2^32)
+> orig(s: i32 in -765..765, t: i32 in 0..7, see: i32 in 0..1) = k3
+    where A = [2, 5, 9, 13, 18, 24, 33, 47][t], B = [8, 17, 29, 42, 60, 80, 106, 183][t],
+> fast(s: i32 in -765..765, t: i32 in 0..7, see: i32 in 0..1) = big ? (s < 0 ? 3 : 1) : (s < 0 && see == 0 ? 2 : 0)
+    where A = [2, 5, 9, 13, 18, 24, 33, 47][t], B = [8, 17, 29, 42, 60, 80, 106, 183][t],
+> equiv orig fast
+orig and fast are equal on the domain of orig (exhaustive)
