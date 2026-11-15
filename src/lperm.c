@@ -18,6 +18,7 @@
 static int
 parity8(unsigned x)
 {
+	x ^= x >> 8;
 	x ^= x >> 4;
 	x ^= x >> 2;
 	x ^= x >> 1;
@@ -192,6 +193,13 @@ pred_price(const struct model *m, int msk)
 	    m->c[C_SELECT];
 }
 
+/* a stage's lanes as a table: (T >> lane) & 1, compared, selected */
+static double
+tab_price(const struct model *m)
+{
+	return m->c[C_SHIFT] + m->c[C_LOGIC] + m->c[C_CMP] + m->c[C_SELECT];
+}
+
 /* ---- the search ---- */
 
 #define BEAM 4
@@ -288,7 +296,7 @@ compose(const struct lperm_plan *p, unsigned l)
 
 	for (i = p->nst - 1; i >= 0; i--) {
 		const struct lperm_stage *s = &p->st[i];
-		if (parity8(l & s->m) ^ s->e)
+		if (s->istab ? (int)(s->tab >> l & 1) : parity8(l & s->m) ^ s->e)
 			l ^= s->k;
 	}
 	return l;
@@ -364,7 +372,220 @@ plan_stages(const struct model *m, struct lperm_plan *p)
 	return 1;
 }
 
+
+/* ---- maps that are not affine: a Benes network ---- */
+
+/*
+ * Route the values of the lanes in L (nl of them, a subcube over the
+ * bits ord[0..r-1], the others fixed) to their destinations' bits of
+ * that cube: cur[x] is the destination of the value at lane x.  Stage
+ * s0 and s0 + 2r - 2 exchange by bit ord[0], the stages between them are
+ * the two halves' (the lanes whose bit ord[0] is 0, and 1), routed the
+ * same way at once.  tab[s] collects the lanes that take the exchange.
+ */
+static void
+benes_route(int *cur, const int *ord, int r, const int *L, int nl, int s0,
+    uint64_t *tab)
+{
+	int B = 1 << ord[0], i, x, rm = 0, n0 = 0, n1 = 0;
+	int col[SG_MAXW], keypos[SG_MAXW], L0[SG_MAXW], L1[SG_MAXW];
+
+	for (i = 0; i < r; i++)
+		rm |= 1 << ord[i];
+	if (r == 1) {
+		for (i = 0; i < nl; i++) {
+			x = L[i];
+			if (!(x & B) && ((cur[x] ^ x) & B)) {
+				int t = cur[x];
+				cur[x] = cur[x | B];
+				cur[x | B] = t;
+				tab[s0] |= 1ULL << x | 1ULL << (x | B);
+			}
+		}
+		return;
+	}
+	for (i = 0; i < nl; i++) {
+		col[L[i]] = -1;
+		keypos[cur[L[i]] & rm] = L[i];
+	}
+	/* the looping algorithm: a lane and its partner by B go to
+	 * different halves, and so do two values whose destinations are
+	 * partners by B; the constraints are even cycles */
+	for (i = 0; i < nl; i++) {
+		int y = L[i], c = 0;
+		if (col[y] >= 0)
+			continue;
+		for (;;) {
+			int z;
+			col[y] = c;
+			col[y ^ B] = 1 - c;
+			z = keypos[(cur[y ^ B] & rm) ^ B];
+			if (col[z] >= 0)
+				break;
+			y = z;
+		}
+	}
+	for (i = 0; i < nl; i++) {
+		x = L[i];
+		if (!(x & B) && col[x] == 1) {
+			int t = cur[x];
+			cur[x] = cur[x | B];
+			cur[x | B] = t;
+			tab[s0] |= 1ULL << x | 1ULL << (x | B);
+		}
+	}
+	for (i = 0; i < nl; i++)
+		if (L[i] & B)
+			L1[n1++] = L[i];
+		else
+			L0[n0++] = L[i];
+	benes_route(cur, ord + 1, r - 1, L0, n0, s0 + 1, tab);
+	benes_route(cur, ord + 1, r - 1, L1, n1, s0 + 1, tab);
+	for (i = 0; i < nl; i++) {
+		x = L[i];
+		if (!(x & B) && (cur[x] & B)) {
+			int t = cur[x];
+			cur[x] = cur[x | B];
+			cur[x | B] = t;
+			tab[s0 + 2 * r - 2] |= 1ULL << x | 1ULL << (x | B);
+		}
+	}
+}
+
+/* a table of the lanes as a parity of their bits: m, e; 0 when none */
+static int
+tab_parity(uint64_t tab, int w, uint8_t *pm, uint8_t *pe)
+{
+	int m, e, l;
+
+	for (m = 0; m < w; m++)
+		for (e = 0; e < 2; e++) {
+			for (l = 0; l < w && (int)(tab >> l & 1) == (parity8((unsigned)(l &
+			    m)) ^ e); l++)
+				;
+			if (l == w) {
+				*pm = (uint8_t)m;
+				*pe = (uint8_t)e;
+				return 1;
+			}
+		}
+	return 0;
+}
+
+static int
+next_order(int *ord, int n)
+{
+	int i = n - 2, j, t;
+
+	while (i >= 0 && ord[i] >= ord[i + 1])
+		i--;
+	if (i < 0)
+		return 0;
+	for (j = n - 1; ord[j] <= ord[i]; j--)
+		;
+	t = ord[i];
+	ord[i] = ord[j];
+	ord[j] = t;
+	for (i++, j = n - 1; i < j; i++, j--) {
+		t = ord[i];
+		ord[i] = ord[j];
+		ord[j] = t;
+	}
+	return 1;
+}
+
+/*
+ * A map that sends each lane's value to one lane at most, as a Benes
+ * network: every order of the bits routed, its stages priced, the
+ * cheapest kept.  The unread lanes take the sources nobody reads (their
+ * own first).  0 when the map copies a lane to two.
+ */
+static int
+plan_benes(const struct model *m, const int16_t *map, struct lperm_plan *p)
+{
+	int w = p->w, n = p->bits, l, ord[6], src[SG_MAXW], used[SG_MAXW];
+	int i, L[SG_MAXW], how, best_n = 0;
+	double best = INFINITY;
+	struct lperm_stage bst[LPERM_MAXST];
+
+	if (n < 1 || 2 * n - 1 > LPERM_MAXST)
+		return 0;
+	memset(used, 0, sizeof used);
+	for (l = 0; l < w; l++) {
+		src[l] = map[l];
+		if (map[l] >= 0 && used[map[l]]++)
+			return 0;
+	}
+	for (l = 0; l < w; l++)
+		if (src[l] < 0 && !used[l])
+			used[src[l] = l] = 1;
+	for (l = 0, i = 0; l < w; l++)
+		if (src[l] < 0) {
+			while (used[i])
+				i++;
+			used[src[l] = i] = 1;
+		}
+	for (i = 0; i < n; i++)
+		ord[i] = i;
+	for (l = 0; l < w; l++)
+		L[l] = l;
+	do {
+		int cur[SG_MAXW], ns = 0, s;
+		uint64_t tab[LPERM_MAXST];
+		struct lperm_stage st[LPERM_MAXST];
+		double pr = 0;
+		memset(tab, 0, sizeof tab);
+		for (l = 0; l < w; l++)
+			cur[src[l]] = l;
+		benes_route(cur, ord, n, L, w, 0, tab);
+		for (s = 0; s < 2 * n - 1; s++) {
+			struct lperm_stage *t;
+			uint64_t all = w == 64 ? ~0ULL : (1ULL << w) - 1;
+			if (!tab[s])
+				continue;
+			t = &st[ns++];
+			memset(t, 0, sizeof *t);
+			t->k = (uint8_t)(1 << ord[s < n ? s : 2 * n - 2 - s]);
+			if (tab[s] == all) {
+				t->e = 1;	/* every lane */
+			} else if (!tab_parity(tab[s], w, &t->m, &t->e) || !t->m) {
+				t->m = 0;
+				t->e = 0;
+				t->istab = 1;
+				t->tab = tab[s];
+			}
+			t->price = xchg_price(m, t->k, &how);
+			t->how = (uint8_t)how;
+			t->price += t->istab ? tab_price(m) : pred_price(m, t->m);
+			pr += t->price;
+		}
+		if (pr < best) {
+			best = pr;
+			best_n = ns;
+			memcpy(bst, st, sizeof st);
+		}
+	} while (next_order(ord, n));
+	if (!isfinite(best))
+		return 0;
+	/* in the order the values go through them, as plan_stages's */
+	p->nst = best_n;
+	for (i = 0; i < best_n; i++)
+		p->st[i] = bst[i];
+	p->benes = 1;
+	return 1;
+}
+
 /* ---- expressions ---- */
+
+/* (tab >> l) & 1 != 0 */
+static nid
+pred_tab(nid l, uint64_t tab, int w)
+{
+	ty_t u = TY(K_UINT, w > 32 ? 64 : 32);
+
+	return mk_bin(O_NE, mk_bin(O_AND, mk_bin(O_SHR, mk_const_i(u,
+	    (int64_t)tab), mk_cast(u, l)), mk_const_i(u, 1)), mk_const_i(u, 0));
+}
 
 static nid
 pred_of(nid l, int msk)
@@ -437,9 +658,14 @@ lperm_expr(const struct lperm_plan *p, nid v, nid at)
 		nid shl = mk_sg(O_SGSHUF, sb, mk_bin(O_XOR, at, k), w), nl;
 		nid shb = i + 1 < p->nst ? mk_sg(O_SGSHUF, sb, mk_bin(O_XOR, L,
 		    k), w) : 0, nb = 0;
-		if (!s->m) {
+		if (LPERM_ALWAYS(s)) {
 			nl = shl;
 			nb = shb;
+		} else if (s->istab) {
+			nid pl = pred_tab(at, s->tab, p->w);
+			nl = mk_sel(pl, shl, sl);
+			if (shb)
+				nb = mk_sel(pred_tab(L, s->tab, p->w), shb, sb);
 		} else {
 			nid pl = pred_of(at, s->m);
 			nl = s->e ? mk_sel(pl, sl, shl) : mk_sel(pl, shl, sl);
@@ -547,6 +773,29 @@ lperm_plan(const struct model *m, const int16_t *map, int w,
 			}
 		}
 	}
+	/* a Benes network, for a map that sends each lane to one at most */
+	{
+		struct lperm_plan q = *p;
+		q.kind = LPH_STAGES;
+		q.affine = 0;
+		if (plan_benes(m, map, &q)) {
+			q.proved = 1;
+			for (l = 0; l < w; l++)
+				if (map[l] >= 0 && (int)compose(&q, (unsigned)l) != map[l])
+					q.proved = 0;
+			q.stages_price = expr_price(m, &q);
+			if (q.proved && (!p->nst || q.stages_price < p->stages_price)) {
+				p->nst = q.nst;
+				memcpy(p->st, q.st, sizeof p->st);
+				p->benes = 1;
+				p->stages_price = q.stages_price;
+				if (q.stages_price < p->price) {
+					p->kind = LPH_STAGES;
+					p->price = q.stages_price;
+				}
+			}
+		}
+	}
 	/* a shuffle and a quad op are their definitions */
 	p->proved = 1;
 	if (p->kind == LPH_STAGES) {
@@ -579,7 +828,9 @@ static void
 stage_text(struct sbuf *b, const struct lperm_stage *s)
 {
 	sb_printf(b, "lane xor %d", s->k);
-	if (!s->m)
+	if (s->istab)
+		sb_printf(b, " in the lanes of 0x%llx", (unsigned long long)s->tab);
+	else if (!s->m)
 		sb_puts(b, " in every lane");
 	else if (!(s->m & (s->m - 1)))
 		sb_printf(b, " where lane & %d is %s", s->m, s->e ? "0" : "not 0");
@@ -608,7 +859,8 @@ lperm_text(struct sbuf *b, const struct lperm_plan *p)
 		sb_puts(b, "no realisation under the model");
 		return;
 	}
-	sb_printf(b, "%d stage%s:", p->nst, p->nst == 1 ? "" : "s");
+	sb_printf(b, "%d stage%s%s:", p->nst, p->nst == 1 ? "" : "s", p->benes ?
+	    " (a Benes network: the map is not affine)" : "");
 	for (i = 0; i < p->nst; i++) {
 		sb_puts(b, i ? "; " : " ");
 		stage_text(b, &p->st[i]);
@@ -648,11 +900,21 @@ plan_report(const struct model *m, const struct lperm_plan *p)
 		for (j = 0; j < p->bits; j++)
 			printf(" %d", p->col[j]);
 		printf("; rank(I xor A) = %d\n", p->rank);
-	} else
-		printf("  not affine over F2: one shuffle by its index\n");
-	if (p->affine && p->nst)
-		printf("  stages: %d, cost %g%s\n", p->nst, p->stages_price,
+	} else if (p->benes)
+		printf("  not affine over F2, a permutation of the lanes (an unread "
+		    "lane's source any the others leave): a Benes network\n");
+	else
+		printf("  not affine over F2, and it copies a lane to two: one "
+		    "shuffle by its index\n");
+	if (p->nst) {
+		struct sbuf s = {0};
+		struct lperm_plan q = *p;
+		q.kind = LPH_STAGES;
+		lperm_text(&s, &q);
+		printf("  stages: %s, cost %g%s\n", sb_str(&s), p->stages_price,
 		    p->kind == LPH_STAGES ? "" : " (not the cheapest)");
+		free(s.p);
+	}
 	if (isfinite(p->shuffle_price))
 		printf("  one shuffle by the index: cost %g\n", p->shuffle_price);
 	printf("  chosen under %s: %s, cost %g\n", sym_str(m->name), sb_str(&b),
@@ -666,6 +928,7 @@ plan_report(const struct model *m, const struct lperm_plan *p)
 	rep_str("model", sym_str(m->name));
 	rep_int("lanes", p->w);
 	rep_bool("affine", p->affine);
+	rep_bool("benes", p->benes);
 	if (p->affine) {
 		rep_int("constant", p->c);
 		rep_list("columns");
@@ -689,6 +952,8 @@ plan_report(const struct model *m, const struct lperm_plan *p)
 		rep_int("xor", p->st[j].k);
 		rep_int("mask", p->st[j].m);
 		rep_int("invert", p->st[j].e);
+		if (p->st[j].istab)
+			rep_int("lanes_table", (long long)p->st[j].tab);
 		rep_str("by", how_name[p->st[j].how]);
 		rep_end();
 	}

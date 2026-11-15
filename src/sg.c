@@ -4249,7 +4249,11 @@ lane_only(nid e, int lslot, int *bound, int depth)
 			return 1;
 		}
 		return 0;
-	case O_TABLE: case O_LOOP: case O_UNDEF:
+	case O_TABLE:
+		/* a table read at the lane (a lane map that is not affine): its
+		 * entries are what the map's evaluation at each lane checks */
+		return 1;
+	case O_LOOP: case O_UNDEF:
 		return 0;
 	}
 	if (IS_SG(N.op[e]) || opinfo[N.op[e]].arity == 0)
@@ -4332,7 +4336,7 @@ lperms(struct sgf *g, nid cur, float *cost)
 		if (ok && lperm_plan(g->m, map, W, -1, &pl) == LPH_SHUFFLE &&
 		    pl.nst && isfinite(pl.stages_price))
 			pl.kind = LPH_STAGES;	/* priced in the function below */
-		if (!ok || pl.kind == LPH_NONE || pl.kind == LPH_SHUFFLE || (pl.kind == LPH_STAGES && pl.nst == 1 && !pl.st[0].m))
+		if (!ok || pl.kind == LPH_NONE || pl.kind == LPH_SHUFFLE || (pl.kind == LPH_STAGES && pl.nst == 1 && LPERM_ALWAYS(&pl.st[0])))
 			continue;
 		cand = sg_replaced(cur, x, lperm_expr(&pl, N.a[x], at));
 		if (!cand)
@@ -4349,7 +4353,13 @@ lperms(struct sgf *g, nid cur, float *cost)
 		lperm_text(&t, &pl);
 		sb_printf(&g->why, "%s: the lane it reads is %s, ", shared_str(x,
 		    80), node_str(N.b[x]));
-		if (pl.kind == LPH_STAGES) {
+		if (pl.kind == LPH_STAGES && pl.benes) {
+			sb_printf(&g->why, "a permutation of the lanes, not affine "
+			    "over their bits, so %s; proved for any value per lane "
+			    "(with a free word in each lane, the stages give lane l the "
+			    "word of lane %s, for each of the %d lanes)\n", sb_str(&t),
+			    node_str(N.b[x]), W);
+		} else if (pl.kind == LPH_STAGES) {
 			sb_printf(&g->why, "affine over the lane's bits (lane -> A "
 			    "lane xor %d, A's columns", pl.c);
 			for (l = 0; l < pl.bits; l++)
