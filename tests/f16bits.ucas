@@ -1,0 +1,24 @@
+# An f16's bits read as an f32's (src/f16x.c): for a finite f16 h,
+# asfloat(((h & 0x7fff) << 13) | ((h & 0x8000) << 16)) is f32(h) * 2^-112
+# exactly, subnormals and zeros included; a multiply after the
+# conversion takes the scale.  Offered where every h of the range has an
+# exponent field below 31 (no infinity, no NaN), kept where the model
+# prices conv above the integer operations.
+u1(h: u16 in 0..31743) = f32(asfloat(h)) * 0.5
+find u1 1
+u3(w: u32) = f32(asfloat(u16(w >> 16))) * 3.0 where w < 0x7c000000
+find u3 1
+# negative halves (0x8000 up): the sign moved by an and and a shift, or
+# copied by an arithmetic shift and cleared
+s1(h: u16 in 32768..64511) = f32(asfloat(h)) * 0.125
+find s1 1
+use sm86
+find u1 1
+find s1 1
+# conversions as cheap as an add (rdna2): derived, not cheaper
+use rdna2
+find u1 1
+use gt1030
+# a range that reaches the infinities and NaNs (exponent field 31): none
+u4(h: u16 in 0..64511) = f32(asfloat(h)) * 0.25 + f32(h)
+find u4 1
