@@ -2648,6 +2648,28 @@ do nothing (tests/floatcontrols.ucas).  Not yet: the rounding modes
 (a truncation or a round to even written as instructions before a
 conversion, which RoundingModeRTZ or RTE would do).
 
+### Narrow float bits in a wider format
+
+The bits h of a finite f16 (exponent field E in 0..30, mantissa M) moved
+into an f32's places, `((h & 0x7fff) << 13) | ((h & 0x8000) << 16)`, are
+the f32 (-1)^s (1 + M 2^-10) 2^(E-127), or (-1)^s M 2^-136 where E = 0:
+2^-112 times the f16, exactly, zeros and their signs and the subnormals
+included.  So `f32(asfloat(h))` is `asfloat(those bits) * 2^112`, and a
+multiply after the conversion takes the scale (`f32(asfloat(h)) * c` is
+`asfloat(bits) * (c 2^112)`: the same exact product, so the same
+rounding, while c 2^112 is an f32).  src/f16x.c offers it to `find`
+where every h of the range (by intervals, each value checked) has an
+exponent field below 31 (no infinity, no NaN); a range that reaches f16
+subnormals is said to give f32 subnormals, which a device that flushes
+f32 denormals reads as 0.  With the sign proved 0 the bits are `h <<
+13`; otherwise the and-and-shift form, or `asuint(i32(h << 16) >> 3) &
+0x8fffffff` (the sign copied by the shift, the copies cleared).  It is
+kept where the model prices `conv` above the integer operations:
+`f32(asfloat(h)) * 0.5` with h in 0..31743 is 4 -> 3 under gt1030 and 9
+-> 3 under sm86, and not cheaper under rdna2 (2); a range that reaches
+the infinities gets nothing (tests/f16bits.ucas).  Packing f32 into f16
+bits the same way would round or truncate off f16's grid: not offered.
+
 ### Dot products
 
 Packed integer dot products are operations of the language, with the

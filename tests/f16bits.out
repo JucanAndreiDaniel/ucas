@@ -1,0 +1,73 @@
+> u1(h: u16 in 0..31743) = f32(asfloat(h)) * 0.5
+> find u1 1
+find u1: rewrites by identities the model prices lower (cost 4 as written, under gt1030)
+  cost 3   2.59614843e+33asfloat(u32(h) << 13)      the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply (derived)
+      holds where h in [0, 31743]: no exponent field 31 (no infinity or NaN; every value checked), the sign bit 0; it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = h is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      s = 0, so b = h << 13 puts E at bits 23..27 (the f32 exponent field, value E) and M at bits 13..22
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      0.5f32(asfloat(h))'s other factor 0.5 times 2^112 is 2.59614843e+33, an f32 (a power of two's scaling, below 2^128): both products have the same exact value, so they round alike
+find u1: derived, but not cheaper under gt1030 (cost 4, as written 4): the f16 h unpacked by its bits
+> u3(w: u32) = f32(asfloat(u16(w >> 16))) * 3.0 where w < 0x7c000000
+> find u3 1
+find u3: rewrites by identities the model prices lower (cost 7 as written, under gt1030)
+  cost 6   1.55768906e+34asfloat(u32(u16(w >> 0x10)) << 13) the f16 u16(w >> 0x10) unpacked by its bits, the scale 2^-112 taken by the multiply (derived)
+      holds where u16(w >> 0x10) in [0, 31743]: no exponent field 31 (no infinity or NaN; every value checked), the sign bit 0; it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = u16(w >> 0x10) is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      s = 0, so b = h << 13 puts E at bits 23..27 (the f32 exponent field, value E) and M at bits 13..22
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      3f32(asfloat(u16(w >> 0x10)))'s other factor 3 times 2^112 is 1.55768906e+34, an f32 (a power of two's scaling, below 2^128): both products have the same exact value, so they round alike
+find u3: derived, but not cheaper under gt1030 (cost 7, as written 7): the f16 u16(w >> 0x10) unpacked by its bits
+> s1(h: u16 in 32768..64511) = f32(asfloat(h)) * 0.125
+> find s1 1
+find s1: derived, but not cheaper under gt1030 (cost 8, as written 4): the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply
+find s1: derived, but not cheaper under gt1030 (cost 6, as written 4): the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply
+find s1: derived, but not cheaper under gt1030 (cost 9, as written 4): the f16 h unpacked by its bits
+find s1: derived, but not cheaper under gt1030 (cost 7, as written 4): the f16 h unpacked by its bits
+> use sm86
+cost model: sm86
+> find u1 1
+find u1: rewrites by identities the model prices lower (cost 9 as written, under sm86)
+  cost 3   2.59614843e+33asfloat(u32(h) << 13)      the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply (derived)
+      holds where h in [0, 31743]: no exponent field 31 (no infinity or NaN; every value checked), the sign bit 0; it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = h is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      s = 0, so b = h << 13 puts E at bits 23..27 (the f32 exponent field, value E) and M at bits 13..22
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      0.5f32(asfloat(h))'s other factor 0.5 times 2^112 is 2.59614843e+33, an f32 (a power of two's scaling, below 2^128): both products have the same exact value, so they round alike
+  cost 4   0.5*5.19229686e+33asfloat(u32(h) << 13)  the f16 h unpacked by its bits (derived)
+      holds where h in [0, 31743]: no exponent field 31 (no infinity or NaN; every value checked), the sign bit 0; it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = h is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      s = 0, so b = h << 13 puts E at bits 23..27 (the f32 exponent field, value E) and M at bits 13..22
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      times 2^112, an f32: the product is the f16's value, exact (f32 holds every f16)
+> find s1 1
+find s1: derived, but not cheaper under sm86 (cost 11, as written 9): the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply
+find s1: rewrites by identities the model prices lower (cost 9 as written, under sm86)
+  cost 7   6.49037107e+32asfloat(u32(i32(u32(h) << 16) >> 3) & 0x8fffffff) the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply (derived)
+      holds where h in [32768, 64511]: no exponent field 31 (no infinity or NaN; every value checked); it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = h is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      (h << 16) as i32 shifted right by 3 copies s into bits 28..31 and puts E and M at bits 23..27 and 13..22; & 0x8fffffff clears the copies: s at bit 31, E, M << 13
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      0.125f32(asfloat(h))'s other factor 0.125 times 2^112 is 6.49037107e+32, an f32 (a power of two's scaling, below 2^128): both products have the same exact value, so they round alike
+find s1: derived, but not cheaper under sm86 (cost 12, as written 9): the f16 h unpacked by its bits
+  cost 8   0.125*5.19229686e+33asfloat(u32(i32(u32(h) << 16) >> 3) & 0x8fffffff) the f16 h unpacked by its bits (derived)
+      holds where h in [32768, 64511]: no exponent field 31 (no infinity or NaN; every value checked); it reaches f16 subnormals, which give f32 subnormals: exact in IEEE arithmetic, 0 on a device that flushes f32 denormals
+      h = h is a finite f16's bits: sign s, exponent field E in 0..30, mantissa M; its value is (-1)^s (1 + M 2^-10) 2^(E-15) (E >= 1) or (-1)^s M 2^-24 (E = 0)
+      (h << 16) as i32 shifted right by 3 copies s into bits 28..31 and puts E and M at bits 23..27 and 13..22; & 0x8fffffff clears the copies: s at bit 31, E, M << 13
+      as an f32 that is (-1)^s (1 + M 2^-10) 2^(E-127) or (-1)^s M 2^13 2^-149 = (-1)^s M 2^-136: 2^-112 times the f16, exactly, zeros and their signs included
+      times 2^112, an f32: the product is the f16's value, exact (f32 holds every f16)
+> use rdna2
+cost model: rdna2
+> find u1 1
+find u1: derived, but not cheaper under rdna2 (cost 2, as written 2): the f16 h unpacked by its bits, the scale 2^-112 taken by the multiply
+find u1: derived, but not cheaper under rdna2 (cost 3, as written 2): the f16 h unpacked by its bits
+> use gt1030
+cost model: gt1030
+> u4(h: u16 in 0..64511) = f32(asfloat(h)) * 0.25 + f32(h)
+> find u4 1
+find u4: rewrites by identities the model prices lower (cost 7 as written, under gt1030)
+  cost 6   0.25f32(asfloat(h)) + (asfloat(u32(h) | 0x4b000000) - 8388608) the conversion f32(h) by the bits of 2^23 (derived)
+      holds where h in [0, 64511], inside [0, 2^23)
+      0 <= h < 2^23: h | 0x4B000000 is the bit pattern with sign 0, exponent field 150 and mantissa h, the f32 2^23 + h exactly (one unit in the last place there is 1)
+      2^23 + h - 2^23 = h is an integer below 2^24, an f32: the subtraction does not round
+      f32(h) is exact below 2^24: both are h

@@ -113,6 +113,8 @@ img.o img.pieo: img.c img.h third_party/stb_image.h
 SRCS+=	simp.c cx.c excouple.c homalg_cmd.c reduce.c
 # lane maps as xor exchange stages, priced and proved (lperm.h)
 SRCS+=	lperm.c
+# a narrow float's bits read in a wider format (f16 in f32): ifx.c's seeds
+SRCS+=	f16x.c
 .PATH:	${.CURDIR}/src
 MAN=
 

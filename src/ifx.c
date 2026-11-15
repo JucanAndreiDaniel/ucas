@@ -1719,6 +1719,7 @@ ifx_cands(struct ivc *c, nid root, nid n, uint8_t *inner, uint32_t lim,
 		rw_pow2(c, root, n, out, cnt, cap);
 		rw_i2f(c, root, n, out, cnt, cap);
 		rw_f2i(c, root, n, out, cnt, cap);
+		f16x_cands(c, root, n, out, cnt, cap);
 		break;
 	case O_FLOOR: case O_CEIL:
 		rw_floor(c, root, n, out, cnt, cap);
@@ -1730,6 +1731,7 @@ ifx_cands(struct ivc *c, nid root, nid n, uint8_t *inner, uint32_t lim,
 		rw_roundmul(c, root, n, out, cnt, cap);
 		rw_ldexp(c, root, n, out, cnt, cap);
 		rw_fpipe(c, root, n, inner, lim, out, cnt, cap);
+		f16x_cands(c, root, n, out, cnt, cap);
 		break;
 	case O_SUB:
 		rw_ilog2(c, root, n, out, cnt, cap);
