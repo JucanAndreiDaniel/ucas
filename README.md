@@ -2824,6 +2824,20 @@ share a word's side.
 With `0x01010101` it is the sum of a word's bytes, with powers of two a
 weighted one.  A lone field is not a sum and stays as it is.
 
+**Float sums on a grid.**  A float sum of products whose factors the
+grid analysis of `intatomic` (below) proves k 2^g, k an integer
+(converted integers, binary constants, their sums and products), and
+whose f32 evaluation is exact (nothing reaches 24 bits of its grid), is
+2^G times an integer sum of products, G the least of the terms' grids
+(src/fdot.c).  That sum goes to the search above, and the float form is
+`f32(dot) * 2^G`, exact while the integer sum is below 2^24.  A sum of
+four bytes times half of the bytes of a word, `f32(a) * 0.5 * f32(x &
+255) + ...`, goes 41 -> 13 under gt1030 and 22 -> 8 under rdna2; a model
+without dot forms is told the grid and the bound; a factor off any
+binary grid (a division by 3) gets nothing (tests/fdotint.ucas).  A
+factor wider than a lane is not split into slices (Ozaki's scheme): not
+yet.
+
 ### Memory kinds
 
 A model can price memory by kind, and say how its shared memory is
