@@ -1,0 +1,26 @@
+# A tensor core's block FMA as an operation (src/tcdot.c): tc_dot(A, B,
+# c), A and B tables of f16, c an f32: the products exact, aligned to the
+# largest exponent in a window of 24 fractional bits, each term truncated,
+# one exact sum, normalised once and truncated to f32 (Ampere's f16 HMMA
+# with f32 accumulate as arXiv 2512.07004 models it).  Written over the
+# bits, so show, equiv and SAT work on it.
+show tc_dot([1.0, 2.0], [3.0, 4.0], 0.5)
+# a term below the window's last unit is cut: 1 + 1.5 2^-24 is 1 here,
+# and 1 + 2^-23 rounded to nearest in an f32 chain
+show tc_dot([0.0009765625], [0.000091552734375], 1.0)
+show f32(0.0009765625) * f32(0.000091552734375) + 1.0
+# a lone exact product is its f32: proved; two terms are not an f32 add
+t1(x: f16) = tc_dot([x], [1.0], 0.0)
+i1(x: f16) = f32(x)
+equiv t1 i1
+t2(x: f16, y: f16) = tc_dot([x, y], [1.0, 1.0], 0.0)
+i2(x: f16, y: f16) = f32(x) + f32(y)
+equiv t2 i2
+# m16n8k16's element: two blocks of 8 chained through c
+show tc_dot([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.0078125, 0.00390625], tc_dot([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], 0.0))
+# the derived bound, relative to the largest term, and a sampled check
+# against the exact sums (seeded); with cancellation the error relative to
+# the sum grows, relative to the largest term it does not
+tcdot
+tcdot n 8 cancel seed 3
+the block fma of 4 products with cancellation

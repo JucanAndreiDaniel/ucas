@@ -42,6 +42,7 @@
 #include "memk.h"
 #include "mma.h"
 #include "lperm.h"
+#include "tcdot.h"
 #include "stoch.h"
 
 #include <ctype.h>
@@ -7534,6 +7535,12 @@ translate(const char *sent)
 			emit(r);
 			return 1;
 		}
+		/* a tensor core's block FMA (tcdot.c) */
+		if ((r = tcdot_nlp_raw(sent)) != NULL) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
 	}
 	{
 		/* stochastic search, identity testing (stoch.c) */
@@ -8071,6 +8078,8 @@ nlp_is_english(const char *s, size_t n)
 			    strncmp(line, "mma", 3) && strncmp(line, "hmma", 4))
 				return 1;
 			if (lperm_nlp_raw(line) != NULL)
+				return 1;
+			if (tcdot_nlp_raw(line) != NULL)
 				return 1;
 		}
 	}

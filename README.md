@@ -4291,6 +4291,48 @@ stage count; `lperm_plan` fills the stages `{k, m, e, how}`, the affine
 form, the three prices and which was chosen; `idx_price` is what a
 shuffle's index costs (< 0: the affine index's own price).
 
+### A tensor core's block FMA
+
+`tc_dot(A, B, c)`, A and B tables of f16 and c an f32, is the block FMA
+of a tensor core's f16 product with f32 accumulate as Khattak and
+Mikaitis (arXiv 2512.07004) model Ampere (A100, A2, A30; Valpey et al.,
+arXiv 2502.15999, describe an sm_86 A6000 the same way): each product
+exact, its significand not renormalised; E the largest exponent among
+the nonzero products and c (at least -132); each term a fixed-point
+number of 24 fractional bits relative to 2^E (one extra alignment bit),
+its magnitude truncated; one exact integer sum (2 integer bits, 24
+fractional, the carries: a 30-bit adder); normalised once, truncated to
+f32 (subnormal results truncated too).  Eight products a block;
+m16n8k16 chains two through c.  Not verified here (no GPU): the fourth
+carry bit (the paper confirms three), the sign of a zero sum (+0), and
+an f16 result's round to nearest even, which is not written (src/tcdot.c
+says what came from which source).
+
+It is written as its definition over the bits (fields, an integer
+multiply, max, variable shifts, clz, selects), so `show`, `equiv`,
+intervals and SAT work on it:
+
+```
+> show tc_dot([0.0009765625], [0.000091552734375], 1.0)
+_() = 1                                      (1 + 1.5 2^-24: the term is cut)
+> show f32(0.0009765625) * f32(0.000091552734375) + 1.0
+_() = 1.00000012
+> t1(x: f16) = tc_dot([x], [1.0], 0.0)
+> equiv t1 i1                                (i1(x: f16) = f32(x))
+t1 and i1 are equal on the domain of t1 (exhaustive)
+```
+
+Its error, derived: each term's truncation loses less than one unit of
+the window, 2^(E-24), and the final truncation less than 2^-23 |S| (S
+the window's sum), so |tc_dot - sum T| < (n+1) 2^(E-24) + 2^-23 |S|,
+with 2^E <= max|T| for normal inputs: relative to the largest term, not
+to sum |T|.  A sum that cancels keeps the largest term's absolute error.
+`tcdot [n N] [samples N] [seed N] [cancel]` prints the semantics and the
+bound and checks both on random blocks (sampled, seeded): the operation
+against an independent transcription, the error against the bound
+(tests/tcdot.ucas); English "the block fma of 4 products with
+cancellation".
+
 ### A catalogue of instructions
 
 Targets have single instructions for things the base operations take

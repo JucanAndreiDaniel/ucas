@@ -115,6 +115,8 @@ SRCS+=	simp.c cx.c excouple.c homalg_cmd.c reduce.c
 SRCS+=	lperm.c
 # a narrow float's bits read in a wider format (f16 in f32): ifx.c's seeds
 SRCS+=	f16x.c
+# a tensor core's block FMA as an operation over the bits (tcdot.h)
+SRCS+=	tcdot.c
 .PATH:	${.CURDIR}/src
 MAN=
 
