@@ -182,7 +182,10 @@ dot_ival(int op, int64_t alo, int64_t ahi, int64_t blo, int64_t bhi,
  * - and unary -, and through conversions that cannot change the value
  * mod 2^W of the sum's type (narrowing ones, and widening ones of a
  * subterm the intervals show does not wrap).  A product's factors are
- * its operands; t << k is t * 2^k; any other term is t * 1.  In a type
+ * its operands; t << k is t * 2^k, and (a * b) << k the product of a and
+ * b of weight 2^k (the slices of a factor wider than a lane, fdot.c):
+ * terms of one weight share a dot, moved up once; any other term is
+ * t * 1.  In a type
  * of at most 32 bits everything is mod 2^W, so wrapping inside the sum
  * is harmless; a wider type needs the exact values (no wrap anywhere).
  *
@@ -217,6 +220,7 @@ struct fac {
 struct term {
 	nid n;               /* as written */
 	int sign;
+	int sh;              /* weight 2^sh: (a * b) << sh (a sliced factor's) */
 	int prod;            /* has two factors */
 	struct fac f[2];
 };
@@ -244,6 +248,7 @@ struct group {
 	uint32_t neg;        /* terms of the other sign: their constant negated */
 	int spare;           /* lanes no term uses */
 	int64_t slo, shi;    /* the exact sum's range */
+	int sh;              /* its terms' weight 2^sh: the dot moved up */
 };
 
 static struct {
@@ -458,6 +463,13 @@ collect(struct sum *s, nid n, int sign, int exact)
 		return;
 	case O_SHL:
 		if (is_const(N.b[n]) && N.ki[N.b[n]] >= 0 && N.ki[N.b[n]] < 31) {
+			if (N.op[N.a[n]] == O_MUL && !exact) {
+				/* a product of weight 2^k (mod 2^W, as the sum) */
+				add_term(s, n, sign, N.a[N.a[n]], N.b[N.a[n]]);
+				if (s->ok)
+					s->tm[s->nt - 1].sh = (int)N.ki[N.b[n]];
+				return;
+			}
 			add_term(s, n, sign, N.a[n], mk_const_i(N.ty[n],
 			    (int64_t)1 << N.ki[N.b[n]]));
 			return;
@@ -571,9 +583,12 @@ layout(const struct sum *s, uint32_t set, uint32_t orient, int L, int b,
 	int gsign = set ? s->tm[__builtin_ctz(set)].sign : 1, dirty = 0;
 
 	memset(g, 0, sizeof *g);
+	g->sh = set ? s->tm[__builtin_ctz(set)].sh : 0;
 	for (i = 0; i < s->nt; i++)
 		if ((set >> i) & 1) {
 			int o = (orient >> i) & 1;
+			if (s->tm[i].sh != g->sh)
+				return 0;	/* one weight a dot */
 			idx[n] = i;
 			side[0][n] = &s->tm[i].f[o];
 			side[1][n] = &s->tm[i].f[1 - o];
@@ -839,7 +854,8 @@ rebuild_sum(const struct sum *s, const struct group *g, int ng, int sat,
 			const struct dotform *df = dot_form(g[i].op);
 			int64_t rlo = df->sa || df->sb ? -(int64_t)0x80000000LL : 0;
 			int64_t rhi = df->sa || df->sb ? 0x7fffffffLL : 0xffffffffLL;
-			if (!ex || !df->sat || g[i].sign < 0 || lo < rlo || hi > rhi)
+			if (!ex || !df->sat || g[i].sign < 0 || g[i].sh || lo < rlo ||
+			    hi > rhi)
 				return 0;
 			lo += g[i].slo;
 			hi += g[i].shi;
@@ -860,6 +876,8 @@ rebuild_sum(const struct sum *s, const struct group *g, int ng, int sat,
 			nid x = mk_cast(s->t, group_dot(&g[i], 0));
 			if (dot_form(g[i].op)->sat)
 				return 0;
+			if (g[i].sh)
+				x = mk_bin(O_SHL, x, mk_const_i(s->t, g[i].sh));
 			if (s->exact) {
 				/* the dot's exact sum must fit its result */
 				const struct dotform *df = dot_form(g[i].op);

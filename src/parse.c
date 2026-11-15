@@ -34,6 +34,7 @@
 #include "lperm.h"
 #include "tcdot.h"
 #include "winograd.h"
+#include "fdot.h"
 #include "stoch.h"
 #include "numsearch.h"
 #include "ring.h"
@@ -3657,6 +3658,9 @@ statement(struct P *p)
 			return;
 		/* winograd: the inner product in half the multiplies */
 		if (winograd_command(p))
+			return;
+		/* ozaki: a float dot product as integer dots (fdot.c) */
+		if (ozaki_command(p))
 			return;
 		/* stoke, pit, phash: stochastic search (stoch.c) */
 		if (stoch_command(p))

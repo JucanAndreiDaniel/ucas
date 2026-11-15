@@ -44,6 +44,7 @@
 #include "lperm.h"
 #include "tcdot.h"
 #include "winograd.h"
+#include "fdot.h"
 #include "stoch.h"
 
 #include <ctype.h>
@@ -7548,6 +7549,12 @@ translate(const char *sent)
 			emit(r);
 			return 1;
 		}
+		/* Ozaki's scheme (fdot.c) */
+		if ((r = ozaki_nlp_raw(sent)) != NULL) {
+			sb_clear(&out);
+			emit(r);
+			return 1;
+		}
 	}
 	{
 		/* stochastic search, identity testing (stoch.c) */
@@ -7812,7 +7819,7 @@ static const char *const ucas_cmds[] = {"show", "table", "range", "domain",
 	/* memk.c */
 	"banks", "intatomic",
 	/* mma.c */
-	"mma", "hmma",
+	"mma", "hmma", "ozaki",
 	/* stoch.c */
 	"stoke", "pit", "phash",
 	/* find.c: the snippet database, rules from the enumeration */
@@ -8089,6 +8096,8 @@ nlp_is_english(const char *s, size_t n)
 			if (tcdot_nlp_raw(line) != NULL)
 				return 1;
 			if (winograd_nlp_raw(line) != NULL)
+				return 1;
+			if (ozaki_nlp_raw(line) != NULL)
 				return 1;
 		}
 	}
