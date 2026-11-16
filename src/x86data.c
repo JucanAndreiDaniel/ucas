@@ -127,6 +127,12 @@ const struct uarch uarchs[UA_N] = {
 	    160, 17, 12,
 	    {"p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9",
 	    "p10", "p11"}},
+	{"zen2", "znver2", "AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom "
+	    "APU 0932): AVX2, no AVX-512; latencies measured on both machines "
+	    "with x86bench, other columns estimated from Zen 4",
+	    V3F | CRYPTO, 4, 224, 60, 13, 12,
+	    {"ALU0", "ALU1", "ALU2", "ALU3", "AGU0", "AGU1", "AGU2", "FP0",
+	    "FP1", "FP2", "FP3", "FP45"}},
 	{"zen4", "znver4", "AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, "
 	    "GFNI) on 256-bit pipes, 512-bit ops double-pumped",
 	    V4F | CRYPTO | ICLX, 6, 320, 96, 13, 12,
@@ -622,6 +628,8 @@ xsrc_text(char src)
 	case 'E': return "estimate (closest documented form)";
 	case 'G': return "generic: worst of the level's cores";
 	case 'V': return "derived from the ymm form";
+	case 'Z': return "Zen 2: latency measured on the host and the Deck, "
+	    "other columns estimated from Zen 4";
 	}
 	return "?";
 }
@@ -716,6 +724,32 @@ x86_init(void)
 		x->src = r->src;
 		x->have = 1;
 	}
+	/*
+	 * Zen 2 starts as a copy of Zen 4's tables.  The latencies below
+	 * were measured on a Ryzen 5 3600 and the Steam Deck's APU with
+	 * tools/x86bench.c (each scaled by a 1-cycle add chain); the other
+	 * columns are estimates from Zen 4 until a full table exists and
+	 * are marked Z.  DIV64's 41 is the full-width worst case: the
+	 * common RDX=0 path measures about 11 cycles on both machines.
+	 */
+	for (c = 1; c < XC_N; c++)
+		for (w = 0; w < 3; w++)
+			X[UA_ZEN2][c][w] = X[UA_ZEN4][c][w];
+#define ZL(c, l) do {							\
+		X[UA_ZEN2][XC_##c][VW_X].lat = (l);			\
+		X[UA_ZEN2][XC_##c][VW_X].src = 'Z';			\
+	} while (0)
+	ZL(ALU, 1);
+	ZL(BITCNT, 1);
+	ZL(PDEP, 21);
+	ZL(MULX, 3);
+	ZL(DIV64, 41);
+	ZL(CVTI2F, 5);
+	ZL(VFADD, 3);
+	ZL(VFMA, 5);
+	ZL(VMULLD, 4);
+	ZL(LOAD, 4);
+#undef ZL
 	for (ua = 0; ua < UA_V2; ua++) {
 		int avx512 = (uarchs[ua].feat & XB(XF_AVX512F)) != 0;
 		for (c = 1; c < XC_N; c++) {
@@ -746,9 +780,12 @@ x86_init(void)
 		for (w = 0; w < 3; w++)
 			if (w == VW_Z || k == XC_VMULLQ || k == XC_VCMPK ||
 			    k == XC_VTERNLOG || k == XC_VCOMPRESS || k == XC_KOP ||
-			    k == XC_KMOV || k == XC_VPMOVN || k == XC_VLZCNT)
+			    k == XC_KMOV || k == XC_VPMOVN || k == XC_VLZCNT) {
 				X[UA_RPL][k][w].have = 0;
+				X[UA_ZEN2][k][w].have = 0;
+			}
 	X[UA_RPL][XC_VPOPCNT][0].have = X[UA_RPL][XC_VPOPCNT][1].have = 0;
+	X[UA_ZEN2][XC_VPOPCNT][0].have = X[UA_ZEN2][XC_VPOPCNT][1].have = 0;
 	/* generic levels: the worst of the members, ports of the first */
 	for (ua = UA_V2; ua <= UA_V4; ua++) {
 		const int *mb = members[ua - UA_V2];

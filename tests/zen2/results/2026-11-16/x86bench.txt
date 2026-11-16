@@ -1,0 +1,28 @@
+CPU measurement evidence (x86bench + divide-path probe)
+host x86bench:
+scale 0.9225
+add 1.00 0.48
+imul 2.96 1.00
+popcnt 1.00 0.48
+pext 24.30 23.75
+vpaddd 0.99 0.46
+vpshufb 0.99 0.52
+vpmulld 3.95 2.01
+vaddps 2.96 0.54
+vfmadd 4.94 0.66
+div64 10.80 -
+deck x86bench:
+scale 1.3816
+add 1.00 0.25
+imul 3.00 1.00
+popcnt 1.00 0.32
+pext 21.02 20.35
+vpaddd 1.00 0.33
+vpshufb 1.00 0.50
+vpmulld 4.00 2.00
+vaddps 3.00 0.50
+vfmadd 5.00 0.63
+div64 10.97 -
+divide-path probe (core cycles after TSC scaling):
+  RDX=0 (fast path, what compilers emit for u64 / s64): host ~10.4, deck ~11.8
+  full 128-bit dividend: host 40.90, deck 42.12 (matches llvm-mca znver2 worst-case 41)
