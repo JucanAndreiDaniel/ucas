@@ -2492,6 +2492,46 @@ static const char prelude[] =
     "  folds none\n"
     "}\n"
     /*
+     * NVIDIA GA104 (GeForce RTX 3060 Ti, sm_86), measured through SPIR-V
+     * by tests/ga104 with snx-shaderperf (driver 620.70.06): issue cost
+     * per warp instruction relative to fadd, from throughput with the
+     * SMs full.  The parent sm86 supplies the fusions and the classes
+     * the corpus does not fit.  The fit differs from sm86's estimates:
+     * integer add is full rate (1.13, not 2), imul 1.70 not 2, integer
+     * division 19.26 not 28.5, fp64 61.68 not 64.  Branch fitted below
+     * zero and bitcast at zero: both keep sm86's prices, a branch's cost
+     * being absorbed by the other classes in the fit.  Latencies in SM
+     * clocks are in the test report.
+     */
+    "model ga104 : sm86 {\n"
+    "  iadd: 1.13, logic: 2.70, shift: 1.93, imul: 1.70, idiv: 19.26, idivk: 4.12,\n"
+    "  cmp: 1.30, select: 2.27, minmax: 2.48, bitcnt: 5.75, conv: 2.48,\n"
+    "  fadd: 1, fmul: 0.99, fdiv: 5.85, fsqrt: 6.79, ftrans: 6.79, fpow: 13.75,\n"
+    "  f64: 61.68, load: 8.94, diverge: 10.26, barrier: 2.94,\n"
+    "  atomic_shared: 7.72, atomic_global: 48.24, store: 34.48\n"
+    "}\n"
+    /*
+     * AMD VANGOUGH (Steam Deck, gfx10.3 / RDNA2), measured through
+     * SPIR-V by tests/vangogh with snx-shaderperf (Mesa 26.x, RADV):
+     * issue cost per wave instruction relative to fadd, from throughput
+     * with the CUs full.  The fit is the mean of two independent runs of
+     * the corpus's 145 compute/ALU/memory tests: the graphics stages
+     * time below zero on RADV and the corpus passes their shaders twice,
+     * and RADV's ACO refuses the float atomic and subgroup partition
+     * opcodes, so those tests are excluded.  The parent rdna2 supplies
+     * the fusions and unmeasured classes.  Logic and bitcnt fit near
+     * zero because the LOP3/BMI fusions absorb them; they keep rdna2's
+     * prices, as do branch and bitcast.  Latencies in SM clocks are in
+     * the test report.
+     */
+    "model vangogh : rdna2 {\n"
+    "  iadd: 0.93, shift: 1.00, imul: 3.94, idiv: 33.37, idivk: 6.92,\n"
+    "  cmp: 1.05, select: 0.95, minmax: 1.08, conv: 1.01,\n"
+    "  fadd: 1, fmul: 1.00, fdiv: 3.68, fsqrt: 3.94, ftrans: 3.96, fpow: 4.06,\n"
+    "  f64: 15.96, load: 4.44, diverge: 1.29, barrier: 6.58,\n"
+    "  atomic_shared: 8.70, atomic_global: 17.61, store: 18.71\n"
+    "}\n"
+    /*
      * ARM Mali-G715 (Pixel 9, Tensor G4, Valhall) through SPIR-V,
      * measured on the phone by tests/mali-g715 over adb (driver
      * v1.r54p3): issue cost per SPIR-V operation relative to fadd, from
