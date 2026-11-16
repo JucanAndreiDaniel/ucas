@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Exercise the five cost models added to the prelude: integer ALU,
+# contracted FMA, integer multiply-add.  These are the measured models from
+# tests/<arch>/results/2026-11-16, not local copies: a local definition here
+# would shadow the prelude and test the wrong numbers.
+
+ialu(a: u32, b: u32, c: u32) = (a + b) xor (c << 3)
+fma(x: f32, y: f32, z: f32) = x*y + z
+mad(a: u32, b: u32, c: u32) = a*b + c
+use gfx90c
+cost ialu
+cost fma
+cost mad
+use gfx902
+cost ialu
+cost fma
+cost mad
+use gp107
+cost ialu
+cost fma
+cost mad
+use zen3
+cost ialu
+cost fma
+cost mad
+use zen1
+cost ialu
+cost fma
+cost mad

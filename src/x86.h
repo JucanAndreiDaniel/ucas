@@ -34,7 +34,7 @@ int xfeat_find(const char *s);
 void xfeat_text(struct sbuf *b, xfeat f);	/* "avx2 fma bmi2" */
 
 /* ---- µarchs ---- */
-enum { UA_SKL, UA_SKX, UA_GLC, UA_RPL, UA_ZEN2, UA_ZEN4,
+enum { UA_SKL, UA_SKX, UA_GLC, UA_RPL, UA_ZEN2, UA_ZEN1, UA_ZEN3, UA_ZEN4,
        UA_V2, UA_V3, UA_V4, UA_N };
 #define MAXPORT 12
 struct uarch {
