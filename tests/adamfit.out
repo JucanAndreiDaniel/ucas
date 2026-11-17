@@ -3,15 +3,15 @@ adamfit cos(x) (x: f32 in 0.0..1.0) -> f32: 160 shapes of up to 9 nodes, ops + -
   measured on 65536 independent uniform points of the domain
   fit: Adam (b1 0.9, b2 0.999, step 0.05 decaying to a tenth), 40 steps from 3 starts on 66 points, the relative residual; the best again longer, then polished (Levenberg-Marquardt, Lawson)
   score = 0.8 * cost / 4 (cos(x)'s cost under gt1030) + 0.5 * log2(1 + error / 1 ulp)
-  measured: front (cost/error) 1/1.11e+06 ulp, 2/5.36e+04 ulp, 6/930 ulp, 8/165 ulp, 9/4.7 ulp, 15/3.1 ulp
+  measured: front (cost/error) 1/1.11e+06 ulp, 2/5.36e+04 ulp, 6/930 ulp, 8/165 ulp, 9/4.7 ulp, 15/4.17 ulp
   closest candidates (defined as af1 ...):
   #   score   cost  measured      proved             shape
   1   3.174   9     4.7 ulp       <= 5.72 ulp (certified) ((c0 * x * x + c1) * x * x + c2) * x * x + c3 (even)
       af1(x) = (((-0.00133823999) * x * x + 0.0416335464) * x * x + (-0.499992877)) * x * x + 0.999999762
-  2   4.221   15    3.1 ulp       <= 4.44 ulp (certified) ((c0 * x + c1) * x + c2) / ((((c3 * x + c4) * x + c5) * x + c6) * x + c7) (rational)
-      af2(x) = (((-0.284838468) * x + (-0.0067179068)) * x + 0.712956071) / ((((0.00509114703 * x + (-0.00297003705)) * x + 0.0715692863) * x + (-0.00671316124)) * x + 0.712956011)
-  3   4.839   13    18.9 ulp      <= 21.3 ulp (certified) ((((c0 * x + c1) * x + c2) * x + c3) * x + c4) / (c5 * x + c6) (rational)
-      af3(x) = (((((-0.0555703267) * x + 0.073365435) * x + 0.582654178) * x + (-0.139139906)) * x + (-1.16713893)) / ((-0.139221355) * x + (-1.16713774))
+  2   4.310   15    4.17 ulp      <= 5.15 ulp (certified) ((c0 * x + c1) * x + c2) / ((((c3 * x + c4) * x + c5) * x + c6) * x + c7) (rational)
+      af2(x) = (((-0.284841865) * x + (-0.00671798689)) * x + 0.712964535) / ((((0.00509120757 * x + (-0.00297007221)) * x + 0.0715701357) * x + (-0.00671324134)) * x + 0.712964535)
+  3   4.833   13    18.5 ulp      <= 21.1 ulp (certified) ((((c0 * x + c1) * x + c2) * x + c3) * x + c4) / (c5 * x + c6) (rational)
+      af3(x) = (((((-0.0555657782) * x + 0.073358506) * x + 0.58260864) * x + (-0.139126986)) * x + (-1.16704762)) / ((-0.139208421) * x + (-1.16704643))
 > adamfit sin(x) in 0..0.5 count 100 steps 40 wcost 2 werr 0.2 list 2
 adamfit sin(x) (x: f32 in 0.0..0.5) -> f32: 100 shapes of up to 9 nodes, ops + - * / fma sqrt
   measured on 65536 independent uniform points of the domain
@@ -45,13 +45,13 @@ adamfit exp(x) (x: f32 in 0.0..1.0) -> f32: 100 shapes of up to 9 nodes, ops + -
   measured on 65536 independent uniform points of the domain
   fit: Adam (b1 0.9, b2 0.999, step 0.05 decaying to a tenth), 30 steps from 3 starts on 66 points, the relative residual; the best again longer, then polished (Levenberg-Marquardt, Lawson)
   score = 0.8 * cost / 4 (exp(x)'s cost under gt1030) + 0.5 * log2(1 + error / 1 ulp)
-  measured: front (cost/error) 1/8.08e+05 ulp, 2/8.63e+04 ulp, 4/8.63e+04 ulp, 6/4.28e+03 ulp, 8/253 ulp, 10/11.4 ulp, 12/1.37 ulp, 14/1.34 ulp
+  measured: front (cost/error) 1/8.08e+05 ulp, 2/8.63e+04 ulp, 4/8.63e+04 ulp, 6/4.28e+03 ulp, 8/253 ulp, 10/11.2 ulp, 12/1.38 ulp, 14/1.34 ulp
   closest candidates (defined as af1 ...):
   #   score   cost  measured      proved             shape
-  1   3.333   12    1.37 ulp      <= 2.64 ulp (certified) (((((c0 * x + c1) * x + c2) * x + c3) * x + c4) * x + c5) * x + c6 (poly)
-      af1(x) = (((((0.00227206433 * x + 0.00706468849) * x + 0.0425258428) * x + 0.16637601) * x + 0.500045776) * x + 0.999997377) * x + 1.0
-  2   3.704   14    1.34 ulp      <= 2.5 ulp (certified) ((((((c0 * x + c1) * x + c2) * x + c3) * x + c4) * x + c5) * x + c6) * x + c7 (poly)
-      af2(x) = ((((((0.000324861961 * x + 0.00117312011) * x + 0.00851607975) * x + 0.041582942) * x + 0.166687131) * x + 0.499997586) * x + 1.00000012) * x + 1.0
+  1   3.330   12    1.38 ulp      <= 2.63 ulp (certified) (((((c0 * x + c1) * x + c2) * x + c3) * x + c4) * x + c5) * x + c6 (poly)
+      af1(x) = (((((0.00227206061 * x + 0.00706470339) * x + 0.0425258204) * x + 0.166376024) * x + 0.500045776) * x + 0.999997377) * x + 1.0
+  2   3.707   14    1.34 ulp      <= 2.51 ulp (certified) ((((((c0 * x + c1) * x + c2) * x + c3) * x + c4) * x + c5) * x + c6) * x + c7 (poly)
+      af2(x) = ((((((0.00032487337 * x + 0.00117308053) * x + 0.00851613283) * x + 0.0415829048) * x + 0.166687146) * x + 0.499997586) * x + 1.00000012) * x + 1.0
 > adamfit x*y in 0..1 count 40 steps 20 auto list 1
 adamfit x*y (x: f32 in 0.0..1.0, y: f32 in 0.0..1.0) -> f32: 40 shapes of up to 9 nodes, ops + - * / fma sqrt
   measured on 65536 independent uniform points of the domain
@@ -93,7 +93,7 @@ adamfit mul8 (x: u8 in 0..255, y: u8 in 0..255) -> u8: 30 fixed-point forms
   measured: front (cost/error) 0/161, 3/128, 10/0
   closest candidates (defined as af1 ...):
   #   score   cost  measured      proved             shape
-  1   0.582   10    0             exact (exhaustive) u8((C1 * i32(x) * i32(y) + B) >> s) (fixed)
+  1   0.582   10    0             exact (exhaustive) u8((C0 * i32(x) * i32(y) + B) >> s) (fixed)
       af1(x, y) = u8((257 * i32(x) * i32(y) + 32871) >> 16)
   168934 integer forms evaluated in the search
 > hyp(x: f32 in 0..1, y: f32 in 0..1) = sqrt(x*x + y*y)

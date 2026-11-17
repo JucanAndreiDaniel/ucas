@@ -113,7 +113,7 @@ simplify exp(log(x))
   ucas: simplify exp(x)*exp(2x)
 simplify exp(x)*exp(2x)
   = exp(3x)
-  check: equal at 64 sample points (max relative difference 1.9e-15)
+  check: equal at 64 sample points (max relative difference 1.8e-15)
 > simplify x^2/x^3
   ucas: simplify x^2/x^3
 simplify x^2/x^3
@@ -250,12 +250,12 @@ x^2 + y with x = 2, y = 3
 ∫ sin(x)^3*cos(x)^2 dx
   = cos(x)^5/5 - cos(x)^3/3 + C
   method: Bioche: t = cos(x)
-  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.1e-16)
+  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.2e-16)
 > integrate sin(x)^2*cos(x)^2
 ∫ sin(x)^2*cos(x)^2 dx
   = x/8 - sin(4x)/32 + C
   method: power reduction: sin^2 = (1 - cos 2u)/2, cos^2 = (1 + cos 2u)/2
-  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.4e-16)
+  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 8.3e-17)
 > integrate tan(x)^3
 ∫ tan(x)^3 dx
   = 1/(2cos(x)^2) + log(abs(cos(x))) + C
@@ -319,7 +319,7 @@ x^2 + y with x = 2, y = 3
 ∫ 1/(cos(x) + 2) dx
   = 2atan(tan(x/2)/sqrt(3))/sqrt(3) + C
   method: Weierstrass: t = tan(x/2); the antiderivative holds on each interval between the poles of the tangent
-  check: d/dx of it equals the integrand at 400 points of [0, 6.28319] (max difference 5.6e-16)
+  check: d/dx of it equals the integrand at 400 points of [0, 6.28319] (max difference 4.4e-16)
   from 0 to 6.28319: F(6.28319) - F(0) = -8.16431199431569e-17
   the antiderivative jumps by -3.62759872846843 at x = pi (the integrand is continuous there): the jump is taken out
   F(b) - F(a) minus the jumps = 3.62759872846843
@@ -411,7 +411,7 @@ solve sin(x)^2 - sin(x) = 0 for x
   ucas: solve exp(x) = 5
 solve exp(x) = 5 for x
   x = log(5)   (= 1.609437912)
-  check: each solution substituted (1 value): residual 0
+  check: each solution substituted (1 value): residual 8.9e-16
 > solve 2^x = 8
   ucas: solve 2^x = 8
 solve 2^x = 8 for x
@@ -425,9 +425,9 @@ solve log(x) = 2 for x
 > solve exp(x^2) = 3
   ucas: solve exp(x^2) = 3
 solve exp(x^2) = 3 for x
-  x = 1.0481470739682
-  x = -1.0481470739682
-  check: each solution substituted (2 values): residual 4.4e-16
+  x = 1.04814707396821
+  x = -1.04814707396821
+  check: each solution substituted (2 values): residual 8.9e-16
 > solve sin(x) = 2
   ucas: solve sin(x) = 2
 solve sin(x) = 2 for x
