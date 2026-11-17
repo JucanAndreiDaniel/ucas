@@ -2,7 +2,7 @@
 > domain f
 domain of f:
   x: u8, 0..255
-  requires 0 <= x < 8  (shift amount; C UB otherwise)
+  requires (x >= 8) => 0 <= x < 8  (shift amount; C UB otherwise)
   defined at 8 of 256 points
   defined for: 0..7
   undefined e.g. at x=8; x=9; x=10; x=11
@@ -13,6 +13,6 @@ wrap analysis of f:
   1 << x   (u8)
       nuw holds
       nsw holds
-  end to end: differs from the mathematical result at 0 points, e.g. 
+  end to end: differs from the mathematical result at 55 points, e.g. x=8
       exact for: 0..7
   over all 256 points of the domain

@@ -1,35 +1,17 @@
 > basis n1 { t(x, y) = lut cost -1 }
-07_negative_cost.ucas:2:32: error: expected a gate: name(x, y) = expr
+07_negative_cost.ucas:2:31: error: gate cost must be a non-negative integer (0..255)
     basis n1 { t(x, y) = lut cost -1 }
-                                   ^
+                                  ^
 > basis n2 { t(x, y) = lut cost -2 }
-07_negative_cost.ucas:3:32: error: expected a gate: name(x, y) = expr
+07_negative_cost.ucas:3:31: error: gate cost must be a non-negative integer (0..255)
     basis n2 { t(x, y) = lut cost -2 }
-                                   ^
+                                  ^
 > f(a: u1, b: u1) = a & b
 > gates f basis n1
-gates for f: 2 input bits -> 1 output bit, basis n1
-  minimal: cost 0, 8 steps (no program of cost <= -1 exists; 8 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x01)                 = (~b & ~a)
-  t1 = t(a, b, 0x04)                 = (~b & a)
-  t2 = t(a, b, 0x05)                 = (~b & ~a) | (~b & a)
-  t3 = t(a, b, 0x02)                 = (b & ~a)
-  t4 = t(a, b, 0x03)                 = (~b & ~a) | (b & ~a)
-  t5 = t(a, b, 0x06)                 = (~b & a) | (b & ~a)
-  t6 = t(a, b, 0x07)                 = (~b & ~a) | (~b & a) | (b & ~a)
-  t7 = t(a, b, 0x08)                 = (b & a)
-  r0 = t7
+07_negative_cost.ucas:5:17: error: basis n1 has no gates
+    gates f basis n1
+                    ^
 > gates f basis n2
-gates for f: 2 input bits -> 1 output bit, basis n2
-  minimal: cost 0, 8 steps (no program of cost <= -1 exists; 8 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x01)                 = (~b & ~a)
-  t1 = t(a, b, 0x04)                 = (~b & a)
-  t2 = t(a, b, 0x05)                 = (~b & ~a) | (~b & a)
-  t3 = t(a, b, 0x02)                 = (b & ~a)
-  t4 = t(a, b, 0x03)                 = (~b & ~a) | (b & ~a)
-  t5 = t(a, b, 0x06)                 = (~b & a) | (b & ~a)
-  t6 = t(a, b, 0x07)                 = (~b & ~a) | (~b & a) | (b & ~a)
-  t7 = t(a, b, 0x08)                 = (b & a)
-  r0 = t7
+07_negative_cost.ucas:6:17: error: basis n2 has no gates
+    gates f basis n2
+                    ^

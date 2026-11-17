@@ -21,14 +21,17 @@ lcm 0, x^2 + 1
 gcd 0, 0
   = 0
 > factor 0
-factor 0
-  = 0
-  check: exact (both sides have the same normal form)
+  ucas: factorint 0
+<english>:1:11: error: factorint n for 1 <= n < 2^64
+    factorint 0
+              ^
 > factor 1
-factor 1
-  = 1
-  check: exact (both sides have the same normal form)
+  ucas: factorint 1
+1 = 1
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 1; each factor is prime
 > factor 2*x + 2
+  ucas: factor 2*x + 2
 factor 2x + 2
   = 2(x + 1)
   check: exact (both sides have the same normal form)

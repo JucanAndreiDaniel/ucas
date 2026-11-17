@@ -1961,6 +1961,77 @@ pr(struct sbuf *b, nid n, int minp, const struct pctx *pc, int hex)
 		sb_putc(b, ')');
 }
 
+/* Bit-blasting a node tree (nodesat.c: blast/blast1) recurses once per node
+ * with a large stack frame: a left-deep chain of ~786 operators overflows an
+ * 8 MB stack.  Expressions built that deep parse fine (the parser's
+ * EXPR_DEPTH_LIMIT only counts nesting, not a flat chain), so callers that
+ * are about to enter the AIG builder check the tree first and get a clean
+ * error instead of a SIGSEGV.  The walk below is bounded by the limit, so it
+ * cannot itself overflow, and memoises depths as node_slots() does so a
+ * shared DAG is visited only once. */
+#define AIG_DEPTH_LIMIT 512
+static uint16_t *ddep;
+static uint8_t *ddone;
+static uint32_t dcap;
+
+static uint16_t
+aig_depth(nid n, int limit)
+{
+	uint32_t j;
+	uint16_t d = 1, x;
+
+	if (n == 0 || n >= dcap)
+		return 0;
+	if (ddone[n])
+		return ddep[n];
+	switch (N.op[n]) {
+	case O_CONST:
+	case O_UNDEF:
+	case O_VAR:
+		break;
+	case O_TABLE:
+		for (j = 0; j < N.b[n]; j++) {
+			x = aig_depth(N.lst[N.a[n] + j], limit);
+			if (x + 1 > d)
+				d = x + 1;
+		}
+		break;
+	default:
+		x = aig_depth(N.a[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.b[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.c[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		break;
+	}
+	if (d > limit)
+		fail("expression nesting too deep (limit %d)", limit);
+	ddep[n] = d;
+	ddone[n] = 1;
+	return d;
+}
+
+int
+node_aig_depth_check(nid root)
+{
+	uint32_t c;
+
+	if (root == 0 || root >= N.n)
+		return 0;
+	if (N.n > dcap) {
+		c = newcap(dcap, N.n + 1);
+		ddep = xrealloc(ddep, c * sizeof *ddep);
+		ddone = xrealloc(ddone, c);
+		memset(ddone + dcap, 0, c - dcap);
+		dcap = c;
+	}
+	return aig_depth(root, AIG_DEPTH_LIMIT);
+}
+
 /* does the expression use a bitwise operator?  (bounded walk) */
 static int
 has_bitwise(nid n, int depth)

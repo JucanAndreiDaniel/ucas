@@ -1,55 +1,41 @@
 > basis c256 { t(x, y) = lut cost 256 }
+06_cost_wrap.ucas:2:37: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis c256 { t(x, y) = lut cost 256 }
+                                        ^
 > basis c257 { t(x, y) = lut cost 257 }
+06_cost_wrap.ucas:3:37: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis c257 { t(x, y) = lut cost 257 }
+                                        ^
 > basis c512 { t(x, y) = lut cost 512 }
+06_cost_wrap.ucas:4:37: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis c512 { t(x, y) = lut cost 512 }
+                                        ^
 > basis c65536 { t(x, y) = lut cost 65536 }
+06_cost_wrap.ucas:5:41: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis c65536 { t(x, y) = lut cost 65536 }
+                                            ^
 > basis c1000 { t(x, y) = lut cost 1000 }
+06_cost_wrap.ucas:6:39: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis c1000 { t(x, y) = lut cost 1000 }
+                                          ^
 > f(a: u1, b: u1) = a & b
 > gates f basis c256
-gates for f: 2 input bits -> 1 output bit, basis c256
-  minimal: cost 0, 8 steps (no program of cost <= -1 exists; 8 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x01)                 = (~b & ~a)
-  t1 = t(a, b, 0x04)                 = (~b & a)
-  t2 = t(a, b, 0x05)                 = (~b & ~a) | (~b & a)
-  t3 = t(a, b, 0x02)                 = (b & ~a)
-  t4 = t(a, b, 0x03)                 = (~b & ~a) | (b & ~a)
-  t5 = t(a, b, 0x06)                 = (~b & a) | (b & ~a)
-  t6 = t(a, b, 0x07)                 = (~b & ~a) | (~b & a) | (b & ~a)
-  t7 = t(a, b, 0x08)                 = (b & a)
-  r0 = t7
+06_cost_wrap.ucas:8:19: error: basis c256 has no gates
+    gates f basis c256
+                      ^
 > gates f basis c257
-gates for f: 2 input bits -> 1 output bit, basis c257
-  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x08)                 = (b & a)
-  r0 = t0
+06_cost_wrap.ucas:9:19: error: basis c257 has no gates
+    gates f basis c257
+                      ^
 > gates f basis c512
-gates for f: 2 input bits -> 1 output bit, basis c512
-  minimal: cost 0, 8 steps (no program of cost <= -1 exists; 8 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x01)                 = (~b & ~a)
-  t1 = t(a, b, 0x04)                 = (~b & a)
-  t2 = t(a, b, 0x05)                 = (~b & ~a) | (~b & a)
-  t3 = t(a, b, 0x02)                 = (b & ~a)
-  t4 = t(a, b, 0x03)                 = (~b & ~a) | (b & ~a)
-  t5 = t(a, b, 0x06)                 = (~b & a) | (b & ~a)
-  t6 = t(a, b, 0x07)                 = (~b & ~a) | (~b & a) | (b & ~a)
-  t7 = t(a, b, 0x08)                 = (b & a)
-  r0 = t7
+06_cost_wrap.ucas:10:19: error: basis c512 has no gates
+    gates f basis c512
+                      ^
 > gates f basis c65536
-gates for f: 2 input bits -> 1 output bit, basis c65536
-  minimal: cost 0, 8 steps (no program of cost <= -1 exists; 8 candidates searched)
-  checked: the program reproduces every output bit on all 4 care inputs
-  t0 = t(a, b, 0x01)                 = (~b & ~a)
-  t1 = t(a, b, 0x04)                 = (~b & a)
-  t2 = t(a, b, 0x05)                 = (~b & ~a) | (~b & a)
-  t3 = t(a, b, 0x02)                 = (b & ~a)
-  t4 = t(a, b, 0x03)                 = (~b & ~a) | (b & ~a)
-  t5 = t(a, b, 0x06)                 = (~b & a) | (b & ~a)
-  t6 = t(a, b, 0x07)                 = (~b & ~a) | (~b & a) | (b & ~a)
-  t7 = t(a, b, 0x08)                 = (b & a)
-  r0 = t7
+06_cost_wrap.ucas:11:21: error: basis c65536 has no gates
+    gates f basis c65536
+                        ^
 > gates f basis c1000
-gates for f: 2 input bits -> 1 output bit, basis c1000
-  exact search stopped (cost limit at cost 12); Shannon decomposition instead:
-  no program found for output 0 (basis not complete, or more than 244 steps)
+06_cost_wrap.ucas:12:20: error: basis c1000 has no gates
+    gates f basis c1000
+                       ^

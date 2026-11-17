@@ -15641,9 +15641,26 @@ spirv_simplify(const char *src, double budget, int nofile)
 		}
 		rep_end();
 	}
-	if (nlog)
-		rep_proof("sat", "each rewrite bit-blasted and proved equal for "
-		    "every input (refinement)");
+	if (nlog) {
+		int nal = 0;
+		/* The rewrites do not all carry the same proof: the derived
+		 * ones (idrw, lane maps, subgroup counts) hold only where the
+		 * assumptions or the derivation's stated conditions do, and
+		 * dot products/algebra have their own certificates.  Claiming
+		 * "sat, for every input" at the response level would assert a
+		 * domain those rewrites do not have. */
+		for (i = 0; i < nlog; i++)
+			nal += rl[i].algebra;
+		if (nal + ndotrw + nidlog + nsglog + nlplog == 0)
+			rep_proof("sat", "each rewrite bit-blasted and proved equal "
+			    "for every input (refinement)");
+		else
+			rep_proof("derivation", "each rewrite carries its own proof "
+			    "and domain: derived rewrites hold only where their "
+			    "stated assumptions do (see holds_where), the rest "
+			    "bit-blasted and proved equal for every input "
+			    "(refinement)");
+	}
 	if (ntriv) {
 		/* the headline: beyond spirv-opt -O and a driver's back end */
 		double b2 = before - tgain;

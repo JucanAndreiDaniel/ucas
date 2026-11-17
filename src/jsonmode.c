@@ -1191,6 +1191,8 @@ struct req {
 	char err[600];
 	const char *ecode;
 	int nfunc;		/* function objects defined so far (it, that) */
+	int exprfn;		/* commands needing two functions (equiv, fit,
+				 * error): define a bare expression string first */
 };
 
 static int
@@ -1465,6 +1467,51 @@ render_params(struct req *r, struct sbuf *b, const struct jv *ps)
 	return 1;
 }
 
+/* a string the ucas grammar reads directly as a function: a name, or a
+ * typed application such as u32(x) (whose casts carry types we must keep) */
+static int
+fn_ref_ok(const char *s)
+{
+	const char *p, *q;
+
+	if (is_ident(s))
+		return 1;
+	for (p = s; *p == ' ' || *p == '\t'; p++)
+		;
+	if (isalpha((unsigned char)*p) || *p == '_') {
+		for (q = p; isalnum((unsigned char)*q) || *q == '_'; q++)
+			;
+		while (*q == ' ' || *q == '\t')
+			q++;
+		if (*q == '(')
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ * equiv/fit/error take two functions, and a bare expression string is not
+ * something the ucas grammar reads as a function.  Define it first with its
+ * parameters inferred from its free variables ("ff = (x*y)^5"), as the parser
+ * does for an anonymous function.  Names and typed applications are passed
+ * through unchanged.
+ */
+static int
+render_expr_func(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s = v->s;
+	char nm[24];
+
+	if (!text_ok(r, what, s))
+		return 0;
+	if (fn_ref_ok(s))
+		return sb_puts(b, s), 1;
+	snprintf(nm, sizeof nm, "_eq%d", r->nfunc++ & 1);
+	sb_printf(&r->pre, "%s = %s\n", nm, s);
+	return sb_puts(b, nm), 1;
+}
+
 /* a function argument; an object is defined first (as it, that, ...) */
 static int
 render_func(struct req *r, struct sbuf *b, const struct jv *v,
@@ -1476,7 +1523,8 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	int k;
 
 	if (v->t == J_STR)
-		return text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
+		return r->exprfn ? render_expr_func(r, b, v, what) :
+		    text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
 	if (v->t != J_OBJ || (body = jv_get(v, "body")) == NULL) {
 		if (v->t == J_OBJ && (jv_get(v, "op") || jv_get(v, "var") ||
 		    jv_get(v, "num") || jv_get(v, "expr")))
@@ -1511,6 +1559,30 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	return 1;
 }
 
+/*
+ * P_EXPRS is a comma-separated list of expressions (the ODE and its initial
+ * values for laplace_solve/zsolve).  A caller may pass one string with ';'
+ * between them; ';' is the global statement separator in ucas, so everything
+ * after the first one would be a separate statement and silently dropped.
+ * Write the list's own separator instead, leaving quoted text alone.
+ */
+static int
+render_exprs_str(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s;
+	int quote = 0;
+
+	if (!text_ok(r, what, v->s))
+		return 0;
+	for (s = v->s; *s; s++) {
+		if (*s == '"' && (s == v->s || s[-1] != '\\'))
+			quote = !quote;
+		sb_putc(b, !quote && *s == ';' ? ',' : *s);
+	}
+	return 1;
+}
+
 static int
 render_list(struct req *r, struct sbuf *b, const struct jv *v,
     const struct jparam *p)
@@ -1520,7 +1592,8 @@ render_list(struct req *r, struct sbuf *b, const struct jv *v,
 
 	if (v->t != J_ARR) {
 		if (p->type == P_EXPRS)
-			return render_expr(r, b, v, p->name, 1);
+			return v->t == J_STR ? render_exprs_str(r, b, v, p->name) :
+			    render_expr(r, b, v, p->name, 1);
 		if (v->t == J_STR && is_ident(v->s))
 			return sb_puts(b, v->s), 1;
 		return bad(r, "bad_request", "%s: an array", p->name);
@@ -2832,6 +2905,8 @@ handle(const struct jv *rq)
 		    "them)", cmd);
 		return error_response(id, cmd, "unknown_command", m);
 	}
+	r.exprfn = !strcmp(cmd, "equiv") || !strcmp(cmd, "fit") ||
+	    !strcmp(cmd, "error");
 	a = jv_get(rq, "args");
 	if (a && a->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "\"args\" is an "
@@ -2847,6 +2922,15 @@ handle(const struct jv *rq)
 		    !strcmp(v->s, "both") ? REP_FILES_WRITE | REP_FILES_BASE64 :
 		    !strcmp(v->s, "none") ? 0 : REP_FILES_WRITE;
 	defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+	if (r.exprfn) {
+		/* Defining a bare expression infers its free variables exactly
+		 * as the CLI does; in JSON mode that guess is an ambiguity, so
+		 * take the default for these calls unless the client set one. */
+		const struct jv *fv = jv_get(a, "f"), *gv = jv_get(a, "g");
+		if ((fv && fv->t == J_STR && !fn_ref_ok(fv->s)) ||
+		    (gv && gv->t == J_STR && !fn_ref_ok(gv->s)))
+			defaults = 1;
+	}
 	if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "args.assume is an "
 		    "object {key: reading}");

@@ -55,7 +55,7 @@ range of bigu -> u64:
 > wrap bigu
 wrap analysis of bigu:
   no wrapping or rounding operations
-  end to end: differs from the mathematical result at 65536 points, e.g. x=0
+  end to end: equals the mathematical (unbounded) result everywhere
   sampled 65536 points (domain has 2^64 or more points); not exhaustive
 > minlit(x: i64) = x + -9223372036854775808
 > wrap minlit
@@ -63,5 +63,5 @@ wrap analysis of minlit:
   x - -9223372036854775808   (i64)
       nuw fails: unsigned wrap at 32755 points, e.g. x=-9223372036854775808
       nsw fails: signed wrap at 32755 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
-  end to end: differs from the mathematical result at 0 points, e.g. 
+  end to end: differs from the mathematical result at 32755 points, e.g. x=-9223372036854775808
   sampled 65536 points (domain has 2^64 or more points); not exhaustive

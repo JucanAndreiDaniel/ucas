@@ -1684,13 +1684,27 @@ plan_run(struct plan *p, uint32_t np, const int64_t *in_i, const double *in_r)
 
 			if (real && (op == O_CAST || op == O_ASFLOAT) && !areal) {
 				const int64_t *av = COLI(p, a);
+				const struct ity *ca = ta;
+				struct ity ua;
+				/* An ideal run models every integer as an unbounded
+				 * K_INT, which loses the unsignedness of a uN
+				 * operand: a u64 value with bit 63 set is then read
+				 * as -1 when it is converted to a real, so f64(x)
+				 * appears to have an astronomically large error.
+				 * Interpret the bits with the operand's declared
+				 * (unsigned) type for the conversion instead. */
+				if (p->ideal && (TYK(p->ty[a]) == K_UINT ||
+				    TYK(p->ty[a]) == K_BOOL)) {
+					ity_of(&ua, p->ty[a], 0);
+					ca = &ua;
+				}
 				for (i = 0; i < np; i++) {
 					if (op == O_ASFLOAT)
 						orr[i] = frombits(TYW(p->ty[k]),
-						    asu(ta, av[i]));
+						    asu(ca, av[i]));
 					else
-						orr[i] = fw ? int_to_float(ta, av[i], fw) :
-						    int_to_real(ta, av[i]);
+						orr[i] = fw ? int_to_float(ca, av[i], fw) :
+						    int_to_real(ca, av[i]);
 					of[i] = af[i] & F_UNDEF;
 				}
 			} else if (real && op == O_CAST) {

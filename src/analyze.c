@@ -724,7 +724,11 @@ cmd_range(struct func *f)
 	printf("range of %s -> %s:\n", fname(f), ty_str(t));
 	rep_begin("range");
 	rep_str("type", ty_str(t));
-	rep_bool("empty", !any);
+	/* A NaN result is still a defined point; it just has no position in
+	 * the numeric min/max.  Calling an all-NaN range "undefined
+	 * everywhere" contradicts `domain`, which counts those same points
+	 * as defined. */
+	rep_bool("empty", !any && !nnan);
 	rep_bool("exhaustive", r.d.exhaustive);
 	rep_int("points", (long long)seen);
 	rep_int("undefined_points", (long long)nund);
@@ -740,9 +744,14 @@ cmd_range(struct func *f)
 		rep_num("min", rmn);
 		rep_num("max", rmx);
 	}
-	if (!any)
+	if (!any && !nnan)
 		printf("  empty (undefined everywhere)\n");
-	else if (TY_FP(t)) {
+	else if (!any) {
+		printf("  no numeric value: all %llu defined points are NaN\n",
+		    (unsigned long long)nnan);
+		rep_strf("note", "no numeric min/max: all %llu defined points "
+		    "are NaN", (unsigned long long)nnan);
+	} else if (TY_FP(t)) {
 		printf("  [%.9g, %.9g]", rmn, rmx);
 		if (!r.d.exhaustive)
 			printf("  (sampled min/max; not a sound bound)");
@@ -846,46 +855,98 @@ snap(double x, double span)
 static void
 list_conditions(const struct func *f, int *nc)
 {
+	struct citem { nid n; uint32_t go; } *st;
 	uint8_t *mark = xcalloc(N.n, 1);
-	nid *st = xmalloc(N.n * sizeof *st), n;
+	struct sbuf gp = {0};
 	uint32_t sp = 0, j;
 	char w[16];
+	const uint32_t NOG = 0xffffffffu;
+#define PUSHN(x, g) do { nid x_ = (x); \
+		if (x_ && !mark[x_]) { mark[x_] = 1; \
+			st[sp].n = x_; st[sp].go = (g); sp++; } } while (0)
+/* Format into a local buffer: growing gp before reading gp.p + b_
+ * would invalidate the argument. */
+#define NEWG(base, expr, neg) do { \
+		uint32_t b_ = (base); char gc_[1024]; \
+		if (b_ == NOG) { \
+			if (neg) snprintf(gc_, sizeof gc_, "!(%s)", (expr)); \
+			else snprintf(gc_, sizeof gc_, "%s", (expr)); \
+		} else if (neg) \
+			snprintf(gc_, sizeof gc_, "(%s && !(%s))", \
+			    gp.p + b_, (expr)); \
+		else \
+			snprintf(gc_, sizeof gc_, "(%s && %s)", \
+			    gp.p + b_, (expr)); \
+		ng_ = gp.n; \
+		sb_puts(&gp, gc_); \
+		sb_putc(&gp, 0); \
+	} while (0)
 
+	st = xmalloc(N.n * sizeof *st);
 	*nc = 0;
-	st[sp++] = f->body;
+	st[sp].n = f->body;
+	st[sp].go = NOG;
+	sp++;
 	mark[f->body] = 1;
 	while (sp) {
-		n = st[--sp];
+		nid n;
+		uint32_t go, ng_ = NOG;
+		const char *guard;
+		struct citem ci = st[--sp];
+
+		n = ci.n;
+		go = ci.go;
+		guard = go == NOG ? NULL : gp.p + go;
 		switch (N.op[n]) {
 		case O_CONST:
 		case O_VAR:
 			continue;
 		case O_TABLE:
 			for (j = 0; j < N.b[n]; j++)
-				if (!mark[N.lst[N.a[n] + j]]) {
-					mark[N.lst[N.a[n] + j]] = 1;
-					st[sp++] = N.lst[N.a[n] + j];
-				}
+				PUSHN(N.lst[N.a[n] + j], go);
 			continue;
 		}
-		if (N.a[n] && !mark[N.a[n]])
-			mark[N.a[n]] = 1, st[sp++] = N.a[n];
-		if (N.b[n] && !mark[N.b[n]])
-			mark[N.b[n]] = 1, st[sp++] = N.b[n];
-		/* a shuffle under sg_active: said below as the lane it reads */
-		if (N.c[n] && !mark[N.c[n]] && !(N.op[n] == O_SEL &&
-		    N.op[N.c[n]] == O_UNDEF && sg_active_of(N.a[n], NULL)))
-			mark[N.c[n]] = 1, st[sp++] = N.c[n];
+		/* ?: and short-circuit && / || evaluate only one side.  A
+		 * condition inside the side that is not taken is not a
+		 * requirement of the whole expression; printing a blind union
+		 * gave jointly-unsatisfiable requires (x >= 0 and -x > 0)
+		 * that contradicted the domain printed just below.  Qualify
+		 * each side's conditions by the guard that reaches it. */
+		if (N.op[n] == O_SEL || N.op[n] == O_LAND ||
+		    N.op[n] == O_LOR) {
+			const char *c = node_str(N.a[n]);
+
+			PUSHN(N.a[n], go);
+			NEWG(go, c, N.op[n] == O_LOR);
+			PUSHN(N.b[n], ng_);
+			if (N.op[n] == O_SEL) {
+				NEWG(go, c, 1);
+				/* a shuffle under sg_active: said below as the
+				 * lane it reads */
+				if (!(N.op[N.c[n]] == O_UNDEF &&
+				    sg_active_of(N.a[n], NULL)))
+					PUSHN(N.c[n], ng_);
+			}
+		} else {
+			PUSHN(N.a[n], go);
+			PUSHN(N.b[n], go);
+			PUSHN(N.c[n], go);
+		}
+		/* NEWG may have grown (and reallocated) gp, so refresh the
+		 * pointer into it before this node's own conditions print. */
+		guard = go == NOG ? NULL : gp.p + go;
 		if (TYK(N.ty[n]) == K_FLOAT)
 			continue;
-#define COND(...) do { char cb_[512]; snprintf(cb_, sizeof cb_, \
-		__VA_ARGS__); printf("  requires %s\n", cb_); (*nc)++; \
-		rep_obj(NULL); rep_str("kind", "requires"); \
-		rep_str("text", cb_); rep_end(); } while (0)
-#define UB(...) do { char cb_[512]; snprintf(cb_, sizeof cb_, \
-		__VA_ARGS__); printf("  C assumes %s\n", cb_); (*nc)++; \
-		rep_obj(NULL); rep_str("kind", "c_assumes"); \
-		rep_str("text", cb_); rep_end(); } while (0)
+#define EMIT(prefix_, kind_, guard_, ...) do { char cb_[512]; \
+		snprintf(cb_, sizeof cb_, __VA_ARGS__); \
+		if (guard_) printf("  %s (%s) => %s\n", prefix_, guard_, cb_); \
+		else printf("  %s %s\n", prefix_, cb_); \
+		(*nc)++; rep_obj(NULL); rep_str("kind", kind_); \
+		rep_str("text", cb_); \
+		if (guard_) rep_str("when", guard_); \
+		rep_end(); } while (0)
+#define COND(...) EMIT("requires", "requires", guard, __VA_ARGS__)
+#define UB(...) EMIT("C assumes", "c_assumes", guard, __VA_ARGS__)
 		if (N.op[n] == O_SEL && N.op[N.c[n]] == O_UNDEF &&
 		    sg_active_of(N.a[n], NULL)) {
 			nid ln = 0, am = sg_active_of(N.a[n], &ln);
@@ -1036,10 +1097,14 @@ list_conditions(const struct func *f, int *nc)
 		}
 #undef COND
 #undef UB
+#undef EMIT
+#undef PUSHN
+#undef NEWG
 	}
 	(void)w;
 	free(mark);
 	free(st);
+	free(gp.p);
 }
 
 static void
@@ -1314,8 +1379,19 @@ cmd_wrap(struct func *f)
 			}
 			/* end to end: machine result vs ideal result */
 			if ((COLF(&r.p, loc)[i] | COLF(&ir.p, iloc)[i]) & F_UNDEF) {
-				if ((COLF(&r.p, loc)[i] ^ COLF(&ir.p, iloc)[i]) & F_UNDEF)
+				/* One side defined and the other not is a difference
+				 * from the unbounded result as well (e.g. i64 -x at
+				 * INT64_MIN: the machine value wraps but the ideal
+				 * int overflows int64 and is undefined).  Give it a
+				 * witness and count it with the other mismatches, or
+				 * the "differs at N points" verdict contradicts its
+				 * own count (and `exact` says false). */
+				if ((COLF(&r.p, loc)[i] ^ COLF(&ir.p, iloc)[i]) &
+				    F_UNDEF) {
 					nmis_def++;
+					if (!wm.n)
+						fmt_point(&wm, f, r.in_i, r.in_r, i);
+				}
 				continue;
 			}
 			if (TY_FP(t)) {
@@ -1348,10 +1424,17 @@ cmd_wrap(struct func *f)
 				int64_t m = COLI(&r.p, loc)[i], id = COLI(&ir.p, iloc)[i];
 				int same;
 				ity_of(&it, t, 0);
-				same = int_unsigned(t) ? (id >= 0 &&
-				    (uint64_t)id == (uint64_t)m) : id == m;
+				/* Both runs keep an integer in an int64_t.  A u64
+				 * value with bit 63 set is therefore stored as a
+				 * negative int64 even when it is the exact
+				 * mathematical result; compare the bit patterns for
+				 * unsigned types, not a signed `id >= 0` test.  A
+				 * bare u64 identity has no wrap and must agree
+				 * everywhere. */
+				same = int_unsigned(t) ? (uint64_t)id == (uint64_t)m :
+				    id == m;
 				if (!same) {
-					if (!mism++)
+					if (!mism++ && !wm.n)
 						fmt_point(&wm, f, r.in_i, r.in_r, i);
 				}
 				if (f->np == 1 && r.d.exhaustive) {
@@ -1500,7 +1583,7 @@ cmd_wrap(struct func *f)
 		rep_int("overflow_points", (long long)novf);
 	} else {
 		rep_bool("exact", mism == 0 && !nmis_def);
-		rep_int("mismatch_points", (long long)mism);
+		rep_int("mismatch_points", (long long)(mism + nmis_def));
 		if (wm.n)
 			rep_str("mismatch_example", sb_str(&wm));
 		if (exact && nex && mism) {
@@ -1538,8 +1621,8 @@ cmd_wrap(struct func *f)
 		    "everywhere\n");
 	} else {
 		printf("  end to end: differs from the mathematical result at "
-		    "%llu points, e.g. %s\n", (unsigned long long)mism,
-		    sb_str(&wm));
+		    "%llu points, e.g. %s\n",
+		    (unsigned long long)(mism + nmis_def), sb_str(&wm));
 		if (exact && nex)
 			print_runs("      exact for: ", exact, nex, 12);
 	}

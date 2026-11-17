@@ -44,6 +44,7 @@
 #include "xform.h"
 #include "x86.h"
 #include "fuse.h"
+int node_aig_depth_check(nid root);	/* node.c: guard before bit-blasting */
 int homalg_command(struct P *p);	/* homalg.h */
 int ec_command(struct P *p);	/* ec.h (absalg.h names a parameter I) */
 
@@ -2784,7 +2785,7 @@ parse_basis(struct P *p)
 {
 	struct basis *b, *parent;
 	struct func tmp;
-	struct gate *g;
+	struct gate *g, ng;
 	uint32_t name;
 	int j;
 
@@ -2811,7 +2812,9 @@ parse_basis(struct P *p)
 			fail("expected a gate: name(x, y) = expr");
 		if (b->ng == MAXGATE)
 			fail("too many gates");
-		g = &b->g[b->ng];
+		/* Parse into a local gate: a failure part-way through this gate
+		 * must not leave a phantom (e.g. cost 0) in the basis. */
+		g = &ng;
 		memset(g, 0, sizeof *g);
 		memset(&tmp, 0, sizeof tmp);
 		g->name = tsym(p, p->i);
@@ -2843,22 +2846,35 @@ parse_basis(struct P *p)
 		}
 		g->cost = 1;
 		if (accept_kw(p, "cost")) {
-			nid c = number(p);
+			nid c;
+			if (pk(p) == T_MINUS)
+				fail("gate cost must be a non-negative integer "
+				    "(0..255)");
+			c = number(p);
+			if (!is_const(c) || N.ki[c] < 0 || N.ki[c] > 255)
+				fail("gate cost must be an integer between 0 and "
+				    "255 (it is stored as 8 bits)");
 			g->cost = (uint8_t)N.ki[c];
 		}
-		/* a gate of the same name replaces the inherited one */
-		for (j = 0; j < b->ng; j++)
-			if (b->g[j].name == g->name) {
-				b->g[j] = *g;
-				break;
-			}
-		if (g->lut)
-			b->ng += j == b->ng;
-		else if (j == b->ng) {
+		/* commit only once the whole gate parsed and validated */
+		if (g->lut) {
+			/* a gate of the same name replaces the inherited one */
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name) {
+					b->g[j] = *g;
+					break;
+				}
+			if (j == b->ng)
+				b->g[b->ng++] = *g;
+		} else {
 			basis_finish_gate(b, g);
-			b->ng++;
-		} else
-			basis_finish_gate(b, &b->g[j]);
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name)
+					break;
+			b->g[j] = *g;
+			if (j == b->ng)
+				b->ng++;
+		}
 	}
 	expect_eos(p);
 }
@@ -3615,6 +3631,31 @@ cmd_func_text(const char *src)
 	return f;
 }
 
+/* equiv_scan enumerates at most 1001 points before it samples and falls
+ * through to the SAT/AIG path.  A function whose whole parameter domain fits
+ * that budget is compared exhaustively and never bit-blasts, however deep
+ * its body: the AIG depth guard must not reject it. */
+static int
+equiv_exhaustive(const struct func *f)
+{
+	uint64_t pts = 1;
+	int i, w;
+	ty_t t;
+
+	for (i = 0; i < f->np; i++) {
+		t = f->p[i].ty;
+		if (!TY_SIZED(t))
+			return 0;
+		w = TYW(t);
+		if (w > 10)
+			return 0;
+		pts *= (uint64_t)1 << w;
+		if (pts > 1001)
+			return 0;
+	}
+	return 1;
+}
+
 /*
  * hyper.c: a statement with complex, quaternion or octonion numbers (i,
  * z, e1, q: quat ...) runs there, as text; 1 when it did.
@@ -4163,9 +4204,20 @@ statement(struct P *p)
 				}
 				expect_eos(p);
 				notes_flush();
-				if (!strcmp(cmd, "equiv"))
+				if (!strcmp(cmd, "equiv")) {
+					/* A flat chain (x*x*... with 800 factors) parses
+					 * fine but bit-blasts recursively in nodesat.c
+					 * and overflows the stack.  Reject it up front,
+					 * but only when the comparison actually reaches
+					 * the AIG builder: small integer domains are
+					 * checked exhaustively and never bit-blast. */
+					if (!equiv_exhaustive(f) ||
+					    !equiv_exhaustive(g)) {
+						node_aig_depth_check(f->body);
+						node_aig_depth_check(g->body);
+					}
 					cmd_equiv(f, g, ftz, nanbits);
-				else if (!strcmp(cmd, "fit"))
+				} else if (!strcmp(cmd, "fit"))
 					cmd_fit(f, g, metric);
 				else
 					cmd_error(f, g);
