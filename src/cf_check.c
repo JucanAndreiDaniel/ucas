@@ -357,7 +357,8 @@ harness(struct sbuf *b, const struct tfn *tf, int ntf, int bench,
 			struct sbuf d = {0};
 			ct_str(&d, ct_unqual(t->pty[j]), "");
 			int64_t alo, ahi;
-			if (t->kind[j] == PK_INT && assumed(t, j, &alo, &ahi)) {
+			if ((t->kind[j] == PK_INT || t->kind[j] == PK_LEN) &&
+			    assumed(t, j, &alo, &ahi)) {
 				sb_printf(b, "\t\t\t%s a%d = (%s)(%lldll + (long long)(rnd() "
 				    "%% %lluull));\n", d.p, j, d.p, (long long)alo,
 				    (unsigned long long)(ahi - alo + 1));

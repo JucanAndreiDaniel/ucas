@@ -191,6 +191,75 @@ exact_same(nid a, nid b)
 	return r;
 }
 
+/* Is a floating constant exactly the rational it denotes, as written?
+ * Integers up to 2^53 and dyadic fractions such as 0.5 are; a decimal whose
+ * double is only an approximation (1/3, 0.1, 2^60) is not.  qexact() only
+ * compares h/k with v in double arithmetic, so on its own it would call such
+ * a rounded double "exact" (the same snapping that turns 0.3333333333333333
+ * into 1/3); compare the recovered fraction with v's exact dyadic value. */
+static int
+const_is_exact(double v)
+{
+	aq c;
+	int64_t n, m;
+	double f;
+	int e, k;
+
+	if (!isfinite(v))
+		return 1;
+	if (fabs(v) > 9e15)
+		return 0;	/* too large to be an exact int64 coefficient */
+	if (v == floor(v))
+		return llabs((int64_t)v) <= ((int64_t)1 << 53);
+	if (!qexact(v, &c) || c.d <= 0)
+		return 0;
+	n = c.n < 0 ? -c.n : c.n;
+	f = frexp(fabs(v), &e);	/* v = m * 2^k, m integral */
+	m = (int64_t)ldexp(f, 53);
+	k = e - 53;
+	if (k >= 0) {
+		__int128 lhs = n, rhs = (__int128)c.d * m;
+		if (k > 40)
+			return 0;
+		return lhs == (rhs << k);
+	}
+	{
+		__int128 lhs = n, rhs = (__int128)c.d * m;
+		if (-k > 70)
+			return 0;
+		return (lhs << -k) == rhs;
+	}
+}
+
+/* the result prints rounded coefficients when any constant in it is a
+ * floating value that is not exact as written (or an integer past 2^53) */
+static int
+rounded_coefs(nid e, int depth)
+{
+	nid op[3];
+	int i, ar;
+
+	if (!e || depth > 100)
+		return 0;
+	if (N.op[e] == O_CONST) {
+		double v;
+		if (!TY_FP(N.ty[e]))
+			return 0;	/* integer constants are exact */
+		num_of(e, &v);
+		return !const_is_exact(v);
+	}
+	ar = opinfo[N.op[e]].arity;
+	if (ar < 0 || ar > 3)
+		return 0;
+	op[0] = N.a[e];
+	op[1] = N.b[e];
+	op[2] = N.c[e];
+	for (i = 0; i < ar; i++)
+		if (rounded_coefs(op[i], depth + 1))
+			return 1;
+	return 0;
+}
+
 static void
 print_check(nid a, nid b, const char *cond)
 {
@@ -198,7 +267,10 @@ print_check(nid a, nid b, const char *cond)
 	int one, n;
 	uint64_t m = 0;
 
-	if (exact_same(a, b)) {
+	/* "same normal form over Q" is only a proof when the result was
+	 * printed exactly: a rounded decimal coefficient makes the claim
+	 * vacuous (both sides snap to the same rational). */
+	if (!rounded_coefs(b, 0) && exact_same(a, b)) {
 		printf("  check: exact (both sides have the same normal form)\n");
 		rep_check("normal_form", -1, -1, 1, "both sides have the same "
 		    "normal form");
@@ -553,28 +625,18 @@ conv_or_say(nid e, struct rf *r, struct mp *dall)
 	return 1;
 }
 
-static int big_coefs;   /* the result has integers past 2^53 */
-
-static int
-mp_big(struct mp a)
-{
-	int i;
-
-	for (i = 0; i < a.n; i++)
-		if (llabs(a.t[i].c.n) > ((int64_t)1 << 53) || a.t[i].c.d >
-		    ((int64_t)1 << 53))
-			return 1;
-	return 0;
-}
-
 static void
 show_result(nid in, nid out, struct sbuf *conds)
 {
 	printf("  = %s\n", node_str(out));
 	rep_expr("result", out);
-	if (big_coefs && !exact_same(in, out)) {
-		printf("  note: coefficients beyond 2^53 are printed rounded (numbers "
-		    "in expressions are doubles), so no check is printed\n");
+	/* Warn whenever the *displayed* result is rounded, not only when the
+	 * exact rational had coefficients past 2^53: a small rational such as
+	 * 2/7 is also printed as a rounded decimal, and the input often already
+	 * held the big coefficient (exact_same would then be true). */
+	if (rounded_coefs(out, 0)) {
+		printf("  note: coefficients are printed rounded (numbers in "
+		    "expressions are doubles), so no exact check is printed\n");
 		return;
 	}
 	if (conds && conds->n)
@@ -792,7 +854,6 @@ alg_cmd1(const char *cmd, nid e, nid var)
 	nid out;
 
 	head(cmd, e);
-	big_coefs = 0;
 	if (!strcmp(cmd, "simplify")) {
 		out = alg_simplify(e, &conds);
 		show_result(e, out, &conds);
@@ -800,7 +861,6 @@ alg_cmd1(const char *cmd, nid e, nid var)
 	}
 	if (!conv_or_say(e, &r, &dall))
 		goto done;
-	big_coefs = mp_big(r.n) || mp_big(r.d);
 	if (strcmp(cmd, "expand"))
 		rf_conds(dall, r.d, &conds);
 	if (!strcmp(cmd, "expand") || !strcmp(cmd, "cancel")) {

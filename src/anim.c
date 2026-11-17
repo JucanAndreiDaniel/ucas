@@ -37,6 +37,7 @@
 #include <string.h>
 #include <strings.h>
 #include <time.h>
+#include <unistd.h>
 
 #define MAXN 100
 #define MAXCELLS 128		/* Blelloch pads to a power of two */
@@ -1608,10 +1609,12 @@ deliver(struct gif *gp, const char *name, int nofile)
 		char path[80];
 		FILE *fp;
 		snprintf(path, sizeof path, "%s.gif", name);
-		if ((fp = fopen(path, "wb")) == NULL ||
-		    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
-			if (fp)
-				fclose(fp);
+		fp = fopen(path, "wb");
+		if (fp == NULL)
+			fail("cannot write %s", path);
+		if (fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+			fclose(fp);
+			unlink(path);   /* do not leave a truncated GIF behind */
 			fail("cannot write %s", path);
 		}
 		fclose(fp);
@@ -1652,9 +1655,11 @@ deliver_file(const char *name, const char *type, const char *data, size_t n,
 		    out.p);
 	} else {
 		FILE *fp = fopen(name, "wb");
-		if (fp == NULL || fwrite(data, 1, n, fp) != n) {
-			if (fp)
-				fclose(fp);
+		if (fp == NULL)
+			fail("cannot write %s", name);
+		if (fwrite(data, 1, n, fp) != n) {
+			fclose(fp);
+			unlink(name);   /* do not leave a truncated file behind */
 			fail("cannot write %s", name);
 		}
 		fclose(fp);

@@ -390,7 +390,8 @@ push(int k, const char *s, size_t n, int sp)
 	w->k = k;
 	w->sp = sp;
 	if (n >= sizeof w->s)
-		n = sizeof w->s - 1;
+		nfail("a word or number is too long for me (at most %zu "
+		    "characters)", sizeof w->s - 1);
 	memcpy(w->o, s, n);
 	for (i = 0; i < n; i++)
 		w->s[i] = tolower((unsigned char)s[i]);
@@ -616,7 +617,28 @@ tokenize(const char *s)
 			i += strlen(sy[k]);
 			continue;
 		}
-		nfail("I can't read the character '%c'", s[i]);
+		{
+			unsigned char c = (unsigned char)s[i];
+			size_t clen = 1, k2;
+			char cp[8];
+
+			if (c >= 0xf0 && i + 3 < n)
+				clen = 4;
+			else if (c >= 0xe0 && i + 2 < n)
+				clen = 3;
+			else if (c >= 0xc0 && i + 1 < n)
+				clen = 2;
+			for (k2 = 1; k2 < clen; k2++)
+				if (((unsigned char)s[i + k2] & 0xc0) != 0x80) {
+					clen = 1;
+					break;
+				}
+			if (clen > 1) {
+				snprintf(cp, sizeof cp, "%.*s", (int)clen, s + i);
+				nfail("I can't read the character '%s'", cp);
+			}
+			nfail("I can't read the character '\\x%02x'", c);
+		}
 	}
 	for (k = 0; k < 4; k++)
 		memset(&W[nw + k], 0, sizeof W[0]);
@@ -1125,27 +1147,67 @@ mult_word(const char *w, int64_t *m)
 		*m = 1000000;
 	else if (!strcmp(w, "billion"))
 		*m = 1000000000;
+	else if (!strcmp(w, "trillion"))
+		*m = 1000000000000LL;
 	else
 		return 0;
 	return 1;
 }
 
-/* "two hundred fifty-six", "a thousand" */
-static int
-number_words(int64_t *out)
+/* printf has no portable conversion for __int128: build the decimal */
+static void
+i128_dec(__int128 v, char *out, size_t n)
 {
-	int s = wi, any = 0, small = 0;
-	int64_t total = 0, cur = 0, v, m;
+	char rev[48];
+	unsigned __int128 u;
+	size_t k = 0, z = 0;
+
+	u = v < 0 ? (unsigned __int128)(-(v + 1)) + 1 : (unsigned __int128)v;
+	/* ucas rejects bare integer literals above u64: when a larger value
+	 * ends in zeros, keep it exact as a coefficient times a power of ten
+	 * so it stays an arbitrary-precision int. */
+	if (u > 9223372036854775807ULL) {
+		while (u > 1000000000ULL && u % 10 == 0) {
+			u /= 10;
+			z++;
+		}
+		if (z) {
+			snprintf(out, n, "%llu*10^%zu", (unsigned long long)u, z);
+			return;
+		}
+	}
+	do {
+		rev[k++] = (char)('0' + u % 10);
+		u /= 10;
+	} while (u);
+	if (v < 0 && k < sizeof rev)
+		rev[k++] = '-';
+	if (k >= n)
+		k = n - 1;
+	while (k > 0)
+		*out++ = rev[--k];
+	*out = 0;
+}
+
+/* "two hundred fifty-six", "a thousand", "one billion billion" */
+static int
+number_words(char *out, size_t outn)
+{
+	int s = wi, any = 0, small = 0, scaled = 0;
+	int64_t nv, m;
+	__int128 total = 0, cur = 0, v;
 
 	for (;;) {
 		const char *w = W[wi].s;
 		if (W[wi].k != W_WORD)
 			break;
-		if (numword_val(w, &v) && !(small && v < 10 && cur % 10)) {
+		if (numword_val(w, &nv) && !(small && nv < 10 && cur % 10)) {
 			if (any && cur % 100 && cur % 100 < 20)
 				break;   /* "three four": two numbers */
+			v = nv;
 			cur += v;
 			any = small = 1;
+			scaled = 0;
 			wi++;
 			continue;
 		}
@@ -1153,24 +1215,31 @@ number_words(int64_t *out)
 		    mult_word(W[wi + 1].s, &m))) {
 			cur = 1;
 			any = 1;
+			scaled = 0;
 			wi++;
 			continue;
 		}
 		if (any && !strcmp(w, "hundred")) {
 			cur = (cur ? cur : 1) * 100;
 			small = 0;
+			scaled = 0;
 			wi++;
 			continue;
 		}
 		if (any && mult_word(w, &m)) {
-			total += (cur ? cur : 1) * m;
+			if (scaled)
+				total *= m;   /* "billion billion": 10^9 * 10^9 */
+			else
+				total += (cur ? cur : 1) * m;
 			cur = 0;
 			small = 0;
+			scaled = 1;
 			wi++;
 			continue;
 		}
 		if (any && !strcmp(w, "and") && (isw(wi - 1, "hundred") ||
-		    isw(wi - 1, "thousand")) && numword_val(W[wi + 1].s, &v)) {
+		    isw(wi - 1, "thousand")) &&
+		    numword_val(W[wi + 1].s, &nv)) {
 			wi++;
 			continue;
 		}
@@ -1180,8 +1249,34 @@ number_words(int64_t *out)
 		wi = s;
 		return 0;
 	}
-	*out = total + cur;
+	i128_dec(total + cur, out, outn);
 	return 1;
+}
+
+/* "point one four": digits spoken singly after a whole number */
+static void
+spelled_point(char *s, size_t n)
+{
+	int64_t d;
+	size_t len = strlen(s);
+	int any = 0;
+
+	if (!isw(wi, "point"))
+		return;
+	wi++;
+	while (W[wi].k == W_WORD && numword_val(W[wi].s, &d) &&
+	    d >= 0 && d <= 9) {
+		if (len + 3 >= n)
+			break;
+		if (!any) {
+			s[len++] = '.';
+			s[len] = 0;
+			any = 1;
+		}
+		s[len++] = (char)('0' + d);
+		s[len] = 0;
+		wi++;
+	}
 }
 
 /* "half", "thirds": the denominator */
@@ -2645,6 +2740,7 @@ parse_prefix(int minprec)
 {
 	struct ex e, a, b, c;
 	struct func *f;
+	static char nbuf[64];
 	struct decl d;
 	int64_t v;
 	int s = wi, s1, k, den;
@@ -2698,8 +2794,9 @@ parse_prefix(int minprec)
 		}
 		goto fraction;
 	}
-	if (number_words(&v)) {
-		e = num(S("%lld", (long long)v));
+	if (number_words(nbuf, sizeof nbuf)) {
+		spelled_point(nbuf, sizeof nbuf);
+		e = num(nbuf);
 		number_scale(&e);
 fraction:
 		if (mixed_number(&e)) {
@@ -3051,7 +3148,7 @@ parse_postfix(struct ex e, int minprec)
 			e = mkbin(e, "*", x, P_MUL);
 			continue;
 		}
-		if (e.lit && mat("percent of|%")) {
+		if (e.lit && (mat("percent of|%") || mat("% of"))) {
 			if (W[wi - 1].k == W_SYM && !mat("of")) {
 				wi = s;
 				break;
@@ -3670,7 +3767,7 @@ parse_model(void)
 static int
 small_number(int *n)
 {
-	int64_t v;
+	char nbuf[64];
 	int s = wi;
 
 	if (W[wi].k == W_NUM && is_int(W[wi].s)) {
@@ -3678,8 +3775,8 @@ small_number(int *n)
 		wi++;
 		return 1;
 	}
-	if (number_words(&v)) {
-		*n = (int)v;
+	if (number_words(nbuf, sizeof nbuf)) {
+		*n = atoi(nbuf);
 		return 1;
 	}
 	wi = s;
@@ -5219,7 +5316,9 @@ yes_no(int s0)
 				o[1] = odd ? "an odd number for every input" :
 				    "an even number for every input";
 				if (clarify(NULL, S("\"%s\"", odd ? "odd" : "even"), o,
-				    2, 0, "say \"an odd function\" or \"always odd\"")) {
+				    2, 0, odd ? "say \"an odd function\" or "
+				    "\"always odd\"" :
+				    "say \"an even function\" or \"always even\"")) {
 					Q.prop = odd ? PR_ODDV : PR_EVENV;
 					Q.cmd = C_PROP;
 					return 1;
@@ -8308,6 +8407,7 @@ static const char *const starters[] = {"what", "whats", "how", "is", "are",
 	"synthesize", "synthesise", "factor", "forget", "hey",
 	"hi", "ok", "okay", "so", "now", "also", "the", "whether", "get",
 	"work", "figure", "tune", "calibrate", "speed", "improve", "name",
+	"it", "make",
 	"call", "declare", "thanks", "verify", "alt", "alts", "alternatives",
 	"alternative", "approximate", "expand", "rewrite", "linearize",
 	"linearise", "classify", "characterize", "characterise", "describe",
@@ -8464,6 +8564,38 @@ word_at(const char *s, size_t n, size_t *i, char *w, size_t wn)
 
 int homalg_line(const char *s, size_t n);	/* homalg_cmd.c */
 int ec_word(const char *w);	/* ec_cmd.c */
+
+/*
+ * "7/8 of 64": a documented fraction-of expression.  "of" is the only
+ * English word, so the word count below does not see a request; ucas would
+ * otherwise read "of" as the product o*f.
+ */
+static int
+number_of_number(const char *s, size_t n, size_t i)
+{
+	size_t k, m;
+
+	for (k = i; k + 1 < n; k++) {
+		if (s[k] != 'o' || s[k + 1] != 'f')
+			continue;
+		if (k > i && !isspace((unsigned char)s[k - 1]))
+			continue;
+		if (k + 2 < n && !isspace((unsigned char)s[k + 2]) &&
+		    s[k + 2] != '?')
+			continue;
+		m = k;
+		while (m > i && isspace((unsigned char)s[m - 1]))
+			m--;
+		if (m == i || !isdigit((unsigned char)s[m - 1]))
+			continue;
+		m = k + 2;
+		while (m < n && isspace((unsigned char)s[m]))
+			m++;
+		if (m < n && isdigit((unsigned char)s[m]))
+			return 1;
+	}
+	return 0;
+}
 
 int
 nlp_is_english(const char *s, size_t n)
@@ -8758,7 +8890,9 @@ nlp_is_english(const char *s, size_t n)
 			 * "parse a < b", "dsolve a to 4" are ucas; "show a
 			 * table of ..." is not
 			 */
-			if (strlen(w2) <= 2)
+			/* "of" is a preposition here, never a ucas variable:
+			 * "wrap of x+1" is a request, not a product o*f*x */
+			if (strlen(w2) <= 2 && strcmp(w2, "of"))
 				return english_words(s + j2, n - j2, 1) >= 1;
 			return 1;
 		} else if (!user_fn(w1) && in_list(starters, w1)) {
@@ -8781,7 +8915,8 @@ nlp_is_english(const char *s, size_t n)
 		}
 		j++;
 	}
-	return count >= 2 || (count == 1 && words >= 2);
+	return count >= 2 || (count == 1 && words >= 2) ||
+	    number_of_number(s, n, i);
 }
 
 /*

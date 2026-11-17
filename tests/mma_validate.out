@@ -3,8 +3,8 @@ mma m16n8k16: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k
   each of D's 128 elements is a sum of 16 products of f16 and its C
    1. 121       output-stationary; A: 12 xor shuffles; B: 16 shuffles; 32 fdot2; k order by lane, depth 16
    2. 132.25    output-stationary; A: 16 quad broadcasts; B: 16 loads from shared memory (register-major); 32 fdot2, depth 16
-   3. 137       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
-   4. 137       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
+   3. 137       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
+   4. 137       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 16 shuffles; partial sums: 12 xor shuffles; 32 fdot2, depth 6
    5. 153.25    output-stationary; A: 8 loads from shared memory (register-major), 8 xor shuffles; B: 8 loads from shared memory (register-major), 8 xor shuffles; 32 fdot2, depth 16
    6. 157.25    output-stationary; A: 8 loads from shared memory (register-major), 8 xor shuffles; B: 8 xor shuffles, 8 shuffles; 32 fdot2, depth 16
   (30 more: mma ... all)
@@ -174,88 +174,88 @@ mma m16n8k8: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8
     	uint v14 = mma_slot[a3];
     	uint a4 = slot + (((lane & 3u) << 3u) ^ 64u);
     	uint v15 = mma_slot[a4];
-    	float v16 = unpackHalf2x16(v14).x;
-    	float v17 = unpackHalf2x16(v15).x;
-    	float v18 = fma(v16, v17, v9);
-    	float v19 = unpackHalf2x16(v14).y;
-    	float v20 = unpackHalf2x16(v15).y;
-    	float v21 = fma(v19, v20, v18);
+    	float v16 = unpackHalf2x16(v15).x;
+    	float v17 = unpackHalf2x16(v14).x;
+    	float v18 = fma(v17, v16, v9);
+    	float v19 = unpackHalf2x16(v15).y;
+    	float v20 = unpackHalf2x16(v14).y;
+    	float v21 = fma(v20, v19, v18);
     	uint v22 = mma_slot[a4 + 4u];
     	float v23 = unpackHalf2x16(v22).x;
-    	float v24 = fma(v16, v23, v10);
+    	float v24 = fma(v17, v23, v10);
     	float v25 = unpackHalf2x16(v22).y;
-    	float v26 = fma(v19, v25, v24);
+    	float v26 = fma(v20, v25, v24);
     	uint v27 = mma_slot[a3 + 32u];
     	float v28 = unpackHalf2x16(v27).x;
-    	float v29 = fma(v28, v17, v12);
+    	float v29 = fma(v28, v16, v12);
     	float v30 = unpackHalf2x16(v27).y;
-    	float v31 = fma(v30, v20, v29);
+    	float v31 = fma(v30, v19, v29);
     	float v32 = fma(v28, v23, v13);
     	float v33 = fma(v30, v25, v32);
     	uint v34 = mma_slot[a3 + 1u];
     	uint v35 = mma_slot[a4 + 1u];
-    	float v36 = unpackHalf2x16(v34).x;
-    	float v37 = unpackHalf2x16(v35).x;
-    	float v38 = fma(v36, v37, v21);
-    	float v39 = unpackHalf2x16(v34).y;
-    	float v40 = unpackHalf2x16(v35).y;
-    	float v41 = fma(v39, v40, v38);
+    	float v36 = unpackHalf2x16(v35).x;
+    	float v37 = unpackHalf2x16(v34).x;
+    	float v38 = fma(v37, v36, v21);
+    	float v39 = unpackHalf2x16(v35).y;
+    	float v40 = unpackHalf2x16(v34).y;
+    	float v41 = fma(v40, v39, v38);
     	uint v42 = mma_slot[a4 + 5u];
     	float v43 = unpackHalf2x16(v42).x;
-    	float v44 = fma(v36, v43, v26);
+    	float v44 = fma(v37, v43, v26);
     	float v45 = unpackHalf2x16(v42).y;
-    	float v46 = fma(v39, v45, v44);
+    	float v46 = fma(v40, v45, v44);
     	uint v47 = mma_slot[a3 + 33u];
     	float v48 = unpackHalf2x16(v47).x;
-    	float v49 = fma(v48, v37, v31);
+    	float v49 = fma(v48, v36, v31);
     	float v50 = unpackHalf2x16(v47).y;
-    	float v51 = fma(v50, v40, v49);
+    	float v51 = fma(v50, v39, v49);
     	float v52 = fma(v48, v43, v33);
     	float v53 = fma(v50, v45, v52);
     	uint v54 = mma_slot[a3 + 2u];
     	uint v55 = mma_slot[a4 + 2u];
-    	float v56 = unpackHalf2x16(v54).x;
-    	float v57 = unpackHalf2x16(v55).x;
-    	float v58 = fma(v56, v57, v41);
-    	float v59 = unpackHalf2x16(v54).y;
-    	float v60 = unpackHalf2x16(v55).y;
-    	float v61 = fma(v59, v60, v58);
+    	float v56 = unpackHalf2x16(v55).x;
+    	float v57 = unpackHalf2x16(v54).x;
+    	float v58 = fma(v57, v56, v41);
+    	float v59 = unpackHalf2x16(v55).y;
+    	float v60 = unpackHalf2x16(v54).y;
+    	float v61 = fma(v60, v59, v58);
     	uint v62 = mma_slot[a4 + 6u];
     	float v63 = unpackHalf2x16(v62).x;
-    	float v64 = fma(v56, v63, v46);
+    	float v64 = fma(v57, v63, v46);
     	float v65 = unpackHalf2x16(v62).y;
-    	float v66 = fma(v59, v65, v64);
+    	float v66 = fma(v60, v65, v64);
     	uint v67 = mma_slot[a3 + 34u];
     	float v68 = unpackHalf2x16(v67).x;
-    	float v69 = fma(v68, v57, v51);
+    	float v69 = fma(v68, v56, v51);
     	float v70 = unpackHalf2x16(v67).y;
-    	float v71 = fma(v70, v60, v69);
+    	float v71 = fma(v70, v59, v69);
     	float v72 = fma(v68, v63, v53);
     	float v73 = fma(v70, v65, v72);
     	uint v74 = mma_slot[a3 + 3u];
     	uint v75 = mma_slot[a4 + 3u];
-    	float v76 = unpackHalf2x16(v74).x;
-    	float v77 = unpackHalf2x16(v75).x;
-    	float v78 = fma(v76, v77, v61);
-    	float v79 = unpackHalf2x16(v74).y;
-    	float v80 = unpackHalf2x16(v75).y;
-    	float v81 = fma(v79, v80, v78);
+    	float v76 = unpackHalf2x16(v75).x;
+    	float v77 = unpackHalf2x16(v74).x;
+    	float v78 = fma(v77, v76, v61);
+    	float v79 = unpackHalf2x16(v75).y;
+    	float v80 = unpackHalf2x16(v74).y;
+    	float v81 = fma(v80, v79, v78);
     	uint v82 = mma_slot[a4 + 7u];
     	float v83 = unpackHalf2x16(v82).x;
-    	float v84 = fma(v76, v83, v66);
+    	float v84 = fma(v77, v83, v66);
     	float v85 = unpackHalf2x16(v82).y;
-    	float v86 = fma(v79, v85, v84);
+    	float v86 = fma(v80, v85, v84);
     	uint v87 = mma_slot[a3 + 35u];
     	float v88 = unpackHalf2x16(v87).x;
-    	float v89 = fma(v88, v77, v71);
+    	float v89 = fma(v88, v76, v71);
     	float v90 = unpackHalf2x16(v87).y;
-    	float v91 = fma(v90, v80, v89);
+    	float v91 = fma(v90, v79, v89);
     	float v92 = fma(v88, v83, v73);
     	float v93 = fma(v90, v85, v92);
     	d[0] = packHalf2x16(vec2(v81, v86));
     	d[1] = packHalf2x16(vec2(v91, v93));
     }
-  (nofile: mma_m16n8k8_f16.glsl, 4030 bytes, checksum 588424ea)
+  (nofile: mma_m16n8k8_f16.glsl, 4030 bytes, checksum a07275ba)
   what if: were a 64- or 128-bit shared access priced as one 32-bit access (load_shared_x2, load_shared_x4, store_shared_x2, store_shared_x4, which mali_g715 does not list): 293.66, 1.66x cheaper (output-stationary; A: 8 loads from shared memory (register-major, in 2 wide accesses); B: 8 loads from shared memory (register-major, in 2 wide accesses))
 > model wide : mali_g715 { load_shared_x4: 16.25, store_shared_x4: 26.94, load_shared_x2: 16.25, store_shared_x2: 26.94 }
 > mma m16n8k8 f16 model wide validate nofile
@@ -312,90 +312,90 @@ mma m16n8k8: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8
     	uint a4 = slot + (((lane & 3u) << 3u) ^ 64u);
     	uvec4 q15 = mma_slot4[(a4) >> 2u];
     	uint v15 = q15[0];
-    	float v16 = unpackHalf2x16(v14).x;
-    	float v17 = unpackHalf2x16(v15).x;
-    	float v18 = fma(v16, v17, v9);
-    	float v19 = unpackHalf2x16(v14).y;
-    	float v20 = unpackHalf2x16(v15).y;
-    	float v21 = fma(v19, v20, v18);
+    	float v16 = unpackHalf2x16(v15).x;
+    	float v17 = unpackHalf2x16(v14).x;
+    	float v18 = fma(v17, v16, v9);
+    	float v19 = unpackHalf2x16(v15).y;
+    	float v20 = unpackHalf2x16(v14).y;
+    	float v21 = fma(v20, v19, v18);
     	uvec4 q22 = mma_slot4[(a4 + 4u) >> 2u];
     	uint v22 = q22[0];
     	float v23 = unpackHalf2x16(v22).x;
-    	float v24 = fma(v16, v23, v10);
+    	float v24 = fma(v17, v23, v10);
     	float v25 = unpackHalf2x16(v22).y;
-    	float v26 = fma(v19, v25, v24);
+    	float v26 = fma(v20, v25, v24);
     	uvec4 q27 = mma_slot4[(a3 + 32u) >> 2u];
     	uint v27 = q27[0];
     	float v28 = unpackHalf2x16(v27).x;
-    	float v29 = fma(v28, v17, v12);
+    	float v29 = fma(v28, v16, v12);
     	float v30 = unpackHalf2x16(v27).y;
-    	float v31 = fma(v30, v20, v29);
+    	float v31 = fma(v30, v19, v29);
     	float v32 = fma(v28, v23, v13);
     	float v33 = fma(v30, v25, v32);
     	uint v34 = q14[1];
     	uint v35 = q15[1];
-    	float v36 = unpackHalf2x16(v34).x;
-    	float v37 = unpackHalf2x16(v35).x;
-    	float v38 = fma(v36, v37, v21);
-    	float v39 = unpackHalf2x16(v34).y;
-    	float v40 = unpackHalf2x16(v35).y;
-    	float v41 = fma(v39, v40, v38);
+    	float v36 = unpackHalf2x16(v35).x;
+    	float v37 = unpackHalf2x16(v34).x;
+    	float v38 = fma(v37, v36, v21);
+    	float v39 = unpackHalf2x16(v35).y;
+    	float v40 = unpackHalf2x16(v34).y;
+    	float v41 = fma(v40, v39, v38);
     	uint v42 = q22[1];
     	float v43 = unpackHalf2x16(v42).x;
-    	float v44 = fma(v36, v43, v26);
+    	float v44 = fma(v37, v43, v26);
     	float v45 = unpackHalf2x16(v42).y;
-    	float v46 = fma(v39, v45, v44);
+    	float v46 = fma(v40, v45, v44);
     	uint v47 = q27[1];
     	float v48 = unpackHalf2x16(v47).x;
-    	float v49 = fma(v48, v37, v31);
+    	float v49 = fma(v48, v36, v31);
     	float v50 = unpackHalf2x16(v47).y;
-    	float v51 = fma(v50, v40, v49);
+    	float v51 = fma(v50, v39, v49);
     	float v52 = fma(v48, v43, v33);
     	float v53 = fma(v50, v45, v52);
     	uint v54 = q14[2];
     	uint v55 = q15[2];
-    	float v56 = unpackHalf2x16(v54).x;
-    	float v57 = unpackHalf2x16(v55).x;
-    	float v58 = fma(v56, v57, v41);
-    	float v59 = unpackHalf2x16(v54).y;
-    	float v60 = unpackHalf2x16(v55).y;
-    	float v61 = fma(v59, v60, v58);
+    	float v56 = unpackHalf2x16(v55).x;
+    	float v57 = unpackHalf2x16(v54).x;
+    	float v58 = fma(v57, v56, v41);
+    	float v59 = unpackHalf2x16(v55).y;
+    	float v60 = unpackHalf2x16(v54).y;
+    	float v61 = fma(v60, v59, v58);
     	uint v62 = q22[2];
     	float v63 = unpackHalf2x16(v62).x;
-    	float v64 = fma(v56, v63, v46);
+    	float v64 = fma(v57, v63, v46);
     	float v65 = unpackHalf2x16(v62).y;
-    	float v66 = fma(v59, v65, v64);
+    	float v66 = fma(v60, v65, v64);
     	uint v67 = q27[2];
     	float v68 = unpackHalf2x16(v67).x;
-    	float v69 = fma(v68, v57, v51);
+    	float v69 = fma(v68, v56, v51);
     	float v70 = unpackHalf2x16(v67).y;
-    	float v71 = fma(v70, v60, v69);
+    	float v71 = fma(v70, v59, v69);
     	float v72 = fma(v68, v63, v53);
     	float v73 = fma(v70, v65, v72);
     	uint v74 = q14[3];
     	uint v75 = q15[3];
-    	float v76 = unpackHalf2x16(v74).x;
-    	float v77 = unpackHalf2x16(v75).x;
-    	float v78 = fma(v76, v77, v61);
-    	float v79 = unpackHalf2x16(v74).y;
-    	float v80 = unpackHalf2x16(v75).y;
-    	float v81 = fma(v79, v80, v78);
+    	float v76 = unpackHalf2x16(v75).x;
+    	float v77 = unpackHalf2x16(v74).x;
+    	float v78 = fma(v77, v76, v61);
+    	float v79 = unpackHalf2x16(v75).y;
+    	float v80 = unpackHalf2x16(v74).y;
+    	float v81 = fma(v80, v79, v78);
     	uint v82 = q22[3];
     	float v83 = unpackHalf2x16(v82).x;
-    	float v84 = fma(v76, v83, v66);
+    	float v84 = fma(v77, v83, v66);
     	float v85 = unpackHalf2x16(v82).y;
-    	float v86 = fma(v79, v85, v84);
+    	float v86 = fma(v80, v85, v84);
     	uint v87 = q27[3];
     	float v88 = unpackHalf2x16(v87).x;
-    	float v89 = fma(v88, v77, v71);
+    	float v89 = fma(v88, v76, v71);
     	float v90 = unpackHalf2x16(v87).y;
-    	float v91 = fma(v90, v80, v89);
+    	float v91 = fma(v90, v79, v89);
     	float v92 = fma(v88, v83, v73);
     	float v93 = fma(v90, v85, v92);
     	d[0] = packHalf2x16(vec2(v81, v86));
     	d[1] = packHalf2x16(vec2(v91, v93));
     }
-  (nofile: mma_m16n8k8_f16.glsl, 4124 bytes, checksum 506d3ef5)
+  (nofile: mma_m16n8k8_f16.glsl, 4124 bytes, checksum 1638f83d)
 > mma m16n8k8 tile 2 1 1 model rdna2 validate nofile
 mma m32n8k8: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8.row.col lays them out, f16 A and B, f32 C and D, 32 lanes, under rdna2 (1768 dataflows tried)
   a tile of 2 x 1 x 1 HMMAs (m16n8k8): one B fragment times several A ones; the costs are the tile's, each HMMA's a 2th of them
@@ -403,9 +403,9 @@ mma m32n8k8: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k8
    1. 89        (44.5 an HMMA) output-stationary; A: 12 xor shuffles; B: 8 shuffles; 32 fdot2; k order by lane, depth 8
    2. 105.25    (52.625 an HMMA) output-stationary; A: 16 quad broadcasts; B: 8 loads from shared memory (register-major); 32 fdot2, depth 8
    3. 105.25    (52.625 an HMMA) output-stationary; A: 16 quad broadcasts; B: 8 loads from shared memory (lane-major); 32 fdot2, depth 8
-   4. 133       (66.5 an HMMA) blocked (a lane: 4 rows x 8 columns x 2 of k); B: 8 shuffles; partial sums: 24 xor shuffles; 32 fdot2, depth 4
-   5. 133       (66.5 an HMMA) A-stationary; B: 8 shuffles; partial sums: 24 xor shuffles; 32 fdot2, depth 4
-   6. 134.25    (67.125 an HMMA) output-stationary; A: 8 loads from shared memory (register-major), 8 xor shuffles; B: 4 loads from shared memory (lane-major), 4 xor shuffles; 32 fdot2, depth 8
+   4. 133       (66.5 an HMMA) A-stationary; B: 8 shuffles; partial sums: 24 xor shuffles; 32 fdot2, depth 4
+   5. 133       (66.5 an HMMA) blocked (a lane: 4 rows x 8 columns x 2 of k); B: 8 shuffles; partial sums: 24 xor shuffles; 32 fdot2, depth 4
+   6. 134.25    (67.125 an HMMA) output-stationary; A: 8 loads from shared memory (register-major), 8 xor shuffles; B: 4 loads from shared memory (register-major), 4 xor shuffles; 32 fdot2, depth 8
   (30 more: mma ... all)
   B-stationary: none possible: no assignment of the partial sums to registers (a xor of the lane's bits) lets a butterfly send and read them from the same registers in every lane
   the 2 HMMAs one at a time, each the best alone: 134 (67 each); the tile is 1.51x cheaper

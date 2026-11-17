@@ -520,8 +520,9 @@ static const struct jcmd cmds[] = {
 	{"qr", "qr", 1, 0, "the quadratic residues mod n", {NUR("n", " %s",
 	    "n")}},
 	{"primroot", "primroot", 1, 0, "the smallest primitive root mod n, or "
-	    "whether a is one", {NUO("a", " %s", "a candidate (with modulus)"),
-	    NUO("n", " %s", "n (alone)"), RINGO(" in %s", "the ring"), RMOD}},
+	    "whether a is one", {NUO("n", " %s", "n (alone)"),
+	    NUO("a", " %s", "a candidate (with modulus)"),
+	    RINGO(" in %s", "the ring"), RMOD}},
 	{"dlog", "dlog", 1, 0, "the discrete logarithm", {TX("a", " %s",
 	    "the value"), TXO("base", " base %s", "the base (default a "
 	    "primitive root)"), RING(" in %s", "the ring"), RMOD}},
@@ -3254,7 +3255,7 @@ rd_all(int fd, void *p, size_t n)
 static int
 run_with_timeout(const struct jv *rq, double secs)
 {
-	int sp[2], st;
+	int sp[2], st = 0;
 	pid_t pid;
 	struct pollfd pf;
 	struct timespec t0, t1;
@@ -3353,15 +3354,24 @@ run_with_timeout(const struct jv *rq, double secs)
 			(void)read(sp[0], &c, 1);   /* 'k' */
 			_exit(0);   /* the child is the server now */
 		}
-		/* closed without the byte: it died */
-		waitpid(pid, &st, 0);
-		close(sp[0]);
+		/* closed without the byte: it died.  If waitpid fails there is
+		 * no status to decode: st is unwritten, so reporting a signal
+		 * number from it would be fabricated. */
 		{
+			pid_t w = waitpid(pid, &st, 0);
+			close(sp[0]);
 			char m[120];
-			snprintf(m, sizeof m, "the evaluation crashed (%s %d); the "
-			    "state is unchanged", WIFSIGNALED(st) ? "signal" :
-			    "status", WIFSIGNALED(st) ? WTERMSIG(st) :
-			    WEXITSTATUS(st));
+			if (w > 0 && WIFSIGNALED(st))
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(signal %d); the state is unchanged",
+				    WTERMSIG(st));
+			else if (w > 0)
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(status %d); the state is unchanged",
+				    WEXITSTATUS(st));
+			else
+				snprintf(m, sizeof m, "the evaluation crashed; "
+				    "the state is unchanged");
 			resp = error_response(jv_get(rq, "id"), jv_gets(rq, "cmd"),
 			    "internal", m);
 		}
@@ -3393,6 +3403,16 @@ json_serve(const struct jv *rq)
 		}
 		if (run_with_timeout(rq, t->num) >= 0)
 			return;
+		/* A pipe/fork failure made it impossible to put a wall-clock
+		 * bound on this request.  Running it inline would silently
+		 * ignore caller's timeout_s, so say so instead. */
+		resp = error_response(jv_get(rq, "id"),
+		    jv_gets(rq, "cmd"), "internal",
+		    "cannot start a timeout worker (pipe or fork failed); "
+		    "the request was not run");
+		respond(resp);
+		jv_free(resp);
+		return;
 	}
 	resp = handle(rq);
 	respond(resp);

@@ -13,6 +13,7 @@
 #include "bound.h"
 #include "numsearch.h"
 #include "stoch.h"
+#include "alg.h"
 
 #include <math.h>
 #include <stdlib.h>
@@ -1381,29 +1382,56 @@ cmd_wrap(struct func *f)
 		    op == O_MUL || op == O_DIV || op == O_SQRT || op == O_LOG ||
 		    op == O_POW || op == O_EXP || op == O_ASFLOAT ||
 		    op == O_CAST || op == O_TAN)) {
+			/* "no NaN"/"no inf" may only be claimed as fact when every
+			 * point was checked.  A finite sample that happens to miss
+			 * x=0 in x/x (0/0) says nothing about that point, so a
+			 * sampled run that saw none is "not proved", never a
+			 * no-NaN proof a fast-math rewrite could rely on. */
+			int nnan_ok = !s->nan && r.d.exhaustive;
+			int ninf_ok = !s->inf && r.d.exhaustive;
+			const char *risk = "";
+
+			if (op == O_DIV)
+				risk = "; a zero divisor gives inf (0/0 gives NaN)";
+			else if (op == O_SQRT)
+				risk = "; sqrt of a negative value gives NaN";
+			else if (op == O_LOG || op == O_POW || op == O_TAN)
+				risk = "; special operand values give NaN/inf";
 			printf("  %s   (%s)\n", node_str(g), ty_str(tk));
 			rep_obj(NULL);
 			rep_expr("op", g);
 			rep_str("type", ty_str(tk));
-			rep_bool("nnan", !s->nan);
+			rep_bool("nnan", nnan_ok);
 			rep_int("nan_points", (long long)s->nan);
 			if (s->nan)
 				rep_str("nan_example", sb_str(&s->wn));
-			rep_bool("ninf", !s->inf);
+			if (!s->nan && !nnan_ok)
+				rep_strf("nnan_note", "not proved: no NaN in the "
+				    "sampled points only%s", risk);
+			rep_bool("ninf", ninf_ok);
 			rep_int("inf_points", (long long)s->inf);
 			if (s->inf)
 				rep_str("inf_example", sb_str(&s->wi));
+			if (!s->inf && !ninf_ok)
+				rep_strf("ninf_note", "not proved: no inf in the "
+				    "sampled points only%s", risk);
 			rep_end();
 			if (s->nan)
 				printf("      nnan fails: NaN at %llu points, e.g. %s\n",
 				    (unsigned long long)s->nan, sb_str(&s->wn));
-			else
+			else if (nnan_ok)
 				printf("      nnan holds (no NaN from non-NaN inputs)\n");
+			else
+				printf("      nnan not proved: no NaN in the sampled "
+				    "points only%s\n", risk);
 			if (s->inf)
 				printf("      ninf fails: inf at %llu points, e.g. %s\n",
 				    (unsigned long long)s->inf, sb_str(&s->wi));
-			else
+			else if (ninf_ok)
 				printf("      ninf holds\n");
+			else
+				printf("      ninf not proved: no inf in the sampled "
+				    "points only%s\n", risk);
 			printed++;
 			continue;
 		}
@@ -2007,6 +2035,11 @@ int equiv_nanbits;
  * IEEE comparison: their rounding is the value being compared. */
 #define REAL_EQ_TOL 1e-9
 
+/* Set when algebra has proved the two real expressions differ by a nonzero
+ * constant.  The tolerance would then hide a genuine difference whose size
+ * is below it: compare the double results exactly to find a witness. */
+static int equiv_real_exact;
+
 static int
 same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 {
@@ -2016,7 +2049,11 @@ same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 	if (TY_FP(t)) {
 		if ((isnan(ar) && isnan(br)) || ar == br)
 			return 1;
-		if (TYK(t) == K_REAL && !isnan(ar) && !isnan(br))
+		/* A tolerance is only a sampling heuristic.  When there is an
+		 * algebraic certificate of a nonzero (possibly tiny) difference
+		 * it must not turn a refuted identity into an apparent equality. */
+		if (TYK(t) == K_REAL && !isnan(ar) && !isnan(br) &&
+		    !equiv_real_exact)
 			return fabs(ar - br) <= REAL_EQ_TOL *
 			    fmax(1.0, fmax(fabs(ar), fabs(br)));
 		return 0;
@@ -2024,13 +2061,19 @@ same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 	return a == b;
 }
 
-/* a result in a counterexample: a NaN with its bits under nanbits */
+/* a result in a counterexample: a NaN with its bits under nanbits.  Reals
+ * print with full double precision: %.6g collapses values a small absolute
+ * amount apart (e.g. 2560000 and 2560001) to the same string, which makes a
+ * reported "differs at ... e.g." counterexample un-reproducible and sounds
+ * like a fabricated witness. */
 static void
 fmt_res(struct sbuf *b, ty_t t, int64_t vi, double vr)
 {
 	if (equiv_nanbits && TYK(t) == K_FLOAT && isnan(vr))
 		sb_printf(b, "NaN 0x%0*llx", TYW(t) / 4,
 		    (unsigned long long)fbits(TYW(t), vr));
+	else if (TYK(t) == K_REAL)
+		sb_printf(b, "%.17g", vr);
 	else
 		fmt_val(b, t, vi, vr);
 }
@@ -2266,8 +2309,10 @@ int
 equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
     struct eqproof *pr)
 {
-	int sampled, m;
+	int sampled, m, real;
 	ty_t ct;
+	nid d = 0;
+	struct sbuf conds = {0};
 
 	memset(pr, 0, sizeof *pr);
 	ct = equiv_cmp_ty(N.ty[a], N.ty[b]);
@@ -2275,6 +2320,7 @@ equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
 	b = mk_cast(ct, b);
 	if ((N.fl[a] | N.fl[b]) & NF_LANES)
 		return equiv_lanes(f, a, b, wit, pr);
+	real = TYK(ct) == K_REAL;
 	m = equiv_scan(f, a, b, wit, &sampled, 1, &pr->points);
 	/* a grid over a real parameter is a sample, not an exhaustive proof:
 	 * there are infinitely many points between its rungs */
@@ -2290,6 +2336,53 @@ equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
 		pr->how = EQ_VACUOUS;
 		return 0;
 	}
+	if (real && sampled && m == 0) {
+		/* `real` is a mathematical type, not a machine float.  Sampling
+		 * with a tolerance can refute a true identity on last-bit noise
+		 * and accept a false one whose difference is below the tolerance.
+		 * The normal form over Q settles both without trusting a sample.
+		 * An exhaustive check needs no algebra: keep its stronger verdict. */
+		d = alg_simplify(mk_bin(O_SUB, a, b), &conds);
+		if (const_is(d, 0.0)) {
+			pr->how = EQ_ALGEBRA;
+			snprintf(pr->alg, sizeof pr->alg,
+			    "proved by algebra: f - g simplifies to 0 over Q%s",
+			    conds.n ? " where the cancelled denominators are nonzero" : "");
+			free(conds.p);
+			return 0;
+		}
+		if (is_const(d)) {
+			/* A provably nonzero constant difference: re-scan with exact
+			 * comparison so a difference below the tolerance is a witness
+			 * and not mistaken for equality. */
+			struct sbuf ew = {0};
+			int em;
+			equiv_real_exact = 1;
+			em = equiv_scan(f, a, b, wit ? &ew : NULL, &sampled, 1, NULL);
+			equiv_real_exact = 0;
+			pr->how = EQ_ALGEBRA;
+			snprintf(pr->alg, sizeof pr->alg,
+			    "proved different by algebra: f - g = %s", node_str(d));
+			if (em) {
+				if (wit) {
+					sb_clear(wit);
+					sb_puts(wit, sb_str(&ew));
+				}
+				free(ew.p);
+				free(conds.p);
+				return em;
+			}
+			free(ew.p);
+			/* below double resolution at every sampled point: still
+			 * refuted, the algebraic certificate is the reason */
+			if (wit)
+				sb_printf(wit, "at every point: f - g = %s (nonzero)",
+				    node_str(d));
+			free(conds.p);
+			return 1;
+		}
+	}
+	free(conds.p);
 	pr->how = sampled ? EQ_SAMPLED : EQ_EXHAUSTIVE;
 	if (m || !sampled)
 		return m;
@@ -2404,8 +2497,10 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	equiv_nanbits = nsat_nanbits = rflt && nanbits > 0;
 	nsat_floats = 1;
 	equiv_algebra = 1;
+	equiv_real_exact = 0;
 	m = equiv_decide(f, f->body, gb, &w, &pr);
 	equiv_algebra = 0;
+	equiv_real_exact = 0;
 	float_ftz = nsat_ftz = nsat_floats = 0;
 	equiv_nanbits = nsat_nanbits = 0;
 	eqproof_text(&how, &pr);

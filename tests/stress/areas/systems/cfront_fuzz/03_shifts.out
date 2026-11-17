@@ -1,9 +1,17 @@
 > c lower nofile
   shl(a: i32, n: i32) = a << n
+    defined where (no C UB): n >= 0 && n < 32
   shr(a: i32, n: i32) = a >> n
+    defined where (no C UB): n >= 0 && n < 32
   ushl(a: u32, n: u32) = a << n
+    defined where (no C UB): n >= 0 && n < 32
   ushr(a: u32, n: u32) = a >> n
+    defined where (no C UB): n >= 0 && n < 32
   shl_const(a: i32) = a << 32
+    defined where (no C UB): 0
   shr_neg(a: i32) = a >> -1
+    defined where (no C UB): 0
   shl_guard(x: u32, n: u32) = i32(i32(n < 32) != 0 ? x << n : 0)
+    defined where (no C UB): i32(n < 32) == 0 || n >= 0 && n < 32
   shr_guard(x: i32, n: i32) = i32(i32(n >= 0) != 0 && i32(n < 32) != 0) != 0 ? x >> n : -1
+    defined where (no C UB): i32(i32(n >= 0) != 0 && i32(n < 32) != 0) == 0 || n >= 0 && n < 32

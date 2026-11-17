@@ -533,10 +533,17 @@ used_axioms(kthm top, uint8_t *used)
 		if (kthm_rule(th) == KR_AXIOM)
 			used[kthm_aux(th)] = 1;
 		if (kthm_rule(th) == KR_CONV) {
+			/* a conversion may use a declared homomorphism, but only
+			 * one the converted terms actually mention: mirror
+			 * deps_of() so `axioms NAME` and `proof NAME` agree on
+			 * the axioms a proof rests on. */
 			uint32_t s;
 			for (s = 1; s < nksyms; s++) {
 				kthm h = ksyms[s].homthm;
-				if (h && h < th && !mark[h]) {
+				if (h && h < th && !mark[h] &&
+				    (uses_sym(kthm_concl(th), s, 0) ||
+				     uses_sym(kthm_concl(kthm_prem(th, 0)), s,
+				     0))) {
 					mark[h] = 1;
 					st[ns++] = h;
 				}

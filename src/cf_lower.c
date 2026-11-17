@@ -762,6 +762,11 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 		rt = ct_promote(ta);
 		a = conv(a, rt, at);
 		b = conv(b, ct_promote(tb), at);
+		/* C99 6.5.7p3: a shift count that is negative or >= the
+		 * promoted left operand's width is undefined.  This stays UB
+		 * even under wrapv (which only makes signed overflow wrap). */
+		add_cond(g, band(mk_bin(O_GE, b, mk_const_i(N.ty[b], 0)),
+		    mk_bin(O_LT, b, mk_const_i(N.ty[b], TYW(N.ty[a])))));
 		return mk_bin(op, a, b);
 	}
 	if (opinfo[op].fl & OF_CMP) {
@@ -775,13 +780,23 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 	b = conv(b, rt, at);
 	if (L.ub && (op == O_ADD || op == O_SUB || op == O_MUL))
 		add_cond(g, no_overflow(op, a, b, rt));
-	if (L.ub && (op == O_DIV || op == O_MOD) && TYK(N.ty[a]) == K_SINT) {
+	if (op == O_DIV || op == O_MOD) {
 		ty_t t = N.ty[a];
-		int w = TYW(t);
-		nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
-		    (w - 1)));
-		add_cond(g, bnot(band(mk_bin(O_EQ, a, mn), mk_bin(O_EQ, b,
-		    mk_const_i(t, -1)))));
+		/* C99 6.5.5p5: division or remainder by zero is undefined for
+		 * every integer type (signed and unsigned).  Float division by
+		 * zero is NOT UB (it follows IEEE 754), so restrict this to
+		 * integers.  A constant zero divisor yields a constant-false
+		 * condition (undefined on the whole domain), which the reporting
+		 * layer renders explicitly. */
+		if (TY_ISINT(t))
+			add_cond(g, mk_bin(O_NE, b, mk_const_i(t, 0)));
+		if (L.ub && TYK(t) == K_SINT) {
+			int w = TYW(t);
+			nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
+			    (w - 1)));
+			add_cond(g, bnot(band(mk_bin(O_EQ, a, mn), mk_bin(O_EQ, b,
+			    mk_const_i(t, -1)))));
+		}
 	}
 	return mk_bin(op, a, b);
 }
