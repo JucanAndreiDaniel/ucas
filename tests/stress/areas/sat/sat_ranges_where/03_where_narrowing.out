@@ -1,0 +1,131 @@
+> c1(x: u8) = x*x where x >= 3 && x <= 9
+> c2(x: u8) = x*x + (x & 16) where x >= 3 && x <= 9
+> equiv c1 ~ c2
+c1 and c2 are equal on the domain of c1 (exhaustive)
+  domain: x in 3..9 by the where clause (7 points enumerated)
+> domain c1
+domain of c1:
+  x: u8, 0..255
+  where x >= 3 && x <= 9
+  no conditions: total on its parameter types
+  defined at 7 of 7 points
+  over all 7 points of the domain
+> range c1
+range of c1 -> u8:
+  9..81   (7 distinct values)
+  values: 9, 16, 25, 36, 49, 64, 81
+  fits in u7
+  over all 7 points of the domain
+> d1(x: u8) = x where x <= 2 || x >= 250
+> domain d1
+domain of d1:
+  x: u8, 0..255
+  where x <= 2 || x >= 250
+  no conditions: total on its parameter types
+  defined at 9 of 9 points
+  over all 9 points of the domain
+> range d1
+range of d1 -> u8:
+  0..255   (9 distinct values)
+  values: 0..2, 250..255
+  fits in u8
+  over all 9 points of the domain
+> e1(x: u32) = x*x where x in {1, 100000, 4000000000}
+> domain e1
+domain of e1:
+  x: u32, 0..4294967295
+  where x == 1 || x == 100000 || x == 4000000000
+  no conditions: total on its parameter types
+  defined at 3 of 3 points
+  over all 3 points of the domain
+> range e1
+range of e1 -> u32:
+  1..1983905792
+  fits in u31
+  over all 3 points of the domain
+> f1(x: u8) = x where y = x + 200, y < 210
+> domain f1
+domain of f1:
+  x: u8, 0..255
+  where x + 200 < 210
+  no conditions: total on its parameter types
+  defined at 210 of 210 points
+  over all 210 points of the domain
+> range f1
+range of f1 -> u8:
+  0..255   (210 distinct values)
+  fits in u8
+  over all 210 points of the domain
+> g1(x: u8) = y*y where y = x & 15
+> equiv g1 ~ (x & 15)*(x & 15)
+g1 and (x & 15)*(x & 15) are equal on the domain of g1 (exhaustive)
+> range g1
+range of g1 -> u8:
+  0..225   (16 distinct values)
+  values: 0..1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225
+  fits in u8
+  over all 256 points of the domain
+> z(x: u8) = x where x < 3 && x > 200
+> domain z
+domain of z:
+  x: u8, 0..255
+  where x < 3 && x > 200
+  no conditions: total on its parameter types
+  defined at 0 of 0 points
+  over all 0 points of the domain
+> range z
+range of z -> u8:
+  empty (undefined everywhere)
+  over all 0 points of the domain
+> w(x: u8) = x where x >= 5 && x <= 5
+> domain w
+domain of w:
+  x: u8, 0..255
+  where x >= 5 && x <= 5
+  no conditions: total on its parameter types
+  defined at 1 of 1 points
+  over all 1 points of the domain
+> range w
+range of w -> u8:
+  5..5   (1 distinct values)
+  values: 5
+  fits in u3
+  over all 1 points of the domain
+> q(x: u16) = x where x % 3 == 0 && x < 100
+> domain q
+domain of q:
+  x: u16, 0..65535
+  where x % 3 == 0 && x < 100
+  no conditions: total on its parameter types
+  defined at 34 of 34 points
+  over all 34 points of the domain
+> range q
+range of q -> u16:
+  0..99   (34 distinct values)
+  values: 0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60, 63, 66, 69, ...
+  fits in u7
+  over all 34 points of the domain
+> s(x: u8) = x where x == 1 || x == 200 || x == 255
+> sall(x: u8) = x
+> equiv s ~ sall
+s and sall are equal on the domain of s (exhaustive)
+  domain: x in {1, 200, 255} by the where clause (3 points enumerated)
+> range s
+range of s -> u8:
+  1..255   (3 distinct values)
+  values: 1, 200, 255
+  fits in u8
+  over all 3 points of the domain
+> t(x: u8) = x where x < 8 || x >= 8
+> domain t
+domain of t:
+  x: u8, 0..255
+  where x < 8 || x >= 8
+  no conditions: total on its parameter types
+  defined at 256 of 256 points
+  over all 256 points of the domain
+> range t
+range of t -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain

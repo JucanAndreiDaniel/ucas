@@ -1,0 +1,10 @@
+> basis a : a { not(x) = ~x }
+> f(x: f32) = x*x + 1
+> cost f
+cost of f under gt1030: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)
+> cost f model gt1030
+cost of f under gt1030: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)

@@ -1,0 +1,26 @@
+> fw(x: u8) = x where x < 10
+> gw(x: u8) = x where x < 5
+> equiv fw ~ gw
+fw and gw are equal on the domain of fw (exhaustive)
+  domain: x in 0..9 by the where clause (10 points enumerated)
+> domain gw
+domain of gw:
+  x: u8, 0..255
+  where x < 5
+  no conditions: total on its parameter types
+  defined at 5 of 5 points
+  over all 5 points of the domain
+> aw(x: u8 in 0..255) = x
+> bw(x: u8 in 0..255) = x where x in {0,1,2,3}
+> equiv aw ~ bw
+aw and bw are equal on the domain of aw (exhaustive)
+> fa(x: u32 in 0..10000000) = x where x < 1000000
+> ga(x: u32 in 0..10000000) = x where x < 500000
+> equiv fa ~ ga
+fa and ga are equal on the domain of fa (exhaustive)
+  domain: x in 0..999999 by the where clause (1000000 points enumerated)
+> cw(x: u4 in 0..15) = x
+> dw(x: u4 in 0..15) = match x { 0 => 0, 1 => 1 }
+  note: match has no default arm: other values are outside the domain
+> equiv cw ~ dw
+cw and dw differ at 14 points, e.g. x=2: 2 vs undefined

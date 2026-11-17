@@ -1,0 +1,28 @@
+> zerof(x: u32) = asuint(asfloat(x) + f32(0))
+> zerog(x: u32) = x
+> equiv zerof zerog
+zerof and zerog differ at 130 points of the sample, e.g. x=2139370684: 2143564988 vs 2139370684
+> zidf(x: u32) = asuint(asfloat(x))
+> equiv zidf zerog
+zidf and zerog differ at 130 points of the sample, e.g. x=2139370684: 2143564988 vs 2139370684
+> minf(x: f32, y: f32) = min(x, y)
+> ming(x: f32, y: f32) = min(y, x)
+> maxf(x: f32, y: f32) = max(x, y)
+> maxg(x: f32, y: f32) = max(y, x)
+> equiv minf ming
+minf and ming are equal on the domain of minf (proved by SAT: 6179 AIG nodes, 1621 conflicts)
+> equiv minf ming nanbits
+minf and ming are equal on the domain of minf (proved by SAT: 6437 AIG nodes, 1525 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> equiv maxf maxg
+maxf and maxg are equal on the domain of maxf (proved by SAT: 6179 AIG nodes, 1451 conflicts)
+> equiv maxf maxg nanbits
+maxf and maxg are equal on the domain of maxf (proved by SAT: 6437 AIG nodes, 1469 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> mnf(a: u32, b: u32) = min(asfloat(a), asfloat(b))
+> mng(a: u32, b: u32) = min(asfloat(b), asfloat(a))
+> equiv mnf mng
+mnf and mng are equal on the domain of mnf (proved by SAT: 5457 AIG nodes, 1354 conflicts)
+> equiv mnf mng nanbits
+mnf and mng differ at 1 point of the sample, e.g. a=4293458434, b=4286966646: NaN 0xffe8fa02 vs NaN 0xffc5eb76
+  NaN results compared by their bits, sign and payload (nanbits)

@@ -1,0 +1,17 @@
+> f1(x: u4) = x
+> g1(x: u4) = match x { 0=>0, 1=>1 }
+  note: match has no default arm: other values are outside the domain
+> equiv f1 ~ g1
+f1 and g1 differ at 14 points, e.g. x=2: 2 vs undefined
+> f2(x: u4) = x
+> g2(x: u4) = [0,1,2,3][x]
+> equiv f2 ~ g2
+f2 and g2 differ at 12 points, e.g. x=4: 4 vs undefined
+> f3(x: u8) = x
+> g3(x: u8) = (x == 0) ? (1/0) : x
+> equiv f3 ~ g3
+f3 and g3 differ at 1 point, e.g. x=0: 0 vs undefined
+> f4(x: u8) = x
+> g4(x: u8) = (x >= 8) ? (1 << x) : x
+> equiv f4 ~ g4
+f4 and g4 differ at 248 points, e.g. x=8: 8 vs undefined

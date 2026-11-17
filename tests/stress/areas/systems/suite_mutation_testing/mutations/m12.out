@@ -1,0 +1,64 @@
+> rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)
+> guess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+> fit guess ~ rsqrt
+fit guess to rsqrt (max relative error, 4096 sample points):
+  K = 1597465581  (0x5f3763ed)
+  objective 0.0342066
+  asfloat(1597465581 - (asuint(x) >> 1))
+  max abs error 0.341896 at x=0.0100000007
+  max rel error 0.0342164 (3.42%) at x=59.6959572
+  mean rel error 0.0231791 over 65536 points
+  max 564234 ulp
+> find rsqrt 2
+find rsqrt: IEEE bit-level families, magic constant K fitted for max relative error
+  max rel 0.03421    cost 3     asfloat(1597465581 - (asuint(x) >> 1))        (x^-1/2 family)
+  [exact 1/sqrt(x) costs 7 under gt1030; refine a family with a Newton step and check it with 'error']
+> quake(x: f32) = y * (1.5f - 0.5f * x * y * y)
+    where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+> error quake ~ rsqrt
+error of quake against rsqrt:
+  max abs error 0.0174789 at x=0.0100000007
+  max rel error 0.00175224 (0.175%) at x=14.9190588
+  mean rel error 0.000943339 over 65536 points
+  max 28402 ulp
+  rounding, first order in u = 2^-24: 5 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4088 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  2.98e-07 (5 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 8.94 u here (it gains from about 16 operations of similar weight on)
+    expected    7.69e-08 (1.29 u): the root mean square if they are independent and uniform in [-u, u]
+    for 5 operations of equal weight: gamma_5 = 5 u / (1 - 5 u) = 2.98e-07, gamma~_5(4) = 4 sqrt(5) u = 5.33e-07
+> sum(x: f32 in 1..2) = x + 1e-4 - x
+> range sum
+range of sum -> f32:
+  [9.98973846e-05, 0.000100016594]
+  sampled 65536 points (domain has 8388609 points); not exhaustive
+> wrap rsqrt
+wrap analysis of rsqrt:
+  sqrt(x)   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  1/sqrt(x)   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 7.97e-07, max rel error 8.89e-08, max 1 ulp
+      worst relative error at x=3.99985194
+  sampled 65536 points (domain has 111421686 points); not exhaustive
+> d(x: f32 in -1..1) = 1 / x
+> wrap d
+wrap analysis of d:
+  1/x   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf fails: inf at 144 points, e.g. x=-2.5064325e-39
+  end to end vs the real-number result: max abs error 1.01e+31, max rel error 5.96e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=-1.03397521e-25
+      the float result is infinite where the real one is finite at 144 points (overflow)
+  sampled 65536 points (domain has 2130706433 points); not exhaustive
+> z(x: f32 in -1..1) = sqrt(x)
+> wrap z
+wrap analysis of z:
+  sqrt(x)   (f32)
+      nnan fails: NaN at 32652 points, e.g. x=-1
+      ninf holds
+  end to end vs the real-number result: max abs error 2.98e-08, max rel error 5.91e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=3.09170296e-33
+  sampled 65536 points (domain has 2130706433 points); not exhaustive

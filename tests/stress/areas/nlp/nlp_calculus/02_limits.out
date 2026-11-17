@@ -1,0 +1,85 @@
+> the limit of sin x / x as x approaches 0
+  note: what does "sin" apply to: read as sin(x) / ..., not sin(x / ...) (say "sin the quantity ..." for the second)
+  ucas: it(x) = sin(x)/x
+  ucas: limit it x -> 0
+limit of it as x -> 0:
+  0/0: L'Hôpital: lim (cos(x))/(1) = lim cos(x)
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> the limit of (1 + 1/x)^x as x goes to infinity
+  ucas: it(x) = (1 + 1/x)^x
+  ucas: limit it x -> inf
+limit of it as x -> inf:
+  (1/x + 1)^x = exp((x)*log(1/x + 1))
+  0*inf: x*log(1/x + 1) = (log(1/x + 1))/(1/x)
+  0/0: L'Hôpital: lim (-1/(x^2*(1/x + 1)))/(-1/x^2) = lim x^2/(x^2*(1/x + 1))
+  at inf: x^2 ~ 1|x|^2, x^2*(1/x + 1) ~ 1|x|^2
+  = 2.718281828
+  numeric (x = 10*2^k, k = 0..21): 2.59374246, 2.709835576, 2.717751104, 2.718248647, 2.718279755, 2.718281764
+    extrapolated (Richardson): 2.71828182846 (estimated error 3e-16): agrees
+> what does 1/x tend to as x goes to infinity
+  ucas: it(x) = 1/x
+  ucas: limit it x -> inf
+limit of it as x -> inf:
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 0.1, 0.00625, 0.000390625, 2.44140625e-05, 1.525878906e-06, 4.768371582e-08
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit of (x^2 - 1)/(x - 1) as x -> 1
+  ucas: it(x) = (x^2 - 1)/(x - 1)
+  ucas: limit it x -> 1
+limit of it as x -> 1:
+  0/0: L'Hôpital: lim (2x)/(1) = lim 2x
+  = 2 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 1.9, 1.99375, 1.999609375, 1.999975586, 1.999998474, 1.999999952
+    extrapolated (Richardson): 2 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 2.1, 2.00625, 2.000390625, 2.000024414, 2.000001526, 2.000000048
+    extrapolated (Richardson): 2 (estimated error 7e-17): agrees
+> the limit of 1/x as x approaches 0 from the right
+  ucas: it(x) = 1/x
+  ucas: limit it x -> 0 from right
+limit of it as x -> 0+ (from the right):
+  1/x -> inf (the numerator -> 1, x -> 0+)
+  = inf
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 10, 160, 2560, 40960, 655360, 20971520
+    the values grow without bound (+): agrees
+> the limit of (sin x - x)/x^3 as x approaches 0
+  note: what does "sin" apply to: read as sin(x) - ..., not sin(x - ...) (say "sin the quantity ..." for the second)
+  ucas: it(x) = (sin(x) - x)/x^3
+  ucas: limit it x -> 0
+limit of it as x -> 0:
+  0/0: L'Hôpital: lim (cos(x) - 1)/(3x^2) = lim (cos(x) - 1)/(3x^2)
+  0/0: L'Hôpital: lim (-sin(x))/(6x) = lim -sin(x)/(6x)
+  0/0: L'Hôpital: lim (-cos(x))/(6) = lim -cos(x)/6
+  = -1/6 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -0.1665833532, -0.1666663411, -0.1666666654, -0.1666666667, -0.1666666649, -0.1666545868
+    extrapolated (Richardson): -0.166666666701 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.1665833532, -0.1666663411, -0.1666666654, -0.1666666667, -0.1666666649, -0.1666545868
+    extrapolated (Richardson): -0.166666666701 (estimated error 0): agrees
+> find the limit of (1 - cos x)/x^2 as x approaches 0
+  ucas: it(x) = (1 - cos(x))/x^2
+  ucas: limit it x -> 0
+limit of it as x -> 0:
+  0/0: L'Hôpital: lim (sin(x))/(2x) = lim sin(x)/(2x)
+  0/0: L'Hôpital: lim (cos(x))/(2) = lim cos(x)/2
+  = 1/2 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.4995834722, 0.4999983724, 0.4999999936, 0.5, 0.4999999888, 0.5000114441
+    extrapolated (Richardson): 0.5 (estimated error 4e-14): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.4995834722, 0.4999983724, 0.4999999936, 0.5, 0.4999999888, 0.5000114441
+    extrapolated (Richardson): 0.5 (estimated error 4e-14): agrees
+> the limit of x*sin(1/x) as x approaches 0
+  ucas: it(x) = x*sin(1/x)
+  ucas: limit it x -> 0
+limit of it as x -> 0:
+  1/x -> inf (the numerator -> 1, x -> 0+)
+  1/x -> inf: sin(1/x) keeps oscillating between -1 and 1
+  squeeze: x -> 0 times a bounded factor
+  = 0 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -0.05440211109, 0.001371407865, 0.0001514012217, -2.073123128e-06, -1.492192327e-06, 2.088386152e-08
+    extrapolated (Richardson): 8.80983672472e-07 (estimated error 1e-08)
+    the values approach 0 (|f - L| = 2e-08 at the last point; not smooth enough to extrapolate): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.05440211109, 0.001371407865, 0.0001514012217, -2.073123128e-06, -1.492192327e-06, 2.088386152e-08
+    extrapolated (Richardson): 8.80983672472e-07 (estimated error 1e-08)
+    the values approach 0 (|f - L| = 2e-08 at the last point; not smooth enough to extrapolate): agrees

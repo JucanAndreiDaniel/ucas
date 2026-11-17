@@ -1,0 +1,49 @@
+> a(x: u8) = x + 1
+> wrap a
+wrap analysis of a:
+  x + 1   (u8)
+      nuw fails: unsigned wrap at 1 points, e.g. x=255
+      nsw fails: signed wrap at 1 points, e.g. x=127
+  end to end: differs from the mathematical result at 1 points, e.g. x=255
+      exact for: 0..254
+  over all 256 points of the domain
+> b(x: u8) = x << 2
+> wrap b
+wrap analysis of b:
+  x << 2   (u8)
+      nuw fails: unsigned wrap at 160 points, e.g. x=64
+      nsw fails: signed wrap at 192 points, e.g. x=32
+  end to end: differs from the mathematical result at 192 points, e.g. x=64
+      exact for: 0..63
+  over all 256 points of the domain
+> c(x: u16) = x * 3
+> wrap c
+wrap analysis of c:
+  3x   (u16)
+      nuw fails: unsigned wrap at 43690 points, e.g. x=21846
+      nsw fails: signed wrap at 43691 points, e.g. x=10923
+  end to end: differs from the mathematical result at 43690 points, e.g. x=21846
+      exact for: 0..21845
+  over all 65536 points of the domain
+> d(x: u8, n: u8 in 0..7) = x << n
+> wrap d
+wrap analysis of d:
+  x << n   (u8)
+      nuw fails: unsigned wrap at 1411 points, e.g. x=128, n=1
+      nsw fails: signed wrap at 1538 points, e.g. x=64, n=1
+  end to end: differs from the mathematical result at 1538 points, e.g. x=128, n=1
+  over all 2048 points of the domain
+> e(x: u16) = ~x
+> wrap e
+wrap analysis of e:
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 65536 points, e.g. x=0
+  over all 65536 points of the domain
+> f(x: u16) = u8(x)
+> wrap f
+wrap analysis of f:
+  u8(x)   (u8)
+      truncates at 65280 points, e.g. x=256
+  end to end: differs from the mathematical result at 65280 points, e.g. x=256
+      exact for: 0..255
+  over all 65536 points of the domain

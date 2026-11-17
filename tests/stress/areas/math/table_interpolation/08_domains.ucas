@@ -1,0 +1,12 @@
+# Partial-table domains: out-of-range index, wrapping index, SAT equiv.
+f(x: u8) = [1,2,3][x+1]
+wrap f
+range f
+g(x: u8) = [1,2,3][x]
+h(x: u8) = x < 3 ? [1,2,3][x] : 99
+equiv g h
+k(x: u8 in 0..2) = [1,2,3][x]
+m2(x: u8 in 0..2) = [1,2,3][x+1]
+equiv k m2
+big(i: u32 in 0..1022) = [i, i+1, i+2][0]
+range big

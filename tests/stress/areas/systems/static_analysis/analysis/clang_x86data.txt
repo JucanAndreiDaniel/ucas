@@ -1,0 +1,61 @@
+src/x86data.c:643:22: warning: Right operand is negative in left shift [core.BitwiseShift]
+  643 |                 m |= (uint16_t)(1u << (isdigit((unsigned char)*s) ? *s - '0' :
+      |                                    ^
+src/x86data.c:688:6: note: Assuming 'x86_ready' is 0
+  688 |         if (x86_ready)
+      |             ^~~~~~~~~
+src/x86data.c:688:2: note: Taking false branch
+  688 |         if (x86_ready)
+      |         ^
+src/x86data.c:693:2: note: Loop condition is true.  Entering loop body
+  693 |         for (i = 0; i < sizeof rows / sizeof rows[0]; i++) {
+      |         ^
+src/x86data.c:697:10: note: Field 'ua' is equal to UA_SKL
+  697 |                 if (r->ua == UA_SKL)
+      |                        ^
+src/x86data.c:697:3: note: Taking true branch
+  697 |                 if (r->ua == UA_SKL)
+      |                 ^
+src/x86data.c:699:10: note: Field 'ua' is not equal to UA_GLC
+  699 |                 if (r->ua == UA_GLC)
+      |                        ^
+src/x86data.c:699:3: note: Taking false branch
+  699 |                 if (r->ua == UA_GLC)
+      |                 ^
+src/x86data.c:701:3: note: Loop condition is true.  Entering loop body
+  701 |                 for (j = 0; j < nt; j++) {
+      |                 ^
+src/x86data.c:703:8: note: 'j' is <= 0
+  703 |                         if (j > 0 && x->have)
+      |                             ^
+src/x86data.c:703:14: note: Left side of '&&' is false
+  703 |                         if (j > 0 && x->have)
+      |                                   ^
+src/x86data.c:708:15: note: Calling 'port_mask'
+  708 |                         x->ports = port_mask(r->ports);
+      |                                    ^~~~~~~~~~~~~~~~~~~
+src/x86data.c:642:2: note: Loop condition is true.  Entering loop body
+  642 |         for (; *s; s++)
+      |         ^
+src/x86data.c:643:26: note: Assuming the condition is false
+  643 |                 m |= (uint16_t)(1u << (isdigit((unsigned char)*s) ? *s - '0' :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:192:21: note: expanded from macro 'isdigit'
+  192 | # define isdigit(c)     __isctype((c), _ISdigit)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/x86data.c:643:26: note: '?' condition is false
+/usr/include/ctype.h:192:21: note: expanded from macro 'isdigit'
+  192 | # define isdigit(c)     __isctype((c), _ISdigit)
+      |                         ^
+/usr/include/ctype.h:89:3: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |   ^
+src/x86data.c:643:22: note: The result of left shift is undefined because the right operand is negative
+  643 |                 m |= (uint16_t)(1u << (isdigit((unsigned char)*s) ? *s - '0' :
+      |                                 ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  644 |                     *s - 'a' + 10));
+      |                     ~~~~~~~~~~~~~~
+1 warning generated.

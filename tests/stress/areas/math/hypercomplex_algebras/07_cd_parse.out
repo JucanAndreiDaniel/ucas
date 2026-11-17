@@ -1,0 +1,115 @@
+> table cd16
+multiplication table of the sedenions (row times column), not symmetric: the product does not commute:
+        |     1    e1    e2    e3    e4    e5    e6    e7    e8    e9   e10   e11   e12   e13   e14   e15
+  ------+------------------------------------------------------------------------------------------------
+      1 |     1    e1    e2    e3    e4    e5    e6    e7    e8    e9   e10   e11   e12   e13   e14   e15
+     e1 |    e1    -1    e3   -e2    e5   -e4   -e7    e6    e9   -e8  -e11   e10  -e13   e12   e15  -e14
+     e2 |    e2   -e3    -1    e1    e6    e7   -e4   -e5   e10   e11   -e8   -e9  -e14  -e15   e12   e13
+     e3 |    e3    e2   -e1    -1    e7   -e6    e5   -e4   e11  -e10    e9   -e8  -e15   e14  -e13   e12
+     e4 |    e4   -e5   -e6   -e7    -1    e1    e2    e3   e12   e13   e14   e15   -e8   -e9  -e10  -e11
+     e5 |    e5    e4   -e7    e6   -e1    -1   -e3    e2   e13  -e12   e15  -e14    e9   -e8   e11  -e10
+     e6 |    e6    e7    e4   -e5   -e2    e3    -1   -e1   e14  -e15  -e12   e13   e10  -e11   -e8    e9
+     e7 |    e7   -e6    e5    e4   -e3   -e2    e1    -1   e15   e14  -e13  -e12   e11   e10   -e9   -e8
+     e8 |    e8   -e9  -e10  -e11  -e12  -e13  -e14  -e15    -1    e1    e2    e3    e4    e5    e6    e7
+     e9 |    e9    e8  -e11   e10  -e13   e12   e15  -e14   -e1    -1   -e3    e2   -e5    e4    e7   -e6
+    e10 |   e10   e11    e8   -e9  -e14  -e15   e12   e13   -e2    e3    -1   -e1   -e6   -e7    e4    e5
+    e11 |   e11  -e10    e9    e8  -e15   e14  -e13   e12   -e3   -e2    e1    -1   -e7    e6   -e5    e4
+    e12 |   e12   e13   e14   e15    e8   -e9  -e10  -e11   -e4    e5    e6    e7    -1   -e1   -e2   -e3
+    e13 |   e13  -e12   e15  -e14    e9    e8   e11  -e10   -e5   -e4    e7   -e6    e1    -1    e3   -e2
+    e14 |   e14  -e15  -e12   e13   e10  -e11    e8    e9   -e6   -e7   -e4    e5    e2   -e3    -1    e1
+    e15 |   e15   e14  -e13  -e12   e11   e10   -e9    e8   -e7    e6   -e5   -e4    e3    e2   -e1    -1
+  (Cayley-Dickson doubling of the octonion: (p, q)(s, t) = (ps - conj(t) q, tp + q conj(s)))
+> table cd(8)
+multiplication table of the octonions (row times column), not symmetric: the product does not commute:
+       |    1   e1   e2   e3   e4   e5   e6   e7
+  -----+----------------------------------------
+     1 |    1   e1   e2   e3   e4   e5   e6   e7
+    e1 |   e1   -1   e3  -e2   e5  -e4  -e7   e6
+    e2 |   e2  -e3   -1   e1   e6   e7  -e4  -e5
+    e3 |   e3   e2  -e1   -1   e7  -e6   e5  -e4
+    e4 |   e4  -e5  -e6  -e7   -1   e1   e2   e3
+    e5 |   e5   e4  -e7   e6  -e1   -1  -e3   e2
+    e6 |   e6   e7   e4  -e5  -e2   e3   -1  -e1
+    e7 |   e7  -e6   e5   e4  -e3  -e2   e1   -1
+  the Fano plane: the 7 lines (a, b, c) with e_a e_b = e_c, e_b e_c = e_a, e_c e_a = e_b:
+    (1, 2, 3) (1, 4, 5) (1, 7, 6) (2, 4, 6) (2, 5, 7) (3, 4, 7) (3, 6, 5)
+  every pair of units lies on one line; e_a^2 = -1 and e_a e_b = -e_b e_a for a != b
+> algebra cd4
+the quaternions: dimension 4 over the reals, basis 1, i, j, k
+  commutative: no: i j = k but j i = -k
+  associative: yes ((ab)c = a(bc) at 200 random triples); by Frobenius, R, C and H are the only associative real division algebras
+  alternative: yes ((aa)b = a(ab), (ba)a = b(aa) at 200 random pairs)
+  flexible and power-associative: yes ((ab)a = a(ba); powers a^n are well defined), as in every Cayley-Dickson algebra
+  normed (a composition algebra): yes, |ab| = |a||b| at 200 random pairs (Euler's four-square identity)
+  a division algebra: yes, ab = 0 only when a = 0 or b = 0 (it is normed); by Hurwitz, R, C, H and O are the only normed division algebras
+  inverses: every a != 0 has a^-1 = conj(a)/|a|^2 (a a^-1 = 1, checked)
+  conjugation: conj(ab) = conj(b) conj(a) (checked); a conj(a) = |a|^2
+> algebra cd(16)
+the sedenions: dimension 16 over the reals, basis 1, e1, e2, e3, e4, e5, e6, e7, ...
+  commutative: no: e1 e2 = e3 but e2 e1 = -e3
+  associative: no: (e1 e2) e4 = e7 but e1 (e2 e4) = -e7
+  alternative: no: (aa)b != a(ab) for random a, b (by 7.28)
+  flexible and power-associative: yes ((ab)a = a(ba); powers a^n are well defined), as in every Cayley-Dickson algebra
+  normed: no: |ab| != |a||b| (off by 0.595 at a random pair)
+  a division algebra: no, it has zero divisors: (e1 - e10)(e4 + e15) = 0
+  inverses: every a != 0 has a^-1 = conj(a)/|a|^2 (a a^-1 = 1, checked); but a^-1(ab) = b can fail, so ax = b need not be solvable
+  conjugation: conj(ab) = conj(b) conj(a) (checked); a conj(a) = |a|^2
+> table cd 3
+07_cd_parse.ucas:5:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    table cd 3
+    ^
+> table cd 1
+07_cd_parse.ucas:6:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    table cd 1
+    ^
+> table cd 0
+07_cd_parse.ucas:7:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    table cd 0
+    ^
+> table cd 64
+07_cd_parse.ucas:8:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    table cd 64
+    ^
+> table cd 33
+07_cd_parse.ucas:9:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    table cd 33
+    ^
+> algebra cd 31
+07_cd_parse.ucas:10:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    algebra cd 31
+    ^
+> zerodivisors cd 5
+07_cd_parse.ucas:11:1: error: cd(N): N is 2, 4, 8, 16 or 32
+    zerodivisors cd 5
+    ^
+> table cd16x
+multiplication table of the sedenions (row times column), not symmetric: the product does not commute:
+        |     1    e1    e2    e3    e4    e5    e6    e7    e8    e9   e10   e11   e12   e13   e14   e15
+  ------+------------------------------------------------------------------------------------------------
+      1 |     1    e1    e2    e3    e4    e5    e6    e7    e8    e9   e10   e11   e12   e13   e14   e15
+     e1 |    e1    -1    e3   -e2    e5   -e4   -e7    e6    e9   -e8  -e11   e10  -e13   e12   e15  -e14
+     e2 |    e2   -e3    -1    e1    e6    e7   -e4   -e5   e10   e11   -e8   -e9  -e14  -e15   e12   e13
+     e3 |    e3    e2   -e1    -1    e7   -e6    e5   -e4   e11  -e10    e9   -e8  -e15   e14  -e13   e12
+     e4 |    e4   -e5   -e6   -e7    -1    e1    e2    e3   e12   e13   e14   e15   -e8   -e9  -e10  -e11
+     e5 |    e5    e4   -e7    e6   -e1    -1   -e3    e2   e13  -e12   e15  -e14    e9   -e8   e11  -e10
+     e6 |    e6    e7    e4   -e5   -e2    e3    -1   -e1   e14  -e15  -e12   e13   e10  -e11   -e8    e9
+     e7 |    e7   -e6    e5    e4   -e3   -e2    e1    -1   e15   e14  -e13  -e12   e11   e10   -e9   -e8
+     e8 |    e8   -e9  -e10  -e11  -e12  -e13  -e14  -e15    -1    e1    e2    e3    e4    e5    e6    e7
+     e9 |    e9    e8  -e11   e10  -e13   e12   e15  -e14   -e1    -1   -e3    e2   -e5    e4    e7   -e6
+    e10 |   e10   e11    e8   -e9  -e14  -e15   e12   e13   -e2    e3    -1   -e1   -e6   -e7    e4    e5
+    e11 |   e11  -e10    e9    e8  -e15   e14  -e13   e12   -e3   -e2    e1    -1   -e7    e6   -e5    e4
+    e12 |   e12   e13   e14   e15    e8   -e9  -e10  -e11   -e4    e5    e6    e7    -1   -e1   -e2   -e3
+    e13 |   e13  -e12   e15  -e14    e9    e8   e11  -e10   -e5   -e4    e7   -e6    e1    -1    e3   -e2
+    e14 |   e14  -e15  -e12   e13   e10  -e11    e8    e9   -e6   -e7   -e4    e5    e2   -e3    -1    e1
+    e15 |   e15   e14  -e13  -e12   e11   e10   -e9    e8   -e7    e6   -e5   -e4    e3    e2   -e1    -1
+  (Cayley-Dickson doubling of the octonion: (p, q)(s, t) = (ps - conj(t) q, tp + q conj(s)))
+> algebra cd2
+the complex numbers: dimension 2 over the reals, basis 1, i
+  commutative: yes (checked on 200 random pairs)
+  associative: yes ((ab)c = a(bc) at 200 random triples)
+  alternative: yes ((aa)b = a(ab), (ba)a = b(aa) at 200 random pairs)
+  flexible and power-associative: yes ((ab)a = a(ba); powers a^n are well defined), as in every Cayley-Dickson algebra
+  normed (a composition algebra): yes, |ab| = |a||b| at 200 random pairs
+  a division algebra: yes, ab = 0 only when a = 0 or b = 0 (it is normed); by Hurwitz, R, C, H and O are the only normed division algebras
+  inverses: every a != 0 has a^-1 = conj(a)/|a|^2 (a a^-1 = 1, checked)
+  conjugation: conj(ab) = conj(b) conj(a) (checked); a conj(a) = |a|^2

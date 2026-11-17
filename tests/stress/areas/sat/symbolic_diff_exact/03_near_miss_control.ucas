@@ -1,0 +1,11 @@
+# CONTROL: genuine near-misses. Here the exact difference is -1, `expand`
+# reports -1, and `equiv` over real correctly refutes with a counterexample
+# whose two exact values really do differ (400 vs 401).
+fn1(x: real, y: real) = (x + y) ^ 2
+gn1(x: real, y: real) = x ^ 2 + 2 * x * y + y ^ 2 + 1
+equiv fn1 gn1
+fn2(x: real) = (x ^ 3 - 1) / (x - 1)
+gn2(x: real) = x * x + x + 2
+equiv fn2 gn2
+expand (x + y) ^ 2 - (x ^ 2 + 2 * x * y + y ^ 2 + 1)
+expand (x ^ 3 - 1) / (x - 1) - (x * x + x + 2)

@@ -1,0 +1,110 @@
+src/cf_lower.c:851:13: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+  851 |                 L.env[ps] = args[k];
+      |                           ^
+src/cf_lower.c:1279:6: note: Assuming the condition is false
+ 1279 |         if (setjmp(L.jb)) {
+      |             ^~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^~~~~~~~~~~~~
+src/cf_lower.c:1279:2: note: Taking false branch
+ 1279 |         if (setjmp(L.jb)) {
+      |         ^
+src/cf_lower.c:1286:6: note: Assuming the condition is false
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:1286:2: note: Taking false branch
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |         ^
+src/cf_lower.c:1288:9: note: Calling 'ex'
+ 1288 |         v->e = ex(e, T1);
+      |                ^~~~~~~~~
+src/cf_lower.c:715:2: note: Control jumps to 'case CA_CALL:'  at line 797
+  715 |         switch (AU.kind[n]) {
+      |         ^
+src/cf_lower.c:798:10: note: Calling 'inline_call'
+  798 |                 return inline_call(n, g);
+      |                        ^~~~~~~~~~~~~~~~~
+src/cf_lower.c:820:9: note: Assuming the condition is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+src/cf_lower.c:820:36: note: Left side of '&&' is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                                           ^
+src/cf_lower.c:822:6: note: Assuming the condition is false
+  822 |         if (AU.kind[callee] != CA_ID)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+src/cf_lower.c:822:2: note: Taking false branch
+  822 |         if (AU.kind[callee] != CA_ID)
+      |         ^
+src/cf_lower.c:826:6: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+src/cf_lower.c:826:6: note: Left side of '||' is false
+src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+src/cf_lower.c:826:31: note: Assuming 'fn' is not equal to 0
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                      ^~~~~~~
+src/cf_lower.c:826:6: note: Left side of '||' is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+src/cf_lower.c:826:42: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+src/cf_lower.c:826:2: note: Taking false branch
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |         ^
+src/cf_lower.c:829:6: note: Assuming field 'depth' is < CF_INLINE
+  829 |         if (L.depth >= CF_INLINE)
+      |             ^~~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:829:2: note: Taking false branch
+  829 |         if (L.depth >= CF_INLINE)
+      |         ^
+src/cf_lower.c:831:6: note: Assuming the condition is false
+  831 |         if (AU.c[n] != AU.d[fn])
+      |             ^~~~~~~~~~~~~~~~~~~
+src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+src/cf_lower.c:831:2: note: Taking false branch
+  831 |         if (AU.c[n] != AU.d[fn])
+      |         ^
+src/cf_lower.c:833:6: note: Assuming 'g' is equal to field 'alive'
+  833 |         if (g != L.alive)
+      |             ^~~~~~~~~~~~
+src/cf_lower.c:833:2: note: Taking false branch
+  833 |         if (g != L.alive)
+      |         ^
+src/cf_lower.c:835:14: note: Assuming the condition is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                     ^~~~~~~~~~~
+src/cf_lower.c:835:26: note: Left side of '&&' is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                                 ^
+src/cf_lower.c:849:7: note: The value 0 is assigned to 'k'
+  849 |         for (k = 0; k < AU.c[n]; k++) {
+      |              ^~~~~
+src/cf_lower.c:849:2: note: Loop condition is true.  Entering loop body
+  849 |         for (k = 0; k < AU.c[n]; k++) {
+      |         ^
+src/cf_lower.c:851:13: note: Assigned value is uninitialized
+  851 |                 L.env[ps] = args[k];
+      |                           ^ ~~~~~~~
+1 warning generated.

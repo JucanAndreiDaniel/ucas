@@ -1,0 +1,35 @@
+> f(x: real) = g(x) + 1
+03_forward_redefine.ucas:2:14: error: 'g' is not defined
+    f(x: real) = g(x) + 1
+                 ^
+> f(2)
+  note: f(...) read as multiplication: f is not a function
+_(f: real) = 2f
+  -> real
+> g(x: real) = x * 10
+> f(2)
+  note: f(...) read as multiplication: f is not a function
+_(f: real) = 2f
+  -> real
+> a(x: real) = x + 1
+> b(x: real) = a(x)
+> b(5)
+6
+> a(x: real) = x + 100
+> a(5)
+105
+> b(5)
+6
+> b(x: real) = a(x)
+> b(5)
+105
+> a(x: real) = x + 1000
+> b(5)
+105
+> funcs
+g(x: real) = 10x
+  -> real
+a(x: real) = x + 1000
+  -> real
+b(x: real) = x + 100
+  -> real

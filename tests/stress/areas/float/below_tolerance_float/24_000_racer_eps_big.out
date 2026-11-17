@@ -1,0 +1,15 @@
+> f_racer_eps_big(x: f32 in 0.001..100) = 1/((1/sqrt(x+f32(0.1)))*(1/sqrt(x+f32(0.1)))) - f32(0.1)
+> g_racer_eps_big(x: f32 in 0.001..100) = 1/((1/sqrt(x+f32(0.1)))*(1/sqrt(x+f32(0.1)))) + f32(0.1)
+> equiv f_racer_eps_big g_racer_eps_big
+f_racer_eps_big and g_racer_eps_big differ at 65536 points of the sample, e.g. x=0.00100000005: 0.000999987125 vs 0.20099999
+> error g_racer_eps_big ~ f_racer_eps_big
+error of g_racer_eps_big against f_racer_eps_big:
+  max abs error 0.200001 at x=19.6214485
+  max rel error 200.003 (2e+04%) at x=0.00100000005
+  mean rel error 16.7531 over 65536 points
+  max 63619313 ulp
+  rounding, first order in u = 2^-24: 6 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  4.76e-07 (7.99 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 13.8 u here (it gains from about 16 operations of similar weight on)
+    expected    1.19e-07 (2 u): the root mean square if they are independent and uniform in [-u, u]
+    for 6 operations of equal weight: gamma_6 = 6 u / (1 - 6 u) = 3.58e-07, gamma~_6(4) = 4 sqrt(6) u = 5.84e-07

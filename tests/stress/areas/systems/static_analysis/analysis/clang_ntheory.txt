@@ -1,0 +1,60 @@
+src/ntheory.c:453:14: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+  453 |                                 nx[nn++] = r;
+      |                                          ^ ~
+src/ntheory.c:432:6: note: Assuming 'n' is not equal to 1
+  432 |         if (n == 1) {
+      |             ^~~~~~
+src/ntheory.c:432:2: note: Taking false branch
+  432 |         if (n == 1) {
+      |         ^
+src/ntheory.c:442:14: note: Assuming 'k' is < field 'k'
+  442 |         for (k = 0; k < f.k; k++) {
+      |                     ^~~~~~~
+src/ntheory.c:442:2: note: Loop condition is true.  Entering loop body
+  442 |         for (k = 0; k < f.k; k++) {
+      |         ^
+src/ntheory.c:443:34: note: 'r' declared without an initial value
+  443 |                 u64 pe = ipow(f.p[k], f.e[k]), r, mm;
+      |                                                ^
+src/ntheory.c:445:7: note: Assuming 'np' is >= 0
+  445 |                 if (np < 0 || (u128)na * np > (u128)max) {
+      |                     ^~~~~~
+src/ntheory.c:445:7: note: Left side of '||' is false
+src/ntheory.c:445:17: note: Assuming the condition is false
+  445 |                 if (np < 0 || (u128)na * np > (u128)max) {
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/ntheory.c:445:3: note: Taking false branch
+  445 |                 if (np < 0 || (u128)na * np > (u128)max) {
+      |                 ^
+src/ntheory.c:450:3: note: Loop condition is true.  Entering loop body
+  450 |                 for (i = 0; i < na; i++)
+      |                 ^
+src/ntheory.c:451:16: note: Assuming 'j' is < 'np'
+  451 |                         for (j = 0; j < np; j++) {
+      |                                     ^~~~~~
+src/ntheory.c:451:4: note: Loop condition is true.  Entering loop body
+  451 |                         for (j = 0; j < np; j++) {
+      |                         ^
+src/ntheory.c:452:5: note: Calling 'nt_crt'
+  452 |                                 nt_crt(acc[i], m, part[j], pe, &r, &mm);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ntheory.c:518:7: note: Assuming 'r1' is <= 'r2'
+  518 |         if ((r1 > r2 ? r1 - r2 : r2 - r1) % g)
+      |              ^~~~~~~
+src/ntheory.c:518:7: note: '?' condition is false
+src/ntheory.c:518:6: note: Assuming the condition is true
+  518 |         if ((r1 > r2 ? r1 - r2 : r2 - r1) % g)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ntheory.c:518:2: note: Taking true branch
+  518 |         if ((r1 > r2 ? r1 - r2 : r2 - r1) % g)
+      |         ^
+src/ntheory.c:519:3: note: Returning without writing to '*r'
+  519 |                 return 0;
+      |                 ^
+src/ntheory.c:452:5: note: Returning from 'nt_crt'
+  452 |                                 nt_crt(acc[i], m, part[j], pe, &r, &mm);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ntheory.c:453:14: note: Assigned value is uninitialized
+  453 |                                 nx[nn++] = r;
+      |                                          ^ ~
+1 warning generated.

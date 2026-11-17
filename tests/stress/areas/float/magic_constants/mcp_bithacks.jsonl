@@ -1,0 +1,15 @@
+{"jsonrpc":"2.0","id":0,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"stress","version":"1"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "ab(x: f32) = asfloat(asuint(x) & 0x7fffffff)\nrf(x: f32) = abs(x)\nidb(x: f32) = asfloat(asuint(x))\nminb(x: f32, y: f32) = asfloat(asuint(y) xor ((asuint(x) xor asuint(y)) & -(u32(asuint(x) < asuint(y)))))\nrmin(x: f32, y: f32) = min(x, y)\ntrunc(x: f32) = asfloat(asuint(x) & 0xffc00000)\nflref(x: f32) = floor(x)\nnegbit(x: f32) = asfloat(asuint(x) xor 0x80000000)\nnegref(x: f32) = -x", "assume": {"caret": "xor"}}}}
+{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "ab", "g": "rf", "ftz": false, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "ab", "g": "rf", "ftz": false, "nanbits": true}}}}
+{"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "ab", "g": "rf", "ftz": true, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "ab", "g": "rf", "ftz": true, "nanbits": true}}}}
+{"jsonrpc": "2.0", "id": 6, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "idb", "g": "x", "ftz": false, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 7, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "idb", "g": "x", "ftz": false, "nanbits": true}}}}
+{"jsonrpc": "2.0", "id": 8, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "minb", "g": "rmin", "ftz": false, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 9, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "trunc", "g": "flref", "ftz": false, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 10, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "equiv", "args": {"f": "negbit", "g": "negref", "ftz": false, "nanbits": false}}}}
+{"jsonrpc": "2.0", "id": 11, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "range", "args": {"f": "ab"}}}}
+{"jsonrpc": "2.0", "id": 12, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "range", "args": {"f": "minb"}}}}
+{"jsonrpc": "2.0", "id": 13, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "range", "args": {"f": "negbit"}}}}

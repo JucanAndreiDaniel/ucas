@@ -1,0 +1,833 @@
+/home/andrew/Code/ucas/src/ifx.c:67:14: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   55 | 
+   56 | #include <math.h>
+   57 | #include <stdlib.h>
+   58 | #include <string.h>
+   59 | 
+   60 | #define P23 8388608.0           /* 2^23 */
+   61 | #define P24 16777216.0          /* 2^24 */
+   62 | #define MAGIC 12582912.0        /* 1.5 * 2^23 */
+   63 | #define MAGIC_BITS 0x4B400000LL /* its bits */
+   64 | #define P23_BITS 0x4B000000LL   /* the bits of 2^23 */
+   65 | #define P22 4194304.0           /* 2^22 */
+   66 | 
+   67 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:67:25: warning: no header providing "TY" is directly included [misc-include-cleaner]
+   67 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                         ^
+/home/andrew/Code/ucas/src/ifx.c:67:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:67:28: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   67 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                            ^
+/home/andrew/Code/ucas/src/ifx.c:67:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   67 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:67:50: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+   67 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                                                  ^
+/home/andrew/Code/ucas/src/ifx.c:77:36: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   77 | static void fval_of(struct ivc *c, nid n, struct fval *v, int depth);
+      |                                    ^
+/home/andrew/Code/ucas/src/ifx.c:82:9: warning: no header providing "N" is directly included [misc-include-cleaner]
+   82 |         return N.ty[n] == TY_F32;
+      |                ^
+/home/andrew/Code/ucas/src/ifx.c:82:20: warning: no header providing "TY_F32" is directly included [misc-include-cleaner]
+   82 |         return N.ty[n] == TY_F32;
+      |                           ^
+/home/andrew/Code/ucas/src/ifx.c:82:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:100:17: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   57 | fits_ty(ty_t t, int64_t lo, int64_t hi)
+      |                 ^
+/home/andrew/Code/ucas/src/ifx.c:102:9: warning: no header providing "ity" is directly included [misc-include-cleaner]
+  102 |         struct ity it;
+      |                ^
+/home/andrew/Code/ucas/src/ifx.c:104:6: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  104 |         if (TYK(t) == K_INT || TYK(t) == K_LIT)
+      |             ^
+/home/andrew/Code/ucas/src/ifx.c:104:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:104:16: warning: no header providing "K_INT" is directly included [misc-include-cleaner]
+  104 |         if (TYK(t) == K_INT || TYK(t) == K_LIT)
+      |                       ^
+/home/andrew/Code/ucas/src/ifx.c:104:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  104 |         if (TYK(t) == K_INT || TYK(t) == K_LIT)
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:104:35: warning: no header providing "K_LIT" is directly included [misc-include-cleaner]
+  104 |         if (TYK(t) == K_INT || TYK(t) == K_LIT)
+      |                                          ^
+/home/andrew/Code/ucas/src/ifx.c:106:2: warning: no header providing "ity_of" is directly included [misc-include-cleaner]
+  106 |         ity_of(&it, t, 0);
+      |         ^
+/home/andrew/Code/ucas/src/ifx.c:107:32: warning: no header providing "K_BOOL" is directly included [misc-include-cleaner]
+  107 |         if (it.k == K_UINT || it.k == K_BOOL)
+      |                                       ^
+/home/andrew/Code/ucas/src/ifx.c:108:37: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  108 |                 return lo >= 0 && (it.w >= 63 || (uint64_t)hi <= it.mask);
+      |                                                   ^
+/home/andrew/Code/ucas/src/ifx.c:117:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  117 |         uint32_t k;
+      |         ^
+/home/andrew/Code/ucas/src/ifx.c:119:7: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  119 |         if (!TY_ISINT(N.ty[a]) || TYK(N.ty[a]) == K_LIT)
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:119:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:119:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  119 |         if (!TY_ISINT(N.ty[a]) || TYK(N.ty[a]) == K_LIT)
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:121:6: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  121 |         if (is_const(a)) {
+      |             ^
+/home/andrew/Code/ucas/src/ifx.c:126:17: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  126 |         if (N.op[a] == O_CAST && is_f32(N.a[a])) {
+      |                        ^
+/home/andrew/Code/ucas/src/ifx.c:135:6: warning: no header providing "plan_loc" is directly included [misc-include-cleaner]
+  135 |         k = plan_loc(&c->p, a);
+      |             ^
+/home/andrew/Code/ucas/src/ifx.c:136:11: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  136 |         if (k == NOTOK || c->iv[k].top || c->iv[k].wrap)
+      |                  ^
+/home/andrew/Code/ucas/src/ifx.c:138:25: warning: no header providing "INT64_MIN" is directly included [misc-include-cleaner]
+  138 |         return irw_range(c, a, INT64_MIN, lo, hi, why, sizeof why);
+      |                                ^
+/home/andrew/Code/ucas/src/ifx.c:152:12: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  152 |         if (op == O_CONST && TY_FP(N.ty[n])) {
+      |                   ^
+/home/andrew/Code/ucas/src/ifx.c:152:23: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  152 |         if (op == O_CONST && TY_FP(N.ty[n])) {
+      |                              ^
+/home/andrew/Code/ucas/src/ifx.c:152:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:153:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  153 |                 double k = TYK(N.ty[n]) == K_FLOAT ? N.kr[n] : fround(32, N.kr[n]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:153:30: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  153 |                 double k = TYK(N.ty[n]) == K_FLOAT ? N.kr[n] : fround(32, N.kr[n]);
+      |                                            ^
+/home/andrew/Code/ucas/src/ifx.c:153:50: warning: no header providing "fround" is directly included [misc-include-cleaner]
+  153 |                 double k = TYK(N.ty[n]) == K_FLOAT ? N.kr[n] : fround(32, N.kr[n]);
+      |                                                                ^
+/home/andrew/Code/ucas/src/ifx.c:164:7: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  164 |         case O_VAR: {
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:165:16: warning: no header providing "param" is directly included [misc-include-cleaner]
+  165 |                 const struct param *pp = &c->g.p[N.ki[n]];
+      |                              ^
+/home/andrew/Code/ucas/src/ifx.c:185:7: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+  185 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:185:21: warning: no header providing "O_CEIL" is directly included [misc-include-cleaner]
+  185 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |                            ^
+/home/andrew/Code/ucas/src/ifx.c:185:34: warning: no header providing "O_ROUNDEVEN" is directly included [misc-include-cleaner]
+  185 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |                                         ^
+/home/andrew/Code/ucas/src/ifx.c:195:7: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  195 |         case O_NEG:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:204:7: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  204 |         case O_ABS:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:213:7: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  213 |         case O_MIN: case O_MAX:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:213:19: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  213 |         case O_MIN: case O_MAX:
+      |                          ^
+/home/andrew/Code/ucas/src/ifx.c:228:7: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  228 |         case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:238:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  238 |         case O_ADD: case O_SUB: case O_MUL: case O_FMA:
+      |              ^
+/home/andrew/Code/ucas/src/ifx.c:238:19: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  238 |         case O_ADD: case O_SUB: case O_MUL: case O_FMA:
+      |                          ^
+/home/andrew/Code/ucas/src/ifx.c:238:31: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  238 |         case O_ADD: case O_SUB: case O_MUL: case O_FMA:
+      |                                      ^
+/home/andrew/Code/ucas/src/ifx.c:238:43: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  238 |         case O_ADD: case O_SUB: case O_MUL: case O_FMA:
+      |                                                  ^
+/home/andrew/Code/ucas/src/ifx.c:295:9: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  295 |         return shared_str(e, 60);
+      |                ^
+/home/andrew/Code/ucas/src/ifx.c:304:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  304 |         char *b = buf[at++ & 3];
+      |                       ^~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:307:38: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  307 |         if (op == O_CONST || op == O_VAR || opinfo[op].arity == 1 ||
+      |                                             ^
+/home/andrew/Code/ucas/src/ifx.c:310:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   57 |         snprintf(b, sizeof buf[0], "(%s)", sstr(e));
+      |         ^
+/home/andrew/Code/ucas/src/ifx.c:317:9: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  317 |         return mk_const_i(TY_F32, (int64_t)v);
+      |                ^
+/home/andrew/Code/ucas/src/ifx.c:317:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  317 |         return mk_const_i(TY_F32, (int64_t)v);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:326:30: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+  326 |         while (N.op[a] == O_CAST && TY_SIZED(N.ty[a]) && TYW(N.ty[a]) == 32 &&
+      |                                     ^
+/home/andrew/Code/ucas/src/ifx.c:326:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:326:51: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  326 |         while (N.op[a] == O_CAST && TY_SIZED(N.ty[a]) && TYW(N.ty[a]) == 32 &&
+      |                                                          ^
+/home/andrew/Code/ucas/src/ifx.c:326:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:327:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  327 |             TY_SIZED(N.ty[N.a[a]]) && TYW(N.ty[N.a[a]]) == 32 &&
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:327:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  327 |             TY_SIZED(N.ty[N.a[a]]) && TYW(N.ty[N.a[a]]) == 32 &&
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:328:22: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  328 |             N.ty[N.a[a]] != TY_BOOL)
+      |                             ^
+/home/andrew/Code/ucas/src/ifx.c:328:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:331:10: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  331 |                 return mk_bin(O_SUB, mk_un(O_ASFLOAT, mk_bin(O_OR, mk_cast(U32,
+      |                        ^
+/home/andrew/Code/ucas/src/ifx.c:331:24: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  331 |                 return mk_bin(O_SUB, mk_un(O_ASFLOAT, mk_bin(O_OR, mk_cast(U32,
+      |                                      ^
+/home/andrew/Code/ucas/src/ifx.c:331:30: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  331 |                 return mk_bin(O_SUB, mk_un(O_ASFLOAT, mk_bin(O_OR, mk_cast(U32,
+      |                                            ^
+/home/andrew/Code/ucas/src/ifx.c:331:48: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  331 |                 return mk_bin(O_SUB, mk_un(O_ASFLOAT, mk_bin(O_OR, mk_cast(U32,
+      |                                                              ^
+/home/andrew/Code/ucas/src/ifx.c:331:54: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  331 |                 return mk_bin(O_SUB, mk_un(O_ASFLOAT, mk_bin(O_OR, mk_cast(U32,
+      |                                                                    ^
+/home/andrew/Code/ucas/src/ifx.c:343:40: warning: no header providing "O_ASINT" is directly included [misc-include-cleaner]
+  343 |         return mk_cast(t, mk_bin(O_SUB, mk_un(O_ASINT, mk_bin(O_ADD, x,
+      |                                               ^
+/home/andrew/Code/ucas/src/ifx.c:360:18: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  360 | i2f_proof(struct sbuf *pf, nid a, int64_t lo, int64_t hi)
+      |                  ^
+/home/andrew/Code/ucas/src/ifx.c:366:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  366 |                 sb_printf(pf, "0 <= %s < 2^23: %s | 0x4B000000 is the bit "
+      |                 ^
+/home/andrew/Code/ucas/src/ifx.c:407:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  407 |         if (!is_f32(n) || TY_FP(N.ty[a]))
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:419:8: warning: no header providing "ty_str" is directly included [misc-include-cleaner]
+  419 |                             ty_str(N.ty[a]));
+      |                             ^
+/home/andrew/Code/ucas/src/ifx.c:424:51: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  424 |                         irw_add(out, cnt, cap, root, n, x, what, cond, sb_str(&pf),
+      |                                                                        ^
+/home/andrew/Code/ucas/src/ifx.c:426:4: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  426 |                         sb_clear(&pf);
+      |                         ^
+/home/andrew/Code/ucas/src/ifx.c:429:37: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  429 |         if (!irange(c, a, &lo, &hi) || (to = magic_i2f(a, lo, hi)) == 0) {
+      |                                         ~~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ifx.c:429:37: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ifx.c:429:37: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ifx.c:455:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  455 |         if (!TY_ISINT(t) || t == TY_BOOL || !is_f32(x))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:455:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  455 |         if (!TY_ISINT(t) || t == TY_BOOL || !is_f32(x))
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:458:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  458 |         if (N.op[x] == O_CAST && TY_ISINT(N.ty[N.a[x]])) {
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:546:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  546 |                 sb_puts(&pf, "roundeven of an integer is that integer");
+      |                 ^
+/home/andrew/Code/ucas/src/ifx.c:622:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  622 |                         to = mk_bin(O_SUB, mk_bin(O_ADD, x, mk_cast(TY_F32,
+      |                                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:623:8: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  623 |                             mk_const_r(C))), mk_cast(TY_F32, mk_const_r(C)));
+      |                             ^
+/home/andrew/Code/ucas/src/ifx.c:623:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  623 |                             mk_const_r(C))), mk_cast(TY_F32, mk_const_r(C)));
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:681:12: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+  681 |         to = fl ? mk_sel(mk_bin(O_GT, r, x), mk_bin(O_SUB, r, kf(1)), r) :
+      |                   ^
+/home/andrew/Code/ucas/src/ifx.c:681:26: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  681 |         to = fl ? mk_sel(mk_bin(O_GT, r, x), mk_bin(O_SUB, r, kf(1)), r) :
+      |                                 ^
+/home/andrew/Code/ucas/src/ifx.c:682:20: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  682 |             mk_sel(mk_bin(O_LT, r, x), mk_bin(O_ADD, r, kf(1)), r);
+      |                           ^
+/home/andrew/Code/ucas/src/ifx.c:761:23: warning: no header providing "O_MOD" is directly included [misc-include-cleaner]
+  761 |         int rem = N.op[n] == O_MOD, e, m;
+      |                              ^
+/home/andrew/Code/ucas/src/ifx.c:770:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |         if (!TY_ISINT(t) || t == TY_BOOL || TYK(t) == K_LIT || !is_const(d) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:770:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |         if (!TY_ISINT(t) || t == TY_BOOL || TYK(t) == K_LIT || !is_const(d) ||
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:770:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |         if (!TY_ISINT(t) || t == TY_BOOL || TYK(t) == K_LIT || !is_const(d) ||
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:774:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  774 |         if (k <= 2 || (k & (k - 1)) == 0 || k >= (int64_t)P24)
+      |                        ^ ~
+/home/andrew/Code/ucas/src/ifx.c:791:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  791 |         xf = mk_cast(TY_F32, x);
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:792:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  792 |         p = mk_bin(O_MUL, xf, mk_cast(TY_F32, mk_const_r(cf)));
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:817:42: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+  817 |                     (long long)hi, xs, (long long)bad, (long long)(bad / k + 1),
+      |                                                        ^
+/home/andrew/Code/ucas/src/ifx.c:856:6: warning: no header providing "mk_fma" is directly included [misc-include-cleaner]
+  856 |         r = mk_fma(mk_un(O_FLOOR, p), kf((double)-k), xf);
+      |             ^
+/home/andrew/Code/ucas/src/ifx.c:876:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  876 |         while (N.op[a] == O_CAST && TY_ISINT(N.ty[a]) && TY_SIZED(N.ty[a]) &&
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:876:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  876 |         while (N.op[a] == O_CAST && TY_ISINT(N.ty[a]) && TY_SIZED(N.ty[a]) &&
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:877:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  877 |             TY_ISINT(N.ty[N.a[a]]) && TY_SIZED(N.ty[N.a[a]]) &&
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:877:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  877 |             TY_ISINT(N.ty[N.a[a]]) && TY_SIZED(N.ty[N.a[a]]) &&
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:878:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  878 |             N.ty[N.a[a]] != TY_BOOL && TYW(N.ty[N.a[a]]) <= TYW(N.ty[a]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:878:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  878 |             N.ty[N.a[a]] != TY_BOOL && TYW(N.ty[N.a[a]]) <= TYW(N.ty[a]))
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:878:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  878 |             N.ty[N.a[a]] != TY_BOOL && TYW(N.ty[N.a[a]]) <= TYW(N.ty[a]))
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:893:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  893 |         return f ? f : mk_cast(TY_F32, a);
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:920:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  920 |         if (N.op[n] != O_MOD || !TY_ISINT(ty) || ty == TY_BOOL ||
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:920:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  920 |         if (N.op[n] != O_MOD || !TY_ISINT(ty) || ty == TY_BOOL ||
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:921:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  921 |             TYK(ty) == K_LIT || !is_const(d) || N.op[x] != O_MUL ||
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:925:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  925 |         if (m < 3 || (m & (m - 1)) == 0 || m >= (int64_t)P22)
+      |                       ^ ~
+/home/andrew/Code/ucas/src/ifx.c:948:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  948 |         t = mk_bin(O_MUL, p, mk_cast(TY_F32, mk_const_r(cf)));
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:952:20: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  952 |         r = mk_sel(mk_bin(O_GE, r, kf((double)m)), mk_bin(O_SUB, r,
+      |                           ^
+/home/andrew/Code/ucas/src/ifx.c:1018:17: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+ 1018 |         if (N.op[s] != O_SHL || !is_const(N.a[s]) || N.ki[N.a[s]] != 1 ||
+      |                        ^
+/home/andrew/Code/ucas/src/ifx.c:1019:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1019 |             TY_FP(N.ty[s]))
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1025:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1025 |         w = TY_SIZED(t) ? TYW(t) : 64;
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1025:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1025 |         w = TY_SIZED(t) ? TYW(t) : 64;
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1027:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1027 |         if (*klo < 0 || *khi > (TYK(t) == K_UINT ? w - 1 : w - 2) || *khi > 127)
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1128:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1128 |         if (N.op[n] != O_SUB || !TY_ISINT(t) || !is_const(N.a[n]) ||
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1129:17: warning: no header providing "O_CLZ" is directly included [misc-include-cleaner]
+ 1129 |             N.op[z] != O_CLZ)
+      |                        ^
+/home/andrew/Code/ucas/src/ifx.c:1133:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1133 |         if (!TY_SIZED(tx) || N.ki[N.a[n]] != TYW(tx) - 1 ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1133:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1133 |         if (!TY_SIZED(tx) || N.ki[N.a[n]] != TYW(tx) - 1 ||
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1134:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1134 |             !irange(c, x, &lo, &hi) || lo < 1 || hi >= ((int64_t)1 << 62))
+      |                                                         ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1143:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1143 |                 int64_t zlo = ((int64_t)1 << (e + 1)) - ((int64_t)1 << (e - 24));
+      |                                ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1143:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1143 |                 int64_t zlo = ((int64_t)1 << (e + 1)) - ((int64_t)1 << (e - 24));
+      |                                                          ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1144:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1144 |                 int64_t zhi = ((int64_t)1 << (e + 1)) - 1;
+      |                                ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1155:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1155 |                 f = v ? magic_i2f(x, lo, hi) : mk_cast(TY_F32, x);
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1158:40: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+ 1158 |                 to = mk_cast(t, mk_bin(O_SUB, mk_bin(O_SHR, mk_un(O_ASINT, f),
+      |                                                      ^
+/home/andrew/Code/ucas/src/ifx.c:1165:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1165 |                     "bit of %s: 2^e <= %s < 2^(e+1)\n", TYW(tx) - 1, sstr(x), xs,
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1206:4: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+ 1206 |                         sb_putc(&pf, '\n');
+      |                         ^
+/home/andrew/Code/ucas/src/ifx.c:1230:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1230 |             TY_ISINT(N.ty[a]) && N.ty[a] != TY_BOOL;
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1230:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1230 |             TY_ISINT(N.ty[a]) && N.ty[a] != TY_BOOL;
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1309:21: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1309 |         if (k->magic && (m = magic_i2f(a, *lo, *hi)) != 0) {
+      |                          ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ifx.c:1309:21: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ifx.c:1309:21: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ifx.c:1314:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1314 |         return mk_cast(TY_F32, a);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1321:42: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 1321 | rw_fpipe(struct ivc *c, nid root, nid n, uint8_t *inner, uint32_t lim,
+      |                                          ^
+/home/andrew/Code/ucas/src/ifx.c:1350:10: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+ 1350 |                 k.lo = INT64_MAX;
+      |                        ^
+/home/andrew/Code/ucas/src/ifx.c:1419:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1419 |         if (N.op[e] == O_SHL && TY_ISINT(N.ty[e]) && int_of(N.b[e], &sh) &&
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1422:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1422 |                 t->scale = (double)((int64_t)1 << sh);
+      |                                     ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1451:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1451 |         return mk_bin(O_MUL, ty == TY_F32 ? kf(t->scale) : mk_const_i(ty,
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1467:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1467 |         int op = N.op[n], i, j, sized = TYK(t) == K_UINT || TYK(t) == K_SINT;
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1467:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1467 |         int op = N.op[n], i, j, sized = TYK(t) == K_UINT || TYK(t) == K_SINT;
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1475:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1475 |         if ((!sized && t != TY_F32) || !fterm_of(N.a[n], &A) ||
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1479:12: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+ 1479 |             op == O_XOR)))
+      |                   ^
+/home/andrew/Code/ucas/src/ifx.c:1498:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1498 |                 if (hi_t->shift < 0 || lo_t->shift >= 0 || TYK(t) != K_UINT ||
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1500:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1500 |                     hi >= ((int64_t)1 << hi_t->shift))
+      |                            ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ifx.c:1509:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1509 |         if (t == TY_F32) {
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ifx.c:1533:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1533 |                             "is modulo 2^%d, a ring", ty_str(t), TYW(t));
+      |                                                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1534:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1534 |                 sb_printf(&pf, "modulo 2^%d ", TYW(t));
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1563:8: warning: Excessive padding in 'struct sterm' (8 padding bytes, where 0 is optimal). Optimal fields order: k, neg, nf, f, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+ 1563 | struct sterm {
+      | ~~~~~~~^~~~~~~
+ 1564 |         int neg;
+      |         ~~~~~~~~
+ 1565 |         uint64_t k;             /* the constant part */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1566 |         nid f[FS_FACS];
+      |         ~~~~~~~~~~~~~~~
+ 1567 |         int nf;
+      |         ~~~~~~~
+ 1568 | };
+      | ~
+/home/andrew/Code/ucas/src/ifx.c:1563:8: note: Excessive padding in 'struct sterm' (8 padding bytes, where 0 is optimal). Optimal fields order: k, neg, nf, f, consider reordering the fields or adding explicit padding members
+ 1563 | struct sterm {
+      | ~~~~~~~^~~~~~~
+ 1564 |         int neg;
+      |         ~~~~~~~~
+ 1565 |         uint64_t k;             /* the constant part */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1566 |         nid f[FS_FACS];
+      |         ~~~~~~~~~~~~~~~
+ 1567 |         int nf;
+      |         ~~~~~~~
+ 1568 | };
+      | ~
+/home/andrew/Code/ucas/src/ifx.c:1579:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1579 |             N.ki[N.b[e]] >= 0 && N.ki[N.b[e]] < TYW(t)) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1580:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1580 |                 s->k *= (uint64_t)1 << N.ki[N.b[e]];
+      |                                     ~~ ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ifx.c:1620:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1620 |         uint64_t m = TYW(t) >= 64 ? ~0ULL : (1ULL << TYW(t)) - 1;
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1620:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1620 |         uint64_t m = TYW(t) >= 64 ? ~0ULL : (1ULL << TYW(t)) - 1;
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ifx.c:1639:39: warning: parameter 't' is unused [misc-unused-parameters]
+ 1639 | sum_add(nid acc, nid e, int neg, ty_t t)
+      |                                ~~~~~~~^
+/home/andrew/Code/ucas/src/ifx.c:1659:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1659 |         if ((TYK(t) != K_UINT && TYK(t) != K_SINT) || !sum_terms(n, t, 0, s,
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1659:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1659 |         if ((TYK(t) != K_UINT && TYK(t) != K_SINT) || !sum_terms(n, t, 0, s,
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ifx.c:1701:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1701 |             "2^%d, a ring", ty_str(t), TYW(t));
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1705:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1705 |             "are %s times the sum of what each has besides it", TYW(t), in1,
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ifx.c:1717:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1717 |         switch (N.op[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

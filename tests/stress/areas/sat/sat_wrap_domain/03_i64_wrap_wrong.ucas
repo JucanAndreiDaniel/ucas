@@ -1,0 +1,19 @@
+# i64 wrap end-to-end reports 0 differences even when nsw fails (WRONG; see FINDINGS.md).
+n64(x: i64) = -x
+wrap n64
+domain n64
+range n64
+a64(x: i64) = x + 9223372036854775807
+wrap a64
+m64(x: i64) = x * 3
+wrap m64
+dbl64(x: i64) = x + x
+wrap dbl64
+sub64(x: i64) = x - -9223372036854775808
+wrap sub64
+min64(x: i64 in {-9223372036854775808}) = x / -1
+wrap min64
+domain min64
+range min64
+negmin64(x: i64 in {-9223372036854775808}) = -x
+wrap negmin64

@@ -1,0 +1,35 @@
+> c optimize nofile
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 4.8 -> 2.0 cycles
+  a (line 1): abs(x)
+    proof: sat (proved by SAT: 504 AIG nodes, 0 conflicts); cost 4.8 -> 2.0
+    before: { return x<0?-x:x; }
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int a(int x){
+  	return (int)((int32_t)((int32_t)((x)) < 0 ? 0u - (uint32_t)((x)) : (uint32_t)((x))));
+  }
+> c optimize nofile target zen4
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for zen4
+  estimated cost of the rewritten values on zen4: 4.0 -> 2.0 cycles
+  engines: find 1
+  b (line 1): mask
+    proof: sat (proved by SAT: 73 AIG nodes, 0 conflicts); cost 4.0 -> 2.0
+    engine: find; search: find: mask, verified below like every candidate
+    before: { int y=x&255; return y/16; }
+optimised C:
+  /* optimised by ucas cfront for zen4 (znver4); every rewrite proved, see the report */
+  #include <stdint.h>
+  int b(int x){
+  	return (int)((int32_t)((uint32_t)(((int32_t)((int32_t)((x)) >> (((int32_t)4))))) & (uint32_t)(((int32_t)15))));
+  }
+> c optimize nofile target sm75
+error: c: unknown target sm75 (c targets lists them)
+  note: the ```c code block was not used (animate exec and simplify take SPIR-V, c optimize takes C)
+> c optimize nofile target rdna2
+error: c: unknown target rdna2 (c targets lists them)
+  note: the ```c code block was not used (animate exec and simplify take SPIR-V, c optimize takes C)
+> show 1+1
+_() = 2
+  -> int

@@ -1,0 +1,37 @@
+> basis b1 { cost(x) = ~x }
+> basis b2 { gates(x) = ~x }
+> basis b3 { lut(x) = ~x }
+> basis b4 { and(x, y) = x & y }
+> basis b5 { pi(x) = ~x }
+> n(a: u1) = ~a
+> a2(a: u1, b: u1) = a & b
+> gates n basis b1
+gates for n: 1 input bit -> 1 output bit, basis b1
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  t0 = cost(a)                  = ~a
+  r0 = t0
+> gates n basis b2
+gates for n: 1 input bit -> 1 output bit, basis b2
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  t0 = gates(a)                 = ~a
+  r0 = t0
+> gates n basis b3
+gates for n: 1 input bit -> 1 output bit, basis b3
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  t0 = lut(a)                   = ~a
+  r0 = t0
+> gates a2 basis b4
+gates for a2: 2 input bits -> 1 output bit, basis b4
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = and(a, b)               = a & b
+  r0 = t0
+> gates n basis b5
+gates for n: 1 input bit -> 1 output bit, basis b5
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  t0 = pi(a)                    = ~a
+  r0 = t0

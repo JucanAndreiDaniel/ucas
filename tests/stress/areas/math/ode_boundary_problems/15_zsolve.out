@@ -1,0 +1,21 @@
+> zsolve x[n+2] = x[n+1] + x[n], x[0]=0, x[1]=1
+x[n+2] = x[n+1] + x[n], x[0] = 0, x[1] = 1
+  transformed: (z^2 - z - 1)Y(z) - (z) = 0
+  Y(z) = z/(z^2 - z - 1)
+  x[n] = sqrt(5)*((1 + sqrt(5))/2)^n/5 - sqrt(5)*((1 - sqrt(5))/2)^n/5    for n >= 0
+  poles of Y: (1 + sqrt(5))/2, (1 - sqrt(5))/2
+  check: iterating the recurrence gives the same x[0..39] (max relative difference 1.2e-15)
+> zsolve a[n+2] = 4*a[n+1] - 4*a[n], a[0]=1, a[1]=4
+a[n+2] = 4*a[n+1] - 4*a[n], a[0] = 1, a[1] = 4
+  transformed: (z^2 - 4z + 4)Y(z) - (z^2) = 0
+  Y(z) = z^2/(z - 2)^2
+  a[n] = (n + 1)*2^n    for n >= 0
+  poles of Y: 2 (double)
+  check: iterating the recurrence gives the same a[0..39] (max relative difference 0)
+> zsolve b[n+1] = b[n] + 1, b[0]=0
+b[n+1] = b[n] + 1, b[0] = 0
+  transformed: (z - 1)Y(z) = z/(z - 1)
+  Y(z) = z/(z - 1)^2
+  b[n] = n    for n >= 0
+  poles of Y: 1 (double)
+  check: iterating the recurrence gives the same b[0..39] (max relative difference 0)

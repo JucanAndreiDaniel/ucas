@@ -1,0 +1,50 @@
+> oddpar(x: bool, y: bool, z: bool) = (x xor y) xor z
+> table oddpar
+  x=0, y=0, z=0  ->  0
+  x=1, y=0, z=0  ->  1
+  x=0, y=1, z=0  ->  1
+  x=1, y=1, z=0  ->  0
+  x=0, y=0, z=1  ->  1
+  x=1, y=0, z=1  ->  0
+  x=0, y=1, z=1  ->  0
+  x=1, y=1, z=1  ->  1
+> mux3(x: bool, y: bool, z: bool) = x ? y : z
+> table mux3
+  x=0, y=0, z=0  ->  0
+  x=1, y=0, z=0  ->  0
+  x=0, y=1, z=0  ->  0
+  x=1, y=1, z=0  ->  1
+  x=0, y=0, z=1  ->  1
+  x=1, y=0, z=1  ->  0
+  x=0, y=1, z=1  ->  1
+  x=1, y=1, z=1  ->  1
+> a_implies_b_c(x: bool, y: bool, z: bool) = x ? (y | z) : z
+> table a_implies_b_c
+  x=0, y=0, z=0  ->  0
+  x=1, y=0, z=0  ->  0
+  x=0, y=1, z=0  ->  0
+  x=1, y=1, z=0  ->  1
+  x=0, y=0, z=1  ->  1
+  x=1, y=0, z=1  ->  1
+  x=0, y=1, z=1  ->  1
+  x=1, y=1, z=1  ->  1
+> demorgan1_A(a: bool, b: bool) = !(a & b)
+> demorgan1_B(a: bool, b: bool) = !a | !b
+> equiv demorgan1_A ~ demorgan1_B
+demorgan1_A and demorgan1_B are equal on the domain of demorgan1_A (exhaustive)
+> demorgan2_A(a: bool, b: bool) = !(a | b)
+> demorgan2_B(a: bool, b: bool) = !a & !b
+> equiv demorgan2_A ~ demorgan2_B
+demorgan2_A and demorgan2_B are equal on the domain of demorgan2_A (exhaustive)
+> demorgan3_A(a: bool, b: bool, c: bool) = !(a & b & c)
+> demorgan3_B(a: bool, b: bool, c: bool) = !a | !b | !c
+> equiv demorgan3_A ~ demorgan3_B
+demorgan3_A and demorgan3_B are equal on the domain of demorgan3_A (exhaustive)
+> demorgan4_A(a: bool, b: bool, c: bool) = !(a | b | c)
+> demorgan4_B(a: bool, b: bool, c: bool) = !a & !b & !c
+> equiv demorgan4_A ~ demorgan4_B
+demorgan4_A and demorgan4_B are equal on the domain of demorgan4_A (exhaustive)
+> absorb1_A(a: bool, b: bool) = a
+> absorb1_B(a: bool, b: bool) = a & (a | b)
+> equiv absorb1_A ~ absorb1_B
+absorb1_A and absorb1_B are equal on the domain of absorb1_A (exhaustive)

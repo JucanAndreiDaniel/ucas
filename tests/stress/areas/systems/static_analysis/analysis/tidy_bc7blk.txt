@@ -1,0 +1,501 @@
+/home/andrew/Code/ucas/src/bc7blk.c:36:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   36 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   37 | #include "texenc.h"
+/home/andrew/Code/ucas/src/bc7blk.c:58:14: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   40 | static const uint32_t bc7_part2[64] = {
+      |              ^
+/home/andrew/Code/ucas/src/bc7blk.c:88:14: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   88 | static const uint8_t bc7_anchor2[64] = {
+      |              ^
+/home/andrew/Code/ucas/src/bc7blk.c:121:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  121 |         return ((64 - w) * a + w * b + 32) >> 6;
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:127:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |         return (v << (8 - bits)) | (v >> (2 * bits - 8));
+      |                ^~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:127:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |         return (v << (8 - bits)) | (v >> (2 * bits - 8));
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:127:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |         return (v << (8 - bits)) | (v >> (2 * bits - 8));
+      |                                     ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:135:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |         return ns == 1 ? 0 : (int)(((ns == 2 ? bc7_part2[p] : bc7_part3[p]) >>
+      |                                                                             ~~
+  135 |             (2 * i)) & 3);
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:135:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  135 |             (2 * i)) & 3);
+      |                      ~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:151:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:151:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:151:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:151:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                         ^~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:151:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                                    ~~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:151:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 v |= (q[*pos >> 3] >> (*pos & 7) & 1) << k;
+      |                                        ^~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:161:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  161 |                 if (v >> k & 1)
+      |                     ^~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:162:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  162 |                         q[*pos >> 3] |= (uint8_t)(1 << (*pos & 7));
+      |                           ^~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:162:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  162 |                         q[*pos >> 3] |= (uint8_t)(1 << (*pos & 7));
+      |                                                   ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:162:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  162 |                         q[*pos >> 3] |= (uint8_t)(1 << (*pos & 7));
+      |                                                         ^~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:170:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  170 |         for (m = 0; m < 8 && !(q[0] >> m & 1); m++)
+      |                                ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:170:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  170 |         for (m = 0; m < 8 && !(q[0] >> m & 1); m++)
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:183:17: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  183 |                 memset(px, 0, 16 * 4);
+      |                               ^
+/home/andrew/Code/ucas/src/bc7blk.c:183:17: note: make conversion explicit to silence this warning
+   40 |                 memset(px, 0, 16 * 4);
+      |                               ^~~~~~
+      |                               (__size_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:183:17: note: perform multiplication in a wider type
+  183 |                 memset(px, 0, 16 * 4);
+      |                               ^~
+      |                               (long)
+/home/andrew/Code/ucas/src/bc7blk.c:204:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  204 |                                         ep[2 * s + e][c] = ep[2 * s + e][c] << 1 | p;
+      |                                                            ^~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:223:30: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  223 |                         px[i][c] = (uint8_t)lerp7(ep[2 * sub][c], ep[2 * sub + 1][c],
+      |                                                   ^
+/home/andrew/Code/ucas/src/bc7blk.c:223:33: note: make conversion explicit to silence this warning
+  223 |                         px[i][c] = (uint8_t)lerp7(ep[2 * sub][c], ep[2 * sub + 1][c],
+      |                                                      ^~~~~~~
+      |                                                      (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:223:33: note: perform multiplication in a wider type
+  223 |                         px[i][c] = (uint8_t)lerp7(ep[2 * sub][c], ep[2 * sub + 1][c],
+      |                                                      ^
+      |                                                      (ptrdiff_t)
+/home/andrew/Code/ucas/src/bc7blk.c:225:29: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  225 |                 px[i][3] = (uint8_t)lerp7(ep[2 * sub][3], ep[2 * sub + 1][3],
+      |                                           ^
+/home/andrew/Code/ucas/src/bc7blk.c:225:32: note: make conversion explicit to silence this warning
+  225 |                 px[i][3] = (uint8_t)lerp7(ep[2 * sub][3], ep[2 * sub + 1][3],
+      |                                              ^~~~~~~
+      |                                              (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:225:32: note: perform multiplication in a wider type
+  225 |                 px[i][3] = (uint8_t)lerp7(ep[2 * sub][3], ep[2 * sub + 1][3],
+      |                                              ^
+      |                                              (ptrdiff_t)
+/home/andrew/Code/ucas/src/bc7blk.c:263:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |         int nl = 1 << ibits, nv = 1 << (bits + (pb ? 1 : 0)), a, b, i, k;
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:263:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |         int nl = 1 << ibits, nv = 1 << (bits + (pb ? 1 : 0)), a, b, i, k;
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:270:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  270 |                 if (mask >> i & 1) {
+      |                     ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:287:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |                         if (pb == 2 && (a & 1) != (b & 1))
+      |                                         ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:287:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |                         if (pb == 2 && (a & 1) != (b & 1))
+      |                                                    ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:295:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  295 |                                 if (!(mask >> i & 1))
+      |                                       ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:319:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  319 |                         r->c[0] = pb ? a >> 1 : a;
+      |                                        ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:320:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  320 |                         r->c[1] = pb ? b >> 1 : b;
+      |                                        ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:321:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                         r->p[0] = pb ? a & 1 : 0;
+      |                                        ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:322:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  322 |                         r->p[1] = pb ? b & 1 : 0;
+      |                                        ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:334:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  334 |         if (!(r->idx[anchor] >> (ibits - 1) & 1))
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:339:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  339 |                 if (mask >> i & 1)
+      |                     ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:340:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  340 |                         r->idx[i] = (1 << ibits) - 1 - r->idx[i];
+      |                                      ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:369:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  369 |                                 mask |= 1 << i;
+      |                                 ^~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:369:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  369 |                                 mask |= 1 << i;
+      |                                         ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:378:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  378 |                                 mask |= 1 << i;
+      |                                 ^~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:378:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  378 |                                 mask |= 1 << i;
+      |                                         ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:401:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  401 |         putbits(q, &pos, m + 1, 1 << m);
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:453:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  453 |                 int nparts = M->pb ? 1 << M->pb : 1, way, nways;
+      |                                      ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:500:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  500 |                                                 info->red[s][e] = rpb ? widen(pr[s].c[e] << 1 |
+      |                                                                               ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:534:2: warning: no header providing "int8_t" is directly included [misc-include-cleaner]
+  534 |         int8_t d;
+      |         ^
+/home/andrew/Code/ucas/src/bc7blk.c:667:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  667 |         return bits >= 32 ? v : (v ^ (1 << (bits - 1))) - (1 << (bits - 1));
+      |                                  ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:667:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  667 |         return bits >= 32 ? v : (v ^ (1 << (bits - 1))) - (1 << (bits - 1));
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:667:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  667 |         return bits >= 32 ? v : (v ^ (1 << (bits - 1))) - (1 << (bits - 1));
+      |                                                            ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:680:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  680 |                 if (x == (1 << epb) - 1)
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:682:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  682 |                 return ((x << 15) + 0x4000) >> (epb - 1);
+      |                        ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:682:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  682 |                 return ((x << 15) + 0x4000) >> (epb - 1);
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:692:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  692 |         else if (x >= (1 << (epb - 1)) - 1)
+      |                        ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:695:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  695 |                 x = ((x << 15) + 0x4000) >> (epb - 1);
+      |                     ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:695:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  695 |                 x = ((x << 15) + 0x4000) >> (epb - 1);
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:703:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  703 |                 return (i * 31) >> 6;
+      |                        ^~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:704:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  704 |         return i < 0 ? (((-i) * 31) >> 5) | 0x8000 : (i * 31) >> 5;
+      |                        ^~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:704:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  704 |         return i < 0 ? (((-i) * 31) >> 5) | 0x8000 : (i * 31) >> 5;
+      |                         ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:704:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  704 |         return i < 0 ? (((-i) * 31) >> 5) | 0x8000 : (i * 31) >> 5;
+      |                                                      ^~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:711:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  711 |         int c = (q[0] & 3) < 2 ? q[0] & 3 : q[0] & 31, i;
+      |                       ~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:711:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  711 |         int c = (q[0] & 3) < 2 ? q[0] & 3 : q[0] & 31, i;
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:711:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  711 |         int c = (q[0] & 3) < 2 ? q[0] & 3 : q[0] & 31, i;
+      |                                                  ~ ^~
+/home/andrew/Code/ucas/src/bc7blk.c:721:43: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+  721 | bc6h_decode(const uint8_t q[16], int sgn, uint16_t px[16][3])
+      |                                           ^
+/home/andrew/Code/ucas/src/bc7blk.c:726:16: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  726 |         memset(px, 0, 16 * 3 * sizeof px[0][0]);
+      |                       ^
+/home/andrew/Code/ucas/src/bc7blk.c:726:16: note: make conversion explicit to silence this warning
+  726 |         memset(px, 0, 16 * 3 * sizeof px[0][0]);
+      |                       ^~~~~~
+      |                       (__size_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:726:16: note: perform multiplication in a wider type
+  726 |         memset(px, 0, 16 * 3 * sizeof px[0][0]);
+      |                       ^~
+      |                       (long)
+/home/andrew/Code/ucas/src/bc7blk.c:734:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                         int bit = q[(R->at + i) >> 3] >> ((R->at + i) & 7) & 1;
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:734:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                         int bit = q[(R->at + i) >> 3] >> ((R->at + i) & 7) & 1;
+      |                                     ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:734:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                         int bit = q[(R->at + i) >> 3] >> ((R->at + i) & 7) & 1;
+      |                                                       ~~ ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:734:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                         int bit = q[(R->at + i) >> 3] >> ((R->at + i) & 7) & 1;
+      |                                                           ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:736:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  736 |                                 part |= bit << (R->e + i);
+      |                                 ^~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:736:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  736 |                                 part |= bit << (R->e + i);
+      |                                         ^~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:738:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                                 e[R->e][R->f] |= bit << (R->b + R->d * i);
+      |                                 ^~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:738:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                                 e[R->e][R->f] |= bit << (R->b + R->d * i);
+      |                                                  ^~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:747:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  747 |                                 e[i][c] = (e[0][c] + bc6_sext(e[i][c], M->d[c])) &
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:748:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  748 |                                     ((1 << M->epb) - 1);
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:748:13: warning: Left shift overflows the capacity of 'int' [clang-analyzer-core.BitwiseShift]
+  748 |                                     ((1 << M->epb) - 1);
+      |                                       ~~^~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:727:6: note: Assuming 'mi' is >= 0
+  727 |         if (mi < 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:727:6: note: 'mi' is >= 0
+  727 |         if (mi < 0)
+      |             ^~
+/home/andrew/Code/ucas/src/bc7blk.c:727:2: note: Taking false branch
+  727 |         if (mi < 0)
+      |         ^
+/home/andrew/Code/ucas/src/bc7blk.c:731:14: note: 'r' is < 32
+  731 |         for (r = 0; r < 32 && bc6runs[mi][r].n; r++) {
+      |                     ^
+/home/andrew/Code/ucas/src/bc7blk.c:731:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/bc7blk.c:731:2: note: Loop condition is false. Execution continues on line 741
+  731 |         for (r = 0; r < 32 && bc6runs[mi][r].n; r++) {
+      |         ^
+/home/andrew/Code/ucas/src/bc7blk.c:741:7: note: Assuming field 'pb' is 0
+  741 |         ns = M->pb ? 2 : 1;
+      |              ^~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:741:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/bc7blk.c:742:2: note: Loop condition is true.  Entering loop body
+  742 |         for (c = 0; c < 3; c++) {
+      |         ^
+/home/andrew/Code/ucas/src/bc7blk.c:743:7: note: Assuming 'sgn' is not equal to 0
+  743 |                 if (sgn)
+      |                     ^~~
+/home/andrew/Code/ucas/src/bc7blk.c:743:3: note: Taking true branch
+  743 |                 if (sgn)
+      |                 ^
+/home/andrew/Code/ucas/src/bc7blk.c:744:14: note: Calling 'bc6_sext'
+  744 |                         e[0][c] = bc6_sext(e[0][c], M->epb);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:667:9: note: Assuming 'bits' is >= 32
+  667 |         return bits >= 32 ? v : (v ^ (1 << (bits - 1))) - (1 << (bits - 1));
+      |                ^~~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:667:9: note: '?' condition is true
+/home/andrew/Code/ucas/src/bc7blk.c:744:14: note: Returning from 'bc6_sext'
+  744 |                         e[0][c] = bc6_sext(e[0][c], M->epb);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:745:3: note: Loop condition is true.  Entering loop body
+  745 |                 for (i = 1; i < 2 * ns; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/bc7blk.c:746:8: note: Assuming field 'trans' is not equal to 0
+  746 |                         if (M->trans) {
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:746:4: note: Taking true branch
+  746 |                         if (M->trans) {
+      |                         ^
+/home/andrew/Code/ucas/src/bc7blk.c:748:13: note: The result of left shift is undefined because the right operand is >= 32, not smaller than 32, the capacity of 'int'
+  748 |                                     ((1 << M->epb) - 1);
+      |                                       ~~^~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:763:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                         ^~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:763:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:763:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:763:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:763:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                                             ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:763:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                         idx |= (q[pos >> 3] >> (pos & 7) & 1) << k;
+      |                                                 ^~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:764:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  764 |                 s = ns == 2 ? (int)(bc7_part2[part] >> (2 * i) & 3) : 0;
+      |                                                     ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:764:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  764 |                 s = ns == 2 ? (int)(bc7_part2[part] >> (2 * i) & 3) : 0;
+      |                                                                ~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:766:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  766 |                         px[i][c] = (uint16_t)bc6_finish(((64 - w[idx]) *
+      |                                                         ^~~~~~~~~~~~~~~~
+  767 |                             e[2 * s][c] + w[idx] * e[2 * s + 1][c] + 32) >> 6, sgn);
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:767:8: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  767 |                             e[2 * s][c] + w[idx] * e[2 * s + 1][c] + 32) >> 6, sgn);
+      |                             ^
+/home/andrew/Code/ucas/src/bc7blk.c:767:10: note: make conversion explicit to silence this warning
+  767 |                             e[2 * s][c] + w[idx] * e[2 * s + 1][c] + 32) >> 6, sgn);
+      |                               ^~~~~
+      |                               (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:767:10: note: perform multiplication in a wider type
+  767 |                             e[2 * s][c] + w[idx] * e[2 * s + 1][c] + 32) >> 6, sgn);
+      |                               ^
+      |                               (ptrdiff_t)
+/home/andrew/Code/ucas/src/bc7blk.c:777:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  777 |         int s = h >> 15 & 1, e = h >> 10 & 31, m = h & 1023;
+      |                 ^~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:777:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  777 |         int s = h >> 15 & 1, e = h >> 10 & 31, m = h & 1023;
+      |                                  ^~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:777:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  777 |         int s = h >> 15 & 1, e = h >> 10 & 31, m = h & 1023;
+      |                                                    ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:785:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  785 |                 v = ldexp(m | 1024, e - 25);
+      |                           ^ ~
+/home/andrew/Code/ucas/src/bc7blk.c:800:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  800 |         int lo = sgn ? -((1 << (epb - 1)) - 1) : 0, hi = sgn ? (1 << (epb -
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:800:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  800 |         int lo = sgn ? -((1 << (epb - 1)) - 1) : 0, hi = sgn ? (1 << (epb -
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:801:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  801 |             1)) - 1 : (1 << epb) - 1, mid;
+      |                        ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:810:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  810 |         if (lo > (sgn ? -((1 << (epb - 1)) - 1) : 0) &&
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:829:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  829 |         int lo = sgn ? -((1 << (M->epb - 1)) - 1) : 0, hi = sgn ? (1 << (M->epb -
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:829:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  829 |         int lo = sgn ? -((1 << (M->epb - 1)) - 1) : 0, hi = sgn ? (1 << (M->epb -
+      |                                                                    ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:830:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  830 |             1)) - 1 : (1 << M->epb) - 1, cand[4 * BC6W + 2], nc = 0, i, j, k, n = 0;
+      |                        ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:835:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  835 |                 if (mask >> i & 1) {
+      |                     ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:855:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |                             M->epb, sgn), nl = 1 << M->ib, x;
+      |                                                ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:859:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  859 |                                 pal[k] = bc6h_half(bc6_finish(((64 - w[k]) * ua + w[k] * ub +
+      |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  860 |                                     32) >> 6, sgn));
+      |                                     ~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:864:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  864 |                                 if (!(mask >> x & 1))
+      |                                       ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:874:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  874 |                         if (p->idx[anchor] >> (M->ib - 1) & 1)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:889:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  889 |         int m = (1 << epb) - 1, delta, back;
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:891:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  891 |         delta = ((v - base) & m);
+      |                  ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:893:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  893 |         if (delta < -(1 << (d - 1)) || delta > (1 << (d - 1)) - 1)
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:893:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  893 |         if (delta < -(1 << (d - 1)) || delta > (1 << (d - 1)) - 1)
+      |                                                 ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:895:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  895 |         back = (base + delta) & m;
+      |                ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:911:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  911 |                 q[0] |= (uint8_t)((code >> i & 1) << i);
+      |                                   ^~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:911:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  911 |                 q[0] |= (uint8_t)((code >> i & 1) << i);
+      |                                    ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:918:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  918 |                         if (v >> src & 1)
+      |                             ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:919:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  919 |                                 q[at >> 3] |= (uint8_t)(1 << (at & 7));
+      |                                   ^~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:919:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  919 |                                 q[at >> 3] |= (uint8_t)(1 << (at & 7));
+      |                                                         ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:919:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  919 |                                 q[at >> 3] |= (uint8_t)(1 << (at & 7));
+      |                                                               ^~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:926:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  926 |                         if (idx[i] >> k & 1)
+      |                             ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:927:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  927 |                                 q[pos >> 3] |= (uint8_t)(1 << (pos & 7));
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:927:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  927 |                                 q[pos >> 3] |= (uint8_t)(1 << (pos & 7));
+      |                                                          ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:927:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  927 |                                 q[pos >> 3] |= (uint8_t)(1 << (pos & 7));
+      |                                                                ^~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:936:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  936 |         int m = (1 << M->epb) - 1, i;
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:938:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  938 |         er[0] = x[0] & m;
+      |                 ^~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:940:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  940 |                 er[i] = M->trans ? (bc6_sext((x[i] - x[0]) & m, M->epb) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:940:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  940 |                 er[i] = M->trans ? (bc6_sext((x[i] - x[0]) & m, M->epb) &
+      |                                              ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:941:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  941 |                     ((1 << M->d[0]) - 1)) : x[i] & m;
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:941:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  941 |                     ((1 << M->d[0]) - 1)) : x[i] & m;
+      |                                             ^~~~ ~
+/home/andrew/Code/ucas/src/bc7blk.c:953:9: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+   38 |         P[0] = xcalloc(2 * NP, sizeof *P[0]);
+      |                ^
+/home/andrew/Code/ucas/src/bc7blk.c:953:17: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  953 |         P[0] = xcalloc(2 * NP, sizeof *P[0]);
+      |                        ^
+/home/andrew/Code/ucas/src/bc7blk.c:953:17: note: make conversion explicit to silence this warning
+  953 |         P[0] = xcalloc(2 * NP, sizeof *P[0]);
+      |                        ^~~~~~
+      |                        (size_t)( )
+/home/andrew/Code/ucas/src/bc7blk.c:953:17: note: perform multiplication in a wider type
+  953 |         P[0] = xcalloc(2 * NP, sizeof *P[0]);
+      |                        ^
+      |                        (long)
+/home/andrew/Code/ucas/src/bc7blk.c:965:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  965 |                                         mask[ns == 2 ? (int)(bc7_part2[part] >> (2 * i) & 3) :
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  966 |                                             0] |= 1 << i;
+      |                                             ~~ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:965:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  965 |                                         mask[ns == 2 ? (int)(bc7_part2[part] >> (2 * i) & 3) :
+      |                                                                              ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:965:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  965 |                                         mask[ns == 2 ? (int)(bc7_part2[part] >> (2 * i) & 3) :
+      |                                                                                         ~ ^
+/home/andrew/Code/ucas/src/bc7blk.c:966:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  966 |                                             0] |= 1 << i;
+      |                                                   ^ ~~
+/home/andrew/Code/ucas/src/bc7blk.c:996:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  996 |                                                 idx[k] = ns == 2 && (bc7_part2[part] >> (2 * k) & 3) ?
+      |                                                                                      ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/bc7blk.c:996:57: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  996 |                                                 idx[k] = ns == 2 && (bc7_part2[part] >> (2 * k) & 3) ?
+      |                                                                                                 ~ ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

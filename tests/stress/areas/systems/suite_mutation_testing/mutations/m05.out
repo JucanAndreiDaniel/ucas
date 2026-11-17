@@ -1,0 +1,281 @@
+> rules infer inputs 1 width 32 cost 3
+rules from the enumeration: 1 input of 32 bits under gt1030, programs up to cost 3
+  323 candidates (a dearer program with a cheaper one's values on 32 points; constants 1 and all ones); 323 read: 188 kept, 40 derived from the kept ones, 64 priced alike by the cover, 31 made one by the constructors, 0 not proved equal
+  as declarations a .ucas file can keep (each is proved again when read):
+  rule r1(a: u32) = a - (a + a)                => -a                       cost 2 -> 1
+  rule r2(a: u32) = a + a - a                  => a                        cost 2 -> 0
+  rule r3(a: u32) = -a - 1                     => 4294967295 - a           cost 2 -> 1
+  rule r4(a: u32) = -a - 4294967295            => 1 - a                    cost 2 -> 1
+  rule r5(a: u32) = a & (a | 1)                => a                        cost 1 -> 0
+  rule r6(a: u32) = -a & 1                     => a & 1                    cost 2 -> 1
+  rule r7(a: u32) = a | a & 1                  => a                        cost 1 -> 0
+  rule r8(a: u32) = a + 4294967295 xor 0xffffffff => -a                       cost 2 -> 1
+  rule r9(a: u32) = 4294967295 - a xor 0xffffffff => a                        cost 2 -> 0
+  rule r10(a: u32) = -a xor 0xffffffff         => a + 4294967295           cost 2 -> 1
+  rule r11(a: u32) = a << 1                    => a + a                    cost 2 -> 1
+  rule r12(a: u32) = -(a + 1)                  => 4294967295 - a           cost 2 -> 1
+  rule r13(a: u32) = -(a + 4294967295)         => 1 - a                    cost 2 -> 1
+  rule r14(a: u32) = -(1 - a)                  => a + 4294967295           cost 2 -> 1
+  rule r15(a: u32) = -(4294967295 - a)         => a + 1                    cost 2 -> 1
+  rule r16(a: u32) = ~(a + 4294967295)         => -a                       cost 2 -> 1
+  rule r17(a: u32) = ~(4294967295 - a)         => a                        cost 2 -> 0
+  rule r18(a: u32) = a + ((a xor 1) - a)       => a xor 1                  cost 3 -> 1
+  rule r19(a: u32) = a + (-a - a)              => -a                       cost 3 -> 1
+  rule r20(a: u32) = a + (a | -a)              => a & a + 4294967295       cost 3 -> 2
+  rule r21(a: u32) = a + (1 - a | 1)           => (a & 1) + 1              cost 3 -> 2
+  rule r22(a: u32) = a + (4294967295 - a | 1)  => (a & 1) + 4294967295     cost 3 -> 2
+  rule r23(a: u32) = a + (-a | 1)              => 1 - (a & 1)              cost 3 -> 2
+  rule r24(a: u32) = a + (-a xor 1)            => (a xor 1) - a            cost 3 -> 2
+  rule r25(a: u32) = a + (a & 1) + 1           => a + 1 | 1                cost 3 -> 2
+  rule r26(a: u32) = -a - a + 1                => 1 - (a + a)              cost 3 -> 2
+  rule r27(a: u32) = (a + 4294967295 | 1) + 1  => a + (a & 1)              cost 3 -> 2
+  rule r28(a: u32) = (4294967295 - a | 1) + 1  => 1 - (a | 1)              cost 3 -> 2
+  rule r29(a: u32) = (a + 1 xor 0xffffffff) + 1 => 4294967295 - a           cost 3 -> 1
+  rule r30(a: u32) = (1 - a xor 0xffffffff) + 1 => a + 4294967295           cost 3 -> 1
+  rule r31(a: u32) = a + (a & 1) + 4294967295  => a + 4294967295 | 1       cost 3 -> 2
+  rule r32(a: u32) = -a - a + 4294967295       => 4294967295 - (a + a)     cost 3 -> 2
+  rule r33(a: u32) = (a + 1 | 1) + 4294967295  => a + (a & 1)              cost 3 -> 2
+  rule r34(a: u32) = (1 - a | 1) + 4294967295  => 1 - (a | 1)              cost 3 -> 2
+  rule r35(a: u32) = (4294967295 - a | 1) + 4294967295 => 4294967295 - (a | 1)     cost 3 -> 2
+  rule r36(a: u32) = a + a - a                 => a                        cost 2 -> 0
+  rule r37(a: u32) = (a & 1) + (a | 1)         => a + 1                    cost 3 -> 1
+  rule r38(a: u32) = (a & 1) + (a xor 1)       => a | 1                    cost 3 -> 1
+  rule r39(a: u32) = a - (a + (a + a))         => -a - a                   cost 3 -> 2
+  rule r40(a: u32) = a - (a + (a & 1))         => -(a & 1)                 cost 3 -> 2
+  rule r41(a: u32) = a - (a + (a | 1))         => 4294967295 - a | 1       cost 3 -> 2
+  rule r42(a: u32) = a - (a + (a xor 1))       => -(a xor 1)               cost 3 -> 2
+  rule r43(a: u32) = a - (a - (a xor 1))       => a xor 1                  cost 3 -> 1
+  rule r44(a: u32) = a - (-a - a)              => a + (a + a)              cost 3 -> 2
+  rule r45(a: u32) = a - (a & a + 4294967295)  => a & -a                   cost 3 -> 2
+  rule r46(a: u32) = a - (a & -a)              => a & a + 4294967295       cost 3 -> 2
+  rule r47(a: u32) = a - (a + 1 | 1)           => 4294967295 - (a & 1)     cost 3 -> 2
+  rule r48(a: u32) = a - (a + 4294967295 | 1)  => 1 - (a & 1)              cost 3 -> 2
+  rule r49(a: u32) = a - (4294967295 - a | 1)  => a + (a | 1)              cost 3 -> 2
+  rule r50(a: u32) = 1 - (a + (a & 1))         => -a | 1                   cost 3 -> 2
+  rule r51(a: u32) = 1 - (-a - a)              => a + a + 1                cost 3 -> 2
+  rule r52(a: u32) = 1 - (a & 1 - a)           => a | 1 - a                cost 3 -> 2
+  rule r53(a: u32) = 1 - (a | 1 - a)           => a & 1 - a                cost 3 -> 2
+  rule r54(a: u32) = 1 - (1 - a | 1)           => (a | 1) + 4294967295     cost 3 -> 2
+  rule r55(a: u32) = 1 - (4294967295 - a | 1)  => (a | 1) + 1              cost 3 -> 2
+  rule r56(a: u32) = 1 - (-a | 1)              => a + (a & 1)              cost 3 -> 2
+  rule r57(a: u32) = 1 - (a + 1 xor 1)         => -a xor 1                 cost 3 -> 2
+  rule r58(a: u32) = 1 - (-a xor 1)            => a + 1 xor 1              cost 3 -> 2
+  rule r59(a: u32) = 4294967295 - (-a - a)     => a + a + 4294967295       cost 3 -> 2
+  rule r60(a: u32) = 4294967295 - (4294967295 - a | 1) => (a | 1) + 4294967295     cost 3 -> 2
+  rule r61(a: u32) = 4294967295 - (a xor a + 4294967295) => a xor -a                 cost 3 -> 2
+  rule r62(a: u32) = 4294967295 - (a xor -a)   => a xor a + 4294967295     cost 3 -> 2
+  rule r63(a: u32) = 4294967295 - (a + 4294967295 xor 1) => -a xor 1                 cost 3 -> 2
+  rule r64(a: u32) = 4294967295 - (-a xor 1)   => a + 4294967295 xor 1     cost 3 -> 2
+  rule r65(a: u32) = 4294967295 - (a + 1 xor 0xffffffff) => a + 1                    cost 3 -> 1
+  rule r66(a: u32) = 4294967295 - (1 - a xor 0xffffffff) => 1 - a                    cost 3 -> 1
+  rule r67(a: u32) = a + a - (a | 1)           => a + 4294967295 | 1       cost 3 -> 2
+  rule r68(a: u32) = (a & 1) - (a | 1)         => -(a xor 1)               cost 3 -> 2
+  rule r69(a: u32) = (a | 1) - (a + a)         => -a | 1                   cost 3 -> 2
+  rule r70(a: u32) = (a | 1) - (a & 1)         => a xor 1                  cost 3 -> 1
+  rule r71(a: u32) = (a | 1) - (a xor 1)       => a & 1                    cost 3 -> 1
+  rule r72(a: u32) = (a xor 1) - (a + a)       => -a xor 1                 cost 3 -> 2
+  rule r73(a: u32) = (a xor 1) - (a | 1)       => -(a & 1)                 cost 3 -> 2
+  rule r74(a: u32) = a + (a + a) - a           => a + a                    cost 3 -> 1
+  rule r75(a: u32) = a + (a & 1) - a           => a & 1                    cost 3 -> 1
+  rule r76(a: u32) = a + (a & 1) - 1           => a + 4294967295 | 1       cost 3 -> 2
+  rule r77(a: u32) = a + (a & 1) - 4294967295  => a + 1 | 1                cost 3 -> 2
+  rule r78(a: u32) = a + (a | 1) - a           => a | 1                    cost 3 -> 1
+  rule r79(a: u32) = a + (a xor 1) - a         => a xor 1                  cost 3 -> 1
+  rule r80(a: u32) = a - (a xor 1) - a         => -(a xor 1)               cost 3 -> 2
+  rule r81(a: u32) = (a xor 1) - a - a         => -a xor 1                 cost 3 -> 2
+  rule r82(a: u32) = -a - a - 1                => 4294967295 - (a + a)     cost 3 -> 2
+  rule r83(a: u32) = -a - a - 4294967295       => 1 - (a + a)              cost 3 -> 2
+  rule r84(a: u32) = (a & a + 4294967295) - a  => a | -a                   cost 3 -> 2
+  rule r85(a: u32) = (a + 1 | 1) - a           => (a & 1) + 1              cost 3 -> 2
+  rule r86(a: u32) = (a + 1 | 1) - 1           => a + (a & 1)              cost 3 -> 2
+  rule r87(a: u32) = (a + 4294967295 | 1) - a  => (a & 1) + 4294967295     cost 3 -> 2
+  rule r88(a: u32) = (a + 4294967295 | 1) - 4294967295 => a + (a & 1)              cost 3 -> 2
+  rule r89(a: u32) = (1 - a | 1) - 1           => 1 - (a | 1)              cost 3 -> 2
+  rule r90(a: u32) = (4294967295 - a | 1) - 1  => 4294967295 - (a | 1)     cost 3 -> 2
+  rule r91(a: u32) = (4294967295 - a | 1) - 4294967295 => 1 - (a | 1)              cost 3 -> 2
+  rule r92(a: u32) = (a + 1 xor 0xffffffff) - 4294967295 => 4294967295 - a           cost 3 -> 1
+  rule r93(a: u32) = (1 - a xor 0xffffffff) - 4294967295 => a + 4294967295           cost 3 -> 1
+  rule r94(a: u32) = 4294967295a               => -a                       cost 3 -> 1
+  rule r95(a: u32) = a & a + (a & 1)           => a & a + 1                cost 3 -> 2
+  rule r96(a: u32) = a & a + (a | 1)           => a & a + a                cost 3 -> 2
+  rule r97(a: u32) = a & (a | 1) + 4294967295  => (a | 1) + 4294967295     cost 3 -> 2
+  rule r98(a: u32) = a & 1 - (a | 1)           => a & 1 - a                cost 3 -> 2
+  rule r99(a: u32) = a & 4294967295 - (a & 1)  => (a | 1) + 4294967295     cost 3 -> 2
+  rule r100(a: u32) = a & (a | a + a)          => a                        cost 2 -> 0
+  rule r101(a: u32) = a & (a | a + 1)          => a                        cost 2 -> 0
+  rule r102(a: u32) = a & (a | a + 4294967295) => a                        cost 2 -> 0
+  rule r103(a: u32) = a & (a | 1 - a)          => a                        cost 2 -> 0
+  rule r104(a: u32) = a & (a | -a)             => a                        cost 2 -> 0
+  rule r105(a: u32) = a & (4294967295 - a | 1) => a & 1                    cost 2 -> 1
+  rule r106(a: u32) = a + (a + a) & 1          => a & 1                    cost 3 -> 1
+  rule r107(a: u32) = a + (a | 1) & 1          => 1 - (a & 1)              cost 3 -> 2
+  rule r108(a: u32) = (a & 1) + 1 & 1          => 1 - (a & 1)              cost 3 -> 2
+  rule r109(a: u32) = (a xor 1) + 1 & 1        => a & 1                    cost 3 -> 1
+  rule r110(a: u32) = (a & 1) + 4294967295 & 1 => 1 - (a & 1)              cost 3 -> 2
+  rule r111(a: u32) = (a xor 1) + 4294967295 & 1 => a & 1                    cost 3 -> 1
+  rule r112(a: u32) = 1 - (a & 1) & 1          => 1 - (a & 1)              cost 3 -> 2
+  rule r113(a: u32) = 1 - (a xor 1) & 1        => a & 1                    cost 3 -> 1
+  rule r114(a: u32) = 4294967295 - (a & 1) & 1 => 1 - (a & 1)              cost 3 -> 2
+  rule r115(a: u32) = 4294967295 - (a xor 1) & 1 => a & 1                    cost 3 -> 1
+  rule r116(a: u32) = a & -a & 1               => a & 1                    cost 2 -> 1
+  rule r117(a: u32) = (a | a + a) & 1          => a & 1                    cost 2 -> 1
+  rule r118(a: u32) = (a | -a) & 1             => a & 1                    cost 2 -> 1
+  rule r119(a: u32) = (a xor a + a) & 1        => a & 1                    cost 2 -> 1
+  rule r120(a: u32) = (a + 1 xor 1) & 1        => a & 1                    cost 2 -> 1
+  rule r121(a: u32) = (a + 4294967295 xor 1) & 1 => a & 1                    cost 2 -> 1
+  rule r122(a: u32) = (a + 1 xor 0xffffffff) & 1 => a & 1                    cost 2 -> 1
+  rule r123(a: u32) = (1 - a xor 0xffffffff) & 1 => a & 1                    cost 2 -> 1
+  rule r124(a: u32) = -(a & 1) & 1             => a & 1                    cost 3 -> 1
+  rule r125(a: u32) = -(a xor 1) & 1           => 1 - (a & 1)              cost 3 -> 2
+  rule r126(a: u32) = a + a & a + 4294967295   => a & a + a                cost 3 -> 2
+  rule r127(a: u32) = a | (a | 1) + 4294967295 => a                        cost 3 -> 0
+  rule r128(a: u32) = a | 1 - (a & 1)          => a | 1                    cost 3 -> 1
+  rule r129(a: u32) = a | a & a + a            => a                        cost 2 -> 0
+  rule r130(a: u32) = a | a & a + 1            => a                        cost 2 -> 0
+  rule r131(a: u32) = a | a & a + 4294967295   => a                        cost 2 -> 0
+  rule r132(a: u32) = a | a & 1 - a            => a                        cost 2 -> 0
+  rule r133(a: u32) = a | a & -a               => a                        cost 2 -> 0
+  rule r134(a: u32) = a + (a & 1) | 1          => a + 1 | 1                cost 3 -> 2
+  rule r135(a: u32) = a + (a | 1) | 1          => a + a + 1                cost 3 -> 2
+  rule r136(a: u32) = a + (a xor 1) | 1        => a + (a xor 1)            cost 3 -> 2
+  rule r137(a: u32) = a + a + 1 | 1            => a + a + 1                cost 3 -> 2
+  rule r138(a: u32) = a + a + 4294967295 | 1   => a + a + 4294967295       cost 3 -> 2
+  rule r139(a: u32) = (a & 1) + 4294967295 | 1 => a - (a xor 1)            cost 3 -> 2
+  rule r140(a: u32) = (a | 1) + 4294967295 | 1 => a | 1                    cost 3 -> 1
+  rule r141(a: u32) = a - (a xor 1) | 1        => a - (a xor 1)            cost 3 -> 2
+  rule r142(a: u32) = 1 - (a + a) | 1          => 1 - (a + a)              cost 3 -> 2
+  rule r143(a: u32) = 1 - (a | 1) | 1          => 1 - a | 1                cost 3 -> 2
+  rule r144(a: u32) = 1 - (a xor 1) | 1        => 1 - a | 1                cost 3 -> 2
+  rule r145(a: u32) = 4294967295 - (a + a) | 1 => 4294967295 - (a + a)     cost 3 -> 2
+  rule r146(a: u32) = 4294967295 - (a | 1) | 1 => 4294967295 - a | 1       cost 3 -> 2
+  rule r147(a: u32) = 4294967295 - (a xor 1) | 1 => 4294967295 - a | 1       cost 3 -> 2
+  rule r148(a: u32) = (a xor 1) - a | 1        => (a xor 1) - a            cost 3 -> 2
+  rule r149(a: u32) = -a - a | 1               => 1 - (a + a)              cost 3 -> 2
+  rule r150(a: u32) = -(a & 1) | 1             => (a xor 1) - a            cost 3 -> 2
+  rule r151(a: u32) = a & 1 | -a               => -a                       cost 2 -> 1
+  rule r152(a: u32) = a xor (a | 1) + 4294967295 => a & 1                    cost 3 -> 1
+  rule r153(a: u32) = a xor 1 - (a & 1)        => a | 1                    cost 3 -> 1
+  rule r154(a: u32) = a xor 4294967295 - (a & 1) => 4294967295 - a | 1       cost 3 -> 2
+  rule r155(a: u32) = a xor (a xor a + a)      => a + a                    cost 2 -> 1
+  rule r156(a: u32) = a xor (a xor a + 1)      => a + 1                    cost 2 -> 1
+  rule r157(a: u32) = a xor (a xor a + 4294967295) => a + 4294967295           cost 2 -> 1
+  rule r158(a: u32) = a xor (a xor 1 - a)      => 1 - a                    cost 2 -> 1
+  rule r159(a: u32) = a xor (a xor -a)         => -a                       cost 2 -> 1
+  rule r160(a: u32) = a + (a & 1) xor 1        => a + 1 | 1                cost 3 -> 2
+  rule r161(a: u32) = a + a + 1 xor 1          => a + a                    cost 3 -> 1
+  rule r162(a: u32) = (a | 1) + 4294967295 xor 1 => a | 1                    cost 3 -> 1
+  rule r163(a: u32) = 1 - (a + a) xor 1        => -a - a                   cost 3 -> 2
+  rule r164(a: u32) = 1 - (a & 1) xor 1        => a & 1                    cost 3 -> 1
+  rule r165(a: u32) = 1 - (a | 1) xor 1        => 1 - a | 1                cost 3 -> 2
+  rule r166(a: u32) = 1 - (a xor 1) xor 1      => 1 - a                    cost 3 -> 1
+  rule r167(a: u32) = 4294967295 - (a | 1) xor 1 => 4294967295 - a | 1       cost 3 -> 2
+  rule r168(a: u32) = 4294967295 - (a xor 1) xor 1 => 4294967295 - a           cost 3 -> 1
+  rule r169(a: u32) = -a - a xor 1             => 1 - (a + a)              cost 3 -> 2
+  rule r170(a: u32) = a + a + 4294967295 xor 0xffffffff => -a - a                   cost 3 -> 2
+  rule r171(a: u32) = (a | 1) + 4294967295 xor 0xffffffff => 4294967295 - a | 1       cost 3 -> 2
+  rule r172(a: u32) = -a - a xor 0xffffffff    => a + a + 4294967295       cost 3 -> 2
+  rule r173(a: u32) = a + 4294967295 xor 4294967295 - a => a xor -a                 cost 3 -> 2
+  rule r174(a: u32) = 4294967295 - a xor -a    => a xor a + 4294967295     cost 3 -> 2
+  rule r175(a: u32) = (a | 1) >> 1             => a >> 1                   cost 3 -> 2
+  rule r176(a: u32) = (a xor 1) >> 1           => a >> 1                   cost 3 -> 2
+  rule r177(a: u32) = -(a - (a xor 1))         => (a xor 1) - a            cost 3 -> 2
+  rule r178(a: u32) = -((a xor 1) - a)         => a - (a xor 1)            cost 3 -> 2
+  rule r179(a: u32) = -(-a - a)                => a + a                    cost 3 -> 1
+  rule r180(a: u32) = -(a & -a)                => a | -a                   cost 3 -> 2
+  rule r181(a: u32) = -(a | -a)                => a & -a                   cost 3 -> 2
+  rule r182(a: u32) = -(a + 4294967295 | 1)    => -a | 1                   cost 3 -> 2
+  rule r183(a: u32) = -(4294967295 - a | 1)    => a | 1                    cost 3 -> 1
+  rule r184(a: u32) = ~(a + a + 4294967295)    => -a - a                   cost 3 -> 2
+  rule r185(a: u32) = ~((a | 1) + 4294967295)  => 4294967295 - a | 1       cost 3 -> 2
+  rule r186(a: u32) = ~(-a - a)                => a + a + 4294967295       cost 3 -> 2
+  rule r187(a: u32) = ~(a + 1 xor 0xffffffff)  => a + 1                    cost 2 -> 1
+  rule r188(a: u32) = ~(1 - a xor 0xffffffff)  => 1 - a                    cost 2 -> 1
+> f(x: u32, y: u32, z: u32) = ((x * y + z) << 1) xor (z * 3)
+> find f 1
+find f: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 8   t1 + t1 xor 3z where t1 = x*y + z        the rule r11, a << 1 => a + a, inferred from the enumeration (derived; checked by SAT)
+      holds where every value of its variables (u32): proved when it was inferred
+      both sides equal on every input of the rule's variables (enumerated or SAT); the variables bound to subterms here
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> model cheapshift : gt1030 { shift: 1 }
+> use cheapshift
+cost model: cheapshift
+> rules infer inputs 1 width 32 cost 2
+rules from the enumeration: 1 input of 32 bits under cheapshift, programs up to cost 2
+  26 candidates (a dearer program with a cheaper one's values on 32 points; constants 1 and all ones); 26 read: 18 kept, 1 derived from the kept ones, 2 priced alike by the cover, 5 made one by the constructors, 0 not proved equal
+  as declarations a .ucas file can keep (each is proved again when read):
+  rule r1(a: u32) = a - (a + a)                => -a                       cost 2 -> 1
+  rule r2(a: u32) = a + a - a                  => a                        cost 2 -> 0
+  rule r3(a: u32) = -a - 1                     => 4294967295 - a           cost 2 -> 1
+  rule r4(a: u32) = -a - 4294967295            => 1 - a                    cost 2 -> 1
+  rule r5(a: u32) = a & (a | 1)                => a                        cost 1 -> 0
+  rule r6(a: u32) = -a & 1                     => a & 1                    cost 2 -> 1
+  rule r7(a: u32) = a | a & 1                  => a                        cost 1 -> 0
+  rule r8(a: u32) = a + 4294967295 xor 0xffffffff => -a                       cost 2 -> 1
+  rule r9(a: u32) = 4294967295 - a xor 0xffffffff => a                        cost 2 -> 0
+  rule r10(a: u32) = -a xor 0xffffffff         => a + 4294967295           cost 2 -> 1
+  rule r11(a: u32) = (a | 1) >> 1              => a >> 1                   cost 2 -> 1
+  rule r12(a: u32) = (a xor 1) >> 1            => a >> 1                   cost 2 -> 1
+  rule r13(a: u32) = -(a + 1)                  => 4294967295 - a           cost 2 -> 1
+  rule r14(a: u32) = -(a + 4294967295)         => 1 - a                    cost 2 -> 1
+  rule r15(a: u32) = -(1 - a)                  => a + 4294967295           cost 2 -> 1
+  rule r16(a: u32) = -(4294967295 - a)         => a + 1                    cost 2 -> 1
+  rule r17(a: u32) = ~(a + 4294967295)         => -a                       cost 2 -> 1
+  rule r18(a: u32) = ~(4294967295 - a)         => a                        cost 2 -> 0
+> use gt1030
+cost model: gt1030
+> rules infer inputs 2 width 32 cost 2
+rules from the enumeration: 2 inputs of 32 bits under gt1030, programs up to cost 2
+  76 candidates (a dearer program with a cheaper one's values on 32 points; constants 1 and all ones); 76 read: 27 kept, 27 derived from the kept ones, 10 priced alike by the cover, 12 made one by the constructors, 0 not proved equal
+  as declarations a .ucas file can keep (each is proved again when read):
+  rule r1(a: u32, b: u32) = a + (b - a)        => b                        cost 2 -> 0
+  rule r2(a: u32, b: u32) = a - (a + a)        => -a                       cost 2 -> 1
+  rule r3(a: u32, b: u32) = a - (a + b)        => -b                       cost 2 -> 1
+  rule r4(a: u32, b: u32) = a - (a - b)        => b                        cost 2 -> 0
+  rule r5(a: u32, b: u32) = b - (a + b)        => -a                       cost 2 -> 1
+  rule r6(a: u32, b: u32) = a + a - a          => a                        cost 2 -> 0
+  rule r7(a: u32, b: u32) = a + b - a          => b                        cost 2 -> 0
+  rule r8(a: u32, b: u32) = a + b - b          => a                        cost 2 -> 0
+  rule r9(a: u32, b: u32) = a - b - a          => -b                       cost 2 -> 1
+  rule r10(a: u32, b: u32) = -a - 1            => 4294967295 - a           cost 2 -> 1
+  rule r11(a: u32, b: u32) = -a - 4294967295   => 1 - a                    cost 2 -> 1
+  rule r12(a: u32, b: u32) = a & (a | b)       => a                        cost 1 -> 0
+  rule r13(a: u32, b: u32) = -a & 1            => a & 1                    cost 2 -> 1
+  rule r14(a: u32, b: u32) = a | a & b         => a                        cost 1 -> 0
+  rule r15(a: u32, b: u32) = a xor (a xor b)   => b                        cost 1 -> 0
+  rule r16(a: u32, b: u32) = b xor (a xor b)   => a                        cost 1 -> 0
+  rule r17(a: u32, b: u32) = a + 4294967295 xor 0xffffffff => -a                       cost 2 -> 1
+  rule r18(a: u32, b: u32) = 4294967295 - a xor 0xffffffff => a                        cost 2 -> 0
+  rule r19(a: u32, b: u32) = -a xor 0xffffffff => a + 4294967295           cost 2 -> 1
+  rule r20(a: u32, b: u32) = a << 1            => a + a                    cost 2 -> 1
+  rule r21(a: u32, b: u32) = -(a + 1)          => 4294967295 - a           cost 2 -> 1
+  rule r22(a: u32, b: u32) = -(a + 4294967295) => 1 - a                    cost 2 -> 1
+  rule r23(a: u32, b: u32) = -(a - b)          => b - a                    cost 2 -> 1
+  rule r24(a: u32, b: u32) = -(1 - a)          => a + 4294967295           cost 2 -> 1
+  rule r25(a: u32, b: u32) = -(4294967295 - a) => a + 1                    cost 2 -> 1
+  rule r26(a: u32, b: u32) = ~(a + 4294967295) => -a                       cost 2 -> 1
+  rule r27(a: u32, b: u32) = ~(4294967295 - a) => a                        cost 2 -> 0
+> rule dbl(a: u32) = a << 1 => a + a
+rule dbl: a << 1 => a + a, proved by SAT (cost 2 -> 1 under gt1030)
+> f2(x: u32, y: u32) = (x * y << 1) xor y
+> find f2 1
+find f2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 5   x*y + x*y xor y                          the rule r20, a << 1 => a + a, inferred from the enumeration (derived; checked by SAT)
+      holds where every value of its variables (u32): proved when it was inferred
+      both sides equal on every input of the rule's variables (enumerated or SAT); the variables bound to subterms here
+  cost 5   x*y + x*y xor y                          the rule dbl, a << 1 => a + a, declared (derived; checked by SAT)
+      holds where every value of its variables (u32): proved when it was declared
+      both sides equal on every input of the rule's variables (enumerated or SAT); the variables bound to subterms here
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> rule bad(a: u32) = a << 1 => a + 1
+m05.ucas:21:35: error: rule bad: not kept: the sides differ at a=0: 0 vs 1
+    rule bad(a: u32) = a << 1 => a + 1
+                                      ^
+> rule narrow(a: u32 in 0..9) = a << 1 => a + a
+m05.ucas:23:29: error: rule narrow: a takes every value of its type: a rule holds for all of them (a range or a list is for a function)
+    rule narrow(a: u32 in 0..9) = a << 1 => a + a
+                                ^

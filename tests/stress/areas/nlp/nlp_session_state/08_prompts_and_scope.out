@@ -1,0 +1,57 @@
+> let square of x be x times x
+  sorry: I don't understand "let square of" here
+> what is square of 4?
+  ucas: 4^2
+16
+> what is its range?
+  sorry: "its" has nothing to refer to yet
+> x if x is positive, otherwise minus x; call it myabs
+  ucas: it(x) = x > 0 ? x : -x
+  ucas: show it
+it(x: real) = x > 0 ? x : -x
+  -> real
+  ucas: myabs(x: real) = it(x)
+  ucas: show myabs
+myabs(x: real) = x > 0 ? x : -x
+  -> real
+> what is the derivative of myabs?
+  ucas: diff myabs
+d/dx myabs = x > 0 ? 1 : -1
+  holds for x != 0
+    at x = 0 myabs has a corner (slope -1 from the left, 1 from the right)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 1e-15)
+> what is myabs of -3?
+  ucas: myabs(-3)
+3
+> what is the range of myabs for x from -4 to 4?
+  ucas: it(x: real in -4..4) = myabs(x)
+  ucas: range it
+range of it:
+  [-0, 4]   min at x ≈ 0, max at x ≈ -4
+  grid of 20001 points over [-4, 4], extrema refined at critical points
+> the sum of i from 1 to 10 of i squared
+  ucas: sum(i, 1, 10, i^2)
+385
+> the product over k from 1 to 5 of k
+  ucas: prod(k, 1, 5, k)
+120
+> what is the square root of 17?
+  note: the square root of a constant: read as the real one, sqrt(17), not the floor root, isqrt (say "integer square root", or "assume square root means integer")
+  ucas: sqrt(17)
+4.12311
+> assume square root means integer
+  ok: square root means integer
+> what is the square root of 17?
+  ucas: isqrt(17)
+4
+> forget square root
+  ok: forgot square root
+> what is the square root of 17?
+  note: the square root of a constant: read as the real one, sqrt(17), not the floor root, isqrt (say "integer square root", or "assume square root means integer")
+  ucas: sqrt(17)
+4.12311
+> what is the log of 100?
+  note: "log" without a base: read as the natural log, ln, not log base 2 or log base 10 (say "natural log", "log base 2" or "log base 10", or "assume log means base 2")
+  ucas: log(100)
+4.60517

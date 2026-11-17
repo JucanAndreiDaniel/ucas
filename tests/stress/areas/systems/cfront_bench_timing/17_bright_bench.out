@@ -1,0 +1,62 @@
+> c optimize nofile bench budget 1
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 1.5 -> 1.0 cycles
+  bright (line 1): store 0: affine fit
+    proof: sat (proved by SAT: 101 AIG nodes, 0 conflicts; per stored value, over the loads); cost 1.5 -> 1.0 per element (loads and stores kept, in order)
+    before: d[i]=s[i]+1;
+  bright (line 1): not lowered: line 1: the function does not return an integer or a float
+  bright (line 1): proved, not applied: bench could not time it (the harness cannot make its parameters), so it is not known to beat clang's own code; 256-bit vectors, 32 lanes of 8 bits (avx avx2), run-time overlap test; 32 lanes proved (0 equal DAGs, 32 exhaustive, 0 SAT); synthesised add_epi8 (CEGIS: 4 of 33 sketches, 5 SAT calls, 0 counterexamples)
+    code (not applied):
+      {
+      	int i=0;
+      #if defined(__AVX__) && defined(__AVX2__)
+      	if (((unsigned long)(const void *)(d) + (unsigned long)(n + 0) * sizeof *(d) <= (unsigned long)(const void *)(s) + (unsigned long)(i + 0) * sizeof *(s) || (unsigned long)(const void *)(s) + (unsigned long)(n + 0) * sizeof *(s) <= (unsigned long)(const void *)(d) + (unsigned long)(i + 0) * sizeof *(d))) {
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 128; i += 128) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((s) + cf_i));
+      		__m256i cf_v1 = _mm256_add_epi8(cf_v0, _mm256_set_epi64x((long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull));
+      		_mm256_storeu_si256((void *)((d) + cf_i), cf_v1);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 32;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((s) + cf_i));
+      		__m256i cf_v1 = _mm256_add_epi8(cf_v0, _mm256_set_epi64x((long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull));
+      		_mm256_storeu_si256((void *)((d) + cf_i), cf_v1);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 64;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((s) + cf_i));
+      		__m256i cf_v1 = _mm256_add_epi8(cf_v0, _mm256_set_epi64x((long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull));
+      		_mm256_storeu_si256((void *)((d) + cf_i), cf_v1);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 96;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((s) + cf_i));
+      		__m256i cf_v1 = _mm256_add_epi8(cf_v0, _mm256_set_epi64x((long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull));
+      		_mm256_storeu_si256((void *)((d) + cf_i), cf_v1);
+      	    }
+      	}
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 32; i += 32) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((s) + cf_i));
+      		__m256i cf_v1 = _mm256_add_epi8(cf_v0, _mm256_set_epi64x((long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull, (long long)0x101010101010101ull));
+      		_mm256_storeu_si256((void *)((d) + cf_i), cf_v1);
+      	    }
+      	}
+      	}
+      #endif
+      	for (; i < (n); i += 1) {
+      		const uint8_t cf_ld0 = (s)[(long)((int64_t)((i)))];
+      		(d)[(long)((int64_t)((i)))] = (unsigned char)((uint8_t)(((int32_t)((uint32_t)(((int32_t)((cf_ld0)))) + (uint32_t)(((int32_t)1))))));
+      	}
+      }
+  check: the original does not compile:
+cc: error: unrecognized command-line option ‘-fsanitize-minimal-runtime’
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  void bright(unsigned char*d,const unsigned char*s,int n){for(int i=0;i<n;i++){
+  		d[i] = (unsigned char)((uint8_t)((uint32_t)((s[i])) + (uint32_t)(((uint8_t)1u))));
+  	}}

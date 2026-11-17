@@ -1,0 +1,10 @@
+> c optimize nofile budget 3
+c optimize: 3 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  bf (line 1): not lowered: line 1: a local of a non-integer type or whose address is taken (x)
+  bfmask (line 2): not lowered: line 2: a local of a non-integer type or whose address is taken (x)
+  bfcmp (line 3): not lowered: line 3: a local of a non-integer type or whose address is taken (x)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int bf(unsigned v){struct B{unsigned a:3;unsigned b:5;};struct B x;x.a=v;x.b=v>>3;return x.a+x.b;}
+  unsigned bfmask(unsigned v){struct B{unsigned a:1;};struct B x;x.a=v;return x.a;}
+  int bfcmp(unsigned v){struct B{unsigned a:3;};struct B x;x.a=v;return x.a==7;}

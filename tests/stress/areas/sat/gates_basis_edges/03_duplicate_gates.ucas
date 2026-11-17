@@ -1,0 +1,13 @@
+# duplicate gate definitions: same/different body, different arity, inherited replacement
+basis d1 { g(x) = ~x; g(x) = ~x }
+basis d2 { g(x, y) = x & y; g(x, y) = x | y }
+basis d3 { g(x) = ~x; g(x, y) = x & y }
+basis p  { g(x) = ~x }
+basis d4 : p { g(x) = x }
+n(a: u1) = ~a
+and(a: u1, b: u1) = a & b
+or(a: u1, b: u1) = a | b
+gates n basis d1
+gates or basis d2
+gates and basis d3
+gates n basis d4

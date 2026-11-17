@@ -1,0 +1,2449 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/xform.c:28:1: warning: included header calc2.h is not used directly [misc-include-cleaner]
+   28 | #include "calc2.h"
+      | ^~~~~~~~~~~~~~~~~~
+   29 | #include "props.h"
+/home/andrew/Code/ucas/src/xform.c:41:12: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+   30 | 
+   31 | #include <ctype.h>
+   32 | #include <math.h>
+   33 | #include <stdlib.h>
+   34 | #include <string.h>
+   35 | 
+   36 | /* ---- text helpers ---- */
+   37 | 
+   38 | static char *
+   39 | xstrdup(const char *s)
+   40 | {
+   41 |         char *r = xmalloc(strlen(s) + 1);
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:43:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+   43 |         strcpy(r, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:43:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+   43 |         strcpy(r, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:63:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   63 |         return isalnum(c) || c == '_' || (c & 0x80);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/xform.c:109:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   33 |         snprintf(val, vn, "%.*s", (int)(end - at - (long)l), s + at + l);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:202:8: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+  202 |                         if (func_find(sym_cstr(w)))
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:202:18: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  202 |                         if (func_find(sym_cstr(w)))
+      |                                       ^
+/home/andrew/Code/ucas/src/xform.c:213:6: warning: no header providing "note" is directly included [misc-include-cleaner]
+  213 |                                         note("the last word %s is read as the variable (write *%s "
+      |                                         ^
+/home/andrew/Code/ucas/src/xform.c:259:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   33 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:260:2: warning: no header providing "vprintf" is directly included [misc-include-cleaner]
+  260 |         vprintf(fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:261:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+  261 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:262:2: warning: no header providing "putchar" is directly included [misc-include-cleaner]
+  262 |         putchar('\n');
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:270:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+  270 |         nid t[MAXT];
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:276:9: warning: no header providing "N" is directly included [misc-include-cleaner]
+  276 |         while (N.op[e] == O_CAST && TY_FP(N.ty[N.a[e]]))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:276:20: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  276 |         while (N.op[e] == O_CAST && TY_FP(N.ty[N.a[e]]))
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:276:30: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  276 |         while (N.op[e] == O_CAST && TY_FP(N.ty[N.a[e]]))
+      |                                     ^
+/home/andrew/Code/ucas/src/xform.c:276:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/xform.c:278:20: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  278 |         return N.op[e] == O_ADD || N.op[e] == O_SUB ||
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:278:40: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  278 |         return N.op[e] == O_ADD || N.op[e] == O_SUB ||
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:279:18: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  279 |             (N.op[e] == O_NEG && is_sum(N.a[e]));
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:287:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |         while (N.op[e] == O_CAST && TY_FP(N.ty[N.a[e]]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/xform.c:289:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  289 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:301:7: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  301 |         case O_MUL:
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:302:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  302 |         case O_DIV:
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:333:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  333 |                 fail("too many terms");
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:357:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  357 |         while (N.op[e] == O_CAST && TY_FP(N.ty[N.a[e]]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/xform.c:359:7: warning: no header providing "has_slot" is directly included [misc-include-cleaner]
+   28 |         if (!has_slot(e, slot)) {
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:363:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  363 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:376:7: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  376 |         case O_POW:
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:383:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  383 |         case O_SQRT:
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:405:20: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  405 |         return N.op[e] == O_VAR && N.ki[e] == slot;
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:412:9: warning: no header providing "npoly" is directly included [misc-include-cleaner]
+  412 |         struct npoly p;
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:414:29: warning: no header providing "npoly_of" is directly included [misc-include-cleaner]
+  414 |         if (!has_slot(u, slot) || !npoly_of(u, slot, &p, 1) || p.deg != 1)
+      |                                    ^
+/home/andrew/Code/ucas/src/xform.c:433:35: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   33 | facs_except(const struct facs *F, uint32_t skip)
+      |                                   ^
+/home/andrew/Code/ucas/src/xform.c:439:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  439 |                 if (!(skip & (1u << k)))
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/xform.c:455:12: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  455 |         if (op == O_LAND) {
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:460:12: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  460 |         if (op == O_LOR) {
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:465:12: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+  465 |         if (op == O_LNOT) {
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:469:8: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  469 |         if (!(opinfo[op].fl & OF_CMP))
+      |               ^
+/home/andrew/Code/ucas/src/xform.c:469:24: warning: no header providing "OF_CMP" is directly included [misc-include-cleaner]
+  469 |         if (!(opinfo[op].fl & OF_CMP))
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:469:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  469 |         if (!(opinfo[op].fl & OF_CMP))
+      |                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:475:12: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  475 |         if (op == O_EQ)
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:477:12: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  477 |         if (op == O_NE)
+      |                   ^
+/home/andrew/Code/ucas/src/xform.c:479:13: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  479 |         if ((op == O_GE || op == O_GT) == (c1 > 0))
+      |                    ^
+/home/andrew/Code/ucas/src/xform.c:479:27: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  479 |         if ((op == O_GE || op == O_GT) == (c1 > 0))
+      |                                  ^
+/home/andrew/Code/ucas/src/xform.c:495:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  495 |                 int sg = (j / 2) & 1 ? -1 : 1;
+      |                          ^~~~~~~ ~
+/home/andrew/Code/ucas/src/xform.c:496:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  496 |                 if (j & 1)
+      |                     ^ ~
+/home/andrew/Code/ucas/src/xform.c:566:20: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  566 |         C->roc = C->roc ? mk_bin(O_MAX, C->roc, xadd(xk(0), a)) :
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:566:27: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  566 |         C->roc = C->roc ? mk_bin(O_MAX, C->roc, xadd(xk(0), a)) :
+      |                                  ^
+/home/andrew/Code/ucas/src/xform.c:585:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |                                 C->rules |= RL_TPOW;
+      |                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:589:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  589 |                         C->rules |= RL_GAMMA;
+      |                                  ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:599:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  599 |                 C->rules |= RL_TPOW;
+      |                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:600:14: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+  600 |         if (trig == O_SIN || trig == O_COS) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:600:31: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+  600 |         if (trig == O_SIN || trig == O_COS) {
+      |                                      ^
+/home/andrew/Code/ucas/src/xform.c:602:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |                 C->rules |= RL_TRIG;
+      |                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:611:13: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  611 |                         nid cp = mk_un(O_COS, phi), sp = mk_un(O_SIN, phi);
+      |                                  ^
+/home/andrew/Code/ucas/src/xform.c:618:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  618 |         C->rules |= RL_HYP;
+      |                  ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:619:30: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  619 |         lc_roc(C, xadd(alpha, mk_un(O_ABS, beta)));
+      |                                     ^
+/home/andrew/Code/ucas/src/xform.c:633:16: warning: no header providing "O_SINH" is directly included [misc-include-cleaner]
+  633 |                         R = trig == O_SINH ? Lsh : Lch;
+      |                                     ^
+/home/andrew/Code/ucas/src/xform.c:635:19: warning: no header providing "O_COSH" is directly included [misc-include-cleaner]
+  635 |                         nid ch = mk_un(O_COSH, phi), sh = mk_un(O_SINH, phi);
+      |                                        ^
+/home/andrew/Code/ucas/src/xform.c:708:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  708 |                         C->rules |= RL_EXP;
+      |                                  ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:713:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  713 |                                 nid g = facs_except(&F, (1u << k) | (1u << trigk));
+      |                                                             ~~ ^
+/home/andrew/Code/ucas/src/xform.c:713:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  713 |                                 nid g = facs_except(&F, (1u << k) | (1u << trigk));
+      |                                                                         ~~ ^~~~~
+/home/andrew/Code/ucas/src/xform.c:714:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  714 |                                 C->rules |= RL_P2S;
+      |                                          ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:738:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                         rest = facs_except(&F, 1u << k);
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/xform.c:741:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  741 |                         C->rules |= RL_POWRED;
+      |                                  ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:758:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  758 |                                 steps |= 1u << k;
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/xform.c:763:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:765:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  765 |                                 C->rules |= RL_STEP;
+      |                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:775:22: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  775 |                                     xf_str(arg), sym_str(N.a[C->t]));
+      |                                                  ^
+/home/andrew/Code/ucas/src/xform.c:776:13: warning: The left operand of '/' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  776 |                         da = -a0 / a1;
+      |                              ~~~ ^
+/home/andrew/Code/ucas/src/xform.c:697:14: note: Assuming 'k' is < field 'nf'
+  697 |         for (k = 0; k < F.nf; k++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:697:2: note: Loop condition is true.  Entering loop body
+  697 |         for (k = 0; k < F.nf; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:701:3: note: Taking false branch
+  701 |                 if (is_var(f, C->ts)) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:705:7: note: Assuming the condition is false
+  705 |                 if (xis_exp(f, &u) && lin_of(u, C->ts, &c1, &c0)) {
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:705:22: note: Left side of '&&' is false
+  705 |                 if (xis_exp(f, &u) && lin_of(u, C->ts, &c1, &c0)) {
+      |                                    ^
+/home/andrew/Code/ucas/src/xform.c:711:7: note: Left side of '&&' is true
+  711 |                 if (trig_op(op) && p == 1 && lin_of(N.a[f], C->ts, &c1, &c0)) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:711:22: note: Assuming 'p' is not equal to 1
+  711 |                 if (trig_op(op) && p == 1 && lin_of(N.a[f], C->ts, &c1, &c0)) {
+      |                                    ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:711:29: note: Left side of '&&' is false
+  711 |                 if (trig_op(op) && p == 1 && lin_of(N.a[f], C->ts, &c1, &c0)) {
+      |                                           ^
+/home/andrew/Code/ucas/src/xform.c:725:7: note: Left side of '&&' is true
+  725 |                 if (trig_op(op) && p == floor(p) && p >= 2 && p <= 6) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:725:22: note: Assuming the condition is false
+  725 |                 if (trig_op(op) && p == floor(p) && p >= 2 && p <= 6) {
+      |                                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:725:36: note: Left side of '&&' is false
+  725 |                 if (trig_op(op) && p == floor(p) && p >= 2 && p <= 6) {
+      |                                                  ^
+/home/andrew/Code/ucas/src/xform.c:751:7: note: Assuming the condition is false
+  751 |                 if (xis_heav(f, &arg) && p == 1 && lin_num(arg, C->ts, &hv1,
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:751:25: note: Left side of '&&' is false
+  751 |                 if (xis_heav(f, &arg) && p == 1 && lin_num(arg, C->ts, &hv1,
+      |                                       ^
+/home/andrew/Code/ucas/src/xform.c:771:7: note: Assuming the condition is true
+  771 |                 if (xis_dirac(f, &arg) && p == 1 && !dirac) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:771:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:771:29: note: Assuming 'p' is equal to 1
+  771 |                 if (xis_dirac(f, &arg) && p == 1 && !dirac) {
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:771:7: note: Left side of '&&' is true
+  771 |                 if (xis_dirac(f, &arg) && p == 1 && !dirac) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:771:40: note: 'dirac' is 0
+  771 |                 if (xis_dirac(f, &arg) && p == 1 && !dirac) {
+      |                                                      ^~~~~
+/home/andrew/Code/ucas/src/xform.c:771:3: note: Taking true branch
+  771 |                 if (xis_dirac(f, &arg) && p == 1 && !dirac) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:773:4: note: Taking true branch
+  773 |                         if (!lin_num(arg, C->ts, &a1, &a0))
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:776:13: note: The left operand of '/' is a garbage value
+  776 |                         da = -a0 / a1;
+      |                              ~~~ ^
+/home/andrew/Code/ucas/src/xform.c:779:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  779 |                         steps |= 1u << k;   /* left out of the rest */
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/xform.c:782:13: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  782 |                 if (op == O_SEL && p == 1) {
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:785:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  785 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:787:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                                 C->rules |= RL_PIECE;
+      |                                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:794:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  794 |                         nid g = facs_except(&F, 1u << k), lin = N.a[f];
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/xform.c:796:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  796 |                         C->rules |= RL_ABS;
+      |                                  ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:813:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  813 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:815:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  815 |                                 C->rules |= RL_POLY;
+      |                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:817:12: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  817 |                                         if (!(is_const(np.c[j]) && const_is(np.c[j], 0)))
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:817:33: warning: no header providing "const_is" is directly included [misc-include-cleaner]
+  817 |                                         if (!(is_const(np.c[j]) && const_is(np.c[j], 0)))
+      |                                                                    ^
+/home/andrew/Code/ucas/src/xform.c:840:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  840 |                 C->rules |= RL_DELTA;
+      |                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:849:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  849 |                 C->rules |= RL_STEP;
+      |                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:866:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  866 |                 C->rules |= RL_LIN;
+      |                          ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:880:6: warning: no header providing "node_slots" is directly included [misc-include-cleaner]
+  880 |         if (node_slots(R) & ~(1ULL << slot))
+      |             ^
+/home/andrew/Code/ucas/src/xform.c:880:29: warning: Right operand is negative in left shift [clang-analyzer-core.BitwiseShift]
+  880 |         if (node_slots(R) & ~(1ULL << slot))
+      |                                    ^
+/home/andrew/Code/ucas/src/xform.c:1934:10: note: Assuming the condition is false
+ 1934 |                 while ((at = find_word(text, w, 0)) >= 0) {
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1934:3: note: Loop condition is false. Execution continues on line 1942
+ 1934 |                 while ((at = find_word(text, w, 0)) >= 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1945:6: note: Assuming the condition is false
+ 1945 |         if (!has_ident(part[0], "t") && has_ident(part[0], "x"))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1945:31: note: Left side of '&&' is false
+ 1945 |         if (!has_ident(part[0], "t") && has_ident(part[0], "x"))
+      |                                      ^
+/home/andrew/Code/ucas/src/xform.c:1947:2: note: Calling 'lineq_of'
+ 1947 |         lineq_of(&L, part[0], 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1752:2: note: Loop condition is false. Execution continues on line 1761
+ 1752 |         for (p = eq; *p; p++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1761:2: note: Taking true branch
+ 1761 |         if (!*p)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1769:6: note: Assuming the condition is false
+ 1769 |         if (!L->nm[0] || kmax < kmin)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1769:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:1769:19: note: Assuming 'kmax' is >= 'kmin'
+ 1769 |         if (!L->nm[0] || kmax < kmin)
+      |                          ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1769:2: note: Taking false branch
+ 1769 |         if (!L->nm[0] || kmax < kmin)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1771:6: note: Assuming the condition is false
+ 1771 |         if (kmax - kmin > MAXORD)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1771:2: note: Taking false branch
+ 1771 |         if (kmax - kmin > MAXORD)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1778:6: note: Assuming field 'xs' is >= 0
+ 1778 |         if (L->xs < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1778:2: note: Taking false branch
+ 1778 |         if (L->xs < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1784:9: note: Value assigned to field 'np'
+ 1784 |         L->x = xv(L->xs, L->xn);
+      |                ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1787:14: note: Assuming 'k' is >= field 'np'
+ 1787 |         for (k = 0; k < f->np; k++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1787:2: note: Loop condition is false. Execution continues on line 1790
+ 1787 |         for (k = 0; k < f->np; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1791:14: note: Assuming 'k' is <= field 'order'
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1791:2: note: Loop condition is true.  Entering loop body
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1795:50: note: 'shifts' is 0
+ 1795 |                 snprintf(nmk, sizeof nmk, "__d%d", k + kmin + (shifts ? 16 : 0));
+      |                                                                ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:1795:50: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:1798:7: note: Assuming 'sl' is < 0
+ 1798 |                 if (sl < 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:1798:3: note: Taking true branch
+ 1798 |                 if (sl < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1799:4: note:  Execution continues on line 1791
+ 1799 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:1791:14: note: Assuming 'k' is > field 'order'
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1791:2: note: Loop condition is false. Execution continues on line 1821
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1821:6: note: Assuming the condition is false
+ 1821 |         if (L->a[L->order] == 0)
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1821:2: note: Taking false branch
+ 1821 |         if (L->a[L->order] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1828:3: note: Loop condition is true.  Entering loop body
+ 1828 |                 for (k = 0; k <= L->order; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1831:51: note: 'shifts' is 0
+ 1831 |                         snprintf(nmk, sizeof nmk, "__d%d", k + kmin + (shifts ? 16 : 0));
+      |                                                                        ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:1831:51: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:1833:8: note: Assuming 'sl' is < 0
+ 1833 |                         if (sl >= 0)
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1833:4: note: Taking false branch
+ 1833 |                         if (sl >= 0)
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:1828:3: note: Loop condition is false. Execution continues on line 1836
+ 1828 |                 for (k = 0; k <= L->order; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1836:15: note: 'j' is >= field 'np'
+ 1836 |                 for (j = 0; j < f->np; j++) {
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:1836:3: note: Loop condition is false. Execution continues on line 1840
+ 1836 |                 for (j = 0; j < f->np; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1840:7: note: Assuming the condition is false
+ 1840 |                 if (fabs(xf_eval(xsub(E, lin), sl2, x1, nn, &ok)) > 1e-9 ||
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1840:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:1841:7: note: Assuming 'ok' is not equal to 0
+ 1841 |                     !ok) {
+      |                     ^~~
+/home/andrew/Code/ucas/src/xform.c:1840:3: note: Taking false branch
+ 1840 |                 if (fabs(xf_eval(xsub(E, lin), sl2, x1, nn, &ok)) > 1e-9 ||
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1947:2: note: Returning from 'lineq_of'
+ 1947 |         lineq_of(&L, part[0], 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1948:6: note: Assuming field 'kmin' is equal to 0
+ 1948 |         if (L.kmin != 0)
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1948:2: note: Taking false branch
+ 1948 |         if (L.kmin != 0)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1951:2: note: Loop condition is false. Execution continues on line 1956
+ 1951 |         for (k = 0; k < L.order; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1959:7: note: Assuming field 'np' is > field 'xs'
+ 1959 |         ss = L.f->np > L.xs ? L.f->np : L.xs + 1;
+      |              ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1959:7: note: '?' condition is true
+/home/andrew/Code/ucas/src/xform.c:1959:2: note: Value assigned to 'ss'
+ 1959 |         ss = L.f->np > L.xs ? L.f->np : L.xs + 1;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1960:6: note: 'ss' is < MAXP
+ 1960 |         if (ss >= MAXP)
+      |             ^~
+/home/andrew/Code/ucas/src/xform.c:1960:2: note: Taking false branch
+ 1960 |         if (ss >= MAXP)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1964:8: note: Assuming the condition is true
+ 1964 |         if (!(is_const(L.g) && const_is(L.g, 0)))
+      |               ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1964:8: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:1964:6: note: Assuming the condition is false
+ 1964 |         if (!(is_const(L.g) && const_is(L.g, 0)))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1964:2: note: Taking false branch
+ 1964 |         if (!(is_const(L.g) && const_is(L.g, 0)))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1970:2: note: Loop condition is true.  Entering loop body
+ 1970 |         for (k = 0; k <= L.order; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1973:3: note: Loop condition is false. Execution continues on line 1970
+ 1973 |                 for (j = 0; j < k; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1970:2: note: Loop condition is false. Execution continues on line 1976
+ 1970 |         for (k = 0; k <= L.order; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1986:3: note: Loop condition is false. Execution continues on line 1989
+ 1986 |                 for (j = 0; j < L.order; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1990:15: note: Field 'n' is 0
+ 1990 |                 if (missing.n)
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:1990:3: note: Taking false branch
+ 1990 |                 if (missing.n)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1995:7: note: Assuming field 'deg' is >= 1
+ 1995 |                 if (P.deg >= 1 && (P.c[0] != 0 || P.deg > 1 || P.c[1] != 1))
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1995:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:1995:22: note: Assuming the condition is true
+ 1995 |                 if (P.deg >= 1 && (P.c[0] != 0 || P.deg > 1 || P.c[1] != 1))
+      |                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1995:34: note: Left side of '||' is true
+ 1995 |                 if (P.deg >= 1 && (P.c[0] != 0 || P.deg > 1 || P.c[1] != 1))
+      |                                                ^
+/home/andrew/Code/ucas/src/xform.c:1999:7: note: Assuming field 'deg' is >= 0
+ 1999 |                 if (Q.deg >= 0) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1999:3: note: Taking true branch
+ 1999 |                 if (Q.deg >= 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2001:8: note: Assuming the condition is true
+ 2001 |                         if (qs[0] == '-')
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2001:4: note: Taking true branch
+ 2001 |                         if (qs[0] == '-')
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2015:3: note: Loop condition is false. Execution continues on line 2026
+ 2015 |                 for (g = 0; g < C.n; g++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2026:8: note: 'any0' is 0
+ 2026 |                 if (!any0 && Q.deg >= 0)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:2026:7: note: Left side of '&&' is true
+ 2026 |                 if (!any0 && Q.deg >= 0)
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:2026:18: note: Field 'deg' is >= 0
+ 2026 |                 if (!any0 && Q.deg >= 0)
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:2026:3: note: Taking true branch
+ 2026 |                 if (!any0 && Q.deg >= 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2027:37: note: Passing value via 2nd parameter 'slot'
+ 2027 |                         Y = xadd(xf_polish(xdiv(Qn, Pn), ss, s), Y);
+      |                                                          ^~
+/home/andrew/Code/ucas/src/xform.c:2027:13: note: Calling 'xf_polish'
+ 2027 |                         Y = xadd(xf_polish(xdiv(Qn, Pn), ss, s), Y);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:880:29: note: The result of left shift is undefined because the right operand is negative
+  880 |         if (node_slots(R) & ~(1ULL << slot))
+      |                               ~~~~~^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:880:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  880 |         if (node_slots(R) & ~(1ULL << slot))
+      |                                    ~~ ^~~~
+/home/andrew/Code/ucas/src/xform.c:889:22: warning: no header providing "func" is directly included [misc-include-cleaner]
+  889 | samples(const struct func *f, const int *skip, int nskip, int *slots,
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:890:26: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  890 |     double *vals, struct sbuf *txt)
+      |                          ^
+/home/andrew/Code/ucas/src/xform.c:902:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  902 |                 vals[n] = sv[n & 7];
+      |                              ^ ~
+/home/andrew/Code/ucas/src/xform.c:904:4: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  904 |                         sb_printf(txt, "%s%s = %s", n ? ", " : "",
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:915:10: warning: no header providing "NSLOT" is directly included [misc-include-cleaner]
+  915 |         nid map[NSLOT];
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:921:9: warning: no header providing "subst" is directly included [misc-include-cleaner]
+  921 |         return subst(e, map, NSLOT);
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:985:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  985 |         printf("  rules:");
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:987:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  987 |                 if (rules & (1u << k))
+      |                                 ~~ ^
+/home/andrew/Code/ucas/src/xform.c:1015:48: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+ 1015 |                 g = xsubst1(e, ts, xsub(t, xmul(xk(P), mk_un(O_FLOOR,
+      |                                                              ^
+/home/andrew/Code/ucas/src/xform.c:1020:8: warning: no header providing "gk_integrate" is directly included [misc-include-cleaner]
+ 1020 |                 if (!gk_integrate(NULL, g, ts, 0, P, &piece, &err, &nev))
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:1030:2: warning: Variable 'a' with floating point type 'double' should not be used as a loop counter [clang-analyzer-security.FloatLoopCounter]
+ 1030 |         for (a = 0, b = 0.5; a < X; a = b, b = fmin(b * 2, X)) {
+      |         ^                    ~      ~
+/home/andrew/Code/ucas/src/xform.c:1030:2: note: Variable 'a' with floating point type 'double' should not be used as a loop counter
+ 1030 |         for (a = 0, b = 0.5; a < X; a = b, b = fmin(b * 2, X)) {
+      |         ^                    ~      ~
+/home/andrew/Code/ucas/src/xform.c:1030:30: warning: loop induction expression should not have floating-point type [bugprone-float-loop-counter]
+ 1030 |         for (a = 0, b = 0.5; a < X; a = b, b = fmin(b * 2, X)) {
+      |                              ~      ^
+/home/andrew/Code/ucas/src/xform.c:1043:35: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+ 1043 |         int skip[2] = {C->ts, C->ss}, sl[MAXP], ns, i, ok, good = 1;
+      |                                          ^
+/home/andrew/Code/ucas/src/xform.c:1126:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1126 |                 C.rules |= RL_PERIOD;
+      |                         ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1141:42: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1141 |                     C.roc && xnum(C.roc, &(double){0}) ? "0" : "0");
+      |                                                        ^
+/home/andrew/Code/ucas/src/xform.c:1141:48: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 1141 |                     C.roc && xnum(C.roc, &(double){0}) ? "0" : "0");
+      |                                                              ^
+/home/andrew/Code/ucas/src/xform.c:1171:15: warning: no header providing "creal" is directly included [misc-include-cleaner]
+   31 |                 double re = creal(P->p), im = cimag(P->p);
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:1171:33: warning: no header providing "cimag" is directly included [misc-include-cleaner]
+ 1171 |                 double re = creal(P->p), im = cimag(P->p);
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:1236:10: warning: no header providing "complex" is directly included [misc-include-cleaner]
+ 1236 |                 double complex p = pf->pole[i].p;
+      |                        ^
+/home/andrew/Code/ucas/src/xform.c:1243:16: warning: no header providing "I" is directly included [misc-include-cleaner]
+ 1243 |                             xf_cnum(I * cimag(p)), ord);
+      |                                     ^
+/home/andrew/Code/ucas/src/xform.c:1408:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1408 |                                         skip |= 1u << k;
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/xform.c:1428:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1428 |                 if (!(node_slots(G[k].R) & ~(1ULL << ss)) && xq_of(G[k].R, ss, &r)) {
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/xform.c:1443:17: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1443 |                 } else if ((g = ilap_power(G[k].R, ss, t)) != 0) {
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1443:17: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/xform.c:1443:17: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/xform.c:1447:17: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1447 |                 } else if ((g = ilap_symbolic(G[k].R, ss, t, assume)) != 0) {
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1447:17: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/xform.c:1447:17: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/xform.c:1585:2: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+ 1585 |         sb_clear(o);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1594:5: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+ 1594 |                                 sb_putc(o, in[i++]);
+      |                                 ^
+/home/andrew/Code/ucas/src/xform.c:1611:12: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 1611 |                                         ord = atoi(in + k + 1);
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:1652:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1652 |                             strcmp(w, xname))) {
+      |                             ^               
+      |                                              != 0
+/home/andrew/Code/ucas/src/xform.c:1687:11: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1687 |                                                 if (strncmp(p, idx, strlen(idx)))
+      |                                                     ^                           
+      |                                                                                  != 0
+/home/andrew/Code/ucas/src/xform.c:1801:12: warning: no header providing "diff_node" is directly included [misc-include-cleaner]
+ 1801 |                         nid d = diff_node(E, (uint32_t)sl);
+      |                                 ^
+/home/andrew/Code/ucas/src/xform.c:1821:6: warning: Out of bound access to memory preceding 'L.a' [clang-analyzer-security.ArrayBound]
+ 1821 |         if (L->a[L->order] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/xform.c:1934:10: note: Assuming the condition is false
+ 1934 |                 while ((at = find_word(text, w, 0)) >= 0) {
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1934:3: note: Loop condition is false. Execution continues on line 1942
+ 1934 |                 while ((at = find_word(text, w, 0)) >= 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:1945:6: note: Assuming the condition is false
+ 1945 |         if (!has_ident(part[0], "t") && has_ident(part[0], "x"))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1945:31: note: Left side of '&&' is false
+ 1945 |         if (!has_ident(part[0], "t") && has_ident(part[0], "x"))
+      |                                      ^
+/home/andrew/Code/ucas/src/xform.c:1947:2: note: Calling 'lineq_of'
+ 1947 |         lineq_of(&L, part[0], 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1752:2: note: Loop condition is false. Execution continues on line 1761
+ 1752 |         for (p = eq; *p; p++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1761:2: note: Taking true branch
+ 1761 |         if (!*p)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1769:6: note: Assuming the condition is true
+ 1769 |         if (!L->nm[0] || kmax < kmin)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1769:16: note: Left side of '||' is true
+ 1769 |         if (!L->nm[0] || kmax < kmin)
+      |                       ^
+/home/andrew/Code/ucas/src/xform.c:1771:6: note: Assuming the condition is false
+ 1771 |         if (kmax - kmin > MAXORD)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1771:2: note: Taking false branch
+ 1771 |         if (kmax - kmin > MAXORD)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1778:6: note: Assuming field 'xs' is >= 0
+ 1778 |         if (L->xs < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1778:2: note: Taking false branch
+ 1778 |         if (L->xs < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1787:14: note: Assuming 'k' is >= field 'np'
+ 1787 |         for (k = 0; k < f->np; k++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1787:2: note: Loop condition is false. Execution continues on line 1790
+ 1787 |         for (k = 0; k < f->np; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1791:14: note: Assuming 'k' is > field 'order'
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1791:2: note: Loop condition is false. Execution continues on line 1821
+ 1791 |         for (k = 0; k <= L->order; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:1821:6: note: Access of 'L.a' at a negative index
+ 1821 |         if (L->a[L->order] == 0)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:1866:7: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1866 |                 if (strncmp(p, nm, l))
+      |                     ^                
+      |                                       != 0
+/home/andrew/Code/ucas/src/xform.c:2078:3: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 2078 |                 uint8_t *gok = xmalloc((size_t)(3 * steps));
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2078:26: warning: either cast from 'int' to 'size_t' (aka 'unsigned long') is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+ 2078 |                 uint8_t *gok = xmalloc((size_t)(3 * steps));
+      |                                        ^
+/home/andrew/Code/ucas/src/xform.c:2080:4: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2080 |                         ts[3 * i] = (i + 1e-9) * h;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2080:7: note: make conversion explicit to silence this warning
+   33 |                         ts[3 * i] = (i + 1e-9) * h;
+      |                            ^~~~~
+      |                            (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/xform.c:2080:7: note: perform multiplication in a wider type
+ 2080 |                         ts[3 * i] = (i + 1e-9) * h;
+      |                            ^
+      |                            (ptrdiff_t)
+/home/andrew/Code/ucas/src/xform.c:2135:8: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   33 | static jmp_buf zjmp;
+      |        ^
+/home/andrew/Code/ucas/src/xform.c:2144:3: warning: no header providing "longjmp" is directly included [misc-include-cleaner]
+ 2144 |                 longjmp(zjmp, 1);
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2146:2: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+ 2146 |         vsnprintf(buf, sizeof buf, fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2200:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2200 |         if (!(opinfo[op].fl & OF_CMP))
+      |                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:2207:21: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+ 2207 |                 op = op == O_GE ? O_LE : op == O_GT ? O_LT : op == O_LE ? O_GE :
+      |                                   ^
+/home/andrew/Code/ucas/src/xform.c:2207:41: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+ 2207 |                 op = op == O_GE ? O_LE : op == O_GT ? O_LT : op == O_LE ? O_GE :
+      |                                                       ^
+/home/andrew/Code/ucas/src/xform.c:2210:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2210 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2210:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/xform.c:2272:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2272 |                 C->rules |= ZR_N;
+      |                          ~~ ^~~~
+/home/andrew/Code/ucas/src/xform.c:2275:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2275 |         C->rules |= ZR_TRIG;
+      |                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2292:27: warning: no header providing "cexp" is directly included [misc-include-cleaner]
+ 2292 |                 double complex w = rv * cexp(I * bv), Nc[XD + 1], Dc[XD + 1];
+      |                                         ^
+/home/andrew/Code/ucas/src/xform.c:2300:35: warning: no header providing "cpow" is directly included [misc-include-cleaner]
+ 2300 |                         Nc[k - j] += euler_num(k, j) * cpow(w, j + 1);
+      |                                                        ^
+/home/andrew/Code/ucas/src/xform.c:2314:32: warning: no header providing "conj" is directly included [misc-include-cleaner]
+ 2314 |                                 double complex t = Nc[i] * conj(Dc[j]);
+      |                                                            ^
+/home/andrew/Code/ucas/src/xform.c:2368:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+ 2368 |         int64_t step = 0;
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2387:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2387 |                         C->rules |= ZR_SCALE;
+      |                                  ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2394:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2394 |                         C->rules |= ZR_SCALE;
+      |                                  ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2399:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2399 |                                 nid g = facs_except(&F, (1u << k) | (1u << trigk));
+      |                                                             ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2399:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2399 |                                 nid g = facs_except(&F, (1u << k) | (1u << trigk));
+      |                                                                         ~~ ^~~~~
+/home/andrew/Code/ucas/src/xform.c:2400:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2400 |                                 C->rules |= ZR_P2S;
+      |                                          ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2423:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2423 |                         rest = facs_except(&F, 1u << k);
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2426:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2426 |                         C->rules |= ZR_POWRED;
+      |                                  ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2436:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2436 |                                 steps |= 1u << k;
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2441:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2441 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2442:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2442 |                                 C->rules |= ZR_DELAY;
+      |                                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2450:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2450 |                         nid g = facs_except(&F, 1u << k);
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2451:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2451 |                         C->rules |= ZR_DELTA;
+      |                                  ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2465:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2465 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2466:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2466 |                                 C->rules |= ZR_PIECE;
+      |                                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2480:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2480 |                                 nid g = facs_except(&F, 1u << k);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2482:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2482 |                                 C->rules |= ZR_POLY;
+      |                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2495:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2495 |                 C->rules |= ZR_DELAY;
+      |                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2508:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2508 |                         C->rules |= ZR_FACT;
+      |                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2533:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2533 |                 C->rules |= ZR_LIN;
+      |                          ~~ ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2546:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2546 |         char *b = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/xform.c:2581:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+ 2581 |                 sb_puts(b, "0");
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2594:7: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+ 2594 |                 if (strcmp(d.p, "1")) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:3323:13: note: Assuming 'f' is null
+ 3323 |         nid v = xv(f ? f->np : 0, vn), Hn;
+      |                    ^
+/home/andrew/Code/ucas/src/xform.c:3323:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:3324:11: note: 'f' is null
+ 3324 |         int vs = f ? f->np : 0;
+      |                  ^
+/home/andrew/Code/ucas/src/xform.c:3324:11: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:3329:6: note: Assuming 'discrete' is not equal to 0
+ 3329 |         if (discrete && H->d.deg > 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3329:6: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:3329:18: note: Assuming field 'deg' is > 0
+ 3329 |         if (discrete && H->d.deg > 0) {
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3329:2: note: Taking true branch
+ 3329 |         if (discrete && H->d.deg > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:3331:3: note: Calling 'zinv_text'
+ 3331 |                 zinv_text(&b, H);
+      |                 ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2568:25: note: 'i' is <= 'dd'
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:2568:2: note: Loop condition is true.  Entering loop body
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2570:14: note: Assuming the condition is false
+ 2570 |                 double c = dd - i <= r->n.deg && dd - i >= 0 ? r->n.c[dd - i] /
+      |                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2570:33: note: Left side of '&&' is false
+ 2570 |                 double c = dd - i <= r->n.deg && dd - i >= 0 ? r->n.c[dd - i] /
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:2572:7: note: Assuming 'c' is equal to 0
+ 2572 |                 if (c == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2572:3: note: Taking true branch
+ 2572 |                 if (c == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2573:4: note:  Execution continues on line 2568
+ 2573 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2568:25: note: 'i' is <= 'dd'
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:2568:2: note: Loop condition is true.  Entering loop body
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2570:14: note: Assuming the condition is false
+ 2570 |                 double c = dd - i <= r->n.deg && dd - i >= 0 ? r->n.c[dd - i] /
+      |                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2570:33: note: Left side of '&&' is false
+ 2570 |                 double c = dd - i <= r->n.deg && dd - i >= 0 ? r->n.c[dd - i] /
+      |                                               ^
+/home/andrew/Code/ucas/src/xform.c:2572:7: note: Assuming 'c' is equal to 0
+ 2572 |                 if (c == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2572:3: note: Taking true branch
+ 2572 |                 if (c == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2573:4: note:  Execution continues on line 2568
+ 2573 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2568:25: note: Assuming 'i' is > 'dd'
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2568:2: note: Loop condition is false. Execution continues on line 2580
+ 2568 |         for (i = 0, first = 1; i <= dd; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2580:6: note: 'first' is 1
+ 2580 |         if (first)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/xform.c:2580:2: note: Taking true branch
+ 2580 |         if (first)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2583:3: note: 'd.p' initialized to a null pointer value
+ 2583 |                 struct sbuf d = {0};
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2584:3: note: Loop condition is true.  Entering loop body
+ 2584 |                 for (i = 0, first = 1; i <= dd; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2586:8: note: Assuming 'c' is equal to 0
+ 2586 |                         if (c == 0)
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2586:4: note: Taking true branch
+ 2586 |                         if (c == 0)
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2587:5: note:  Execution continues on line 2584
+ 2587 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/xform.c:2584:3: note: Loop condition is true.  Entering loop body
+ 2584 |                 for (i = 0, first = 1; i <= dd; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2586:8: note: Assuming 'c' is equal to 0
+ 2586 |                         if (c == 0)
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2586:4: note: Taking true branch
+ 2586 |                         if (c == 0)
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:2587:5: note:  Execution continues on line 2584
+ 2587 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/xform.c:2584:3: note: Loop condition is false. Execution continues on line 2594
+ 2584 |                 for (i = 0, first = 1; i <= dd; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:2594:7: note: Null pointer passed to 1st parameter expecting 'nonnull'
+ 2594 |                 if (strcmp(d.p, "1")) {
+      |                     ^      ~~~
+/home/andrew/Code/ucas/src/xform.c:2594:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2594 |                 if (strcmp(d.p, "1")) {
+      |                     ^               
+      |                                      != 0
+/home/andrew/Code/ucas/src/xform.c:2701:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2701 |                 if (rules & (1u << k))
+      |                                 ~~ ^
+/home/andrew/Code/ucas/src/xform.c:2759:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2759 |         if (!(node_slots(X) & ~(1ULL << C.zs)) && xq_of(X, C.zs, &r) &&
+      |                                      ~~ ^~~~
+/home/andrew/Code/ucas/src/xform.c:2786:7: warning: no header providing "cabs" is directly included [misc-include-cleaner]
+ 2786 |                 if (cabs(p) == 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:2834:32: warning: no header providing "carg" is directly included [misc-include-cleaner]
+ 2834 |                                 double rho = cabs(p), th = carg(p);
+      |                                                            ^
+/home/andrew/Code/ucas/src/xform.c:2866:12: warning: The right operand of '/' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 2866 |                 x[n] = v / a[0];
+      |                          ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is true
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking true branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5189:3: note: Calling 'cmd_iztrans'
+ 5189 |                 cmd_iztrans(text);
+      |                 ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2982:6: note: Assuming 'zs' is >= 0
+ 2982 |         if (zs < 0 && f->np > 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:2982:13: note: Left side of '&&' is false
+ 2982 |         if (zs < 0 && f->np > 0)
+      |                    ^
+/home/andrew/Code/ucas/src/xform.c:2984:6: note: 'zs' is >= 0
+ 2984 |         if (zs < 0)
+      |             ^~
+/home/andrew/Code/ucas/src/xform.c:2984:2: note: Taking false branch
+ 2984 |         if (zs < 0)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2986:13: note: Assuming 'zs' is >= field 'np'
+ 2986 |         z = xv(zs, zs < f->np ? sym_str(f->p[zs].name) : "z");
+      |                    ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2986:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:2987:7: note: Assuming 'zs' is not equal to field 'np'
+ 2987 |         ns = zs == f->np ? f->np + 1 : f->np;
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2987:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:2988:6: note: Assuming 'ns' is < MAXP
+ 2988 |         if (ns >= MAXP)
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2988:2: note: Taking false branch
+ 2988 |         if (ns >= MAXP)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2990:2: note: Taking true branch
+ 2990 |         if (!nv[0])
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2995:6: note: Assuming 'x' is not equal to 0
+ 2995 |         if (!x) {
+      |             ^~
+/home/andrew/Code/ucas/src/xform.c:2995:2: note: Taking false branch
+ 2995 |         if (!x) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:3008:13: note: Field 'n' is 0
+ 3008 |                 if (poles.n)
+      |                           ^
+/home/andrew/Code/ucas/src/xform.c:3008:3: note: Taking false branch
+ 3008 |                 if (poles.n)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:3012:7: note: Calling 'long_div'
+ 3012 |                 if (long_div(&r, ld, 32)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2856:17: note: 'dd' is >= field 'deg'
+ 2856 |         if (r->n.deg > dd)
+      |                        ^~
+/home/andrew/Code/ucas/src/xform.c:2856:2: note: Taking false branch
+ 2856 |         if (r->n.deg > dd)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2858:14: note: Assuming 'j' is > 'dd'
+ 2858 |         for (j = 0; j <= dd; j++) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:2858:2: note: Loop condition is false. Execution continues on line 2862
+ 2858 |         for (j = 0; j <= dd; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2862:2: note: Loop condition is true.  Entering loop body
+ 2862 |         for (n = 0; n < cnt; n++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:2863:14: note: 'n' is > 'dd'
+ 2863 |                 double v = n <= dd ? b[n] : 0;
+      |                            ^
+/home/andrew/Code/ucas/src/xform.c:2863:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:2864:15: note: 'j' is > 'dd'
+ 2864 |                 for (j = 1; j <= dd && j <= n; j++)
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:2864:23: note: Left side of '&&' is false
+ 2864 |                 for (j = 1; j <= dd && j <= n; j++)
+      |                                     ^
+/home/andrew/Code/ucas/src/xform.c:2866:12: note: The right operand of '/' is a garbage value
+ 2866 |                 x[n] = v / a[0];
+      |                          ^ ~~~~
+/home/andrew/Code/ucas/src/xform.c:2880:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2880 |         if ((node_slots(X) & ~(1ULL << zs)) || !xq_of(X, zs, r))
+      |                                     ~~ ^~
+/home/andrew/Code/ucas/src/xform.c:3257:4: warning: Variable 'it' with floating point type 'double' should not be used as a loop counter [clang-analyzer-security.FloatLoopCounter]
+ 3257 |                         for (it = 0; it < 80; it++) {
+      |                         ^            ~~       ~~
+/home/andrew/Code/ucas/src/xform.c:3257:4: note: Variable 'it' with floating point type 'double' should not be used as a loop counter
+ 3257 |                         for (it = 0; it < 80; it++) {
+      |                         ^            ~~       ~~
+/home/andrew/Code/ucas/src/xform.c:3257:26: warning: loop induction expression should not have floating-point type [bugprone-float-loop-counter]
+ 3257 |                         for (it = 0; it < 80; it++) {
+      |                                      ~~       ^~
+/home/andrew/Code/ucas/src/xform.c:3393:17: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+ 3393 |                 memcpy(saved, fail_jmp, sizeof saved);
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:3394:7: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+ 3394 |                 if (setjmp(fail_jmp) == 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:3468:36: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3468 |                                 if (has_ident(text, ins[k]) && strcmp(ins[k], out)) {
+      |                                                                ^                  
+      |                                                                                    != 0
+/home/andrew/Code/ucas/src/xform.c:3474:19: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3474 |                         if (!out[0] && strcmp(names[k], in))
+      |                                        ^                   
+      |                                                             != 0
+/home/andrew/Code/ucas/src/xform.c:3476:23: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3476 |                         else if (!in[0] && strcmp(names[k], out))
+      |                                            ^                    
+      |                                                                  != 0
+/home/andrew/Code/ucas/src/xform.c:3510:8: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3510 |                         if (strncmp(nm, "__", 2) || (nm[2] != 'd' && nm[2] != 'e'))
+      |                             ^
+      |                                                  != 0
+/home/andrew/Code/ucas/src/xform.c:3512:10: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3512 |                         off = atoi(nm + 3) - (discrete ? 16 : 0);
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:3551:49: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+ 3551 |                         fail("tf: H has symbols besides %s", sym_str(f->p[vs].name));
+      |                                                                      ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is false
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking false branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5190:11: note: Assuming the condition is false
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5190:7: note: Taking false branch
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5192:11: note: Assuming the condition is true
+ 5192 |         else if (!strcmp(w, "tf"))
+      |                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5192:7: note: Taking true branch
+ 5192 |         else if (!strcmp(w, "tf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5193:3: note: Calling 'cmd_tf'
+ 5193 |                 cmd_tf(text);
+      |                 ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3449:6: note: Assuming the condition is false
+ 3449 |         if (strchr(text, '=') && !strstr(text, "==")) {
+      |             ^
+/usr/include/string.h:265:43: note: expanded from macro 'strchr'
+  265 |   __glibc_const_generic (S, const char *, strchr (S, C))
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:3449:24: note: Left side of '&&' is false
+ 3449 |         if (strchr(text, '=') && !strstr(text, "==")) {
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:3541:51: note: 'vs' declared without an initial value
+ 3541 |                 int zs = xf_slot(f, "z"), ss = xf_slot(f, "s"), vs;
+      |                                                                 ^~
+/home/andrew/Code/ucas/src/xform.c:3542:7: note: Assuming 'zs' is < 0
+ 3542 |                 if (zs >= 0)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3542:3: note: Taking false branch
+ 3542 |                 if (zs >= 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:3544:12: note: Assuming 'ss' is < 0
+ 3544 |                 else if (ss >= 0)
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3544:8: note: Taking false branch
+ 3544 |                 else if (ss >= 0)
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:3546:12: note: Assuming field 'np' is not equal to 1
+ 3546 |                 else if (f->np == 1)
+      |                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3546:8: note: Taking false branch
+ 3546 |                 else if (f->np == 1)
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:3550:7: note: Assuming field 'np' is > 1
+ 3550 |                 if (f->np > 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3550:3: note: Taking true branch
+ 3550 |                 if (f->np > 1)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:3551:49: note: Array subscript is undefined
+ 3551 |                         fail("tf: H has symbols besides %s", sym_str(f->p[vs].name));
+      |                                                                      ^    ~~
+/home/andrew/Code/ucas/src/xform.c:3552:8: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 3552 |                 if (!xq_of(f->body, vs, &H))
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is false
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking false branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5190:11: note: Assuming the condition is false
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5190:7: note: Taking false branch
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5192:11: note: Assuming the condition is true
+ 5192 |         else if (!strcmp(w, "tf"))
+      |                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5192:7: note: Taking true branch
+ 5192 |         else if (!strcmp(w, "tf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5193:3: note: Calling 'cmd_tf'
+ 5193 |                 cmd_tf(text);
+      |                 ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3449:6: note: Assuming the condition is false
+ 3449 |         if (strchr(text, '=') && !strstr(text, "==")) {
+      |             ^
+/usr/include/string.h:265:43: note: expanded from macro 'strchr'
+  265 |   __glibc_const_generic (S, const char *, strchr (S, C))
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:3449:24: note: Left side of '&&' is false
+ 3449 |         if (strchr(text, '=') && !strstr(text, "==")) {
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:3541:51: note: 'vs' declared without an initial value
+ 3541 |                 int zs = xf_slot(f, "z"), ss = xf_slot(f, "s"), vs;
+      |                                                                 ^~
+/home/andrew/Code/ucas/src/xform.c:3542:7: note: Assuming 'zs' is < 0
+ 3542 |                 if (zs >= 0)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3542:3: note: Taking false branch
+ 3542 |                 if (zs >= 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:3544:12: note: Assuming 'ss' is < 0
+ 3544 |                 else if (ss >= 0)
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3544:8: note: Taking false branch
+ 3544 |                 else if (ss >= 0)
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:3546:12: note: Assuming field 'np' is not equal to 1
+ 3546 |                 else if (f->np == 1)
+      |                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3546:8: note: Taking false branch
+ 3546 |                 else if (f->np == 1)
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:3550:7: note: Assuming field 'np' is <= 1
+ 3550 |                 if (f->np > 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:3550:3: note: Taking false branch
+ 3550 |                 if (f->np > 1)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:3552:8: note: 2nd function call argument is an uninitialized value
+ 3552 |                 if (!xq_of(f->body, vs, &H))
+      |                      ^              ~~
+/home/andrew/Code/ucas/src/xform.c:3664:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3664 |                         M[m * 8 + 2 * k + 1] = (i & 1 ? -1 : 1) * pow(i, -(k + 1));
+      |                                                 ^ ~
+/home/andrew/Code/ucas/src/xform.c:3668:7: warning: no header providing "solve_lsq" is directly included [misc-include-cleaner]
+ 3668 |         if (!solve_lsq(M, rhs, m, 8, sol))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:3694:10: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3694 |                         v += (snapv[2 * k] + (i & 1 ? -1 : 1) * snapv[2 * k + 1]) *
+      |                               ^
+/home/andrew/Code/ucas/src/xform.c:3694:16: note: make conversion explicit to silence this warning
+ 3694 |                         v += (snapv[2 * k] + (i & 1 ? -1 : 1) * snapv[2 * k + 1]) *
+      |                                     ^~~~~
+      |                                     (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/xform.c:3694:16: note: perform multiplication in a wider type
+ 3694 |                         v += (snapv[2 * k] + (i & 1 ? -1 : 1) * snapv[2 * k + 1]) *
+      |                                     ^
+      |                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/xform.c:3694:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3694 |                         v += (snapv[2 * k] + (i & 1 ? -1 : 1) * snapv[2 * k + 1]) *
+      |                                               ^ ~
+/home/andrew/Code/ucas/src/xform.c:3700:14: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3700 |                 double A = snapv[2 * k], B = snapv[2 * k + 1];
+      |                            ^
+/home/andrew/Code/ucas/src/xform.c:3700:20: note: make conversion explicit to silence this warning
+ 3700 |                 double A = snapv[2 * k], B = snapv[2 * k + 1];
+      |                                  ^~~~~
+      |                                  (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/xform.c:3700:20: note: perform multiplication in a wider type
+ 3700 |                 double A = snapv[2 * k], B = snapv[2 * k + 1];
+      |                                  ^
+      |                                  (ptrdiff_t)
+/home/andrew/Code/ucas/src/xform.c:3733:10: warning: no header providing "q" is directly included [misc-include-cleaner]
+ 3733 |                 struct q q;
+      |                        ^
+/home/andrew/Code/ucas/src/xform.c:3734:7: warning: no header providing "q_from_double" is directly included [misc-include-cleaner]
+ 3734 |                 if (q_from_double(v, &q) && q.d <= 1000)
+      |                     ^
+/home/andrew/Code/ucas/src/xform.c:3735:8: warning: no header providing "q_val" is directly included [misc-include-cleaner]
+ 3735 |                         v = q_val(q);
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:3812:11: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3812 |                 nshow = atoi(terms) > 0 && atoi(terms) <= 20 ? atoi(terms) : 5;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:3812:30: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3812 |                 nshow = atoi(terms) > 0 && atoi(terms) <= 20 ? atoi(terms) : 5;
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:3812:50: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3812 |                 nshow = atoi(terms) > 0 && atoi(terms) <= 20 ? atoi(terms) : 5;
+      |                                                                ^
+/home/andrew/Code/ucas/src/xform.c:3827:15: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+ 3827 |                 t.p[0].ty = TY_REAL;
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:3827:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/xform.c:4085:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4085 |         if (!(opinfo[op].fl & OF_CMP) || op == O_EQ || op == O_NE)
+      |                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:4135:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4135 |                 struct cpair G = ft_rec(C, facs_except(&F, 1u << k));
+      |                                                               ~~ ^
+/home/andrew/Code/ucas/src/xform.c:4151:29: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+ 4151 |                                         return cp(xmul(F.coef, mk_sel(mk_bin(O_LT, mk_un(O_ABS, w),
+      |                                                                ^
+/home/andrew/Code/ucas/src/xform.c:4162:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4162 |                         struct cpair G = ft_rec(C, facs_except(&F, 1u << k));
+      |                                                                       ~~ ^
+/home/andrew/Code/ucas/src/xform.c:4324:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4324 |         struct sbuf *o = &b[k++ & 3];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/xform.c:4341:9: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+ 4341 |         return sb_str(o);
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:4356:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4356 |         t.p[xs].ty = TY_REAL;
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/xform.c:4410:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4410 |                 t.p[xs].ty = TY_REAL;
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/xform.c:4589:10: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4589 |                 e[k] = x[2 * k];
+      |                        ^
+/home/andrew/Code/ucas/src/xform.c:4589:12: note: make conversion explicit to silence this warning
+ 4589 |                 e[k] = x[2 * k];
+      |                          ^~~~~
+      |                          (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/xform.c:4589:12: note: perform multiplication in a wider type
+ 4589 |                 e[k] = x[2 * k];
+      |                          ^
+      |                          (ptrdiff_t)
+/home/andrew/Code/ucas/src/xform.c:4608:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4608 |         if ((n & (n - 1)) == 0) {
+      |              ^ ~
+/home/andrew/Code/ucas/src/xform.c:4643:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4643 |             "X[k] = sum_n x[n] e^(-2 pi i k n/N)", (n & (n - 1)) == 0 ?
+      |                                                     ^ ~
+/home/andrew/Code/ucas/src/xform.c:4647:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+   30 |         rep_int("n", n);
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4648:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+ 4648 |         rep_list("values");
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4650:3: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+ 4650 |                 rep_obj(NULL);
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4651:3: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+ 4651 |                 rep_str("exact", xf_cnum(X[k]));
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4652:3: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+ 4652 |                 rep_num("re", creal(X[k]));
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4656:3: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+ 4656 |                 rep_end();
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4776:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 4776 |                         if (strcmp(cs, "1")) {
+      |                             ^              
+      |                                             != 0
+/home/andrew/Code/ucas/src/xform.c:4860:56: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 4860 |                         } else if (xis_exp(f, &u) && lin_of(u, ns, &c1 == 0 ? &u : &u,
+      |                                                                             ^
+/home/andrew/Code/ucas/src/xform.c:4860:61: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 4860 |                         } else if (xis_exp(f, &u) && lin_of(u, ns, &c1 == 0 ? &u : &u,
+      |                                                                                  ^
+/home/andrew/Code/ucas/src/xform.c:4864:22: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 4864 |                                 r = xmul(r, xexp(xmul(xk(F.pw[k]), s1)));
+      |                                                  ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is false
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking false branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5190:11: note: Assuming the condition is false
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5190:7: note: Taking false branch
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5192:11: note: Assuming the condition is false
+ 5192 |         else if (!strcmp(w, "tf"))
+      |                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5192:7: note: Taking false branch
+ 5192 |         else if (!strcmp(w, "tf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5194:11: note: Assuming the condition is false
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5194:7: note: Taking false branch
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5196:36: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:7: note: Taking false branch
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                    ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5204:34: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:9: note: Taking false branch
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5206:33: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                                        ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:7: note: Taking false branch
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5208:11: note: Assuming the condition is false
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5208:7: note: Taking false branch
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5210:11: note: Assuming the condition is false
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5210:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5210:36: note: Assuming the condition is false
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                                           ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5210:7: note: Taking false branch
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5212:11: note: Assuming the condition is true
+ 5212 |         else if (!strcmp(w, "egf"))
+      |                  ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5212:7: note: Taking true branch
+ 5212 |         else if (!strcmp(w, "egf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5213:3: note: Calling 'cmd_genfunc'
+ 5213 |                 cmd_genfunc(text, 1);
+      |                 ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4955:2: note: Loop condition is true.  Entering loop body
+ 4955 |         for (k = 0; named_seq[k].name; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4956:3: note: Taking true branch
+ 4956 |                 if (!strcasecmp(t, named_seq[k].name)) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4959:4: note:  Execution continues on line 4961
+ 4959 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:4962:6: note: Assuming the condition is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |             ^
+/usr/include/string.h:265:43: note: expanded from macro 'strchr'
+  265 |   __glibc_const_generic (S, const char *, strchr (S, C))
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:4962:21: note: Left side of '&&' is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |                            ^
+/home/andrew/Code/ucas/src/xform.c:4984:7: note: Assuming 'ns' is >= 0
+ 4984 |                 if (ns < 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:4984:3: note: Taking false branch
+ 4984 |                 if (ns < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: Assuming field 'np' is 0
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                                                 ^~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: Assuming the condition is false
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:67: note: Left side of '&&' is false
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                                                                                 ^
+/home/andrew/Code/ucas/src/xform.c:4986:3: note: Taking false branch
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4991:7: note: Assuming 'xsl' is < MAXP
+ 4991 |                 if (xsl >= MAXP)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4991:3: note: Taking false branch
+ 4991 |                 if (xsl >= MAXP)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4994:8: note: 'egf' is 1
+ 4994 |                 if (!egf) {
+      |                      ^~~
+/home/andrew/Code/ucas/src/xform.c:4994:3: note: Taking false branch
+ 4994 |                 if (!egf) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5017:7: note: 'egf' is 1
+ 5017 |         if (!egf) {
+      |              ^~~
+/home/andrew/Code/ucas/src/xform.c:5017:2: note: Taking false branch
+ 5017 |         if (!egf) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5079:9: note: 'isrec' is 0
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/xform.c:5079:8: note: Left side of '&&' is true
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:5079:18: note: Assuming the condition is false
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                                       ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:5079:4: note: Taking false branch
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:5098:8: note: Assuming the condition is false
+ 5098 |                         if (xis_fact(a, &fa) && is_var(fa, ns))
+      |                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5098:25: note: Left side of '&&' is false
+ 5098 |                         if (xis_fact(a, &fa) && is_var(fa, ns))
+      |                                              ^
+/home/andrew/Code/ucas/src/xform.c:5101:9: note: Calling 'egf_of'
+ 5101 |                                 E = egf_of(a, ns, x);
+      |                                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4843:2: note: Loop condition is true.  Entering loop body
+ 4843 |         for (i = 0; i < T.n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4852:3: note: Loop condition is true.  Entering loop body
+ 4852 |                 for (k = 0; k < F.nf; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4854:22: note: Left side of '&&' is false
+ 4854 |                         if (is_var(f, ns) && F.pw[k] > 0 && F.pw[k] == floor(F.pw[k]))
+      |                                           ^
+/home/andrew/Code/ucas/src/xform.c:4856:13: note: Assuming the condition is false
+ 4856 |                         else if (N.op[f] == O_POW && !has_slot(N.a[f], ns) &&
+      |                                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4856:30: note: Left side of '&&' is false
+ 4856 |                         else if (N.op[f] == O_POW && !has_slot(N.a[f], ns) &&
+      |                                                   ^
+/home/andrew/Code/ucas/src/xform.c:4860:15: note: Assuming the condition is true
+ 4860 |                         } else if (xis_exp(f, &u) && lin_of(u, ns, &c1 == 0 ? &u : &u,
+      |                                    ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4860:15: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:4860:47: note: '?' condition is false
+ 4860 |                         } else if (xis_exp(f, &u) && lin_of(u, ns, &c1 == 0 ? &u : &u,
+      |                                                                    ^
+/home/andrew/Code/ucas/src/xform.c:4860:11: note: Taking true branch
+ 4860 |                         } else if (xis_exp(f, &u) && lin_of(u, ns, &c1 == 0 ? &u : &u,
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:4862:9: note: 's1' declared without an initial value
+ 4862 |                                 nid s1, s0;
+      |                                     ^~
+/home/andrew/Code/ucas/src/xform.c:4863:5: note: Calling 'lin_of'
+ 4863 |                                 lin_of(u, ns, &s1, &s0);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:414:6: note: Assuming the condition is true
+  414 |         if (!has_slot(u, slot) || !npoly_of(u, slot, &p, 1) || p.deg != 1)
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:414:25: note: Left side of '||' is true
+  414 |         if (!has_slot(u, slot) || !npoly_of(u, slot, &p, 1) || p.deg != 1)
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:415:3: note: Returning without writing to '*c1'
+  415 |                 return 0;
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4863:5: note: Returning from 'lin_of'
+ 4863 |                                 lin_of(u, ns, &s1, &s0);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4864:22: note: 2nd function call argument is an uninitialized value
+ 4864 |                                 r = xmul(r, xexp(xmul(xk(F.pw[k]), s1)));
+      |                                                  ^                 ~~
+/home/andrew/Code/ucas/src/xform.c:4956:8: warning: no header providing "strcasecmp" is directly included [misc-include-cleaner]
+   35 |                 if (!strcasecmp(t, named_seq[k].name)) {
+      |                      ^
+/home/andrew/Code/ucas/src/xform.c:4999:33: warning: Out of bound access to memory after the end of the field 'p' [clang-analyzer-security.ArrayBound]
+ 4999 |                         C.n = xv(ns, f->np ? sym_str(f->p[ns].name) : "n");
+      |                                                      ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is false
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking false branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5190:11: note: Assuming the condition is false
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5190:7: note: Taking false branch
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5192:11: note: Assuming the condition is false
+ 5192 |         else if (!strcmp(w, "tf"))
+      |                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5192:7: note: Taking false branch
+ 5192 |         else if (!strcmp(w, "tf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5194:11: note: Assuming the condition is false
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5194:7: note: Taking false branch
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5196:36: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:7: note: Taking false branch
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                    ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5204:34: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:9: note: Taking false branch
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5206:33: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                                        ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:7: note: Taking false branch
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5208:11: note: Assuming the condition is false
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5208:7: note: Taking false branch
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5210:11: note: Assuming the condition is true
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5210:33: note: Left side of '||' is true
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                                        ^
+/home/andrew/Code/ucas/src/xform.c:5211:3: note: Calling 'cmd_genfunc'
+ 5211 |                 cmd_genfunc(text, 0);
+      |                 ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4955:2: note: Loop condition is true.  Entering loop body
+ 4955 |         for (k = 0; named_seq[k].name; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4956:3: note: Taking true branch
+ 4956 |                 if (!strcasecmp(t, named_seq[k].name)) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4959:4: note:  Execution continues on line 4961
+ 4959 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:4962:6: note: Assuming the condition is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |             ^
+/usr/include/string.h:265:43: note: expanded from macro 'strchr'
+  265 |   __glibc_const_generic (S, const char *, strchr (S, C))
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:4962:21: note: Left side of '&&' is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |                            ^
+/home/andrew/Code/ucas/src/xform.c:4984:7: note: Assuming 'ns' is >= 0
+ 4984 |                 if (ns < 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:4984:3: note: Taking false branch
+ 4984 |                 if (ns < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: Assuming field 'np' is not equal to 0
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                                                 ^~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: '?' condition is true
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: Assuming the condition is true
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:4987:7: note: Assuming 'ns' is < field 'np'
+ 4987 |                     ns < f->np ? 1 : 0))
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: '?' condition is true
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                              ^
+/home/andrew/Code/ucas/src/xform.c:4986:7: note: Assuming the condition is false
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 4987 |                     ns < f->np ? 1 : 0))
+      |                     ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:3: note: Taking false branch
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4991:7: note: Assuming 'xsl' is >= MAXP
+ 4991 |                 if (xsl >= MAXP)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4991:3: note: Taking true branch
+ 4991 |                 if (xsl >= MAXP)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4994:8: note: 'egf' is 0
+ 4994 |                 if (!egf) {
+      |                      ^~~
+/home/andrew/Code/ucas/src/xform.c:4994:3: note: Taking true branch
+ 4994 |                 if (!egf) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4999:20: note: Field 'np' is not equal to 0
+ 4999 |                         C.n = xv(ns, f->np ? sym_str(f->p[ns].name) : "n");
+      |                                         ^
+/home/andrew/Code/ucas/src/xform.c:4999:17: note: '?' condition is true
+ 4999 |                         C.n = xv(ns, f->np ? sym_str(f->p[ns].name) : "n");
+      |                                      ^
+/home/andrew/Code/ucas/src/xform.c:4999:33: note: Access of the field 'p' at an overflowing index, while it holds only 8 'struct param' elements
+ 4999 |                         C.n = xv(ns, f->np ? sym_str(f->p[ns].name) : "n");
+      |                                                      ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5014:4: warning: no header providing "notes_drop" is directly included [misc-include-cleaner]
+ 5014 |                         notes_drop();
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:5086:39: warning: Out of bound access to memory after the end of the field 'p' [clang-analyzer-security.ArrayBound]
+ 5086 |                                 C.n = xv(ns, f && f->np ? sym_str(f->p[ns].name) : "n");
+      |                                                                   ^
+/home/andrew/Code/ucas/src/xform.c:5143:6: note: Assuming the condition is false
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5143:2: note: Taking false branch
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5145:25: note: Left side of '&&' is false
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                ^
+/home/andrew/Code/ucas/src/xform.c:5150:6: note: Assuming the condition is false
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5150:2: note: Taking false branch
+ 5150 |         if (func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5155:6: note: Assuming the condition is false
+ 5155 |         if (!in_list(xcmds, w)) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5155:2: note: Taking false branch
+ 5155 |         if (!in_list(xcmds, w)) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5160:6: note: Assuming the condition is false
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5160:2: note: Taking false branch
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5166:10: note: Assuming the condition is false
+ 5166 |                 while (*r == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5166:3: note: Loop condition is false. Execution continues on line 5168
+ 5166 |                 while (*r == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5168:13: note: Assuming the condition is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                           ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5168:35: note: Left side of '&&' is false
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                                                 ^
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Assuming the condition is false
+ 5169 |                     "laplace_solve" : (!strcmp(w, "fourier") ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5169:26: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5170:7: note: Assuming the condition is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5170:30: note: Left side of '&&' is false
+ 5170 |                     !strcmp(w, "fseries")) && !strncmp(r, "series ", 7) ?
+      |                                            ^
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: Assuming the condition is false
+ 5171 |                     "fourier_series" : !strcmp(w, "fseries") ? "fourier_series" :
+      |                                        ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5171:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: Assuming the condition is false
+ 5172 |                     !strcmp(w, "fft") ? "dft" : !strcmp(w, "ifft") ? "idft" :
+      |                                                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5172:35: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: Assuming the condition is false
+ 5173 |                     !strcmp(w, "ogf") ? "genfunc" : w);
+      |                     ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5173:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/xform.c:5176:6: note: Assuming the condition is false
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5176:2: note: Taking false branch
+ 5176 |         if (!strcmp(w, "laplace")) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5184:13: note: Assuming the condition is false
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5184:9: note: Taking false branch
+ 5184 |         } else if (!strcmp(w, "ilaplace"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5186:11: note: Assuming the condition is false
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5186:7: note: Taking false branch
+ 5186 |         else if (!strcmp(w, "ztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5188:11: note: Assuming the condition is false
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5188:7: note: Taking false branch
+ 5188 |         else if (!strcmp(w, "iztrans"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5190:11: note: Assuming the condition is false
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5190:7: note: Taking false branch
+ 5190 |         else if (!strcmp(w, "zsolve"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5192:11: note: Assuming the condition is false
+ 5192 |         else if (!strcmp(w, "tf"))
+      |                  ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5192:7: note: Taking false branch
+ 5192 |         else if (!strcmp(w, "tf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5194:11: note: Assuming the condition is false
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5194:7: note: Taking false branch
+ 5194 |         else if (!strcmp(w, "fseries"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5196:36: note: Assuming the condition is false
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5196:7: note: Taking false branch
+ 5196 |         else if (!strcmp(w, "fourier") || !strcmp(w, "ifourier")) {
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                    ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:13: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5204:34: note: Assuming the condition is false
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5204:9: note: Taking false branch
+ 5204 |         } else if (!strcmp(w, "dft") || !strcmp(w, "fft"))
+      |                ^
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5206:33: note: Assuming the condition is false
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |                                        ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5206:7: note: Taking false branch
+ 5206 |         else if (!strcmp(w, "idft") || !strcmp(w, "ifft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5208:11: note: Assuming the condition is false
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5208:7: note: Taking false branch
+ 5208 |         else if (!strcmp(w, "dtft"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5210:11: note: Assuming the condition is false
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                  ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5210:11: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/xform.c:5210:36: note: Assuming the condition is false
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |                                           ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5210:7: note: Taking false branch
+ 5210 |         else if (!strcmp(w, "genfunc") || !strcmp(w, "ogf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5212:11: note: Assuming the condition is true
+ 5212 |         else if (!strcmp(w, "egf"))
+      |                  ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5212:7: note: Taking true branch
+ 5212 |         else if (!strcmp(w, "egf"))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5213:3: note: Calling 'cmd_genfunc'
+ 5213 |                 cmd_genfunc(text, 1);
+      |                 ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4955:2: note: Loop condition is true.  Entering loop body
+ 4955 |         for (k = 0; named_seq[k].name; k++)
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:4956:3: note: Taking true branch
+ 4956 |                 if (!strcasecmp(t, named_seq[k].name)) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4959:4: note:  Execution continues on line 4961
+ 4959 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:4962:6: note: Assuming the condition is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |             ^
+/usr/include/string.h:265:43: note: expanded from macro 'strchr'
+  265 |   __glibc_const_generic (S, const char *, strchr (S, C))
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/xform.c:4962:21: note: Left side of '&&' is false
+ 4962 |         if (strchr(t, '[') && strchr(t, '=')) {
+      |                            ^
+/home/andrew/Code/ucas/src/xform.c:4984:7: note: Assuming 'ns' is >= 0
+ 4984 |                 if (ns < 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/xform.c:4984:3: note: Taking false branch
+ 4984 |                 if (ns < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: Assuming field 'np' is not equal to 0
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                                                 ^~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:35: note: '?' condition is true
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: Assuming the condition is true
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:4987:7: note: Assuming 'ns' is < field 'np'
+ 4987 |                     ns < f->np ? 1 : 0))
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:16: note: '?' condition is true
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                              ^
+/home/andrew/Code/ucas/src/xform.c:4986:7: note: Assuming the condition is false
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 4987 |                     ns < f->np ? 1 : 0))
+      |                     ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4986:3: note: Taking false branch
+ 4986 |                 if (f->np > (xf_slot(f, sym_str(f->np ? f->p[0].name : 0)) >= 0 &&
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4991:7: note: Assuming 'xsl' is >= MAXP
+ 4991 |                 if (xsl >= MAXP)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:4991:3: note: Taking true branch
+ 4991 |                 if (xsl >= MAXP)
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:4994:8: note: 'egf' is 1
+ 4994 |                 if (!egf) {
+      |                      ^~~
+/home/andrew/Code/ucas/src/xform.c:4994:3: note: Taking false branch
+ 4994 |                 if (!egf) {
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5017:7: note: 'egf' is 1
+ 5017 |         if (!egf) {
+      |              ^~~
+/home/andrew/Code/ucas/src/xform.c:5017:2: note: Taking false branch
+ 5017 |         if (!egf) {
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5079:9: note: 'isrec' is 0
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/xform.c:5079:8: note: Left side of '&&' is true
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                             ^
+/home/andrew/Code/ucas/src/xform.c:5079:18: note: Assuming the condition is true
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                                       ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:5079:4: note: Taking true branch
+ 5079 |                         if (!isrec && setjmp(fail_jmp) == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/xform.c:5086:18: note: 'f' is non-null
+ 5086 |                                 C.n = xv(ns, f && f->np ? sym_str(f->p[ns].name) : "n");
+      |                                              ^
+/home/andrew/Code/ucas/src/xform.c:5086:18: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/xform.c:5086:26: note: Field 'np' is not equal to 0
+ 5086 |                                 C.n = xv(ns, f && f->np ? sym_str(f->p[ns].name) : "n");
+      |                                                      ^
+/home/andrew/Code/ucas/src/xform.c:5086:18: note: '?' condition is true
+ 5086 |                                 C.n = xv(ns, f && f->np ? sym_str(f->p[ns].name) : "n");
+      |                                              ^
+/home/andrew/Code/ucas/src/xform.c:5086:39: note: Access of the field 'p' at an overflowing index, while it holds only 8 'struct param' elements
+ 5086 |                                 C.n = xv(ns, f && f->np ? sym_str(f->p[ns].name) : "n");
+      |                                                                   ^~~~~~~~
+/home/andrew/Code/ucas/src/xform.c:5140:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+ 5140 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/xform.c:5143:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+ 5143 |         if (!cmdp_word(p, w, sizeof w))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5145:28: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                   ^
+      |                                                    != 0
+/home/andrew/Code/ucas/src/xform.c:5145:48: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 5145 |         if (!in_list(xcmds, w) && strcmp(w, "sum") && strcmp(w, "prod") &&
+      |                                                       ^
+      |                                                                         != 0
+/home/andrew/Code/ucas/src/xform.c:5146:6: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 5146 |             strcmp(w, "Σ") && strcmp(w, "∏")) {
+      |             ^
+      |                            != 0
+/home/andrew/Code/ucas/src/xform.c:5146:25: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 5146 |             strcmp(w, "Σ") && strcmp(w, "∏")) {
+      |                               ^             
+      |                                              != 0
+/home/andrew/Code/ucas/src/xform.c:5147:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+ 5147 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5160:7: warning: no header providing "cmdp_rest" is directly included [misc-include-cleaner]
+ 5160 |         if (!cmdp_rest(p, text, cap, NULL))
+      |              ^
+/home/andrew/Code/ucas/src/xform.c:5163:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+ 5163 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/xform.c:5168:3: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 5168 |                 rep_begin(!strcmp(w, "laplace") && !strncmp(r, "solve ", 6) ?
+      |                 ^
+/home/andrew/Code/ucas/src/xform.c:5174:3: warning: no header providing "rep_text_fields" is directly included [misc-include-cleaner]
+ 5174 |                 rep_text_fields();
+      |                 ^

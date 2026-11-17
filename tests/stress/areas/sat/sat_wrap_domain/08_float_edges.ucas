@@ -1,0 +1,21 @@
+# Float overflow / underflow / subnormal wrap analysis.
+ov(x: f32) = x * x
+wrap ov
+uf(x: f32) = x * x * x
+wrap uf
+sc(x: f32) = x * 3.4e38
+wrap sc
+tiny(x: f32) = x * 1e-40
+wrap tiny
+ov16(x: f16) = x * x
+wrap ov16
+ov64(x: f64) = x * x
+wrap ov64
+sub(x: f32 in -1e-30..1e-30) = x + x
+wrap sub
+canc(x: f32 in 1..2) = x + 1e-8 - x
+range canc
+inf1(x: f32) = 1 / x
+wrap inf1
+zero(x: f32) = x - x
+wrap zero

@@ -1,0 +1,615 @@
+/home/andrew/Code/ucas/src/glslc.c:47:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   47 |         if ((pid = fork()) < 0) {
+      |              ~~~~^~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:47:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/glslc.c:47:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/glslc.c:53:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   53 |                 struct rlimit cpu = {60, 60}, mem = {2048UL << 20, 2048UL << 20},
+      |                                                             ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:53:64: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   53 |                 struct rlimit cpu = {60, 60}, mem = {2048UL << 20, 2048UL << 20},
+      |                                                                           ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:54:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   54 |                     fsz = {32UL << 20, 32UL << 20};
+      |                                 ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:54:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   54 |                     fsz = {32UL << 20, 32UL << 20};
+      |                                             ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:70:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   70 |                 if (out->n + (size_t)r > MAXTOOL) {
+      |                                          ^
+/home/andrew/Code/ucas/src/glslc.c:33:26: note: expanded from macro 'MAXTOOL'
+   33 | #define MAXTOOL (32UL << 20)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:343:22: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  343 |         if (p != NULL && (p = strchr(p, '(')) != NULL) {
+      |                           ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:343:22: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/glslc.c:343:22: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/glslc.c:390:7: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  390 |         free(lo_names);
+      |              ^
+/home/andrew/Code/ucas/src/glslc.c:391:7: warning: multilevel pointer conversion from 'const char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  391 |         free(lo_file);
+      |              ^
+/home/andrew/Code/ucas/src/glslc.c:398:12: warning: multilevel pointer conversion from 'void *' to 'const char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  398 |         lo_file = calloc((size_t)lo_n + 1, sizeof *lo_file);
+      |                   ^
+/home/andrew/Code/ucas/src/glslc.c:422:17: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  422 |                                         char **g = qe ? realloc(lo_names,
+      |                                                    ^
+/home/andrew/Code/ucas/src/glslc.c:422:30: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  422 |                                         char **g = qe ? realloc(lo_names,
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:505:20: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  505 |                         const char *v = strstr(body.p, "#version"), *rest = body.p;
+      |                                         ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^       ~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/glslc.c:461:32: note: Assuming the condition is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                       ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/glslc.c:461:60: note: Left side of '&&' is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/glslc.c:466:2: note: Value assigned to 'body.p'
+  466 |         sb_puts(&body, src);
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Assuming 'l' is equal to NULL
+  472 |                 while (l != NULL && *l) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:20: note: Left side of '&&' is false
+  472 |                 while (l != NULL && *l) {
+      |                                  ^
+/home/andrew/Code/ucas/src/glslc.c:488:2: note: Loop condition is true.  Entering loop body
+  488 |         for (tries = 0; tries < 8; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/glslc.c:505:20: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  505 |                         const char *v = strstr(body.p, "#version"), *rest = body.p;
+      |                                         ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^       ~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/glslc.c:545:13: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:13: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/glslc.c:545:13: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/glslc.c:545:15: warning: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior [clang-analyzer-unix.Stream]
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:461:32: note: Assuming the condition is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                       ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/glslc.c:461:60: note: Left side of '&&' is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Assuming 'l' is not equal to NULL
+  472 |                 while (l != NULL && *l) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/glslc.c:472:3: note: Loop condition is false. Execution continues on line 488
+  472 |                 while (l != NULL && *l) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:488:2: note: Loop condition is true.  Entering loop body
+  488 |         for (tries = 0; tries < 8; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/glslc.c:507:8: note: Assuming 'v' is not equal to NULL
+  507 |                         if (v != NULL) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:507:4: note: Taking true branch
+  507 |                         if (v != NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:509:22: note: Assuming 'c' is >= 'v'
+  509 |                                 for (c = body.p; c < v; c++)
+      |                                                  ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:509:5: note: Loop condition is false. Execution continues on line 513
+  509 |                                 for (c = body.p; c < v; c++)
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:513:38: note: Assuming 've' is non-null
+  513 |                                 sb_printf(&full, "%.*s\n", (int)(ve ? ve - v :
+      |                                                                  ^~
+/home/andrew/Code/ucas/src/glslc.c:513:38: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:515:12: note: 've' is non-null
+  515 |                                 rest = ve ? ve + 1 : v + strlen(v);
+      |                                        ^~
+/home/andrew/Code/ucas/src/glslc.c:515:12: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:519:24: note: Field 'p' is null
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                             ^
+/home/andrew/Code/ucas/src/glslc.c:519:19: note: '?' condition is false
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                        ^
+/home/andrew/Code/ucas/src/glslc.c:523:8: note: 'has_main' is 0
+  523 |                 if (!has_main) {
+      |                      ^~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:523:3: note: Taking true branch
+  523 |                 if (!has_main) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: 'tries' is equal to 0
+  525 |                         harness(src, &full, tries == 0 ? notes : &log);
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:528:7: note: Left side of '||' is false
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/glslc.c:528:3: note: Taking false branch
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:534:8: note: Assuming 'rc' is equal to 0
+  534 |                         if (rc == 0) {
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:534:4: note: Taking true branch
+  534 |                         if (rc == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking true branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: 'cap' is 0
+  542 |                                                 cap = cap ? cap * 2 : 65536;
+      |                                                       ^~~
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/glslc.c:545:15: note: Assuming this stream operation fails
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is false
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking false branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is not equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking false branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:545:15: note: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:15: warning: Read function called when stream is in EOF state. Function has no effect [clang-analyzer-unix.Stream]
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:461:32: note: Assuming the condition is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                       ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/glslc.c:461:60: note: Left side of '&&' is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Assuming 'l' is not equal to NULL
+  472 |                 while (l != NULL && *l) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/glslc.c:472:3: note: Loop condition is false. Execution continues on line 488
+  472 |                 while (l != NULL && *l) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:488:2: note: Loop condition is true.  Entering loop body
+  488 |         for (tries = 0; tries < 8; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/glslc.c:507:8: note: Assuming 'v' is not equal to NULL
+  507 |                         if (v != NULL) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:507:4: note: Taking true branch
+  507 |                         if (v != NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:509:22: note: Assuming 'c' is >= 'v'
+  509 |                                 for (c = body.p; c < v; c++)
+      |                                                  ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:509:5: note: Loop condition is false. Execution continues on line 513
+  509 |                                 for (c = body.p; c < v; c++)
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:513:38: note: Assuming 've' is non-null
+  513 |                                 sb_printf(&full, "%.*s\n", (int)(ve ? ve - v :
+      |                                                                  ^~
+/home/andrew/Code/ucas/src/glslc.c:513:38: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:515:12: note: 've' is non-null
+  515 |                                 rest = ve ? ve + 1 : v + strlen(v);
+      |                                        ^~
+/home/andrew/Code/ucas/src/glslc.c:515:12: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:519:24: note: Field 'p' is null
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                             ^
+/home/andrew/Code/ucas/src/glslc.c:519:19: note: '?' condition is false
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                        ^
+/home/andrew/Code/ucas/src/glslc.c:523:8: note: 'has_main' is 0
+  523 |                 if (!has_main) {
+      |                      ^~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:523:3: note: Taking true branch
+  523 |                 if (!has_main) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: 'tries' is equal to 0
+  525 |                         harness(src, &full, tries == 0 ? notes : &log);
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:528:7: note: Left side of '||' is false
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/glslc.c:528:3: note: Taking false branch
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:534:8: note: Assuming 'rc' is equal to 0
+  534 |                         if (rc == 0) {
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:534:4: note: Taking true branch
+  534 |                         if (rc == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking true branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: 'cap' is 0
+  542 |                                                 cap = cap ? cap * 2 : 65536;
+      |                                                       ^~~
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/glslc.c:545:15: note: Assuming stream reaches end-of-file here
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is false
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking false branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is not equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking false branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:545:15: note: Read function called when stream is in EOF state. Function has no effect
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:17: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                      ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:17: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/glslc.c:569:17: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/glslc.c:569:19: warning: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior [clang-analyzer-unix.Stream]
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:461:32: note: Assuming the condition is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                       ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/glslc.c:461:60: note: Left side of '&&' is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Assuming 'l' is not equal to NULL
+  472 |                 while (l != NULL && *l) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/glslc.c:472:3: note: Loop condition is false. Execution continues on line 488
+  472 |                 while (l != NULL && *l) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:488:2: note: Loop condition is true.  Entering loop body
+  488 |         for (tries = 0; tries < 8; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/glslc.c:507:8: note: Assuming 'v' is equal to NULL
+  507 |                         if (v != NULL) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:507:4: note: Taking false branch
+  507 |                         if (v != NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:519:24: note: Field 'p' is null
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                             ^
+/home/andrew/Code/ucas/src/glslc.c:519:19: note: '?' condition is false
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                        ^
+/home/andrew/Code/ucas/src/glslc.c:523:8: note: 'has_main' is 0
+  523 |                 if (!has_main) {
+      |                      ^~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:523:3: note: Taking true branch
+  523 |                 if (!has_main) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: 'tries' is equal to 0
+  525 |                         harness(src, &full, tries == 0 ? notes : &log);
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:528:7: note: Left side of '||' is false
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/glslc.c:528:3: note: Taking false branch
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:534:8: note: Assuming 'rc' is equal to 0
+  534 |                         if (rc == 0) {
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:534:4: note: Taking true branch
+  534 |                         if (rc == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking true branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: 'cap' is 0
+  542 |                                                 cap = cap ? cap * 2 : 65536;
+      |                                                       ^~~
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is false
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking false branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is not equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking false branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is true
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking true branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:546:7: note:  Execution continues on line 549
+  546 |                                                 break;
+      |                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:549:9: note: 'fp' is non-null
+  549 |                                 if (fp)
+      |                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:549:5: note: Taking true branch
+  549 |                                 if (fp)
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:552:9: note: 'nb' is > 0
+  552 |                                 if (nb > 0) {
+      |                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:552:5: note: Taking true branch
+  552 |                                 if (nb > 0) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:559:6: note: Taking true branch
+  559 |                                         if (tool_tmp(opath, "", 0) == 0) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:560:11: note: Assuming the condition is true
+  560 |                                                 if (tool_run(oargv, &olog) == 0) {
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:560:7: note: Taking true branch
+  560 |                                                 if (tool_run(oargv, &olog) == 0) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:564:8: note: Loop condition is true.  Entering loop body
+  564 |                                                         while (of) {
+      |                                                         ^
+/home/andrew/Code/ucas/src/glslc.c:565:13: note: 'nb' is not equal to 'cap'
+  565 |                                                                 if (nb == cap) {
+      |                                                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:565:9: note: Taking false branch
+  565 |                                                                 if (nb == cap) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:569:19: note: Assuming this stream operation fails
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:13: note: Assuming the condition is false
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:9: note: Taking false branch
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:564:8: note: Loop condition is true.  Entering loop body
+  564 |                                                         while (of) {
+      |                                                         ^
+/home/andrew/Code/ucas/src/glslc.c:565:13: note: 'nb' is not equal to 'cap'
+  565 |                                                                 if (nb == cap) {
+      |                                                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:565:9: note: Taking false branch
+  565 |                                                                 if (nb == cap) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:569:19: note: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:19: warning: Read function called when stream is in EOF state. Function has no effect [clang-analyzer-unix.Stream]
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:461:32: note: Assuming the condition is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                       ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/glslc.c:461:60: note: Left side of '&&' is false
+  461 |         int tries, ok = 0, has_main = strstr(src, "main") != NULL &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Assuming 'l' is not equal to NULL
+  472 |                 while (l != NULL && *l) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:472:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/glslc.c:472:3: note: Loop condition is false. Execution continues on line 488
+  472 |                 while (l != NULL && *l) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:488:2: note: Loop condition is true.  Entering loop body
+  488 |         for (tries = 0; tries < 8; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/glslc.c:507:8: note: Assuming 'v' is equal to NULL
+  507 |                         if (v != NULL) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:507:4: note: Taking false branch
+  507 |                         if (v != NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:519:24: note: Field 'p' is null
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                             ^
+/home/andrew/Code/ucas/src/glslc.c:519:19: note: '?' condition is false
+  519 |                         sb_puts(&full, decl.p ? decl.p : "");
+      |                                        ^
+/home/andrew/Code/ucas/src/glslc.c:523:8: note: 'has_main' is 0
+  523 |                 if (!has_main) {
+      |                      ^~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:523:3: note: Taking true branch
+  523 |                 if (!has_main) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: 'tries' is equal to 0
+  525 |                         harness(src, &full, tries == 0 ? notes : &log);
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/glslc.c:525:24: note: '?' condition is true
+/home/andrew/Code/ucas/src/glslc.c:528:7: note: Left side of '||' is false
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/glslc.c:528:3: note: Taking false branch
+  528 |                 if (tool_tmp(path, full.p, full.n) < 0 || tool_tmp(spv, "", 0) < 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/glslc.c:534:8: note: Assuming 'rc' is equal to 0
+  534 |                         if (rc == 0) {
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:534:4: note: Taking true branch
+  534 |                         if (rc == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking true branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: 'cap' is 0
+  542 |                                                 cap = cap ? cap * 2 : 65536;
+      |                                                       ^~~
+/home/andrew/Code/ucas/src/glslc.c:542:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is false
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking false branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:540:5: note: Loop condition is true.  Entering loop body
+  540 |                                 while (fp) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:541:10: note: 'nb' is not equal to 'cap'
+  541 |                                         if (nb == cap) {
+      |                                             ^~
+/home/andrew/Code/ucas/src/glslc.c:541:6: note: Taking false branch
+  541 |                                         if (nb == cap) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:545:10: note: Assuming the condition is true
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:545:6: note: Taking true branch
+  545 |                                         if ((r = fread(bin + nb, 1, cap - nb, fp)) == 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:546:7: note:  Execution continues on line 549
+  546 |                                                 break;
+      |                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:549:9: note: 'fp' is non-null
+  549 |                                 if (fp)
+      |                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:549:5: note: Taking true branch
+  549 |                                 if (fp)
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:552:9: note: 'nb' is > 0
+  552 |                                 if (nb > 0) {
+      |                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:552:5: note: Taking true branch
+  552 |                                 if (nb > 0) {
+      |                                 ^
+/home/andrew/Code/ucas/src/glslc.c:559:6: note: Taking true branch
+  559 |                                         if (tool_tmp(opath, "", 0) == 0) {
+      |                                         ^
+/home/andrew/Code/ucas/src/glslc.c:560:11: note: Assuming the condition is true
+  560 |                                                 if (tool_run(oargv, &olog) == 0) {
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:560:7: note: Taking true branch
+  560 |                                                 if (tool_run(oargv, &olog) == 0) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:564:8: note: Loop condition is true.  Entering loop body
+  564 |                                                         while (of) {
+      |                                                         ^
+/home/andrew/Code/ucas/src/glslc.c:565:13: note: 'nb' is not equal to 'cap'
+  565 |                                                                 if (nb == cap) {
+      |                                                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:565:9: note: Taking false branch
+  565 |                                                                 if (nb == cap) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:569:19: note: Assuming stream reaches end-of-file here
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:13: note: Assuming the condition is false
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:569:9: note: Taking false branch
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:564:8: note: Loop condition is true.  Entering loop body
+  564 |                                                         while (of) {
+      |                                                         ^
+/home/andrew/Code/ucas/src/glslc.c:565:13: note: 'nb' is not equal to 'cap'
+  565 |                                                                 if (nb == cap) {
+      |                                                                     ^~
+/home/andrew/Code/ucas/src/glslc.c:565:9: note: Taking false branch
+  565 |                                                                 if (nb == cap) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/glslc.c:569:19: note: Read function called when stream is in EOF state. Function has no effect
+  569 |                                                                 if ((r2 = fread(bin + nb, 1, cap - nb, of)) == 0)
+      |                                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/glslc.c:589:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  589 |                                             "MiB)\n", MAXTOOL >> 20);
+      |                                                       ^
+/home/andrew/Code/ucas/src/glslc.c:33:26: note: expanded from macro 'MAXTOOL'
+   33 | #define MAXTOOL (32UL << 20)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/glslc.c:589:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  589 |                                             "MiB)\n", MAXTOOL >> 20);
+      |                                                               ~~ ^~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

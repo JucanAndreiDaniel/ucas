@@ -1,0 +1,90 @@
+> f(x:i64)=x+1
+> g(x:i64)=1+x
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 1, g at most 1
+  polynomials of total degree at most 1, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 1/(2^61 - 1) = 4.34e-19 (Schwartz-Zippel), at all 8 with at most 1.25e-147
+  -> equal as polynomials over the integers, except with probability at most 1.25e-147 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64)=x*x
+> g(x:i64)=x^2
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  polynomials of total degree at most 2, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 2/(2^61 - 1) = 8.67e-19 (Schwartz-Zippel), at all 8 with at most 3.2e-145
+  -> equal as polynomials over the integers, except with probability at most 3.2e-145 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64,y:i64)=(x+y)^2
+> g(x:i64,y:i64)=x*x+2*x*y+y*y
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  polynomials of total degree at most 2, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 2/(2^61 - 1) = 8.67e-19 (Schwartz-Zippel), at all 8 with at most 3.2e-145
+  -> equal as polynomials over the integers, except with probability at most 3.2e-145 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64)=x*(x+1)
+> g(x:i64)=x^2+x
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  polynomials of total degree at most 2, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 2/(2^61 - 1) = 8.67e-19 (Schwartz-Zippel), at all 8 with at most 3.2e-145
+  -> equal as polynomials over the integers, except with probability at most 3.2e-145 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64)=(x-1)*(x+1)
+> g(x:i64)=x^2-1
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  polynomials of total degree at most 2, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 2/(2^61 - 1) = 8.67e-19 (Schwartz-Zippel), at all 8 with at most 3.2e-145
+  -> equal as polynomials over the integers, except with probability at most 3.2e-145 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64)=x^3+1
+> g(x:i64)=(x+1)*(x*x-x+1)
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 3, g at most 3
+  polynomials of total degree at most 3, equal at 8 random points mod 2^61 - 1: two that differ agree at one with probability at most 3/(2^61 - 1) = 1.3e-18 (Schwartz-Zippel), at all 8 with at most 8.21e-144
+  -> equal as polynomials over the integers, except with probability at most 8.21e-144 (not a proof: a probabilistic answer)
+     in i64 they are then equal for every input: reduction mod 2^64 is a ring homomorphism
+> f(x:i64)=x
+> g(x:i64)=x+1
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 1, g at most 1
+  they differ as polynomials over the integers: at x = 1507915731792878937 (mod 2^61 - 1) the values are 1507915731792878937 and 1507915731792878938 (certain)
+  -> and as i64 functions they differ too, e.g. x=-9223372036854775808: -9223372036854775808 vs -9223372036854775807
+> f(x:i64)=x^2
+> g(x:i64)=x^3
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 3
+  they differ as polynomials over the integers: at x = 1507915731792878937 (mod 2^61 - 1) the values are 1063406293359821434 and 1167552370512889509 (certain)
+  -> and as i64 functions they differ too, e.g. x=9223372036854775807: 1 vs 9223372036854775807
+> f(x:i64,y:i64)=x*y
+> g(x:i64,y:i64)=x*y+1
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  they differ as polynomials over the integers: at x = 1507915731792878937, y = 728479921167953487 (mod 2^61 - 1) the values are 2199393997874888792 and 2199393997874888793 (certain)
+  -> and as i64 functions they differ too, e.g. x=-9223372036854775808, y=9223372036854775806: 0 vs 1
+> f(x:i64,y:i64)=(x+y)^2
+> g(x:i64,y:i64)=x*x+y*y
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  they differ as polynomials over the integers: at x = 1507915731792878937, y = 728479921167953487 (mod 2^61 - 1) the values are 1411851496979807141 and 1624749519657417459 (certain)
+  -> and as i64 functions they differ too, e.g. x=-9223372036854775807, y=1: 4 vs 2
+> f(x:i64)=x^2+2*x+1
+> g(x:i64)=x^2+2*x
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 2, g at most 2
+  they differ as polynomials over the integers: at x = 1507915731792878937 (mod 2^61 - 1) the values are 1773394747731885358 and 1773394747731885357 (certain)
+  -> and as i64 functions they differ too, e.g. x=-9223372036854775808: 1 vs 0
+> f(x:i64,y:i64)=x^3+y^3
+> g(x:i64,y:i64)=(x+y)^3
+> pit f g trials 8 seed 1
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 1
+  f has total degree at most 3, g at most 3
+  they differ as polynomials over the integers: at x = 1507915731792878937, y = 728479921167953487 (mod 2^61 - 1) the values are 1994928640002857233 and 2207089582547567106 (certain)
+  -> and as i64 functions they differ too, e.g. x=-9223372036854775807, y=1: -9223372036854775806 vs 8

@@ -1,0 +1,65 @@
+> complex log(-1)
+log(-1) = i*pi
+  Re = 0,  Im = pi
+  check: equal numerically (3.141592654i, complex arithmetic)
+> complex sqrt(-1)
+sqrt(-1) = i
+  Re = 0,  Im = 1
+  check: equal numerically (1i, complex arithmetic)
+> complex (-1)^(1/2)
+(-1)^(1/2) = (-1)^(1/2)
+  Re = (-1)^(1/2),  Im = 0
+  check: equal numerically (1i, complex arithmetic)
+> complex exp(i*pi)
+exp(i*pi) = -1
+  Re = -1,  Im = 0
+  check: equal numerically (-1, complex arithmetic)
+> complex i^i
+i^i = exp(-pi/2)
+  Re = exp(-pi/2),  Im = 0
+  check: equal numerically (0.2078795764, complex arithmetic)
+> polar 1 + i
+1 + i = sqrt(2)*e^(i*pi/4)
+  = sqrt(2)*(cos(pi/4) + i*sin(pi/4))
+  r = |z| = sqrt(2),  theta = arg z = pi/4
+  theta is the principal argument, -pi < theta <= pi
+  check: equal numerically (1 + 1i, complex arithmetic)
+  check: equal numerically (1 + 1i, complex arithmetic)
+> re log(z)
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+  note: z = x + iy (real and imaginary parts real)
+  note: i is the imaginary unit; x, y are taken as real
+Re(log(x + i*y)) = log(x^2 + y^2)/2
+  check: equal at 64 of 64 sample points (max relative difference 2e-16)
+> im sqrt(z)
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+  note: z = x + iy (real and imaginary parts real)
+  note: i is the imaginary unit; x, y are taken as real
+Im(sqrt(x + i*y)) = copysign(sqrt((sqrt(x^2 + y^2) - x)/2), y)
+  check: equal at 64 of 64 sample points (max relative difference 1e-15)
+> arg -1
+arg(-1) = pi
+  the principal argument, -pi < arg <= pi
+  check: equal numerically (3.141592654, complex arithmetic)
+> nthroots 3 1
+the 3 cube roots of 1 (w^3 = 1)
+  w0 = 1                      = 1  (principal)
+  w1 = -1/2 + i*sqrt(3)/2     = e^(i*2pi/3)
+  w2 = -1/2 - i*sqrt(3)/2     = e^(-i*2pi/3)
+  check: each w^3, parsed back as printed, equals 1 numerically
+> holomorphic 1/z
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+  holomorphic: the Cauchy-Riemann equations hold at 64 sample points of [-2, 2] x [-2, 2] (df/dx = df/(i dy))
+  holomorphic except at the points where it is undefined (poles)
+> holomorphic conj(z)
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+conj(z) is not holomorphic
+  Cauchy-Riemann fails: at z = 1/2 + i/4, df/dx = 1 but df/(i dy) = -1
+  (it uses conj, which is not holomorphic)
+  Wirtinger derivatives there: df/dz = 0, df/dconj(z) = 1 (holomorphic means df/dconj(z) = 0)
+> residue 1/(z^4+1) at exp(i*pi/4)
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+residue of 1/(z^4 + 1) at z = sqrt(2)/2 + i*sqrt(2)/2:
+  = -sqrt(2)/8 - i*sqrt(2)/8
+  a pole of order 1 (|f| grows like |z - a|^-1)
+  computed as (1/(2 pi i)) times the integral of 1/(z^4 + 1) on |z - a| = 0.01 and 0.005 (512 points each): they agree

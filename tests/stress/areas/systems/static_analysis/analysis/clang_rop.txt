@@ -1,0 +1,45 @@
+src/rop.c:2071:5: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 2071 |                 e = x[0];
+      |                   ^ ~~~~
+src/rop.c:2037:35: note: Assuming the condition is true
+ 2037 |         int n = f->np, w = TYW(t), flt = t == TY_F32, k, j, stencil;
+      |                                          ^~~~~~~~~~~
+src/rop.c:2040:25: note: Assuming field 'anon' is not equal to 0
+ 2040 |         const char *how, *fn = f->anon ? "F" : sym_str(f->name), *att;
+      |                                ^~~~~~~
+src/rop.c:2040:25: note: '?' condition is true
+src/rop.c:2044:7: note: 'flt' is 1
+ 2044 |         if (!flt && !(TYK(t) == K_UINT && (w == 8 || w == 16 || w == 32)))
+      |              ^~~
+src/rop.c:2044:11: note: Left side of '&&' is false
+ 2044 |         if (!flt && !(TYK(t) == K_UINT && (w == 8 || w == 16 || w == 32)))
+      |                  ^
+src/rop.c:2047:6: note: Assuming the condition is false
+ 2047 |         if (N.ty[f->body] != t)
+      |             ^~~~~~~~~~~~~~~~~~
+src/rop.c:2047:2: note: Taking false branch
+ 2047 |         if (N.ty[f->body] != t)
+      |         ^
+src/rop.c:2053:14: note: Assuming 'j' is >= 'n'
+ 2053 |         for (j = 0; j < n; j++) {
+      |                     ^~~~~
+src/rop.c:2053:2: note: Loop condition is false. Execution continues on line 2058
+ 2053 |         for (j = 0; j < n; j++) {
+      |         ^
+src/rop.c:2068:13: note: 'flt' is 1
+ 2068 |         stencil = !flt && w == 8;
+      |                    ^~~
+src/rop.c:2068:17: note: Left side of '&&' is false
+ 2068 |         stencil = !flt && w == 8;
+      |                        ^
+src/rop.c:2069:8: note: 'stencil' is 0
+ 2069 |         att = stencil ? "S8_UINT stencil" : "D32_SFLOAT depth";
+      |               ^~~~~~~
+src/rop.c:2069:8: note: '?' condition is false
+src/rop.c:2070:2: note: Loop condition is true.  Entering loop body
+ 2070 |         for (k = 0; k < 3; k++) {
+      |         ^
+src/rop.c:2071:5: note: Assigned value is uninitialized
+ 2071 |                 e = x[0];
+      |                   ^ ~~~~
+1 warning generated.

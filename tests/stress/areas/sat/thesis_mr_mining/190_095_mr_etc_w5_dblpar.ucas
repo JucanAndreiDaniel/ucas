@@ -1,0 +1,11 @@
+# MR mined from tests/etc2:w5,w5mul
+# meaning-preserving rewrite: dblpar
+f(v: u8) = u8((u8(v) << 3) | (v >> 2))
+g(v: u8) = u8(8 * u32(v) + (u32(v) >> 2))
+f2(v: u8) = ((u8((u8(v) << 3) | (v >> 2))))
+g2(v: u8) = ((u8(8 * u32(v) + (u32(v) >> 2))))
+f1(v: u8) = ((u8((u8(v) << 3) | (v >> 2))))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

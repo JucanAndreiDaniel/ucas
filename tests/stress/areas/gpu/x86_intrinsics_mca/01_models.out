@@ -1,0 +1,173 @@
+> x86 models
+  skl    skylake        Intel Skylake/Kaby/Coffee Lake client core (this host's i5-9400 is one): AVX2, no AVX-512
+  skx    skylake-x      Intel Skylake-SP/X server core: AVX-512 F/CD/BW/DQ/VL, two 512-bit FMA units (ports 0+1 fused, 5)
+  glc    goldencove     Intel Golden Cove P-core as in Sapphire Rapids: AVX-512 with VBMI, VPOPCNTDQ, BITALG, GFNI
+  rpl    raptorlake     Intel Raptor Lake / Alder Lake P-core (Golden Cove/Raptor Cove): Golden Cove costs, AVX-512 fused off; GFNI, VAES and VPCLMULQDQ on xmm/ymm
+  zen2   znver2         AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom APU 0932): AVX2, no AVX-512; latencies measured on both machines with x86bench, other columns estimated from Zen 4
+  zen4   znver4         AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, GFNI) on 256-bit pipes, 512-bit ops double-pumped
+  x86v2  x86-64-v2      generic x86-64-v2 (SSE4.2, POPCNT): the worst of Skylake, Golden Cove and Zen 4 per class
+  x86v3  x86-64-v3      generic x86-64-v3 (AVX2, FMA, BMI1/2, LZCNT, MOVBE): the worst of Skylake, Golden Cove and Zen 4
+  x86v4  x86-64-v4      generic x86-64-v4 (AVX-512 F/BW/CD/DQ/VL): the worst of Skylake-X, Golden Cove and Zen 4
+> model skl
+model skl (skylake): Intel Skylake/Kaby/Coffee Lake client core (this host's i5-9400 is one): AVX2, no AVX-512
+  features: sse2 sse3 ssse3 sse4.1 sse4.2 popcnt lzcnt bmi bmi2 avx avx2 fma f16c pclmul aes adx movbe
+  dispatch 4 uops/cycle, ROB 224, scheduler 97, branch mispredict 16 cycles
+  ports: p0 p1 p2 p3 p4 p5 p6 p7
+  class        xmm/scalar: lat rtp uops ports ymm                      
+  add             1  0.25  1 p0156     [M]
+  lea             3     1  1 p1        [U]
+  shl             1   0.5  1 p06       [U]
+  shlx            1   0.5  1 p06       [U]
+  shl cl          2   1.5  3 p06       [U]
+  imul            3     1  1 p1        [M]
+  mulx            4     1  2 p15       [U]
+  div r32        26     6 10 p0156     [U]
+  div r64        36    21 36 p0156     [M]
+  popcnt          3     1  1 p1        [M]
+  andn            1   0.5  1 p15       [U]
+  pext            3     1  1 p1        [M]
+  cmov            1   0.5  1 p06       [U]
+  setcc           1   0.5  1 p06       [U]
+  adc             1   0.5  1 p06       [U]
+  jcc             1   0.5  1 p06       [U]
+  load            5   0.5  1 p23       [U]
+  store           1     1  1 p4        [U]
+  crc32           3     1  1 p1        [U]
+  lock add       18    18  9 p0156     [A]
+  call libm      20    15 20 p0156     [E]
+  cvtsi2ss        5     1  2 p015      [U]
+  cvttss2si       6     1  2 p015      [U]
+  movd r,x        2     1  1 p0        [U]
+  movd x,r        2     1  1 p5        [U]
+  vpaddd          1  0.33  1 p015        1  0.33  1 p015      [M]
+  vpminsd         1   0.5  1 p01         1   0.5  1 p01       [U]
+  vpslld          1   0.5  1 p01         1   0.5  1 p01       [U]
+  vpsllw x        2     1  2 p015        4     1  2 p015      [U]
+  vpshufb         1     1  1 p5          1     1  1 p5        [M]
+  vpermd          3     1  1 p5          3     1  1 p5        [U]
+  vpblendd        1  0.33  1 p015        1  0.33  1 p015      [U]
+  vpblendvb       2     1  2 p015        2     1  2 p015      [U]
+  vpmullw         5   0.5  1 p01         5   0.5  1 p01       [U]
+  vpmulld        10     1  2 p01        10     1  2 p01       [U]
+  vpsadbw         3     1  1 p5          3     1  1 p5        [U]
+  vpcmpgtq        3     1  1 p5          3     1  1 p5        [U]
+  vpmovmskb       3     1  1 p0          3     1  1 p0        [U]
+  vptest          3     1  2 p05         3     1  2 p05       [U]
+  vpextrd         3     1  2 p05         3     1  2 p05       [U]
+  vpinsrd         3     2  2 p5          3     2  2 p5        [U]
+  vpmovzx         1     1  1 p5          3     1  1 p5        [U]
+  vphaddd         3     2  3 p015        3     2  3 p015      [U]
+  vaddps          4   0.5  1 p01         4   0.5  1 p01       [M]
+  vmulps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vfmadd          4   0.5  1 p01         4   0.5  1 p01       [M]
+  vdivps         11     3  1 p0         11     5  1 p0        [U]
+  vdivpd         14     4  1 p0         14     8  1 p0        [U]
+  vsqrtps        12     3  1 p0         12     6  1 p0        [U]
+  vsqrtpd        16     6  1 p0         16    12  1 p0        [U]
+  vrcpps          4     1  1 p0          4     1  1 p0        [U]
+  vroundps        8     1  2 p01         8     1  2 p01       [U]
+  vminps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcmpps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcvtdq2ps       4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcvtps2pd       5     1  2 p015        7     1  2 p015      [U]
+  vpgatherdd     20     4  4 p0235      22     5  4 p0235     [U]
+  vpgatherqq     20     3  4 p0235      22     4  4 p0235     [U]
+  pclmulqdq       7     1  1 p5          7     1  1 p5        [U]
+  aesenc          4     1  1 p0          4     1  1 p0        [U]
+  mpsadbw         4     2  2 p5          4     2  2 p5        [U]
+  vmovdqu ld      6   0.5  1 p23         7   0.5  1 p23       [U]
+  vmovdqu st      1     1  1 p4          1     1  1 p4        [U]
+  vpmaskmovd ld    8   0.5  2 p01235      8   0.5  2 p01235    [U]
+  vpmaskmovd st    1     1  3 p0457       1     1  3 p0457     [U]
+  vpbroadcastd r    3     1  2 p5          3     1  2 p5        [U]
+  sources: U uops.info, A Agner Fog, I Intel manual, D AMD Zen 4 SOG, M measured here, E estimate, V derived from ymm, G worst of the level's cores
+  as a ucas cost model (scalar latencies; see `models`):
+    model skl {
+      iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1,
+      select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2,
+      fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1,
+      load: 5, branch: 1, diverge: 8, barrier: 33,
+      atomic_shared: 18, atomic_global: 18, store: 1
+    }
+> model zen2
+model zen2 (znver2): AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom APU 0932): AVX2, no AVX-512; latencies measured on both machines with x86bench, other columns estimated from Zen 4
+  features: sse2 sse3 ssse3 sse4.1 sse4.2 popcnt lzcnt bmi bmi2 avx avx2 fma f16c pclmul aes adx movbe
+  dispatch 4 uops/cycle, ROB 224, scheduler 60, branch mispredict 13 cycles
+  ports: ALU0 ALU1 ALU2 ALU3 AGU0 AGU1 AGU2 FP0 FP1 FP2 FP3 FP45
+  class        xmm/scalar: lat rtp uops ports ymm                      
+  add             1  0.25  1 ALU0 ALU1 ALU2 ALU3   [Z]
+  lea             2   0.5  1 ALU0 ALU1 ALU2 ALU3   [D]
+  shl             1   0.5  1 ALU1 ALU2   [D]
+  shlx            1   0.5  1 ALU1 ALU2   [D]
+  shl cl          1   0.5  1 ALU1 ALU2   [D]
+  imul            3     1  1 ALU1      [D]
+  mulx            3     1  2 ALU1 ALU2   [Z]
+  div r32        12     6  2 ALU1      [D]
+  div r64        41     9  2 ALU1      [Z]
+  popcnt          1  0.25  1 ALU0 ALU1 ALU2 ALU3   [Z]
+  andn            1  0.25  1 ALU0 ALU1 ALU2 ALU3   [D]
+  pext           21     1  1 ALU1      [Z]
+  cmov            1   0.5  1 ALU0 ALU3   [D]
+  setcc           1   0.5  1 ALU0 ALU3   [D]
+  adc             1   0.5  1 ALU0 ALU3   [D]
+  jcc             1   0.5  1 ALU0 ALU3   [D]
+  load            4  0.33  1 AGU0 AGU1 AGU2   [Z]
+  store           1   0.5  1 AGU1 AGU2   [D]
+  crc32           3     1  1 ALU1      [D]
+  lock add        8     8  9 ALU0 ALU1 ALU2 ALU3   [A]
+  call libm      18    12 20 ALU0 ALU1 ALU2 ALU3   [E]
+  cvtsi2ss        5     1  2 FP2 FP3 FP45   [Z]
+  cvttss2si       5     1  2 FP2 FP3 FP45   [D]
+  movd r,x        3     1  1 FP45      [D]
+  movd x,r        3     1  1 FP45      [D]
+  vpaddd          1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3   [D]
+  vpminsd         1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3   [D]
+  vpslld          1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2   [D]
+  vpsllw x        1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2   [D]
+  vpshufb         1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2   [D]
+  vpermd          3     1  1 FP1 FP2     4     1  1 FP1 FP2   [D]
+  vpblendd        1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3   [D]
+  vpblendvb       1   0.5  1 FP0 FP1     1   0.5  1 FP0 FP1   [D]
+  vpmullw         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3   [D]
+  vpmulld         4   0.5  1 FP0 FP3     4   0.5  1 FP0 FP3   [Z]
+  vpsadbw         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3   [D]
+  vpcmpgtq        1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3   [D]
+  vpmovmskb       5     1  1 FP45        5     1  1 FP45      [U]
+  vptest          4     1  2 FP0 FP45     4     1  2 FP0 FP45   [D]
+  vpextrd         4     1  2 FP1 FP45     4     1  2 FP1 FP45   [D]
+  vpinsrd         4     1  2 FP1 FP45     4     1  2 FP1 FP45   [D]
+  vpmovzx         1   0.5  1 FP1 FP2     4     1  1 FP1 FP2   [D]
+  vphaddd         2     1  3 FP0 FP1 FP2 FP3     2     1  3 FP0 FP1 FP2 FP3   [D]
+  vaddps          3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3   [Z]
+  vmulps          3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1   [D]
+  vfmadd          5   0.5  1 FP0 FP1     5   0.5  1 FP0 FP1   [Z]
+  vdivps         10     3  1 FP1        10     5  1 FP1       [D]
+  vdivpd         13     5  1 FP1        13     8  1 FP1       [D]
+  vsqrtps        15     5  1 FP1        15     8  1 FP1       [D]
+  vsqrtpd        21     9  1 FP1        21    13  1 FP1       [D]
+  vrcpps          3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1   [D]
+  vroundps        3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3   [D]
+  vminps          2   0.5  1 FP0 FP1     2   0.5  1 FP0 FP1   [D]
+  vcmpps          1   0.5  1 FP0 FP1     1   0.5  1 FP0 FP1   [D]
+  vcvtdq2ps       3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3   [D]
+  vcvtps2pd       4     1  2 FP1 FP2 FP3     4     1  2 FP1 FP2 FP3   [D]
+  vpgatherdd     20     4  9 AGU0 AGU1 AGU2    22     8 17 AGU0 AGU1 AGU2   [U]
+  vpgatherqq     20     3  6 AGU0 AGU1 AGU2    22     5 10 AGU0 AGU1 AGU2   [U]
+  gf2p8affineqb    3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1   [D]
+  pclmulqdq       4     1  1 FP0 FP1     4     1  1 FP0 FP1   [D]
+  aesenc          4   0.5  1 FP0 FP1     4   0.5  1 FP0 FP1   [D]
+  mpsadbw         4     2  3 FP0 FP1 FP2 FP3     4     2  3 FP0 FP1 FP2 FP3   [D]
+  vmovdqu ld      7   0.5  1 AGU0 AGU1 AGU2     7   0.5  1 AGU0 AGU1 AGU2   [D]
+  vmovdqu st      1   0.5  1 AGU1 AGU2     1     1  1 AGU1 AGU2   [D]
+  vpmaskmovd ld    8   0.5  1 AGU0 AGU1 AGU2     8   0.5  1 AGU0 AGU1 AGU2   [D]
+  vpmaskmovd st    1     6  4 AGU1 AGU2     1     6  4 AGU1 AGU2   [U]
+  vpbroadcastd r    4     1  2 FP1 FP45     4     1  2 FP1 FP45   [D]
+  sources: U uops.info, A Agner Fog, I Intel manual, D AMD Zen 4 SOG, M measured here, E estimate, V derived from ymm, G worst of the level's cores
+  as a ucas cost model (scalar latencies; see `models`):
+    model zen2 {
+      iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 41, idivk: 4, cmp: 1,
+      select: 1, minmax: 2, bitcnt: 1, conv: 5, bitcast: 3,
+      fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1,
+      load: 4, branch: 1, diverge: 6.5, barrier: 33,
+      atomic_shared: 8, atomic_global: 8, store: 1
+    }

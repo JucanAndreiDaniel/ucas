@@ -1,0 +1,14 @@
+> c optimize nofile budget 5 assume x 100 0
+<input>: error: the function is undefined on its whole domain
+c optimize: 1 function, 1 rewrite proved (1 exhaustive, 0 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 1.0 -> 0.0 cycles
+  f (line 1): the value is x
+    proof: exhaustive (exhaustive: 0 inputs); cost 1.0 -> 0.0
+    over: x in [100, 0] (assumed)
+    before: {return x+1;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int f(int x){
+  	return (int)(x);
+  }

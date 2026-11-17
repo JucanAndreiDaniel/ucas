@@ -1,0 +1,8 @@
+# f32 sampled ranges: spike and abs min excluded.
+# f_spk05 headline [0,1] but f(0.5)=1e30; f_abs headline min 1.13e-41 but f(0)=0.
+f_spk05(x: f32 in 0..1) = x==0.5 ? 1e30 : x
+range f_spk05
+show f_spk05(0.5)
+f_abs(x: f32 in -1..1) = x<0 ? -x : x
+range f_abs
+show f_abs(0)

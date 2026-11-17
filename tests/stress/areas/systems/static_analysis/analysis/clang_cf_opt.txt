@@ -1,0 +1,184 @@
+src/cf_opt.c:2828:8: warning: 5th function call argument is an uninitialized value [core.CallAndMessage]
+ 2828 |                 if (!emit_over(em, it.v.nleaf, text, lty, best[k], it.store[k].cty,
+      |                      ^                                    ~~~~~~~
+src/cf_opt.c:2737:18: note: Assuming the condition is false
+ 2737 |         uint32_t body = u->A.kind[n] == CA_FOR ? u->A.d[n] : u->A.b[n], from, to;
+      |                         ^~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2737:18: note: '?' condition is false
+src/cf_opt.c:2752:6: note: Assuming the condition is false
+ 2752 |         if (!cf_span(u, body, &from, &to) || (u->A.kind[body] != CA_BLOCK &&
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2752:6: note: Left side of '||' is false
+src/cf_opt.c:2752:40: note: Assuming the condition is false
+ 2752 |         if (!cf_span(u, body, &from, &to) || (u->A.kind[body] != CA_BLOCK &&
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2752:68: note: Left side of '&&' is false
+ 2752 |         if (!cf_span(u, body, &from, &to) || (u->A.kind[body] != CA_BLOCK &&
+      |                                                                           ^
+src/cf_opt.c:2756:6: note: Assuming the condition is false
+ 2756 |         if (!cf_lower_iter(u, fn, n, 0, &it)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2756:2: note: Taking false branch
+ 2756 |         if (!cf_lower_iter(u, fn, n, 0, &it)) {
+      |         ^
+src/cf_opt.c:2760:6: note: Assuming field 'nset' is 0
+ 2760 |         if (it.nset || it.nstore == 0)
+      |             ^~~~~~~
+src/cf_opt.c:2760:6: note: Left side of '||' is false
+src/cf_opt.c:2760:17: note: Assuming field 'nstore' is not equal to 0
+ 2760 |         if (it.nset || it.nstore == 0)
+      |                        ^~~~~~~~~~~~~~
+src/cf_opt.c:2760:2: note: Taking false branch
+ 2760 |         if (it.nset || it.nstore == 0)
+      |         ^
+src/cf_opt.c:2763:14: note: Assuming the condition is false
+ 2763 |         for (k = 0; k < it.nload + it.nstore; k++) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2763:2: note: Loop condition is false. Execution continues on line 2770
+ 2763 |         for (k = 0; k < it.nload + it.nstore; k++) {
+      |         ^
+src/cf_opt.c:2770:14: note: Assuming 'k' is < field 'nstore'
+ 2770 |         for (k = 0; k < it.nstore; k++) {
+      |                     ^~~~~~~~~~~~~
+src/cf_opt.c:2770:2: note: Loop condition is true.  Entering loop body
+ 2770 |         for (k = 0; k < it.nstore; k++) {
+      |         ^
+src/cf_opt.c:2777:7: note: Assuming the condition is true
+ 2777 |                 if (best[k] != v.e && ns[k] > 0) {
+      |                     ^~~~~~~~~~~~~~
+src/cf_opt.c:2777:7: note: Left side of '&&' is true
+src/cf_opt.c:2777:25: note: Assuming the condition is true
+ 2777 |                 if (best[k] != v.e && ns[k] > 0) {
+      |                                       ^~~~~~~~~
+src/cf_opt.c:2777:3: note: Taking true branch
+ 2777 |                 if (best[k] != v.e && ns[k] > 0) {
+      |                 ^
+src/cf_opt.c:2780:8: note: Assuming field 'kind' is not equal to CF_PROOF_SAT
+ 2780 |                         if (steps[k][ns[k] - 1].pf.kind == CF_PROOF_SAT ||
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2780:8: note: Left side of '||' is false
+src/cf_opt.c:2781:8: note: 'worst' is not equal to CF_PROOF_SAT
+ 2781 |                             worst == CF_PROOF_SAT)
+      |                             ^~~~~
+src/cf_opt.c:2780:4: note: Taking false branch
+ 2780 |                         if (steps[k][ns[k] - 1].pf.kind == CF_PROOF_SAT ||
+      |                         ^
+src/cf_opt.c:2784:13: note: Assuming field 'kind' is equal to CF_PROOF_EXHAUSTIVE
+ 2784 |                         else if (steps[k][ns[k] - 1].pf.kind != CF_PROOF_EXHAUSTIVE)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2784:9: note: Taking false branch
+ 2784 |                         else if (steps[k][ns[k] - 1].pf.kind != CF_PROOF_EXHAUSTIVE)
+      |                              ^
+src/cf_opt.c:2786:42: note: Field 'n' is 0
+ 2786 |                         sb_printf(&what, "%sstore %d: ", what.n ? "; " : "", k);
+      |                                                               ^
+src/cf_opt.c:2786:37: note: '?' condition is false
+ 2786 |                         sb_printf(&what, "%sstore %d: ", what.n ? "; " : "", k);
+      |                                                          ^
+src/cf_opt.c:2787:4: note: Loop condition is true.  Entering loop body
+ 2787 |                         for (j = 0; j < ns[k]; j++)
+      |                         ^
+src/cf_opt.c:2788:30: note: 'j' is 0
+ 2788 |                                 sb_printf(&what, "%s%s", j ? ", " : "", steps[k][j].what);
+      |                                                          ^
+src/cf_opt.c:2788:30: note: '?' condition is false
+src/cf_opt.c:2787:16: note: Assuming the condition is false
+ 2787 |                         for (j = 0; j < ns[k]; j++)
+      |                                     ^~~~~~~~~
+src/cf_opt.c:2787:4: note: Loop condition is false. Execution continues on line 2770
+ 2787 |                         for (j = 0; j < ns[k]; j++)
+      |                         ^
+src/cf_opt.c:2770:14: note: Assuming 'k' is >= field 'nstore'
+ 2770 |         for (k = 0; k < it.nstore; k++) {
+      |                     ^~~~~~~~~~~~~
+src/cf_opt.c:2770:2: note: Loop condition is false. Execution continues on line 2794
+ 2770 |         for (k = 0; k < it.nstore; k++) {
+      |         ^
+src/cf_opt.c:2794:7: note: 'any' is 1
+ 2794 |         if (!any)
+      |              ^~~
+src/cf_opt.c:2794:2: note: Taking false branch
+ 2794 |         if (!any)
+      |         ^
+src/cf_opt.c:2798:14: note: Assuming 'j' is >= field 'nload'
+ 2798 |         for (j = 0; j < it.nload; j++)
+      |                     ^~~~~~~~~~~~
+src/cf_opt.c:2798:2: note: Loop condition is false. Execution continues on line 2800
+ 2798 |         for (j = 0; j < it.nload; j++)
+      |         ^
+src/cf_opt.c:2800:2: note: Loop condition is true.  Entering loop body
+ 2800 |         for (k = 0; k < it.nstore; k++)
+      |         ^
+src/cf_opt.c:2801:15: note: 'j' is >= field 'nload'
+ 2801 |                 for (j = 0; j < it.nload; j++)
+      |                             ^
+src/cf_opt.c:2801:3: note: Loop condition is false. Execution continues on line 2800
+ 2801 |                 for (j = 0; j < it.nload; j++)
+      |                 ^
+src/cf_opt.c:2800:2: note: Loop condition is false. Execution continues on line 2806
+ 2800 |         for (k = 0; k < it.nstore; k++)
+      |         ^
+src/cf_opt.c:2810:2: note: Loop condition is true.  Entering loop body
+ 2810 |         for (k = 0; k < it.nstore; k++) {
+      |         ^
+src/cf_opt.c:2813:15: note: 'j' is >= field 'nload'
+ 2813 |                 for (j = 0; j < it.nload; j++) {
+      |                             ^
+src/cf_opt.c:2813:3: note: Loop condition is false. Execution continues on line 2823
+ 2813 |                 for (j = 0; j < it.nload; j++) {
+      |                 ^
+src/cf_opt.c:2823:15: note: Assuming 'j' is < field 'nleaf'
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                             ^~~~~~~~~~~~~~
+src/cf_opt.c:2823:3: note: Loop condition is true.  Entering loop body
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                 ^
+src/cf_opt.c:2825:14: note: Assuming 'ld' is < 0
+ 2825 |                         text[j] = ld >= 0 && temp[ld] ? tname[ld] : it.v.leaf[j].text;
+      |                                   ^~~~~~~
+src/cf_opt.c:2825:22: note: Left side of '&&' is false
+ 2825 |                         text[j] = ld >= 0 && temp[ld] ? tname[ld] : it.v.leaf[j].text;
+      |                                           ^
+src/cf_opt.c:2823:15: note: Assuming 'j' is >= field 'nleaf'
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                             ^~~~~~~~~~~~~~
+src/cf_opt.c:2823:3: note: Loop condition is false. Execution continues on line 2828
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                 ^
+src/cf_opt.c:2828:7: note: Assuming the condition is false
+ 2828 |                 if (!emit_over(em, it.v.nleaf, text, lty, best[k], it.store[k].cty,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2829 |                     &v) || !cf_span(u, it.store[k].node, &a, &b)) {
+      |                     ~~~
+src/cf_opt.c:2828:7: note: Left side of '||' is false
+src/cf_opt.c:2829:14: note: Assuming the condition is false
+ 2829 |                     &v) || !cf_span(u, it.store[k].node, &a, &b)) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cf_opt.c:2828:3: note: Taking false branch
+ 2828 |                 if (!emit_over(em, it.v.nleaf, text, lty, best[k], it.store[k].cty,
+      |                 ^
+src/cf_opt.c:2810:29: note: The value 1 is assigned to 'k'
+ 2810 |         for (k = 0; k < it.nstore; k++) {
+      |                                    ^~~
+src/cf_opt.c:2810:14: note: Assuming 'k' is < field 'nstore'
+ 2810 |         for (k = 0; k < it.nstore; k++) {
+      |                     ^~~~~~~~~~~~~
+src/cf_opt.c:2810:2: note: Loop condition is true.  Entering loop body
+ 2810 |         for (k = 0; k < it.nstore; k++) {
+      |         ^
+src/cf_opt.c:2813:15: note: Assuming 'j' is >= field 'nload'
+ 2813 |                 for (j = 0; j < it.nload; j++) {
+      |                             ^~~~~~~~~~~~
+src/cf_opt.c:2813:3: note: Loop condition is false. Execution continues on line 2823
+ 2813 |                 for (j = 0; j < it.nload; j++) {
+      |                 ^
+src/cf_opt.c:2823:15: note: Assuming 'j' is >= field 'nleaf'
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                             ^~~~~~~~~~~~~~
+src/cf_opt.c:2823:3: note: Loop condition is false. Execution continues on line 2828
+ 2823 |                 for (j = 0; j < it.v.nleaf; j++) {
+      |                 ^
+src/cf_opt.c:2828:8: note: 5th function call argument is an uninitialized value
+ 2828 |                 if (!emit_over(em, it.v.nleaf, text, lty, best[k], it.store[k].cty,
+      |                      ^                                    ~~~~~~~
+1 warning generated.

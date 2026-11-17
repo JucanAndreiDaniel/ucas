@@ -1,0 +1,114 @@
+> gf2matrix x ^ (x << 3) u8
+  note: ^ is xor here (addition in GF(2))
+the GF(2) matrix of x ^ (x << 3) on u8 (row i = output bit i, column j = input bit j, bit 0 first)
+  [1.......]
+  [.1......]
+  [..1.....]
+  [1..1....]
+  [.1..1...]
+  [..1..1..]
+  [...1..1.]
+  [....1..1]
+  how: the columns are f(1 << j); check: f(x) = M x for every x (256 inputs)
+  rank 8: invertible (a bijection of the values)
+  inverse: x ^ (x << 3) ^ (x << 6)
+  check: the inverse as printed, evaluated after f: gives back x for every x (256 inputs)
+  characteristic polynomial: x^8 + 1 = (x + 1)^8
+  order 4: applying the map 4 times gives the identity (M^4 = I and no M^(4/r) = I, by matrix powers; it divides the order of x mod the characteristic polynomial)
+> gf2matrix (x << 1) ^ ((x >> 7) * 0x1d) u8
+  note: ^ is xor here (addition in GF(2))
+the GF(2) matrix of (x << 1) ^ ((x >> 7) * 0x1d) on u8 (row i = output bit i, column j = input bit j, bit 0 first)
+  [.......1]
+  [1.......]
+  [.1.....1]
+  [..1....1]
+  [...1...1]
+  [....1...]
+  [.....1..]
+  [......1.]
+  how: the columns are f(1 << j); check: f(x) = M x for every x (256 inputs)
+  rank 8: invertible (a bijection of the values)
+  inverse: (x >> 1) ^ ((x << 1) & 0x2) ^ ((x << 2) & 0x4) ^ ((x << 3) & 0x8) ^ (x << 7)
+  check: the inverse as printed, evaluated after f: gives back x for every x (256 inputs)
+  characteristic polynomial: x^8 + x^4 + x^3 + x^2 + 1 (irreducible)
+  order 255: applying the map 255 times gives the identity (M^255 = I and no M^(255/r) = I, by matrix powers; it divides the order of x mod the characteristic polynomial)
+> gf2matrix x ^ (x >> 4) u16
+  note: ^ is xor here (addition in GF(2))
+the GF(2) matrix of x ^ (x >> 4) on u16 (row i = output bit i, column j = input bit j, bit 0 first)
+  [1...1...........]
+  [.1...1..........]
+  [..1...1.........]
+  [...1...1........]
+  [....1...1.......]
+  [.....1...1......]
+  [......1...1.....]
+  [.......1...1....]
+  [........1...1...]
+  [.........1...1..]
+  [..........1...1.]
+  [...........1...1]
+  [............1...]
+  [.............1..]
+  [..............1.]
+  [...............1]
+  how: the columns are f(1 << j); check: f(x) = M x for every x (65536 inputs)
+  rank 16: invertible (a bijection of the values)
+  inverse: (x >> 12) ^ (x >> 8) ^ (x >> 4) ^ x
+  check: the inverse as printed, evaluated after f: gives back x for every x (65536 inputs)
+  characteristic polynomial: x^16 + 1 = (x + 1)^16
+  order 4: applying the map 4 times gives the identity (M^4 = I and no M^(4/r) = I, by matrix powers; it divides the order of x mod the characteristic polynomial)
+> gf2matrix x ^ (x << 1) ^ (x >> 3) u32
+  note: ^ is xor here (addition in GF(2))
+the GF(2) matrix of x ^ (x << 1) ^ (x >> 3) on u32 (row i = output bit i, column j = input bit j, bit 0 first)
+  [1..1............................]
+  [11..1...........................]
+  [.11..1..........................]
+  [..11..1.........................]
+  [...11..1........................]
+  [....11..1.......................]
+  [.....11..1......................]
+  [......11..1.....................]
+  [.......11..1....................]
+  [........11..1...................]
+  [.........11..1..................]
+  [..........11..1.................]
+  [...........11..1................]
+  [............11..1...............]
+  [.............11..1..............]
+  [..............11..1.............]
+  [...............11..1............]
+  [................11..1...........]
+  [.................11..1..........]
+  [..................11..1.........]
+  [...................11..1........]
+  [....................11..1.......]
+  [.....................11..1......]
+  [......................11..1.....]
+  [.......................11..1....]
+  [........................11..1...]
+  [.........................11..1..]
+  [..........................11..1.]
+  [...........................11..1]
+  [............................11..]
+  [.............................11.]
+  [..............................11]
+  how: the columns are f(1 << j); check: f(x) = M x for 65536 random x, not every x (65536 inputs)
+  rank 32: invertible (a bijection of the values)
+  inverse: (x >> 30) ^ ((x >> 29) & 0x2) ^ (x >> 27) ^ ((x >> 26) & 0x21) ^ ((x >> 25) & 0x22) ^ (x >> 24) ^ ((x >> 23) & 0xfe) ^ ((x >> 22) & 0x303) ^ ((x >> 21) & 0x5dd) ^ ((x >> 20) & 0x801) ^ ((x >> 19) & 0x17fd) ^ ((x >> 18) & 0x1ede) ^ ((x >> 17) & 0x1ddc) ^ ((x >> 16) & 0x3ffc) ^ ((x >> 15) & 0x18923) ^ ((x >> 14) & 0x10302) ^ ((x >> 13) & 0x2220) ^ ((x >> 12) & 0xfb6df) ^ ((x >> 11) & 0x108a21) ^ ((x >> 10) & 0x112122) ^ ((x >> 9) & 0x7f94ff) ^ ((x >> 8) & 0x7f3cfe) ^ ((x >> 7) & 0x181ab03) ^ ((x >> 6) & 0x2eeb5dd) ^ ((x >> 5) & 0x400a801) ^ ((x >> 4) & 0xbfe97fd) ^ ((x >> 3) & 0xf6f1ede) ^ ((x >> 2) & 0xeee1ddc) ^ ((x >> 1) & 0x1ffe3ffc) ^ (x & 0xc4918923) ^ ((x << 1) & 0x81810302) ^ ((x << 2) & 0x11102220) ^ ((x << 3) & 0x24904920) ^ ((x << 4) & 0x45108a20) ^ ((x << 5) & 0x90912120) ^ ((x << 6) & 0x35806b00) ^ ((x << 7) & 0x6180c300) ^ ((x << 8) & 0xd581ab00) ^ ((x << 9) & 0xa5114a00) ^ ((x << 10) & 0x5400a800) ^ ((x << 11) & 0xb4016800) ^ ((x << 12) & 0x7090e000) ^ ((x << 13) & 0xf111e000) ^ ((x << 14) & 0xe001c000) ^ ((x << 15) & 0xc4918000) ^ ((x << 16) & 0x81810000) ^ ((x << 17) & 0x11100000) ^ ((x << 18) & 0x24900000) ^ ((x << 19) & 0x45100000) ^ ((x << 20) & 0x90900000) ^ ((x << 21) & 0x35800000) ^ ((x << 22) & 0x61800000) ^ ((x << 23) & 0xd5800000) ^ ((x << 24) & 0xa5000000) ^ ((x << 25) & 0x54000000) ^ ((x << 26) & 0xb4000000) ^ ((x << 27) & 0x70000000) ^ (x << 28) ^ (x << 29) ^ (x << 30) ^ (x << 31)
+  check: the inverse as printed, evaluated after f: gives back x for the unit vectors (which proves it for a linear map) and 4096 others (4128 inputs)
+  characteristic polynomial: x^32 + x^28 + x^12 + x^8 + 1 = (x^8 + x^7 + x^3 + x^2 + 1)^4
+  order 1020: applying the map 1020 times gives the identity (M^1020 = I and no M^(1020/r) = I, by matrix powers; it divides the order of x mod the characteristic polynomial)
+> gf2matrix (x & 0x0f) ^ ((x & 0x30) >> 2) u8
+  note: ^ is xor here (addition in GF(2))
+the GF(2) matrix of (x & 0x0f) ^ ((x & 0x30) >> 2) on u8 (row i = output bit i, column j = input bit j, bit 0 first)
+  [1.......]
+  [.1......]
+  [..1.1...]
+  [...1.1..]
+  [........]
+  [........]
+  [........]
+  [........]
+  how: the columns are f(1 << j); check: f(x) = M x for every x (256 inputs)
+  rank 4: singular (some values collide; the kernel has dimension w - rank)
+  characteristic polynomial: x^8 + x^4 = (x)^4 (x + 1)^4

@@ -1,0 +1,23 @@
+> basis l1 { t(x) = lut }
+> basis l2 { t(x, y) = lut }
+> basis l3 { t(x, y, z) = lut }
+> id(a: u1) = a
+> and(a: u1, b: u1) = a & b
+> maj(a: u1, b: u1, c: u1) = a&b | a&c | b&c
+> gates id basis l1
+gates for id: 1 input bit -> 1 output bit, basis l1
+  minimal: cost 0, 0 steps (no program of cost <= -1 exists; 0 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  r0 = a
+> gates and basis l2
+gates for and: 2 input bits -> 1 output bit, basis l2
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = t(a, b, 0x08)                 = (b & a)
+  r0 = t0
+> gates maj basis l3
+gates for maj: 3 input bits -> 1 output bit, basis l3
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = t(a, b, c, 0xe8)             = (~c & b & a) | (c & ~b & a) | (c & b & ~a) | (c & b & a)
+  r0 = t0

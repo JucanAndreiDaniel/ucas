@@ -1,0 +1,40 @@
+> q16(x: u16) = isqrt(x)
+> range q16
+range of q16 -> u16:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 65536 points of the domain
+> wrap q16
+wrap analysis of q16:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 65536 points of the domain
+> q32(x: u32) = isqrt(x)
+> range q32
+range of q32 -> u32:
+  0..65535
+  fits in u16
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..65535
+  proved bound (monotonicity, exact algebra): 0..65535
+  the sample reaches both ends: the range is exactly 0..65535 (proved)
+    max: q32 is nondecreasing in x, so take x = 4294967295:
+      65535
+    min: q32 is nondecreasing in x, so take x = 0:
+      0
+> q8(x: u8 in 0..15) = isqrt(x)
+> range q8
+range of q8 -> u8:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 16 points of the domain
+> tab(i: u8 in 0..7) = [3, 1, 4, 1, 5, 9, 2, 6][i]
+> range tab
+range of tab -> int:
+  1..9
+  fits in u4
+  over all 8 points of the domain
+> cost tab
+cost of tab under gt1030: 6.875 (1 operations, shared subterms counted once)
+  load             1 x 6.875 = 6.875

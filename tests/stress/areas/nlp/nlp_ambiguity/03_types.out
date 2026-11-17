@@ -1,0 +1,26 @@
+> x is a byte
+  note: "byte" without signed or unsigned: read as unsigned, u8, not signed, i8 (say "unsigned byte", or "assume bytes are signed")
+  ok: from now on x is a byte
+> c is a char
+  note: "char" without signed or unsigned: read as signed, i8 (as on x86), not unsigned, u8 (as on ARM) (say "signed char", or "assume chars are unsigned")
+  ok: from now on c is a char
+> x is an int
+  note: "int": read as a C int, i32, not an unbounded integer, int (say "32-bit int" or "unbounded integer", or "assume int means unbounded")
+  ok: from now on x is an int
+> n is an integer
+  note: "integer" without a width: read as an unbounded integer, int, not a C int, i32 (say "32-bit integer", or "assume integers are 32-bit")
+  ok: from now on n is an integer
+> x and y
+_(x: real, y: real) = x != 0 && y != 0
+  -> bool
+> the bitwise and of x and y
+  ucas: it(x: i32, y) = x & y
+  ucas: show it
+  note: y has no type: inferred int from the integer operations in the body
+it(x: i32, y: int) = int(x) & y
+  -> int
+> the bitwise not of x
+  ucas: it(x: i32) = ~x
+  ucas: show it
+it(x: i32) = ~x
+  -> i32

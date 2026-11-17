@@ -1,0 +1,14 @@
+# many-output 6-bit functions, don't-cares, budgets and C emission.
+f(x: u6) = { y = x; y = (y << 1 | y >> 5) xor 0x2a; y }
+g(x: u6) = x + 1
+sega(d: u4 in 0..9) = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1][d]
+gates f
+gates f nodes 10
+gates f nodes 0
+gates f max 2
+gates f basis avx512 nodes 50
+gates g
+gates sega
+gates sega as c
+gates 5
+gates (a: u1, b: u1, c: u1, d: u1, e: u1, f: u1, g: u1) = a & b

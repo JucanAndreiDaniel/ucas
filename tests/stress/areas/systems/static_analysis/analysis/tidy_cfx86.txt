@@ -1,0 +1,1929 @@
+/home/andrew/Code/ucas/src/cfx86.c:64:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   47 |         nid lane[MAXL];
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:79:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   49 |         uint8_t gather[CF_MAXMEM];      /* the load is a gather */
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:82:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+   82 |         struct sbuf body;       /* the vector loop's body */
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:94:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   49 |                 snprintf(X.why, sizeof X.why, fmt, a ? a : "");
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:124:10: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  124 | ctype_of(ty_t t)
+      |          ^
+/home/andrew/Code/ucas/src/cfx86.c:126:10: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  126 |         int w = TYW(t);
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:126:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:128:6: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  128 |         if (TYK(t) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:128:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:128:16: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  128 |         if (TYK(t) == K_FLOAT)
+      |                       ^
+/home/andrew/Code/ucas/src/cfx86.c:130:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  130 |         if (TYK(t) == K_UINT || t == TY_BOOL)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:130:16: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  130 |         if (TYK(t) == K_UINT || t == TY_BOOL)
+      |                       ^
+/home/andrew/Code/ucas/src/cfx86.c:130:31: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  130 |         if (TYK(t) == K_UINT || t == TY_BOOL)
+      |                                      ^
+/home/andrew/Code/ucas/src/cfx86.c:130:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:182:12: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  182 |         ty_t xu = TY(K_UINT, x->w);
+      |                   ^
+/home/andrew/Code/ucas/src/cfx86.c:182:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:188:4: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  188 |                         fail("cfx86: lane %d of a %d-lane value", j, x->n);
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:192:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  192 |                 ty_t ut = TY(K_UINT, w);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:198:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         e = TYK(N.ty[e]) == K_FLOAT ? mk_un(O_ASUINT, e) : mk_cast(xu, e);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:198:12: warning: no header providing "N" is directly included [misc-include-cleaner]
+  198 |                         e = TYK(N.ty[e]) == K_FLOAT ? mk_un(O_ASUINT, e) : mk_cast(xu, e);
+      |                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:198:34: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  198 |                         e = TYK(N.ty[e]) == K_FLOAT ? mk_un(O_ASUINT, e) : mk_cast(xu, e);
+      |                                                       ^
+/home/andrew/Code/ucas/src/cfx86.c:198:40: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  198 |                         e = TYK(N.ty[e]) == K_FLOAT ? mk_un(O_ASUINT, e) : mk_cast(xu, e);
+      |                                                             ^
+/home/andrew/Code/ucas/src/cfx86.c:198:55: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  198 |                         e = TYK(N.ty[e]) == K_FLOAT ? mk_un(O_ASUINT, e) : mk_cast(xu, e);
+      |                                                                            ^
+/home/andrew/Code/ucas/src/cfx86.c:201:9: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  201 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:201:16: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  201 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                            ^
+/home/andrew/Code/ucas/src/cfx86.c:201:26: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  201 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                                      ^
+/home/andrew/Code/ucas/src/cfx86.c:201:41: warning: performing an implicit widening conversion to type 'int64_t' (aka 'long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  201 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:201:41: note: make conversion explicit to silence this warning
+   49 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                                                     ^~~~~~~~
+      |                                                                     (int64_t)( )
+/home/andrew/Code/ucas/src/cfx86.c:201:41: note: perform multiplication in a wider type
+  201 |                                 p = mk_bin(O_SHL, p, mk_const_i(ut, q * x->w));
+      |                                                                     ^
+      |                                                                     (int64_t)
+/home/andrew/Code/ucas/src/cfx86.c:202:19: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  202 |                         r = r ? mk_bin(O_OR, r, p) : p;
+      |                                        ^
+/home/andrew/Code/ucas/src/cfx86.c:210:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  210 |         p = TYK(N.ty[p]) == K_FLOAT ? mk_un(O_ASUINT, p) : mk_cast(xu, p);
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:212:14: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  212 |                 p = mk_bin(O_SHR, p, mk_const_i(xu, (j % m) * w));
+      |                            ^
+/home/andrew/Code/ucas/src/cfx86.c:212:39: warning: performing an implicit widening conversion to type 'int64_t' (aka 'long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  212 |                 p = mk_bin(O_SHR, p, mk_const_i(xu, (j % m) * w));
+      |                                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:212:39: note: make conversion explicit to silence this warning
+  212 |                 p = mk_bin(O_SHR, p, mk_const_i(xu, (j % m) * w));
+      |                                                     ^~~~~~~~~~~
+      |                                                     (int64_t)( )
+/home/andrew/Code/ucas/src/cfx86.c:212:39: note: perform multiplication in a wider type
+  212 |                 p = mk_bin(O_SHR, p, mk_const_i(xu, (j % m) * w));
+      |                                                     ^~~~~~
+      |                                                      (int64_t)
+/home/andrew/Code/ucas/src/cfx86.c:213:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |         return mk_cast(TY(K_UINT, w), p);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:225:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  225 |                 if (TYK(t) == K_FLOAT && v->kind == 'f' && v->w == TYW(t))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:225:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  225 |                 if (TYK(t) == K_FLOAT && v->kind == 'f' && v->w == TYW(t))
+      |                                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:227:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  227 |                 e = vlane(o->arg[k], lane, TYW(t));
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:228:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 if (TYK(t) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:229:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                         return TYK(N.ty[e]) == K_FLOAT ? e : mk_un(O_ASFLOAT,
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:229:47: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  229 |                         return TYK(N.ty[e]) == K_FLOAT ? e : mk_un(O_ASFLOAT,
+      |                                                                    ^
+/home/andrew/Code/ucas/src/cfx86.c:230:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  230 |                             mk_cast(TY(K_UINT, TYW(t)), e));
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:230:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  230 |                             mk_cast(TY(K_UINT, TYW(t)), e));
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:251:22: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  251 |     const nid *scal, int64_t imm)
+      |                      ^
+/home/andrew/Code/ucas/src/cfx86.c:263:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:263:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:263:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:263:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:273:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  273 |                 int bits = n * TYW(rt), vb = X.VB;
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:275:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  275 |                 sb_printf(&X.body, "\t\t%s %s = %s(", vtype(kind, TYW(rt)),
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:275:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                 sb_printf(&X.body, "\t\t%s %s = %s(", vtype(kind, TYW(rt)),
+      |                                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:280:15: warning: Value stored to 's' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+  280 |                 const char *s = "";
+      |                             ^   ~~
+/home/andrew/Code/ucas/src/cfx86.c:280:15: note: Value stored to 's' during its initialization is never read
+  280 |                 const char *s = "";
+      |                             ^   ~~
+/home/andrew/Code/ucas/src/cfx86.c:283:12: warning: Out of bound access to memory after the end of 'args' [clang-analyzer-security.ArrayBound]
+  283 |                         s = X.v[args[k]].nm;
+      |                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:1579:15: note: Assuming 'o' is null
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                      ^
+/home/andrew/Code/ucas/src/cfx86.c:1579:17: note: Left side of '&&' is false
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                        ^
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Assuming field 'W' is equal to 8
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cfx86.c:1584:18: note: Assuming field 'flt' is 0
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                         ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Left side of '||' is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:1584:27: note: Assuming the condition is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:2: note: Taking false branch
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1587:14: note: Assuming 'k' is < field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1587:2: note: Loop condition is true.  Entering loop body
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Assuming 's' is equal to field 'slot'
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cfx86.c:1588:33: note: Assuming the condition is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Left side of '&&' is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^
+/home/andrew/Code/ucas/src/cfx86.c:1589:7: note: Assuming field 'esize' is equal to 1
+ 1589 |                     X.l->load[k].esize == 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:3: note: Taking true branch
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:1587:14: note: Assuming 'k' is >= field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1587:2: note: Loop condition is false. Execution continues on line 1591
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1591:6: note: 'ld' is >= 0
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |             ^~
+/home/andrew/Code/ucas/src/cfx86.c:1591:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cfx86.c:1591:16: note: Assuming the condition is false
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1591:2: note: Taking false branch
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1593:6: note: Assuming the condition is false
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1594 |             &R))
+      |             ~~~
+/home/andrew/Code/ucas/src/cfx86.c:1593:2: note: Taking false branch
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1597:14: note: Assuming 'k' is >= field 'n'
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1597:2: note: Loop condition is false. Execution continues on line 1599
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1599:12: note: Calling 'vload'
+ 1599 |         if ((ld = vload(ld)) < 0)
+      |                   ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:526:6: note: Assuming the condition is false
+  526 |         if (X.ldv[k] >= 0)
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:526:2: note: Taking false branch
+  526 |         if (X.ldv[k] >= 0)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:528:6: note: Assuming the condition is false
+  528 |         if (X.gather[k])
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:528:2: note: Taking false branch
+  528 |         if (X.gather[k])
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:531:6: note: Assuming field 'flt' is 0
+  531 |         if (X.flt && (TYK(m->ety) != K_FLOAT || E != X.flt)) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:531:12: note: Left side of '&&' is false
+  531 |         if (X.flt && (TYK(m->ety) != K_FLOAT || E != X.flt)) {
+      |                   ^
+/home/andrew/Code/ucas/src/cfx86.c:535:9: note: Field 'flt' is 0
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:535:6: note: Left side of '&&' is true
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:535:16: note: Assuming the condition is false
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:535:2: note: Taking false branch
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:540:6: note: Assuming 'nbytes' is >= 8
+  540 |         if (nbytes < 8) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:540:2: note: Taking false branch
+  540 |         if (nbytes < 8) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:546:12: note: Assuming 'nbytes' is > 8
+  546 |                 int rb = nbytes <= 8 ? 128 : nbytes * 8;
+      |                          ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:546:12: note: '?' condition is false
+/home/andrew/Code/ucas/src/cfx86.c:549:21: note: Field 'flt' is 0
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                                   ^
+/home/andrew/Code/ucas/src/cfx86.c:549:19: note: '?' condition is false
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:549:7: note: Assuming the condition is false
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:549:3: note: Taking false branch
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:551:15: note: Assuming 'j' is >= 'nraw'
+  551 |                 for (j = 0; j < nraw; j++) {
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:551:3: note: Loop condition is false. Execution continues on line 562
+  551 |                 for (j = 0; j < nraw; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:563:7: note: Assuming field 'flt' is not equal to 0
+  563 |                 if (X.flt)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:563:3: note: Taking true branch
+  563 |                 if (X.flt)
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:564:9: note: Assuming field 'flt' is not equal to 32
+  564 |                         ld = X.flt == 32 ? (X.VB == 512 ? "_mm512_loadu_ps" : X.VB == 256 ?
+      |                              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:564:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/cfx86.c:565:47: note: Assuming field 'VB' is equal to 512
+  565 |                             "_mm256_loadu_ps" : "_mm_loadu_ps") : (X.VB == 512 ?
+      |                                                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:565:47: note: '?' condition is true
+/home/andrew/Code/ucas/src/cfx86.c:574:8: note: Assuming 'id' is >= 0
+  574 |                         if (id < 0) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:574:4: note: Taking false branch
+  574 |                         if (id < 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:582:7: note: Assuming field 'flt' is not equal to 0
+  582 |                     X.flt ? vtype('f', E) : rb == 128 ? "__m128i" : rb == 256 ?
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:582:7: note: '?' condition is true
+/home/andrew/Code/ucas/src/cfx86.c:585:6: note: Assuming 'f' is > 1
+  585 |         if (f > 1) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:585:2: note: Taking true branch
+  585 |         if (f > 1) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:588:7: note: Assuming the condition is true
+  588 |                     TYK(m->ety) == K_UINT ? 'u' : 'i', E, X.W);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:588:7: note: '?' condition is true
+  588 |                     TYK(m->ety) == K_UINT ? 'u' : 'i', E, X.W);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:592:8: note: Calling 'vop'
+  592 |                         r = vop(nm, 'i', args, NULL, NULL, 0);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:257:6: note: Assuming 'id' is >= 0
+  257 |         if (id < 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:257:2: note: Taking false branch
+  257 |         if (id < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:263:6: note: Assuming the condition is false
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:263:2: note: Taking false branch
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:268:14: note: Assuming 'k' is < 'n'
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:268:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cfx86.c:268:2: note: Loop condition is true.  Entering loop body
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:268:14: note: Assuming 'k' is >= 'n'
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:268:20: note: Left side of '&&' is false
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                           ^
+/home/andrew/Code/ucas/src/cfx86.c:274:10: note: Assuming 'bits' is <= 128
+  274 |                 X.VB = bits <= 128 ? 128 : bits <= 256 ? 256 : 512;
+      |                        ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:274:10: note: '?' condition is true
+/home/andrew/Code/ucas/src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:281:3: note: Control jumps to 'case 118:'  at line 282
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:284:4: note:  Execution continues on line 288
+  284 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:288:30: note: 'k' is 0
+  288 |                 sb_printf(&X.body, "%s%s", k ? ", " : "", s);
+      |                                            ^
+/home/andrew/Code/ucas/src/cfx86.c:288:30: note: '?' condition is false
+/home/andrew/Code/ucas/src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:281:3: note: Control jumps to 'case 118:'  at line 282
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:283:12: note: Access of 'args' at index 1, while it holds only a single 'int' element
+  283 |                         s = X.v[args[k]].nm;
+      |                                 ^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:286:8: warning: Array access (from variable 'text') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  286 |                         s = text[k];
+      |                             ^
+/home/andrew/Code/ucas/src/cfx86.c:1579:15: note: Assuming 'o' is null
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                      ^
+/home/andrew/Code/ucas/src/cfx86.c:1579:17: note: Left side of '&&' is false
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                        ^
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Assuming field 'W' is equal to 8
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cfx86.c:1584:18: note: Assuming field 'flt' is 0
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                         ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:6: note: Left side of '||' is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:1584:27: note: Assuming the condition is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1584:2: note: Taking false branch
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1587:14: note: Assuming 'k' is < field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1587:2: note: Loop condition is true.  Entering loop body
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Assuming 's' is equal to field 'slot'
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cfx86.c:1588:33: note: Assuming the condition is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:7: note: Left side of '&&' is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^
+/home/andrew/Code/ucas/src/cfx86.c:1589:7: note: Assuming field 'esize' is equal to 1
+ 1589 |                     X.l->load[k].esize == 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1588:3: note: Taking true branch
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:1587:14: note: Assuming 'k' is >= field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1587:2: note: Loop condition is false. Execution continues on line 1591
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1591:6: note: 'ld' is >= 0
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |             ^~
+/home/andrew/Code/ucas/src/cfx86.c:1591:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cfx86.c:1591:16: note: Assuming the condition is false
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1591:2: note: Taking false branch
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1593:6: note: Assuming the condition is false
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1594 |             &R))
+      |             ~~~
+/home/andrew/Code/ucas/src/cfx86.c:1593:2: note: Taking false branch
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1597:14: note: Assuming 'k' is >= field 'n'
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1597:2: note: Loop condition is false. Execution continues on line 1599
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1599:12: note: Calling 'vload'
+ 1599 |         if ((ld = vload(ld)) < 0)
+      |                   ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:526:6: note: Assuming the condition is false
+  526 |         if (X.ldv[k] >= 0)
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:526:2: note: Taking false branch
+  526 |         if (X.ldv[k] >= 0)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:528:6: note: Assuming the condition is true
+  528 |         if (X.gather[k])
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:528:2: note: Taking true branch
+  528 |         if (X.gather[k])
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:529:21: note: Calling 'vgather'
+  529 |                 return X.ldv[k] = vgather(k);
+      |                                   ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:483:6: note: Assuming field 'W' is equal to 32
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:483:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cfx86.c:483:19: note: Assuming field 'VB' is >= 256
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:483:6: note: Left side of '||' is false
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:483:33: note: Assuming field 'esize' is equal to 4
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |                                        ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:483:2: note: Taking false branch
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:488:12: note: Calling 'tr'
+  488 |         if ((vi = tr(m->index)) < 0)
+      |                   ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1199:2: note: Taking false branch
+ 1199 |         if ((r = memo_get(n)) >= 0)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1201:6: note: Assuming the condition is true
+ 1201 |         if (N.op[n] == O_VAR) {
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1201:2: note: Taking true branch
+ 1201 |         if (N.op[n] == O_VAR) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1203:7: note: Assuming 'slot' is equal to field 'islot'
+ 1203 |                 if (slot == X.l->islot) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1203:3: note: Taking true branch
+ 1203 |                 if (slot == X.l->islot) {
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:1207:8: note: Assuming field 'flt' is 0
+ 1207 |                         if (X.flt) {
+      |                             ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1207:4: note: Taking false branch
+ 1207 |                         if (X.flt) {
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1211:8: note: Assuming the condition is false
+ 1211 |                         if ((s = vset1(X.ivar, "cf_i")) < 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1211:4: note: Taking false branch
+ 1211 |                         if ((s = vset1(X.ivar, "cf_i")) < 0)
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1213:8: note: Assuming the condition is false
+ 1213 |                         if ((io = new_vv('i', X.W, X.VL)) < 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1213:4: note: Taking false branch
+ 1213 |                         if ((io = new_vv('i', X.W, X.VL)) < 0)
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1215:16: note: Assuming 'j' is >= field 'VL'
+ 1215 |                         for (j = 0; j < X.VL; j++)
+      |                                     ^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1215:4: note: Loop condition is false. Execution continues on line 1217
+ 1215 |                         for (j = 0; j < X.VL; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1219:16: note: Assuming 'j' is >= field 'VL'
+ 1219 |                         for (j = 0; j < X.VL; j++)
+      |                                     ^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1219:4: note: Loop condition is false. Execution continues on line 1221
+ 1219 |                         for (j = 0; j < X.VL; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1228:42: note: Passing null pointer value via 4th parameter 'text'
+ 1228 |                         return memo_put(n, vop(nm, 'i', args, NULL, NULL, 0));
+      |                                                               ^
+/usr/lib/clang/23/include/__stddef_null.h:26:14: note: expanded from macro 'NULL'
+   26 | #define NULL ((void*)0)
+      |              ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1228:23: note: Calling 'vop'
+ 1228 |                         return memo_put(n, vop(nm, 'i', args, NULL, NULL, 0));
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:257:6: note: Assuming 'id' is >= 0
+  257 |         if (id < 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:257:2: note: Taking false branch
+  257 |         if (id < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:263:6: note: Assuming the condition is false
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:263:2: note: Taking false branch
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:268:14: note: Assuming 'k' is >= 'n'
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/cfx86.c:268:20: note: Left side of '&&' is false
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                           ^
+/home/andrew/Code/ucas/src/cfx86.c:274:10: note: Assuming 'bits' is <= 128
+  274 |                 X.VB = bits <= 128 ? 128 : bits <= 256 ? 256 : 512;
+      |                        ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:274:10: note: '?' condition is true
+/home/andrew/Code/ucas/src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:281:3: note: Control jumps to the 'default' case at line 285
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+/home/andrew/Code/ucas/src/cfx86.c:286:8: note: Array access (from variable 'text') results in a null pointer dereference
+  286 |                         s = text[k];
+      |                             ^~~~
+/home/andrew/Code/ucas/src/cfx86.c:290:2: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  290 |         sb_puts(&X.body, ");\n");
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:349:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  349 |         ty_t t = TY(K_SINT, X.W);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:349:14: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  349 |         ty_t t = TY(K_SINT, X.W);
+      |                     ^
+/home/andrew/Code/ucas/src/cfx86.c:352:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  352 |         if ((id = xi_find(name)) < 0) {
+      |              ~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:352:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:352:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:356:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  356 |         if ((r = new_vv(va->kind == 'm' && vb->kind == 'm' ? 'm' : 'i', X.W,
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  357 |             X.VL)) < 0)
+      |             ~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:356:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:356:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:362:37: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  362 |                 X.v[r].lane[j] = op == 0 ? mk_bin(O_AND, x, y) : op == 1 ?
+      |                                                   ^
+/home/andrew/Code/ucas/src/cfx86.c:363:45: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  363 |                     mk_bin(O_OR, x, y) : op == 2 ? mk_bin(O_XOR, x, y) :
+      |                                                           ^
+/home/andrew/Code/ucas/src/cfx86.c:364:27: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  364 |                     mk_bin(O_AND, mk_un(O_NOT, x), y);
+      |                                         ^
+/home/andrew/Code/ucas/src/cfx86.c:393:21: warning: no header providing "TY_F32" is directly included [misc-include-cleaner]
+  393 |                 t = X.flt == 32 ? TY_F32 : TY_F64;
+      |                                   ^
+/home/andrew/Code/ucas/src/cfx86.c:393:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:393:30: warning: no header providing "TY_F64" is directly included [misc-include-cleaner]
+  393 |                 t = X.flt == 32 ? TY_F32 : TY_F64;
+      |                                            ^
+/home/andrew/Code/ucas/src/cfx86.c:393:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:399:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  399 |                 t = TY(K_SINT, X.W);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:411:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  411 |         ty_t t = TY(K_SINT, X.W);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:415:6: warning: no header providing "int_norm" is directly included [misc-include-cleaner]
+  415 |         k = int_norm(t, k);
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:417:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  417 |         if ((r = memo_get(kn)) >= 0)
+      |              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:417:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:417:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:420:11: warning: no header providing "INT64_MIN" is directly included [misc-include-cleaner]
+  420 |         if (k == INT64_MIN)
+      |                  ^
+/home/andrew/Code/ucas/src/cfx86.c:425:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  425 |                 while (b < 64 && (k >> b))
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/cfx86.c:440:20: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  440 |         while (N.op[e] == O_CAST && TY_ISINT(N.ty[e]) && TYW(N.ty[e]) >=
+      |                           ^
+/home/andrew/Code/ucas/src/cfx86.c:440:30: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  440 |         while (N.op[e] == O_CAST && TY_ISINT(N.ty[e]) && TYW(N.ty[e]) >=
+      |                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:440:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:440:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  440 |         while (N.op[e] == O_CAST && TY_ISINT(N.ty[e]) && TYW(N.ty[e]) >=
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:441:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  441 |             TYW(N.ty[N.a[e]]) && TY_ISINT(N.ty[N.a[e]]))
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:441:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  441 |             TYW(N.ty[N.a[e]]) && TY_ISINT(N.ty[N.a[e]]))
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:443:17: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  443 |         if (N.op[e] == O_VAR && N.ki[e] == islot) {
+      |                        ^
+/home/andrew/Code/ucas/src/cfx86.c:447:18: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  447 |         if ((N.op[e] == O_ADD || N.op[e] == O_SUB) && N.op[N.a[e]] == O_VAR &&
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:447:38: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  447 |         if ((N.op[e] == O_ADD || N.op[e] == O_SUB) && N.op[N.a[e]] == O_VAR &&
+      |                                             ^
+/home/andrew/Code/ucas/src/cfx86.c:448:47: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  448 |             N.ki[N.a[e]] == islot && N.op[N.b[e]] == O_CONST) {
+      |                                                      ^
+/home/andrew/Code/ucas/src/cfx86.c:461:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  461 |         r = (r + 1) & 3;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:488:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  488 |         if ((vi = tr(m->index)) < 0)
+      |              ~~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:488:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:488:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:491:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  491 |         if ((id = xi_find(nm)) < 0) {
+      |              ~~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:491:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:491:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:495:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  495 |         if ((r = new_vv(X.flt ? 'f' : 'i', 32, X.VL)) < 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:495:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:495:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:500:20: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  500 |                 X.v[r].lane[j] = mk_var((uint32_t)(LSLOT + k * 64 + j), sym_cstr(ln),
+      |                                  ^
+/home/andrew/Code/ucas/src/cfx86.c:500:28: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  500 |                 X.v[r].lane[j] = mk_var((uint32_t)(LSLOT + k * 64 + j), sym_cstr(ln),
+      |                                          ^
+/home/andrew/Code/ucas/src/cfx86.c:500:59: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  500 |                 X.v[r].lane[j] = mk_var((uint32_t)(LSLOT + k * 64 + j), sym_cstr(ln),
+      |                                                                         ^
+/home/andrew/Code/ucas/src/cfx86.c:531:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  531 |         if (X.flt && (TYK(m->ety) != K_FLOAT || E != X.flt)) {
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:535:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:549:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:549:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:549:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:558:20: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+  558 |                             X.l->iname, (long long)(c + j));
+      |                                         ^
+/home/andrew/Code/ucas/src/cfx86.c:588:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                     TYK(m->ety) == K_UINT ? 'u' : 'i', E, X.W);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:596:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |                 if (TYK(m->ety) == K_UINT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:602:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |                 if (TYK(m->ety) == K_UINT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:635:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  635 |                 if ((m = vconst(E == 8 ? 0xff : E == 16 ? 0xffff : 0xffffffffLL)) < 0)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:635:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:635:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:637:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  637 |                 if ((r = vbit(0, v, m)) < 0)
+      |                      ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:637:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:637:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:704:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  704 |         return TYK(t) == K_SINT;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:715:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  715 |         if (from == TY_BOOL || TYK(from) == K_BOOL) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:715:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  715 |         if (from == TY_BOOL || TYK(from) == K_BOOL) {
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:715:38: warning: no header providing "K_BOOL" is directly included [misc-include-cleaner]
+  715 |         if (from == TY_BOOL || TYK(from) == K_BOOL) {
+      |                                             ^
+/home/andrew/Code/ucas/src/cfx86.c:717:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  717 |                 if ((a = tr(N.a[n])) < 0 || (m = vconst(1)) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:717:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:717:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:717:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  717 |                 if ((a = tr(N.a[n])) < 0 || (m = vconst(1)) < 0)
+      |                                              ~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:717:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:717:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:721:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  721 |         if (!TY_ISINT(to) || !TY_ISINT(from) || TY_FP(to) || TY_FP(from)) {
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:721:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  721 |         if (!TY_ISINT(to) || !TY_ISINT(from) || TY_FP(to) || TY_FP(from)) {
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:721:42: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  721 |         if (!TY_ISINT(to) || !TY_ISINT(from) || TY_FP(to) || TY_FP(from)) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:721:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:721:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  721 |         if (!TY_ISINT(to) || !TY_ISINT(from) || TY_FP(to) || TY_FP(from)) {
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:725:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  725 |         if ((a = tr(N.a[n])) < 0)
+      |              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:725:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:725:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:727:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  727 |         wt = TYW(to) < TYW(from) ? TYW(to) : TYW(from);
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:727:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  727 |         wt = TYW(to) < TYW(from) ? TYW(to) : TYW(from);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:727:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  727 |         wt = TYW(to) < TYW(from) ? TYW(to) : TYW(from);
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:727:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  727 |         wt = TYW(to) < TYW(from) ? TYW(to) : TYW(from);
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:732:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  732 |         if (!is_signed(TYW(to) < TYW(from) ? to : from)) {
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:732:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  732 |         if (!is_signed(TYW(to) < TYW(from) ? to : from)) {
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:735:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  735 |                 if ((m = vconst((int64_t)((1ULL << wt) - 1))) < 0)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:735:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:735:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:735:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  735 |                 if ((m = vconst((int64_t)((1ULL << wt) - 1))) < 0)
+      |                                                 ~~ ^~
+/home/andrew/Code/ucas/src/cfx86.c:745:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  745 |         if ((a = vshift("slli", a, X.W - wt)) < 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:745:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:745:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:762:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  762 |         if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:762:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:762:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:762:33: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  762 |         if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:762:33: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:762:33: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:765:12: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  765 |         if (op == O_EQ || op == O_NE) {
+      |                   ^
+/home/andrew/Code/ucas/src/cfx86.c:765:26: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  765 |         if (op == O_EQ || op == O_NE) {
+      |                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:773:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  773 |         if (!is_signed(t) || TYW(t) > X.W) {
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:775:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  775 |                 if ((sb = vconst((int64_t)(1ULL << (X.W - 1)))) < 0)
+      |                      ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:775:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:775:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:775:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  775 |                 if ((sb = vconst((int64_t)(1ULL << (X.W - 1)))) < 0)
+      |                                                 ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:777:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  777 |                 if ((a = vbit(2, a, sb)) < 0 || (b = vbit(2, b, sb)) < 0)
+      |                      ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:777:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:777:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:777:38: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  777 |                 if ((a = vbit(2, a, sb)) < 0 || (b = vbit(2, b, sb)) < 0)
+      |                                                  ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:777:38: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:777:38: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:782:7: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  782 |         case O_GT: r = vop2("cmpgt", sfx, 'm', a, b); break;
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:783:7: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  783 |         case O_LT: r = vop2("cmpgt", sfx, 'm', b, a); break;
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:784:7: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  784 |         case O_LE: r = vop2("cmpgt", sfx, 'm', a, b); s = 1; goto neg;
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:785:7: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  785 |         case O_GE: r = vop2("cmpgt", sfx, 'm', b, a); s = 1; goto neg;
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:805:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  805 |         while (N.op[a] == O_CAST && TY_ISINT(N.ty[a]) && TY_ISINT(N.ty[N.a[a]]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:805:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  805 |         while (N.op[a] == O_CAST && TY_ISINT(N.ty[a]) && TY_ISINT(N.ty[N.a[a]]))
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:807:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  807 |         while (N.op[b] == O_CAST && TY_ISINT(N.ty[b]) && TY_ISINT(N.ty[N.a[b]]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:807:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  807 |         while (N.op[b] == O_CAST && TY_ISINT(N.ty[b]) && TY_ISINT(N.ty[N.a[b]]))
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:811:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  811 |         return N.op[a] == O_CONST && N.op[b] == O_CONST && TY_ISINT(N.ty[a]) &&
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:812:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |             TY_ISINT(N.ty[b]) && N.ki[a] == N.ki[b];
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:825:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  825 |         int64_t smax = (1LL << (X.W - 1)) - 1, smin = -(1LL << (X.W - 1)),
+      |                         ^~~ ~~
+/home/andrew/Code/ucas/src/cfx86.c:825:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  825 |         int64_t smax = (1LL << (X.W - 1)) - 1, smin = -(1LL << (X.W - 1)),
+      |                                                         ^~~ ~~
+/home/andrew/Code/ucas/src/cfx86.c:826:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  826 |             umax = (1LL << X.W) - 1;
+      |                     ^~~ ~~
+/home/andrew/Code/ucas/src/cfx86.c:833:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  833 |                 while (N.op[e] == O_CAST && TY_ISINT(N.ty[e]))
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:835:18: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  835 |                 if (N.op[e] != O_SEL)
+      |                                ^
+/home/andrew/Code/ucas/src/cfx86.c:839:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  839 |                 while (N.op[x] == O_CAST && TY_ISINT(N.ty[x]))
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:841:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  841 |                 while (N.op[y] == O_CAST && TY_ISINT(N.ty[y]))
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:868:20: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  868 |         } else if ((op == O_MUL && N.op[N.b[core]] == O_CONST &&
+      |                           ^
+/home/andrew/Code/ucas/src/cfx86.c:883:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  883 |         if ((va = tr(a)) < 0 || (vb = tr(b)) < 0)
+      |              ~~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:883:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:883:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:883:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  883 |         if ((va = tr(a)) < 0 || (vb = tr(b)) < 0)
+      |                                  ~~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:883:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:883:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:904:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  904 |             N.op[N.a[c]] == O_CAST && (N.ty[N.a[N.a[c]]] == TY_BOOL ||
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:905:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  905 |             TYK(N.ty[N.a[N.a[c]]]) == K_BOOL))
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:918:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  918 |                 if (f && TYW(N.ty[p]) <= 64) {
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:921:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  921 |                         if ((a = tr(p)) >= 0 && (b = tr(q)) >= 0) {
+      |                              ~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:921:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:921:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:921:31: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  921 |                         if ((a = tr(p)) >= 0 && (b = tr(q)) >= 0) {
+      |                                                  ~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:921:31: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:921:31: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:934:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  934 |         if ((m = tr(c)) < 0 || (a = tr(x)) < 0 || (b = tr(y)) < 0)
+      |              ~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:934:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:934:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:934:28: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  934 |         if ((m = tr(c)) < 0 || (a = tr(x)) < 0 || (b = tr(y)) < 0)
+      |                                 ~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:934:28: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:934:28: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:934:47: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  934 |         if ((m = tr(c)) < 0 || (a = tr(x)) < 0 || (b = tr(y)) < 0)
+      |                                                    ~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:934:47: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:934:47: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:953:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  953 |         if ((t = vbit(0, m, a)) < 0 || (u = vbit(3, m, b)) < 0)
+      |              ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:953:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:953:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:953:36: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  953 |         if ((t = vbit(0, m, a)) < 0 || (u = vbit(3, m, b)) < 0)
+      |                                         ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:953:36: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:953:36: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:966:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  966 |         while (N.op[e] == O_CAST && TY_ISINT(N.ty[e]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:972:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  972 |         while (N.op[x] == O_CAST && TY_ISINT(N.ty[x]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:986:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  986 |                 if ((va = tr(p)) < 0 || (vb = tr(q)) < 0)
+      |                      ~~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:986:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:986:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:986:31: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  986 |                 if ((va = tr(p)) < 0 || (vb = tr(q)) < 0)
+      |                                          ~~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:986:31: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:986:31: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1006:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1006 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1006:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/cfx86.c:1012:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1012 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1012:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1012:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1012:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1012 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1012:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1012:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1020:4: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+ 1020 |                         uint64_t kk = (uint64_t)int_norm(TY(K_UINT, X.W), N.ki[kn]);
+      |                         ^
+/home/andrew/Code/ucas/src/cfx86.c:1020:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1020 |                         uint64_t kk = (uint64_t)int_norm(TY(K_UINT, X.W), N.ki[kn]);
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1023:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1023 |                                 uint64_t p2 = 1ULL << sh;
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/cfx86.c:1026:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1026 |                                 if ((a = tr(xn)) < 0 || (b = vshift("slli", a, sh)) < 0)
+      |                                      ~~^~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1026:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1026:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1026:32: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1026 |                                 if ((a = tr(xn)) < 0 || (b = vshift("slli", a, sh)) < 0)
+      |                                                          ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1026:32: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1026:32: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1037:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1037 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1037:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1037:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1037:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1037 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1037:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1037:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1044:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1044 |                         uint64_t kk = (uint64_t)int_norm(TY(K_UINT, X.W), N.ki[N.b[n]]);
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1045:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1045 |                         if (kk == (uint64_t)int_norm(TY(K_UINT, X.W), -1))
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1047:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1047 |                         if ((a = tr(N.a[n])) < 0)
+      |                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1047:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1047:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1050:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1050 |                             (kk & ((1ULL << X.v[a].zb) - 1)) ==
+      |                                          ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1051:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1051 |                             (1ULL << X.v[a].zb) - 1)
+      |                                   ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1054:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1054 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1054:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1054:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1054:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1054 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1054:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1054:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1058:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1058 |                 if ((a = tr(N.a[n])) < 0 || (b = vconst(-1)) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1058:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1058:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1058:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1058 |                 if ((a = tr(N.a[n])) < 0 || (b = vconst(-1)) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1058:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1058:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1061:7: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+ 1061 |         case O_NEG:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1062:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1062 |                 if ((b = tr(N.a[n])) < 0 || (a = vconst(0)) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1062:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1062:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1062:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1062 |                 if ((b = tr(N.a[n])) < 0 || (a = vconst(0)) < 0)
+      |                                              ~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1062:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1062:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1075:37: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1075 |                 if (N.op[N.b[n]] != O_CONST || (k = N.ki[N.b[n]]) < 0 ||
+      |                                                 ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1075:37: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1075:37: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1076:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1076 |                     k >= TYW(t)) {
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1084:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1084 |                 if ((a = tr(N.a[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1084:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1084:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1094:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+ 1094 |         case O_DIV: case O_MOD:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1094:19: warning: no header providing "O_MOD" is directly included [misc-include-cleaner]
+ 1094 |         case O_DIV: case O_MOD:
+      |                          ^
+/home/andrew/Code/ucas/src/cfx86.c:1097:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1097 |                     (k = N.ki[N.b[n]]) <= 0 || (k & (k - 1))) {
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1097:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1097:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1097:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1097 |                     (k = N.ki[N.b[n]]) <= 0 || (k & (k - 1))) {
+      |                                                 ^ ~
+/home/andrew/Code/ucas/src/cfx86.c:1101:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1101 |                 if ((a = tr(N.a[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1101:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1101:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1104:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1104 |                         if ((b = vconst(k - 1)) < 0)
+      |                              ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1104:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1104:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1112:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1112 |                 for (r = 0; (1LL << r) < k; r++)
+      |                              ^~~ ~~
+/home/andrew/Code/ucas/src/cfx86.c:1115:7: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+ 1115 |         case O_MIN: case O_MAX:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1115:19: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+ 1115 |         case O_MIN: case O_MAX:
+      |                          ^
+/home/andrew/Code/ucas/src/cfx86.c:1116:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1116 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1116:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1116:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1116:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1116 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1116:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1116:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1120:7: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+ 1120 |         case O_ABS:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1121:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1121 |                 if ((a = tr(N.a[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1121:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1121:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1128:7: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+ 1128 |         case O_LNOT:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1129:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1129 |                 if ((a = tr(N.a[n])) < 0 || (b = vconst(-1)) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1129:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1129:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1129:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1129 |                 if ((a = tr(N.a[n])) < 0 || (b = vconst(-1)) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1129:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1129:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1132:7: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+ 1132 |         case O_LAND: case O_LOR:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1132:20: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+ 1132 |         case O_LAND: case O_LOR:
+      |                           ^
+/home/andrew/Code/ucas/src/cfx86.c:1133:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1133 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1133:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1133:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1133:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1133 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1133:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1133:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1137:54: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+ 1137 |         why("an operation without a vector form here (%s)", opinfo[op].name);
+      |                                                             ^
+/home/andrew/Code/ucas/src/cfx86.c:1147:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1147 |         if (TYK(N.ty[n]) != K_FLOAT || TYW(N.ty[n]) != X.flt) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1147:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1147 |         if (TYK(N.ty[n]) != K_FLOAT || TYW(N.ty[n]) != X.flt) {
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1151:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1151 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1151:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/cfx86.c:1156:16: warning: both sides of operator are equivalent [misc-redundant-expression]
+ 1156 |                         if (N.kr[n] != N.kr[n] || N.kr[n] - N.kr[n] != 0) {
+      |                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:1156:38: warning: both sides of operator are equivalent [misc-redundant-expression]
+ 1156 |                         if (N.kr[n] != N.kr[n] || N.kr[n] - N.kr[n] != 0) {
+      |                                                           ^
+/home/andrew/Code/ucas/src/cfx86.c:1163:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1163 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1163:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1163:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1163:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1163 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0)
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1163:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1163:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1167:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+ 1167 |         case O_SQRT:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1168:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1168 |                 if ((a = tr(N.a[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1168:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1168:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1171:7: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+ 1171 |         case O_FMA:
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1172:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1172 |                 if (!(X.t->feat & CF_F(CF_FMA))) {
+      |                                   ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1176:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1176 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0 ||
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1176:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1176:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1176:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1176 |                 if ((a = tr(N.a[n])) < 0 || (b = tr(N.b[n])) < 0 ||
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1176:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1176:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1177:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1177 |                     (c = tr(N.c[n])) < 0)
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1177:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1177:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1199:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1199 |         if ((r = memo_get(n)) >= 0)
+      |              ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1199:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1199:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1211:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1211 |                         if ((s = vset1(X.ivar, "cf_i")) < 0)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1211:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1211:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1213:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1213 |                         if ((io = new_vv('i', X.W, X.VL)) < 0)
+      |                              ~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1213:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1213:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1216:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1216 |                                 X.v[io].lane[j] = mk_const_i(TY(K_SINT, X.W), j);
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1218:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1218 |                             ctype_of(TY(K_SINT, X.W)), io, X.VL);
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1264:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+ 1264 |         if (N.op[n] == O_TABLE) {
+      |                        ^
+/home/andrew/Code/ucas/src/cfx86.c:1288:9: warning: no header providing "func" is directly included [misc-include-cleaner]
+ 1288 |         struct func f;
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:1289:9: warning: no header providing "eqproof" is directly included [misc-include-cleaner]
+ 1289 |         struct eqproof pr;
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:1295:9: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+ 1295 |         seen = xcalloc(N.n, 1);
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:1299:11: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+ 1299 |         if (ns > MAXP) {
+      |                  ^
+/home/andrew/Code/ucas/src/cfx86.c:1312:61: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+ 1312 |                 f.p[k].name = N.op[vars[k]] == O_VAR ? (uint32_t)sym_cstr(node_str(
+      |                                                                           ^
+/home/andrew/Code/ucas/src/cfx86.c:1317:7: warning: no header providing "subst" is directly included [misc-include-cleaner]
+ 1317 |         a2 = subst(a, map, (int)maxs);
+      |              ^
+/home/andrew/Code/ucas/src/cfx86.c:1329:6: warning: no header providing "equiv_decide" is directly included [misc-include-cleaner]
+ 1329 |         if (equiv_decide(&f, a2, b2, NULL, &pr) != 0 || pr.how == EQ_SAMPLED) {
+      |             ^
+/home/andrew/Code/ucas/src/cfx86.c:1329:60: warning: no header providing "EQ_SAMPLED" is directly included [misc-include-cleaner]
+ 1329 |         if (equiv_decide(&f, a2, b2, NULL, &pr) != 0 || pr.how == EQ_SAMPLED) {
+      |                                                                   ^
+/home/andrew/Code/ucas/src/cfx86.c:1333:16: warning: no header providing "EQ_SAT" is directly included [misc-include-cleaner]
+ 1333 |         if (pr.how == EQ_SAT)
+      |                       ^
+/home/andrew/Code/ucas/src/cfx86.c:1349:21: warning: no header providing "NSLOT" is directly included [misc-include-cleaner]
+ 1349 |         nid *map = xcalloc(NSLOT, sizeof *map), r;
+      |                            ^
+/home/andrew/Code/ucas/src/cfx86.c:1359:7: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+ 1359 |                     (long long)(c + j));
+      |                     ^
+/home/andrew/Code/ucas/src/cfx86.c:1377:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1377 |         ty_t ut = TYK(ety) == K_FLOAT ? ety : TY(K_UINT, TYW(ety));
+      |                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1377:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1377 |         ty_t ut = TYK(ety) == K_FLOAT ? ety : TY(K_UINT, TYW(ety));
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1377:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1377 |         ty_t ut = TYK(ety) == K_FLOAT ? ety : TY(K_UINT, TYW(ety));
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1381:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 nid b = mk_cast(ut, vlane(v, j, TYW(ety)));
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1410:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1410 |         while (op == O_CAST && TY_ISINT(N.ty[e]) && TYW(N.ty[e]) <=
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1410:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1410 |         while (op == O_CAST && TY_ISINT(N.ty[e]) && TYW(N.ty[e]) <=
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1411:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1411 |             TYW(N.ty[N.a[e]])) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1458:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1458 |         while (N.op[a] == O_CAST && TY_ISINT(N.ty[a]))
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1508:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1508 |                 if (f & XB(k)) {
+      |                         ^
+/home/andrew/Code/ucas/src/x86.h:30:24: note: expanded from macro 'XB'
+   30 | #define XB(f) (1ULL << (f))
+      |                     ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1525:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1525 |                         return (X.t->feat & CF_F(f)) != 0;
+      |                                             ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1535:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1535 |                 if ((need & XB(k)) && !t_has(k))
+      |                             ^
+/home/andrew/Code/ucas/src/x86.h:30:24: note: expanded from macro 'XB'
+   30 | #define XB(f) (1ULL << (f))
+      |                     ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1549:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1549 |         return (t->feat & CF_F(CF_AVX512F)) ? UA_V4 : (t->feat & CF_F(CF_AVX2)) ?
+      |                           ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1549:59: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1549 |         return (t->feat & CF_F(CF_AVX512F)) ? UA_V4 : (t->feat & CF_F(CF_AVX2)) ?
+      |                                                                  ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1555:9: warning: no header providing "MAXST" is directly included [misc-include-cleaner]
+ 1555 |         int rv[MAXST];          /* each reduction's g vector */
+      |                ^
+/home/andrew/Code/ucas/src/cfx86.c:1575:16: warning: no header providing "node_slots" is directly included [misc-include-cleaner]
+   46 |         uint64_t sl = node_slots(value);
+      |                       ^
+/home/andrew/Code/ucas/src/cfx86.c:1593:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1599:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1599 |         if ((ld = vload(ld)) < 0)
+      |              ~~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1599:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1599:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1601:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1601 |         if ((r = new_vv('i', 8, X.VL)) < 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1601:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1601:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1606:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1606 |                         in[j] = mk_cast(TY(K_UINT, 8), X.v[ld].lane[16 * c + j]);
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1610:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1610 |                         X.v[r].lane[16 * c + j] = mk_cast(TY(K_SINT, 8), out[j]);
+      |                                                           ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1651:2: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+ 1651 |         sb_clear(&X.body);
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1694:20: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1694 |                 if (!X.flt && (v = vnarrow(v, E)) < 0)
+      |                                ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1694:20: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1694:20: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1701:18: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1701 |                 if ((pl->rv[k] = tr(g)) < 0)
+      |                      ~~~~~~~~~~^~~~~~~
+/home/andrew/Code/ucas/src/cfx86.c:1701:18: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cfx86.c:1701:18: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cfx86.c:1715:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1715 |                                 nid b = mk_cast(it, mk_cast(TY(K_SINT, 32), vlane(X.gidx[k],
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:1750:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1750 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/cfx86.c:1750:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/cfx86.c:1752:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1752 |         case O_MIN: return TYK(t) == K_UINT ? "-1" : TYW(t) == 64 ?
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1752:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1752 |         case O_MIN: return TYK(t) == K_UINT ? "-1" : TYW(t) == 64 ?
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1753:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1753 |             "0x7fffffffffffffffLL" : TYW(t) == 32 ? "0x7fffffff" : TYW(t) == 16 ?
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1753:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1753 |             "0x7fffffffffffffffLL" : TYW(t) == 32 ? "0x7fffffff" : TYW(t) == 16 ?
+      |                                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1755:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1755 |         case O_MAX: return TYK(t) == K_UINT ? "0" : TYW(t) == 64 ?
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1755:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1755 |         case O_MAX: return TYK(t) == K_UINT ? "0" : TYW(t) == 64 ?
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1756:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1756 |             "(-0x7fffffffffffffffLL - 1)" : TYW(t) == 32 ? "(-0x7fffffff - 1)" :
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1757:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1757 |             TYW(t) == 16 ? "(-0x7fff - 1)" : "(-0x7f - 1)";
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1789:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1789 |         if (!TY_ISINT(l->ity) || TYW(l->ity) < 32)
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1789:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1789 |         if (!TY_ISINT(l->ity) || TYW(l->ity) < 32)
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1853:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1853 |                 if (TYK(l->load[k].ety) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1856:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1856 |                 if (TYK(l->store[k].ety) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1863:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1863 |                 if (!TY_ISINT(rt) || TYK(rt) == K_BOOL)
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1863:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1863 |                 if (!TY_ISINT(rt) || TYK(rt) == K_BOOL)
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:1870:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1870 |                 if (TYW(rt) > Wmin)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1871:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1871 |                         Wmin = TYW(rt);
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:1888:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1888 |                         if (VB == 512 && !(t->feat & CF_F(CF_AVX512F)))
+      |                                                      ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1890:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1890 |                         if (VB == 512 && W <= 16 && !(t->feat & CF_F(CF_AVX512BW)))
+      |                                                                 ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1892:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1892 |                         if (VB == 256 && !(t->feat & CF_F(X.flt ? CF_AVX : CF_AVX2)))
+      |                                                      ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cfx86.c:1895:5: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   49 |                                 jmp_buf saved;
+      |                                 ^
+/home/andrew/Code/ucas/src/cfx86.c:1896:19: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+ 1896 |                                 memcpy(saved, fail_jmp, sizeof saved);
+      |                                               ^
+/home/andrew/Code/ucas/src/cfx86.c:1897:9: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+ 1897 |                                 if (setjmp(fail_jmp)) {
+      |                                     ^
+/home/andrew/Code/ucas/src/cfx86.c:1920:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1920 |         UT = TYW(l->ity) == 32 ? "unsigned" : "unsigned long";
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cfx86.c:2005:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2005 |                             opn, TYK(N.ty[l->rnext[k]]) == K_UINT ? 'u' : 'i', X.W);
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:2049:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2049 |                             X.VB < 512 ? "x" : "", ctype_of(TY(K_SINT, X.W)), red_ident(pl.rop[k],
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:2064:6: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+ 2064 |                                         sb_putc(&out->text, *q);
+      |                                         ^
+/home/andrew/Code/ucas/src/cfx86.c:2075:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2075 |                 ty_t rt = N.ty[l->rnext[k]], lt = TY(TYK(rt) == K_UINT ? K_UINT :
+      |                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:2075:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2075 |                 ty_t rt = N.ty[l->rnext[k]], lt = TY(TYK(rt) == K_UINT ? K_UINT :
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cfx86.c:2077:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2077 |                 const char *ct = ctype_of(rt), *ut = ctype_of(TY(K_UINT, TYW(rt)));
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cfx86.c:2077:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2077 |                 const char *ct = ctype_of(rt), *ut = ctype_of(TY(K_UINT, TYW(rt)));
+      |                                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

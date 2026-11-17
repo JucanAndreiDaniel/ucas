@@ -1,0 +1,88 @@
+> s_add_basic_u8(x: u8, y: u8) = x + y
+> m_add_basic_u8(x: u8, y: u8) = x - y
+> equiv s_add_basic_u8 m_add_basic_u8
+s_add_basic_u8 and m_add_basic_u8 differ at 65024 points, e.g. x=0, y=1: 1 vs 255
+> s_add_basic_u32(x: u32, y: u32) = x + y
+> m_add_basic_u32(x: u32, y: u32) = x - y
+> equiv s_add_basic_u32 m_add_basic_u32
+s_add_basic_u32 and m_add_basic_u32 differ at 65533 points of the sample, e.g. x=0, y=4294967294: 4294967294 vs 2
+> s_add_zero_u8(x: u8, y: u8) = x + 0
+> m_add_zero_u8(x: u8, y: u8) = x - 0
+> equiv s_add_zero_u8 m_add_zero_u8
+s_add_zero_u8 and m_add_zero_u8 are equal on the domain of s_add_zero_u8 (exhaustive)
+> s_add_zero_u32(x: u32, y: u32) = x + 0
+> m_add_zero_u32(x: u32, y: u32) = x - 0
+> equiv s_add_zero_u32 m_add_zero_u32
+s_add_zero_u32 and m_add_zero_u32 are equal on the domain of s_add_zero_u32 (proved by SAT: 65 AIG nodes, 0 conflicts)
+> s_diffsq_u8(x: u8, y: u8) = (x + y)*(x - y)
+> m_diffsq_u8(x: u8, y: u8) = x*x - y*y
+> equiv s_diffsq_u8 m_diffsq_u8
+s_diffsq_u8 and m_diffsq_u8 are equal on the domain of s_diffsq_u8 (exhaustive)
+> s_diffsq_u32(x: u32, y: u32) = (x + y)*(x - y)
+> m_diffsq_u32(x: u32, y: u32) = x*x - y*y
+> equiv s_diffsq_u32 m_diffsq_u32
+s_diffsq_u32 and m_diffsq_u32 are equal on the domain of s_diffsq_u32 (proved by algebra: both sides expand to one polynomial in x, y mod 2^32)
+> s_diffsq_bad_u8(x: u8, y: u8) = (x + y)*(x - y)
+> m_diffsq_bad_u8(x: u8, y: u8) = x*x + y*y
+> equiv s_diffsq_bad_u8 m_diffsq_bad_u8
+s_diffsq_bad_u8 and m_diffsq_bad_u8 differ at 61440 points, e.g. x=0, y=1: 255 vs 1
+> s_diffsq_bad_u32(x: u32, y: u32) = (x + y)*(x - y)
+> m_diffsq_bad_u32(x: u32, y: u32) = x*x + y*y
+> equiv s_diffsq_bad_u32 m_diffsq_bad_u32
+s_diffsq_bad_u32 and m_diffsq_bad_u32 differ at 65533 points of the sample, e.g. x=0, y=4294967294: 4294967292 vs 4
+> s_add_assoc_u8(x: u8, y: u8, z: u8) = (x + y) + z
+> m_add_assoc_u8(x: u8, y: u8, z: u8) = x + (y + z)
+> equiv s_add_assoc_u8 m_add_assoc_u8
+s_add_assoc_u8 and m_add_assoc_u8 are equal on the domain of s_add_assoc_u8 (proved by SAT: 324 AIG nodes, 2248 conflicts)
+> s_add_assoc_u32(x: u32, y: u32, z: u32) = (x + y) + z
+> m_add_assoc_u32(x: u32, y: u32, z: u32) = x + (y + z)
+> equiv s_add_assoc_u32 m_add_assoc_u32
+s_add_assoc_u32 and m_add_assoc_u32 are equal on the domain of s_add_assoc_u32 (proved by SAT: 1356 AIG nodes, 15969 conflicts)
+> s_add_comm_u8(x: u8, y: u8) = x + y
+> m_add_comm_u8(x: u8, y: u8) = y + x
+> equiv s_add_comm_u8 m_add_comm_u8
+s_add_comm_u8 and m_add_comm_u8 are equal on the domain of s_add_comm_u8 (exhaustive)
+> s_add_comm_u32(x: u32, y: u32) = x + y
+> m_add_comm_u32(x: u32, y: u32) = y + x
+> equiv s_add_comm_u32 m_add_comm_u32
+s_add_comm_u32 and m_add_comm_u32 are equal on the domain of s_add_comm_u32 (proved by SAT: 348 AIG nodes, 0 conflicts)
+> s_sub_neg_u8(x: u8, y: u8) = x - y
+> m_sub_neg_u8(x: u8, y: u8) = x + (0 - y)
+> equiv s_sub_neg_u8 m_sub_neg_u8
+s_sub_neg_u8 and m_sub_neg_u8 are equal on the domain of s_sub_neg_u8 (exhaustive)
+> s_sub_neg_u32(x: u32, y: u32) = x - y
+> m_sub_neg_u32(x: u32, y: u32) = x + (0 - y)
+> equiv s_sub_neg_u32 m_sub_neg_u32
+s_sub_neg_u32 and m_sub_neg_u32 are equal on the domain of s_sub_neg_u32 (proved by SAT: 349 AIG nodes, 0 conflicts)
+> s_twice_plus_u8(x: u8) = x + x
+> m_twice_plus_u8(x: u8) = 2*x
+> equiv s_twice_plus_u8 m_twice_plus_u8
+s_twice_plus_u8 and m_twice_plus_u8 are equal on the domain of s_twice_plus_u8 (exhaustive)
+> s_twice_plus_u32(x: u32) = x + x
+> m_twice_plus_u32(x: u32) = 2*x
+> equiv s_twice_plus_u32 m_twice_plus_u32
+s_twice_plus_u32 and m_twice_plus_u32 are equal on the domain of s_twice_plus_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_inc_dec_u8(x: u8) = x + 1
+> m_inc_dec_u8(x: u8) = x - 1
+> equiv s_inc_dec_u8 m_inc_dec_u8
+s_inc_dec_u8 and m_inc_dec_u8 differ at 256 points, e.g. x=0: 1 vs 255
+> s_inc_dec_u32(x: u32) = x + 1
+> m_inc_dec_u32(x: u32) = x - 1
+> equiv s_inc_dec_u32 m_inc_dec_u32
+s_inc_dec_u32 and m_inc_dec_u32 differ at 65536 points of the sample, e.g. x=0: 1 vs 4294967295
+> s_sum_const_u8(x: u8, y: u8) = x + y + 7
+> m_sum_const_u8(x: u8, y: u8) = x - y + 7
+> equiv s_sum_const_u8 m_sum_const_u8
+s_sum_const_u8 and m_sum_const_u8 differ at 65024 points, e.g. x=0, y=1: 8 vs 6
+> s_sum_const_u32(x: u32, y: u32) = x + y + 7
+> m_sum_const_u32(x: u32, y: u32) = x - y + 7
+> equiv s_sum_const_u32 m_sum_const_u32
+s_sum_const_u32 and m_sum_const_u32 differ at 65533 points of the sample, e.g. x=0, y=4294967294: 5 vs 9
+> s_add_cancel_u8(x: u8, y: u8) = x + (y - y)
+> m_add_cancel_u8(x: u8, y: u8) = x
+> equiv s_add_cancel_u8 m_add_cancel_u8
+s_add_cancel_u8 and m_add_cancel_u8 are equal on the domain of s_add_cancel_u8 (exhaustive)
+> s_add_cancel_u32(x: u32, y: u32) = x + (y - y)
+> m_add_cancel_u32(x: u32, y: u32) = x
+> equiv s_add_cancel_u32 m_add_cancel_u32
+s_add_cancel_u32 and m_add_cancel_u32 are equal on the domain of s_add_cancel_u32 (proved by SAT: 65 AIG nodes, 0 conflicts)

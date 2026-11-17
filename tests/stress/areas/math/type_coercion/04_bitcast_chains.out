@@ -1,0 +1,56 @@
+> show asuint(1)
+  note: constant read as f32 for asuint
+_() = 1065353216
+  -> u32
+> show asint(1)
+  note: constant read as f32 for asint
+_() = 1065353216
+  -> i32
+> show asfloat(1)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = 1.40129846e-45
+  -> f32
+> show asuint(f32(1))
+_() = 1065353216
+  -> u32
+> show asint(f32(-1))
+_() = -1082130432
+  -> i32
+> show asfloat(asuint(f32(1)))
+_() = 1
+  -> f32
+> show asuint(asint(f32(-1)))
+04_bitcast_chains.ucas:8:28: error: asuint needs an f16, f32 or f64 operand
+    show asuint(asint(f32(-1)))
+                               ^
+> show asint(asuint(f32(1)))
+04_bitcast_chains.ucas:9:27: error: asint needs an f16, f32 or f64 operand
+    show asint(asuint(f32(1)))
+                              ^
+> show asfloat(u32(1065353216))
+_() = 1
+  -> f32
+> show asuint(i32(-1))
+04_bitcast_chains.ucas:11:21: error: asuint needs an f16, f32 or f64 operand
+    show asuint(i32(-1))
+                        ^
+> show asint(u32(4294967295))
+04_bitcast_chains.ucas:12:28: error: asint needs an f16, f32 or f64 operand
+    show asint(u32(4294967295))
+                               ^
+> show asuint(f16(1))
+_() = 15360
+  -> u16
+> show asuint(f64(1))
+_() = 4607182418800017408
+  -> u64
+> show asfloat(asuint(f64(1)))
+_() = 1
+  -> f64
+> show asint(asfloat(u32(4294967295)))
+_() = -1
+  -> i32
+> show asfloat(asuint(asfloat(asuint(1.0))))
+  note: constant read as f32 for asuint
+_() = 1
+  -> f32

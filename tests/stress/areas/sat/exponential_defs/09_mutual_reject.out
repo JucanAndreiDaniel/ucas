@@ -1,0 +1,23 @@
+> f(x: u8) = g(x)
+09_mutual_reject.ucas:1:12: error: 'g' is not defined
+    f(x: u8) = g(x)
+               ^
+> g(x: u8) = f(x)
+09_mutual_reject.ucas:2:12: error: 'f' is not defined
+    g(x: u8) = f(x)
+               ^
+> show f(0)
+  note: f(...) read as multiplication: f is not a function
+_(f: real) = 0
+  -> real
+> h(x: u8) = h(x)
+09_mutual_reject.ucas:4:12: error: 'h' is not defined
+    h(x: u8) = h(x)
+               ^
+> show h(0)
+  note: h(...) read as multiplication: h is not a function
+_(h: real) = 0
+  -> real
+> show 1+2
+_() = 3
+  -> int

@@ -1,0 +1,11 @@
+# MR mined from tests/catalogue:mh1,mh2
+# meaning-preserving rewrite: idcast
+f(a: u32, b: u32) = mulhi(a, b)
+g(a: u32, b: u32) = u32((u64(a) * u64(b)) >> 32)
+f2(a: u32, b: u32) = u32(mulhi(a, b))
+g2(a: u32, b: u32) = u32(u32((u64(a) * u64(b)) >> 32))
+f1(a: u32, b: u32) = u32(mulhi(a, b))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

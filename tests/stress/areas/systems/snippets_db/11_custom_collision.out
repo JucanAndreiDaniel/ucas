@@ -1,0 +1,15 @@
+> c1(a: u32, b: u32) = a + b
+> find c1 1 snippets fx_dupbad
+find c1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: its program with these values, a xor b, differs from c1 elsewhere (32 points do not tell them apart)
+  cost 1   a + b                                    exact (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> find c1 1 snippets fx_dupgood
+find c1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   a + b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> c2(a: u32) = a + 0
+> find c2 1 snippets fx_add
+find c2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 0   a                                        exact (proved by SAT)
+  [searched every term up to cost 1: 54 distinct columns; 'more' continues]

@@ -1,0 +1,7 @@
+rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)
+guess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+fit guess ~ rsqrt
+quake(x: f32 in 0.01..100) = y * (1.5f - 0.5f*x*y*y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+error quake ~ rsqrt
+clang(x: f32) = y * (1.5f - 0.5f*x*y*y) where y = asfloat(0x5f375a86 - (asuint(x) >> 1))
+error clang ~ rsqrt

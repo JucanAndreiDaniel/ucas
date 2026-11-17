@@ -1,0 +1,10 @@
+> basis a { lu(x, y, z) = lut }
+> basis b : a { inv(x) = ~x }
+> basis a : b { andp(x, y) = x & y }
+> maj(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+> gates maj basis a
+gates for maj: 3 input bits -> 1 output bit, basis a
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = lu(a, b, c, 0xe8)            = (~c & b & a) | (c & ~b & a) | (c & b & ~a) | (c & b & a)
+  r0 = t0

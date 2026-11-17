@@ -1,0 +1,21 @@
+# WRONG: equiv ignores G's declaration-level domain restriction (where clause,
+# declared `in a..b`, declared `in {…}` set).  G is undefined on part of F's
+# domain, so every `equiv` below should say "differ"; ucas says "equal".
+f1(x: u8) = x
+g1(x: u8) = x where x < 5
+equiv f1 ~ g1
+f2(x: u8) = x
+g2(x: u8 in 0..7) = x
+equiv f2 ~ g2
+f3(x: u8) = x
+g3(x: u8 in {0,1,2,3}) = x
+equiv f3 ~ g3
+f4(x: u8) = x
+g4(x: u8) = x where x in {0,1,2,3}
+equiv f4 ~ g4
+f5(x: u8) = x
+g5(x: u8) = x where x != 0
+equiv f5 ~ g5
+f6(x: u8) = x
+g6(x: u8) = x where x < 3 || x > 250
+equiv f6 ~ g6

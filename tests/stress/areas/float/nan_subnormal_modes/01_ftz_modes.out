@@ -1,0 +1,27 @@
+> add0f(x: u32) = asfloat(x) + f32(0)
+> add0g(x: u32) = asfloat(x)
+> equiv add0f add0g noftz
+add0f and add0g are equal on the domain of add0f (proved by SAT: 5170 AIG nodes, 1462 conflicts)
+> equiv add0f add0g ftz
+add0f and add0g differ at 259 points of the sample, e.g. x=1: 0 vs 1.40129846e-45
+  every float operation flushed subnormals to zero (ftz)
+> fma1f(x: u32) = fma(asfloat(x), f32(1), f32(0))
+> fma1g(x: u32) = asfloat(x)
+> equiv fma1f fma1g noftz
+fma1f and fma1g are equal on the domain of fma1f (proved by SAT: 5171 AIG nodes, 1462 conflicts)
+> equiv fma1f fma1g ftz
+fma1f and fma1g differ at 259 points of the sample, e.g. x=1: 0 vs 1.40129846e-45
+  every float operation flushed subnormals to zero (ftz)
+> subtf(x: u32) = abs(asfloat(x)) < f32(2^(-126)) ? f32(1) : f32(0)
+> subtg(x: u32) = asfloat(x) == f32(0) ? f32(1) : f32(0)
+> equiv subtf subtg noftz
+subtf and subtg differ at 259 points of the sample, e.g. x=1: 1 vs 0
+> equiv subtf subtg ftz
+subtf and subtg are equal on the domain of subtf (proved by SAT: 3527 AIG nodes, 161 conflicts)
+  every float operation flushed subnormals to zero (ftz)
+> mul1f(x: u32) = asfloat(x) * f32(1)
+> equiv mul1f add0g noftz
+mul1f and add0g are equal on the domain of mul1f (proved by SAT: 1105 AIG nodes, 0 conflicts)
+> equiv mul1f add0g ftz
+mul1f and add0g are equal on the domain of mul1f (proved by SAT: 1105 AIG nodes, 0 conflicts)
+  every float operation flushed subnormals to zero (ftz)

@@ -1,0 +1,29 @@
+> t*y' = y
+  note: '=' inside an expression read as '=='
+_(t: real, y': real, y: real) = t*y' == y
+  -> bool
+> y(1)=2
+> dsolve y from 1 to 3 steps 2
+07_singular_coeff.ucas:3:29: error: no equation for y (write y' = ...)
+    dsolve y from 1 to 3 steps 2
+                                ^
+> t^2*z'' = -t*z'
+  note: '=' inside an expression read as '=='
+_(t: real, z'': real, z': real) = t^2*z'' == -t*z'
+  -> bool
+> z(1)=1
+> z'(1)=0
+> dsolve z from 1 to 2 steps 2
+07_singular_coeff.ucas:7:29: error: no equation for z (write z' = ...)
+    dsolve z from 1 to 2 steps 2
+                                ^
+> w' = w/t
+> w(1)=1
+> dsolve w from 1 to 3 steps 2
+w' = w/t, w(1) = 1
+  not linear with constant coefficients: numeric only
+  numeric (Dormand-Prince 5(4), adaptive, 8 steps, tolerance 1e-10); a 1000x looser solve differs by 0
+      t            w(t)
+      1            1
+      2            2
+      3            3

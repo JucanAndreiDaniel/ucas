@@ -1,0 +1,9 @@
+# pde + dsolve: partial differential equations (calc2.c/ode.c) — NO stress area
+pde heat { u_t = 0.1 u_xx; u(x, 0) = sin(pi x); x in 0..1; t in 0..0.5 }
+dsolve heat steps 2
+pde wave { u_tt = u_xx; u(x, 0) = sin(pi x); x in 0..1; t in 0..0.2 }
+dsolve wave steps 2
+pde adv { u_t = -u_x; u(x, 0) = exp(-100 (x-0.3)^2); x in 0..1; t in 0..0.2; periodic }
+dsolve adv steps 2
+pde src { u_t = u_xx + 1; u(x,0) = 0; u(0,t) = 0; u(1,t) = 0; x in 0..1; t in 0..0.2 }
+dsolve src steps 2

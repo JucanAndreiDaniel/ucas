@@ -1,0 +1,90 @@
+> what is 2 to the 10th?
+  ucas: 2^10
+1024
+> what is the range of x squared for a signed byte x?
+  ucas: it(x: i8) = x^2
+  ucas: range it
+range of it -> i8:
+  -127..121   (44 distinct values)
+  values: -127, -124, -119, -112..-111, -103, -95, -92, -87, -79, -71, -63, -60, -55, -47, -39, -31, -28, -23, -15, -7, 0..1, 4, 9, 16..17, ...
+  fits in i8
+  over all 256 points of the domain
+> the derivative of sin x squared with respect to x
+  ucas: it(x) = sin(x^2)
+  ucas: diff it x
+d/dx it = 2x*cos(x^2)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-10)
+> what are the critical points of x cubed minus 3x?
+  ucas: it(x) = x^3 - 3*x
+  ucas: crit it
+critical points of it:
+  it' = 3x^2 - 3
+  x ≈ -1: local maximum, it = 2
+  x ≈ 1: local minimum, it = -2
+  searched [-10, 10] (default; give x a range)
+> does x times 2 plus 1 overflow for a signed byte x?
+  ucas: it(x: i8) = x*2 + 1
+  ucas: wrap it
+wrap analysis of it:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  2x + 1   (i8)
+      nuw holds
+      nsw holds (C requires it: signed overflow is UB)
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain
+> is (a + b) / 2 the same as the average of a and b, for u8 a and b?
+  ucas: it(a: u8, b: u8) = (a + b)/2
+  ucas: that(a: u8, b: u8) = (a + b)/2
+  ucas: equiv it that
+it and that are equal on the domain of it (exhaustive)
+> what is the integral of x squared times sin x from 0 to pi
+  ucas: it(x) = x^2*sin(x)
+  ucas: integrate it from 0 to pi
+∫ x^2*sin(x) dx
+  = 2x*sin(x) + 2cos(x) - x^2*cos(x) + C
+  check: d/dx of it equals the integrand at 401 points of [0, 3.14159] (max difference 8.9e-16)
+  from 0 to 3.14159: F(3.14159) - F(0) = 5.86960440108936
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 5.86960440108936, estimated error 6.5e-14
+  the two agree to 0
+> the closed form of the sum of i squared for i from 1 to n
+  ucas: it(n: int in 0..100) = sum(i, 1, n, i^2)
+  ucas: closed it
+sum(i, 1, n, i^2)
+  = n*(n + 1)*(2n + 1)/6
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> is sin(2x) periodic?
+  ucas: it(x) = sin(2*x)
+  ucas: periodic it
+periodic it:
+  yes: fundamental period pi ≈ 3.141592654
+  proved symbolically: sin(2x) has period pi; x occurs only inside them, so f(x + p) = f(x).  Smallest: no p/k (2 <= k <= 64) is a period (checked at 997 points)
+> what kind of equation is y'' + y = 0?
+  ucas: identify y'' + y = 0
+identify y'' + y = 0:
+  an ordinary differential equation of order 2 in y(t)
+  linear: every y-term appears to the first power [proved: the partial derivatives in y, y', ... do not involve y]
+  homogeneous
+  constant coefficients (and autonomous)
+  characteristic equation: r^2 + 1 = 0, roots ±i
+  homogeneous solutions: y(t) = a combination of cos(t), sin(t)
+  autonomous: the independent variable does not appear explicitly
+  solved for the highest derivative: y'' = -y  (then initial values and: dsolve y)
+> what is the square root of 16?
+  ucas: sqrt(16)
+4
+> what is the limit of sin x / x as x goes to 0?
+  note: what does "sin" apply to: read as sin(x) / ..., not sin(x / ...) (say "sin the quantity ..." for the second)
+  ucas: it(x) = sin(x)/x
+  ucas: limit it x -> 0
+limit of it as x -> 0:
+  0/0: L'Hôpital: lim (cos(x))/(1) = lim cos(x)
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees

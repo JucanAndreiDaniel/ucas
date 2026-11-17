@@ -1,0 +1,11 @@
+> c lower nofile
+  alias: not lowered: line 1: a parameter that is not an integer or a float (p)
+  restrict_copy: not lowered: line 2: the function does not return an integer or a float
+    loop (line 2): for i = 0 while i < n step 1 (index i32, slot 0)
+      array b: read only, no alias (restrict or a distinct array)
+      array a: written, no alias (restrict or a distinct array)
+      load  b[i64(i)] -> leaf 2 (i32, 4 bytes, after 0 stores)
+      store a[i64(i)] = b[i] (i32, after 0 stores)
+      leaves: 0 i: i32, 1 n: i32, 2 b[i]: i32
+  unionread: not lowered: line 3: a parameter that is not an integer or a float (p)
+  byteread: not lowered: line 4: a parameter that is not an integer or a float (p)

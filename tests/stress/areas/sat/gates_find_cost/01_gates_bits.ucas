@@ -1,0 +1,17 @@
+# gates over 2-6 input bits, several built-in bases (all minimal proofs).
+maj(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+mux(a: bool, b: bool, c: bool) = a ? b : c
+minority(a: bool, b: bool, c: bool) = !(a & b | a & c | b & c)
+eq2(a: bool, b: bool) = a == b
+add2(x: u2, y: u2) = x + y
+isqrt4(x: u4) = isqrt(x)
+gates maj
+gates maj basis spirv
+gates maj basis a64
+gates maj basis x86bmi
+gates maj basis avx512
+gates mux basis a64sha
+gates minority basis nand
+gates eq2
+gates add2 basis avx512
+gates isqrt4 basis c

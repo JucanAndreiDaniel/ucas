@@ -1,0 +1,73 @@
+> limit floor(x)/x x -> inf
+limit of floor(x)/x as x -> inf:
+  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+> limit ceil(x)/x x -> inf
+limit of ceil(x)/x as x -> inf:
+  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+> limit floor(2*x)/x x -> inf
+limit of floor(2x)/x as x -> inf:
+  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 2, 2, 2, 2, 2, 2
+    extrapolated (Richardson): 2 (estimated error 0): DISAGREES with 0
+> limit floor(x^2)/x^2 x -> inf
+limit of floor(x^2)/x^2 as x -> inf:
+  inf/inf: L'Hôpital: lim (0)/(2x) = lim 0
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+> limit (x - floor(x))/x x -> inf
+limit of (x - floor(x))/x as x -> inf:
+  inf - inf: x - floor(x) = (1/(floor(x)) - 1/(x))/(1/((x)*(floor(x))))
+  0/0: L'Hôpital: lim (1/x^2)/(-floor(x)/(x^2*floor(x)^2)) = lim -floor(x)
+  inf/inf: L'Hôpital: lim (1)/(1) = lim 1
+  = 1
+  numeric (x = 10*2^k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): DISAGREES with 1
+> limit (x - floor(x)) x -> inf
+limit of x - floor(x) as x -> inf:
+  inf - inf: x - floor(x) = (1/(floor(x)) - 1/(x))/(1/((x)*(floor(x))))
+  0/0: L'Hôpital: lim (1/x^2)/(-floor(x)/(x^2*floor(x)^2)) = lim -floor(x)
+  = -inf
+  numeric (x = 10*2^k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): DISAGREES
+> limit floor(x)/x x -> -inf
+limit of floor(x)/x as x -> -inf:
+  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
+  = 0
+  numeric (x = -10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+> limit floor(x)/x x -> 0
+limit of floor(x)/x as x -> 0:
+  from the left:
+  x -> 0 from below
+  floor(x)/x -> inf (the numerator -> -1, x -> 0-)
+  = inf
+  from the right:
+  0/0: L'Hôpital: lim (0)/(1) = lim 0
+  = 0
+  the one-sided limits differ: the (two-sided) limit does not exist
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 10, 160, 2560, 40960, 655360, 20971520
+    the values grow without bound (+): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit x*sin(1/x) x -> inf
+limit of x*sin(1/x) as x -> inf:
+  0*inf: x*sin(1/x) = (sin(1/x))/(1/x)
+  0/0: L'Hôpital: lim (-cos(1/x)/x^2)/(-1/x^2) = lim cos(1/x)
+  = 1
+  numeric (x = 10*2^k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> limit sin(x)/x x -> inf
+limit of sin(x)/x as x -> inf:
+  x -> inf: sin(x) keeps oscillating between -1 and 1
+  = 0
+  numeric (x = 10*2^k, k = 0..21): -0.05440211109, 0.001371407865, 0.0001514012217, -2.073123128e-06, -1.492192327e-06, 2.088386152e-08
+    extrapolated (Richardson): 8.80983672472e-07 (estimated error 1e-08)
+    the values approach 0 (|f - L| = 2e-08 at the last point; not smooth enough to extrapolate): agrees

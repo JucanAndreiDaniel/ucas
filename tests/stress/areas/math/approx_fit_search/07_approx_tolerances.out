@@ -1,0 +1,80 @@
+> approx sin(x) in 0..1 degree 5 error 0 as f32 list 1
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 1] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    7.12e-06     7.14e-06     6.57e-06     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00263 (0.0186) 3/2 7.32e-06 (0.000239) 1/4 7.27e-05 (0.00193) 5/2 1.65e-08 (2.24e-06)
+    3/4 5.28e-08 (6.68e-06) 1/6 1.96e-06 (0.000197) 5/4 5.08e-11 (2.7e-08) 3/6 3.68e-10 (1.83e-07) 5/6 1.61e-13 (3.37e-10)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.021 2: 0.00518 3: 3.33e-05 4: 4.03e-06 5: 1.84e-08
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  111 ulp                  1.23e-05      5.55e-06      4    at x=0.523582816
+      x*P(x^2): x*fma(fma(0.00803649612, s, -0.166553423), s, 0.999993443) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 2.37, probable no better (under 16 operations), expected 0.83; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'
+> approx sin(x) in 0..1 degree 5 error -1 as f32 list 1
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 1] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    7.12e-06     7.14e-06     6.57e-06     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00263 (0.0186) 3/2 7.32e-06 (0.000239) 1/4 7.27e-05 (0.00193) 5/2 1.65e-08 (2.24e-06)
+    3/4 5.28e-08 (6.68e-06) 1/6 1.96e-06 (0.000197) 5/4 5.08e-11 (2.7e-08) 3/6 3.68e-10 (1.83e-07) 5/6 1.61e-13 (3.37e-10)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.021 2: 0.00518 3: 3.33e-05 4: 4.03e-06 5: 1.84e-08
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  111 ulp                  1.23e-05      5.55e-06      4    at x=0.523582816
+      x*P(x^2): x*fma(fma(0.00803649612, s, -0.166553423), s, 0.999993443) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 2.37, probable no better (under 16 operations), expected 0.83; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'
+> approx sin(x) in 0..1 degree 5 error 1e-300 as f32 list 1
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 1] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    7.12e-06     7.14e-06     6.57e-06     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00263 (0.0186) 3/2 7.32e-06 (0.000239) 1/4 7.27e-05 (0.00193) 5/2 1.65e-08 (2.24e-06)
+    3/4 5.28e-08 (6.68e-06) 1/6 1.96e-06 (0.000197) 5/4 5.08e-11 (2.7e-08) 3/6 3.68e-10 (1.83e-07) 5/6 1.61e-13 (3.37e-10)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.021 2: 0.00518 3: 3.33e-05 4: 4.03e-06 5: 1.84e-08
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  111 ulp                  1.23e-05      5.55e-06      4    at x=0.523582816
+      x*P(x^2): x*fma(fma(0.00803649612, s, -0.166553423), s, 0.999993443) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 2.37, probable no better (under 16 operations), expected 0.83; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'
+> approx sin(x) in 0..1 degree 5 error 1e-20 as f32 list 1
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 1] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    7.12e-06     7.14e-06     6.57e-06     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00263 (0.0186) 3/2 7.32e-06 (0.000239) 1/4 7.27e-05 (0.00193) 5/2 1.65e-08 (2.24e-06)
+    3/4 5.28e-08 (6.68e-06) 1/6 1.96e-06 (0.000197) 5/4 5.08e-11 (2.7e-08) 3/6 3.68e-10 (1.83e-07) 5/6 1.61e-13 (3.37e-10)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.021 2: 0.00518 3: 3.33e-05 4: 4.03e-06 5: 1.84e-08
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  111 ulp                  1.23e-05      5.55e-06      4    at x=0.523582816
+      x*P(x^2): x*fma(fma(0.00803649612, s, -0.166553423), s, 0.999993443) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 2.37, probable no better (under 16 operations), expected 0.83; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'

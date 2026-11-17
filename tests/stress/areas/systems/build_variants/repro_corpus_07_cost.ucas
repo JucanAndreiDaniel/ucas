@@ -1,0 +1,24 @@
+# Batch 07: cost models / gates / find (integer arithmetic, exact).
+m1(x: u8, y: u8) = x*y + x + y
+cost m1
+g1(x: u4, y: u2) = x*y + x + y
+gates g1
+m2(x: u8) = x*7 + 3
+cost m2
+g2(x: u6) = x*7 + 3
+gates g2
+m3(x: u16, y: u16) = (x & y) | (x ^ y)
+cost m3
+m4(x: u32) = (x * 2246822519) >> 13
+cost m4
+m5(x: u8 in 0..15) = [12,5,6,11,9,0,10,13,3,14,15,8,4,7,1,2][x]
+cost m5
+use gt1030
+m6(x: u32 uniform) = (x & 255) * 3 + (x >> 8)
+cost m6
+gates g1
+model cheapdiv : gt1030 { fdiv: 2 }
+m7(x: f32 in 1..100) = 1/x + 2/x
+cost m7 model cheapdiv
+find m1 1
+find m2 1

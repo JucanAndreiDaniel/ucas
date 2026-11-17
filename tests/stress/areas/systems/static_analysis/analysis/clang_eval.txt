@@ -1,0 +1,549 @@
+src/eval.c:783:15: warning: Left shift by '1010' overflows the capacity of 'uint64_t' [core.BitwiseShift]
+  783 |                 r.hi = x.lo << (n - 64);
+      |                             ^
+src/eval.c:1399:14: note: Assuming 'k' is < 'n'
+ 1399 |         for (k = 0; k < n; k++) {
+      |                     ^~~~~
+src/eval.c:1399:2: note: Loop condition is true.  Entering loop body
+ 1399 |         for (k = 0; k < n; k++) {
+      |         ^
+src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^~~~~~~~~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1401:14: note: Left side of '||' is false
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^~~~~~~~~~~~~~~
+src/ucas.h:103:39: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                       ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1408:3: note: Control jumps to 'case O_FMA:'  at line 1481
+ 1408 |                 switch (op) {
+      |                 ^
+src/eval.c:1488:13: note: Assuming field 'k' is not equal to K_FLOAT
+ 1488 |                         int fw = t->k == K_FLOAT ? t->w : 0;
+      |                                  ^~~~~~~~~~~~~~~
+src/eval.c:1488:13: note: '?' condition is false
+src/eval.c:1489:16: note: Assuming 'i' is < 'np'
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                                     ^~~~~~
+src/eval.c:1489:4: note: Loop condition is true.  Entering loop body
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                         ^
+src/eval.c:1491:9: note: Assuming the condition is false
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1492 |                                     F_UNDEF) {
+      |                                     ~~~~~~~
+src/eval.c:1491:5: note: Taking false branch
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                 ^
+src/eval.c:1497:9: note: 'fw' is 0
+ 1497 |                                 if (fw && float_ftz) {
+      |                                     ^~
+src/eval.c:1497:12: note: Left side of '&&' is false
+ 1497 |                                 if (fw && float_ftz) {
+      |                                        ^
+src/eval.c:1503:15: note: 'fw' is not equal to 32
+ 1503 |                                         orr[i] = fw == 32 ? fma32(av[i], bv[i], cv[i]) :
+      |                                                  ^~
+src/eval.c:1503:15: note: '?' condition is false
+src/eval.c:1504:10: note: 'fw' is not equal to 16
+ 1504 |                                             fw == 16 ? fma16(av[i], bv[i], cv[i]) :
+      |                                             ^~
+src/eval.c:1504:10: note: '?' condition is false
+src/eval.c:1505:10: note: Calling 'fma64'
+ 1505 |                                             fma64(av[i], bv[i], cv[i]);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:842:6: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |             ^~~~~~~~~~~~
+src/eval.c:842:6: note: Left side of '||' is false
+src/eval.c:842:22: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |                             ^~~~~~~~~~~~
+src/eval.c:842:2: note: Taking false branch
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |         ^
+src/eval.c:844:6: note: Assuming the condition is false
+  844 |         if (!isfinite(c))
+      |             ^~~~~~~~~~~~
+src/eval.c:844:2: note: Taking false branch
+  844 |         if (!isfinite(c))
+      |         ^
+src/eval.c:846:6: note: Assuming 'a' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |             ^~~~~~
+src/eval.c:846:6: note: Left side of '||' is false
+src/eval.c:846:16: note: Assuming 'b' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |                       ^~~~~~
+src/eval.c:846:2: note: Taking false branch
+  846 |         if (a == 0 || b == 0)
+      |         ^
+src/eval.c:853:6: note: Assuming 'c' is not equal to 0
+  853 |         if (c == 0)
+      |             ^~~~~~
+src/eval.c:853:2: note: Taking false branch
+  853 |         if (c == 0)
+      |         ^
+src/eval.c:866:6: note: Assuming field 'lo' is 0
+  866 |         if (Y.lo) {
+      |             ^~~~
+src/eval.c:866:2: note: Taking false branch
+  866 |         if (Y.lo) {
+      |         ^
+src/eval.c:872:6: note: 'ey' is <= 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |             ^~
+src/eval.c:872:6: note: Left side of '||' is false
+src/eval.c:872:18: note: 'ey' is equal to 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                         ^~
+src/eval.c:872:18: note: Left side of '&&' is true
+src/eval.c:872:31: note: Assuming 'Y.hi' is <= 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                      ^~~~~~~~~~~
+src/eval.c:872:31: note: Left side of '||' is false
+src/eval.c:872:47: note: Assuming 'Y.hi' is not equal to 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                      ^~~~~~~~~~~~
+src/eval.c:872:60: note: Left side of '&&' is false
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                                   ^
+src/eval.c:880:6: note: 'rest' is 0
+  880 |         if (rest)
+      |             ^~~~
+src/eval.c:880:2: note: Taking false branch
+  880 |         if (rest)
+      |         ^
+src/eval.c:882:6: note: Assuming 'sx' is not equal to 'sy'
+  882 |         if (sx == sy) {
+      |             ^~~~~~~~
+src/eval.c:882:2: note: Taking false branch
+  882 |         if (sx == sy) {
+      |         ^
+src/eval.c:887:25: note: Assuming 'X.lo' is >= 'Y.lo'
+  887 |                 R.hi = X.hi - Y.hi - (X.lo < Y.lo);
+      |                                       ^~~~~~~~~~~
+src/eval.c:889:9: note: Field 'hi' is not equal to 0
+  889 |         if (!R.hi && !R.lo)
+      |                ^
+src/eval.c:889:12: note: Left side of '&&' is false
+  889 |         if (!R.hi && !R.lo)
+      |                   ^
+src/eval.c:894:6: note: Assuming the condition is true
+  894 |         if (ex + L < -1022)
+      |             ^~~~~~~~~~~~~~
+src/eval.c:894:2: note: Taking true branch
+  894 |         if (ex + L < -1022)
+      |         ^
+src/eval.c:896:6: note: 's' is > 0
+  896 |         if (s <= 0)
+      |             ^
+src/eval.c:896:2: note: Taking false branch
+  896 |         if (s <= 0)
+      |         ^
+src/eval.c:898:6: note: Assuming the condition is false
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |             ^~~~~~~~~
+src/eval.c:898:2: note: Taking false branch
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |         ^
+src/eval.c:901:49: note: The value 0 is assigned to 'x.lo'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+src/eval.c:901:49: note: Calling 'shl128'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+src/eval.c:780:6: note: 'n' is > 0
+  780 |         if (n <= 0)
+      |             ^
+src/eval.c:780:2: note: Taking false branch
+  780 |         if (n <= 0)
+      |         ^
+src/eval.c:782:6: note: 'n' is >= 64
+  782 |         if (n >= 64) {
+      |             ^
+src/eval.c:782:2: note: Taking true branch
+  782 |         if (n >= 64) {
+      |         ^
+src/eval.c:783:15: note: The result of left shift is undefined because the right operand '1010' is not smaller than 64, the capacity of 'uint64_t'
+  783 |                 r.hi = x.lo << (n - 64);
+      |                        ~~~~~^~~~~~~~~~~
+src/eval.c:783:15: warning: Left shift overflows the capacity of 'uint64_t' [core.BitwiseShift]
+  783 |                 r.hi = x.lo << (n - 64);
+      |                             ^
+src/eval.c:1399:14: note: Assuming 'k' is < 'n'
+ 1399 |         for (k = 0; k < n; k++) {
+      |                     ^~~~~
+src/eval.c:1399:2: note: Loop condition is true.  Entering loop body
+ 1399 |         for (k = 0; k < n; k++) {
+      |         ^
+src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^~~~~~~~~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1401:14: note: Left side of '||' is false
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^~~~~~~~~~~~~~~
+src/ucas.h:103:39: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                       ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/eval.c:1408:3: note: Control jumps to 'case O_FMA:'  at line 1481
+ 1408 |                 switch (op) {
+      |                 ^
+src/eval.c:1488:13: note: Assuming field 'k' is not equal to K_FLOAT
+ 1488 |                         int fw = t->k == K_FLOAT ? t->w : 0;
+      |                                  ^~~~~~~~~~~~~~~
+src/eval.c:1488:13: note: '?' condition is false
+src/eval.c:1489:16: note: Assuming 'i' is < 'np'
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                                     ^~~~~~
+src/eval.c:1489:4: note: Loop condition is true.  Entering loop body
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                         ^
+src/eval.c:1491:9: note: Assuming the condition is false
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1492 |                                     F_UNDEF) {
+      |                                     ~~~~~~~
+src/eval.c:1491:5: note: Taking false branch
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                 ^
+src/eval.c:1497:9: note: 'fw' is 0
+ 1497 |                                 if (fw && float_ftz) {
+      |                                     ^~
+src/eval.c:1497:12: note: Left side of '&&' is false
+ 1497 |                                 if (fw && float_ftz) {
+      |                                        ^
+src/eval.c:1503:15: note: 'fw' is not equal to 32
+ 1503 |                                         orr[i] = fw == 32 ? fma32(av[i], bv[i], cv[i]) :
+      |                                                  ^~
+src/eval.c:1503:15: note: '?' condition is false
+src/eval.c:1504:10: note: 'fw' is not equal to 16
+ 1504 |                                             fw == 16 ? fma16(av[i], bv[i], cv[i]) :
+      |                                             ^~
+src/eval.c:1504:10: note: '?' condition is false
+src/eval.c:1505:10: note: Calling 'fma64'
+ 1505 |                                             fma64(av[i], bv[i], cv[i]);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:842:6: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |             ^~~~~~~~~~~~
+src/eval.c:842:6: note: Left side of '||' is false
+src/eval.c:842:22: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |                             ^~~~~~~~~~~~
+src/eval.c:842:2: note: Taking false branch
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |         ^
+src/eval.c:844:6: note: Assuming the condition is false
+  844 |         if (!isfinite(c))
+      |             ^~~~~~~~~~~~
+src/eval.c:844:2: note: Taking false branch
+  844 |         if (!isfinite(c))
+      |         ^
+src/eval.c:846:6: note: Assuming 'a' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |             ^~~~~~
+src/eval.c:846:6: note: Left side of '||' is false
+src/eval.c:846:16: note: Assuming 'b' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |                       ^~~~~~
+src/eval.c:846:2: note: Taking false branch
+  846 |         if (a == 0 || b == 0)
+      |         ^
+src/eval.c:853:6: note: Assuming 'c' is not equal to 0
+  853 |         if (c == 0)
+      |             ^~~~~~
+src/eval.c:853:2: note: Taking false branch
+  853 |         if (c == 0)
+      |         ^
+src/eval.c:866:6: note: Assuming field 'lo' is 0
+  866 |         if (Y.lo) {
+      |             ^~~~
+src/eval.c:866:2: note: Taking false branch
+  866 |         if (Y.lo) {
+      |         ^
+src/eval.c:872:6: note: 'ey' is <= 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |             ^~
+src/eval.c:872:6: note: Left side of '||' is false
+src/eval.c:872:18: note: 'ey' is equal to 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                         ^~
+src/eval.c:872:18: note: Left side of '&&' is true
+src/eval.c:872:31: note: Assuming 'Y.hi' is <= 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                      ^~~~~~~~~~~
+src/eval.c:872:31: note: Left side of '||' is false
+src/eval.c:872:47: note: Assuming 'Y.hi' is not equal to 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                      ^~~~~~~~~~~~
+src/eval.c:872:60: note: Left side of '&&' is false
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                                   ^
+src/eval.c:880:6: note: 'rest' is 0
+  880 |         if (rest)
+      |             ^~~~
+src/eval.c:880:2: note: Taking false branch
+  880 |         if (rest)
+      |         ^
+src/eval.c:882:6: note: Assuming 'sx' is not equal to 'sy'
+  882 |         if (sx == sy) {
+      |             ^~~~~~~~
+src/eval.c:882:2: note: Taking false branch
+  882 |         if (sx == sy) {
+      |         ^
+src/eval.c:887:25: note: Assuming 'X.lo' is >= 'Y.lo'
+  887 |                 R.hi = X.hi - Y.hi - (X.lo < Y.lo);
+      |                                       ^~~~~~~~~~~
+src/eval.c:889:9: note: Field 'hi' is not equal to 0
+  889 |         if (!R.hi && !R.lo)
+      |                ^
+src/eval.c:889:12: note: Left side of '&&' is false
+  889 |         if (!R.hi && !R.lo)
+      |                   ^
+src/eval.c:894:6: note: Assuming the condition is false
+  894 |         if (ex + L < -1022)
+      |             ^~~~~~~~~~~~~~
+src/eval.c:894:2: note: Taking false branch
+  894 |         if (ex + L < -1022)
+      |         ^
+src/eval.c:896:6: note: Assuming 's' is > 0
+  896 |         if (s <= 0)
+      |             ^~~~~~
+src/eval.c:896:2: note: Taking false branch
+  896 |         if (s <= 0)
+      |         ^
+src/eval.c:898:6: note: Assuming the condition is false
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |             ^~~~~~~~~
+src/eval.c:898:2: note: Taking false branch
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |         ^
+src/eval.c:901:49: note: The value 0 is assigned to 'x.lo'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+src/eval.c:901:49: note: Calling 'shl128'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+src/eval.c:780:6: note: 'n' is > 0
+  780 |         if (n <= 0)
+      |             ^
+src/eval.c:780:2: note: Taking false branch
+  780 |         if (n <= 0)
+      |         ^
+src/eval.c:782:6: note: 'n' is >= 64
+  782 |         if (n >= 64) {
+      |             ^
+src/eval.c:782:2: note: Taking true branch
+  782 |         if (n >= 64) {
+      |         ^
+src/eval.c:783:15: note: The result of left shift is undefined because the right operand is not smaller than 64, the capacity of 'uint64_t'
+  783 |                 r.hi = x.lo << (n - 64);
+      |                        ~~~~~^~~~~~~~~~~
+src/eval.c:1232:7: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^
+src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+src/eval.c:2165:14: note: '?' condition is false
+src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+src/eval.c:2037:6: note: Assuming 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~~~~~~
+src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+src/eval.c:2039:14: note: Assuming 'i' is >= 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+src/eval.c:2043:2: note: Calling 'plan_build'
+ 2043 |         plan_build(&p, roots, (uint32_t)(2 * na), 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:1231:7: note: The value 0 is assigned to 'i'
+ 1231 |         for (i = 0; i < nr; i++) {
+      |              ^~~~~
+src/eval.c:1231:14: note: Assuming 'i' is < 'nr'
+ 1231 |         for (i = 0; i < nr; i++) {
+      |                     ^~~~~~
+src/eval.c:1231:2: note: Loop condition is true.  Entering loop body
+ 1231 |         for (i = 0; i < nr; i++) {
+      |         ^
+src/eval.c:1232:7: note: Branch condition evaluates to a garbage value
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^~~~~~~~~
+src/eval.c:1240:12: warning: Use of memory after it is released [unix.Malloc]
+ 1240 |                 roots[i] = sg_lower(roots0[i]);
+      |                          ^
+src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+src/eval.c:2165:14: note: '?' condition is false
+src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+src/eval.c:2037:6: note: Assuming 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~~~~~~
+src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+src/eval.c:2039:14: note: Assuming 'i' is < 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+src/eval.c:2039:2: note: Loop condition is true.  Entering loop body
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+src/eval.c:2039:14: note: Assuming 'i' is >= 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+src/eval.c:2043:2: note: Calling 'plan_build'
+ 2043 |         plan_build(&p, roots, (uint32_t)(2 * na), 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:1231:2: note: Loop condition is true.  Entering loop body
+ 1231 |         for (i = 0; i < nr; i++) {
+      |         ^
+src/eval.c:1232:7: note: Assuming the condition is true
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^~~~~~~~~
+src/eval.c:1232:7: note: Left side of '&&' is true
+src/eval.c:1232:21: note: Assuming the condition is true
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:1232:3: note: Taking true branch
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                 ^
+src/eval.c:1234:4: note: Memory is released
+ 1234 |                         free(roots);
+      |                         ^~~~~~~~~~~
+src/eval.c:1238:8: note: Assuming 'nm' is null
+ 1238 |                             nm ? nm : "a parameter");
+      |                             ^~
+src/eval.c:1238:8: note: '?' condition is false
+src/eval.c:1240:12: note: Use of memory after it is released
+ 1240 |                 roots[i] = sg_lower(roots0[i]);
+      |                 ~~~~~~~~ ^
+src/eval.c:2061:3: warning: The first element of the 2nd argument is undefined [unix.cstring.UninitializedRead]
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^
+src/eval.c:2061:3: note: Other elements might also be undefined
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:2160:10: note: 'ilo' declared without an initial value
+ 2160 |         int64_t ilo[MAXP], ihi[MAXP];
+      |                 ^~~
+src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+src/eval.c:2165:14: note: '?' condition is false
+src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/eval.c:2173:18: note: Passing value via 2nd parameter 'lo'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |                         ^~~
+src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+src/eval.c:2037:6: note: 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~
+src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+src/eval.c:2039:2: note: Loop condition is true.  Entering loop body
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+src/eval.c:2044:15: note: Assuming field 'n' is 0
+ 2044 |         iv = xcalloc(p.n ? p.n : 1, sizeof *iv);
+      |                      ^~~
+src/eval.c:2044:15: note: '?' condition is false
+src/eval.c:2051:2: note: Loop condition is true.  Entering loop body
+ 2051 |         for (round = 0; round < 4; round++) {
+      |         ^
+src/eval.c:2054:15: note: 'j' is >= field 'np'
+ 2054 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/eval.c:2054:3: note: Loop condition is false. Execution continues on line 2060
+ 2054 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/eval.c:2061:3: note: The first element of the 2nd argument is undefined
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^           ~~
+5 warnings generated.

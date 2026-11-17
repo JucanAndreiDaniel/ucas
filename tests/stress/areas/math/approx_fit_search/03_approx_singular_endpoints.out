@@ -1,0 +1,84 @@
+> approx log(x) in 0..1 degree 4 as f32 norational nosplit noreduce list 2
+  note: log(x) has special points at the interval's ends (at x = 1 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx log(x) on [0, 1] as f32, fma
+  metric: absolute error (the function crosses zero away from the expansion point)
+  checked: the target equals log(x) at 33 points: range reductions and identities for log apply
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    4    12.3         -            10.9         
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130826 f32 in [0, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  75.7 abs                 inf           75.7          4    at x=2.27795078e-41
+      P(x): fma(fma(fma(fma(-1464.82007, x, 2964.99731), x, -1895.29932), x, 402.106842), x, -17.9184341)
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 3.7e+03, probable no better (under 16 operations), expected 1.73e+03; `error ap1 ~ F` says what each means
+  2   minimax   4     estrin+fma  75.7 abs                 inf           75.7          6    at x=2.27795078e-41
+      P(x): fma(-1464.82007, x4, fma(fma(2964.99731, x, -1895.29932), x2, fma(402.106842, x, -17.9184341))) where x2 = x*x, x4 = x2*x2
+> approx 1/x in 0..1 degree 4 as f32 norational nosplit noreduce list 2
+approx 1/x on [0, 1] as f32, fma
+  checked: 1/x is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  no polynomial fit in the degree range
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+> approx 1/sqrt(x) in 0..1 degree 4 as f32 norational nosplit noreduce list 2
+approx 1/sqrt(x) on [0, 1] as f32, fma
+  metric: relative error
+  checked: the target equals rsqrt(x) at 33 points: range reductions and identities for rsqrt apply
+  fits in real arithmetic (max relative error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    4    0.998        -            1            
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  1.68e+07 ulp             1             2.1e+20       4    at x=1.29254859e-26
+      P(x): fma(fma(fma(fma(279.896362, x, -642.998535), x, 499.811371), x, -149.926392), x, 15.2171736)
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 4.27e+05, probable no better (under 16 operations), expected 1.51e+05; `error ap1 ~ F` says what each means
+  2   minimax   4     estrin+fma  1.68e+07 ulp             1             2.1e+20       6    at x=1.29254859e-26
+      P(x): fma(279.896362, x4, fma(fma(-642.998535, x, 499.811371), x2, fma(-149.926392, x, 15.2171736))) where x2 = x*x, x4 = x2*x2
+> approx 1/x in 1e-3..1 degree 4 as f32 list 1
+approx 1/x on [0.00100000005, 1] as f32, fma
+  metric: relative error
+  fits in real arithmetic (max relative error of P(t)):
+    deg  cheb interp  cheb econ    minimax
+    4    0.952        -            0.952        
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131022 f32 in [0.00100000005, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  1.56e+07 ulp             0.952         952           5    at x=0.00100000005
+      P(t): fma(fma(fma(fma(489.853607, t, -246.151443), t, -29.6963043), t, 15.0773115), t, 1.99047077) where t = x - 0.5
+      rounding of ap1, first order, 5 operations, relative, in u = 2^-24: worst case 251, probable no better (under 16 operations), expected 96.4; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]' (dominated or worse)
+> approx log(x) in 1..1.5 degree 5 as f32 norational nosplit noreduce list 1
+  note: log(x) has special points at the interval's ends (at x = 1 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx log(x) on [1, 1.5] as f32, fma
+  checked: simple zero at x = 1: fitting (x-1.0)*P(t), exact zero
+  metric: relative error
+  checked: the target equals log(x) at 33 points: range reductions and identities for log apply
+  fits in real arithmetic (max relative error of (x-1.0)*P(t)):
+    deg  cheb interp  cheb econ    minimax
+    5    4.05e-06     3.86e-06     3.79e-06     
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 98303 f32 in [1, 1.5]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  60 ulp (64)              4.12e-06      1.66e-06      6    at x=1.00006104
+      (x-1.0)*P(t): t*fma(fma(fma(fma(0.0821429193, t, -0.2084831), t, 0.326669782), t, -0.499607831), t, 0.999996424) where t = x - 1.0
+      rounding of ap1, first order, 6 operations, relative, in u = 2^-24: worst case 3.16, probable no better (under 16 operations), expected 1; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]' (dominated or worse)
+> approx sin(x) - 0.3 in 0..0.6 degree 4 as f32 norational nosplit noreduce list 1
+approx sin(x) - 0.3 on [0, 0.600000024] as f32, fma
+  metric: absolute error (the function crosses zero away from the expansion point)
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    4    1.22e-06     1.21e-06     1.2e-06      
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131063 f32 in [0, 0.600000024]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  1.24e-06 abs             63.2          1.24e-06      4    at x=0.542842805
+      P(x): fma(fma(fma(fma(0.0122488411, x, -0.173027843), x, 0.00135327899), x, 0.999899089), x, -0.29999879)
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 74.7, probable no better (under 16 operations), expected 41.3; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]'

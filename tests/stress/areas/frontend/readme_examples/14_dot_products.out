@@ -1,0 +1,44 @@
+> show sudot4x8(0xff000001, 0x01000002)
+_() = 1
+  -> i32
+> show udot4x8sat(0xffffffff, 0xffffffff, 0xfffffff0)
+_() = 4294967295
+  -> u32
+> range sdot4x8(a: u8, b: u8)
+range of sdot4x8(a, b) -> i32:
+  -16256..16384
+  fits in i16
+  over all 65536 points of the domain
+> f(x: u32) = (x & 255)*3 + ((x >> 8) & 255)*5 + ((x >> 16) & 255)*7 + (x >> 24)*9
+> find f 1
+find f: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 20  u32(asint(3(asfloat(x & 0xff | 0x4b000000) - 8388608) + 5(asfloat(x >> 8 & 0xff | 0x4b000000) - 8388608) + 7(asfloat(x >> 0x10 & 0xff | 0x4b000000) - 8388608) + 9(asfloat(x >> 0x18 | 0x4b000000) - 8388608) + 12582912) - 1262485504) the integer arithmetic 3(x & 0xff) + 5(x >> 8 & 0xff) + 7(x >> 0x10 & 0xff) + 9(x >… (7 more characters) on f32, converted by the bits (derived; checked on a sample)
+      holds where every value in it is an integer in [0, 6120], inside (-2^24, 2^24) (interval arithmetic over the parameters' ranges)
+      f32 holds every integer below 2^24 in magnitude: each operand converts exactly, and each +, -, * has an exact result that is such an integer, so no operation rounds (a*b + c contracted into one fma rounds a*b + c once: the same integer)
+      4 operands converted by the bits: i | 0x4B000000 (0 <= i < 2^23) and i + 0x4B400000 (-2^22 <= i < 2^22) are the bits of 2^23 + i and 1.5*2^23 + i, and subtracting that constant is exact
+      the float result + 1.5*2^23 is an integer in [2^23, 2^24), where every integer is an f32: the add does not round
+      its bits are 0x4B000000 + (the float result + 2^22) = 0x4B400000 + the float result (exponent field 150, the mantissa the integer less 2^23): subtracting 0x4B400000 leaves the float result
+  dot products under gt1030 (sums of products laid into lanes; cost 21 as written):
+  cost 1   udot4x8(x, 0x9070503)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (x & 0xff) * 3, lane 1: (x >> 8 & 0xff) * 5, lane 2: (x >> 0x10 & 0xff) * 7, lane 3: (x >> 0x18) * 9
+           x & 0xff is bits 0..7 of x: lane 0 as it is
+           x >> 8 & 0xff is bits 8..15 of x: lane 1 as it is
+           x >> 0x10 & 0xff is bits 16..23 of x: lane 2 as it is
+           x >> 0x18 is bits 24..31 of x: lane 3 as it is
+           udot4x8's sum is in 0..6120: it does not wrap
+           proved by SAT: 755 AIG nodes, 0 conflicts
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g(a: u32 in 0..255, b: u32 in 0..255, c: u32) = a*b + c
+> find g 1
+find g: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   udot4x8(a, b) + c
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: a * b
+           a in 0..255 (proved range)
+           b in 0..255 (proved range)
+           udot4x8's sum is in 0..65025: it does not wrap
+           proved by SAT: 828 AIG nodes, 0 conflicts
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

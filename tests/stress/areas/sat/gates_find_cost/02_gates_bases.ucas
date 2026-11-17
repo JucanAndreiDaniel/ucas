@@ -1,0 +1,13 @@
+# built-in, custom, bogus and degenerate bases; minimum-network proof.
+basis x86bmi2 : c { andn(x, y) = ~x & y }
+basis lut2 { f(x, y) = lut }
+basis lut3 { f(x, y, z) = lut }
+basis onlynot { not(x) = ~x }
+maj(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+gates maj basis x86bmi2
+gates maj basis lut2 max 4
+gates maj basis lut3
+gates maj basis onlynot max 3
+gates maj basis nosuch
+gates maj basis c
+gates npn

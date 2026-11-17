@@ -1,0 +1,46 @@
+> snippets grow inputs 0 width 8 cost 1
+16_grow_invalid.ucas:1:38: error: snippets: inputs 0: from 1 to 3
+    snippets grow inputs 0 width 8 cost 1
+                                         ^
+> snippets grow inputs 4 width 8 cost 1
+16_grow_invalid.ucas:2:38: error: snippets: inputs 4: from 1 to 3
+    snippets grow inputs 4 width 8 cost 1
+                                         ^
+> snippets grow inputs 1 width 64 cost 1
+16_grow_invalid.ucas:3:39: error: snippets: width 64: 8, 16 or 32
+    snippets grow inputs 1 width 64 cost 1
+                                          ^
+> snippets grow inputs 1 width 7 cost 1
+16_grow_invalid.ucas:4:38: error: snippets: width 7: 8, 16 or 32
+    snippets grow inputs 1 width 7 cost 1
+                                         ^
+> snippets grow inputs 1 width 8 cost 0
+16_grow_invalid.ucas:5:38: error: snippets: cost 0: from 1 to 30
+    snippets grow inputs 1 width 8 cost 0
+                                         ^
+> snippets grow inputs 1 width 8 cost 31
+16_grow_invalid.ucas:6:39: error: snippets: cost 31: from 1 to 30
+    snippets grow inputs 1 width 8 cost 31
+                                          ^
+> snippets grow inputs 1 width 8 cost 1 seconds 0
+16_grow_invalid.ucas:7:48: error: snippets: seconds 0: more than 0, at most 120 (a slice; grow again to go on)
+    snippets grow inputs 1 width 8 cost 1 seconds 0
+                                                   ^
+> snippets grow inputs 1 width 8 cost 1 seconds 121
+16_grow_invalid.ucas:8:50: error: snippets: seconds 121: more than 0, at most 120 (a slice; grow again to go on)
+    snippets grow inputs 1 width 8 cost 1 seconds 121
+                                                     ^
+> snippets grow inputs 1 width 8 cost 1 seconds 1e30
+16_grow_invalid.ucas:9:51: error: snippets: seconds 1e+30: more than 0, at most 120 (a slice; grow again to go on)
+    snippets grow inputs 1 width 8 cost 1 seconds 1e30
+                                                      ^
+> snippets grow bogus fresh inputs 1 width 8 cost 1 seconds 0.2
+snippets bogus: 1 input of 8 bits under gt1030, 54 programs with distinct values on 32 points, every one up to cost 1 (new)
+  wrote bogus.snip
+> snippets grow
+snippets: 2 inputs of 32 bits under gt1030, 78812 programs with distinct values on 32 points, every one up to cost 3 (new)
+  cost 4 not finished (the bank is full): its programs are not kept; grow again (a bank this size holds no more)
+> snippets grow cost 1 fresh seconds 0.2 width 8 inputs 1
+snippets: 1 input of 8 bits under gt1030, 54 programs with distinct values on 32 points, every one up to cost 1 (new)
+> snippets grow fresh fresh inputs 1 width 8 cost 1 seconds 0.2
+snippets: 1 input of 8 bits under gt1030, 54 programs with distinct values on 32 points, every one up to cost 1 (new)

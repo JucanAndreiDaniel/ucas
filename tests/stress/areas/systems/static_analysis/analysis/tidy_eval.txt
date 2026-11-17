@@ -1,0 +1,1709 @@
+/home/andrew/Code/ucas/src/eval.c:27:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   27 |         int k = TYK(t), w = TYW(t);
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:27:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   27 |         int k = TYK(t), w = TYW(t);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:40:11: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   21 |         it->k = (uint8_t)k;
+      |                  ^
+/home/andrew/Code/ucas/src/eval.c:42:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   42 |         it->mask = w >= 64 ? ~0ULL : (1ULL << w) - 1;
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/eval.c:44:24: warning: no header providing "INT64_MIN" is directly included [misc-include-cleaner]
+   44 |                 it->smin = w >= 64 ? INT64_MIN : -(int64_t)(1ULL << (w - 1));
+      |                                      ^
+/home/andrew/Code/ucas/src/eval.c:44:38: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   44 |                 it->smin = w >= 64 ? INT64_MIN : -(int64_t)(1ULL << (w - 1));
+      |                                                    ^
+/home/andrew/Code/ucas/src/eval.c:44:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   44 |                 it->smin = w >= 64 ? INT64_MIN : -(int64_t)(1ULL << (w - 1));
+      |                                                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:45:24: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+   45 |                 it->smax = w >= 64 ? INT64_MAX : (int64_t)((1ULL << (w - 1)) - 1);
+      |                                      ^
+/home/andrew/Code/ucas/src/eval.c:45:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   45 |                 it->smax = w >= 64 ? INT64_MAX : (int64_t)((1ULL << (w - 1)) - 1);
+      |                                                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:48:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   48 |                 it->smin = w >= 64 ? INT64_MIN : -(int64_t)(1ULL << (w - 1));
+      |                                                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:49:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   49 |                 it->smax = w >= 64 ? INT64_MAX : (int64_t)((1ULL << (w - 1)) - 1);
+      |                                                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:55:15: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   55 | static inline uint64_t
+      |               ^
+/home/andrew/Code/ucas/src/eval.c:68:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   68 |         m = 1ULL << (t->w - 1);
+      |                  ~~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:76:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+   76 |         switch (t->k) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:142:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  142 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:142:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/eval.c:165:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  165 |                         *fl |= F_UNDEF | F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:169:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  169 |                 raw = sh ? ua << sh : ua;
+      |                               ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:170:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  170 |                 uw = sh && (ua >> (t->w - sh)) != 0;
+      |                                ~~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:173:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  173 |                         sr = so ? 0 : (int64_t)((uint64_t)sa << sh);
+      |                                                              ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:176:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  176 |                         so = (sr >> sh) != sa;
+      |                               ^~ ~~
+/home/andrew/Code/ucas/src/eval.c:180:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  180 |                         *fl |= (uw ? F_UW : 0) | F_SW;
+      |                             ~~ ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:182:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  182 |                                 *fl |= F_UB;
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:735:14: note: expanded from macro 'F_UB'
+  735 | #define F_UB 8     /* undefined behaviour in C */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:189:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  189 |                         *fl |= F_OVF | F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:737:15: note: expanded from macro 'F_OVF'
+  737 | #define F_OVF 32   /* left the 64-bit range of the ideal evaluator */
+      |               ^
+/home/andrew/Code/ucas/src/eval.c:197:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |                 *fl |= F_UW;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:733:14: note: expanded from macro 'F_UW'
+  733 | #define F_UW 2     /* the result wrapped as an unsigned value */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:199:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  199 |                 *fl |= F_SW;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:734:14: note: expanded from macro 'F_SW'
+  734 | #define F_SW 4     /* the result wrapped as a signed value */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:201:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  201 |                         *fl |= F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:735:14: note: expanded from macro 'F_UB'
+  735 | #define F_UB 8     /* undefined behaviour in C */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:223:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  223 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:223:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/eval.c:234:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  234 |                         *fl |= F_UNDEF | F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:246:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  246 |                                 *fl |= F_OVF | F_UNDEF;
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:737:15: note: expanded from macro 'F_OVF'
+  737 | #define F_OVF 32   /* left the 64-bit range of the ideal evaluator */
+      |               ^
+/home/andrew/Code/ucas/src/eval.c:249:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  249 |                         *fl |= F_SW | F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:734:14: note: expanded from macro 'F_SW'
+  734 | #define F_SW 4     /* the result wrapped as a signed value */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:263:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         *fl |= F_UNDEF | F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:267:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  267 |                         return inorm(t, asu(t, a) >> b);
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/eval.c:269:20: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  269 |                 return sa < 0 ? ~(~sa >> b) : sa >> b;
+      |                                 ~^~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:269:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  269 |                 return sa < 0 ? ~(~sa >> b) : sa >> b;
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/eval.c:269:22: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  269 |                 return sa < 0 ? ~(~sa >> b) : sa >> b;
+      |                                   ~^~
+/home/andrew/Code/ucas/src/eval.c:269:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  269 |                 return sa < 0 ? ~(~sa >> b) : sa >> b;
+      |                                               ^~ ~~
+/home/andrew/Code/ucas/src/eval.c:272:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  272 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:280:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  280 |                                 if (b & 1)
+      |                                     ^ ~
+/home/andrew/Code/ucas/src/eval.c:282:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  282 |                                 b >>= 1;
+      |                                 ^ ~~~
+/home/andrew/Code/ucas/src/eval.c:285:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  285 |                                 if (*fl & F_UNDEF)
+      |                                         ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:292:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  292 |                         if (*fl & F_UNDEF)
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:316:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  316 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:324:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  324 |                         *fl |= F_UB;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:735:14: note: expanded from macro 'F_UB'
+  735 | #define F_UB 8     /* undefined behaviour in C */
+      |              ^
+/home/andrew/Code/ucas/src/eval.c:329:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  329 |                         while (!(ua >> (t->w - 1 - r) & 1))
+      |                                     ~~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:329:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  329 |                         while (!(ua >> (t->w - 1 - r) & 1))
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/eval.c:332:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  332 |                         while (!(ua >> r & 1))
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:332:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  332 |                         while (!(ua >> r & 1))
+      |                                          ~ ^
+/home/andrew/Code/ucas/src/eval.c:359:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  359 |                                 *fl |= F_OVF | F_UNDEF;
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:737:15: note: expanded from macro 'F_OVF'
+  737 | #define F_OVF 32   /* left the 64-bit range of the ideal evaluator */
+      |               ^
+/home/andrew/Code/ucas/src/eval.c:366:53: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  366 |                 if (rneg != neg || (uint64_t)r != (t->k == K_SINT ? (uint64_t)r :
+      |                                                                   ^
+/home/andrew/Code/ucas/src/eval.c:366:67: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  366 |                 if (rneg != neg || (uint64_t)r != (t->k == K_SINT ? (uint64_t)r :
+      |                                                                                 ^
+/home/andrew/Code/ucas/src/eval.c:369:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  369 |                         *fl |= F_TRUNC;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:736:17: note: expanded from macro 'F_TRUNC'
+  736 | #define F_TRUNC 16 /* conversion changed the value */
+      |                 ^~
+/home/andrew/Code/ucas/src/eval.c:372:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  372 |         *fl |= F_UNDEF;
+      |             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:387:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  387 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:394:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  394 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:401:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  401 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:411:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  411 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:419:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  419 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:428:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  428 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:436:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  436 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:443:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  443 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:451:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  451 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:460:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  460 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:466:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  466 |                         *fl |= F_UNDEF;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:483:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                 *fl |= F_UNDEF;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:487:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  487 |                 *fl |= F_UNDEF;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:611:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  611 |         sign = u >> 63 << 15;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:611:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  611 |         sign = u >> 63 << 15;
+      |                        ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:613:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |                 uint64_t frac = u >> 42 & 0x3ff;
+      |                                   ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:613:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |                 uint64_t frac = u >> 42 & 0x3ff;
+      |                                         ~ ^~~~~
+/home/andrew/Code/ucas/src/eval.c:614:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  614 |                 return sign | 0x7c00 | (frac ? frac : 0x200);
+      |                             ~ ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:618:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  618 |                 return sign | 0x7c00;
+      |                             ~ ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:622:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  622 |         return sign | (uint64_t)(e - 1 + 15) << 10 |
+      |                                              ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:623:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  623 |             ((uint64_t)ldexp(a, 10 - (e - 1)) & 0x3ff);
+      |                                               ~ ^~~~~
+/home/andrew/Code/ucas/src/eval.c:629:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  629 |         uint64_t frac = b & 0x3ff, u;
+      |                           ~ ^~~~~
+/home/andrew/Code/ucas/src/eval.c:630:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  630 |         int e = (int)(b >> 10 & 0x1f);
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:630:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  630 |         int e = (int)(b >> 10 & 0x1f);
+      |                               ~ ^~~~
+/home/andrew/Code/ucas/src/eval.c:634:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 u = (b >> 15 & 1) << 63 | 0x7ff0000000000000ULL | frac << 42;
+      |                        ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:634:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 u = (b >> 15 & 1) << 63 | 0x7ff0000000000000ULL | frac << 42;
+      |                              ~ ^
+/home/andrew/Code/ucas/src/eval.c:634:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 u = (b >> 15 & 1) << 63 | 0x7ff0000000000000ULL | frac << 42;
+      |                                   ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:634:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 u = (b >> 15 & 1) << 63 | 0x7ff0000000000000ULL | frac << 42;
+      |                                                                        ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:638:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  638 |         v = e ? ldexp((double)(frac | 0x400), e - 25) :
+      |                                     ~ ^~~~~
+/home/andrew/Code/ucas/src/eval.c:640:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  640 |         return b >> 15 & 1 ? -v : v;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:640:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  640 |         return b >> 15 & 1 ? -v : v;
+      |                        ~ ^
+/home/andrew/Code/ucas/src/eval.c:650:3: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  650 |                 uint32_t u;
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:688:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  688 |         return 1ULL << (w - 1);
+      |                     ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:754:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  754 |         uint64_t al = a & 0xffffffffu, ah = a >> 32, bl = b & 0xffffffffu,
+      |                                               ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:755:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  755 |             bh = b >> 32, ll = al * bl, lh = al * bh, hl = ah * bl, hh = ah * bh,
+      |                    ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:756:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  756 |             mid = (ll >> 32) + (lh & 0xffffffffu) + (hl & 0xffffffffu);
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:759:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  759 |         r.lo = (mid << 32) | (ll & 0xffffffffu);
+      |                     ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:760:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |         r.hi = hh + (lh >> 32) + (hl >> 32) + (mid >> 32);
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:760:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |         r.hi = hh + (lh >> 32) + (hl >> 32) + (mid >> 32);
+      |                                      ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:760:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |         r.hi = hh + (lh >> 32) + (hl >> 32) + (mid >> 32);
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:770:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                 if (k >= 64 ? (x.hi >> (k - 64)) & 1 : (x.lo >> k) & 1)
+      |                                     ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:770:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                 if (k >= 64 ? (x.hi >> (k - 64)) & 1 : (x.lo >> k) & 1)
+      |                                                  ~ ^
+/home/andrew/Code/ucas/src/eval.c:770:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                 if (k >= 64 ? (x.hi >> (k - 64)) & 1 : (x.lo >> k) & 1)
+      |                                                              ~~ ^
+/home/andrew/Code/ucas/src/eval.c:770:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                 if (k >= 64 ? (x.hi >> (k - 64)) & 1 : (x.lo >> k) & 1)
+      |                                                                    ~ ^
+/home/andrew/Code/ucas/src/eval.c:783:15: warning: Left shift by '1010' overflows the capacity of 'uint64_t' [clang-analyzer-core.BitwiseShift]
+  783 |                 r.hi = x.lo << (n - 64);
+      |                             ^
+/home/andrew/Code/ucas/src/eval.c:1399:14: note: Assuming 'k' is < 'n'
+ 1399 |         for (k = 0; k < n; k++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/eval.c:1399:2: note: Loop condition is true.  Entering loop body
+ 1399 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Left side of '||' is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:39: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                       ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1408:3: note: Control jumps to 'case O_FMA:'  at line 1481
+ 1408 |                 switch (op) {
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1488:13: note: Assuming field 'k' is not equal to K_FLOAT
+ 1488 |                         int fw = t->k == K_FLOAT ? t->w : 0;
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1488:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1489:16: note: Assuming 'i' is < 'np'
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:1489:4: note: Loop condition is true.  Entering loop body
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/eval.c:1491:9: note: Assuming the condition is false
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1492 |                                     F_UNDEF) {
+      |                                     ~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1491:5: note: Taking false branch
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                 ^
+/home/andrew/Code/ucas/src/eval.c:1497:9: note: 'fw' is 0
+ 1497 |                                 if (fw && float_ftz) {
+      |                                     ^~
+/home/andrew/Code/ucas/src/eval.c:1497:12: note: Left side of '&&' is false
+ 1497 |                                 if (fw && float_ftz) {
+      |                                        ^
+/home/andrew/Code/ucas/src/eval.c:1503:15: note: 'fw' is not equal to 32
+ 1503 |                                         orr[i] = fw == 32 ? fma32(av[i], bv[i], cv[i]) :
+      |                                                  ^~
+/home/andrew/Code/ucas/src/eval.c:1503:15: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1504:10: note: 'fw' is not equal to 16
+ 1504 |                                             fw == 16 ? fma16(av[i], bv[i], cv[i]) :
+      |                                             ^~
+/home/andrew/Code/ucas/src/eval.c:1504:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1505:10: note: Calling 'fma64'
+ 1505 |                                             fma64(av[i], bv[i], cv[i]);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:6: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:842:22: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:2: note: Taking false branch
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:844:6: note: Assuming the condition is false
+  844 |         if (!isfinite(c))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:844:2: note: Taking false branch
+  844 |         if (!isfinite(c))
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:846:6: note: Assuming 'a' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:846:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:846:16: note: Assuming 'b' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |                       ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:846:2: note: Taking false branch
+  846 |         if (a == 0 || b == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:853:6: note: Assuming 'c' is not equal to 0
+  853 |         if (c == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:853:2: note: Taking false branch
+  853 |         if (c == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:866:6: note: Assuming field 'lo' is 0
+  866 |         if (Y.lo) {
+      |             ^~~~
+/home/andrew/Code/ucas/src/eval.c:866:2: note: Taking false branch
+  866 |         if (Y.lo) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:872:6: note: 'ey' is <= 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |             ^~
+/home/andrew/Code/ucas/src/eval.c:872:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:872:18: note: 'ey' is equal to 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                         ^~
+/home/andrew/Code/ucas/src/eval.c:872:18: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/eval.c:872:31: note: Assuming 'Y.hi' is <= 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                      ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:872:31: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:872:47: note: Assuming 'Y.hi' is not equal to 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                      ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:872:60: note: Left side of '&&' is false
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/eval.c:880:6: note: 'rest' is 0
+  880 |         if (rest)
+      |             ^~~~
+/home/andrew/Code/ucas/src/eval.c:880:2: note: Taking false branch
+  880 |         if (rest)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:882:6: note: Assuming 'sx' is not equal to 'sy'
+  882 |         if (sx == sy) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:882:2: note: Taking false branch
+  882 |         if (sx == sy) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:887:25: note: Assuming 'X.lo' is >= 'Y.lo'
+  887 |                 R.hi = X.hi - Y.hi - (X.lo < Y.lo);
+      |                                       ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:889:9: note: Field 'hi' is not equal to 0
+  889 |         if (!R.hi && !R.lo)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:889:12: note: Left side of '&&' is false
+  889 |         if (!R.hi && !R.lo)
+      |                   ^
+/home/andrew/Code/ucas/src/eval.c:894:6: note: Assuming the condition is true
+  894 |         if (ex + L < -1022)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:894:2: note: Taking true branch
+  894 |         if (ex + L < -1022)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:896:6: note: 's' is > 0
+  896 |         if (s <= 0)
+      |             ^
+/home/andrew/Code/ucas/src/eval.c:896:2: note: Taking false branch
+  896 |         if (s <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:898:6: note: Assuming the condition is false
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:898:2: note: Taking false branch
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:901:49: note: The value 0 is assigned to 'x.lo'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:901:49: note: Calling 'shl128'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:780:6: note: 'n' is > 0
+  780 |         if (n <= 0)
+      |             ^
+/home/andrew/Code/ucas/src/eval.c:780:2: note: Taking false branch
+  780 |         if (n <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:782:6: note: 'n' is >= 64
+  782 |         if (n >= 64) {
+      |             ^
+/home/andrew/Code/ucas/src/eval.c:782:2: note: Taking true branch
+  782 |         if (n >= 64) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:783:15: note: The result of left shift is undefined because the right operand '1010' is not smaller than 64, the capacity of 'uint64_t'
+  783 |                 r.hi = x.lo << (n - 64);
+      |                        ~~~~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:783:15: warning: Left shift overflows the capacity of 'uint64_t' [clang-analyzer-core.BitwiseShift]
+  783 |                 r.hi = x.lo << (n - 64);
+      |                             ^
+/home/andrew/Code/ucas/src/eval.c:1399:14: note: Assuming 'k' is < 'n'
+ 1399 |         for (k = 0; k < n; k++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/eval.c:1399:2: note: Loop condition is true.  Entering loop body
+ 1399 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Left side of '||' is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: note: Assuming the condition is false
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:39: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                       ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1408:3: note: Control jumps to 'case O_FMA:'  at line 1481
+ 1408 |                 switch (op) {
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1488:13: note: Assuming field 'k' is not equal to K_FLOAT
+ 1488 |                         int fw = t->k == K_FLOAT ? t->w : 0;
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1488:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1489:16: note: Assuming 'i' is < 'np'
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:1489:4: note: Loop condition is true.  Entering loop body
+ 1489 |                         for (i = 0; i < np; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/eval.c:1491:9: note: Assuming the condition is false
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1492 |                                     F_UNDEF) {
+      |                                     ~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1491:5: note: Taking false branch
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                 ^
+/home/andrew/Code/ucas/src/eval.c:1497:9: note: 'fw' is 0
+ 1497 |                                 if (fw && float_ftz) {
+      |                                     ^~
+/home/andrew/Code/ucas/src/eval.c:1497:12: note: Left side of '&&' is false
+ 1497 |                                 if (fw && float_ftz) {
+      |                                        ^
+/home/andrew/Code/ucas/src/eval.c:1503:15: note: 'fw' is not equal to 32
+ 1503 |                                         orr[i] = fw == 32 ? fma32(av[i], bv[i], cv[i]) :
+      |                                                  ^~
+/home/andrew/Code/ucas/src/eval.c:1503:15: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1504:10: note: 'fw' is not equal to 16
+ 1504 |                                             fw == 16 ? fma16(av[i], bv[i], cv[i]) :
+      |                                             ^~
+/home/andrew/Code/ucas/src/eval.c:1504:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1505:10: note: Calling 'fma64'
+ 1505 |                                             fma64(av[i], bv[i], cv[i]);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:6: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:842:22: note: Assuming the condition is false
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:842:2: note: Taking false branch
+  842 |         if (!isfinite(a) || !isfinite(b))
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:844:6: note: Assuming the condition is false
+  844 |         if (!isfinite(c))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:844:2: note: Taking false branch
+  844 |         if (!isfinite(c))
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:846:6: note: Assuming 'a' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:846:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:846:16: note: Assuming 'b' is not equal to 0
+  846 |         if (a == 0 || b == 0)
+      |                       ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:846:2: note: Taking false branch
+  846 |         if (a == 0 || b == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:853:6: note: Assuming 'c' is not equal to 0
+  853 |         if (c == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:853:2: note: Taking false branch
+  853 |         if (c == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:866:6: note: Assuming field 'lo' is 0
+  866 |         if (Y.lo) {
+      |             ^~~~
+/home/andrew/Code/ucas/src/eval.c:866:2: note: Taking false branch
+  866 |         if (Y.lo) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:872:6: note: 'ey' is <= 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |             ^~
+/home/andrew/Code/ucas/src/eval.c:872:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:872:18: note: 'ey' is equal to 'ex'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                         ^~
+/home/andrew/Code/ucas/src/eval.c:872:18: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/eval.c:872:31: note: Assuming 'Y.hi' is <= 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                      ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:872:31: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/eval.c:872:47: note: Assuming 'Y.hi' is not equal to 'X.hi'
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                      ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:872:60: note: Left side of '&&' is false
+  872 |         if (ey > ex || (ey == ex && (Y.hi > X.hi || (Y.hi == X.hi &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/eval.c:880:6: note: 'rest' is 0
+  880 |         if (rest)
+      |             ^~~~
+/home/andrew/Code/ucas/src/eval.c:880:2: note: Taking false branch
+  880 |         if (rest)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:882:6: note: Assuming 'sx' is not equal to 'sy'
+  882 |         if (sx == sy) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:882:2: note: Taking false branch
+  882 |         if (sx == sy) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:887:25: note: Assuming 'X.lo' is >= 'Y.lo'
+  887 |                 R.hi = X.hi - Y.hi - (X.lo < Y.lo);
+      |                                       ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:889:9: note: Field 'hi' is not equal to 0
+  889 |         if (!R.hi && !R.lo)
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:889:12: note: Left side of '&&' is false
+  889 |         if (!R.hi && !R.lo)
+      |                   ^
+/home/andrew/Code/ucas/src/eval.c:894:6: note: Assuming the condition is false
+  894 |         if (ex + L < -1022)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:894:2: note: Taking false branch
+  894 |         if (ex + L < -1022)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:896:6: note: Assuming 's' is > 0
+  896 |         if (s <= 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:896:2: note: Taking false branch
+  896 |         if (s <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:898:6: note: Assuming the condition is false
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:898:2: note: Taking false branch
+  898 |         if (s > L + 1)          /* below half the smallest subnormal */
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:901:49: note: The value 0 is assigned to 'x.lo'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:901:49: note: Calling 'shl128'
+  901 |                 struct u128 q = shr128(R, s, &sticky), back = shl128(q, s);
+      |                                                               ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:780:6: note: 'n' is > 0
+  780 |         if (n <= 0)
+      |             ^
+/home/andrew/Code/ucas/src/eval.c:780:2: note: Taking false branch
+  780 |         if (n <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:782:6: note: 'n' is >= 64
+  782 |         if (n >= 64) {
+      |             ^
+/home/andrew/Code/ucas/src/eval.c:782:2: note: Taking true branch
+  782 |         if (n >= 64) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:783:15: note: The result of left shift is undefined because the right operand is not smaller than 64, the capacity of 'uint64_t'
+  783 |                 r.hi = x.lo << (n - 64);
+      |                        ~~~~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:783:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  783 |                 r.hi = x.lo << (n - 64);
+      |                             ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:786:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  786 |                 r.hi = x.hi << n | x.lo >> (64 - n);
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/eval.c:786:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  786 |                 r.hi = x.hi << n | x.lo >> (64 - n);
+      |                                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:787:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                 r.lo = x.lo << n;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/eval.c:807:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  807 |                 *rest = x.lo != 0 || (n > 64 && (x.hi << (128 - n)) != 0);
+      |                                                       ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:808:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  808 |                 r.lo = x.hi >> (n - 64);
+      |                             ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:811:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  811 |                 *rest = (x.lo << (64 - n)) != 0;
+      |                               ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:812:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |                 r.lo = x.lo >> n | x.hi << (64 - n);
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/eval.c:812:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |                 r.lo = x.lo >> n | x.hi << (64 - n);
+      |                                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:813:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  813 |                 r.hi = x.hi >> n;
+      |                             ~~ ^
+/home/andrew/Code/ucas/src/eval.c:825:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  825 |         be = (int)((u >> 52) & 0x7ff);
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:825:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  825 |         be = (int)((u >> 52) & 0x7ff);
+      |                              ~ ^~~~~
+/home/andrew/Code/ucas/src/eval.c:828:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  828 |                 *m |= 1ULL << 52;
+      |                            ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:881:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  881 |                 Y.lo |= 1;
+      |                      ~~ ^
+/home/andrew/Code/ucas/src/eval.c:906:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  906 |                 half.hi = s - 1 >= 64 ? 1ULL << (s - 1 - 64) : 0;
+      |                                              ~~ ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:907:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  907 |                 half.lo = s - 1 < 64 ? 1ULL << (s - 1) : 0;
+      |                                             ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:909:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  909 |                     (rr.hi == half.hi && rr.lo == half.lo && (q.lo & 1)))
+      |                                                                    ~ ^
+/home/andrew/Code/ucas/src/eval.c:985:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  985 |                 if (!(u & 1)) {
+      |                         ~ ^
+/home/andrew/Code/ucas/src/eval.c:1090:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1090 |                 *fl |= F_UNDEF;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1108:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1108 |                 *fl |= F_NAN;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:738:15: note: expanded from macro 'F_NAN'
+  738 | #define F_NAN 64   /* IEEE: produced a NaN from non-NaN operands */
+      |               ^~
+/home/andrew/Code/ucas/src/eval.c:1110:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1110 |                 *fl |= F_INF;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:739:15: note: expanded from macro 'F_INF'
+  739 | #define F_INF 128  /* IEEE: produced an infinity from finite operands */
+      |               ^~~
+/home/andrew/Code/ucas/src/eval.c:1155:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1155 |                 *fl |= F_UNDEF | F_UB;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1160:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1160 |                 *fl |= F_TRUNC | F_UB;
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:736:17: note: expanded from macro 'F_TRUNC'
+  736 | #define F_TRUNC 16 /* conversion changed the value */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1166:1: warning: function 'fold_const' can be made static to enforce internal linkage [misc-use-internal-linkage]
+ 1165 | int
+      | static 
+ 1166 | fold_const(int op, ty_t t, nid a, nid b, nid c, int64_t *ri, double *rr)
+      | ^
+/home/andrew/Code/ucas/src/eval.c:1178:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1178 |                 return !(fl & F_UNDEF);
+      |                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1183:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1183 |                 if (TYK(t) == K_FLOAT && TYW(t) == 32)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1183:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1183 |                 if (TYK(t) == K_FLOAT && TYW(t) == 32)
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1185:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1185 |                 else if (TYK(t) == K_FLOAT && TYW(t) == 16)
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1185:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1185 |                 else if (TYK(t) == K_FLOAT && TYW(t) == 16)
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1193:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1193 |         if (TY_FP(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1195:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1195 |                         *rr = frombits(TYW(t), (uint64_t)N.ki[a]);
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1197:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1197 |                         *rr = TY_FP(ta) ? N.kr[a] : TYK(t) == K_FLOAT ?
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1197:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1197 |                         *rr = TY_FP(ta) ? N.kr[a] : TYK(t) == K_FLOAT ?
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1198:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1198 |                             int_to_float(&ita, N.ki[a], TYW(t)) :
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1200:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |                 else if (TYK(t) == K_FLOAT)
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1201:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1201 |                         *rr = scalar_float(op, TYW(t), N.kr[a], b ? N.kr[b] : 0, &fl);
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1204:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1204 |                 if (TYK(t) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1205:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1205 |                         *rr = fround(TYW(t), *rr);
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1206:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1206 |         } else if (TY_FP(ta)) {
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1208:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1208 |                         *ri = int_norm(t, (int64_t)fbits(TYW(ta), N.kr[a]));
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1216:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1216 |         return !(fl & (F_UNDEF | F_UB | F_OVF | F_NAN | F_INF));
+      |                     ~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1216:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1216 |         return !(fl & (F_UNDEF | F_UB | F_OVF | F_NAN | F_INF));
+      |                        ^                              ~
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1232:7: warning: Branch condition evaluates to a garbage value [clang-analyzer-core.uninitialized.Branch]
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2037:6: note: Assuming 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2039:14: note: Assuming 'i' is >= 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2043:2: note: Calling 'plan_build'
+ 2043 |         plan_build(&p, roots, (uint32_t)(2 * na), 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1231:7: note: The value 0 is assigned to 'i'
+ 1231 |         for (i = 0; i < nr; i++) {
+      |              ^~~~~
+/home/andrew/Code/ucas/src/eval.c:1231:14: note: Assuming 'i' is < 'nr'
+ 1231 |         for (i = 0; i < nr; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:1231:2: note: Loop condition is true.  Entering loop body
+ 1231 |         for (i = 0; i < nr; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:1232:7: note: Branch condition evaluates to a garbage value
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1232:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                                                   ~ ^
+/home/andrew/Code/ucas/src/ucas.h:279:18: note: expanded from macro 'NF_LANES'
+  279 | #define NF_LANES 32  /* reads a `lanes` parameter in another lane: a free
+      |                  ^~
+/home/andrew/Code/ucas/src/eval.c:1240:12: warning: Use of memory after it is released [clang-analyzer-unix.Malloc]
+ 1240 |                 roots[i] = sg_lower(roots0[i]);
+      |                          ^
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2037:6: note: Assuming 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2039:14: note: Assuming 'i' is < 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2039:2: note: Loop condition is true.  Entering loop body
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2039:14: note: Assuming 'i' is >= 'na'
+ 2039 |         for (i = 0; i < na; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2043:2: note: Calling 'plan_build'
+ 2043 |         plan_build(&p, roots, (uint32_t)(2 * na), 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1231:2: note: Loop condition is true.  Entering loop body
+ 1231 |         for (i = 0; i < nr; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:1232:7: note: Assuming the condition is true
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1232:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/eval.c:1232:21: note: Assuming the condition is true
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1232:3: note: Taking true branch
+ 1232 |                 if (roots0[i] && (N.fl[roots0[i]] & NF_LANES)) {
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1234:4: note: Memory is released
+ 1234 |                         free(roots);
+      |                         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1238:8: note: Assuming 'nm' is null
+ 1238 |                             nm ? nm : "a parameter");
+      |                             ^~
+/home/andrew/Code/ucas/src/eval.c:1238:8: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:1240:12: note: Use of memory after it is released
+ 1240 |                 roots[i] = sg_lower(roots0[i]);
+      |                 ~~~~~~~~ ^
+/home/andrew/Code/ucas/src/eval.c:1309:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1309 |                         if (ideal && TYK(N.ty[g]) == K_UINT)
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1401:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1401 |                 int real = TY_FP(p->ty[k]);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1408:3: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1408 |                 switch (op) {
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1408:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/eval.c:1419:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1419 |                                 of[i] = (COLF(p, a)[i] | COLF(p, b)[i]) &
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1434:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1434 |                                 of[i] = (uint8_t)((COLF(p, a)[i] | (op == O_ATOMIC ?
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1435 |                                     COLF(p, b)[i] : 0)) & F_UNDEF);
+      |                                     ~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1434:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1434 |                                 of[i] = (uint8_t)((COLF(p, a)[i] | (op == O_ATOMIC ?
+      |                                                                  ~ ^~~~~~~~~~~~~~~~~
+ 1435 |                                     COLF(p, b)[i] : 0)) & F_UNDEF);
+      |                                     ~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:1458:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1458 |                                 of[i] = (uint8_t)((cf[i] | COLF(p, s)[i]) & F_UNDEF);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1468:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1468 |                                 if (af[i] & F_UNDEF) {
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1476:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1476 |                                         of[i] = bf[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1491:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1491:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1491 |                                 if ((COLF(p, a)[i] | COLF(p, b)[i] | COLF(p, c)[i]) &
+      |                                      ^                             ~
+/home/andrew/Code/ucas/src/ucas.h:788:20: note: expanded from macro 'COLF'
+  788 | #define COLF(p, k) (&(p)->vf[(size_t)(k)*CH])
+      |                    ^
+/home/andrew/Code/ucas/src/eval.c:1508:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1508 |                                         f |= F_NAN;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:738:15: note: expanded from macro 'F_NAN'
+  738 | #define F_NAN 64   /* IEEE: produced a NaN from non-NaN operands */
+      |               ^~
+/home/andrew/Code/ucas/src/eval.c:1511:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1511 |                                         f |= F_INF;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:739:15: note: expanded from macro 'F_INF'
+  739 | #define F_INF 128  /* IEEE: produced an infinity from finite operands */
+      |               ^~~
+/home/andrew/Code/ucas/src/eval.c:1513:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1513 |                                         f |= F_UNDEF;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1529:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1529 |                                 uint8_t f = (COLF(p, a)[i] | COLF(p, b)[i] |
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1530 |                                     (sat ? COLF(p, c)[i] : 0)) & F_UNDEF;
+      |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1529:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1529 |                                 uint8_t f = (COLF(p, a)[i] | COLF(p, b)[i] |
+      |                                              ^                             ~
+/home/andrew/Code/ucas/src/ucas.h:788:20: note: expanded from macro 'COLF'
+  788 | #define COLF(p, k) (&(p)->vf[(size_t)(k)*CH])
+      |                    ^
+/home/andrew/Code/ucas/src/eval.c:1551:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1551 |                                 if (TYK(p->ty[b]) == K_UINT)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1553:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1553 |                                 if (ifl[i] & F_UNDEF) {
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1559:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1559 |                                 j = tex_wrap(op, j + TEX_OFF(p->ki[k]), cnt);
+      |                                                      ^
+/home/andrew/Code/ucas/src/texalu.h:129:28: note: expanded from macro 'TEX_OFF'
+  129 | #define TEX_OFF(ki) ((int)((((ki) >> 8) & 31) ^ 16) - 16)
+      |                            ^~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1563:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1563 |                                 of[i] = COLF(p, e)[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1574:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1574 |                                 if (TYK(p->ty[b]) == K_UINT)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1576:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1576 |                                 if ((COLF(p, b)[i] & F_UNDEF) || j < 0 || j >=
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1586:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1586 |                                 of[i] = COLF(p, e)[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1597:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1597 |                                 if ((COLF(p, b)[i] & F_UNDEF) || j < 0) {
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1606:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1606 |                                 of[i] = COLF(p, e)[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1624:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1624 |                                 uint8_t f = COLF(p, b)[i] & F_UNDEF;
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1626:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1626 |                                         f |= COLF(p, y)[i] & F_UNDEF;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:788:20: note: expanded from macro 'COLF'
+  788 | #define COLF(p, k) (&(p)->vf[(size_t)(k)*CH])
+      |                    ^
+/home/andrew/Code/ucas/src/eval.c:1626:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1626 |                                         f |= COLF(p, y)[i] & F_UNDEF;
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1628:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1628 |                                         f |= COLF(p, z)[i] & F_UNDEF;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:788:20: note: expanded from macro 'COLF'
+  788 | #define COLF(p, k) (&(p)->vf[(size_t)(k)*CH])
+      |                    ^
+/home/andrew/Code/ucas/src/eval.c:1628:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1628 |                                         f |= COLF(p, z)[i] & F_UNDEF;
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1636:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1636 |                                 of[i] = (f | tc.fl) & F_UNDEF;
+      |                                         ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1647:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1647 |                                 if (TYK(p->ty[b]) == K_UINT)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1649:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1649 |                                 if ((ifl[i] & F_UNDEF) || j < 0 || (uint64_t)j >= cnt) {
+      |                                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1658:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1658 |                                 of[i] = COLF(p, e)[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1668:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1668 |                         int areal = TY_FP(p->ty[a]);
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1676:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1676 |                                                 orr[i] = frombits(TYW(p->ty[k]),
+      |                                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1681:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1681 |                                         of[i] = af[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1689:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1689 |                                                     TYK(p->ty[a]) == K_FLOAT ?
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1690:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1690 |                                                     fflush0(TYW(p->ty[a]), av[i]) : av[i]));
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1691:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1691 |                                         of[i] = af[i] & F_UNDEF;
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1697:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1697 |                                         if ((af[i] | bf[i]) & F_UNDEF) {
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1709:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1709 |                                         if ((af[i] | bf[i]) & F_UNDEF) {
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1721:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1721 |                                         if ((af[i] | bf[i]) & F_UNDEF) {
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1727:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1727 |                                                 o[i] = inorm(t, fbits(TYW(p->ty[a]), av[i]));
+      |                                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1730:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1730 |                                         else if (float_ftz && TYK(p->ty[a]) == K_FLOAT)
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1731:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1731 |                                                 o[i] = scalar_real(op, fflush0(TYW(p->ty[a]),
+      |                                                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1732:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1732 |                                                     av[i]), fflush0(TYW(p->ty[a]), bv[i]), &f) != 0;
+      |                                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1741:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1741 |                                         if ((af[i] | bf[i]) & F_UNDEF) {
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1788:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1788 |                                 if (af[i] & F_UNDEF)
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1802:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1802 |                                 if (!(af[i] & F_UNDEF) &&
+      |                                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1835:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1835 |                                 if (TYK(p->ty[b]) == K_UINT)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1877:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1877 |         if (p->ranged && TYK(p->ty) != K_REAL) {
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1897:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1897 |         int ks = TYK(s), kt = TYK(t), ws = TYW(s), wt = TYW(t);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1897:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1897 |         int ks = TYK(s), kt = TYK(t), ws = TYW(s), wt = TYW(t);
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1897:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1897 |         int ks = TYK(s), kt = TYK(t), ws = TYW(s), wt = TYW(t);
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1897:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1897 |         int ks = TYK(s), kt = TYK(t), ws = TYW(s), wt = TYW(t);
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1928:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1928 |         if (n < max && (opinfo[N.op[w]].fl & OF_CMP) &&
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:1929:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1929 |             TY_ISINT(N.ty[N.a[w]]) && N.ty[N.a[w]] != TY_BOOL)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1929:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1929 |             TY_ISINT(N.ty[N.a[w]]) && N.ty[N.a[w]] != TY_BOOL)
+      |                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/eval.c:1945:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1945 |         return s < 0 || s >= f->np || !TY_ISINT(f->p[s].ty) ||
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1946:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1946 |             (TYK(f->p[s].ty) == K_UINT && TYW(f->p[s].ty) == 64);
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:1946:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1946 |             (TYK(f->p[s].ty) == K_UINT && TYW(f->p[s].ty) == 64);
+      |                                           ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:1993:3: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1993 |                 switch (o) {
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:1993:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/eval.c:2040:3: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2040 |                 roots[2 * i] = N.a[at[i]];
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:2040:9: note: make conversion explicit to silence this warning
+   21 |                 roots[2 * i] = N.a[at[i]];
+      |                       ^~~~~
+      |                       (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/eval.c:2040:9: note: perform multiplication in a wider type
+ 2040 |                 roots[2 * i] = N.a[at[i]];
+      |                       ^
+      |                       (ptrdiff_t)
+/home/andrew/Code/ucas/src/eval.c:2061:3: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:2061:3: note: Other elements might also be undefined
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2160:10: note: 'ilo' declared without an initial value
+ 2160 |         int64_t ilo[MAXP], ihi[MAXP];
+      |                 ^~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: Assuming 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: 'rsteps' is >= 2
+ 2165 |         d->rsteps = rsteps < 2 ? 2 : rsteps;
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/eval.c:2165:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:2168:14: note: Assuming 'j' is >= field 'np'
+ 2168 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2168:2: note: Loop condition is false. Execution continues on line 2173
+ 2168 |         for (j = 0; j < f->np; j++)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2173:18: note: Passing value via 2nd parameter 'lo'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |                         ^~~
+/home/andrew/Code/ucas/src/eval.c:2173:2: note: Calling 'where_bounds'
+ 2173 |         where_bounds(f, ilo, ihi, d->narrowed);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:6: note: Assuming field 'where' is not equal to 0
+ 2034 |         if (!f->where)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/eval.c:2034:2: note: Taking false branch
+ 2034 |         if (!f->where)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2037:6: note: 'na' is not equal to 0
+ 2037 |         if (na == 0)
+      |             ^~
+/home/andrew/Code/ucas/src/eval.c:2037:2: note: Taking false branch
+ 2037 |         if (na == 0)
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2039:2: note: Loop condition is true.  Entering loop body
+ 2039 |         for (i = 0; i < na; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2039:2: note: Loop condition is false. Execution continues on line 2043
+/home/andrew/Code/ucas/src/eval.c:2044:15: note: Assuming field 'n' is 0
+ 2044 |         iv = xcalloc(p.n ? p.n : 1, sizeof *iv);
+      |                      ^~~
+/home/andrew/Code/ucas/src/eval.c:2044:15: note: '?' condition is false
+/home/andrew/Code/ucas/src/eval.c:2051:2: note: Loop condition is true.  Entering loop body
+ 2051 |         for (round = 0; round < 4; round++) {
+      |         ^
+/home/andrew/Code/ucas/src/eval.c:2054:15: note: 'j' is >= field 'np'
+ 2054 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+/home/andrew/Code/ucas/src/eval.c:2054:3: note: Loop condition is false. Execution continues on line 2060
+ 2054 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:2061:3: note: The first element of the 2nd argument is undefined
+ 2061 |                 memcpy(nlo, lo, (size_t)f->np * sizeof *lo);
+      |                 ^           ~~
+/home/andrew/Code/ucas/src/eval.c:2169:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2169 |                 if (TY_ISINT(f->p[j].ty))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2176:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2176 |                 if (TYK(p->ty) == K_REAL) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2181:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2181 |                 } else if (TYK(p->ty) == K_FLOAT) {
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2183:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2183 |                         int w = TYW(p->ty);
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:2203:19: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+ 2203 |                                 d->nset[j] = (uint16_t)ns;
+      |                                               ^
+/home/andrew/Code/ucas/src/eval.c:2207:5: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 2207 |                                 sz = 0;         /* none of its keys in range */
+      |                                 ^
+/home/andrew/Code/ucas/src/eval.c:2207:11: note: end of the original
+ 2207 |                                 sz = 0;         /* none of its keys in range */
+      |                                       ^
+/home/andrew/Code/ucas/src/eval.c:2211:5: note: clone 1 starts here
+ 2211 |                                 sz = 0;
+      |                                 ^
+/home/andrew/Code/ucas/src/eval.c:2214:16: warning: no header providing "UINT64_MAX" is directly included [misc-include-cleaner]
+ 2214 |                                 sz = sz == UINT64_MAX ? UINT64_MAX : sz + 1;
+      |                                            ^
+/home/andrew/Code/ucas/src/eval.c:2218:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2218 |                         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64 && !p->ranged) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2218:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2218 |                         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64 && !p->ranged) {
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:2235:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2235 |         d->rng ^= d->rng << 13;
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:2236:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2236 |         d->rng ^= d->rng >> 7;
+      |                          ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2237:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2237 |         d->rng ^= d->rng << 17;
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:2277:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2277 |                                 double u = (double)(rnd(d) >> 11) / 9007199254740992.0;
+      |                                                            ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:2290:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2290 |                                         int u = TYK(d->f->p[j].ty) == K_UINT;
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2318:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2318 |                 ok[i] = !(COLF(p, wloc)[i] & F_UNDEF) && COLI(p, wloc)[i] != 0;
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/eval.c:2324:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2324 |         switch (TYK(t)) {
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2329:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2329 |                 sb_printf(b, "%.*g", fdigits(TYW(t)), vr);
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:2332:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2332 |                 if (TYW(t) == 64)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:2371:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2371 |         for (m = (uint64_t)1 << 62; m; m >>= 1)
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:2371:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2371 |         for (m = (uint64_t)1 << 62; m; m >>= 1)
+      |                                          ~~~ ^
+/home/andrew/Code/ucas/src/eval.c:2396:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2396 |         for (m = (uint64_t)1 << 62; m; m >>= 1)
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/eval.c:2396:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2396 |         for (m = (uint64_t)1 << 62; m; m >>= 1)
+      |                                          ~~~ ^
+/home/andrew/Code/ucas/src/eval.c:2457:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2457 |                 if (TYK(p->ty[k]) == K_FLOAT) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2461:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2461 |                 if (TYK(p->ty[k]) == K_REAL) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2504:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2504 |                 if (TYK(p->ty[k]) == K_BOOL || (opinfo[op].fl & OF_CMP) ||
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2504:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2504 |                 if (TYK(p->ty[k]) == K_BOOL || (opinfo[op].fl & OF_CMP) ||
+      |                                                               ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/eval.c:2517:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2517 |                         if (TYK(f->p[p->ki[k]].ty) == K_UINT &&
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/eval.c:2518:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2518 |                             TYW(f->p[p->ki[k]].ty) == 64 && !f->p[p->ki[k]].ranged)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/eval.c:2577:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2577 |                         v->lo = ok ? A->lo << B->lo : 0;
+      |                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/eval.c:2578:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2578 |                         v->hi = ok ? A->hi << B->hi : 0;
+      |                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/eval.c:2582:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2582 |                         v->lo = ok ? A->lo >> B->hi : 0;
+      |                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/eval.c:2583:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2583 |                         v->hi = ok ? A->hi >> B->lo : 0;
+      |                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/eval.c:2650:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2650 |                         if (TY_FP(p->ty[p->a[k]])) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

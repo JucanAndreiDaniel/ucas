@@ -1,0 +1,13 @@
+# error of hand-built approximations against exact targets.
+h(x: f32 in 0.5..2) = fma(fma(fma(0.25f, x, -0.5f), x, 1.5f), x, 2.0f)
+p(x: real in 0.5..2) = ((0.25 * x - 0.5) * x + 1.5) * x + 2
+error h ~ p
+s20(x: f32 in 1..2) = x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x
+e20(x: real in 1..2) = 11*x + 10*x*x
+error s20 ~ e20
+cn(x: f32 in 1..1.001) = (x * x - 1.0f) - (x - 1.0f)
+ce(x: real in 1..1.001) = (x * x - 1) - (x - 1)
+error cn ~ ce
+rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)
+quake(x: f32) = y * (1.5f - 0.5f * x * y * y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+error quake ~ rsqrt

@@ -1,0 +1,23 @@
+> rule dbl(a: u32) = a << 1 => a + a
+rule dbl: a << 1 => a + a, proved by SAT (cost 2 -> 1 under gt1030)
+> rule shlsub(a: i32) = a << 3 => a * 8
+rule shlsub: a << 3 => 8a, proved by SAT (cost 2 -> 2 under gt1030)
+> rule bad(a: u32) = a << 1 => a + 1
+15_rule.ucas:4:35: error: rule bad: not kept: the sides differ at a=0: 0 vs 1
+    rule bad(a: u32) = a << 1 => a + 1
+                                      ^
+> rule narrow(a: u32 in 0..9) = a << 1 => a + a
+15_rule.ucas:5:29: error: rule narrow: a takes every value of its type: a rule holds for all of them (a range or a list is for a function)
+    rule narrow(a: u32 in 0..9) = a << 1 => a + a
+                                ^
+> rule two(a: u32, b: u32) = a + b => b + a
+rule two: a + b => b + a, proved by SAT (cost 1 -> 1 under gt1030)
+> f(x: u32, y: u32) = (x * y << 1) xor y
+> find f 1
+find f: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 5   x*y + x*y xor y                          the rule dbl, a << 1 => a + a, declared (derived; checked by SAT)
+      holds where every value of its variables (u32): proved when it was declared
+      both sides equal on every input of the rule's variables (enumerated or SAT); the variables bound to subterms here
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

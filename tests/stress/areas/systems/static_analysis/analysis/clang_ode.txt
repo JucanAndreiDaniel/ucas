@@ -1,0 +1,758 @@
+src/ode.c:257:4: warning: The first element of the 2nd argument is undefined [unix.cstring.UninitializedRead]
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^         ~~
+src/ode.c:257:4: note: Other elements might also be undefined
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:219:25: note: 'yn' declared without an initial value
+  219 |             k7[MAXS], y[MAXS], yn[MAXS], t = t0, h = *hint, dir = t1 > t0 ? 1 : -1;
+      |                                ^~
+src/ode.c:219:60: note: Assuming 't1' is <= 't0'
+  219 |             k7[MAXS], y[MAXS], yn[MAXS], t = t0, h = *hint, dir = t1 > t0 ? 1 : -1;
+      |                                                                   ^~~~~~~
+src/ode.c:219:60: note: '?' condition is false
+src/ode.c:222:6: note: Assuming 't1' is not equal to 't0'
+  222 |         if (t1 == t0)
+      |             ^~~~~~~~
+src/ode.c:222:2: note: Taking false branch
+  222 |         if (t1 == t0)
+      |         ^
+src/ode.c:224:6: note: Assuming 'h' is > 0
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |             ^~~~~~
+src/ode.c:224:6: note: Left side of '||' is false
+src/ode.c:224:16: note: Assuming the condition is false
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |                       ^~~~~~~~~~~~~~~~~
+src/ode.c:224:2: note: Taking false branch
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |         ^
+src/ode.c:226:6: note: Assuming the condition is false
+  226 |         if (!ev_run(E, t, z, n, k1, n))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:226:2: note: Taking false branch
+  226 |         if (!ev_run(E, t, z, n, k1, n))
+      |         ^
+src/ode.c:228:2: note: Loop condition is true.  Entering loop body
+  228 |         while (dir * (t1 - t) > 0) {
+      |         ^
+src/ode.c:230:3: note: Taking false branch
+  230 |                 if (++it > 2000000)
+      |                 ^
+src/ode.c:232:7: note: Assuming the condition is false
+  232 |                 if (h > fabs(t1 - t))
+      |                     ^~~~~~~~~~~~~~~~
+src/ode.c:232:3: note: Taking false branch
+  232 |                 if (h > fabs(t1 - t))
+      |                 ^
+src/ode.c:237:3: note: Assuming 'i' is >= 'n'
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^~~~~
+src/ode.c:237:3: note: Loop condition is false. Execution continues on line 237
+src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+src/ode.c:237:3: note: Assuming the condition is false
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:237:3: note: Taking false branch
+src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+src/ode.c:237:3: note: Loop condition is false.  Exiting loop
+src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+src/ode.c:238:3: note: 'i' is >= 'n'
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+src/ode.c:238:3: note: Loop condition is false. Execution continues on line 238
+src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+src/ode.c:238:3: note: Assuming the condition is false
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:238:3: note: Taking false branch
+src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+src/ode.c:238:3: note: Loop condition is false.  Exiting loop
+src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+src/ode.c:239:3: note: 'i' is >= 'n'
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+src/ode.c:239:3: note: Loop condition is false. Execution continues on line 239
+src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+src/ode.c:239:3: note: Assuming the condition is false
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:239:3: note: Taking false branch
+src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+src/ode.c:239:3: note: Loop condition is false.  Exiting loop
+src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+src/ode.c:240:3: note: 'i' is >= 'n'
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+src/ode.c:240:3: note: Loop condition is false. Execution continues on line 240
+src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+src/ode.c:240:3: note: Assuming the condition is false
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:240:3: note: Taking false branch
+src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+src/ode.c:240:3: note: Loop condition is false.  Exiting loop
+src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+src/ode.c:241:3: note: 'i' is >= 'n'
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  242 |                     a65 * k5[i]);
+      |                     ~~~~~~~~~~~~
+src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+src/ode.c:241:3: note: Loop condition is false. Execution continues on line 241
+src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+src/ode.c:241:3: note: Assuming the condition is false
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  242 |                     a65 * k5[i]);
+      |                     ~~~~~~~~~~~~
+src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:241:3: note: Taking false branch
+src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+src/ode.c:241:3: note: Loop condition is false.  Exiting loop
+src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+src/ode.c:244:15: note: 'i' is >= 'n'
+  244 |                 for (i = 0; i < n; i++)
+      |                             ^
+src/ode.c:244:3: note: Loop condition is false. Execution continues on line 247
+  244 |                 for (i = 0; i < n; i++)
+      |                 ^
+src/ode.c:247:7: note: Assuming the condition is false
+  247 |                 if (!ev_run(E, t + hh, yn, n, k7, n))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:247:3: note: Taking false branch
+  247 |                 if (!ev_run(E, t + hh, yn, n, k7, n))
+      |                 ^
+src/ode.c:249:15: note: 'i' is >= 'n'
+  249 |                 for (i = 0; i < n; i++) {
+      |                             ^
+src/ode.c:249:3: note: Loop condition is false. Execution continues on line 255
+  249 |                 for (i = 0; i < n; i++) {
+      |                 ^
+src/ode.c:255:7: note: Assuming 'err' is <= 1
+  255 |                 if (err <= 1) {
+      |                     ^~~~~~~~
+src/ode.c:255:3: note: Taking true branch
+  255 |                 if (err <= 1) {
+      |                 ^
+src/ode.c:257:4: note: The first element of the 2nd argument is undefined
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^         ~~
+src/ode.c:555:3: warning: The last accessed element (at index 14) in the 2nd argument is undefined [unix.cstring.UninitializedRead]
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^         ~
+src/ode.c:555:3: note: Other elements might also be undefined
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:430:39: note: 'w' declared without an initial value
+  430 |         double A[MAXS * MAXS], cp[MAXS + 1], w[MAXS], L;
+      |                                              ^
+src/ode.c:438:14: note: Assuming 'i' is < 'n'
+  438 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+src/ode.c:438:2: note: Loop condition is true.  Entering loop body
+  438 |         for (i = 0; i < n; i++)
+      |         ^
+src/ode.c:438:14: note: Assuming 'i' is >= 'n'
+  438 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+src/ode.c:438:2: note: Loop condition is false. Execution continues on line 440
+  438 |         for (i = 0; i < n; i++)
+      |         ^
+src/ode.c:440:2: note: Loop condition is true.  Entering loop body
+  440 |         for (i = 0; i < n; i++) {
+      |         ^
+src/ode.c:442:7: note: 'n' is <= MAXST
+  442 |                 if (n > MAXST)
+      |                     ^
+src/ode.c:442:3: note: Taking false branch
+  442 |                 if (n > MAXST)
+      |                 ^
+src/ode.c:444:7: note: Assuming the condition is false
+  444 |                 if (!linear_form(S->F[i], slot, n, row, &g[i]))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:444:3: note: Taking false branch
+  444 |                 if (!linear_form(S->F[i], slot, n, row, &g[i]))
+      |                 ^
+src/ode.c:446:3: note: Loop condition is true.  Entering loop body
+  446 |                 for (l = 0; l < n; l++)
+      |                 ^
+src/ode.c:446:3: note: Loop condition is false. Execution continues on line 448
+src/ode.c:449:7: note: Assuming the condition is false
+  449 |                 if (!const_is(g[i], 0))
+      |                     ^~~~~~~~~~~~~~~~~~
+src/ode.c:449:3: note: Taking false branch
+  449 |                 if (!const_is(g[i], 0))
+      |                 ^
+src/ode.c:440:2: note: Loop condition is false. Execution continues on line 452
+  440 |         for (i = 0; i < n; i++) {
+      |         ^
+src/ode.c:454:14: note: Assuming 'j' is < 'nr'
+  454 |         for (j = 0; j < nr; j++) {
+      |                     ^~~~~~
+src/ode.c:454:2: note: Loop condition is true.  Entering loop body
+  454 |         for (j = 0; j < nr; j++) {
+      |         ^
+src/ode.c:456:15: note: Assuming 'p' is < field 'mult'
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                             ^~~~~~~~~~~~~~
+src/ode.c:456:3: note: Loop condition is true.  Entering loop body
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                 ^
+src/ode.c:457:14: note: Assuming field 'im' is equal to 0
+  457 |                         if (nb + (rt[j].im != 0 ? 2 : 1) > MAXS)
+      |                                   ^~~~~~~~~~~~~
+src/ode.c:457:14: note: '?' condition is false
+src/ode.c:457:4: note: Taking false branch
+  457 |                         if (nb + (rt[j].im != 0 ? 2 : 1) > MAXS)
+      |                         ^
+src/ode.c:460:8: note: Assuming field 'im' is equal to 0
+  460 |                         if (rt[j].im != 0)
+      |                             ^~~~~~~~~~~~~
+src/ode.c:460:4: note: Taking false branch
+  460 |                         if (rt[j].im != 0)
+      |                         ^
+src/ode.c:456:15: note: Assuming 'p' is >= field 'mult'
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                             ^~~~~~~~~~~~~~
+src/ode.c:456:3: note: Loop condition is false. Execution continues on line 454
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                 ^
+src/ode.c:454:14: note: Assuming 'j' is >= 'nr'
+  454 |         for (j = 0; j < nr; j++) {
+      |                     ^~~~~~
+src/ode.c:454:2: note: Loop condition is false. Execution continues on line 464
+  454 |         for (j = 0; j < nr; j++) {
+      |         ^
+src/ode.c:464:6: note: 'nb' is equal to 'n'
+  464 |         if (nb != n)
+      |             ^~
+src/ode.c:464:2: note: Taking false branch
+  464 |         if (nb != n)
+      |         ^
+src/ode.c:468:6: note: Assuming 't1' is <= field 't0'
+  468 |         L = t1 > S->t0 ? t1 - S->t0 : 1;
+      |             ^~~~~~~~~~
+src/ode.c:468:6: note: '?' condition is false
+src/ode.c:470:7: note: 'gzero' is 1
+  470 |         if (!gzero) {
+      |              ^~~~~
+src/ode.c:470:2: note: Taking false branch
+  470 |         if (!gzero) {
+      |         ^
+src/ode.c:540:2: note: Loop condition is true.  Entering loop body
+  540 |         for (i = 0; i < n; i++) {
+      |         ^
+src/ode.c:542:7: note: 'cz' is null
+  542 |                 if (cz) {
+      |                     ^~
+src/ode.c:542:3: note: Taking false branch
+  542 |                 if (cz) {
+      |                 ^
+src/ode.c:540:2: note: Loop condition is false. Execution continues on line 551
+  540 |         for (i = 0; i < n; i++) {
+      |         ^
+src/ode.c:551:8: note: Assuming field 't0' is equal to 0
+  551 |         tau = S->t0 == 0 ? tvar(S) : SUB(tvar(S), KR(S->t0));
+      |               ^~~~~~~~~~
+src/ode.c:551:8: note: '?' condition is true
+src/ode.c:552:2: note: Loop condition is true.  Entering loop body
+  552 |         for (i = 0; i < n; i++) {
+      |         ^
+src/ode.c:555:3: note: The last accessed element (at index 14) in the 2nd argument is undefined
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^         ~
+src/ode.c:709:2: warning: Undefined or garbage value returned to caller [core.uninitialized.UndefReturn]
+  709 |         return d;
+      |         ^
+src/ode.c:826:6: note: Assuming the condition is false
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+src/ode.c:826:2: note: Taking false branch
+  826 |         if (pde_find(var)) {
+      |         ^
+src/ode.c:830:6: note: Assuming the condition is false
+  830 |         if (!eq_find(var))
+      |             ^~~~~~~~~~~~~
+src/ode.c:830:2: note: Taking false branch
+  830 |         if (!eq_find(var))
+      |         ^
+src/ode.c:837:2: note: Loop condition is true.  Entering loop body
+  837 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:842:15: note: Assuming 'j' is >= field 'np'
+  842 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^~~~~~~~~~~~~
+src/ode.c:842:3: note: Loop condition is false. Execution continues on line 837
+  842 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+src/ode.c:837:2: note: Loop condition is false. Execution continues on line 859
+  837 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:859:2: note: Loop condition is true.  Entering loop body
+  859 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:862:15: note: Assuming 'k' is >= field 'order'
+  862 |                 for (k = 0; k < q->order; k++) {
+      |                             ^~~~~~~~~~~~
+src/ode.c:862:3: note: Loop condition is false. Execution continues on line 859
+  862 |                 for (k = 0; k < q->order; k++) {
+      |                 ^
+src/ode.c:859:2: note: Loop condition is false. Execution continues on line 869
+  859 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:869:2: note: Loop condition is true.  Entering loop body
+  869 |         for (i = 0; i < nv; i++)
+      |         ^
+src/ode.c:870:15: note: 'j' is >= field 'np'
+  870 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^
+src/ode.c:870:3: note: Loop condition is false. Execution continues on line 869
+  870 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+src/ode.c:869:2: note: Loop condition is false. Execution continues on line 889
+  869 |         for (i = 0; i < nv; i++)
+      |         ^
+src/ode.c:889:9: note: Field 'tname' is 0
+  889 |         if (!S.tname)
+      |                ^
+src/ode.c:889:2: note: Taking true branch
+  889 |         if (!S.tname)
+      |         ^
+src/ode.c:892:2: note: Loop condition is true.  Entering loop body
+  892 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:895:15: note: 'j' is >= field 'np'
+  895 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^
+src/ode.c:895:3: note: Loop condition is false. Execution continues on line 904
+  895 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+src/ode.c:904:15: note: Assuming the condition is false
+  904 |                 for (k = 0; k + 1 < q->order; k++)
+      |                             ^~~~~~~~~~~~~~~~
+src/ode.c:904:3: note: Loop condition is false. Execution continues on line 907
+  904 |                 for (k = 0; k + 1 < q->order; k++)
+      |                 ^
+src/ode.c:892:2: note: Loop condition is false. Execution continues on line 910
+  892 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:910:2: note: Loop condition is true.  Entering loop body
+  910 |         for (i = 0; i < nv; i++) {
+      |         ^
+src/ode.c:912:15: note: Assuming 'k' is < field 'order'
+  912 |                 for (k = 0; k < q->order; k++) {
+      |                             ^~~~~~~~~~~~
+src/ode.c:912:3: note: Loop condition is true.  Entering loop body
+  912 |                 for (k = 0; k < q->order; k++) {
+      |                 ^
+src/ode.c:914:16: note: Assuming 'z' is >= 'nics'
+  914 |                         for (z = 0; z < nics; z++)
+      |                                     ^~~~~~~~
+src/ode.c:914:4: note: Loop condition is false. Execution continues on line 917
+  914 |                         for (z = 0; z < nics; z++)
+      |                         ^
+src/ode.c:917:8: note: Assuming 'z' is not equal to 'nics'
+  917 |                         if (z == nics)
+      |                             ^~~~~~~~~
+src/ode.c:917:4: note: Taking false branch
+  917 |                         if (z == nics)
+      |                         ^
+src/ode.c:921:17: note: Calling 'parse_const'
+  921 |                                 double t0 = parse_const(ics[z].t0);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:702:2: note: 'd' declared without an initial value
+  702 |         double d;
+      |         ^~~~~~~~
+src/ode.c:707:6: note: Assuming field 'np' is not equal to 0
+  707 |         if (fn.np || !num_of(v, &d))
+      |             ^~~~~
+src/ode.c:707:12: note: Left side of '||' is true
+  707 |         if (fn.np || !num_of(v, &d))
+      |                   ^
+src/ode.c:709:2: note: Undefined or garbage value returned to caller
+  709 |         return d;
+      |         ^      ~
+src/ode.c:1075:13: warning: 2nd function call argument is an uninitialized value [core.CallAndMessage]
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^~~~~~~~~
+src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^             ~~~
+src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+src/ode.c:1072:7: note: 'a' declared without an initial value
+ 1072 |                 nid a, b;
+      |                     ^
+src/ode.c:1073:3: note: Calling 'guarded_subst'
+ 1073 |                 guarded_subst(F, s, Hr, &a);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+src/ode.c:1073:3: note: Returning from 'guarded_subst'
+ 1073 |                 guarded_subst(F, s, Hr, &a);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1075:13: note: 2nd function call argument is an uninitialized value
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^~~~~~~~~
+src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^             ~~~
+src/ode.c:1075:13: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^~~~~~~~~
+src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^                  ~~~
+src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+src/ode.c:1072:10: note: 'b' declared without an initial value
+ 1072 |                 nid a, b;
+      |                        ^
+src/ode.c:1074:3: note: Calling 'guarded_subst'
+ 1074 |                 guarded_subst(F, s, Lr, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+src/ode.c:1074:3: note: Returning from 'guarded_subst'
+ 1074 |                 guarded_subst(F, s, Lr, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1075:13: note: 3rd function call argument is an uninitialized value
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^~~~~~~~~
+src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^                  ~~~
+src/ode.c:1079:22: warning: 2nd function call argument is an uninitialized value [core.CallAndMessage]
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                        ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+src/ode.c:1051:42: note: 'gl' declared without an initial value
+ 1051 |         nid lo = N.a[n], hi = N.b[n], roots[5], gl, gh;
+      |                                                 ^~
+src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+src/ode.c:1076:3: note: Calling 'guarded_subst'
+ 1076 |                 guarded_subst(g, s, Lr, &gl);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+src/ode.c:1076:3: note: Returning from 'guarded_subst'
+ 1076 |                 guarded_subst(g, s, Lr, &gl);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1079:22: note: 2nd function call argument is an uninitialized value
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                        ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+src/ode.c:1079:22: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                        ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+src/ode.c:1051:46: note: 'gh' declared without an initial value
+ 1051 |         nid lo = N.a[n], hi = N.b[n], roots[5], gl, gh;
+      |                                                     ^~
+src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:6: note: Left side of '||' is false
+src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+src/ode.c:1077:3: note: Calling 'guarded_subst'
+ 1077 |                 guarded_subst(g, s, Hr, &gh);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+src/ode.c:1077:3: note: Returning from 'guarded_subst'
+ 1077 |                 guarded_subst(g, s, Hr, &gh);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1079:22: note: 3rd function call argument is an uninitialized value
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                        ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~
+src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+src/ode.c:1716:7: warning: Access to field 'pd' results in a dereference of a null pointer (loaded from variable 'E') [core.NullDereference]
+ 1716 |         pd = E->pd;
+      |              ^
+src/ode.c:826:6: note: Assuming the condition is true
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+src/ode.c:826:2: note: Taking true branch
+  826 |         if (pde_find(var)) {
+      |         ^
+src/ode.c:827:3: note: Calling 'cmd_pde'
+  827 |                 cmd_pde(var, bn, steps);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1706:2: note: 'E' initialized here
+ 1706 |         struct pdeent *E = pde_find(name);
+      |         ^~~~~~~~~~~~~~~~
+src/ode.c:1714:6: note: Assuming 'E' is null
+ 1714 |         if (!E)
+      |             ^~
+src/ode.c:1714:2: note: Taking true branch
+ 1714 |         if (!E)
+      |         ^
+src/ode.c:1716:7: note: Access to field 'pd' results in a dereference of a null pointer (loaded from variable 'E')
+ 1716 |         pd = E->pd;
+      |              ^
+src/ode.c:1752:8: warning: 1st function call argument is an uninitialized value [core.CallAndMessage]
+ 1752 |                         d = tidy(d);
+      |                             ^
+src/ode.c:826:6: note: Assuming the condition is true
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+src/ode.c:826:2: note: Taking true branch
+  826 |         if (pde_find(var)) {
+      |         ^
+src/ode.c:827:3: note: Calling 'cmd_pde'
+  827 |                 cmd_pde(var, bn, steps);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1709:21: note: 'd' declared without an initial value
+ 1709 |         nid map[MAXP], r2, d;
+      |                            ^
+src/ode.c:1714:6: note: Assuming 'E' is non-null
+ 1714 |         if (!E)
+      |             ^~
+src/ode.c:1714:2: note: Taking false branch
+ 1714 |         if (!E)
+      |         ^
+src/ode.c:1717:6: note: Assuming 'tend' is 0
+ 1717 |         if (tend)
+      |             ^~~~
+src/ode.c:1717:2: note: Taking false branch
+ 1717 |         if (tend)
+      |         ^
+src/ode.c:1720:14: note: Assuming 'j' is >= field 'np'
+ 1720 |         for (j = 0; j < pd.rf.np; j++) {
+      |                     ^~~~~~~~~~~~
+src/ode.c:1720:2: note: Loop condition is false. Execution continues on line 1745
+ 1720 |         for (j = 0; j < pd.rf.np; j++) {
+      |         ^
+src/ode.c:1749:3: note: Loop condition is true.  Entering loop body
+ 1749 |                 for (k = 2; k <= 5; k++) {
+      |                 ^
+src/ode.c:1750:9: note: Calling 'guarded_diff'
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1017:6: note: Assuming the condition is false
+ 1017 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/ode.c:1017:2: note: Taking false branch
+ 1017 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/ode.c:1023:2: note: Returning without writing to '*r'
+ 1023 |         return ok;
+      |         ^
+src/ode.c:1750:9: note: Returning from 'guarded_diff'
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ode.c:1750:4: note: Taking true branch
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                         ^
+src/ode.c:1752:8: note: 1st function call argument is an uninitialized value
+ 1752 |                         d = tidy(d);
+      |                             ^    ~
+9 warnings generated.

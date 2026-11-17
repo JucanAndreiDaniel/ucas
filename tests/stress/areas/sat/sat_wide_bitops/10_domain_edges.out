@@ -1,0 +1,35 @@
+> p(x: u8, n: u8) = x << n
+> domain p
+domain of p:
+  x: u8, 0..255
+  n: u8, 0..255
+  requires 0 <= n < 8  (shift amount; C UB otherwise)
+  defined at 2048 of 65536 points
+  undefined e.g. at x=0, n=8; x=1, n=8; x=2, n=8; x=3, n=8
+  C undefined behaviour at 63488 points, e.g. x=0, n=8
+  over all 65536 points of the domain
+> q(x: u8) = x << 8
+> domain q
+domain of q:
+  x: u8, 0..255
+  no conditions: total on its parameter types
+  defined at 0 of 256 points
+  undefined e.g. at x=0; x=1; x=2; x=3
+  C undefined behaviour at 256 points, e.g. x=0
+  over all 256 points of the domain
+> r(x: u16) = x >> 16
+> domain r
+domain of r:
+  x: u16, 0..65535
+  no conditions: total on its parameter types
+  defined at 0 of 65536 points
+  undefined e.g. at x=0; x=1; x=2; x=3
+  C undefined behaviour at 65536 points, e.g. x=0
+  over all 65536 points of the domain
+> t(i: u8 in 0..7) = [3, 1, 4, 1, 5, 9, 2, 6][i]
+> domain t
+domain of t:
+  i: u8, 0..7
+  requires 0 <= i < 8  (table index)
+  defined at 8 of 8 points
+  over all 8 points of the domain

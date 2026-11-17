@@ -1,0 +1,43 @@
+> c optimize nofile budget 3
+c optimize: 8 functions, 5 rewrites proved (0 exhaustive, 0 by SAT, 5 by algebra) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 69.0 -> 24.0 cycles
+  d2 (line 1): x / 2 as x * 0.5
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 11.0 -> 4.0
+    before: {return a/2.0f;}
+  dd4 (line 2): x / 4 as x * 0.25
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 14.0 -> 4.0
+    before: {return a/4.0;}
+  d24 (line 3): x / 1.67772e+07 as x * 5.96046e-08
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 11.0 -> 4.0
+    before: {return a/16777216.0f;}
+  dtwo (line 7): x / 8 as x * 0.125 (x2)
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 22.0 -> 8.0
+    before: {return a/8.0f/8.0f;}
+  dneg (line 8): x / 0.5 as x * 2
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 11.0 -> 4.0
+    before: {return a/0.5f;}
+  d140 (line 4): no cheaper form: lowered: 1 inputs, cost 11.0
+  dsub (line 5): no cheaper form: lowered: 1 inputs, cost 11.0
+  dinf (line 6): no cheaper form: lowered: 1 inputs, cost 11.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  #pragma STDC FP_CONTRACT OFF
+  float d2(float a){
+  	return (float)((float)(((float)0x1p-1f)) * (float)((a)));
+  }
+  double dd4(double a){
+  	return (double)((double)(((double)0x1p-2)) * (double)((a)));
+  }
+  float d24(float a){
+  	return (float)((float)(((float)0x1p-24f)) * (float)((a)));
+  }
+  float d140(float a){return a/1.3932039e42f;}
+  float dsub(float a){return a/1.401298464324817e-45f;}
+  float dinf(float a){return a/1e40f;}
+  float dtwo(float a){
+  	return (float)((float)(((float)0x1p-3f)) * (float)(((float)(((float)0x1p-3f)) * (float)((a)))));
+  }
+  float dneg(float a){
+  	return (float)((float)(((float)0x1p+1f)) * (float)((a)));
+  }

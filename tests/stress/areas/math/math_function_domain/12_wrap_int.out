@@ -1,0 +1,44 @@
+> wrap abs(x: i8)
+wrap analysis of abs(x):
+  abs(x)   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 1 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-128
+      exact for: -127..127
+  over all 256 points of the domain
+> wrap isqrt(x: u8)
+wrap analysis of isqrt(x):
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> wrap isqrt(x: i8)
+wrap analysis of isqrt(x):
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> wrap clz(x: u8)
+wrap analysis of clz(x):
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 256 points, e.g. x=0
+  over all 256 points of the domain
+> wrap ctz(x: u8)
+wrap analysis of ctz(x):
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 1 points, e.g. x=0
+      exact for: 1..255
+  over all 256 points of the domain
+> wrap popcount(x: u8)
+wrap analysis of popcount(x):
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> wrap min(x: u8, y: u8)
+wrap analysis of min(x, y):
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 65536 points of the domain
+> wrap max(x: u8, y: u8)
+wrap analysis of max(x, y):
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 65536 points of the domain

@@ -1,0 +1,134 @@
+> simplify sin(x+y) - (sin(x)*cos(y) + cos(x)*sin(y))
+  ucas: trig sin(x+y) - (sin(x)*cos(y) + cos(x)*sin(y))
+  note: x, y are taken as real
+trig forms of sin(x+y) - (sin(x)*cos(y) + cos(x)*sin(y))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = -sin(x)*cos(y) - cos(x)*sin(y) + sin(x + y)
+    check: equal at 64 of 64 sample points
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*(x + y)) - exp(-i*(x + y)))/(2*i) - (exp(i*x) - exp(-i*x))*(exp(i*y) + exp(-i*y))/(4*i) - (exp(i*x) + exp(-i*x))*(exp(i*y) - exp(-i*y))/(4*i)
+    check: equal at 64 of 64 sample points (max relative difference 6e-17)
+  simplest: 0  (product to sum)
+> simplify cos(x+y) - (cos(x)*cos(y) - sin(x)*sin(y))
+  ucas: trig cos(x+y) - (cos(x)*cos(y) - sin(x)*sin(y))
+  note: x, y are taken as real
+trig forms of cos(x+y) - (cos(x)*cos(y) - sin(x)*sin(y))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = sin(x)*sin(y) - cos(y)*cos(x) + cos(x + y)
+    check: equal at 64 of 64 sample points
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*(x + y)) + exp(-i*(x + y)))/2 - (exp(i*x) + exp(-i*x))*(exp(i*y) + exp(-i*y))/4 + (exp(i*x) - exp(-i*x))*(exp(i*y) - exp(-i*y))/(4*i*i)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: 0  (product to sum)
+> simplify sin(x-y) - (sin(x)*cos(y) - cos(x)*sin(y))
+  ucas: trig sin(x-y) - (sin(x)*cos(y) - cos(x)*sin(y))
+  note: x, y are taken as real
+trig forms of sin(x-y) - (sin(x)*cos(y) - cos(x)*sin(y))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cos(x)*sin(y) - sin(x)*cos(y) + sin(x - y)
+    check: equal at 64 of 64 sample points
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*(x - y)) - exp(-i*(x - y)))/(2*i) - (exp(i*x) - exp(-i*x))*(exp(i*y) + exp(-i*y))/(4*i) + (exp(i*x) + exp(-i*x))*(exp(i*y) - exp(-i*y))/(4*i)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: 0  (product to sum)
+> simplify sin(x)+sin(y) - 2*sin((x+y)/2)*cos((x-y)/2)
+  ucas: trig sin(x)+sin(y) - 2*sin((x+y)/2)*cos((x-y)/2)
+  note: x, y are taken as real
+trig forms of sin(x)+sin(y) - 2*sin((x+y)/2)*cos((x-y)/2)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = sin(x) - 2sin((x + y)/2)*cos((x - y)/2) + sin(y)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
+    = -2sin(x/2)*cos(x/2) - 2sin(y/2)*cos(y/2) + sin(x) + sin(y)
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
+    = sin(x) + sin(y) - 2sqrt((1 - cos(x + y))/2)*sqrt((cos(x - y) + 1)/2)
+    for sin((x + y)/2) >= 0 && cos((x - y)/2) >= 0
+    check: equal at 33 of 64 sample points where sin((x + y)/2) >= 0 && cos((x - y)/2) >= 0 (max relative difference 6e-16)
+      (outside: differs at 25 of 31 points, so the condition is needed)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*x) - exp(-i*x))/(2*i) + (exp(i*y) - exp(-i*y))/(2*i) - (exp(i*(x + y)/2) - exp(-i*(x + y)/2))*(exp(i*(x - y)/2) + exp(-i*(x - y)/2))/(2*i)
+    check: equal at 64 of 64 sample points
+  simplest: 0  (product to sum)
+> simplify cos(x)+cos(y) - 2*cos((x+y)/2)*cos((x-y)/2)
+  ucas: trig cos(x)+cos(y) - 2*cos((x+y)/2)*cos((x-y)/2)
+  note: x, y are taken as real
+trig forms of cos(x)+cos(y) - 2*cos((x+y)/2)*cos((x-y)/2)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cos(y) - 2cos((x - y)/2)*cos((x + y)/2) + cos(x)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
+    = 2sin(x/2)^2*sin(y/2)^2 - 2cos(x/2)^2*cos(y/2)^2 + cos(y) + cos(x)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound angles, in sin: cos^2 u = 1 - sin^2 u
+    = 2sin(x/2)^2 - 2cos(y/2)^2 + cos(y) + cos(x)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound angles, in cos: sin^2 u = 1 - cos^2 u
+    = 2sin(y/2)^2 - 2cos(x/2)^2 + cos(y) + cos(x)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
+    = cos(x) + cos(y) - 2sqrt((cos(x + y) + 1)/2)*sqrt((cos(x - y) + 1)/2)
+    for cos((x + y)/2) >= 0 && cos((x - y)/2) >= 0
+    check: equal at 40 of 64 sample points where cos((x + y)/2) >= 0 && cos((x - y)/2) >= 0 (max relative difference 2e-15)
+      (outside: differs at 24 of 24 points, so the condition is needed)
+  exponential (Euler): cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*x) + exp(-i*x))/2 + (exp(i*y) + exp(-i*y))/2 - (exp(i*(x + y)/2) + exp(-i*(x + y)/2))*(exp(i*(x - y)/2) + exp(-i*(x - y)/2))/2
+    check: equal at 64 of 64 sample points
+  simplest: 0  (product to sum)
+> simplify sin(x)*cos(y) - (sin(x+y)+sin(x-y))/2
+  ucas: trig sin(x)*cos(y) - (sin(x+y)+sin(x-y))/2
+  note: x, y are taken as real
+trig forms of sin(x)*cos(y) - (sin(x+y)+sin(x-y))/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2sin(x)*cos(y) - sin(x + y) - sin(x - y))/2
+    check: equal at 64 of 64 sample points (max relative difference 6e-17)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*x) - exp(-i*x))*(exp(i*y) + exp(-i*y))/(4*i) - ((exp(i*(x + y)) - exp(-i*(x + y)))/(2*i) + (exp(i*(x - y)) - exp(-i*(x - y)))/(2*i))/2
+    check: equal at 64 of 64 sample points
+  simplest: 0  (product to sum)
+> simplify sin(x)*sin(y) - (cos(x-y)-cos(x+y))/2
+  ucas: trig sin(x)*sin(y) - (cos(x-y)-cos(x+y))/2
+  note: x, y are taken as real
+trig forms of sin(x)*sin(y) - (cos(x-y)-cos(x+y))/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2sin(x)*sin(y) + cos(x + y) - cos(x - y))/2
+    check: equal at 64 of 64 sample points (max relative difference 6e-17)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*x) - exp(-i*x))*(exp(i*y) - exp(-i*y))/(4*i*i) - ((exp(i*(x - y)) + exp(-i*(x - y)))/2 - (exp(i*(x + y)) + exp(-i*(x + y)))/2)/2
+    check: equal at 64 of 64 sample points
+  simplest: 0  (product to sum)
+> trig sin(x)*cos(y) product
+  note: x, y are taken as real
+trig forms of sin(x)*cos(y)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = (sin(x + y) + sin(x - y))/2
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: sin(x)*cos(y)  (as given)
+> trig sin(x)+sin(y) sum
+  note: x, y are taken as real
+trig forms of sin(x)+sin(y)
+  sum to product: sin a + sin b = 2 sin((a + b)/2) cos((a - b)/2), cos a + cos b = 2 cos((a + b)/2) cos((a - b)/2) ...
+    = 2sin((x + y)/2)*cos((x - y)/2)
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  simplest: sin(x)+sin(y)  (as given)

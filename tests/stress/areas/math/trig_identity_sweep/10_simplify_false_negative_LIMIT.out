@@ -1,0 +1,128 @@
+> simplify cot(x)^2 + 1 - 1/sin(x)^2
+  ucas: trig cot(x)^2 + 1 - 1/sin(x)^2
+  note: x is taken as real
+trig forms of cot(x)^2 + 1 - 1/sin(x)^2
+  in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
+    = (cos(x)^2 - 1)/sin(x)^2 + 1
+    check: equal at 64 of 64 sample points (max relative difference 9e-14)
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = (cos(2x) - 1)/(2*sin(x)^2) + 1
+    check: equal at 64 of 64 sample points (max relative difference 1e-13)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cot u = i(e^(iu) + e^(-iu))/(e^(iu) - e^(-iu))
+    = (i*(exp(i*x) + exp(-i*x))/(exp(i*x) - exp(-i*x)))^2 + 1 - 1/((exp(i*x) - exp(-i*x))/(2*i))^2
+    check: equal at 64 of 64 sample points
+  simplest: cot(x)^2 + 1 - 1/sin(x)^2  (as given)
+> simplify tan(x/2) - sin(x)/(1 + cos(x))
+  ucas: trig tan(x/2) - sin(x)/(1 + cos(x))
+  note: x is taken as real
+trig forms of tan(x/2) - sin(x)/(1 + cos(x))
+  in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
+    = sin(x/2)/cos(x/2) - sin(x)/(cos(x) + 1)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b, tan(a + b) = (tan a + tan b)/(1 - tan a tan b)
+    = tan(x/2) - sin(x)/(cos(x) + 1)
+    for cos(x/2) != 0
+    check: equal at 64 of 64 sample points where cos(x/2) != 0
+  half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
+    = sin(x)/(cos(x) + 1) - sin(x)/(cos(x) + 1)
+    check: equal at 64 of 64 sample points (max relative difference 4e-15)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2, tan u = (e^(iu) - e^(-iu))/(i(e^(iu) + e^(-iu)))
+    = (exp(i*x/2) - exp(-i*x/2))/(i*(exp(i*x/2) + exp(-i*x/2))) - (exp(i*x) - exp(-i*x))/(2*i*((exp(i*x) + exp(-i*x))/2 + 1))
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  simplest: tan(x/2) - sin(x)/(1 + cos(x))  (as given)
+> simplify asin(x) + acos(x) - pi/2
+  ucas: trig asin(x) + acos(x) - pi/2
+  note: x is taken as real
+trig forms of asin(x) + acos(x) - pi/2
+  asin via atan: asin(u) = atan(u/sqrt(1 - u^2))
+    = atan(x/sqrt(1 - x^2)) + acos(x) - pi/2
+    for -1 < x < 1
+    check: equal at 31 of 64 sample points where -1 < x < 1 (max relative difference 2e-16)
+  asin via acos: asin(u) = pi/2 - acos(u)
+    = pi/2 - acos(x) + acos(x) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 2e-16)
+  asin via acos: asin(u) = acos(sqrt(1 - u^2))
+    = acos(sqrt(1 - x^2)) + acos(x) - pi/2
+    for 0 <= x <= 1
+    check: equal at 18 of 64 sample points where 0 <= x <= 1 (max relative difference 2e-16)
+      (outside: differs at 13 of 13 points, so the condition is needed)
+  asin via acos: asin(u) = -acos(sqrt(1 - u^2))
+    = acos(x) - acos(sqrt(1 - x^2)) - pi/2
+    for -1 <= x <= 0
+    check: equal at 13 of 64 sample points where -1 <= x <= 0 (max relative difference 4e-16)
+      (outside: differs at 18 of 18 points, so the condition is needed)
+  asin half-angle: asin(u) = 2atan(u/(1 + sqrt(1 - u^2)))
+    = 2atan(x/(sqrt(1 - x^2) + 1)) + acos(x) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 2e-16)
+  asin as atan2: asin(u) = atan2(u, sqrt(1 - u^2))
+    = atan2(x, sqrt(1 - x^2)) + acos(x) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 2e-16)
+  acos via asin: acos(u) = pi/2 - asin(u)
+    = asin(x) + pi/2 - asin(x) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 2e-16)
+  acos via asin: acos(u) = asin(sqrt(1 - u^2))
+    = asin(x) + asin(sqrt(1 - x^2)) - pi/2
+    for 0 <= x <= 1
+    check: equal at 18 of 64 sample points where 0 <= x <= 1 (max relative difference 2e-16)
+      (outside: differs at 13 of 13 points, so the condition is needed)
+  acos via asin: acos(u) = 2asin(sqrt((1 - u)/2))
+    = asin(x) + 2asin(sqrt((1 - x)/2)) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 4e-16)
+  acos via atan: acos(u) = atan(sqrt(1 - u^2)/u)
+    = asin(x) + atan(sqrt(1 - x^2)/x) - pi/2
+    for 0 < x <= 1
+    check: equal at 18 of 64 sample points where 0 < x <= 1 (max relative difference 2e-16)
+      (outside: differs at 13 of 13 points, so the condition is needed)
+  acos via atan: acos(u) = pi + atan(sqrt(1 - u^2)/u)
+    = asin(x) + atan(sqrt(1 - x^2)/x) + pi - pi/2
+    for -1 <= x < 0
+    check: equal at 13 of 64 sample points where -1 <= x < 0 (max relative difference 2e-16)
+      (outside: differs at 18 of 18 points, so the condition is needed)
+  acos half-angle: acos(u) = 2atan(sqrt((1 - u)/(1 + u)))
+    = asin(x) + 2atan(sqrt((1 - x)/(x + 1))) - pi/2
+    for -1 < x <= 1
+    check: equal at 31 of 64 sample points where -1 < x <= 1 (max relative difference 4e-16)
+  acos as atan2: acos(u) = atan2(sqrt(1 - u^2), u)
+    = asin(x) + atan2(sqrt(1 - x^2), x) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 2e-16)
+  logarithmic and exponential (Euler): asin u = -i log(iu + sqrt(1 - u^2)), acos u = -i log(u + i sqrt(1 - u^2))
+    = -i*log(i*x + sqrt(1 - x^2)) - i*log(x + i*sqrt(1 - x^2)) - pi/2
+    check: equal at 31 of 64 sample points (max relative difference 3e-16)
+  simplest: asin(x) + acos(x) - pi/2  (as given)
+> simplify cosh(x) + sinh(x) - exp(x)
+  ucas: trig cosh(x) + sinh(x) - exp(x)
+  note: x is taken as real
+trig forms of cosh(x) + sinh(x) - exp(x)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cosh(x) - exp(x) + sinh(x)
+    check: equal at 64 of 64 sample points (max relative difference 2e-15)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(x) + exp(-x))/2 + (exp(x) - exp(-x))/2 - exp(x)
+    check: equal at 64 of 64 sample points (max relative difference 4e-15)
+  simplest: cosh(x) + sinh(x) - exp(x)  (as given)
+> simplify cosh(x) - sinh(x) - exp(-x)
+  ucas: trig cosh(x) - sinh(x) - exp(-x)
+  note: x is taken as real
+trig forms of cosh(x) - sinh(x) - exp(-x)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cosh(x) - exp(-x) - sinh(x)
+    check: equal at 64 of 64 sample points (max relative difference 9e-16)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(x) + exp(-x))/2 - (exp(x) - exp(-x))/2 - exp(-x)
+    check: equal at 64 of 64 sample points (max relative difference 9e-16)
+  simplest: cosh(x) - sinh(x) - exp(-x)  (as given)
+> simplify tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  ucas: trig tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  note: x is taken as real
+trig forms of tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
+    = sinh(2x)/cosh(2x) - 2sinh(x)/(cosh(x)*(sinh(x)^2/cosh(x)^2 + 1))
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound and multiple angles: sinh(a + b) = sinh a cosh b + cosh a sinh b, cosh(a + b) = cosh a cosh b + sinh a sinh b
+    = 0
+    for cosh(x) != 0
+    check: equal at 64 of 64 sample points where cosh(x) != 0 (max relative difference 1e-16)
+  exponential (Euler): tanh u = (e^u - e^(-u))/(e^u + e^(-u))
+    = (exp(2x) - exp(-2x))/(exp(2x) + exp(-2x)) - 2*(exp(x) - exp(-x))/((exp(x) + exp(-x))*(((exp(x) - exp(-x))/(exp(x) + exp(-x)))^2 + 1))
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  simplest: tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)  (as given)

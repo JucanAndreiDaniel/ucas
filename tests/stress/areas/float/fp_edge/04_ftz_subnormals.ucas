@@ -1,0 +1,11 @@
+a(x: f32, y: f32) = x * y
+b(x: f32, y: f32) = y == f32(1) ? x : x * y
+equiv a b noftz
+equiv a b ftz
+n1(x: f32, y: f32) = x * y
+n2(x: f32, y: f32) = f32(f64(x) * f64(y))
+equiv n1 n2
+equiv n1 n2 ftz
+sub(x: f32) = asfloat(asuint(x) & 0x007fffff)
+sub2(x: f32) = asfloat(asuint(x) & 0x007ffffe)
+equiv sub sub2 ftz

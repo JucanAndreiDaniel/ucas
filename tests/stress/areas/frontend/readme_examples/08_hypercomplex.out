@@ -1,0 +1,48 @@
+> (1+2i)*(3-i)
+5 + 5i
+> i^i
+exp(-pi/2)
+> sqrt(-4)
+  note: sqrt(-4) is undefined in the reals; its complex principal value follows
+  note: on the branch cut of sqrt: the principal value, sqrt z = e^(log(z)/2): i sqrt|z| on the negative reals (the other root is its negative)
+2i
+> j*i
+  note: i, j are quaternion units: ij = k = -ji
+-k
+> (e1*e2)*e4
+  note: octonion products are not associative: each product is taken as grouped, (a b) c != a (b c) here
+e7
+> f(z) = z^2 + 1
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+> zeros f
+zeros of f (z complex):
+  2 roots (a polynomial of degree 2):
+    z = -i
+    z = i
+  check: f = 0 at the roots; the polynomial's coefficients come from 64 samples and were checked at 8 other points
+  a polynomial of degree 2 has 2 complex roots counted with multiplicity (the fundamental theorem of algebra)
+> residue 1/(z^2+1) at i
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+residue of 1/(z^2 + 1) at z = i:
+  = -i/2
+  a pole of order 1 (|f| grows like |z - a|^-1)
+  computed as (1/(2 pi i)) times the integral of 1/(z^2 + 1) on |z - a| = 0.01 and 0.005 (512 points each): they agree
+> integrate 1/z around |z| = 1
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+integral of 1/z around |z| = 1 (counterclockwise):
+  = 2pi*i
+  numerically: the trapezoid rule on the circle with 1024 and 2048 points (difference 1e-18)
+  residue theorem: 2 pi i times the sum of the residues at the 1 pole inside = 2pi*i: agrees
+> rotate (1, 0, 0) by 90 degrees about the z axis
+rotate (1, 0, 0) by pi/2 about (0, 0, 1):
+  q = cos(theta/2) + sin(theta/2) u, u the unit axis
+  q = sqrt(2)/2 + k*sqrt(2)/2: a rotation by pi/2 about (0, 0, 1)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = j
+  rotated: (0, 1, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)

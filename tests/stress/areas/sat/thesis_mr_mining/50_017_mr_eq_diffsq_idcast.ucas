@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:p,q
+# meaning-preserving rewrite: idcast
+f(x: u8, y: u8) = (x + y)*(x - y)
+g(x: u8, y: u8) = x*x - y*y
+f2(x: u8, y: u8) = u8((x + y)*(x - y))
+g2(x: u8, y: u8) = u8(x*x - y*y)
+f1(x: u8, y: u8) = u8((x + y)*(x - y))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

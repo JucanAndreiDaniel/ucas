@@ -1,0 +1,18 @@
+> c optimize nofile vectorize
+c optimize: 2 functions, 2 rewrites proved (0 exhaustive, 0 by SAT, 2 structural) for x86-64-v3
+  len (line 1): a scan for the terminating zero: n += strlen(s + n)
+    proof: structural (C99 7.21.6.3: strlen counts the characters before the first null; the loop steps over exactly those, reading the same bytes (a signed counter past its maximum is UB)); cost: a byte loop -> the C library's strlen
+    before: while(s[n])n++;
+    after:  n += strlen((const char *)s + n);
+  lenp (line 2): a scan for the terminating zero: p += strlen(p)
+    proof: structural (C99 7.21.6.3: strlen counts the characters before the first null; the loop steps over exactly those, reading the same bytes); cost: a byte loop -> the C library's strlen
+    before: while(*p)p++;
+    after:  p += strlen((const char *)p);
+  len (line 1): not lowered: line 1: a parameter that is not an integer or a float (s)
+  lenp (line 2): not lowered: line 2: a parameter that is not an integer or a float (s)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  #include <string.h>
+  int len(const char*s){int n=0;n += strlen((const char *)s + n);return n;}
+  int lenp(const char*s){const char*p=s;p += strlen((const char *)p);return p-s;}

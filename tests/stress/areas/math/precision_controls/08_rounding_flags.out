@@ -1,0 +1,22 @@
+> g1(x: f32 in 0..1) = x
+> g2(x: f32 in 0..1) = x+0
+> equiv g1 g2
+g1 and g2 are equal on the domain of g1 (proved by SAT: 5481 AIG nodes, 1384 conflicts)
+> g3(x: f16) = x
+> g4(x: f16) = x+0
+> equiv g3 g4
+g3 and g4 are equal on the domain of g3 (exhaustive)
+> g5(x: f32 in 0..1) = x+x
+> g6(x: f32 in 0..1) = 2*x
+> equiv g5 g6 ftz
+g5 and g6 are equal on the domain of g5 (proved by SAT: 8893 AIG nodes, 655 conflicts)
+  every float operation flushed subnormals to zero (ftz)
+> g7(x: f32 in 0..1) = x+x
+> g8(x: f32 in 0..1) = 2*x
+> equiv g7 g8 noftz
+g7 and g8 are equal on the domain of g7 (proved by SAT: 6362 AIG nodes, 1275 conflicts)
+> g9(x: f32 in 0..1) = x*x
+> g10(x: f32 in 0..1) = x^2
+> equiv g9 g10 nanbits
+g9 and g10 are equal on the domain of g9 (sampled, not proved; no SAT proof: a float power)
+  NaN results compared by their bits, sign and payload (nanbits)

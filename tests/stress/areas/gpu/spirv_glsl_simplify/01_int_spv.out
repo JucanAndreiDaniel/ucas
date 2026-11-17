@@ -1,0 +1,117 @@
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 4 -> 4 (+0.0%)
+  counting the strength reductions any driver also does: 5 -> 4 (-20.0%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 a multiply by a power of two is a shift
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 516 bytes, checksum eeab4e4d)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 16 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 1 -> 1 (+0.0%)
+  counting the strength reductions any driver also does: 2 -> 1 (-50.0%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 an extract at bit 0 is a mask
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 487 bytes, checksum 1a6547cb)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 2 -> 1 (-50.0%)
+  by kind:
+       1  never below the low bound: a min              -1
+  rewrites:
+    %a = OpExtInst %uint %glsl UClamp %x %uint_0 %uint_255
+      ->  OpExtInst %uint %glsl UMin %x %uint_255   (never below the low bound: a min; -1)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 495 bytes, checksum e18e8da4)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 4 -> 4 (+0.0%)
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 1 dead instruction removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 2 -> 2 (+0.0%)
+  counting the strength reductions any driver also does: 4 -> 2 (-50.0%)
+  also done by any driver compiler (1 rewrite, -2; kept in the written module, not counted above): 1 two shifts by constants are one
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 487 bytes, checksum 6698a1d4)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input) and 1 by algebra mod 2^w, 1 dead instruction removed
+  integer arithmetic cost under gt1030 (each instruction once): 6 -> 3 (-50.0%)
+  by kind:
+       1  a chain of shifts and adds is one multiply    -3
+  rewrites:
+    %b = OpIMul %uint %a %uint_5
+      ->  OpIMul %uint %x %ucas_uint_15   (a chain of shifts and adds is one multiply; -3; by algebra mod 2^w, not SAT)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 478 bytes, checksum 2bb0d7e4)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+  output %out2: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 2 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 0 -> 0
+  counting the strength reductions any driver also does: 2 -> 0 (-100.0%)
+  also done by any driver compiler (2 rewrites, -2; kept in the written module, not counted above): 2 always this value
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 466 bytes, checksum a4f7195a)
+> spvsimplify nofile
+  input %c: bool
+  input %x: uint
+  input %y: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 28 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 4 -> 3 (-25.0%)
+  by kind:
+       1  equals its operand                            -1
+  rewrites:
+    %w = OpExtInst %uint %glsl UMin %v %uint_255
+      ->  %v   (equals its operand; -1)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 719 bytes, checksum 5ea34a25)
+> spvsimplify nofile
+  input %sx: int
+  output %out: int (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 21 -> 0 (-100.0%)
+  by kind:
+       1  always this value                             -21
+  rewrites:
+    %a = OpSDiv %int %sx %int_0
+      ->  0   (always this value; -21)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 376 bytes, checksum 80f6780d)
+> spvsimplify nofile
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 0 -> 0
+  counting the strength reductions any driver also does: 1 -> 0 (-100.0%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 equals its operand
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 396 bytes, checksum 7fa86f5c)
+> spvsimplify nofile assume n 1 30
+  input %x: uint
+  input %n: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 16 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  assuming n in [1, 30] (every load of it)
+  integer arithmetic cost under gt1030 (each instruction once): 4 -> 4 (+0.0%)
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs

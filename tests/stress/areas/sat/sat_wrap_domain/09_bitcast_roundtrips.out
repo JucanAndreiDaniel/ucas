@@ -1,0 +1,47 @@
+> rt1(x: f32) = asfloat(asuint(x))
+> idf(x: f32) = x
+> equiv rt1 idf
+rt1 and idf are equal on the domain of rt1 (proved by SAT: 2733 AIG nodes, 382 conflicts)
+> rt2(x: f32) = asfloat(asint(x))
+> wrap rt2
+wrap analysis of rt2:
+  asfloat(asint(x))   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 4278190079 points); not exhaustive
+> rt3(x: u32) = asuint(asfloat(x))
+> wrap rt3
+wrap analysis of rt3:
+  asfloat(x)   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> rt4(x: f32) = asuint(asfloat(asint(x)))
+> wrap rt4
+wrap analysis of rt4:
+  asfloat(asint(x))   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 4278190079 points); not exhaustive
+> nn(x: f32) = -(-x)
+> wrap nn
+wrap analysis of nn:
+  no wrapping or rounding operations
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 4278190079 points); not exhaustive
+> ab(x: f32) = abs(x)
+> ab2(x: f32) = x < 0 ? -x : x
+> equiv ab ab2 ftz
+ab and ab2 differ at 255 points of the sample, e.g. x=-4.91007275e-39: 0 vs -4.91007275e-39
+  every float operation flushed subnormals to zero (ftz)
+> q1(x: u32) = asfloat(x | 0x7fc00000)
+> q2(x: u32) = asfloat(0x7fc00000)
+  note: asfloat of an untyped integer: read as u32 -> f32
+> equiv q1 q2
+q1 and q2 are equal on the domain of q1 (proved by SAT: 54 AIG nodes, 0 conflicts)
+> equiv q1 q2 nanbits
+q1 and q2 differ at 65533 points of the sample, e.g. x=4294967295: NaN 0xffffffff vs NaN 0x7fc00000
+  NaN results compared by their bits, sign and payload (nanbits)

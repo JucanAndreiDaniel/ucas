@@ -1,0 +1,48 @@
+> f01(x: u8, y: u8, z: u8) = ~(x & y & z)
+> g01(x: u8, y: u8, z: u8) = ~x | ~y | ~z
+> equiv f01 g01
+f01 and g01 are equal on the domain of f01 (proved by SAT: 41 AIG nodes, 0 conflicts)
+> f02(x: u16, y: u16, z: u16) = ~(x | y | z)
+> g02(x: u16, y: u16, z: u16) = ~x & ~y & ~z
+> equiv f02 g02
+f02 and g02 are equal on the domain of f02 (proved by SAT: 81 AIG nodes, 0 conflicts)
+> f03(x: u32, y: u32, z: u32) = x & (x | y | z)
+> g03(x: u32, y: u32, z: u32) = x
+> equiv f03 g03
+f03 and g03 are equal on the domain of f03 (proved by SAT: 320 AIG nodes, 72 conflicts)
+> f04(x: u64, y: u64, z: u64) = x | (x & y & z)
+> g04(x: u64, y: u64, z: u64) = x
+> equiv f04 g04
+f04 and g04 are equal on the domain of f04 (proved by SAT: 640 AIG nodes, 136 conflicts)
+> f05(x: u8, y: u8, z: u8) = (x xor y) xor z
+> g05(x: u8, y: u8, z: u8) = x xor (y xor z)
+> equiv f05 g05
+f05 and g05 are equal on the domain of f05 (proved by SAT: 152 AIG nodes, 72 conflicts)
+> f06(x: u16, y: u16, z: u16) = (x & y) & z
+> g06(x: u16, y: u16, z: u16) = x & (y & z)
+> equiv f06 g06
+f06 and g06 are equal on the domain of f06 (proved by SAT: 176 AIG nodes, 41 conflicts)
+> f07(x: u32, y: u32, z: u32) = (x | y) | z
+> g07(x: u32, y: u32, z: u32) = x | (y | z)
+> equiv f07 g07
+f07 and g07 are equal on the domain of f07 (proved by SAT: 352 AIG nodes, 88 conflicts)
+> f08(x: u64, y: u64) = x xor y
+> g08(x: u64, y: u64) = y xor x
+> equiv f08 g08
+f08 and g08 are equal on the domain of f08 (proved by SAT: 321 AIG nodes, 0 conflicts)
+> f09(x: u8, y: u8) = x & y
+> g09(x: u8, y: u8) = y & x
+> equiv f09 g09
+f09 and g09 are equal on the domain of f09 (exhaustive)
+> f10(x: u16, y: u16) = x | y
+> g10(x: u16, y: u16) = y | x
+> equiv f10 g10
+f10 and g10 are equal on the domain of f10 (proved by SAT: 49 AIG nodes, 0 conflicts)
+> f11(x: i32) = ~(~x)
+> g11(x: i32) = x
+> equiv f11 g11
+f11 and g11 are equal on the domain of f11 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> f12(x: u8) = x xor ~x
+> g12(x: u8) = 0xFF
+> equiv f12 g12
+f12 and g12 are equal on the domain of f12 (exhaustive)

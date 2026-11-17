@@ -1,0 +1,18 @@
+> par8(x: u8) = popcount(x) & 1
+> parbits(x: u8) = (x&1) xor ((x>>1)&1) xor ((x>>2)&1) xor ((x>>3)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>6)&1) xor ((x>>7)&1)
+> equiv par8 parbits
+par8 and parbits are equal on the domain of par8 (exhaustive)
+> and8(x: u8) = x == 255 ? 1 : 0
+> andbits(x: u8) = (x&1) & ((x>>2)&1) & ((x>>4)&1) & ((x>>6)&1) & (x==0xff ? 1 : 0)
+> equiv and8 andbits
+and8 and andbits are equal on the domain of and8 (exhaustive)
+> xorchain(x: u32) = x xor (x << 1) xor (x << 2) xor (x << 3) xor (x << 4)
+> xorchainb(x: u32) = (x xor (x << 4)) xor ((x << 1) xor (x << 3)) xor (x << 2)
+> equiv xorchain xorchainb
+xorchain and xorchainb are equal on the domain of xorchain (proved by SAT: 847 AIG nodes, 2287 conflicts)
+> range par8
+range of par8 -> u8:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  over all 256 points of the domain

@@ -1,0 +1,27 @@
+> basis a { inv(x) = ~x }
+> basis b : a { andp(x, y) = x & y }
+> basis a : b { orp(x, y) = x | y }
+> f(x: u4) = x ^ 0xf
+> gates f basis a max 4
+gates for f: 4 input bits -> 4 output bits, basis a
+  exact search stopped (cost limit at cost 4); Shannon decomposition instead:
+  cost 14, 14 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 16 care inputs
+  t0 = andp(x0, x1)              = x0 & x1
+  t1 = andp(x0, x2)              = x0 & x2
+  t2 = andp(x1, x2)              = x1 & x2
+  t3 = orp(x1, x2)               = x1 | x2
+  t4 = inv(t3)                   = ~t3
+  t5 = orp(t2, t4)               = t2 | t4
+  t6 = andp(x0, t5)              = x0 & t5
+  t7 = inv(t2)                   = ~t2
+  t8 = andp(x0, t7)              = x0 & t7
+  t9 = andp(t8, t3)              = t8 & t3
+  t10 = inv(x3)                   = ~x3
+  t11 = andp(x3, t6)              = x3 & t6
+  t12 = andp(t9, t10)              = t9 & t10
+  t13 = orp(t11, t12)               = t11 | t12
+  r3 = t13
+  r2 = t1
+  r1 = t0
+  r0 = x0

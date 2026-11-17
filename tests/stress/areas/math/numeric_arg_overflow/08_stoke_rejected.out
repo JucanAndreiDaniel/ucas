@@ -1,0 +1,41 @@
+> f(x: u8) = x*x
+> stoke f steps -1
+08_stoke_rejected.ucas:2:15: error: stoke: steps N, 1 to 100000000
+    stoke f steps -1
+                  ^
+> stoke f steps 0
+08_stoke_rejected.ucas:3:16: error: stoke: steps N, 1 to 100000000
+    stoke f steps 0
+                   ^
+> stoke f steps 100000001
+08_stoke_rejected.ucas:4:24: error: stoke: steps N, 1 to 100000000
+    stoke f steps 100000001
+                           ^
+> stoke f steps 2147483647
+08_stoke_rejected.ucas:5:25: error: stoke: steps N, 1 to 100000000
+    stoke f steps 2147483647
+                            ^
+> stoke f steps 9999999999999999999999
+08_stoke_rejected.ucas:6:15: error: the integer literal 9999999999999999999999 is too large: the largest is 2^64 - 1 = 18446744073709551615 (a u64)
+    stoke f steps 9999999999999999999999
+                  ^
+> stoke f restarts -1
+08_stoke_rejected.ucas:7:18: error: stoke: restarts R, 1 to 1000
+    stoke f restarts -1
+                     ^
+> stoke f restarts 1001
+08_stoke_rejected.ucas:8:22: error: stoke: restarts R, 1 to 1000
+    stoke f restarts 1001
+                         ^
+> stoke f len -1
+08_stoke_rejected.ucas:9:13: error: stoke: len L, 1 to 12
+    stoke f len -1
+                ^
+> stoke f len 13
+08_stoke_rejected.ucas:10:15: error: stoke: len L, 1 to 12
+    stoke f len 13
+                  ^
+> stoke f seed -1
+08_stoke_rejected.ucas:11:14: error: stoke: seed K
+    stoke f seed -1
+                 ^

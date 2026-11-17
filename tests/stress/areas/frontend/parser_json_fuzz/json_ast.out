@@ -1,0 +1,15 @@
+{"id": 1, "ok": true, "cmd": "show", "ucas": "show ((1) + (2))", "structured": true, "result": {"kind": "show", "definition": "_() = 3", "body": "3", "type": "int"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_() = 3\n  -> int\n"}
+{"id": 2, "ok": true, "cmd": "show", "ucas": "show ((1) + (2) + (3))", "structured": true, "result": {"kind": "show", "definition": "_() = 6", "body": "6", "type": "int"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_() = 6\n  -> int\n"}
+{"id": 3, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: * takes two or more arguments"}}
+{"id": 4, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: op \"+\" needs args (an array)"}}
+{"id": 5, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: op \"+\" needs args (an array)"}}
+{"id": 6, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: a name, an expression, or {\"body\", \"params\"}"}}
+{"id": 7, "ok": true, "cmd": "show", "ucas": "show (1/0)", "structured": true, "result": {"kind": "show", "definition": "_() = 1/0", "body": "1/0", "type": "int"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_() = 1/0\n  -> int\n"}
+{"id": 8, "ok": true, "cmd": "show", "ucas": "show nope((1))", "structured": true, "result": {"kind": "show", "definition": "_(nope: real) = nope", "body": "nope", "type": "real"}, "notes": [{"kind": "rule", "text": "nope(...) read as multiplication: nope is not a function"}], "conditions": [], "checks": [], "files": [], "text": "  note: nope(...) read as multiplication: nope is not a function\n_(nope: real) = nope\n  -> real\n"}
+{"id": 9, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: var \"\" is not a name"}}
+{"id": 10, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: num \"abc\" is not a number or a fraction"}}
+{"id": 11, "ok": false, "cmd": "show", "error": {"code": "bad_request", "message": "f: ?: takes three arguments"}}
+{"id": null, "ok": false, "cmd": null, "error": {"code": "bad_json", "message": "nested too deeply at byte 691"}}
+{"id": 13, "ok": true, "cmd": "show", "ucas": "show (-(5))", "structured": true, "result": {"kind": "show", "definition": "_() = -5", "body": "-5", "type": "int"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_() = -5\n  -> int\n"}
+{"id": 14, "ok": true, "cmd": "show", "ucas": "show (x + y)", "structured": true, "result": {"kind": "show", "definition": "_(x: real, y: real) = x + y", "body": "x + y", "type": "real"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_(x: real, y: real) = x + y\n  -> real\n"}
+{"id": 15, "ok": true, "cmd": "show", "ucas": "show x+1", "structured": true, "result": {"kind": "show", "definition": "_(x: real) = x + 1", "body": "x + 1", "type": "real"}, "notes": [], "conditions": [], "checks": [], "files": [], "text": "_(x: real) = x + 1\n  -> real\n"}

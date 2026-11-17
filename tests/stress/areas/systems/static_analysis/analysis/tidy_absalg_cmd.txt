@@ -1,0 +1,644 @@
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:37: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   29 | #include <stdlib.h>
+   30 | #include <string.h>
+   31 | #include <strings.h>
+   32 | 
+   33 | /* notes (from parsing) come before the answer */
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                     ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:36:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   36 | static char text[1 << 16];
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:120:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  120 |         k = (k + 1) & 3;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/absalg_cmd.c:133:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  133 |         k = (k + 1) & 3;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/absalg_cmd.c:267:4: warning: Out of bound access to memory after the end of 'arg' [clang-analyzer-security.ArrayBound]
+  267 |                         arg[k++] = bexpr();
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:326:11: note: Calling 'bpostfix'
+  326 |         zint v = bpostfix();
+      |                  ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:305:11: note: Calling 'bprimary'
+  305 |         zint v = bprimary();
+      |                  ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:237:6: note: Assuming the condition is false
+  237 |         if (*bp == '(') {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:237:2: note: Taking false branch
+  237 |         if (*bp == '(') {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:246:6: note: Assuming the condition is false
+  246 |         if (isdigit((unsigned char)*bp)) {
+      |             ^
+/usr/include/ctype.h:192:21: note: expanded from macro 'isdigit'
+  192 | # define isdigit(c)     __isctype((c), _ISdigit)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:246:2: note: Taking false branch
+  246 |         if (isdigit((unsigned char)*bp)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:252:6: note: Assuming the condition is true
+  252 |         if (isalpha((unsigned char)*bp)) {
+      |             ^
+/usr/include/ctype.h:190:21: note: expanded from macro 'isalpha'
+  190 | # define isalpha(c)     __isctype((c), _ISalpha)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:252:2: note: Taking true branch
+  252 |         if (isalpha((unsigned char)*bp)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:256:10: note: Assuming the condition is false
+  256 |                 while (isalnum((unsigned char)*bp) && n < 15)
+      |                        ^
+/usr/include/ctype.h:189:21: note: expanded from macro 'isalnum'
+  189 | # define isalnum(c)     __isctype((c), _ISalnum)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:256:38: note: Left side of '&&' is false
+  256 |                 while (isalnum((unsigned char)*bp) && n < 15)
+      |                                                    ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:260:7: note: Assuming the condition is false
+  260 |                 if (*bp != '(')
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:260:3: note: Taking false branch
+  260 |                 if (*bp != '(')
+      |                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:264:3: note: Loop condition is true.  Entering loop body
+  264 |                 for (;;) {
+      |                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:8: note: 'k' is not equal to 2
+  265 |                         if (k == 2)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:4: note: Taking false branch
+  265 |                         if (k == 2)
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:269:8: note: Assuming the condition is true
+  269 |                         if (*bp == ',') {
+      |                             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:269:4: note: Taking true branch
+  269 |                         if (*bp == ',') {
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:271:5: note:  Execution continues on line 264
+  271 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:264:3: note: Loop condition is true.  Entering loop body
+  264 |                 for (;;) {
+      |                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:8: note: 'k' is not equal to 2
+  265 |                         if (k == 2)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:4: note: Taking false branch
+  265 |                         if (k == 2)
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:269:8: note: Assuming the condition is true
+  269 |                         if (*bp == ',') {
+      |                             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:269:4: note: Taking true branch
+  269 |                         if (*bp == ',') {
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:271:5: note:  Execution continues on line 264
+  271 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:264:3: note: Loop condition is true.  Entering loop body
+  264 |                 for (;;) {
+      |                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:8: note: 'k' is equal to 2
+  265 |                         if (k == 2)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:265:4: note: Taking true branch
+  265 |                         if (k == 2)
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:267:4: note: Access of 'arg' at index 2, while it holds only 2 'long' elements
+  267 |                         arg[k++] = bexpr();
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:287:4: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   29 |                         int64_t nn = z_to_i64(arg[0]), kk = z_to_i64(arg[1]), i;
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:337:20: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  337 |                 return z_pow(v, (uint64_t)z_to_i64(e));
+      |                                  ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:795:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  795 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:795:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/absalg_cmd.c:977:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  977 |         switch (which) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:977:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/absalg_cmd.c:1022:9: warning: Dereference of null pointer (loaded from variable 'arrow') [clang-analyzer-core.NullDereference]
+ 1022 |         *arrow = 0;
+      |          ~~~~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1013:8: note: 'arrow' initialized here
+ 1013 |         char *arrow = find_arrow(s), *by;
+      |               ^~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:6: note: Assuming 'arrow' is null
+ 1019 |         if (!arrow || !by || by < arrow)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:7: note: 'arrow' is null
+ 1019 |         if (!arrow || !by || by < arrow)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:13: note: Left side of '||' is true
+ 1019 |         if (!arrow || !by || by < arrow)
+      |                    ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1022:9: note: Dereference of null pointer (loaded from variable 'arrow')
+ 1022 |         *arrow = 0;
+      |          ~~~~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1023:6: warning: Dereference of null pointer (loaded from variable 'by') [clang-analyzer-core.NullDereference]
+ 1023 |         *by = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1018:2: note: Value assigned to 'by'
+ 1018 |         by = find_word(s, "by");
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:6: note: Assuming 'arrow' is non-null
+ 1019 |         if (!arrow || !by || by < arrow)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:7: note: 'arrow' is non-null
+ 1019 |         if (!arrow || !by || by < arrow)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:6: note: Left side of '||' is false
+ 1019 |         if (!arrow || !by || by < arrow)
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:16: note: Assuming 'by' is null
+ 1019 |         if (!arrow || !by || by < arrow)
+      |                       ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1019:20: note: Left side of '||' is true
+ 1019 |         if (!arrow || !by || by < arrow)
+      |                           ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1023:6: note: Dereference of null pointer (loaded from variable 'by')
+ 1023 |         *by = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1186:6: warning: Dereference of null pointer (loaded from variable 'by') [clang-analyzer-core.NullDereference]
+ 1186 |         *by = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1178:8: note: 'by' initialized here
+ 1178 |         char *by = find_word(s, "by"), *gp[3], *mp[3], *a1, *a2;
+      |               ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:6: note: Assuming 'by' is null
+ 1184 |         if (!by)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:7: note: 'by' is null
+ 1184 |         if (!by)
+      |              ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:2: note: Taking true branch
+ 1184 |         if (!by)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1186:6: note: Dereference of null pointer (loaded from variable 'by')
+ 1186 |         *by = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1190:6: warning: Dereference of null pointer (loaded from variable 'a1') [clang-analyzer-core.NullDereference]
+ 1190 |         *a1 = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:6: note: Assuming 'by' is non-null
+ 1184 |         if (!by)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:7: note: 'by' is non-null
+ 1184 |         if (!by)
+      |              ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:2: note: Taking false branch
+ 1184 |         if (!by)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1187:2: note: Value assigned to 'a1'
+ 1187 |         a1 = find_arrow(s);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1188:6: note: Assuming 'a1' is null
+ 1188 |         if (!a1)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1188:2: note: Taking true branch
+ 1188 |         if (!a1)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1190:6: note: Dereference of null pointer (loaded from variable 'a1')
+ 1190 |         *a1 = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1194:6: warning: Dereference of null pointer (loaded from variable 'a2') [clang-analyzer-core.NullDereference]
+ 1194 |         *a2 = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:6: note: Assuming 'by' is non-null
+ 1184 |         if (!by)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:7: note: 'by' is non-null
+ 1184 |         if (!by)
+      |              ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1184:2: note: Taking false branch
+ 1184 |         if (!by)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1188:6: note: Assuming 'a1' is non-null
+ 1188 |         if (!a1)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1188:2: note: Taking false branch
+ 1188 |         if (!a1)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1191:2: note: Value assigned to 'a2'
+ 1191 |         a2 = find_arrow(a1 + 2);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1192:6: note: Assuming 'a2' is null
+ 1192 |         if (!a2)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1192:2: note: Taking true branch
+ 1192 |         if (!a2)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1194:6: note: Dereference of null pointer (loaded from variable 'a2')
+ 1194 |         *a2 = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1238:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1238 |         rng ^= rng << 13;
+      |                    ~~ ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1239:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1239 |         rng ^= rng >> 7;
+      |                    ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1240:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1240 |         rng ^= rng << 17;
+      |                    ~~ ^~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1268:4: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1268 |                         switch (f) {
+      |                         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1268:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/absalg_cmd.c:1291:10: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 1291 |         int n = atoi(s), t, f, bad = 0, homs = 0;
+      |                 ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1387:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1387 |                         a = z_add(z_mul(a, z_from_i64(1 << 30)), z_from_i64(rnd(1 <<
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1387:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1387 |                         a = z_add(z_mul(a, z_from_i64(1 << 30)), z_from_i64(rnd(1 <<
+      |                                                                                 ^ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1390:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1390 |                         b = z_add(z_mul(b, z_from_i64(1 << 30)), z_from_i64(rnd(1 <<
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1390:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1390 |                         b = z_add(z_mul(b, z_from_i64(1 << 30)), z_from_i64(rnd(1 <<
+      |                                                                                 ^ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1439:6: warning: function 'absalg_cmd2' can be made static to enforce internal linkage [misc-use-internal-linkage]
+ 1439 | void absalg_cmd2(const char *w, char *s);   /* below: groups, ideals */
+      |      ^
+      | static 
+/home/andrew/Code/ucas/src/absalg_cmd.c:1440:5: warning: function 'absalg_is_cmd2' can be made static to enforce internal linkage [misc-use-internal-linkage]
+ 1440 | int absalg_is_cmd2(const char *w);
+      |     ^
+      | static 
+/home/andrew/Code/ucas/src/absalg_cmd.c:1456:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+ 1456 |         uint32_t pos = cmdp_pos(p);
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1476:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1476 |         switch (c) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1476:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/absalg_cmd.c:1532:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1532 |         k = (k + 1) & 3;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1595:2: warning: no header providing "u64" is directly included [misc-include-cleaner]
+   25 |         u64 o64;
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:38: warning: Out of bound access to memory around 'ord' [clang-analyzer-security.ArrayBound]
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: note: Control jumps to 'case 1:'  at line 2356
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2357:3: note: Calling 'cmd_permgroup'
+ 2357 |                 cmd_permgroup(s);
+      |                 ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1603:14: note: Assuming 'i' is >= field 'ngens'
+ 1603 |         for (i = 0; i < G.ngens; i++)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1603:2: note: Loop condition is false. Execution continues on line 1605
+ 1603 |         for (i = 0; i < G.ngens; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1605:17: note: Assuming field 'ngens' is 0
+ 1605 |         printf("%s\n", G.ngens ? "" : " none (the trivial group)");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1605:17: note: '?' condition is false
+ 1605 |         printf("%s\n", G.ngens ? "" : " none (the trivial group)");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1607:14: note: Assuming 'i' is >= field 'nbase'
+ 1607 |         for (i = 0; i < G.nbase; i++)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1607:2: note: Loop condition is false. Execution continues on line 1609
+ 1607 |         for (i = 0; i < G.nbase; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1609:36: note: Assuming field 'nbase' is 0
+ 1609 |         printf("%s; basic orbit lengths", G.nbase ? "" : " (empty)");
+      |                                           ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1609:36: note: '?' condition is false
+ 1609 |         printf("%s; basic orbit lengths", G.nbase ? "" : " (empty)");
+      |                                           ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1610:2: note: Loop condition is false. Execution continues on line 1612
+ 1610 |         for (i = 0; i < G.nbase; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1617:14: note: Assuming 'j' is >= 'no'
+ 1617 |         for (j = 0; j < no; j++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1617:2: note: Loop condition is false. Execution continues on line 1627
+ 1617 |         for (j = 0; j < no; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1627:17: note: 'no' is not equal to 1
+ 1627 |         printf("%s\n", no == 1 ? " (transitive)" : "");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1627:17: note: '?' condition is false
+/home/andrew/Code/ucas/src/absalg_cmd.c:1628:28: note: Assuming the condition is false
+ 1628 |         printf("  abelian: %s\n", pg_is_abelian(&G) ? "yes" : "no");
+      |                                   ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1628:28: note: '?' condition is false
+ 1628 |         printf("  abelian: %s\n", pg_is_abelian(&G) ? "yes" : "no");
+      |                                   ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1630:2: note: Calling 'print_series'
+ 1630 |         print_series("derived series (orders)", ord, len);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1583:14: note: Assuming 'i' is >= 'len'
+ 1583 |         for (i = 0; i < len && i < 64; i++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1583:22: note: Left side of '&&' is false
+ 1583 |         for (i = 0; i < len && i < 64; i++)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1630:2: note: Returning from 'print_series'
+ 1630 |         print_series("derived series (orders)", ord, len);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:43: note: 'len' is < 64
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                                  ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:43: note: '?' condition is true
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:38: note: Access of 'ord' at a negative or overflowing index, while it holds only 64 'long' elements
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1636:39: warning: Out of bound access to memory around 'ord' [clang-analyzer-security.ArrayBound]
+ 1636 |         printf("  nilpotent: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                              ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: note: Control jumps to 'case 1:'  at line 2356
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2357:3: note: Calling 'cmd_permgroup'
+ 2357 |                 cmd_permgroup(s);
+      |                 ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1603:14: note: Assuming 'i' is >= field 'ngens'
+ 1603 |         for (i = 0; i < G.ngens; i++)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1603:2: note: Loop condition is false. Execution continues on line 1605
+ 1603 |         for (i = 0; i < G.ngens; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1605:17: note: Assuming field 'ngens' is 0
+ 1605 |         printf("%s\n", G.ngens ? "" : " none (the trivial group)");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1605:17: note: '?' condition is false
+ 1605 |         printf("%s\n", G.ngens ? "" : " none (the trivial group)");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1607:14: note: Assuming 'i' is >= field 'nbase'
+ 1607 |         for (i = 0; i < G.nbase; i++)
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1607:2: note: Loop condition is false. Execution continues on line 1609
+ 1607 |         for (i = 0; i < G.nbase; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1609:36: note: Assuming field 'nbase' is 0
+ 1609 |         printf("%s; basic orbit lengths", G.nbase ? "" : " (empty)");
+      |                                           ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1609:36: note: '?' condition is false
+ 1609 |         printf("%s; basic orbit lengths", G.nbase ? "" : " (empty)");
+      |                                           ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1610:2: note: Loop condition is false. Execution continues on line 1612
+ 1610 |         for (i = 0; i < G.nbase; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1617:14: note: Assuming 'j' is >= 'no'
+ 1617 |         for (j = 0; j < no; j++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1617:2: note: Loop condition is false. Execution continues on line 1627
+ 1617 |         for (j = 0; j < no; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1627:17: note: 'no' is not equal to 1
+ 1627 |         printf("%s\n", no == 1 ? " (transitive)" : "");
+      |                        ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1627:17: note: '?' condition is false
+/home/andrew/Code/ucas/src/absalg_cmd.c:1628:28: note: Assuming the condition is false
+ 1628 |         printf("  abelian: %s\n", pg_is_abelian(&G) ? "yes" : "no");
+      |                                   ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1628:28: note: '?' condition is false
+ 1628 |         printf("  abelian: %s\n", pg_is_abelian(&G) ? "yes" : "no");
+      |                                   ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:43: note: 'len' is < 64
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                                  ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:43: note: '?' condition is true
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:29: note: Assuming the condition is false
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                    ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1631:29: note: '?' condition is false
+ 1631 |         printf("  solvable: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                    ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1633:43: note: 'len' is < 64
+ 1633 |         rep_bool("solvable_value", z_is_one(ord[(len < 64 ? len : 64) - 1]));
+      |                                                  ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1633:43: note: '?' condition is true
+/home/andrew/Code/ucas/src/absalg_cmd.c:1635:2: note: Calling 'print_series'
+ 1635 |         print_series("lower central series (orders)", ord, len);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1583:14: note: Assuming 'i' is >= 'len'
+ 1583 |         for (i = 0; i < len && i < 64; i++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1583:22: note: Left side of '&&' is false
+ 1583 |         for (i = 0; i < len && i < 64; i++)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1635:2: note: Returning from 'print_series'
+ 1635 |         print_series("lower central series (orders)", ord, len);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1636:44: note: 'len' is < 64
+ 1636 |         printf("  nilpotent: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                                   ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1636:44: note: '?' condition is true
+/home/andrew/Code/ucas/src/absalg_cmd.c:1636:39: note: Access of 'ord' at a negative or overflowing index, while it holds only 64 'long' elements
+ 1636 |         printf("  nilpotent: %s\n", z_is_one(ord[(len < 64 ? len : 64) - 1]) ?
+      |                                              ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1659:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1659 |                         ok &= pg_contains(&G, G.gens + (size_t)i * n, k);
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1686:6: warning: 1st function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1686 |         p = need_perm(part[1], n, "permelem");
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: note: Control jumps to 'case 2:'  at line 2359
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2360:3: note: Calling 'cmd_permelem'
+ 2360 |                 cmd_permelem(s);
+      |                 ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1677:6: note: Calling 'split_commas'
+ 1677 |         if (split_commas(s, part, 3) < 2)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:60:2: note: Loop condition is false. Execution continues on line 72
+   60 |         for (; *s; s++) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:72:6: note: 'n' is < 'max'
+   72 |         if (n < max)
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:72:2: note: Taking true branch
+   72 |         if (n < max)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1677:6: note: Returning from 'split_commas'
+ 1677 |         if (split_commas(s, part, 3) < 2)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1677:2: note: Taking true branch
+ 1677 |         if (split_commas(s, part, 3) < 2)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1686:6: note: 1st function call argument is an uninitialized value
+ 1686 |         p = need_perm(part[1], n, "permelem");
+      |             ^         ~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1897:55: warning: no header providing "nt_isprime" is directly included [misc-include-cleaner]
+ 1897 |                         if (!z_parse(p, &v, &e) || !z_to_u64(v, &o->p) || !nt_isprime(
+      |                                                                            ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:1963:30: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1963 |                                 for (i = 0; i < o->nv && strcmp(o->var[i], w); i++)
+      |                                                          ^                   
+      |                                                                               != 0
+/home/andrew/Code/ucas/src/absalg_cmd.c:1969:6: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1969 |                                         strcpy(o->var[o->nv++], w);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1969:6: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 1969 |                                         strcpy(o->var[o->nv++], w);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1981:6: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1981 |                                         strcpy(t, o->var[j]);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1981:6: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 1981 |                                         strcpy(t, o->var[j]);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1982:6: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1982 |                                         strcpy(o->var[j], o->var[j - 1]);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1982:6: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 1982 |                                         strcpy(o->var[j], o->var[j - 1]);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1983:6: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1983 |                                         strcpy(o->var[j - 1], t);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:1983:6: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 1983 |                                         strcpy(o->var[j - 1], t);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2007:6: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+ 2007 |         n = snprintf(buf, sizeof buf, "%s, ", R->order == MPL_LEX ? "lex" :
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2113:6: warning: Dereference of null pointer (loaded from variable 'in') [clang-analyzer-core.NullDereference]
+ 2113 |         *in = 0;
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: note: Control jumps to 'case 7:'  at line 2374
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2375:3: note: Calling 'cmd_idealmember'
+ 2375 |                 cmd_idealmember(s);
+      |                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2110:2: note: Value assigned to 'in'
+ 2110 |         in = find_word(s, "in");
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2111:6: note: Assuming 'in' is null
+ 2111 |         if (!in)
+      |             ^~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2111:2: note: Taking true branch
+ 2111 |         if (!in)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2113:6: note: Dereference of null pointer (loaded from variable 'in')
+ 2113 |         *in = 0;
+      |          ~~ ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2241:56: warning: Out of bound access to memory around 'inv' [clang-analyzer-security.ArrayBound]
+ 2241 |         printf("  minimal polynomial: %s\n", n ? mpl_str(&R, &inv[n - 1]) : "1");
+      |                                                               ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: note: Control jumps to 'case 9:'  at line 2380
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2381:3: note: Calling 'cmd_fxmodule'
+ 2381 |                 cmd_fxmodule(s);
+      |                 ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2222:6: note: Assuming the condition is true
+ 2222 |         if (!qm_parse(&m, s, &e) || *trim((char *)e) || m.r != m.c)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2222:27: note: Left side of '||' is true
+ 2222 |         if (!qm_parse(&m, s, &e) || *trim((char *)e) || m.r != m.c)
+      |                                  ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2226:6: note: Assuming field 'p' is 0
+ 2226 |             o.p ? "F_p" : "Q");
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2226:6: note: '?' condition is false
+ 2226 |             o.p ? "F_p" : "Q");
+      |             ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2227:14: note: Assuming 'i' is >= 'n'
+ 2227 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2227:2: note: Loop condition is false. Execution continues on line 2229
+ 2227 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2229:6: note: Assuming 'n' is not equal to 0
+ 2229 |         if (n == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2229:2: note: Taking false branch
+ 2229 |         if (n == 0)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2233:14: note: 'i' is >= 'n'
+ 2233 |         for (i = 0; i < n; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2233:2: note: Loop condition is false. Execution continues on line 2235
+ 2233 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2239:14: note: 'i' is >= 'n'
+ 2239 |         for (i = 0; i < n; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2239:2: note: Loop condition is false. Execution continues on line 2241
+ 2239 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2241:39: note: 'n' is not equal to 0
+ 2241 |         printf("  minimal polynomial: %s\n", n ? mpl_str(&R, &inv[n - 1]) : "1");
+      |                                              ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2241:39: note: '?' condition is true
+/home/andrew/Code/ucas/src/absalg_cmd.c:2241:56: note: Access of 'inv' at a negative or overflowing index, while it holds only 64 'struct mpl' elements
+ 2241 |         printf("  minimal polynomial: %s\n", n ? mpl_str(&R, &inv[n - 1]) : "1");
+      |                                                               ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:34:44: note: expanded from macro 'printf'
+   34 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2355:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2355 |         switch (absalg_is_cmd2(w)) {
+      |         ^
+/home/andrew/Code/ucas/src/absalg_cmd.c:2420:6: warning: function 'strncasecmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2420 |         if (strncasecmp(s, a, la))
+      |             ^                    
+      |                                   != 0
+/home/andrew/Code/ucas/src/absalg_cmd.c:2493:9: warning: Value stored to 'sp' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 2493 |                 char *sp = x + strlen(x);
+      |                       ^~   ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg_cmd.c:2493:9: note: Value stored to 'sp' during its initialization is never read
+ 2493 |                 char *sp = x + strlen(x);
+      |                       ^~   ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

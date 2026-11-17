@@ -1,0 +1,25 @@
+> k1(a: u16, b: u16) = a + b
+> find k1 2 snippets
+find k1: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
+  cost 1   a + b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  cost 3   -(-a - b)                                affine fit (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> k2(a: u16, b: u16) = (a ^ b) << 1
+  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+> find k2 2 snippets
+find k2: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
+  cost 2   (a xor b) + (a xor b)                    the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  cost 3   2(a xor b)                               affine fit (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> k3(a: u16, b: u16) = a & ~b
+> find k3 2 snippets
+find k3: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
+  cost 1   a & (a xor b)                            exact (proved by SAT)
+  cost 1   b xor (a | b)                            exact (proved by SAT)
+  [searched every term up to cost 2: 2779 distinct columns; 'more' continues]
+> k4(a: u16, b: u16) = a - b
+> find k4 2 snippets
+find k4: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
+  cost 1   a - b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  cost 2   -(b - a)                                 affine fit (proved by SAT)
+  [searched every term up to cost 2: 2779 distinct columns; 'more' continues]

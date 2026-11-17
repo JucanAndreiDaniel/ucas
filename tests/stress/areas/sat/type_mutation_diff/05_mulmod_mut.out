@@ -1,0 +1,64 @@
+> s_mulmod_basic_u8(x: u8, y: u8) = x * y
+> m_mulmod_basic_u8(x: u8, y: u8) = x % (y + 1)
+> equiv s_mulmod_basic_u8 m_mulmod_basic_u8
+s_mulmod_basic_u8 and m_mulmod_basic_u8 differ at 64490 points, e.g. x=2, y=1: 2 vs 0
+> s_mulmod_basic_u32(x: u32, y: u32) = x * y
+> m_mulmod_basic_u32(x: u32, y: u32) = x % (y + 1)
+> equiv s_mulmod_basic_u32 m_mulmod_basic_u32
+s_mulmod_basic_u32 and m_mulmod_basic_u32 differ at 65530 points of the sample, e.g. x=0, y=4294967295: 0 vs undefined
+> s_mul_one_u8(x: u8) = x * 1
+> m_mul_one_u8(x: u8) = x % 1
+> equiv s_mul_one_u8 m_mul_one_u8
+s_mul_one_u8 and m_mul_one_u8 differ at 255 points, e.g. x=1: 1 vs 0
+> s_mul_one_u32(x: u32) = x * 1
+> m_mul_one_u32(x: u32) = x % 1
+> equiv s_mul_one_u32 m_mul_one_u32
+s_mul_one_u32 and m_mul_one_u32 differ at 65533 points of the sample, e.g. x=4294967295: 4294967295 vs 0
+> s_mul_zero_u8(x: u8) = x * 0
+> m_mul_zero_u8(x: u8) = x % 1
+> equiv s_mul_zero_u8 m_mul_zero_u8
+s_mul_zero_u8 and m_mul_zero_u8 are equal on the domain of s_mul_zero_u8 (exhaustive)
+> s_mul_zero_u32(x: u32) = x * 0
+> m_mul_zero_u32(x: u32) = x % 1
+> equiv s_mul_zero_u32 m_mul_zero_u32
+s_mul_zero_u32 and m_mul_zero_u32 are equal on the domain of s_mul_zero_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_mul_distribute_u8(x: u8, y: u8, z: u8) = x*(y + z)
+> m_mul_distribute_u8(x: u8, y: u8, z: u8) = x*y + x*z
+> equiv s_mul_distribute_u8 m_mul_distribute_u8
+s_mul_distribute_u8 and m_mul_distribute_u8 are equal on the domain of s_mul_distribute_u8 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> s_mul_distribute_u32(x: u32, y: u32, z: u32) = x*(y + z)
+> m_mul_distribute_u32(x: u32, y: u32, z: u32) = x*y + x*z
+> equiv s_mul_distribute_u32 m_mul_distribute_u32
+s_mul_distribute_u32 and m_mul_distribute_u32 are equal on the domain of s_mul_distribute_u32 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^32)
+> s_mul_comm_u8(x: u8, y: u8) = x * y
+> m_mul_comm_u8(x: u8, y: u8) = y * x
+> equiv s_mul_comm_u8 m_mul_comm_u8
+s_mul_comm_u8 and m_mul_comm_u8 are equal on the domain of s_mul_comm_u8 (exhaustive)
+> s_mul_comm_u32(x: u32, y: u32) = x * y
+> m_mul_comm_u32(x: u32, y: u32) = y * x
+> equiv s_mul_comm_u32 m_mul_comm_u32
+s_mul_comm_u32 and m_mul_comm_u32 are equal on the domain of s_mul_comm_u32 (proved by algebra: both sides expand to one polynomial in x, y mod 2^32)
+> s_mul_assoc_u8(x: u8, y: u8, z: u8) = (x*y)*z
+> m_mul_assoc_u8(x: u8, y: u8, z: u8) = x*(y*z)
+> equiv s_mul_assoc_u8 m_mul_assoc_u8
+s_mul_assoc_u8 and m_mul_assoc_u8 are equal on the domain of s_mul_assoc_u8 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> s_mul_assoc_u32(x: u32, y: u32, z: u32) = (x*y)*z
+> m_mul_assoc_u32(x: u32, y: u32, z: u32) = x*(y*z)
+> equiv s_mul_assoc_u32 m_mul_assoc_u32
+s_mul_assoc_u32 and m_mul_assoc_u32 are equal on the domain of s_mul_assoc_u32 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^32)
+> s_mul_pow2_u8(x: u8) = x * 4
+> m_mul_pow2_u8(x: u8) = x << 2
+> equiv s_mul_pow2_u8 m_mul_pow2_u8
+s_mul_pow2_u8 and m_mul_pow2_u8 are equal on the domain of s_mul_pow2_u8 (exhaustive)
+> s_mul_pow2_u32(x: u32) = x * 4
+> m_mul_pow2_u32(x: u32) = x << 2
+> equiv s_mul_pow2_u32 m_mul_pow2_u32
+s_mul_pow2_u32 and m_mul_pow2_u32 are equal on the domain of s_mul_pow2_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_mod_self_u8(x: u8) = x % (x + 1)
+> m_mod_self_u8(x: u8) = x
+> equiv s_mod_self_u8 m_mod_self_u8
+s_mod_self_u8 and m_mod_self_u8 are equal on the domain of s_mod_self_u8 (exhaustive)
+> s_mod_self_u32(x: u32) = x % (x + 1)
+> m_mod_self_u32(x: u32) = x
+> equiv s_mod_self_u32 m_mod_self_u32
+s_mod_self_u32 and m_mod_self_u32 are equal on the domain of s_mod_self_u32 (proved by SAT: 16561 AIG nodes, 2796 conflicts)

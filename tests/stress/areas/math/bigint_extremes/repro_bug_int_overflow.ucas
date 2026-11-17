@@ -1,0 +1,11 @@
+# BUG reproducer (no golden .out on purpose): int loop value >= 2^63 gives a bogus
+# "complex or hypercomplex" error instead of working with arbitrary precision.
+g(n: int in 0..200) = { a = 1; k = 0; while k < n { a = a * 2; k += 1 }; a }
+g(62)
+g(63)
+f(n: int in 0..200) = { a = 0; b = 1; k = 0; while k < n { t = a + b; a = b; b = t; k += 1 }; a }
+f(91)
+f(92)
+s(n: int in 0..200) = sum(i, 0, n, 2^i)
+s(62)
+s(63)

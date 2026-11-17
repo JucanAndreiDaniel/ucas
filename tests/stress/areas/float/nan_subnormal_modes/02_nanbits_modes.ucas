@@ -1,0 +1,32 @@
+# nanbits mode sensitivity: NaN payload and quieting.
+
+# payload from x vs fixed qNaN: equal as NaNs, differ by bits.
+nanf(x: u32) = asfloat(x | 0x7fc12345)
+nang(x: u32) = asfloat(u32(0x7fc00000))
+equiv nanf nang
+equiv nanf nang nanbits
+
+# negative NaN payload vs fixed qNaN.
+nannegf(x: u32) = asfloat(x | 0xffc54321)
+equiv nannegf nang
+equiv nannegf nang nanbits
+
+# f16 payload leak: exhaustive, differ with nanbits.
+hnanf(x: u16) = asfloat(x | 0x7e01)
+hnang(x: u16) = asfloat(u16(0x7e00))
+equiv hnanf hnang
+equiv hnanf hnang nanbits
+
+# double negation and abs only move the payload -> equal even with nanbits.
+negf(x: u32) = -(-asfloat(x))
+passthru(x: u32) = asfloat(x)
+absf(x: u32) = abs(asfloat(x))
+absb(x: u32) = asfloat(x & 0x7fffffff)
+equiv negf passthru nanbits
+equiv absf absb nanbits
+
+# sNaN quieting: f32 held in a double reads quiet -> nanbits stays sampled.
+sqf(x: u32) = asfloat(x | 0x7f800001)
+sqg(x: u32) = asfloat(x | 0x7f800001) + f32(0)
+equiv sqf sqg
+equiv sqf sqg nanbits

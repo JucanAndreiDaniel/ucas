@@ -1,0 +1,338 @@
+/home/andrew/Code/ucas/src/main.c:23:7: warning: no header providing "FILE" is directly included [misc-include-cleaner]
+   18 | #include <stdlib.h>
+   19 | #include <string.h>
+   20 | #include <unistd.h>
+   21 | 
+   22 | static char *
+   23 | slurp(FILE *fp)
+      |       ^
+/home/andrew/Code/ucas/src/main.c:28:14: warning: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior [clang-analyzer-unix.Stream]
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/main.c:77:14: note: Assuming 'i' is < 'argc'
+   77 |         for (i = 1; i < argc; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/main.c:77:2: note: Loop condition is true.  Entering loop body
+   77 |         for (i = 1; i < argc; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:78:7: note: Assuming the condition is false
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:78:3: note: Taking false branch
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:83:7: note: Assuming the condition is false
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:83:3: note: Taking false branch
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:85:7: note: Assuming the condition is false
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:86:7: note: Assuming the condition is false
+   86 |                     !strcmp(argv[i], "--json-schema"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:3: note: Taking false branch
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:88:7: note: Assuming the condition is false
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:88:3: note: Taking false branch
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:90:14: note: Assuming the condition is false
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:90:10: note: Taking false branch
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:92:14: note: Assuming the condition is false
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:92:10: note: Taking false branch
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:94:14: note: Assuming the condition is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:94:37: note: Left side of '&&' is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                                                   ^
+/home/andrew/Code/ucas/src/main.c:97:14: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:97:40: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:10: note: Taking false branch
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:103:8: note: 'fp' is not equal to NULL
+  103 |                         if (fp == NULL) {
+      |                             ^~
+/home/andrew/Code/ucas/src/main.c:103:4: note: Taking false branch
+  103 |                         if (fp == NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:107:10: note: Calling 'slurp'
+  107 |                         src = slurp(fp);
+      |                               ^~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: note: Assuming this stream operation fails
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:9: note: Assuming the condition is true
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:2: note: Loop condition is true.  Entering loop body
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:30:7: note: Assuming the condition is false
+   30 |                 if (cap - n - 1 == 0) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:30:3: note: Taking false branch
+   30 |                 if (cap - n - 1 == 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:28:14: note: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: warning: Read function called when stream is in EOF state. Function has no effect [clang-analyzer-unix.Stream]
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/main.c:77:14: note: Assuming 'i' is < 'argc'
+   77 |         for (i = 1; i < argc; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/main.c:77:2: note: Loop condition is true.  Entering loop body
+   77 |         for (i = 1; i < argc; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:78:7: note: Assuming the condition is false
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:78:3: note: Taking false branch
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:83:7: note: Assuming the condition is false
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:83:3: note: Taking false branch
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:85:7: note: Assuming the condition is false
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:86:7: note: Assuming the condition is false
+   86 |                     !strcmp(argv[i], "--json-schema"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:3: note: Taking false branch
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:88:7: note: Assuming the condition is false
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:88:3: note: Taking false branch
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:90:14: note: Assuming the condition is false
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:90:10: note: Taking false branch
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:92:14: note: Assuming the condition is false
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:92:10: note: Taking false branch
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:94:14: note: Assuming the condition is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:94:37: note: Left side of '&&' is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                                                   ^
+/home/andrew/Code/ucas/src/main.c:97:14: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:97:40: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:10: note: Taking false branch
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:103:8: note: 'fp' is not equal to NULL
+  103 |                         if (fp == NULL) {
+      |                             ^~
+/home/andrew/Code/ucas/src/main.c:103:4: note: Taking false branch
+  103 |                         if (fp == NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:107:10: note: Calling 'slurp'
+  107 |                         src = slurp(fp);
+      |                               ^~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: note: Assuming stream reaches end-of-file here
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:9: note: Assuming the condition is true
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:2: note: Loop condition is true.  Entering loop body
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:30:7: note: Assuming the condition is false
+   30 |                 if (cap - n - 1 == 0) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:30:3: note: Taking false branch
+   30 |                 if (cap - n - 1 == 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:28:14: note: Read function called when stream is in EOF state. Function has no effect
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: warning: no header providing "fread" is directly included [misc-include-cleaner]
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/main.c:35:2: warning: Potential out of bound access to the region with tainted index [clang-analyzer-security.ArrayBound]
+   35 |         s[n] = 0;
+      |         ^
+/home/andrew/Code/ucas/src/main.c:71:1: note: Taint originated in 'argv'
+   71 | int
+      | ^
+/home/andrew/Code/ucas/src/main.c:77:14: note: Assuming 'i' is < 'argc'
+   77 |         for (i = 1; i < argc; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/main.c:77:2: note: Loop condition is true.  Entering loop body
+   77 |         for (i = 1; i < argc; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:78:7: note: Assuming the condition is false
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:78:3: note: Taking false branch
+   78 |                 if (!strcmp(argv[i], "--sat-selftest")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:83:7: note: Assuming the condition is false
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:83:3: note: Taking false branch
+   83 |                 if (!strcmp(argv[i], "--mcp"))
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:85:7: note: Assuming the condition is false
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:86:7: note: Assuming the condition is false
+   86 |                     !strcmp(argv[i], "--json-schema"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:85:3: note: Taking false branch
+   85 |                 if (!strcmp(argv[i], "--json") ||
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:88:7: note: Assuming the condition is false
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:88:3: note: Taking false branch
+   88 |                 if (!strcmp(argv[i], "-q")) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:90:14: note: Assuming the condition is false
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:90:10: note: Taking false branch
+   90 |                 } else if (!strcmp(argv[i], "-y")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:92:14: note: Assuming the condition is false
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:92:10: note: Taking false branch
+   92 |                 } else if (!strcmp(argv[i], "-i")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:94:14: note: Assuming the condition is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:94:37: note: Left side of '&&' is false
+   94 |                 } else if (!strcmp(argv[i], "-e") && i + 1 < argc) {
+      |                                                   ^
+/home/andrew/Code/ucas/src/main.c:97:14: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/main.c:97:40: note: Assuming the condition is false
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:97:10: note: Taking false branch
+   97 |                 } else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
+      |                        ^
+/home/andrew/Code/ucas/src/main.c:101:15: note: Taint propagated to the return value
+  101 |                         FILE *fp = fopen(argv[i], "r");
+      |                                    ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:101:15: note: Assuming that 'fopen' is successful
+  101 |                         FILE *fp = fopen(argv[i], "r");
+      |                                    ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:103:8: note: 'fp' is not equal to NULL
+  103 |                         if (fp == NULL) {
+      |                             ^~
+/home/andrew/Code/ucas/src/main.c:103:4: note: Taking false branch
+  103 |                         if (fp == NULL) {
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:107:10: note: Calling 'slurp'
+  107 |                         src = slurp(fp);
+      |                               ^~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: note: Taint propagated to the return value
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:14: note: Assuming that 'fread' fails
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:9: note: Assuming the condition is true
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:2: note: Loop condition is true.  Entering loop body
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:30:7: note: Assuming the condition is false
+   30 |                 if (cap - n - 1 == 0) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:30:3: note: Taking false branch
+   30 |                 if (cap - n - 1 == 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/main.c:28:9: note: Assuming the condition is false
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/main.c:28:2: note: Loop condition is false. Execution continues on line 35
+   28 |         while ((r = fread(s + n, 1, cap - n - 1, fp)) > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/main.c:35:2: note: Access of the region with a tainted index that may be too large
+   35 |         s[n] = 0;
+      |         ^~~~
+/home/andrew/Code/ucas/src/main.c:49:4: warning: no header providing "fputs" is directly included [misc-include-cleaner]
+   49 |                         fputs(depth > 0 ? "... " : "ucas> ", stdout);
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:50:4: warning: no header providing "fflush" is directly included [misc-include-cleaner]
+   50 |                         fflush(stdout);
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:52:7: warning: no header providing "fgets" is directly included [misc-include-cleaner]
+   52 |                 if (fgets(line, sizeof line, stdin) == NULL)
+      |                     ^
+/home/andrew/Code/ucas/src/main.c:76:2: warning: no header providing "setvbuf" is directly included [misc-include-cleaner]
+   76 |         setvbuf(stdout, NULL, _IOLBF, 0);
+      |         ^
+/home/andrew/Code/ucas/src/main.c:76:24: warning: no header providing "_IOLBF" is directly included [misc-include-cleaner]
+   76 |         setvbuf(stdout, NULL, _IOLBF, 0);
+      |                               ^
+/home/andrew/Code/ucas/src/main.c:80:4: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   80 |                         printf("sat selftest: %s\n", bad ? "FAILED" : "ok");
+      |                         ^
+/home/andrew/Code/ucas/src/main.c:87:11: warning: no header providing "json_main" is directly included [misc-include-cleaner]
+   14 |                         return json_main(argc, argv, i);
+      |                                ^
+/home/andrew/Code/ucas/src/main.c:101:15: warning: no header providing "fopen" is directly included [misc-include-cleaner]
+  101 |                         FILE *fp = fopen(argv[i], "r");
+      |                                    ^
+/home/andrew/Code/ucas/src/main.c:104:5: warning: no header providing "perror" is directly included [misc-include-cleaner]
+  104 |                                 perror(argv[i]);
+      |                                 ^
+/home/andrew/Code/ucas/src/main.c:108:4: warning: no header providing "fclose" is directly included [misc-include-cleaner]
+  108 |                         fclose(fp);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

@@ -1,0 +1,40 @@
+> phi 18446744073709551615
+phi(18446744073709551615) = 9208981628670443520
+  how: 18446744073709551615 = 3 * 5 * 17 * 257 * 641 * 65537 * 6700417; phi = product of p^(e-1) (p - 1): 2 * 4 * 16 * 256 * 640 * 65536 * 6700416
+  the order of the unit group (Z/18446744073709551615)*; lambda(18446744073709551615) = 17153064960 is its exponent
+> carmichael 18446744073709551615
+lambda(18446744073709551615) = 17153064960 (Carmichael: the least m with a^m = 1 for every unit a)
+  how: 18446744073709551615 = 3 * 5 * 17 * 257 * 641 * 65537 * 6700417; lambda is the lcm of 2 (3^1), 4 (5^1), 16 (17^1), 256 (257^1), 640 (641^1), 65536 (65537^1), 6700416 (6700417^1)
+  lambda(2^e) = 2^(e-2) for e >= 3; lambda(p^e) = phi(p^e) otherwise; phi(18446744073709551615) = 9208981628670443520
+> factorint 18446744073709551615
+18446744073709551615 = 3 * 5 * 17 * 257 * 641 * 65537 * 6700417 (not prime)
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 18446744073709551615; each factor is prime
+> factorint 18446744073709551614
+18446744073709551614 = 2 * 7^2 * 73 * 127 * 337 * 92737 * 649657 (not prime)
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 18446744073709551614; each factor is prime
+> inverse 18446744073709551614 mod 18446744073709551615
+18446744073709551614^-1 = 18446744073709551614 mod 18446744073709551615 (0xfffffffffffffffe)
+  how: extended Euclid: 18446744073709551614*18446744073709551614 - 18446744073709551613*18446744073709551615 = 1
+  check: 18446744073709551614 * 18446744073709551614 = 340282366920938463389587631136930004996 = 18446744073709551613*18446744073709551615 + 1
+> crt 1 mod 4294967295, 2 mod 4294967294
+the system
+  1 mod 4294967295: x = 1
+    x = 1 (mod 4294967295)
+  2 mod 4294967294: x = 2
+    x = 2 (mod 4294967294)
+x = 4294967296 (mod 18446744060824649730)
+  how: the Chinese remainder theorem, pairwise (moduli that share factors must agree mod their gcd)
+  check: the solution substituted into every congruence: it holds
+> crt 1 mod 4294967297, 2 mod 4294967299
+the system
+  1 mod 4294967297: x = 1
+    x = 1 (mod 4294967297)
+  2 mod 4294967299: x = 2
+    x = 2 (mod 4294967299)
+10_large_u64.ucas:7:5: error: the combined modulus is too large (or too many solutions)
+    crt 1 mod 4294967297, 2 mod 4294967299
+        ^
+> sqrtmod 1 6469693230
+x^2 = 1 mod 6469693230 has more than 256 solutions

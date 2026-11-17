@@ -1,0 +1,31 @@
+> base(x: u32) = asfloat(x)
+> f1(x: u32) = asfloat(x) + f32(0)
+> equiv base f1 nanbits
+base and f1 are equal on the domain of base (sampled, not proved; no SAT proof: its counterexample did not reproduce)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f2(x: u32) = asfloat(x) * f32(1)
+> equiv base f2 nanbits
+base and f2 are equal on the domain of base (proved by SAT: 1168 AIG nodes, 17 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f3(x: u32) = -(-asfloat(x))
+> equiv base f3 nanbits
+base and f3 are equal on the domain of base (proved by SAT: 1168 AIG nodes, 17 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f4(x: u32) = asfloat(asuint(asfloat(x)))
+> equiv base f4 nanbits
+base and f4 are equal on the domain of base (proved by SAT: 2560 AIG nodes, 278 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f5(x: u32) = abs(asfloat(x))
+> f6(x: u32) = asfloat(asuint(asfloat(x)) & 0x7fffffff)
+> equiv f5 f6 nanbits
+f5 and f6 are equal on the domain of f5 (proved by SAT: 2555 AIG nodes, 275 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f7(x: u32) = asfloat(x) / f32(1)
+> equiv base f7 nanbits
+base and f7 are equal on the domain of base (proved by SAT: 1168 AIG nodes, 17 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> f8(x: u32) = copysign(f32(1), asfloat(x))
+> f9(x: u32) = asfloat((x & 0x80000000) | 0x3f800000)
+> equiv f8 f9 nanbits
+f8 and f9 are equal on the domain of f8 (proved by SAT: 1067 AIG nodes, 0 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)

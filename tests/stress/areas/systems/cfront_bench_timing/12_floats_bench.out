@@ -1,0 +1,18 @@
+> c optimize nofile bench budget 0
+c optimize: 4 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  fadd (line 1): no cheaper form: lowered: 2 inputs, cost 4.0
+  ffma (line 2): no cheaper form: lowered: 3 inputs, cost 8.0
+  fdiv (line 3): no cheaper form: lowered: 2 inputs, cost 14.0
+  fscale (line 4): no cheaper form: lowered: 1 inputs, cost 4.0
+  check: fadd not tested (a parameter or result the harness cannot make)
+  check: ffma not tested (a parameter or result the harness cannot make)
+  check: fdiv not tested (a parameter or result the harness cannot make)
+  check: fscale not tested (a parameter or result the harness cannot make)
+  check: the original does not compile:
+cc: error: unrecognized command-line option ‘-fsanitize-minimal-runtime’
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  float fadd(float a,float b){return a+b;}
+  float ffma(float a,float b,float c){return a*b+c;}
+  double fdiv(double a,double b){return a/b;}
+  float fscale(float x){return x*3.14159265f;}

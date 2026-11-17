@@ -1,0 +1,43 @@
+> f1(x: u32 in 0..10000000) = x*x
+> g1(x: u32 in 0..10000000) = x*x + (x == 1234567 ? 1 : 0)
+> equiv f1 ~ g1
+f1 and g1 differ, e.g. x=1234567: 3737254705 vs 3737254706 (found by SAT, checked by evaluation)
+> a1(x: u32) = x & 0xffff
+> b1(x: u32) = x % 65536
+> equiv a1 ~ b1
+a1 and b1 are equal on the domain of a1 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> p1(x: u32 in 0..20000000) = x where x < 10000000
+> q1(x: u32 in 0..20000000) = x + (x == 15000000 ? 1 : 0)
+> equiv p1 ~ q1
+p1 and q1 are equal on the domain of p1 (proved by SAT: 406 AIG nodes, 62 conflicts)
+> p2(x: u32 in 0..20000000) = x where x != 10000000
+> q2(x: u32 in 0..20000000) = x + (x == 10000000 ? 7 : 0)
+> equiv p2 ~ q2
+p2 and q2 are equal on the domain of p2 (proved by SAT: 385 AIG nodes, 51 conflicts)
+> d1(x: u32 in 1..10000000) = x/x
+> d2(x: u32 in 1..10000000) = 1
+> equiv d1 ~ d2
+d1 and d2 are equal on the domain of d1 (proved by SAT: 16392 AIG nodes, 2091 conflicts)
+> d3(x: u32 in 0..10000000) = x/x
+> d4(x: u32 in 0..10000000) = 1
+> equiv d3 ~ d4
+d3 and d4 are equal on the domain of d3 (proved by SAT: 16391 AIG nodes, 2091 conflicts)
+> e1(x: u32) = 100/x where x > 0
+> e2(x: u32) = 100/x
+> equiv e1 ~ e2
+e1 and e2 are equal on the domain of e1 (proved by SAT: 15985 AIG nodes, 0 conflicts)
+> domain e1
+domain of e1:
+  x: u32, 0..4294967295
+  where x > 0
+  requires x != 0  (in 100/x)
+  defined at 65536 of 65536 points
+  sampled 65536 points (domain has 4294967295 points); not exhaustive
+> t1(x: u32 in 0..10000000) = x
+> t2(x: u32 in 0..10000000) = [0,1,2,3][x]
+> equiv t1 ~ t2
+t1 and t2 differ at 65530 points of the sample, e.g. x=10000000: 10000000 vs undefined
+> mul1(x: u32, y: u32) = x*y
+> mul2(x: u32, y: u32) = y*x
+> equiv mul1 ~ mul2
+mul1 and mul2 are equal on the domain of mul1 (proved by algebra: both sides expand to one polynomial in x, y mod 2^32)

@@ -1,0 +1,274 @@
+> f(x: u8 in 0..15) = x*x + x
+> find f 2 stoke
+find f: 16 points, computing in u8, costs from gt1030
+  derived, but not cheaper under gt1030 (cost 4, as written 3): x*x + x: the factor x of 2 terms taken out once
+  cost 3   x + x*x                                  exact
+  cost 4   x^2 + x                                  polynomial (Horner)
+  [searched every term up to cost 4: 306382 distinct columns; 'more' continues]
+stoke f under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 200000 proposals, seed 1; f as written costs 3
+  800000 proposals, 623370 accepted, 618380 at distance 0 on the 16 tests (0 counterexamples joined them), 3 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> rules infer inputs 2 width 8 seconds 5
+rules from the enumeration: 2 inputs of 8 bits under gt1030, programs up to cost 3
+  1308 candidates (a dearer program with a cheaper one's values on 32 points; constants 1 and all ones); 1012 read: 256 kept, 470 derived from the kept ones, 188 priced alike by the cover, 97 made one by the constructors, 1 not proved equal; the most rules kept
+  as declarations a .ucas file can keep (each is proved again when read):
+  rule r1(a: u8, b: u8) = a + (b - a)          => b                        cost 2 -> 0
+  rule r2(a: u8, b: u8) = a - (a + a)          => -a                       cost 2 -> 1
+  rule r3(a: u8, b: u8) = a - (a + b)          => -b                       cost 2 -> 1
+  rule r4(a: u8, b: u8) = a - (a - b)          => b                        cost 2 -> 0
+  rule r5(a: u8, b: u8) = b - (a + b)          => -a                       cost 2 -> 1
+  rule r6(a: u8, b: u8) = a + a - a            => a                        cost 2 -> 0
+  rule r7(a: u8, b: u8) = a + b - a            => b                        cost 2 -> 0
+  rule r8(a: u8, b: u8) = a + b - b            => a                        cost 2 -> 0
+  rule r9(a: u8, b: u8) = a - b - a            => -b                       cost 2 -> 1
+  rule r10(a: u8, b: u8) = -a - 1              => 255 - a                  cost 2 -> 1
+  rule r11(a: u8, b: u8) = -a - 255            => 1 - a                    cost 2 -> 1
+  rule r12(a: u8, b: u8) = a & (a | b)         => a                        cost 1 -> 0
+  rule r13(a: u8, b: u8) = -a & 1              => a & 1                    cost 2 -> 1
+  rule r14(a: u8, b: u8) = a | a & b           => a                        cost 1 -> 0
+  rule r15(a: u8, b: u8) = a xor (a xor b)     => b                        cost 1 -> 0
+  rule r16(a: u8, b: u8) = b xor (a xor b)     => a                        cost 1 -> 0
+  rule r17(a: u8, b: u8) = a + 255 xor 0xff    => -a                       cost 2 -> 1
+  rule r18(a: u8, b: u8) = 255 - a xor 0xff    => a                        cost 2 -> 0
+  rule r19(a: u8, b: u8) = -a xor 0xff         => a + 255                  cost 2 -> 1
+  rule r20(a: u8, b: u8) = a << 1              => a + a                    cost 2 -> 1
+  rule r21(a: u8, b: u8) = -(a + 1)            => 255 - a                  cost 2 -> 1
+  rule r22(a: u8, b: u8) = -(a + 255)          => 1 - a                    cost 2 -> 1
+  rule r23(a: u8, b: u8) = -(a - b)            => b - a                    cost 2 -> 1
+  rule r24(a: u8, b: u8) = -(1 - a)            => a + 255                  cost 2 -> 1
+  rule r25(a: u8, b: u8) = -(255 - a)          => a + 1                    cost 2 -> 1
+  rule r26(a: u8, b: u8) = ~(a + 255)          => -a                       cost 2 -> 1
+  rule r27(a: u8, b: u8) = ~(255 - a)          => a                        cost 2 -> 0
+  rule r28(a: u8, b: u8) = a + (b + (b - a))   => b + b                    cost 3 -> 1
+  rule r29(a: u8, b: u8) = a + (b - (a + a))   => b - a                    cost 3 -> 1
+  rule r30(a: u8, b: u8) = a + (b - (a & b))   => a | b                    cost 3 -> 1
+  rule r31(a: u8, b: u8) = a + (b - (a | b))   => a & b                    cost 3 -> 1
+  rule r32(a: u8, b: u8) = a + (a | -a)        => a & a + 255              cost 3 -> 2
+  rule r33(a: u8, b: u8) = a + (b | 255 - a)   => (a & b) + 255            cost 3 -> 2
+  rule r34(a: u8, b: u8) = a + (b | -a)        => b & a + 255              cost 3 -> 2
+  rule r35(a: u8, b: u8) = a + (1 - a | 1)     => (a & 1) + 1              cost 3 -> 2
+  rule r36(a: u8, b: u8) = a + (255 - a | 1)   => (a & 1) + 255            cost 3 -> 2
+  rule r37(a: u8, b: u8) = a + (255 - b | 1)   => a - (b | 1)              cost 3 -> 2
+  rule r38(a: u8, b: u8) = a + (-a | 1)        => 1 - (a & 1)              cost 3 -> 2
+  rule r39(a: u8, b: u8) = a + (-a xor 1)      => (a xor 1) - a            cost 3 -> 2
+  rule r40(a: u8, b: u8) = b + (a - (a & b))   => a | b                    cost 3 -> 1
+  rule r41(a: u8, b: u8) = b + (a - (a | b))   => a & b                    cost 3 -> 1
+  rule r42(a: u8, b: u8) = b + (a | 255 - b)   => (a & b) + 255            cost 3 -> 2
+  rule r43(a: u8, b: u8) = a + (a & 1) + 1     => a + 1 | 1                cost 3 -> 2
+  rule r44(a: u8, b: u8) = -a - b + 1          => 1 - (a + b)              cost 3 -> 2
+  rule r45(a: u8, b: u8) = (a | 255 - b) + 1   => a - (a | b)              cost 3 -> 2
+  rule r46(a: u8, b: u8) = (b | 255 - a) + 1   => b - (a | b)              cost 3 -> 2
+  rule r47(a: u8, b: u8) = (a + 255 | 1) + 1   => a + (a & 1)              cost 3 -> 2
+  rule r48(a: u8, b: u8) = (255 - a | 1) + 1   => 1 - (a | 1)              cost 3 -> 2
+  rule r49(a: u8, b: u8) = (a + 1 xor 0xff) + 1 => 255 - a                  cost 3 -> 1
+  rule r50(a: u8, b: u8) = (1 - a xor 0xff) + 1 => a + 255                  cost 3 -> 1
+  rule r51(a: u8, b: u8) = a + (a & 1) + 255   => a + 255 | 1              cost 3 -> 2
+  rule r52(a: u8, b: u8) = a - (a | b) + 255   => a | 255 - b              cost 3 -> 2
+  rule r53(a: u8, b: u8) = b - (a | b) + 255   => b | 255 - a              cost 3 -> 2
+  rule r54(a: u8, b: u8) = -a - b + 255        => 255 - (a + b)            cost 3 -> 2
+  rule r55(a: u8, b: u8) = (a + 1 | 1) + 255   => a + (a & 1)              cost 3 -> 2
+  rule r56(a: u8, b: u8) = (1 - a | 1) + 255   => 1 - (a | 1)              cost 3 -> 2
+  rule r57(a: u8, b: u8) = (255 - a | 1) + 255 => 255 - (a | 1)            cost 3 -> 2
+  rule r58(a: u8, b: u8) = a + a + (b - a)     => a + b                    cost 3 -> 1
+  rule r59(a: u8, b: u8) = a + b + (a - b)     => a + a                    cost 3 -> 1
+  rule r60(a: u8, b: u8) = a + b - a           => b                        cost 2 -> 0
+  rule r61(a: u8, b: u8) = a + b - b           => a                        cost 2 -> 0
+  rule r62(a: u8, b: u8) = b + b + (a - b)     => a + b                    cost 3 -> 1
+  rule r63(a: u8, b: u8) = a - b - a           => -b                       cost 2 -> 1
+  rule r64(a: u8, b: u8) = (a & b) + (a | b)   => a + b                    cost 3 -> 1
+  rule r65(a: u8, b: u8) = (a & b) + (a xor b) => a | b                    cost 3 -> 1
+  rule r66(a: u8, b: u8) = a - (a + (a + a))   => -a - a                   cost 3 -> 2
+  rule r67(a: u8, b: u8) = a - (a + (a + b))   => -a - b                   cost 3 -> 2
+  rule r68(a: u8, b: u8) = a - (a + (b + b))   => -b - b                   cost 3 -> 2
+  rule r69(a: u8, b: u8) = a - (a + (a | 1))   => 255 - a | 1              cost 3 -> 2
+  rule r70(a: u8, b: u8) = a - (a + (b | 1))   => 255 - b | 1              cost 3 -> 2
+  rule r71(a: u8, b: u8) = a - (-a - b)        => a + (a + b)              cost 3 -> 2
+  rule r72(a: u8, b: u8) = a - (a & a + 255)   => a & -a                   cost 3 -> 2
+  rule r73(a: u8, b: u8) = a - (a & b + 255)   => a & -b                   cost 3 -> 2
+  rule r74(a: u8, b: u8) = a - (a & -b)        => a & b + 255              cost 3 -> 2
+  rule r75(a: u8, b: u8) = a - (b & a - b)     => b | a - b                cost 3 -> 2
+  rule r76(a: u8, b: u8) = a - (b | a - b)     => b & a - b                cost 3 -> 2
+  rule r77(a: u8, b: u8) = a - (a + 1 | 1)     => 255 - (a & 1)            cost 3 -> 2
+  rule r78(a: u8, b: u8) = a - (a + 255 | 1)   => 1 - (a & 1)              cost 3 -> 2
+  rule r79(a: u8, b: u8) = b - (a + (a + b))   => -a - a                   cost 3 -> 2
+  rule r80(a: u8, b: u8) = b - (a + (b + b))   => -a - b                   cost 3 -> 2
+  rule r81(a: u8, b: u8) = b - (-a - a)        => a + (a + b)              cost 3 -> 2
+  rule r82(a: u8, b: u8) = b - (-a - b)        => a + (b + b)              cost 3 -> 2
+  rule r83(a: u8, b: u8) = b - (b | 255 - a)   => (a | b) + 1              cost 3 -> 2
+  rule r84(a: u8, b: u8) = 1 - (a + (a & 1))   => -a | 1                   cost 3 -> 2
+  rule r85(a: u8, b: u8) = 1 - (-a - b)        => a + b + 1                cost 3 -> 2
+  rule r86(a: u8, b: u8) = 1 - (-a | 1)        => a + (a & 1)              cost 3 -> 2
+  rule r87(a: u8, b: u8) = 1 - (a + 1 xor 1)   => -a xor 1                 cost 3 -> 2
+  rule r88(a: u8, b: u8) = 1 - (-a xor 1)      => a + 1 xor 1              cost 3 -> 2
+  rule r89(a: u8, b: u8) = 255 - (a - (a & b)) => b | 255 - a              cost 3 -> 2
+  rule r90(a: u8, b: u8) = 255 - (b - (a & b)) => a | 255 - b              cost 3 -> 2
+  rule r91(a: u8, b: u8) = 255 - (-a - b)      => a + b + 255              cost 3 -> 2
+  rule r92(a: u8, b: u8) = 255 - (a | 255 - b) => b - (a & b)              cost 3 -> 2
+  rule r93(a: u8, b: u8) = 255 - (b | 255 - a) => a - (a & b)              cost 3 -> 2
+  rule r94(a: u8, b: u8) = 255 - (a xor a + 255) => a xor -a                 cost 3 -> 2
+  rule r95(a: u8, b: u8) = 255 - (a xor b + 255) => a xor -b                 cost 3 -> 2
+  rule r96(a: u8, b: u8) = 255 - (a xor -b)    => a xor b + 255            cost 3 -> 2
+  rule r97(a: u8, b: u8) = 255 - (a + 255 xor 1) => -a xor 1                 cost 3 -> 2
+  rule r98(a: u8, b: u8) = 255 - (-a xor 1)    => a + 255 xor 1            cost 3 -> 2
+  rule r99(a: u8, b: u8) = 255 - (a + 1 xor 0xff) => a + 1                    cost 3 -> 1
+  rule r100(a: u8, b: u8) = 255 - (1 - a xor 0xff) => 1 - a                    cost 3 -> 1
+  rule r101(a: u8, b: u8) = a + a - (a + b)    => a - b                    cost 3 -> 1
+  rule r102(a: u8, b: u8) = a + a - (a - b)    => a + b                    cost 3 -> 1
+  rule r103(a: u8, b: u8) = a + a - (a | 1)    => a + 255 | 1              cost 3 -> 2
+  rule r104(a: u8, b: u8) = a + b - (a + a)    => b - a                    cost 3 -> 1
+  rule r105(a: u8, b: u8) = a + b - (b + b)    => a - b                    cost 3 -> 1
+  rule r106(a: u8, b: u8) = a + b - (b - a)    => a + a                    cost 3 -> 1
+  rule r107(a: u8, b: u8) = a + b - (a & b)    => a | b                    cost 3 -> 1
+  rule r108(a: u8, b: u8) = a + b - (a | b)    => a & b                    cost 3 -> 1
+  rule r109(a: u8, b: u8) = b + b - (a + b)    => b - a                    cost 3 -> 1
+  rule r110(a: u8, b: u8) = b + b - (b - a)    => a + b                    cost 3 -> 1
+  rule r111(a: u8, b: u8) = a - b - (a + a)    => -a - b                   cost 3 -> 2
+  rule r112(a: u8, b: u8) = a - b - (a + b)    => -b - b                   cost 3 -> 2
+  rule r113(a: u8, b: u8) = b - a - (b + b)    => -a - b                   cost 3 -> 2
+  rule r114(a: u8, b: u8) = (a & b) - (a + b)  => -(a | b)                 cost 3 -> 2
+  rule r115(a: u8, b: u8) = (a & b) - (a | b)  => -(a xor b)               cost 3 -> 2
+  rule r116(a: u8, b: u8) = (a | b) - (a + b)  => -(a & b)                 cost 3 -> 2
+  rule r117(a: u8, b: u8) = (a | b) - (a & b)  => a xor b                  cost 3 -> 1
+  rule r118(a: u8, b: u8) = (a | b) - (a xor b) => a & b                    cost 3 -> 1
+  rule r119(a: u8, b: u8) = (a | 1) - (a + a)  => -a | 1                   cost 3 -> 2
+  rule r120(a: u8, b: u8) = (a xor b) - (a | b) => -(a & b)                 cost 3 -> 2
+  rule r121(a: u8, b: u8) = (a xor 1) - (a + a) => -a xor 1                 cost 3 -> 2
+  rule r122(a: u8, b: u8) = -a - (a - b)       => b - (a + a)              cost 3 -> 2
+  rule r123(a: u8, b: u8) = -a - (b - a)       => -b                       cost 3 -> 1
+  rule r124(a: u8, b: u8) = a + (a + b) - b    => a + a                    cost 3 -> 1
+  rule r125(a: u8, b: u8) = a + (b + b) - b    => a + b                    cost 3 -> 1
+  rule r126(a: u8, b: u8) = a + (a & 1) - 1    => a + 255 | 1              cost 3 -> 2
+  rule r127(a: u8, b: u8) = a + (a & 1) - 255  => a + 1 | 1                cost 3 -> 2
+  rule r128(a: u8, b: u8) = a - (b + b) - a    => -b - b                   cost 3 -> 2
+  rule r129(a: u8, b: u8) = a - (a | b) - 1    => a | 255 - b              cost 3 -> 2
+  rule r130(a: u8, b: u8) = a - (b | 1) - a    => 255 - b | 1              cost 3 -> 2
+  rule r131(a: u8, b: u8) = b - (a | b) - 1    => b | 255 - a              cost 3 -> 2
+  rule r132(a: u8, b: u8) = (a xor 1) - a - a  => -a xor 1                 cost 3 -> 2
+  rule r133(a: u8, b: u8) = -a - b - 1         => 255 - (a + b)            cost 3 -> 2
+  rule r134(a: u8, b: u8) = -a - b - 255       => 1 - (a + b)              cost 3 -> 2
+  rule r135(a: u8, b: u8) = (a & a + 255) - a  => a | -a                   cost 3 -> 2
+  rule r136(a: u8, b: u8) = (a & b + 255) - b  => a | -b                   cost 3 -> 2
+  rule r137(a: u8, b: u8) = (a | 255 - b) - a  => 255 - (a | b)            cost 3 -> 2
+  rule r138(a: u8, b: u8) = (a | 255 - b) - 255 => a - (a | b)              cost 3 -> 2
+  rule r139(a: u8, b: u8) = (b | 255 - a) - b  => 255 - (a | b)            cost 3 -> 2
+  rule r140(a: u8, b: u8) = (b | 255 - a) - 255 => b - (a | b)              cost 3 -> 2
+  rule r141(a: u8, b: u8) = (a + 1 | 1) - a    => (a & 1) + 1              cost 3 -> 2
+  rule r142(a: u8, b: u8) = (a + 1 | 1) - 1    => a + (a & 1)              cost 3 -> 2
+  rule r143(a: u8, b: u8) = (a + 255 | 1) - a  => (a & 1) + 255            cost 3 -> 2
+  rule r144(a: u8, b: u8) = (a + 255 | 1) - 255 => a + (a & 1)              cost 3 -> 2
+  rule r145(a: u8, b: u8) = (1 - a | 1) - 1    => 1 - (a | 1)              cost 3 -> 2
+  rule r146(a: u8, b: u8) = (255 - a | 1) - 1  => 255 - (a | 1)            cost 3 -> 2
+  rule r147(a: u8, b: u8) = (255 - a | 1) - 255 => 1 - (a | 1)              cost 3 -> 2
+  rule r148(a: u8, b: u8) = (a + 1 xor 0xff) - 255 => 255 - a                  cost 3 -> 1
+  rule r149(a: u8, b: u8) = (1 - a xor 0xff) - 255 => a + 255                  cost 3 -> 1
+  rule r150(a: u8, b: u8) = 255a               => -a                       cost 3 -> 1
+  rule r151(a: u8, b: u8) = a & a + (a & 1)    => a & a + 1                cost 3 -> 2
+  rule r152(a: u8, b: u8) = a & a + (a | 1)    => a & a + a                cost 3 -> 2
+  rule r153(a: u8, b: u8) = a & (a | 1) + 255  => (a | 1) + 255            cost 3 -> 2
+  rule r154(a: u8, b: u8) = a & a - (a & b)    => a - (a & b)              cost 3 -> 2
+  rule r155(a: u8, b: u8) = a & 1 - (a | 1)    => a & 1 - a                cost 3 -> 2
+  rule r156(a: u8, b: u8) = a & 255 - (a & b)  => a - (a & b)              cost 3 -> 2
+  rule r157(a: u8, b: u8) = a & 255 - (a & 1)  => (a | 1) + 255            cost 3 -> 2
+  rule r158(a: u8, b: u8) = a & 255 - (a xor b) => a & b                    cost 3 -> 1
+  rule r159(a: u8, b: u8) = a & (b | 255 - a)  => a & b                    cost 2 -> 1
+  rule r160(a: u8, b: u8) = a & (255 - a | 1)  => a & 1                    cost 2 -> 1
+  rule r161(a: u8, b: u8) = a & (a | b | 1)    => a                        cost 1 -> 0
+  rule r162(a: u8, b: u8) = b & b - (a & b)    => b - (a & b)              cost 3 -> 2
+  rule r163(a: u8, b: u8) = b & 255 - (a & b)  => b - (a & b)              cost 3 -> 2
+  rule r164(a: u8, b: u8) = b & 255 - (a xor b) => a & b                    cost 3 -> 1
+  rule r165(a: u8, b: u8) = b & (a | 255 - b)  => a & b                    cost 2 -> 1
+  rule r166(a: u8, b: u8) = a + (a + a) & 1    => a & 1                    cost 3 -> 1
+  rule r167(a: u8, b: u8) = a + (a + b) & 1    => b & 1                    cost 3 -> 1
+  rule r168(a: u8, b: u8) = a + (b + b) & 1    => a & 1                    cost 3 -> 1
+  rule r169(a: u8, b: u8) = a + (a - b) & 1    => b & 1                    cost 3 -> 1
+  rule r170(a: u8, b: u8) = a + (b & 1) & 1    => a + b & 1                cost 3 -> 2
+  rule r171(a: u8, b: u8) = a + (a | 1) & 1    => 1 - (a & 1)              cost 3 -> 2
+  rule r172(a: u8, b: u8) = a + (b | 1) & 1    => 1 - (a & 1)              cost 3 -> 2
+  rule r173(a: u8, b: u8) = a + (a xor b) & 1  => b & 1                    cost 3 -> 1
+  rule r174(a: u8, b: u8) = b + (a & 1) & 1    => a + b & 1                cost 3 -> 2
+  rule r175(a: u8, b: u8) = b + (a xor b) & 1  => a & 1                    cost 3 -> 1
+  rule r176(a: u8, b: u8) = (a & 1) + 1 & 1    => 1 - (a & 1)              cost 3 -> 2
+  rule r177(a: u8, b: u8) = (a xor 1) + 1 & 1  => a & 1                    cost 3 -> 1
+  rule r178(a: u8, b: u8) = (a & 1) + 255 & 1  => 1 - (a & 1)              cost 3 -> 2
+  rule r179(a: u8, b: u8) = (a xor 1) + 255 & 1 => a & 1                    cost 3 -> 1
+  rule r180(a: u8, b: u8) = a - (b + b) & 1    => a & 1                    cost 3 -> 1
+  rule r181(a: u8, b: u8) = a - (b & 1) & 1    => a + b & 1                cost 3 -> 2
+  rule r182(a: u8, b: u8) = a - (b | 1) & 1    => 1 - (a & 1)              cost 3 -> 2
+  rule r183(a: u8, b: u8) = a - (a xor b) & 1  => b & 1                    cost 3 -> 1
+  rule r184(a: u8, b: u8) = b - (a & 1) & 1    => a + b & 1                cost 3 -> 2
+  rule r185(a: u8, b: u8) = b - (a xor b) & 1  => a & 1                    cost 3 -> 1
+  rule r186(a: u8, b: u8) = 1 - (a & 1) & 1    => 1 - (a & 1)              cost 3 -> 2
+  rule r187(a: u8, b: u8) = 255 - (a & 1) & 1  => 1 - (a & 1)              cost 3 -> 2
+  rule r188(a: u8, b: u8) = 255 - (a xor 1) & 1 => a & 1                    cost 3 -> 1
+  rule r189(a: u8, b: u8) = (a & 1) - b & 1    => a + b & 1                cost 3 -> 2
+  rule r190(a: u8, b: u8) = (b & 1) - a & 1    => a + b & 1                cost 3 -> 2
+  rule r191(a: u8, b: u8) = (a | 1) - b & 1    => 1 - (b & 1)              cost 3 -> 2
+  rule r192(a: u8, b: u8) = (a xor b) - a & 1  => b & 1                    cost 3 -> 1
+  rule r193(a: u8, b: u8) = (a xor b) - b & 1  => a & 1                    cost 3 -> 1
+  rule r194(a: u8, b: u8) = -a - b & 1         => a + b & 1                cost 3 -> 2
+  rule r195(a: u8, b: u8) = a & -a & 1         => a & 1                    cost 2 -> 1
+  rule r196(a: u8, b: u8) = a & -b & 1         => a & b & 1                cost 2 -> 1
+  rule r197(a: u8, b: u8) = b & -a & 1         => a & b & 1                cost 2 -> 1
+  rule r198(a: u8, b: u8) = (a | a + a) & 1    => a & 1                    cost 2 -> 1
+  rule r199(a: u8, b: u8) = (a | a + b) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r200(a: u8, b: u8) = (a | b + b) & 1    => a & 1                    cost 2 -> 1
+  rule r201(a: u8, b: u8) = (a | a - b) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r202(a: u8, b: u8) = (a | b - a) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r203(a: u8, b: u8) = (a | -b) & 1       => (a | b) & 1              cost 2 -> 1
+  rule r204(a: u8, b: u8) = (b | a + b) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r205(a: u8, b: u8) = (b | a - b) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r206(a: u8, b: u8) = (b | b - a) & 1    => (a | b) & 1              cost 2 -> 1
+  rule r207(a: u8, b: u8) = (b | -a) & 1       => (a | b) & 1              cost 2 -> 1
+  rule r208(a: u8, b: u8) = (a xor a + a) & 1  => a & 1                    cost 2 -> 1
+  rule r209(a: u8, b: u8) = (a xor a + b) & 1  => b & 1                    cost 2 -> 1
+  rule r210(a: u8, b: u8) = (a xor b + b) & 1  => a & 1                    cost 2 -> 1
+  rule r211(a: u8, b: u8) = (a xor a - b) & 1  => b & 1                    cost 2 -> 1
+  rule r212(a: u8, b: u8) = (a xor b - a) & 1  => b & 1                    cost 2 -> 1
+  rule r213(a: u8, b: u8) = (b xor a + b) & 1  => a & 1                    cost 2 -> 1
+  rule r214(a: u8, b: u8) = (a + 1 xor 1) & 1  => a & 1                    cost 2 -> 1
+  rule r215(a: u8, b: u8) = (a + 255 xor 1) & 1 => a & 1                    cost 2 -> 1
+  rule r216(a: u8, b: u8) = (a + 1 xor 0xff) & 1 => a & 1                    cost 2 -> 1
+  rule r217(a: u8, b: u8) = (1 - a xor 0xff) & 1 => a & 1                    cost 2 -> 1
+  rule r218(a: u8, b: u8) = -(a & 1) & 1       => a & 1                    cost 3 -> 1
+  rule r219(a: u8, b: u8) = -(a xor b) & 1     => a + b & 1                cost 3 -> 2
+  rule r220(a: u8, b: u8) = -(a xor 1) & 1     => 1 - (a & 1)              cost 3 -> 2
+  rule r221(a: u8, b: u8) = a + a & a + 255    => a & a + a                cost 3 -> 2
+  rule r222(a: u8, b: u8) = 255 - a & 255 - b  => 255 - (a | b)            cost 3 -> 2
+  rule r223(a: u8, b: u8) = a | (a | 1) + 255  => a                        cost 3 -> 0
+  rule r224(a: u8, b: u8) = a | a - (a & b)    => a                        cost 3 -> 0
+  rule r225(a: u8, b: u8) = a | b - (a & b)    => a | b                    cost 3 -> 1
+  rule r226(a: u8, b: u8) = a | 255 - (a | b)  => a | 255 - b              cost 3 -> 2
+  rule r227(a: u8, b: u8) = a | 255 - (a xor b) => a | 255 - b              cost 3 -> 2
+  rule r228(a: u8, b: u8) = a | a + b & 1      => a | b & 1                cost 2 -> 1
+  rule r229(a: u8, b: u8) = a | a & b & 1      => a                        cost 1 -> 0
+  rule r230(a: u8, b: u8) = b | a - (a & b)    => a | b                    cost 3 -> 1
+  rule r231(a: u8, b: u8) = b | 255 - (a | b)  => b | 255 - a              cost 3 -> 2
+  rule r232(a: u8, b: u8) = b | 255 - (a xor b) => b | 255 - a              cost 3 -> 2
+  rule r233(a: u8, b: u8) = b | a + b & 1      => b | a & 1                cost 2 -> 1
+  rule r234(a: u8, b: u8) = a + (a & 1) | 1    => a + 1 | 1                cost 3 -> 2
+  rule r235(a: u8, b: u8) = a + (a | 1) | 1    => a + a + 1                cost 3 -> 2
+  rule r236(a: u8, b: u8) = a + a + 1 | 1      => a + a + 1                cost 3 -> 2
+  rule r237(a: u8, b: u8) = a + a + 255 | 1    => a + a + 255              cost 3 -> 2
+  rule r238(a: u8, b: u8) = (a & 1) + 255 | 1  => a - (a xor 1)            cost 3 -> 2
+  rule r239(a: u8, b: u8) = (a | 1) + 255 | 1  => a | 1                    cost 3 -> 1
+  rule r240(a: u8, b: u8) = 1 - (a | 1) | 1    => 1 - a | 1                cost 3 -> 2
+  rule r241(a: u8, b: u8) = 1 - (a xor 1) | 1  => 1 - a | 1                cost 3 -> 2
+  rule r242(a: u8, b: u8) = 255 - (a | 1) | 1  => 255 - a | 1              cost 3 -> 2
+  rule r243(a: u8, b: u8) = 255 - (a xor 1) | 1 => 255 - a | 1              cost 3 -> 2
+  rule r244(a: u8, b: u8) = -a - a | 1         => 1 - (a + a)              cost 3 -> 2
+  rule r245(a: u8, b: u8) = -(a & 1) | 1       => (a xor 1) - a            cost 3 -> 2
+  rule r246(a: u8, b: u8) = 255 - a | 255 - b  => 255 - (a & b)            cost 3 -> 2
+  rule r247(a: u8, b: u8) = a & 1 | -a         => -a                       cost 2 -> 1
+  rule r248(a: u8, b: u8) = a xor (a | 1) + 255 => a & 1                    cost 3 -> 1
+  rule r249(a: u8, b: u8) = a xor a - (a & b)  => a & b                    cost 3 -> 1
+  rule r250(a: u8, b: u8) = a xor b - (a & b)  => a | b                    cost 3 -> 1
+  rule r251(a: u8, b: u8) = a xor 255 - (a & b) => b | 255 - a              cost 3 -> 2
+  rule r252(a: u8, b: u8) = a xor 255 - (a | b) => a | 255 - b              cost 3 -> 2
+  rule r253(a: u8, b: u8) = a xor 255 - (a xor b) => 255 - b                  cost 3 -> 1
+  rule r254(a: u8, b: u8) = b xor a - (a & b)  => a | b                    cost 3 -> 1
+  rule r255(a: u8, b: u8) = b xor b - (a & b)  => a & b                    cost 3 -> 1
+  rule r256(a: u8, b: u8) = b xor 255 - (a & b) => a | 255 - b              cost 3 -> 2
+> show f
+f(x: u8 in 0..15) = x*x + x
+  -> u8

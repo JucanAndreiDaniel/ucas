@@ -1,0 +1,8 @@
+> c lower nofile
+  nullderef: not lowered: line 1: a local of a non-integer type or whose address is taken (p)
+  castint(x: u32) = i32(x)
+  castlong(x: i32) = i64(x)
+  oob: not lowered: line 4: a local of a non-integer type or whose address is taken (a)
+  signedshiftneg(x: i32) = x >> 0x1f
+  incdec(x: i32) = x + 1 + (x + 1)
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 - 1 >= -2147483648 && t2 - 1 <= 2147483647) && (t2 + t2 >= -2147483648 && t2 + t2 <= 2147483647) where t1 = i64(x) + 1, t2 = i64(x + 1)

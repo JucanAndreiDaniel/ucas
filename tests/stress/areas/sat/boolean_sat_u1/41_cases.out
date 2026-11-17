@@ -1,0 +1,33 @@
+> chain3_A(x: u8) = x < 5 || x > 5
+> chain3_B(x: u8) = x != 5
+> equiv chain3_A ~ chain3_B
+chain3_A and chain3_B are equal on the domain of chain3_A (exhaustive)
+> chain4_A(x: u8) = 2 < x < 7 && x != 4
+  note: chained comparison read as a conjunction
+> chain4_B(x: u8) = x in 3..6 && x != 4
+> equiv chain4_A ~ chain4_B
+chain4_A and chain4_B are equal on the domain of chain4_A (exhaustive)
+> co_u1(x: bool) = u1(x)
+> table co_u1
+  x=0  ->  0
+  x=1  ->  1
+> co_int(x: bool) = int(x)
+> table co_int
+  x=0  ->  0
+  x=1  ->  1
+> co_u8(x: bool) = u8(x)
+> table co_u8
+  x=0  ->  0
+  x=1  ->  1
+> co_bool_from_u1(x: u1) = x != 0
+> table co_bool_from_u1
+  x=0  ->  0
+  x=1  ->  1
+> co_bool_from_int(x: bool) = x == 1
+> table co_bool_from_int
+  x=0  ->  0
+  x=1  ->  1
+> co_neg_u1(x: u1) = -x
+> table co_neg_u1
+  x=0  ->  0
+  x=1  ->  1

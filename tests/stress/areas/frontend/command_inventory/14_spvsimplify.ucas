@@ -1,0 +1,32 @@
+# spvsimplify keyword + its sink/advice/assume options (parse.c/spirv.c) — NO stress area
+spvsimplify nofile nofunctions
+```spv
+%c = OpIMul %uint %x %uint_4
+%d = OpUDiv %uint %c %uint_2
+OpStore %out %d
+```
+spvsimplify nofile nofunctions budget 0.5
+```spv
+%a = OpBitFieldUExtract %uint %x %uint_0 %uint_8
+OpStore %out %a
+```
+spvsimplify nofile nofunctions advice
+```spv
+%c = OpIMul %uint %x %uint_4
+OpStore %out %c
+```
+spvsimplify nofile nofunctions sink rgba8
+```spv
+%c = OpIMul %uint %x %uint_4
+OpStore %out %c
+```
+spvsimplify nofile nofunctions sink int
+```spv
+%c = OpSDiv %int %x %int_2
+OpStore %out %c
+```
+spvsimplify nofile nofunctions assume x 0 31
+```spv
+%c = OpUDiv %uint %x %uint_4
+OpStore %out %c
+```

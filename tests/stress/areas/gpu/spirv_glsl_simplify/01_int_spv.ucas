@@ -1,0 +1,84 @@
+# Integer SPIR-V peepholes, each proved by SAT (live sessions: "SAT simplify").
+# Power-of-two multiply + divide: the multiply becomes a shift (driver-trivial).
+SAT simplify nofile
+```spv
+%a = OpIMul %uint %x %uint_8
+%b = OpUDiv %uint %a %uint_2
+OpStore %out %b
+```
+# An extract at bit 0 is a mask.
+SAT simplify nofile
+```spv
+%a = OpBitFieldUExtract %uint %x %uint_0 %uint_8
+OpStore %out %a
+```
+# UClamp with a low bound that can never bite becomes a min.
+SAT simplify nofile
+```spv
+%a = OpExtInst %uint %glsl UClamp %x %uint_0 %uint_255
+OpStore %out %a
+```
+# A select of a value and a constant: SAT keeps a min when the compare is irrelevant.
+SAT simplify nofile
+```spv
+%j = OpULessThan %bool %x %uint_8
+%k = OpSelect %uint %j %x %uint_8
+OpStore %out %k
+```
+# Two constant shifts are one.
+SAT simplify nofile
+```spv
+%a = OpShiftLeftLogical %uint %x %uint_1
+%b = OpShiftLeftLogical %uint %a %uint_2
+OpStore %out %b
+```
+# A shift-and-add chain folds into one multiply (proof: algebra mod 2^w).
+SAT simplify nofile
+```spv
+%a = OpIMul %uint %x %uint_3
+%b = OpIMul %uint %a %uint_5
+OpStore %out %b
+```
+# x - x and x ^ x are each always zero.
+SAT simplify nofile
+```spv
+%a = OpISub %uint %x %x
+%b = OpBitwiseXor %uint %x %x
+OpStore %out %a
+OpStore %out2 %b
+```
+# A phi at a merge: either incoming value already fits in a byte.
+SAT simplify nofile
+```spv
+OpSelectionMerge %m None
+OpBranchConditional %c %l1 %l2
+%l1 = OpLabel
+%p = OpBitwiseAnd %uint %x %uint_127
+OpBranch %m
+%l2 = OpLabel
+%q = OpShiftRightLogical %uint %y %uint_24
+OpBranch %m
+%m = OpLabel
+%v = OpPhi %uint %p %l1 %q %l2
+%w = OpExtInst %uint %glsl UMin %v %uint_255
+OpStore %out %w
+```
+# Division by zero is undefined for every input: the whole value is vacuously 0.
+SAT simplify nofile
+```spv
+%a = OpSDiv %int %sx %int_0
+OpStore %out %a
+```
+# A constant above 2^32 folds modulo the operand width.
+SAT simplify nofile
+```spv
+%a = OpIAdd %uint %x %uint_4294967296
+OpStore %out %a
+```
+# An assumption on a shift amount enables the merge that is otherwise rejected.
+SAT simplify n in [1, 31) nofile
+```spv
+%a = OpShiftLeftLogical %uint %x %uint_1
+%b = OpShiftLeftLogical %uint %a %n
+OpStore %out %b
+```

@@ -1,0 +1,11 @@
+> correct(x: f32 in 0.01..100) = x
+> buggy(x: f32 in 0.01..100, e: f32) = 1/((1/sqrt(x+e))*(1/sqrt(x+e))) + e
+> fit buggy ~ correct
+fit buggy to correct (max relative error, 4096 sample points):
+  e = 0
+  objective 2.35443e-07
+  1/(1/sqrt(x + 0)*(1/sqrt(x + 0))) + 0
+  max abs error 2.28882e-05 at x=98.880249
+  max rel error 2.4754e-07 (2.48e-05%) at x=0.0150492154
+  mean rel error 5.96011e-08 over 65536 points
+  max 4 ulp

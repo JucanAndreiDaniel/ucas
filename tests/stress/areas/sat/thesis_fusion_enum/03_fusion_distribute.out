@@ -1,0 +1,36 @@
+> f_dist_mul_add(x: u8, y: u8, z: u8) = (x * (y + z))
+> g_dist_mul_add(x: u8, y: u8, z: u8) = ((x * y) + (x * z))
+> equiv f_dist_mul_add g_dist_mul_add
+f_dist_mul_add and g_dist_mul_add are equal on the domain of f_dist_mul_add (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> error g_dist_mul_add ~ f_dist_mul_add
+error of g_dist_mul_add against f_dist_mul_add:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> f_dist_and_or(x: u8, y: u8, z: u8) = (x & (y | z))
+> g_dist_and_or(x: u8, y: u8, z: u8) = ((x & y) | (x & z))
+> equiv f_dist_and_or g_dist_and_or
+f_dist_and_or and g_dist_and_or are equal on the domain of f_dist_and_or (proved by SAT: 96 AIG nodes, 25 conflicts)
+> error g_dist_and_or ~ f_dist_and_or
+error of g_dist_and_or against f_dist_and_or:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> f_dist_or_and(x: u8, y: u8, z: u8) = (x | (y & z))
+> g_dist_or_and(x: u8, y: u8, z: u8) = ((x | y) & (x | z))
+> equiv f_dist_or_and g_dist_or_and
+f_dist_or_and and g_dist_or_and are equal on the domain of f_dist_or_and (proved by SAT: 96 AIG nodes, 24 conflicts)
+> error g_dist_or_and ~ f_dist_or_and
+error of g_dist_or_and against f_dist_or_and:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> f_dist_sub_dist(x: u8, y: u8, z: u8) = ((x - y) * z)
+> g_dist_sub_dist(x: u8, y: u8, z: u8) = ((x * z) - (y * z))
+> equiv f_dist_sub_dist g_dist_sub_dist
+f_dist_sub_dist and g_dist_sub_dist are equal on the domain of f_dist_sub_dist (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> error g_dist_sub_dist ~ f_dist_sub_dist
+error of g_dist_sub_dist against f_dist_sub_dist:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points

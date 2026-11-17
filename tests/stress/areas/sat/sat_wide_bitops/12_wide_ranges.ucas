@@ -1,0 +1,15 @@
+# Wide-range comparisons, isqrt/clz/ctz on u64/u32, and exhaustive 8-bit div/mod.
+cmp1(x: u8) = x >= 200
+range cmp1
+cmp2(x: u8) = (x >= 1) && (x <= 254) && (x != 128)
+range cmp2
+q64(x: u64) = isqrt(x)
+range q64
+clz32(x: u32) = clz(x)
+range clz32
+ctz32(x: u32) = ctz(x)
+range ctz32
+d8(a: u8, b: u8 in 1..255) = a / b
+range d8
+m8(a: u8, b: u8 in 1..255) = a % b
+range m8

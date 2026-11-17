@@ -1,0 +1,21 @@
+> c lower nofile
+  i2f24(a: i32) = f32(a)
+  i2f53(a: i64) = f64(a)
+  u2f(a: u32) = f32(a)
+  u2d(a: u32) = f64(a)
+  f2d_ret(a: f32) = f32(f64(a))
+  d2f_ret(a: f64) = f64(f32(a))
+  f2i(a: f32) = i32(a)
+    defined where (no C UB): f64(a) > -2147483649 && f64(a) < 2147483648
+  f2u(a: f32) = u32(a)
+    defined where (no C UB): f64(a) > -1 && f64(a) < 4294967296
+  d2i(a: f64) = i32(a)
+    defined where (no C UB): a > -2147483649 && a < 2147483648
+  d2ll(a: f64) = i64(a)
+    defined where (no C UB): a >= -9.2233720368547758e+18 && a < 9.2233720368547758e+18
+  d2ul(a: f64) = u64(a)
+    defined where (no C UB): a > -1 && a < 1.8446744073709552e+19
+  f2c(a: f32) = i32(i8(a))
+    defined where (no C UB): f64(a) > -129 && f64(a) < 128
+  f2s(a: f32) = i32(i16(a))
+    defined where (no C UB): f64(a) > -32769 && f64(a) < 32768

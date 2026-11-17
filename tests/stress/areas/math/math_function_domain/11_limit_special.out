@@ -1,0 +1,69 @@
+> limit log(x) as x -> 0+
+limit of log(x) as x -> 0+ (from the right):
+  = -inf
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -2.302585093, -5.075173815, -7.847762537, -10.62035126, -13.39293998, -16.85867588
+    the values do not settle (the last ones lie in [-16.8587, -12.0066]): DISAGREES
+> limit atan(x) as x -> inf
+limit of atan(x) as x -> inf:
+  = pi/2
+  numeric (x = 10*2^k, k = 0..21): 1.471127674, 1.564546408, 1.570405702, 1.570771913, 1.570794801, 1.570796279
+    extrapolated (Richardson): 1.57079632679 (estimated error 0): agrees
+> limit atan(x) as x -> -inf
+limit of atan(x) as x -> -inf:
+  = -pi/2
+  numeric (x = -10*2^k, k = 0..21): -1.471127674, -1.564546408, -1.570405702, -1.570771913, -1.570794801, -1.570796279
+    extrapolated (Richardson): -1.57079632679 (estimated error 0): agrees
+> limit tanh(x) as x -> inf
+limit of tanh(x) as x -> inf:
+  = not found symbolically
+  numeric (x = 10*2^k, k = 0..21): 0.9999999959, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0)
+    (no symbolic answer: this numeric estimate is not a proof)
+> limit exp(x) as x -> -inf
+limit of exp(x) as x -> -inf:
+  = 0
+  numeric (x = -10*2^k, k = 0..21): 4.539992976e-05, 3.257488532e-70, 1.607408748e-1112, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit W(x) as x -> -1/e+
+limit of W(x) as x -> -1/e+ (from the right):
+  = -1
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.3993824525, -0.826120014, -0.954610124, -0.9885232205, -0.997122564, -0.9994909346
+    extrapolated (Richardson): -0.999490934591 (estimated error 0.0008): agrees
+> limit sign(x) as x -> 0
+limit of sign(x) as x -> 0:
+  from the left:
+  = -1
+  from the right:
+  = 1
+  the one-sided limits differ: the (two-sided) limit does not exist
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -1, -1, -1, -1, -1, -1
+    extrapolated (Richardson): -1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> limit abs(x) as x -> 0
+limit of abs(x) as x -> 0:
+  continuous at x = 0: substitute
+  = 0 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.1, 0.00625, 0.000390625, 2.44140625e-05, 1.525878906e-06, 4.768371582e-08
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.1, 0.00625, 0.000390625, 2.44140625e-05, 1.525878906e-06, 4.768371582e-08
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit floor(x) as x -> 0
+limit of floor(x) as x -> 0:
+  from the left:
+  x -> 0 from below
+  = -1
+  from the right:
+  continuous at x = 0: substitute
+  = 0
+  the one-sided limits differ: the (two-sided) limit does not exist
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -1, -1, -1, -1, -1, -1
+    extrapolated (Richardson): -1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit sqrt(x) as x -> 0
+limit of sqrt(x) as x -> 0:
+  sqrt(x) is undefined just left of x = 0: the limit is the one from the right
+  = 0
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.316227766, 0.0790569415, 0.01976423538, 0.004941058844, 0.001235264711, 0.0002183660134
+    extrapolated (Richardson): 0.000218366013428 (estimated error 0.0004): agrees

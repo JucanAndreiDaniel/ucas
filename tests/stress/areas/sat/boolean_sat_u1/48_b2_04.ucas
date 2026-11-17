@@ -1,0 +1,22 @@
+# Coercion/cross-type/partial-domain oracle-verified cases
+mu(c: bool, a: u1, b: u1) = c ? a : b
+table mu
+mi(c: bool) = c ? 7 : 9
+table mi
+mb(c: bool, a: bool) = c ? a : !a
+table mb
+nma(c: bool, d: bool, a: bool, b: bool) = c ? (d ? a : b) : b
+nmb(c: bool, d: bool, a: bool, b: bool) = (c & d) ? a : b
+equiv nma ~ nmb
+pa(x: bool) = x where x == 0
+pb(x: bool) = 0
+equiv pa ~ pb
+pc(x: bool) = !x where x == 1
+pd(x: bool) = 0
+equiv pc ~ pd
+k1(x: bool) = 1
+k2(x: bool) = 1
+equiv k1 ~ k2
+k3(x: bool) = 1
+k4(x: bool) = 0
+equiv k3 ~ k4

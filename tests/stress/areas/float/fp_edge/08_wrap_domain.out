@@ -1,0 +1,53 @@
+> dd(x: f16 in -1..1) = x/x
+> wrap dd
+wrap analysis of dd:
+  x/x   (f16)
+      nnan fails: NaN at 1 points, e.g. x=0
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  over all 30721 points of the domain
+> zz(x: f16 in -1..1) = x - x
+> wrap zz
+wrap analysis of zz:
+  x - x   (f16)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  over all 30721 points of the domain
+> fsqrt(x: f32 in -1..1) = sqrt(x)
+> wrap fsqrt
+wrap analysis of fsqrt:
+  sqrt(x)   (f32)
+      nnan fails: NaN at 32652 points, e.g. x=-1
+      ninf holds
+  end to end vs the real-number result: max abs error 2.98e-08, max rel error 5.91e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=3.09170296e-33
+  sampled 65536 points (domain has 2130706433 points); not exhaustive
+> finv(x: f32 in -1..1) = 1/x
+> wrap finv
+wrap analysis of finv:
+  1/x   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf fails: inf at 144 points, e.g. x=-2.5064325e-39
+  end to end vs the real-number result: max abs error 1.01e+31, max rel error 5.96e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=-1.03397521e-25
+      the float result is infinite where the real one is finite at 144 points (overflow)
+  sampled 65536 points (domain has 2130706433 points); not exhaustive
+> domain finv
+domain of finv:
+  x: f32
+  no conditions: total on its parameter types
+  defined at 65536 of 65536 points
+  sampled 65536 points (domain has 2130706433 points); not exhaustive
+> domain fsqrt
+domain of fsqrt:
+  x: f32
+  no conditions: total on its parameter types
+  defined at 65536 of 65536 points
+  sampled 65536 points (domain has 2130706433 points); not exhaustive
+> d16c(x: f16 in -1..1) = sqrt(x)
+> range d16c
+range of d16c -> f16:
+  [0, 1]
+  IEEE: NaN at 15360 points, ±inf at 0 points
+  over all 30721 points of the domain

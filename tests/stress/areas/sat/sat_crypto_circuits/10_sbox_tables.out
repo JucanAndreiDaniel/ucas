@@ -1,0 +1,41 @@
+> S = [99, 7, 5, 9, 1, 2, 8, 3]
+> s1(x: u8 in 0..7) = S[x]
+> s2(x: u8 in 0..7) = match x { 0 => 99, 1 => 7, 2 => 5, 3 => 9, 4 => 1, 5 => 2, 6 => 8, 7 => 3, _ => 0 }
+> equiv s1 s2
+s1 and s2 are equal on the domain of s1 (exhaustive)
+> range s1
+range of s1 -> int:
+  1..99
+  fits in u7
+  over all 8 points of the domain
+> phash s2
+phash s2 under gt1030: 8 keys, the compare chain costs 32; seed 1
+  19 hash functions tried: masks and shifts, (x K) >> s, ((x xor x >> a) K) >> s, and a displacement table, K drawn at random
+  the values by a multiply-add and a shift: none with a shift up to 15 (every multiplier mod 2^(s + 7) tried, each with its offset solved), nor with 16 to 25 among 1048576 multipliers drawn
+  injective on the 8 keys (each slot checked): h(x) = x & 7, a table of 8 slots
+  every value of x in 0..7 is a key: no key check is needed
+  the lookup costs 7.875
+  -> [99, 7, 5, 9, 1, 2, 8, 3][x & 7]
+     cost 7.875 against 32 (-75.4%); equal to the switch for every input: every input enumerated
+  defined s2_ph
+> s3(x: u8 in 0..2) = [10,20,30][x]
+> domain s3
+domain of s3:
+  x: u8, 0..2
+  requires 0 <= x < 3  (table index)
+  defined at 3 of 3 points
+  over all 3 points of the domain
+> range s3
+range of s3 -> int:
+  10..30
+  fits in u5
+  over all 3 points of the domain
+> oob(x: u8 in 0..5) = [10,20,30][x]
+> domain oob
+domain of oob:
+  x: u8, 0..5
+  requires 0 <= x < 3  (table index)
+  defined at 3 of 6 points
+  defined for: 0..2
+  undefined e.g. at x=3; x=4; x=5
+  over all 6 points of the domain

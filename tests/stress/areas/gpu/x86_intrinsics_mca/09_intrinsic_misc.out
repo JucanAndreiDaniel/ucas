@@ -1,0 +1,50 @@
+> intrinsic _mm256_andn_epi32
+09_intrinsic_misc.ucas:1:28: error: unknown intrinsic _mm256_andn_epi32
+    intrinsic _mm256_andn_epi32
+                               ^
+> intrinsic _mm_bext_u32
+09_intrinsic_misc.ucas:2:23: error: unknown intrinsic _mm_bext_u32
+    intrinsic _mm_bext_u32
+                          ^
+> intrinsic _mm_gf2p8mul_epi8
+__m128i _mm_gf2p8mul_epi8(__m128i a, __m128i b)
+  needs: gfni
+  class: gf2p8affineqb (gf2p8affineqb gf2p8affineinvqb gf2p8mulb)
+  semantics (each lane i of 16): gfmul(a, b)
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a0 & -(b0 & 1) xor t1 & -(b0 >> 1 & 1) xor t2 & -(b0 >> 2 & 1) xor t3 & -(b0 >> 3 & 1) xor t4 & -(b0 >> 4 & 1) xor t5 & -(b0 >> 5 & 1) xor t6 & -(b0 >> 6 & 1) xor (t6 << 1 xor 27(t6 >> 7)) & -(b0 >> 7 & 1) where t1 = a0 << 1 xor 27(a0 >> 7), t2 = t1 << 1 xor 27(t1 >> 7), t3 = t2 << 1 xor 27(t2 >> 7), t4 = t3 << 1 xor 27(t3 >> 7), t5 = t4 << 1 xor 27(t4 >> 7), t6 = t5 << 1 xor 27(t5 >> 7)
+    r15 = a15 & -(b15 & 1) xor t1 & -(b15 >> 1 & 1) xor t2 & -(b15 >> 2 & 1) xor t3 & -(b15 >> 3 & 1) xor t4 & -(b15 >> 4 & 1) xor t5 & -(b15 >> 5 & 1) xor t6 & -(b15 >> 6 & 1) xor (t6 << 1 xor 27(t6 >> 7)) & -(b15 >> 7 & 1) where t1 = a15 << 1 xor 27(a15 >> 7), t2 = t1 << 1 xor 27(t1 >> 7), t3 = t2 << 1 xor 27(t2 >> 7), t4 = t3 << 1 xor 27(t3 >> 7), t5 = t4 << 1 xor 27(t4 >> 7), t6 = t5 << 1 xor 27(t5 >> 7)
+  cost       lat   rtp uops  ports
+  glc          5   0.5    1  p01
+  rpl          5   0.5    1  p01
+  zen4         3   0.5    1  FP0 FP1
+> intrinsic _mm_aesenc_si128
+__m128i _mm_aesenc_si128(__m128i a, __m128i b)
+  needs: aes
+  class: aesenc (aesenc aesenclast aesdec aesdeclast)
+  semantics (each lane i of 16): @def S(q) = sbox(a[aes_sr(q)]); @def c = i - i % 4; @def r = i % 4; xtime(S(c + r)) ^ xtime(S(c + (r + 1) % 4)) ^ S(c + (r + 1) % 4) ^ S(c + (r + 2) % 4) ^ S(c + (r + 3) % 4) ^ b
+  lanes (operand lanes named a0, b3 ...):
+    r0 = t1 << 1 xor 27(t1 >> 7) xor (t2 << 1 xor 27(t2 >> 7)) xor t2 xor [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 1… (4194 more characters)
+    r15 = t1 << 1 xor 27(t1 >> 7) xor (t2 << 1 xor 27(t2 >> 7)) xor t2 xor [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 1… (4195 more characters)
+  cost       lat   rtp uops  ports
+  skl          4     1    1  p0
+  skx          4     1    1  p0
+  glc          3   0.5    1  p01
+  rpl          3   0.5    1  p01
+  zen2         4   0.5    1  FP0 FP1
+  zen4         4   0.5    1  FP0 FP1
+> intrinsic _mm_clmulepi64_si128
+__m128i _mm_clmulepi64_si128(__m128i a, __m128i b, const int c)
+  needs: pclmul
+  class: pclmulqdq (pclmulqdq)
+  semantics (each lane i of 2): @def X = a[imm & 1]; @def Y = b[(imm >> 4) & 1]; i == 0 ? xor(j, 0, 63, bit(Y, j) != 0 ? X << j : 0) : xor(j, 1, 63, bit(Y, j) != 0 ? X >> (64 - j) : 0)
+  lanes with imm = 0x1b (operand lanes named a0, b3 ...):
+    r0 = (b1 & 1 != 0 ? a1 : 0) xor (b1 >> 1 & 1 != 0 ? a1 << 1 : 0) xor (b1 >> 2 & 1 != 0 ? a1 << 2 : 0) xor (b1 >> 3 & 1 != 0 ? a1 << 3 : 0) xor (b1 >> 4 & 1 != 0 ? a1 << 4 : 0) xor (b1 >> 5 & 1 != 0 ? a1 << 5 : 0) xor (b1 >> 6 & 1 != 0 ? a1 << 6 : 0) xor (b1 >> 7 & 1 != 0 ? a1 << 7 : 0) xor (b1 >> 8 & 1 != 0 ? a1 << 8 : 0) xor (b1 >> 9 & 1 != 0 ? a1 << 9 : 0) xor (b1 >> 10 & 1 != 0 ? a1 << 10 : 0) xor (b1 >> 11 & 1 != 0 ? a1 << 11 : 0) xor (b1 >> 12 & 1 != 0 ? a1 << 12 : 0) xor (b1 >> 13 & 1 != 0 ? a1 << 13 : 0) xor (b1 >> 14 & 1 != 0 ? a1 << 14 : 0) xor (b1 >> 15 & 1 != 0 ? a1 << 15 : 0) xor (b1 >>… (1957 more characters)
+    r1 = (b1 >> 1 & 1 != 0 ? a1 >> 0x3f : 0) xor (b1 >> 2 & 1 != 0 ? a1 >> 0x3e : 0) xor (b1 >> 3 & 1 != 0 ? a1 >> 0x3d : 0) xor (b1 >> 4 & 1 != 0 ? a1 >> 0x3c : 0) xor (b1 >> 5 & 1 != 0 ? a1 >> 0x3b : 0) xor (b1 >> 6 & 1 != 0 ? a1 >> 0x3a : 0) xor (b1 >> 7 & 1 != 0 ? a1 >> 0x39 : 0) xor (b1 >> 8 & 1 != 0 ? a1 >> 0x38 : 0) xor (b1 >> 9 & 1 != 0 ? a1 >> 0x37 : 0) xor (b1 >> 10 & 1 != 0 ? a1 >> 0x36 : 0) xor (b1 >> 11 & 1 != 0 ? a1 >> 0x35 : 0) xor (b1 >> 12 & 1 != 0 ? a1 >> 0x34 : 0) xor (b1 >> 13 & 1 != 0 ? a1 >> 0x33 : 0) xor (b1 >> 14 & 1 != 0 ? a1 >> 0x32 : 0) xor (b1 >> 15 & 1 != 0 ? a1 >> 0x31 : 0… (2026 more characters)
+  cost       lat   rtp uops  ports
+  skl          7     1    1  p5
+  skx          7     1    1  p5
+  glc          3     1    1  p5
+  rpl          3     1    1  p5
+  zen2         4     1    1  FP0 FP1
+  zen4         4     1    1  FP0 FP1

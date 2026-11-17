@@ -1,0 +1,85 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/x86.c:15:1: warning: included header stdlib.h is not used directly [misc-include-cleaner]
+   15 | #include <stdlib.h>
+      | ^~~~~~~~~~~~~~~~~~~
+   16 | #include <string.h>
+/home/andrew/Code/ucas/src/x86.c:23:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   15 | #include <stdlib.h>
+   16 | #include <string.h>
+   17 | 
+   18 | /* `on M`, `model M`, `for M`, `under M`: an x86 µarch; -1 if not given */
+   19 | static int
+   20 | opt_uarch(struct P *p)
+   21 | {
+   22 |         char w[48];
+   23 |         uint32_t at = cmdp_pos(p);
+      |         ^
+/home/andrew/Code/ucas/src/x86.c:23:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+   14 | 
+   15 | #include <stdlib.h>
+   16 | #include <string.h>
+   17 | 
+   18 | /* `on M`, `model M`, `for M`, `under M`: an x86 µarch; -1 if not given */
+   19 | static int
+   20 | opt_uarch(struct P *p)
+   21 | {
+   22 |         char w[48];
+   23 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/x86.c:26:7: warning: no header providing "cmdp_kw" is directly included [misc-include-cleaner]
+   26 |         if (!cmdp_kw(p, "on") && !cmdp_kw(p, "model") && !cmdp_kw(p, "for") &&
+      |              ^
+/home/andrew/Code/ucas/src/x86.c:29:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+   29 |         if (!cmdp_word(p, w, sizeof w)) {
+      |              ^
+/home/andrew/Code/ucas/src/x86.c:30:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+   30 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/x86.c:33:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   33 |         if ((ua = uarch_find(w)) < 0)
+      |              ~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/x86.c:33:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/x86.c:33:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/x86.c:34:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+   34 |                 fail("unknown x86 µarch '%s' (skl skx glc rpl zen4 x86v2 x86v3 "
+      |                 ^
+/home/andrew/Code/ucas/src/x86.c:43:26: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+   43 |         int ua = uarch_of_model(model_active());
+      |                                 ^
+/home/andrew/Code/ucas/src/x86.c:59:6: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+   59 |         if (func_find(sym_cstr(w))) {
+      |             ^
+/home/andrew/Code/ucas/src/x86.c:59:16: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+   59 |         if (func_find(sym_cstr(w))) {
+      |                       ^
+/home/andrew/Code/ucas/src/x86.c:66:38: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+   66 |                 if (cmdp_word(p, nm, sizeof nm) && cmdp_eos(p) &&
+      |                                                    ^
+/home/andrew/Code/ucas/src/x86.c:67:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   67 |                     (ua = uarch_find(nm)) >= 0) {
+      |                      ~~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/x86.c:67:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/x86.c:67:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/x86.c:96:24: warning: no header providing "cmdp_at" is directly included [misc-include-cleaner]
+   96 |                 if (!cmdp_eos(p) && !cmdp_at(p, T_ID))
+      |                                      ^
+/home/andrew/Code/ucas/src/x86.c:96:35: warning: no header providing "T_ID" is directly included [misc-include-cleaner]
+   96 |                 if (!cmdp_eos(p) && !cmdp_at(p, T_ID))
+      |                                                 ^
+/home/andrew/Code/ucas/src/x86.c:111:3: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  111 |                 int64_t npts = 64;
+      |                 ^
+/home/andrew/Code/ucas/src/x86.c:114:10: warning: no header providing "cmdp_int" is directly included [misc-include-cleaner]
+  114 |                                 if (!cmdp_int(p, &npts))
+      |                                      ^
+/home/andrew/Code/ucas/src/x86.c:129:10: warning: no header providing "func" is directly included [misc-include-cleaner]
+  129 |                 struct func *f;
+      |                        ^
+/home/andrew/Code/ucas/src/x86.c:132:7: warning: no header providing "cmdp_func" is directly included [misc-include-cleaner]
+  132 |                 f = cmdp_func(p, mca_stop);
+      |                     ^
+/home/andrew/Code/ucas/src/x86.c:136:3: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+  136 |                 notes_flush();
+      |                 ^

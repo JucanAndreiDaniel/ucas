@@ -1,0 +1,67 @@
+> acc(s: u32 in 0..255, d: u32 in 0..1000000) = d + s
+> rop acc
+rop acc: acc = d + s, applied once per fragment (s what a fragment brings, d the cell's value)
+  order: the result does not depend on the order of the fragments: acc(s2, acc(s1, d)) = acc(s1, acc(s2, d)) (proved by SAT)
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  blending: VK_BLEND_OP_ADD, source factor ONE, destination factor ONE on a float target (R32_SFLOAT): s + d
+      holds where the operands, the factors, both products and the result stay below 2^24 in magnitude (at most 1000255, the result in [0, 1000255], from the parameters' ranges)
+      acc and s + d expand to the same polynomial; every value is an integer below 2^24, which f32 holds, so no step of the blender rounds whatever its arithmetic, and the integer result (inside u32: no wrap) is the polynomial's
+      price: rop_blend is not priced by gt1030 (not measured): unavailable
+      pipeline: VkPipelineColorBlendAttachmentState: blendEnable, colorBlendOp = VK_BLEND_OP_ADD, srcColorBlendFactor = VK_BLEND_FACTOR_ONE, dstColorBlendFactor = VK_BLEND_FACTOR_ONE; an R32_SFLOAT colour attachment; one point per contribution, its position the cell, its colour s
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back
+> bits(s: u32, d: u32) = d | s
+> rop bits
+rop bits: bits = d | s, applied once per fragment (s what a fragment brings, d the cell's value)
+  order: the result does not depend on the order of the fragments: bits(s2, bits(s1, d)) = bits(s1, bits(s2, d)) (proved by SAT)
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  logic op: VK_LOGIC_OP_OR on an unsigned integer target (R32_UINT): s | d
+      proved by SAT
+      price: rop_logic is not priced by gt1030 (not measured): unavailable
+      pipeline: VkPipelineColorBlendStateCreateInfo: logicOpEnable, logicOp = VK_LOGIC_OP_OR (the logicOp feature); an R32_UINT colour attachment; one point per contribution, its position the cell, its colour s
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back
+> cnt(d: u8) = d + 1
+> rop cnt
+rop cnt: cnt = d + 1, applied once per fragment (d the cell's value)
+  order: every fragment applies the same update: their order is immaterial
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  stencil op: VK_STENCIL_OP_INCREMENT_AND_WRAP on the 8-bit stencil value: d + 1
+      checked on every point of the domain
+      price: rop_stencil is not priced by gt1030 (not measured): unavailable
+      pipeline: VkStencilOpState: passOp = VK_STENCIL_OP_INCREMENT_AND_WRAP, writeMask = 0xff; a stencil attachment (S8_UINT); one fragment per contribution, its position the cell
+  occlusion query: VK_QUERY_TYPE_OCCLUSION, precise, around the draw: the fragments that pass, counted: d + 1
+      holds where every contribution updates the same cell: a query counts a whole draw (more cells: a draw and a query each)
+      the update is d + 1 (checked on every point of the domain); a precise occlusion query counts every sample that passes the fragment tests, which with no depth or stencil test and one sample a point is one a contribution; read as 64 bits the count is exact, and adding it to the cell wraps in u8 as the update does
+      price: rop_query is not priced by gt1030 (not measured): unavailable
+      pipeline: VkQueryPoolCreateInfo: queryType = VK_QUERY_TYPE_OCCLUSION; vkCmdBeginQuery with VK_QUERY_CONTROL_PRECISE_BIT (the occlusionQueryPrecise feature) around a draw of one point per contribution, anywhere (no depth or stencil test, one sample a pixel); vkCmdCopyQueryPoolResults with VK_QUERY_RESULT_64_BIT into a buffer, and the cell's d + count once after the draw
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back
+> sat(d: u8) = d == 255 ? 255 : d + 1
+> rop sat
+rop sat: sat = d == 255 ? 255 : d + 1, applied once per fragment (d the cell's value)
+  order: every fragment applies the same update: their order is immaterial
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  stencil op: VK_STENCIL_OP_INCREMENT_AND_CLAMP on the 8-bit stencil value: u8(min(u32(d) + 1, 255))
+      checked on every point of the domain
+      price: rop_stencil is not priced by gt1030 (not measured): unavailable
+      pipeline: VkStencilOpState: passOp = VK_STENCIL_OP_INCREMENT_AND_CLAMP, writeMask = 0xff; a stencil attachment (S8_UINT); one fragment per contribution, its position the cell
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back
+> tog(s: u16, d: u16) = d xor s
+> rop tog
+rop tog: tog = d xor s, applied once per fragment (s what a fragment brings, d the cell's value)
+  order: the result does not depend on the order of the fragments: tog(s2, tog(s1, d)) = tog(s1, tog(s2, d)) (proved by SAT)
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  logic op: VK_LOGIC_OP_XOR on an unsigned integer target (R16_UINT): s xor d
+      proved by SAT
+      price: rop_logic is not priced by gt1030 (not measured): unavailable
+      pipeline: VkPipelineColorBlendStateCreateInfo: logicOpEnable, logicOp = VK_LOGIC_OP_XOR (the logicOp feature); an R16_UINT colour attachment; one point per contribution, its position the cell, its colour s
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back
+> mx(s: f32, d: f32) = max(s, d)
+> rop mx
+rop mx: mx = max(s, d), applied once per fragment (s what a fragment brings, d the cell's value)
+  order: the result does not depend on the order of the fragments: max is associative and commutative on floats other than NaN (up to the sign of a zero)
+  fixed-function states that compute it (each a proposal: the pipeline changes):
+  blending: VK_BLEND_OP_MAX on a float target (R32_SFLOAT): max(s, d) (the factors are not used)
+      holds where neither value is NaN; the sign of a zero result may differ
+      the same operation: the result is one of the two values, nothing rounds
+      price: rop_blend is not priced by gt1030 (not measured): unavailable
+      pipeline: VkPipelineColorBlendAttachmentState: blendEnable, colorBlendOp = VK_BLEND_OP_MAX; an R32_SFLOAT colour attachment; one point per contribution, its position the cell, its colour s
+  not in any price: the draw's setup (a render pass, the pipeline, one vertex per contribution) and reading the target back

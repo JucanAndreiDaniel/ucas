@@ -1,0 +1,36 @@
+> continuous x^2
+x^2 has no loops
+> h(x: u32) = sum(i, 0, x, i)
+> continuous h
+sum(i, 0, int(x), i)
+  the sum ≈ ∫ i di from 0 to int(x), plus Euler-Maclaurin corrections
+  ∫ i di = i^2/2 + C
+  integral: real(int(x))^2/2
+  + (g(lo) + g(hi))/2: real(int(x))^2/2 + real(int(x))/2
+  + (g'(hi) - g'(lo))/12 - (g'''(hi) - g'''(lo))/720 (evaluated below)
+  measured against the sum (relative error):
+      at                       exact          integral    + endpoint  + g', g''' 
+      x=0                      0              -           -           -          
+> fac(n: int in 1..20) = prod(i, 1, n, i)
+> continuous fac
+prod(i, 1, n, i)
+  log of the product ≈ ∫ log(i) di from 1 to n, plus Euler-Maclaurin corrections
+  ∫ log(i) di = i*log(i) - i + C
+  integral: exp(real(n)*log(real(n)) - real(n) + 1)
+  + (g(lo) + g(hi))/2: exp(real(n)*log(real(n)) + log(real(n))/2 - real(n) + 1)
+  + (g'(hi) - g'(lo))/12 - (g'''(hi) - g'''(lo))/720 (evaluated below)
+  measured against the product (relative error):
+      at                       exact          integral    + endpoint  + g', g''' 
+      n=1                      1              0           0           0          
+      n=4                      24             0.47        0.062       0.00051    
+      n=8                      40320          0.62        0.073       0.00051    
+      n=12                     4.790016e+08   0.69        0.077       0.00051    
+      n=16                     2.092279e+13   0.73        0.079       0.00051    
+      n=20                     2.432902e+18   0.76        0.08        0.00051    
+  the remaining error does not shrink: the corrections at the lower end are not small (it is a constant factor, like Stirling's sqrt(2 pi)/e)
+> decay(t: f32) = exp(-t)
+> continuous decay
+decay has no loops
+> osc(t: f32) = sin(t) + cos(2t)
+> continuous osc
+osc has no loops

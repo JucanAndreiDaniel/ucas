@@ -1,0 +1,89 @@
+> sum(n,1,inf,1/n^2)
+sum(n, 1, inf, 1/n^2)
+  converges absolutely: p-series 1/n^2 with p = 2 > 1
+  = pi^2/6
+  method: partial fractions; zeta(k), digamma at integers
+  numeric: 1.644934066848226 (the first 128 terms plus an Euler-Maclaurin tail (integral + 3 corrections); estimated error 4.4e-16)
+  check: the closed form and the numeric value agree (difference 4.4e-16)
+> sum(n,1,inf,(-1)^(n+1)/n)
+sum(n, 1, inf, (-1)^(n + 1)/n)
+  converges conditionally: alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1)
+  = log(2)
+  method: partial fractions; eta(k) = (1 - 2^(1-k)) zeta(k), Dirichlet beta
+  numeric: 0.6931471805599452 (alternating: Cohen-Villegas-Zagier acceleration (an Euler-type transform), 40 terms; estimated error 1.1e-16)
+  check: the closed form and the numeric value agree (difference 1.1e-16)
+> sum(n,1,inf,n/2^n)
+sum(n, 1, inf, n/2^n)
+  converges absolutely: ratio test: |a_(n+1)/a_n| -> 1/2 < 1
+  = 2
+  method: arithmetico-geometric: sum m^k r^m = r A_k(r)/(1 - r)^(k+1) (Eulerian numbers)
+  numeric: 2 (65 terms (the ratio of terms -> 1/2; Aitken's delta^2 agrees); estimated error 2e-16)
+  check: the closed form and the numeric value agree (difference 2.2e-16)
+> sum(n,1,inf,1/(n*(n+1)))
+sum(n, 1, inf, 1/(n*(n + 1)))
+  converges absolutely: limit comparison with the p-series sum 1/n^2 (p = 2 > 1): a_n n^2 -> 1
+  = 1
+  method: partial fractions; zeta(k), digamma at integers
+  numeric: 0.9999999999999998 (the first 128 terms plus an Euler-Maclaurin tail (integral + 3 corrections); estimated error 1e-16)
+  check: the closed form and the numeric value agree (difference 2.2e-16)
+> sum(n,1,inf,1/(4n^2-1))
+sum(n, 1, inf, 1/(4n^2 - 1))
+  converges absolutely: limit comparison with the p-series sum 1/n^2 (p = 2 > 1): a_n n^2 -> 1/4
+  = 1/2
+  method: partial fractions; zeta(k), digamma at integers
+  numeric: 0.4999999999999996 (the first 128 terms plus an Euler-Maclaurin tail (integral + 3 corrections); estimated error 1.7e-16)
+  check: the closed form and the numeric value agree (difference 3.9e-16)
+> sum(n,1,inf,1/n)
+sum(n, 1, inf, 1/n)
+  diverges: limit comparison with the harmonic series sum 1/n (p = 1): a_n n -> 1
+> sum(n,1,inf,1/sqrt(n))
+sum(n, 1, inf, 1/sqrt(n))
+  diverges: comparison with the p-series sum 1/n^(1/2) (a_n ~ C/n^(1/2), p <= 1)
+> sum(n,1,inf,(-1)^n)
+sum(n, 1, inf, (-1)^n)
+  diverges: nth-term test: a_n does not tend to 0 (a_1000000 = 1)
+> prod(n,1,inf,1+1/n^2)
+prod(n, 1, inf, 1/n^2 + 1)
+  converges: the factors are 1 + O(1/n^2) (sum |a_n - 1| converges)
+  = sinh(pi)/pi
+  method: the factors as (n - a_i)/(n - b_i): prod Gamma(1 - b_i)/Gamma(1 - a_i)
+  numeric: 3.67607791008984 (partial products to 4096, Richardson in 1/N twice; estimated error 4.4e-07)
+  check: agree (difference 2.9e-10)
+> prod(n,1,inf,n/(n+1))
+prod(n, 1, inf, n/(n + 1))
+  diverges: the factors are 1 + -1/n + O(1/n^2) and sum -1/n diverges
+> converge 1/n^2
+sum(n, 1, inf, 1/n^2)
+  converges absolutely: p-series 1/n^2 with p = 2 > 1
+  partial sums: S_10 = 1.549767731, S_1000 = 1.643934567
+> converge (-1)^n/n
+sum(n, 1, inf, (-1)^n/n)
+  converges conditionally: alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1)
+  partial sums: S_10 = -0.6456349206, S_1000 = -0.6926474306
+> converge n!/n^n
+sum(n, 0, inf, n!/n^n)
+  converges absolutely: ratio test: |a_(n+1)/a_n| -> 1/e < 1
+  partial sums: S_10 = 2.879264136, S_1000 = 2.879853862
+> converge 1/(n*log(n)^2)
+sum(n, 2, inf, 1/(n*log(n)^2))
+  converges absolutely: integral test: int f = -1/log(n) has the finite limit 0 as n -> inf
+  partial sums: S_10 = 1.700396385, S_1000 = 1.96500938
+> radius x^n/n
+power series sum(n, 1, inf, x^n/n) in x
+  center x = 0; coefficients a_n = 1/n of x^(n)
+  radius of convergence R = 1 (ratio test: |a_(n+1)/a_n| -> 1)
+  at x = -1: converges conditionally (alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1))
+  at x = 1: diverges (limit comparison with the harmonic series sum 1/n (p = 1): a_n n -> 1)
+  interval of convergence: [-1, 1)
+  sum = -log(1 - x)    for |x| < 1 (-log(1 - u))
+> radius x^n/n!
+power series sum(n, 0, inf, x^n/n!) in x
+  center x = 0; coefficients a_n = 1/n! of x^(n)
+  radius of convergence R = inf (ratio test: |a_(n+1)/a_n| -> 0)
+  interval of convergence: every x (absolutely)
+  sum = e^x    for |x| < inf (e^u)
+> radius n^n*x^n
+power series sum(n, 0, inf, n^n*x^n) in x
+  center x = 0; coefficients a_n = n^n of x^(n)
+  radius of convergence R = 0 (ratio test: |a_(n+1)/a_n| -> inf)
+  converges only at x = 0

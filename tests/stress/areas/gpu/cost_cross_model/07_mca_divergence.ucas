@@ -1,0 +1,13 @@
+# REPRO (deterministic): integer division: mca's "simulated" cycles exceed the
+# critical-path bound it prints, while claiming to be "limited by the critical path".
+d(x: u32, y: u32) = x / y
+r(x: u32, y: u32) = x % y
+cost d model zen4
+mca d on zen4
+mca r on zen4
+mca d on zen2
+mca d on skl
+mca d on x86v4
+mca d on glc
+mca d on rpl
+mca d on x86v2

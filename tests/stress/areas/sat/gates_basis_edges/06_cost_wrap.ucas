@@ -1,0 +1,12 @@
+# gate cost is stored as uint8_t: values >= 256 wrap (256 -> 0, 257 -> 1, ...)
+basis c256 { t(x, y) = lut cost 256 }
+basis c257 { t(x, y) = lut cost 257 }
+basis c512 { t(x, y) = lut cost 512 }
+basis c65536 { t(x, y) = lut cost 65536 }
+basis c1000 { t(x, y) = lut cost 1000 }
+f(a: u1, b: u1) = a & b
+gates f basis c256
+gates f basis c257
+gates f basis c512
+gates f basis c65536
+gates f basis c1000

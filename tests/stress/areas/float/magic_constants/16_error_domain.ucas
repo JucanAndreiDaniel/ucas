@@ -1,0 +1,8 @@
+nw(x: f32) = asfloat(0x5f3759df - (asuint(x) >> 1)) where x >= 1 && x <= 2
+nr(x: f32 in 1..2) = asfloat(0x5f3759df - (asuint(x) >> 1))
+tw(x: f32) = 1/sqrt(x) where x >= 1 && x <= 2
+domain nw
+domain nr
+error nw ~ 1/sqrt(x)
+error nr ~ 1/sqrt(x)
+error nw ~ tw

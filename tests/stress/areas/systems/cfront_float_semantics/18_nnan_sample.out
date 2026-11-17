@@ -1,0 +1,19 @@
+> w(x: f32) = x / x
+> wrap w
+wrap analysis of w:
+  x/x   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 4278190079 points); not exhaustive
+> wk(x: f32) = (x - x)/(x - x)
+> wrap wk
+wrap analysis of wk:
+  x - x   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  (x - x)/(x - x)   (f32)
+      nnan fails: NaN at 65536 points, e.g. x=-3.40282347e+38
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 4278190079 points); not exhaustive

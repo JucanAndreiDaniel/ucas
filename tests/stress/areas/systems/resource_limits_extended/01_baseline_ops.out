@@ -1,0 +1,25 @@
+> show 1+2
+_() = 3
+  -> int
+> show u8(255)+1
+_() = 0
+  -> u8
+> show isqrt(x: u8)
+_(x: u8) = isqrt(x)
+  -> u8
+> range isqrt(x: u8)
+range of isqrt(x) -> u8:
+  0..15   (16 distinct values)
+  values: 0..15
+  fits in u4
+  over all 256 points of the domain
+> parse sin(x)^2 + cos(x)^2
+((sin(x) ^ 2) + (cos(x) ^ 2))
+> diff sin(x)*x
+d/dx sin(x)*x = x*cos(x) + sin(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-15)
+> p(x: u8) = x+1
+> q(x: u8) = 1+x
+> equiv p q
+p and q are equal on the domain of p (exhaustive)

@@ -1,0 +1,120 @@
+> simplify sin(2*x) - 2*sin(x)*cos(x)
+  ucas: trig sin(2*x) - 2*sin(x)*cos(x)
+  note: x is taken as real
+trig forms of sin(2*x) - 2*sin(x)*cos(x)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(2i*x) - exp(-2i*x))/(2*i) - (exp(i*x) - exp(-i*x))*(exp(i*x) + exp(-i*x))/(2*i)
+    check: equal at 64 of 64 sample points
+  simplest: 0  (product to sum)
+> simplify cos(2*x) - (cos(x)^2 - sin(x)^2)
+  ucas: trig cos(2*x) - (cos(x)^2 - sin(x)^2)
+  note: x is taken as real
+trig forms of cos(2*x) - (cos(x)^2 - sin(x)^2)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = sin(x)^2 - cos(x)^2 + cos(2x)
+    check: equal at 64 of 64 sample points
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(2i*x) + exp(-2i*x))/2 - ((exp(i*x) + exp(-i*x))/2)^2 + ((exp(i*x) - exp(-i*x))/(2*i))^2
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: 0  (power reduction)
+> simplify cos(2*x) - (1 - 2*sin(x)^2)
+  ucas: trig cos(2*x) - (1 - 2*sin(x)^2)
+  note: x is taken as real
+trig forms of cos(2*x) - (1 - 2*sin(x)^2)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = 2sin(x)^2 + cos(2x) - 1
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(2i*x) + exp(-2i*x))/2 - 1 + 2*((exp(i*x) - exp(-i*x))/(2*i))^2
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: 0  (power reduction)
+> simplify cos(2*x) - (2*cos(x)^2 - 1)
+  ucas: trig cos(2*x) - (2*cos(x)^2 - 1)
+  note: x is taken as real
+trig forms of cos(2*x) - (2*cos(x)^2 - 1)
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  exponential (Euler): cos u = (e^(iu) + e^(-iu))/2
+    = (exp(2i*x) + exp(-2i*x))/2 - 2*((exp(i*x) + exp(-i*x))/2)^2 + 1
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: 0  (power reduction)
+> simplify cos(3*x) - (4*cos(x)^3 - 3*cos(x))
+  ucas: trig cos(3*x) - (4*cos(x)^3 - 3*cos(x))
+  note: x is taken as real
+trig forms of cos(3*x) - (4*cos(x)^3 - 3*cos(x))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = 3cos(x) - 4cos(x)^3 + cos(3x)
+    check: equal at 64 of 64 sample points
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 9e-16)
+  exponential (Euler): cos u = (e^(iu) + e^(-iu))/2
+    = (exp(3i*x) + exp(-3i*x))/2 - 4*((exp(i*x) + exp(-i*x))/2)^3 + 3*(exp(i*x) + exp(-i*x))/2
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  simplest: 0  (power reduction)
+> simplify sin(x/2)^2 - (1 - cos(x))/2
+  ucas: trig sin(x/2)^2 - (1 - cos(x))/2
+  note: x is taken as real
+trig forms of sin(x/2)^2 - (1 - cos(x))/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2sin(x/2)^2 + cos(x) - 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  compound angles, in cos: sin^2 u = 1 - cos^2 u
+    = (cos(x) - 2cos(x/2)^2 + 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
+    = sqrt((1 - cos(x))/2)^2 - (1 - cos(x))/2
+    for sin(x/2) >= 0
+    check: equal at 38 of 64 sample points where sin(x/2) >= 0 (max relative difference 2e-16)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = ((exp(i*x/2) - exp(-i*x/2))/(2*i))^2 - (1 - (exp(i*x) + exp(-i*x))/2)/2
+    check: equal at 64 of 64 sample points
+  simplest: 0  (power reduction)
+> simplify cos(x/2)^2 - (1 + cos(x))/2
+  ucas: trig cos(x/2)^2 - (1 + cos(x))/2
+  note: x is taken as real
+trig forms of cos(x/2)^2 - (1 + cos(x))/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2cos(x/2)^2 - cos(x) - 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  compound angles, in sin: cos^2 u = 1 - sin^2 u
+    = (1 - 2sin(x/2)^2 - cos(x))/2
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
+    = sqrt((cos(x) + 1)/2)^2 - (cos(x) + 1)/2
+    for cos(x/2) >= 0
+    check: equal at 64 of 64 sample points where cos(x/2) >= 0 (max relative difference 2e-16)
+  exponential (Euler): cos u = (e^(iu) + e^(-iu))/2
+    = ((exp(i*x/2) + exp(-i*x/2))/2)^2 - ((exp(i*x) + exp(-i*x))/2 + 1)/2
+    check: equal at 64 of 64 sample points
+  simplest: 0  (power reduction)
+> trig sin(2*x) expand
+  note: x is taken as real
+trig forms of sin(2*x)
+  compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
+    = 2sin(x)*cos(x)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
+  simplest: sin(2*x)  (as given)
+> trig cos(x)^2 reduce
+  note: x is taken as real
+trig forms of cos(x)^2
+  power reduction: sin^2 u = (1 - cos 2u)/2, cos^2 u = (1 + cos 2u)/2 (higher powers through e^(iu) = cos u + i sin u)
+    = (cos(2x) + 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  simplest: cos(x)^2  (as given)

@@ -1,0 +1,77 @@
+> rsqrt(x: f32) = 1/sqrt(x)
+> quake(x: f32) = y * (1.5f - 0.5f * x * y * y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+> d(x: f64) = x * x + 1
+> k(x: f32, y: f32) = x > 0 ? sqrt(x) * y + exp(y) : y
+> w(i: u32, v: u32) = barrier(atomic_add_shared(i, v) + 1)
+> div7(a: u32) = a / 7
+> loop(x: u32) = { s = 0; for i in 0..49 { s = s + x + i }; s }
+> fprice(x: u32) = x & 0xff | x >> 8
+> cost rsqrt
+cost of rsqrt under gt1030: 7 (2 operations, shared subterms counted once)
+  fdiv             1 x 3     = 3
+  fsqrt            1 x 4     = 4
+> cost quake
+cost of quake under gt1030: 7 (9 operations, shared subterms counted once)
+  shared subterms (named once, used below):
+    y = asfloat(1597463007 - (asuint(x) >> 1))
+  iadd             1 x 1     = 1
+  shift            1 x 2     = 2
+  bitcast          2 x 0     = 0
+  fmul             3 x 1     = 3
+  fused by the model (one instruction for several operations):
+    ffmr             1 x 1     = 1  (c - a*b, contracted: one rounding; saves 1)
+> cost d
+cost of d under gt1030: 32.375 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 32.375 = 32.375  (a*b + c, contracted: one rounding; saves 32.375)
+> cost k
+cost of k under gt1030: 13 (6 operations, shared subterms counted once)
+  cmp              1 x 2.375 = 2.375
+  select           1 x 1.625 = 1.625
+  fsqrt            1 x 4     = 4
+  ftrans           1 x 4     = 4
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)
+  ?: on x > 0  (arms cost 9 and 0)
+      select: +1.625   uniform branch: +6.25   divergent branch: +20.625
+      expected branch: +20.625   (P(true) = 0.5044 over a sample of 4096 points; 32 independent lanes split with probability 1 - p^32 - (1 - p)^32 = 1)
+      -> select (condition varies per invocation; mark parameters 'uniform' if it does not)
+  estimate with the best form per ?: : 13
+> cost w
+cost of w under gt1030: 16.75 (3 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  barrier          1 x 9.125 = 9.125
+  atomic_shared    1 x 6.625 = 6.625
+> cost div7
+cost of div7 under gt1030: 8.75 (1 operations, shared subterms counted once)
+  idivk            1 x 8.75  = 8.75
+> cost loop
+cost of loop under gt1030: 581.25 (0 operations outside loops and 1 loop, shared subterms counted once)
+  iadd           150 x 1     = 150
+  cmp             50 x 2.375 = 118.75
+  branch          50 x 6.25  = 312.5
+  loop i in 0..49:
+    per iteration: body 2 + overhead 9.625 (index add, compare, branch) = 11.625
+    trip count: 50 (constant bounds)
+    once: 0 (initial values and loop-invariant subterms, hoisted)
+    loop total: 581.25
+> cost loop model zen4
+cost of loop under zen4: 250 (0 operations outside loops and 1 loop, shared subterms counted once)
+  iadd           150 x 1     = 150
+  cmp             50 x 1     = 50
+  branch          50 x 1     = 50
+  loop i in 0..49:
+    per iteration: body 2 + overhead 3 (index add, compare, branch) = 5
+    trip count: 50 (constant bounds)
+    once: 0 (initial values and loop-invariant subterms, hoisted)
+    loop total: 250
+> cost fprice
+cost of fprice under gt1030: 3 (3 operations, shared subterms counted once)
+  shift            1 x 2     = 2
+  fused by the model (one instruction for several operations):
+    lop3             1 x 1     = 1  (bitwise logic of up to 3 inputs; saves 1)
+> cost fprice model gt1030 consecutive x
+cost of fprice under gt1030: 3 (3 operations, shared subterms counted once)
+  shift            1 x 2     = 2
+  fused by the model (one instruction for several operations):
+    lop3             1 x 1     = 1  (bitwise logic of up to 3 inputs; saves 1)

@@ -1,0 +1,865 @@
+/home/andrew/Code/ucas/src/fsimp.c:40:8: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   32 | #include <stdlib.h>
+   33 | #include <string.h>
+   34 | 
+   35 | #define U24 0x1p-24
+   36 | #define FDEN 0x1p-149f          /* smallest subnormal */
+   37 | 
+   38 | /* ---- the total order ---- */
+   39 | 
+   40 | static int64_t
+      |        ^
+/home/andrew/Code/ucas/src/fsimp.c:43:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   43 |         uint32_t u;
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:46:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   46 |         return (u >> 31) ? -(int64_t)(u & 0x7fffffffu) - 1 : (int64_t)u;
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/fsimp.c:107:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   32 |                 snprintf(b, n, "NaN");
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:128:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  128 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:128:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:191:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  191 |                         uu |= u[n->a] | u[n->b] | (!(a < b) ? u[n->c] : u[n->d]);
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:191:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  191 |                         uu |= u[n->a] | u[n->b] | (!(a < b) ? u[n->c] : u[n->d]);
+      |                               ^~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:193:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  193 |                         uu |= (n->a >= 0 && u[n->a]) | (n->b >= 0 && u[n->b]) |
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:193:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  193 |                         uu |= (n->a >= 0 && u[n->a]) | (n->b >= 0 && u[n->b]) |
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  194 |                             (n->c >= 0 && u[n->c]) | (n->d >= 0 && u[n->d]);
+      |                             ~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:198:12: warning: 'signed char' to 'int' conversion; consider casting to 'unsigned char' first. [bugprone-signed-char-misuse]
+  198 |                 *undef = u[node];
+      |                          ^
+/home/andrew/Code/ucas/src/fsimp.c:205:19: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+   29 |         const float *c = model_active()->c;
+      |                          ^
+/home/andrew/Code/ucas/src/fsimp.c:207:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  207 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:207:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:208:50: warning: no header providing "C_FADD" is directly included [misc-include-cleaner]
+  208 |         case FX_ADD: case FX_SUB: case FX_NEG: return c[C_FADD];
+      |                                                         ^
+/home/andrew/Code/ucas/src/fsimp.c:209:37: warning: no header providing "C_FMUL" is directly included [misc-include-cleaner]
+  209 |         case FX_MUL: case FX_FMA: return c[C_FMUL];
+      |                                            ^
+/home/andrew/Code/ucas/src/fsimp.c:210:24: warning: no header providing "C_FDIV" is directly included [misc-include-cleaner]
+  210 |         case FX_DIV: return c[C_FDIV];
+      |                               ^
+/home/andrew/Code/ucas/src/fsimp.c:211:24: warning: no header providing "C_FPOW" is directly included [misc-include-cleaner]
+  211 |         case FX_POW: return c[C_FPOW];
+      |                               ^
+/home/andrew/Code/ucas/src/fsimp.c:212:54: warning: no header providing "C_FTRANS" is directly included [misc-include-cleaner]
+  212 |         case FX_EXP2: case FX_LOG2: case FX_ISQRT: return c[C_FTRANS];
+      |                                                             ^
+/home/andrew/Code/ucas/src/fsimp.c:213:25: warning: no header providing "C_FSQRT" is directly included [misc-include-cleaner]
+  213 |         case FX_SQRT: return c[C_FSQRT];
+      |                                ^
+/home/andrew/Code/ucas/src/fsimp.c:215:40: warning: no header providing "C_CMP" is directly included [misc-include-cleaner]
+  215 |         case FX_STEP: case FX_SELGE: return c[C_CMP] + c[C_SELECT];
+      |                                               ^
+/home/andrew/Code/ucas/src/fsimp.c:215:51: warning: no header providing "C_SELECT" is directly included [misc-include-cleaner]
+  215 |         case FX_STEP: case FX_SELGE: return c[C_CMP] + c[C_SELECT];
+      |                                                          ^
+/home/andrew/Code/ucas/src/fsimp.c:217:50: warning: no header providing "C_MINMAX" is directly included [misc-include-cleaner]
+  217 |         case FX_MIN: case FX_MAX: case FX_ABS: return c[C_MINMAX];
+      |                                                         ^
+/home/andrew/Code/ucas/src/fsimp.c:218:24: warning: no header providing "C_CONV" is directly included [misc-include-cleaner]
+  218 |         case FX_CVT: return c[C_CONV];
+      |                               ^
+/home/andrew/Code/ucas/src/fsimp.c:269:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  269 |         r.nan |= b.nan;
+      |         ^~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:270:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  270 |         r.undef |= b.undef;
+      |         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:300:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  300 |         for (m = 0; m < (1 << na); m++) {
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:304:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  304 |                         v[i] = (m >> i & 1) ? A[i].hi : A[i].lo;
+      |                                 ^~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:314:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  314 |         int nan = a.nan | b.nan, undef = a.undef | b.undef;
+      |                   ^~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:314:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  314 |         int nan = a.nan | b.nan, undef = a.undef | b.undef;
+      |                                          ^~~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:317:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  317 |                 nan |= c.nan;
+      |                 ^~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:318:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  318 |                 undef |= c.undef;
+      |                 ^~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:320:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  320 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:320:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:333:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  333 |                         undef |= nan;
+      |                         ^~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:431:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 undef = a.undef | b.undef;
+      |                         ^~~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:439:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  439 |         r.nan |= nan;
+      |         ^~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:440:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  440 |         r.undef |= undef;
+      |         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:496:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  496 |                 return 1u << n->in;
+      |                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:533:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  533 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:662:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  662 |                 u1 |= isnan(f1);
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:663:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  663 |                 u2 |= isnan(f2);
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:742:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  742 |         r.maybe = a->maybe | b->maybe;
+      |                   ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:788:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  788 |         if (d == (1u << in) && (m == 1 || m == -1)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/fsimp.c:808:42: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  808 | xtext(const struct fxg *g, int i, struct sbuf *b, int depth)
+      |                                          ^
+/home/andrew/Code/ucas/src/fsimp.c:810:25: warning: Out of bound access to memory preceding the field 'n' [clang-analyzer-security.ArrayBound]
+  810 |         const struct fxn *n = &g->n[i];
+      |                                ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is <= field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is true.  Entering loop body
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is <= field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is true.  Entering loop body
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is > field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is false. Execution continues on line 4195
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4195:2: note: Loop condition is true.  Entering loop body
+ 4195 |         for (i = 0; i <= s->root; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Assuming field 'ok' is not equal to 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4200:19: note: Assuming field 'leaf' is 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                 ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:32: note: Assuming field 'deg' is >= 2
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:48: note: Assuming 'x' is >= 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                                              ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:3: note: Taking false branch
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: 'j' is <= field 'root'
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fsimp.c:4203:3: note: Loop condition is true.  Entering loop body
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:17: note: 'i' is not equal to field 'a'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                      ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:30: note: 'i' is not equal to field 'b'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                   ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:43: note: 'i' is not equal to field 'c'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:48: note: Assuming 'i' is not equal to field 'd'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4205:59: note: Left side of '&&' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                                ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: 'j' is > field 'root'
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:32: note: Left side of '&&' is false
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4209:8: note: 'top' is 1
+ 4209 |                 if (!top)
+      |                      ^~~
+/home/andrew/Code/ucas/src/fsimp.c:4209:3: note: Taking false branch
+ 4209 |                 if (!top)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4212:7: note: Assuming the condition is false
+ 4212 |                 if (!isfinite(mx))
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4212:3: note: Taking false branch
+ 4212 |                 if (!isfinite(mx))
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Assuming the condition is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4216:26: note: 'kk' is >= 1
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                                        ^~
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Left side of '||' is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4216:36: note: Assuming the condition is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4216:3: note: Taking false branch
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is true.  Entering loop body
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4219:4: note: Taking true branch
+ 4219 |                         if (seen[k])
+      |                         ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is true.  Entering loop body
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4219:4: note: Taking false branch
+ 4219 |                         if (seen[k])
+      |                         ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is false. Execution continues on line 4221
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: Assuming 'k' is < 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is false. Execution continues on line 4229
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4237:7: note: Assuming 'dp' is > 'budget'
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4237:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4237:25: note: Assuming 'dc' is <= 'budget'
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                                       ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4237:3: note: Taking false branch
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4246:25: note: Assuming field 'op' is equal to FX_IN
+ 4246 |                         int q, un = 0, xin = g->n[x].op == FX_IN || g->n[x].op ==
+      |                                              ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4246:45: note: Left side of '||' is true
+ 4246 |                         int q, un = 0, xin = g->n[x].op == FX_IN || g->n[x].op ==
+      |                                                                  ^
+/home/andrew/Code/ucas/src/fsimp.c:4249:16: note: 'q' is <= 4096
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4249:16: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fsimp.c:4249:29: note: Assuming 'xin' is < 0
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                                  ^~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4249:38: note: Left side of '&&' is false
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/fsimp.c:4280:59: note: Calling 'xstr'
+ 4280 |                     "4097 points: %.3g as written, %.3g compensated\n", xstr(g, i),
+      |                                                                         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:880:2: note: Calling 'xtext'
+  880 |         xtext(g, i, &b, 0);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:817:22: note: Field 'op' is not equal to FX_ADD
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:817:19: note: '?' condition is false
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                          ^
+/home/andrew/Code/ucas/src/fsimp.c:817:48: note: Field 'op' is not equal to FX_SUB
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                                                       ^
+/home/andrew/Code/ucas/src/fsimp.c:817:45: note: '?' condition is false
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                                                    ^
+/home/andrew/Code/ucas/src/fsimp.c:818:9: note: Field 'op' is not equal to FX_MUL
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                ^
+/home/andrew/Code/ucas/src/fsimp.c:818:6: note: '?' condition is false
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |             ^
+/home/andrew/Code/ucas/src/fsimp.c:818:35: note: Field 'op' is not equal to FX_DIV
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                                          ^
+/home/andrew/Code/ucas/src/fsimp.c:818:32: note: '?' condition is false
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                                       ^
+/home/andrew/Code/ucas/src/fsimp.c:820:6: note: 'depth' is <= 5
+  820 |         if (depth > 5) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:820:2: note: Taking false branch
+  820 |         if (depth > 5) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:824:2: note: 'Default' branch taken. Execution continues on line 850
+  824 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:850:6: note: 'op' is null
+  850 |         if (op) {
+      |             ^~
+/home/andrew/Code/ucas/src/fsimp.c:850:2: note: Taking false branch
+  850 |         if (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:858:22: note: Assuming the condition is false
+  858 |         sb_printf(b, "%s(", n->op < (int)(sizeof fn / sizeof fn[0]) &&
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:858:62: note: Left side of '&&' is false
+  858 |         sb_printf(b, "%s(", n->op < (int)(sizeof fn / sizeof fn[0]) &&
+      |                                                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:860:2: note: Calling 'xtext'
+  860 |         xtext(g, n->a, b, depth + 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:810:25: note: Access of the field 'n' at a negative index
+  810 |         const struct fxn *n = &g->n[i];
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:821:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  821 |                 sb_puts(b, "...");
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:824:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  824 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:829:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  829 |                 sb_printf(b, "float(%s)", g->in[n->in].name);
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:859:6: warning: Out of bound access to memory preceding 'fn' [clang-analyzer-security.ArrayBound]
+  859 |             fn[n->op] ? fn[n->op] : "?");
+      |             ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is <= field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is true.  Entering loop body
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is <= field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is true.  Entering loop body
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4193:14: note: Assuming 'i' is > field 'root'
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4193:2: note: Loop condition is false. Execution continues on line 4195
+ 4193 |         for (i = 0; i <= s->root; i++)
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4195:2: note: Loop condition is true.  Entering loop body
+ 4195 |         for (i = 0; i <= s->root; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Assuming field 'ok' is not equal to 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4200:19: note: Assuming field 'leaf' is 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                 ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:32: note: Assuming field 'deg' is >= 2
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:7: note: Left side of '||' is false
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4200:48: note: Assuming 'x' is >= 0
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                                                              ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4200:3: note: Taking false branch
+ 4200 |                 if (!P[i].ok || P[i].leaf || P[i].deg < 2 || x < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: 'j' is <= field 'root'
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fsimp.c:4203:3: note: Loop condition is true.  Entering loop body
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:17: note: 'i' is not equal to field 'a'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                      ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:30: note: 'i' is not equal to field 'b'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                   ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:43: note: 'i' is not equal to field 'c'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:9: note: Left side of '||' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4205:48: note: Assuming 'i' is not equal to field 'd'
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4205:59: note: Left side of '&&' is false
+ 4205 |                         if ((m->a == i || m->b == i || m->c == i || m->d == i) &&
+      |                                                                                ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:19: note: 'j' is > field 'root'
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4203:32: note: Left side of '&&' is false
+ 4203 |                 for (j = i + 1; j <= s->root && top; j++) {
+      |                                              ^
+/home/andrew/Code/ucas/src/fsimp.c:4209:8: note: 'top' is 1
+ 4209 |                 if (!top)
+      |                      ^~~
+/home/andrew/Code/ucas/src/fsimp.c:4209:3: note: Taking false branch
+ 4209 |                 if (!top)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4212:7: note: Assuming the condition is false
+ 4212 |                 if (!isfinite(mx))
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4212:3: note: Taking false branch
+ 4212 |                 if (!isfinite(mx))
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Assuming the condition is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4216:26: note: 'kk' is >= 1
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                                        ^~
+/home/andrew/Code/ucas/src/fsimp.c:4216:7: note: Left side of '||' is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4216:36: note: Assuming the condition is false
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4216:3: note: Taking false branch
+ 4216 |                 if (!isfinite(abs_) || kk < 1 || kk * u >= 0.5)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is true.  Entering loop body
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4219:4: note: Taking true branch
+ 4219 |                         if (seen[k])
+      |                         ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is true.  Entering loop body
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4219:4: note: Taking false branch
+ 4219 |                         if (seen[k])
+      |                         ^
+/home/andrew/Code/ucas/src/fsimp.c:4218:3: note: Loop condition is false. Execution continues on line 4221
+ 4218 |                 for (k = 0; k <= s->root; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: 'k' is >= 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is true.  Entering loop body
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4224:15: note: Assuming 'k' is < 0
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4224:3: note: Loop condition is false. Execution continues on line 4229
+ 4224 |                 for (k = n; k >= 0; k--) {
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4237:7: note: Assuming 'dp' is > 'budget'
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4237:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:4237:25: note: Assuming 'dc' is <= 'budget'
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                                       ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4237:3: note: Taking false branch
+ 4237 |                 if (!(dp > budget) || !(dc <= budget))
+      |                 ^
+/home/andrew/Code/ucas/src/fsimp.c:4246:25: note: Assuming field 'op' is equal to FX_IN
+ 4246 |                         int q, un = 0, xin = g->n[x].op == FX_IN || g->n[x].op ==
+      |                                              ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4246:45: note: Left side of '||' is true
+ 4246 |                         int q, un = 0, xin = g->n[x].op == FX_IN || g->n[x].op ==
+      |                                                                  ^
+/home/andrew/Code/ucas/src/fsimp.c:4249:16: note: 'q' is <= 4096
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:4249:16: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fsimp.c:4249:29: note: Assuming 'xin' is < 0
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                                  ^~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4249:38: note: Left side of '&&' is false
+ 4249 |                         for (q = 0; q <= 4096 && xin >= 0 && isfinite(lo) &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/fsimp.c:4280:59: note: Calling 'xstr'
+ 4280 |                     "4097 points: %.3g as written, %.3g compensated\n", xstr(g, i),
+      |                                                                         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:880:2: note: Calling 'xtext'
+  880 |         xtext(g, i, &b, 0);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:817:22: note: Field 'op' is not equal to FX_ADD
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:817:19: note: '?' condition is false
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                          ^
+/home/andrew/Code/ucas/src/fsimp.c:817:48: note: Field 'op' is not equal to FX_SUB
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                                                       ^
+/home/andrew/Code/ucas/src/fsimp.c:817:45: note: '?' condition is false
+  817 |         const char *op = n->op == FX_ADD ? " + " : n->op == FX_SUB ? " - " :
+      |                                                    ^
+/home/andrew/Code/ucas/src/fsimp.c:818:9: note: Field 'op' is not equal to FX_MUL
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                ^
+/home/andrew/Code/ucas/src/fsimp.c:818:6: note: '?' condition is false
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |             ^
+/home/andrew/Code/ucas/src/fsimp.c:818:35: note: Field 'op' is not equal to FX_DIV
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                                          ^
+/home/andrew/Code/ucas/src/fsimp.c:818:32: note: '?' condition is false
+  818 |             n->op == FX_MUL ? " * " : n->op == FX_DIV ? " / " : NULL;
+      |                                       ^
+/home/andrew/Code/ucas/src/fsimp.c:820:6: note: 'depth' is <= 5
+  820 |         if (depth > 5) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:820:2: note: Taking false branch
+  820 |         if (depth > 5) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:824:2: note: 'Default' branch taken. Execution continues on line 850
+  824 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:850:6: note: 'op' is null
+  850 |         if (op) {
+      |             ^~
+/home/andrew/Code/ucas/src/fsimp.c:850:2: note: Taking false branch
+  850 |         if (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:858:22: note: Assuming the condition is true
+  858 |         sb_printf(b, "%s(", n->op < (int)(sizeof fn / sizeof fn[0]) &&
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:858:22: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fsimp.c:859:6: note: Access of 'fn' at a negative index
+  859 |             fn[n->op] ? fn[n->op] : "?");
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:878:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  878 |         char *r = ring[at++ & 3];
+      |                        ^~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:892:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  892 |         return fx_str(v, ring[at++ & 7], 40);
+      |                               ^~~~ ~
+/home/andrew/Code/ucas/src/fsimp.c:985:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  985 |                 if (d == (1u << i))
+      |                              ~~ ^
+/home/andrew/Code/ucas/src/fsimp.c:1016:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1016 |                         u |= 1;
+      |                           ~~ ^
+/home/andrew/Code/ucas/src/fsimp.c:1246:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1246 |                         if (deps(g, src) != (1u << xi) ||
+      |                                                 ~~ ^~
+/home/andrew/Code/ucas/src/fsimp.c:1247:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1247 |                             ((m = mono(g, src, xi)) != 1 && m != -1))
+      |                               ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:1247:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:1247:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:1598:5: warning: potentially unintended semicolon [bugprone-suspicious-semicolon]
+ 1598 |                                 ;
+      |                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:1763:21: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+ 1763 |         struct fxsctx *s = xcalloc(1, sizeof *s);
+      |                            ^
+/home/andrew/Code/ucas/src/fsimp.c:1766:15: warning: no header providing "fkey" is directly included [misc-include-cleaner]
+ 1766 |         int64_t ka = fkey(32, xa), kb = fkey(32, xb);
+      |                      ^
+/home/andrew/Code/ucas/src/fsimp.c:1774:51: warning: no header providing "fromkey" is directly included [misc-include-cleaner]
+ 1774 |                     i / (m - 1))) * ((ld)xb - xa) / 2) : (float)fromkey(32, ka +
+      |                                                                 ^
+/home/andrew/Code/ucas/src/fsimp.c:1957:24: warning: no header providing "C_IADD" is directly included [misc-include-cleaner]
+ 1957 |                 double c_bh = 2 * mc[C_IADD] + 2 * mc[C_CONV] + mc[C_FMUL];
+      |                                      ^
+/home/andrew/Code/ucas/src/fsimp.c:2110:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2110 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2110:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:2121:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2121 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2121:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:2132:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2132 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2132:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:2146:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2146 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2146:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/fsimp.c:2453:5: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 2453 |     uint8_t *in)
+      |     ^
+/home/andrew/Code/ucas/src/fsimp.c:2479:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2479 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2872:20: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+ 2872 |             node), terms, sb_str(&why), nlog, slo, shi);
+      |                           ^
+/home/andrew/Code/ucas/src/fsimp.c:2904:29: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2904 |         if (r->kind != FXR_POLY || strncmp(r->why, "polynomial of degree", 20))
+      |                                    ^                                          
+      |                                                                                != 0
+/home/andrew/Code/ucas/src/fsimp.c:2908:9: warning: Out of bound access to memory preceding 'P' [clang-analyzer-security.ArrayBound]
+ 2908 |         return P[r->node].leaf ? 0 : pl_mark(g, P, r->node, P[r->node].x, in);
+      |                ^~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:2894:6: note: Assuming field 'kind' is not equal to FXR_LOGDOM
+ 2894 |         if (r->kind == FXR_LOGDOM) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:2894:9: note: Field 'kind' is not equal to FXR_LOGDOM
+ 2894 |         if (r->kind == FXR_LOGDOM) {
+      |                ^
+/home/andrew/Code/ucas/src/fsimp.c:2894:2: note: Taking false branch
+ 2894 |         if (r->kind == FXR_LOGDOM) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2904:6: note: Assuming field 'kind' is equal to FXR_POLY
+ 2904 |         if (r->kind != FXR_POLY || strncmp(r->why, "polynomial of degree", 20))
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:2904:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fsimp.c:2904:29: note: Assuming the condition is false
+ 2904 |         if (r->kind != FXR_POLY || strncmp(r->why, "polynomial of degree", 20))
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:2904:2: note: Taking false branch
+ 2904 |         if (r->kind != FXR_POLY || strncmp(r->why, "polynomial of degree", 20))
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:2906:14: note: Assuming 'i' is > field 'node'
+ 2906 |         for (i = 0; i <= r->node && i < g->nn; i++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:2906:27: note: Left side of '&&' is false
+ 2906 |         for (i = 0; i <= r->node && i < g->nn; i++)
+      |                                  ^
+/home/andrew/Code/ucas/src/fsimp.c:2908:9: note: Access of 'P' at a negative index
+ 2908 |         return P[r->node].leaf ? 0 : pl_mark(g, P, r->node, P[r->node].x, in);
+      |                ^~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:3027:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3027 |         static ld e[TAB_MAXN];
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3152:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3152 |         float tab[TAB_MAXN];
+      |                   ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3226:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3226 |         static ld tv[TAB_MAXN], act[TAB_MAXN], best[TAB_MAXN];
+      |                      ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3226:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3226 |         static ld tv[TAB_MAXN], act[TAB_MAXN], best[TAB_MAXN];
+      |                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3226:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3226 |         static ld tv[TAB_MAXN], act[TAB_MAXN], best[TAB_MAXN];
+      |                                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3227:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3227 |         static long kq[TAB_MAXN];
+      |                        ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3231:38: warning: no header providing "MP_SUBTEXEL" is directly included [misc-include-cleaner]
+ 3231 |         double snap = ldexp(1, -(int)m->par[MP_SUBTEXEL]);
+      |                                             ^
+/home/andrew/Code/ucas/src/fsimp.c:3232:20: warning: no header providing "MP_TEX_WITHIN" is directly included [misc-include-cleaner]
+ 3232 |         double W = m->par[MP_TEX_WITHIN], bestv = INFINITY;
+      |                           ^
+/home/andrew/Code/ucas/src/fsimp.c:3382:22: warning: no header providing "C_TEX_SAMPLE" is directly included [misc-include-cleaner]
+ 3382 |         c8 = model_lists(m, C_TEX_SAMPLE) ? m->c[C_TEX_SAMPLE] + 2 *
+      |                             ^
+/home/andrew/Code/ucas/src/fsimp.c:3391:30: warning: no header providing "C_TEX_SAMPLE_F32" is directly included [misc-include-cleaner]
+ 3391 |         fm[nf++].c = model_lists(m, C_TEX_SAMPLE_F32) ?
+      |                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:3406:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3406 |                         if (tab_try(g, r, (1 << k) + 1, fm[f].fmt, fm[f].deg, r->tmax,
+      |                                            ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3417:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3417 |                     "come to about %.3g (sampled)%s", TAB_MAXN, r->tmax, near.n,
+      |                                                       ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3423:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3423 |                     "texels is within the %.3g its value may move", TAB_MAXN,
+      |                                                                     ^
+/home/andrew/Code/ucas/src/fsimp.c:2946:20: note: expanded from macro 'TAB_MAXN'
+ 2946 | #define TAB_MAXN ((1 << TAB_MAXK) + 1)
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3428:11: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+ 3428 |         r->tab = xmalloc((size_t)o.n * sizeof *r->tab);
+      |                  ^
+/home/andrew/Code/ucas/src/fsimp.c:3549:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3549 |         if ((r = new_rw(rw, nrw, max, FXR_TABLE, node)) == NULL)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:3549:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:3549:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:3574:7: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+ 3574 |                     sym_str(m->name));
+      |                     ^
+/home/andrew/Code/ucas/src/fsimp.c:3653:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3653 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:3790:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3790 |                 cut |= s->at[i] && s->at[i]->kind == FXR_TABLE;
+      |                 ^~~ ~~
+/home/andrew/Code/ucas/src/fsimp.c:3874:2: warning: Variable 'hi' with floating point type 'double' should not be used as a loop counter [clang-analyzer-security.FloatLoopCounter]
+ 3874 |         for (hi = target; hi < 0x1p100; hi *= 2) {
+      |         ^                 ~~            ~~
+/home/andrew/Code/ucas/src/fsimp.c:3874:2: note: Variable 'hi' with floating point type 'double' should not be used as a loop counter
+ 3874 |         for (hi = target; hi < 0x1p100; hi *= 2) {
+      |         ^                 ~~            ~~
+/home/andrew/Code/ucas/src/fsimp.c:3874:34: warning: loop induction expression should not have floating-point type [bugprone-float-loop-counter]
+ 3874 |         for (hi = target; hi < 0x1p100; hi *= 2) {
+      |                           ~~            ^~
+/home/andrew/Code/ucas/src/fsimp.c:3921:29: warning: Value stored to 'n' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 3921 |                 int together = pass == 0, n = t[0]->node;
+      |                                           ^   ~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:3921:29: note: Value stored to 'n' during its initialization is never read
+ 3921 |                 int together = pass == 0, n = t[0]->node;
+      |                                           ^   ~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4049:8: warning: Out of bound access to memory preceding 's.R' [clang-analyzer-security.ArrayBound]
+ 4049 |         top = s.R[root];
+      |               ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4035:6: note: Assuming field 'sink' is > 0
+ 4035 |         if (g->sink <= 0 && g->sinkrel <= 0)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4035:19: note: Left side of '&&' is false
+ 4035 |         if (g->sink <= 0 && g->sinkrel <= 0)
+      |                          ^
+/home/andrew/Code/ucas/src/fsimp.c:4040:14: note: Assuming 'i' is > 'root'
+ 4040 |         for (i = 0; i <= root; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4040:2: note: Loop condition is false. Execution continues on line 4049
+ 4040 |         for (i = 0; i <= root; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4049:8: note: Access of 's.R' at a negative index
+ 4049 |         top = s.R[root];
+      |               ^~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4094:8: warning: multilevel pointer conversion from 'const struct fxrw **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 4094 |         qsort(cand, (size_t)nc, sizeof *cand, sink_gain_cmp);
+      |               ^
+/home/andrew/Code/ucas/src/fsimp.c:4160:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 4160 |         switch (n->op) {
+      |         ^
+/home/andrew/Code/ucas/src/fsimp.c:4377:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4377 |                         if ((r = new_rw(rw, &nrw, max, FXR_SELECT, i)) == NULL)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4377:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4377:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:4437:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4437 |                     1u << n->in : 0;
+      |                        ~~ ^~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4480:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4480 |                         while (!(dm[i] >> in & 1))
+      |                                        ~~ ^~
+/home/andrew/Code/ucas/src/fsimp.c:4480:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4480 |                         while (!(dm[i] >> in & 1))
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/fsimp.c:4488:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4488 |                         if ((r = new_rw(rw, &nrw, max, FXR_RECIP, i)) == NULL)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4488:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4488:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:4502:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4502 |                                 if ((r = new_rw(rw, &nrw, max, FXR_DIVNOTE, i)) == NULL)
+      |                                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4502:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4502:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:4515:13: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4515 |                                         if ((r = new_rw(rw, &nrw, max, FXR_FMA, i)) == NULL)
+      |                                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4515:13: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4515:13: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:4536:13: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4536 |                                         if ((r = new_rw(rw, &nrw, max, FXR_FMA2, i)) == NULL)
+      |                                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4536:13: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4536:13: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fsimp.c:4555:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4555 |                         if ((r = new_rw(rw, &nrw, max, FXR_SQRT, i)) == NULL)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fsimp.c:4555:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fsimp.c:4555:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

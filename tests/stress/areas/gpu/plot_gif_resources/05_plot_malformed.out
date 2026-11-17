@@ -1,0 +1,39 @@
+> plot  nofile
+05_plot_malformed.ucas:1:7: error: plot what? (a function or an expression)
+    plot  nofile
+          ^
+> plot sin( nofile
+05_plot_malformed.ucas:1:12: error: expected ')', found 'end'
+    sin( nofile
+               ^
+> plot x + nofile
+05_plot_malformed.ucas:1:4: error: expected an expression
+    x +
+       ^
+> plot ? nofile
+05_plot_malformed.ucas:4:14: error: expected ':', found 'eol'
+    plot ? nofile
+                 ^
+> plot sin x x in 0..0 nofile
+05_plot_malformed.ucas:5:6: error: plot: an empty interval [0, 0]
+    plot sin x x in 0..0 nofile
+         ^
+> plot sin x x in 1..0 nofile
+plot of sin(x)
+  x in [0, 1]: given
+  y in [-0.04207, 0.8835]: the values
+  sin(x): 1201 samples, values in [0, 0.8415]
+  image: 640x440, 6247 bytes
+  (nofile: GIF checksum 91c68f19)
+> plot sin(x) garbagejunk nofile
+surface: z = f(x, garbagejunk)
+  x in [-6.283 (-2pi), 6.283 (2pi)]: periodic with period 6.283 (2pi): two periods
+  garbagejunk in [-2, 2]: covering the 1 feature found in [-10, 10]
+  z in [-2.2, 2.2]: the values
+  65x65 grid
+  image: 640x500, 32194 bytes
+  (nofile: GIF checksum f4837eab)
+> plot sin x fps -1 nofile
+05_plot_malformed.ucas:8:6: error: plot: fps and frames are positive
+    plot sin x fps -1 nofile
+         ^

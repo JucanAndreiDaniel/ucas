@@ -1,0 +1,64 @@
+> converge sin(n)/n
+sum(n, 1, inf, sin(n)/n)
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+  partial sums: S_10 = 1.124518813, S_1000 = 1.070694154
+> converge cos(n)/n
+sum(n, 1, inf, cos(n)/n)
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+  partial sums: S_10 = -0.04004972914, S_1000 = 0.04305687846
+> converge sin(n)/n^2
+sum(n, 1, inf, sin(n)/n^2)
+  converges absolutely: comparison with the p-series sum 1/n^2 (|a_n| ~ C/n^2, p > 1)
+  partial sums: S_10 = 1.019570958, S_1000 = 1.013959029
+> sum(n,1,inf,sin(n)/n)
+sum(n, 1, inf, sin(n)/n)
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+> sum(n,1,inf,(-1)^n*sin(n)/n)
+sum(n, 1, inf, (-1)^n*sin(n)/n)
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+> converge 1/n^(1+1/n)
+sum(n, 1, inf, 1/n^(1/n + 1))
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+  partial sums: S_10 = 2.401095826, S_1000 = 6.664493015
+> converge (-1)^n*n
+sum(n, 0, inf, (-1)^n*n)
+  diverges: nth-term test: a_n does not tend to 0 (a_1000000 = 1e+06)
+  partial sums: S_10 = -5, S_1000 = -500
+> converge 1/log(n)
+sum(n, 2, inf, 1/log(n))
+  diverges: nth-term test: a_n does not tend to 0 (a_1000000 = 0.07238)
+  partial sums: S_10 = 6.554970525, S_1000 = 177.5835442
+> sum(n,1,inf,1/(n^2-1))
+sum(n, 1, inf, 1/(n^2 - 1))
+  converges absolutely: limit comparison with the p-series sum 1/n^2 (p = 2 > 1): a_n n^2 -> 1
+  numeric: a_n is undefined at n = 1
+> sum(n,0,inf,1/0)
+sum(n, 0, inf, 1/0)
+  convergence unknown: the ratio, root, comparison and integral tests are inconclusive here
+  numeric: a_n is undefined at n = 0
+> prod(n,2,inf,n)
+prod(n, 2, inf, n)
+  numeric: -nan (partial products to 4097, Richardson in 1/N twice; estimated error nan)
+> prod(n,2,inf,2)
+prod(n, 2, inf, 2)
+  numeric: -nan (partial products to 4097, Richardson in 1/N twice; estimated error nan)
+> radius sum(n,1,inf,n^(2n)*x^n/2^n)
+power series sum(n, 1, inf, n^(2n)*x^n/2^n) in x
+  center x = 0; coefficients a_n = n^(2n)/2^n of x^(n)
+  radius of convergence R = 0 (ratio test: |a_(n+1)/a_n| -> inf)
+  converges only at x = 0
+> radius sum(n,1,inf,(-x)^n/n)
+power series sum(n, 1, inf, (-x)^n/n) in x
+  center x = 0; coefficients a_n = 1/n of -x^(n)
+  radius of convergence R = 1 (ratio test: |a_(n+1)/a_n| -> 1)
+  at x = -1: diverges (limit comparison with the harmonic series sum 1/n (p = 1): a_n n -> 1)
+  at x = 1: converges conditionally (alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1))
+  interval of convergence: (-1, 1]
+  sum = -log(x + 1)    for |-x| < 1 (-log(1 - u))
+> radius sum(n,1,inf,x^n/n^2)
+power series sum(n, 1, inf, x^n/n^2) in x
+  center x = 0; coefficients a_n = 1/n^2 of x^(n)
+  radius of convergence R = 1 (ratio test: |a_(n+1)/a_n| -> 1)
+  at x = -1: converges absolutely (|a_n| ~ C/n^2: comparison with a p-series (p > 1))
+  at x = 1: converges absolutely (p-series 1/n^2 with p = 2 > 1)
+  interval of convergence: [-1, 1]

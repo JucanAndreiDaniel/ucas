@@ -1,0 +1,21 @@
+> crc1(r: u16, b: u8) = (r >> 1) xor (((r & 1) xor (b & 1)) != 0 ? 0x8408 : 0)
+> crc2(r: u16, b: u8) = (r >> 1) xor (((b & 1) xor (r & 1)) != 0 ? 0x8408 : 0)
+> equiv crc1 crc2
+crc1 and crc2 are equal on the domain of crc1 (proved by SAT: 34 AIG nodes, 0 conflicts)
+> crc3(r: u16, b: u8) = (r >> 1) xor ((b xor (r & 1)) != 0 ? 0x8408 : 0)
+> equiv crc1 crc3
+crc1 and crc3 differ at 32545 points of the sample, e.g. r=0, b=254: 0 vs 33800
+> fb(s: u16) = (s xor (s >> 2) xor (s >> 4) xor (s >> 6)) & 1
+> fb2(s: u16) = ((s & 1) xor ((s>>2)&1) xor ((s>>4)&1) xor ((s>>6)&1)) & 1
+> equiv fb fb2
+fb and fb2 are equal on the domain of fb (exhaustive)
+> lfsr1(s: u16) = (s >> 1) | (fb(s) << 15)
+> lfsr2(s: u16) = (s >> 1) | (fb2(s) << 15)
+> equiv lfsr1 lfsr2
+lfsr1 and lfsr2 are equal on the domain of lfsr1 (exhaustive)
+> range fb
+range of fb -> u16:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  over all 65536 points of the domain

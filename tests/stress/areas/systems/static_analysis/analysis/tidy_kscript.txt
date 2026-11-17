@@ -1,0 +1,433 @@
+/home/andrew/Code/ucas/src/kscript.c:31:1: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   27 | #include <stdlib.h>
+   28 | #include <string.h>
+   29 | 
+   30 | struct klemma *klemmas;
+   31 | uint32_t nklemmas;
+      | ^
+/home/andrew/Code/ucas/src/kscript.c:130:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                      ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:130:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kscript.c:130:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kscript.c:180:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   27 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:181:2: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+   27 |         vsnprintf(m, sizeof m, fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:182:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+  182 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:183:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  183 |         snprintf(S->msg, (size_t)S->msgn, "%s:%d: %s", S->file, no, m);
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:250:42: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  250 | decl_sorts(struct src *S, const char *s, uint8_t *out, int max)
+      |                                          ^
+/home/andrew/Code/ucas/src/kscript.c:262:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  262 |                 if ((k = ks_lookup(w)) < 0)
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:262:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kscript.c:262:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kscript.c:307:38: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  307 |                 if (!word(&s, w, sizeof w) || (res = ks_lookup(w)) < 0)
+      |                                                ~~~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:307:38: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kscript.c:307:38: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kscript.c:310:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  310 |                         if (strcmp(w, "hom"))
+      |                             ^               
+      |                                              != 0
+/home/andrew/Code/ucas/src/kscript.c:396:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  396 |         if ((i = kl_find(name)) >= 0 && klemmas[i].th)
+      |              ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:396:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kscript.c:396:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kscript.c:442:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  442 |         if ((w = find_kw(s, "with")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:442:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kscript.c:442:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kscript.c:516:4: warning: no header providing "fprintf" is directly included [misc-include-cleaner]
+  516 |                         fprintf(stderr, "  fact: %s\n", kt_str(kthm_concl(c->fact[i])));
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:580:41: warning: Out of bound access to memory preceding 'names' [clang-analyzer-security.ArrayBound]
+  580 |         ka_add(&P->ctx, th, *k < nn ? sym_cstr(names[*k]) : 0);
+      |                                                ^
+/home/andrew/Code/ucas/src/kscript.c:611:9: note: Assuming field 'i' is < field 'n'
+  611 |         for (; S->i < S->n && !S->failed; S->i++) {
+      |                ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:611:12: note: Field 'i' is < field 'n'
+  611 |         for (; S->i < S->n && !S->failed; S->i++) {
+      |                   ^
+/home/andrew/Code/ucas/src/kscript.c:611:9: note: Left side of '&&' is true
+  611 |         for (; S->i < S->n && !S->failed; S->i++) {
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:611:24: note: Assuming field 'failed' is 0
+  611 |         for (; S->i < S->n && !S->failed; S->i++) {
+      |                               ^~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:611:2: note: Loop condition is true.  Entering loop body
+  611 |         for (; S->i < S->n && !S->failed; S->i++) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:619:7: note: Assuming the condition is false
+  619 |                 if (!strcmp(kw, "qed")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:619:3: note: Taking false branch
+  619 |                 if (!strcmp(kw, "qed")) {
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:650:7: note: 'done' is 0
+  650 |                 if (done)
+      |                     ^~~~
+/home/andrew/Code/ucas/src/kscript.c:650:3: note: Taking false branch
+  650 |                 if (done)
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:653:7: note: Assuming the condition is false
+  653 |                 if (!strcmp(kw, "fix")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:653:3: note: Taking false branch
+  653 |                 if (!strcmp(kw, "fix")) {
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:666:14: note: Assuming the condition is false
+  666 |                 } else if (!strcmp(kw, "intro")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:666:10: note: Taking false branch
+  666 |                 } else if (!strcmp(kw, "intro")) {
+      |                        ^
+/home/andrew/Code/ucas/src/kscript.c:684:14: note: Assuming the condition is true
+  684 |                 } else if (!strcmp(kw, "contra")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:684:10: note: Taking true branch
+  684 |                 } else if (!strcmp(kw, "contra")) {
+      |                        ^
+/home/andrew/Code/ucas/src/kscript.c:687:8: note: Assuming the condition is false
+  687 |                         if (KOP(G) == KO_NOT) {
+      |                             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:687:4: note: Taking false branch
+  687 |                         if (KOP(G) == KO_NOT) {
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:698:27: note: 'nn' is 2
+  698 |                         add_named(P, a, names, nn ? nn : 1, &k);
+      |                                                ^~
+/home/andrew/Code/ucas/src/kscript.c:698:27: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:698:4: note: Calling 'add_named'
+  698 |                         add_named(P, a, names, nn ? nn : 1, &k);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:575:6: note: Assuming the condition is true
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:575:6: note: Left side of '&&' is true
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:575:2: note: Taking true branch
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:576:3: note: Calling 'add_named'
+  576 |                 add_named(P, kr_ande1(th), names, nn, k);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:575:6: note: Assuming the condition is true
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:575:6: note: Left side of '&&' is true
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:575:2: note: Taking true branch
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:577:3: note: Calling 'add_named'
+  577 |                 add_named(P, kr_ande2(th), names, nn, k);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:575:6: note: Assuming the condition is false
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:72:16: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                ^
+/home/andrew/Code/ucas/src/kscript.c:575:23: note: Left side of '&&' is false
+  575 |         if (KOP(f) == KO_AND && *k < nn - 1) {
+      |                              ^
+/home/andrew/Code/ucas/src/kscript.c:580:22: note: Assuming the condition is true
+  580 |         ka_add(&P->ctx, th, *k < nn ? sym_cstr(names[*k]) : 0);
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:580:22: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:580:41: note: Access of 'char[64]' element in 'names' at negative index -2147483648
+  580 |         ka_add(&P->ctx, th, *k < nn ? sym_cstr(names[*k]) : 0);
+      |                                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:624:5: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  624 |                                 switch (cl[i].kind) {
+      |                                 ^
+/home/andrew/Code/ucas/src/kscript.c:805:13: warning: 'c1' is confusable with 'cl' [misc-confusable-identifiers]
+  805 |                         kthm th, c1, c2;
+      |                                  ^
+/home/andrew/Code/ucas/src/kscript.c:606:16: note: other declaration found here
+  606 |         struct closer cl[128];
+      |                       ^
+/home/andrew/Code/ucas/src/kscript.c:958:8: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                             ^
+/home/andrew/Code/ucas/src/kscript.c:1118:6: note: Assuming 'loaded' is 0
+ 1118 |         if (loaded)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/kscript.c:1118:2: note: Taking false branch
+ 1118 |         if (loaded)
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:1125:2: note: Calling 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:123:2: note: Loop condition is true.  Entering loop body
+  123 |         while (*p) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:125:16: note: Assuming 'e' is non-null
+  125 |                 size_t len = e ? (size_t)(e - p) : strlen(p);
+      |                              ^
+/home/andrew/Code/ucas/src/kscript.c:125:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:130:7: note: Assuming the condition is false
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:130:3: note: Taking false branch
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:132:7: note: 'e' is non-null
+  132 |                 p = e ? e + 1 : p + len;
+      |                     ^
+/home/andrew/Code/ucas/src/kscript.c:132:7: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:135:4: note: Loop condition is false. Execution continues on line 137
+  135 |                         while (isspace((unsigned char)*t))
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:137:8: note: Assuming the condition is true
+  137 |                         if (!*t) {
+      |                             ^~~
+/home/andrew/Code/ucas/src/kscript.c:137:4: note: Taking true branch
+  137 |                         if (!*t) {
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:139:5: note:  Execution continues on line 123
+  139 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/kscript.c:123:2: note: Loop condition is false. Execution continues on line 161
+  123 |         while (*p) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:161:10: note: Field 'n' is 0
+  161 |         if (cur.n) {
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:161:2: note: Taking false branch
+  161 |         if (cur.n) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:1125:2: note: Returning from 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:1126:7: note: Calling 'run'
+ 1126 |         if (!run(&libsrc))
+      |              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:944:2: note: 'phi' declared without an initial value
+  944 |         kt phi;
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:17: note: Assuming field 'i' is < field 'n'
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                        ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:17: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/kscript.c:946:32: note: Assuming field 'failed' is 0
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                                       ^~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:2: note: Loop condition is true.  Entering loop body
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:949:3: note: Taking false branch
+  949 |                 if (!word(&s, kw, sizeof kw))
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/kscript.c:951:30: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                                            ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Left side of '||' is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^
+/home/andrew/Code/ucas/src/kscript.c:952:7: note: Assuming the condition is false
+  952 |                     !strcmp(kw, "pred")) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:3: note: Taking false branch
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:955:14: note: Assuming the condition is true
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:955:33: note: Left side of '||' is true
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                                               ^
+/home/andrew/Code/ucas/src/kscript.c:956:9: note: Calling 'statement'
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:916:2: note: Taking true branch
+  916 |         if (!word(&s, name, nn))
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:917:3: note: Returning without writing to '*phi'
+  917 |                 return serr(S, "expected a name");
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:956:9: note: Returning from 'statement'
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:956:8: note: Assuming the condition is false
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:956:4: note: Taking false branch
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:958:27: note: Assuming the condition is false
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                                                ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:958:27: note: '?' condition is false
+/home/andrew/Code/ucas/src/kscript.c:958:8: note: 2nd function call argument is an uninitialized value
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                             ^             ~~~
+/home/andrew/Code/ucas/src/kscript.c:971:9: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+  971 |                         li = kl_add(name, phi, xstrdup(skipws(strchr(s, ':') + 1)),
+      |                              ^
+/home/andrew/Code/ucas/src/kscript.c:1118:6: note: Assuming 'loaded' is 0
+ 1118 |         if (loaded)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/kscript.c:1118:2: note: Taking false branch
+ 1118 |         if (loaded)
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:1125:2: note: Calling 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:123:2: note: Loop condition is true.  Entering loop body
+  123 |         while (*p) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:125:16: note: Assuming 'e' is non-null
+  125 |                 size_t len = e ? (size_t)(e - p) : strlen(p);
+      |                              ^
+/home/andrew/Code/ucas/src/kscript.c:125:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:130:7: note: Assuming the condition is false
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:130:3: note: Taking false branch
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:132:7: note: 'e' is non-null
+  132 |                 p = e ? e + 1 : p + len;
+      |                     ^
+/home/andrew/Code/ucas/src/kscript.c:132:7: note: '?' condition is true
+/home/andrew/Code/ucas/src/kscript.c:135:4: note: Loop condition is false. Execution continues on line 137
+  135 |                         while (isspace((unsigned char)*t))
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:137:8: note: Assuming the condition is true
+  137 |                         if (!*t) {
+      |                             ^~~
+/home/andrew/Code/ucas/src/kscript.c:137:4: note: Taking true branch
+  137 |                         if (!*t) {
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:139:5: note:  Execution continues on line 123
+  139 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/kscript.c:123:2: note: Loop condition is false. Execution continues on line 161
+  123 |         while (*p) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:161:10: note: Field 'n' is 0
+  161 |         if (cur.n) {
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:161:2: note: Taking false branch
+  161 |         if (cur.n) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:1125:2: note: Returning from 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:1126:7: note: Calling 'run'
+ 1126 |         if (!run(&libsrc))
+      |              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:944:2: note: 'phi' declared without an initial value
+  944 |         kt phi;
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:17: note: Assuming field 'i' is < field 'n'
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                        ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:17: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/kscript.c:946:32: note: Assuming field 'failed' is 0
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                                       ^~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:946:2: note: Loop condition is true.  Entering loop body
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:949:3: note: Taking false branch
+  949 |                 if (!word(&s, kw, sizeof kw))
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/kscript.c:951:30: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                                            ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:7: note: Left side of '||' is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^
+/home/andrew/Code/ucas/src/kscript.c:952:7: note: Assuming the condition is false
+  952 |                     !strcmp(kw, "pred")) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:951:3: note: Taking false branch
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:955:14: note: Assuming the condition is false
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:955:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/kscript.c:955:36: note: Assuming the condition is false
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                                                  ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:955:10: note: Taking false branch
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                        ^
+/home/andrew/Code/ucas/src/kscript.c:963:14: note: Assuming the condition is true
+  963 |                 } else if (!strcmp(kw, "lemma") || !strcmp(kw, "theorem")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:963:35: note: Left side of '||' is true
+  963 |                 } else if (!strcmp(kw, "lemma") || !strcmp(kw, "theorem")) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/kscript.c:969:9: note: Calling 'statement'
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:916:2: note: Taking true branch
+  916 |         if (!word(&s, name, nn))
+      |         ^
+/home/andrew/Code/ucas/src/kscript.c:917:3: note: Returning without writing to '*phi'
+  917 |                 return serr(S, "expected a name");
+      |                 ^
+/home/andrew/Code/ucas/src/kscript.c:969:9: note: Returning from 'statement'
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:969:8: note: Assuming the condition is false
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kscript.c:969:4: note: Taking false branch
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                         ^
+/home/andrew/Code/ucas/src/kscript.c:971:9: note: 2nd function call argument is an uninitialized value
+  971 |                         li = kl_add(name, phi, xstrdup(skipws(strchr(s, ':') + 1)),
+      |                              ^            ~~~
+/home/andrew/Code/ucas/src/kscript.c:1045:6: warning: variable 'ks_load_msg' can be made static to enforce internal linkage [misc-use-internal-linkage]
+ 1045 | char ks_load_msg[1024];
+      |      ^
+      | static 
+/home/andrew/Code/ucas/src/kscript.c:1109:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+ 1109 |                 printf("%*s%s\n", 2 * d, "", t);
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

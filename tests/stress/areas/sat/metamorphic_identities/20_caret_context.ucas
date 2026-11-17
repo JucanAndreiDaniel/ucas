@@ -1,0 +1,8 @@
+# The '^' token is read as POWER in a plain arithmetic context, but as XOR
+# when bitwise operators (~ & | xor) are nearby. The SAME subexpression x^2
+# therefore parses differently depending on context.
+a(x: u8) = x^2
+equiv a ~ x*x
+b(x: u8) = ~(~(x^2))
+equiv a b
+show b

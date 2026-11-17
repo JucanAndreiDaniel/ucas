@@ -1,0 +1,48 @@
+> f(x: u32) = x*7 + 11
+> g(x: f32, y: f32, z: f32) = x*y + z
+> model a : gt1030 { imul: 5 }
+> model b : a { iadd: 7 }
+> model c : b { fadd: 9 }
+> cost f model c
+cost of f under c: 5 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 5     = 5  (a*b + c; saves 7)
+> cost f model b
+cost of f under b: 5 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 5     = 5  (a*b + c; saves 7)
+> cost g model c
+cost of g under c: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 9)
+> model empty : gt1030 { }
+> cost f model empty
+cost of f under empty: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> model bare { iadd: 1 }
+> cost f model bare
+cost of f under bare: 2 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 1     = 1
+> model sib1 : gt1030 { imul: 2 }
+> model sib2 : gt1030 { iadd: 3 }
+> cost f model sib1
+cost of f under sib1: 2 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 2     = 2  (a*b + c; saves 1)
+> cost f model sib2
+cost of f under sib2: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 3)
+> model nf : gt1030 { nofuse imad }
+> cost f model nf
+cost of f under nf: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> model a2 : gt1030 { imul: 4 }
+> model b2 : a2 { nofuse imad }
+> cost f model b2
+cost of f under b2: 5 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 4     = 4

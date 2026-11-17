@@ -1,0 +1,16 @@
+> trunc(x: f32) = asfloat(asuint(x) & 0xffc00000)
+> equiv trunc ~ floor(x: f32)
+trunc and floor(x) differ at 65139 points of the sample, e.g. x=-3.40282347e+38: -2.55211775e+38 vs -3.40282347e+38
+> flp(x: f32 in 0..1e30) = asfloat(asuint(x) & 0xffc00000)
+> rfp(x: f32 in 0..1e30) = floor(x)
+> equiv flp ~ rfp
+flp and rfp differ at 64669 points of the sample, e.g. x=9.99999939e+29: 9.5073795e+29 vs 9.99999939e+29
+> ceilbit(x: f32 in 0..1e30) = asfloat((asuint(x) + 0x007fffff) & 0xffc00000)
+> rceilp(x: f32 in 0..1e30) = ceil(x)
+> equiv ceilbit ~ rceilp
+ceilbit and rceilp differ at 65266 points of the sample, e.g. x=0: 5.87747175e-39 vs 0
+> idem(a: u32, b: u32) = (a & b) + (a ^ b)
+  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+> idem2(a: u32, b: u32) = a | b
+> equiv idem ~ idem2
+idem and idem2 are equal on the domain of idem (proved by SAT: 635 AIG nodes, 197 conflicts)

@@ -1,0 +1,12 @@
+# Valid images must decode with stable checksums.
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/good4.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 2 nofile input 1 file img/good4.gif
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+show 1+1

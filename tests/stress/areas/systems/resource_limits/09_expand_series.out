@@ -1,0 +1,33 @@
+> expand (1+x)^50
+  ucas: expand (1+x)^50
+expand (x + 1)^50
+  = x^50 + 50x^49 + 1225x^48 + 19600x^47 + 230300x^46 + 2118760x^45 + 15890700x^44 + 99884400x^43 + 536878650x^42 + 2505433700x^41 + 10272278170x^40 + 37353738800x^39 + 121399651100x^38 + 354860518600x^37 + 937845656300x^36 + 2250829575120x^35 + 4923689695575x^34 + 9847379391150x^33 + 18053528883775x^32 + 30405943383200x^31 + 47129212243960x^30 + 67327446062800x^29 + 88749815264600x^28 + 108043253365600x^27 + 121548660036300x^26 + 126410606437752x^25 + 121548660036300x^24 + 108043253365600x^23 + 88749815264600x^22 + 67327446062800x^21 + 47129212243960x^20 + 30405943383200x^19 + 18053528883775x^18 + 9847379391150x^17 + 4923689695575x^16 + 2250829575120x^15 + 937845656300x^14 + 354860518600x^13 + 121399651100x^12 + 37353738800x^11 + 10272278170x^10 + 2505433700x^9 + 536878650x^8 + 99884400x^7 + 15890700x^6 + 2118760x^5 + 230300x^4 + 19600x^3 + 1225x^2 + 50x + 1
+  check: exact (both sides have the same normal form)
+> expand (1+x)^200
+  ucas: expand (1+x)^200
+expand (x + 1)^200
+  = (x + 1)^200
+  check: exact (both sides have the same normal form)
+> expand (x+y)^12
+  ucas: expand (x+y)^12
+expand (x + y)^12
+  = x^12 + 12x^11*y + 66x^10*y^2 + 220x^9*y^3 + 495x^8*y^4 + 792x^7*y^5 + 924x^6*y^6 + 792x^5*y^7 + 495x^4*y^8 + 220x^3*y^9 + 66x^2*y^10 + 12x*y^11 + y^12
+  check: exact (both sides have the same normal form)
+> taylor sin(x) order 12
+Maclaurin (Taylor at 0) series of sin(x) at x = 0, through order 12:
+  sin(x) = x - x^3/6 + x^5/120 - x^7/5040 + x^9/362880 - x^11/39916800 + O(x^13)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 0 1 0 -1/6 0 1/120 0 -1/5040 0 1/362880 0 -1/39916800 0
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 0 at x = 0 ± 1/10, 3.39e-21 at ± 1/20, 0 at ± 1/40 (at rounding level)
+> taylor exp(x) order 12
+Maclaurin (Taylor at 0) series of exp(x) at x = 0, through order 12:
+  exp(x) = 1 + x + x^2/2 + x^3/6 + x^4/24 + x^5/120 + x^6/720 + x^7/5040 + x^8/40320 + x^9/362880 + x^10/3628800 + x^11/39916800 + x^12/479001600 + O(x^13)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 1 1 1/2 1/6 1/24 1/120 1/720 1/5040 1/40320 1/362880 1/3628800 1/39916800 1/479001600
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 1.08e-19 at x = 0 ± 1/10, 5.42e-20 at ± 1/20, 1.08e-19 at ± 1/40 (at rounding level)
+> taylor (1+x)^20 order 8
+Maclaurin (Taylor at 0) series of (x + 1)^20 at x = 0, through order 8:
+  (x + 1)^20 = 1 + 20x + 190x^2 + 1140x^3 + 4845x^4 + 15504x^5 + 38760x^6 + 77520x^7 + 125970x^8 + O(x^9)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 1 20 190 1140 4845 15504 38760 77520 125970
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 0.000188 at x = 0 ± 1/10, 3.47e-07 at ± 1/20, 6.59e-10 at ± 1/40 (shrinks like h^9.0; expected >= 9)

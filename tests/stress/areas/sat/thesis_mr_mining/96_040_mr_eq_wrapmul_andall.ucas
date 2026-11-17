@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:h,k
+# meaning-preserving rewrite: andall
+f(x: u32) = x*x + x
+g(x: u32) = (x*x + x) + 2147483648*(x*x + x)
+f2(x: u32) = (x*x + x) & 4294967295
+g2(x: u32) = ((x*x + x) + 2147483648*(x*x + x)) & 4294967295
+f1(x: u32) = (x*x + x) & 4294967295
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

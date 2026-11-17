@@ -1,0 +1,364 @@
+/home/andrew/Code/ucas/src/cf_parse.c:29:8: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   22 | #include <stdio.h>
+   23 | #include <stdlib.h>
+   24 | #include <string.h>
+   25 | 
+   26 | #include "cfront.h"
+   27 | 
+   28 | struct cf_types CT;
+   29 | static uint32_t *ct_uq; /* the unqualified version of each type */
+      |        ^
+/home/andrew/Code/ucas/src/cf_parse.c:40:12: warning: no header providing "newcap" is directly included [misc-include-cleaner]
+   27 | 
+   28 | struct cf_types CT;
+   29 | static uint32_t *ct_uq; /* the unqualified version of each type */
+   30 | 
+   31 | /* ---- types ---- */
+   32 | 
+   33 | static uint32_t
+   34 | ct_new(int kind)
+   35 | {
+   36 |         struct cf_types *c = &CT;
+   37 |         uint32_t i;
+   38 | 
+   39 |         if (c->n == c->cap) {
+   40 |                 c->cap = newcap(c->cap, c->n + 1);
+      |                          ^
+/home/andrew/Code/ucas/src/cf_parse.c:41:13: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+   41 |                 c->kind = xrealloc(c->kind, c->cap);
+      |                           ^
+/home/andrew/Code/ucas/src/cf_parse.c:55:16: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   55 |         c->kind[i] = (uint8_t)kind;
+      |                       ^
+/home/andrew/Code/ucas/src/cf_parse.c:59:15: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+   59 |         c->base[i] = NOTOK;
+      |                      ^
+/home/andrew/Code/ucas/src/cf_parse.c:106:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  106 |         q |= CT.qual[t];
+      |         ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:142:25: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  142 | ct_array(uint32_t base, int64_t n)
+      |                         ^
+/home/andrew/Code/ucas/src/cf_parse.c:208:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  208 |         switch (CT.kind[t]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:221:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  221 |         switch (CT.kind[t]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:285:1: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  285 | ty_t
+      | ^
+/home/andrew/Code/ucas/src/cf_parse.c:289:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  289 |         switch (CT.kind[t]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:290:23: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  290 |         case CT_BOOL: return TY_BOOL;
+      |                              ^
+/home/andrew/Code/ucas/src/cf_parse.c:290:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:291:38: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  291 |         case CT_CHAR: case CT_SCHAR: return TY(K_SINT, 8);
+      |                                             ^
+/home/andrew/Code/ucas/src/cf_parse.c:291:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:291:41: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  291 |         case CT_CHAR: case CT_SCHAR: return TY(K_SINT, 8);
+      |                                                ^
+/home/andrew/Code/ucas/src/cf_parse.c:292:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  292 |         case CT_UCHAR: return TY(K_UINT, 8);
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:292:27: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  292 |         case CT_UCHAR: return TY(K_UINT, 8);
+      |                                  ^
+/home/andrew/Code/ucas/src/cf_parse.c:293:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  293 |         case CT_SHORT: return TY(K_SINT, 16);
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:294:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |         case CT_USHORT: return TY(K_UINT, 16);
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:295:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  295 |         case CT_INT: return TY(K_SINT, 32);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:296:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  296 |         case CT_UINT: return TY(K_UINT, 32);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:297:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  297 |         case CT_LONG: case CT_LLONG: return TY(K_SINT, 64);
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:298:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  298 |         case CT_ULONG: case CT_ULLONG: return TY(K_UINT, 64);
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:299:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  299 |         case CT_ENUM: return ct_is_signed(t) ? TY(K_SINT, 32) : TY(K_UINT, 32);
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:299:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  299 |         case CT_ENUM: return ct_is_signed(t) ? TY(K_SINT, 32) : TY(K_UINT, 32);
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:301:24: warning: no header providing "TY_F32" is directly included [misc-include-cleaner]
+  301 |         case CT_FLOAT: return TY_F32;
+      |                               ^
+/home/andrew/Code/ucas/src/cf_parse.c:301:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:302:25: warning: no header providing "TY_F64" is directly included [misc-include-cleaner]
+  302 |         case CT_DOUBLE: return TY_F64;
+      |                                ^
+/home/andrew/Code/ucas/src/cf_parse.c:302:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_parse.c:314:14: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  314 | quals(struct sbuf *b, int q)
+      |              ^
+/home/andrew/Code/ucas/src/cf_parse.c:316:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  316 |         if (q & CQ_CONST)
+      |             ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:317:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  317 |                 sb_puts(b, "const ");
+      |                 ^
+/home/andrew/Code/ucas/src/cf_parse.c:318:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  318 |         if (q & CQ_VOLATILE)
+      |             ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:320:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  320 |         if (q & CQ_RESTRICT)
+      |             ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:334:4: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  334 |                         sb_clear(&tmp);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_parse.c:345:5: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  345 |                                 sb_printf(&tmp, "(%s)", in.p);
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_parse.c:360:4: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  360 |                         sb_putc(&in, '(');
+      |                         ^
+/home/andrew/Code/ucas/src/cf_parse.c:377:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  377 |         quals(b, CT.qual[t] & ~CQ_RESTRICT);
+      |                             ~ ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:377:25: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  377 |         quals(b, CT.qual[t] & ~CQ_RESTRICT);
+      |                               ~^
+/home/andrew/Code/ucas/src/cfront.h:288:21: note: expanded from macro 'CQ_RESTRICT'
+  288 | #define CQ_RESTRICT 4
+      |                     ^
+/home/andrew/Code/ucas/src/cf_parse.c:384:19: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  384 |                     CT.tag[t] ? sym_str(CT.tag[t]) : "<anonymous>");
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_parse.c:451:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   22 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:453:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+  453 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:671:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  671 |         switch (A_.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:679:8: warning: no header providing "int_norm" is directly included [misc-include-cleaner]
+  679 |                 *v = int_norm(ct_to_ucas(t), a);
+      |                      ^
+/home/andrew/Code/ucas/src/cf_parse.c:686:47: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  686 |                 *v = int_norm(ct_to_ucas(t), (int64_t)(0 - (uint64_t)a));
+      |                                                             ^
+/home/andrew/Code/ucas/src/cf_parse.c:691:33: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  691 |                 *v = int_norm(ct_to_ucas(t), ~a);
+      |                                              ~^
+/home/andrew/Code/ucas/src/cf_parse.c:715:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  715 |                 uint64_t ua, ub, m = w >= 64 ? ~0ULL : (1ULL << w) - 1;
+      |                                                              ~~ ^
+/home/andrew/Code/ucas/src/cf_parse.c:735:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  735 |                 case '&': *v = a & b; break;
+      |                                ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:736:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  736 |                 case '|': *v = a | b; break;
+      |                                ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:737:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  737 |                 case '^': *v = a ^ b; break;
+      |                                ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:738:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                 case CO_SHL: *v = (int64_t)((uint64_t)a << (b & 63)); break;
+      |                                                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:738:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                 case CO_SHL: *v = (int64_t)((uint64_t)a << (b & 63)); break;
+      |                                                             ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:740:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         *v = uns ? (int64_t)(ua >> (b & 63)) : a >> (b & 63);
+      |                                                 ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:740:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         *v = uns ? (int64_t)(ua >> (b & 63)) : a >> (b & 63);
+      |                                                     ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:740:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         *v = uns ? (int64_t)(ua >> (b & 63)) : a >> (b & 63);
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:740:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         *v = uns ? (int64_t)(ua >> (b & 63)) : a >> (b & 63);
+      |                                                                      ^ ~
+/home/andrew/Code/ucas/src/cf_parse.c:801:2: warning: Out of bound access to memory after the end of 'buf' [clang-analyzer-security.ArrayBound]
+  801 |         buf[len] = 0;
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:936:6: note: Assuming the condition is true
+  936 |         if (TK.kind[t0] == CK_NUM) {
+      |             ^
+/home/andrew/Code/ucas/src/cf_parse.c:439:12: note: expanded from macro 'TK'
+  439 | #define TK (U->tk)
+      |            ^
+/home/andrew/Code/ucas/src/cf_parse.c:936:2: note: Taking true branch
+  936 |         if (TK.kind[t0] == CK_NUM) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:938:10: note: Calling 'num_literal'
+  938 |                 return num_literal(t0);
+      |                        ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:798:6: note: Assuming the condition is true
+  798 |         if (len >= sizeof buf)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:798:2: note: Taking true branch
+  798 |         if (len >= sizeof buf)
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:801:2: note: Access of 'buf' at index 96, while it holds only 96 'char' elements
+  801 |         buf[len] = 0;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1005:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1005 |                                 *ty = ct_qual(*ty, CT.qual[st] & ~CQ_RESTRICT);
+      |                                                                ~ ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1005:39: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 1005 |                                 *ty = ct_qual(*ty, CT.qual[st] & ~CQ_RESTRICT);
+      |                                                                  ~^
+/home/andrew/Code/ucas/src/cfront.h:288:21: note: expanded from macro 'CQ_RESTRICT'
+  288 | #define CQ_RESTRICT 4
+      |                     ^
+/home/andrew/Code/ucas/src/cf_parse.c:1255:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1255 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:1255:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/cf_parse.c:1298:10: warning: The left operand of '==' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1298 |                 if (op == 1 || op == 2) {
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_parse.c:1293:6: note: 'op' declared without an initial value
+ 1293 |         int op, p;
+      |             ^~
+/home/andrew/Code/ucas/src/cf_parse.c:1295:14: note: Calling 'binop_prec'
+ 1295 |         while ((p = binop_prec(PS.i, &op)) >= minp) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1225:6: note: Assuming the condition is true
+ 1225 |         if (TK.kind[i] != CK_PUNCT)
+      |             ^
+/home/andrew/Code/ucas/src/cf_parse.c:439:12: note: expanded from macro 'TK'
+  439 | #define TK (U->tk)
+      |            ^
+/home/andrew/Code/ucas/src/cf_parse.c:1225:2: note: Taking true branch
+ 1225 |         if (TK.kind[i] != CK_PUNCT)
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:1226:3: note: Returning without writing to '*op'
+ 1226 |                 return -1;
+      |                 ^
+/home/andrew/Code/ucas/src/cf_parse.c:1295:14: note: Returning from 'binop_prec'
+ 1295 |         while ((p = binop_prec(PS.i, &op)) >= minp) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1295:9: note: Assuming the condition is true
+ 1295 |         while ((p = binop_prec(PS.i, &op)) >= minp) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1295:2: note: Loop condition is true.  Entering loop body
+ 1295 |         while ((p = binop_prec(PS.i, &op)) >= minp) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_parse.c:1298:10: note: The left operand of '==' is a garbage value
+ 1298 |                 if (op == 1 || op == 2) {
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_parse.c:1368:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1368 |         if (CT.qual[A_.ty[l]] & CQ_CONST)
+      |                               ~ ^
+/home/andrew/Code/ucas/src/cfront.h:286:18: note: expanded from macro 'CQ_CONST'
+  286 | #define CQ_CONST 1
+      |                  ^
+/home/andrew/Code/ucas/src/cf_parse.c:1431:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1431 |                 if (accept("const")) { q |= CQ_CONST; any = 1; continue; }
+      |                                        ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1432:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1432 |                 if (accept("volatile")) { q |= CQ_VOLATILE; any = 1; continue; }
+      |                                           ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1435:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1435 |                         q |= CQ_RESTRICT;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1557:12: warning: Value stored to 'fst' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 1557 |                 uint32_t fst = CT.nfl, nf = 0, maxsz = 0;
+      |                          ^~~   ~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1557:12: note: Value stored to 'fst' during its initialization is never read
+ 1557 |                 uint32_t fst = CT.nfl, nf = 0, maxsz = 0;
+      |                          ^~~   ~~~~~~
+/home/andrew/Code/ucas/src/cf_parse.c:1574:36: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1574 |                                         fty = ct_basic(CT_INT) == fty ? fty : fty;
+      |                                                                       ^
+/home/andrew/Code/ucas/src/cf_parse.c:1574:42: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 1574 |                                         fty = ct_basic(CT_INT) == fty ? fty : fty;
+      |                                                                             ^
+/home/andrew/Code/ucas/src/cf_parse.c:1751:5: warning: Value stored to 'e' is never read [clang-analyzer-deadcode.DeadStores]
+ 1751 |                                 e = 0;
+      |                                 ^   ~
+/home/andrew/Code/ucas/src/cf_parse.c:1751:5: note: Value stored to 'e' is never read
+ 1751 |                                 e = 0;
+      |                                 ^   ~
+/home/andrew/Code/ucas/src/cf_parse.c:1781:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1781 |                                 q |= CQ_CONST;
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1783:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1783 |                                 q |= CQ_VOLATILE;
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1786:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1786 |                                 q |= CQ_RESTRICT;
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/cf_parse.c:1877:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1877 |                         A_.iv[PS.nlbuf ? PS.lbuf[PS.nlbuf - 1] : 0] |= 0;
+      |                         ^                                           ~~
+/home/andrew/Code/ucas/src/cf_parse.c:440:12: note: expanded from macro 'A_'
+  440 | #define A_ (U->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_parse.c:2227:11: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+ 2227 |         u->fns = xmalloc((nfn + 1) * sizeof *u->fns);
+      |                  ^
+/home/andrew/Code/ucas/src/cf_parse.c:2258:7: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 2258 |         free(u->ftext);
+      |              ^
+/home/andrew/Code/ucas/src/cf_parse.c:2259:7: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 2259 |         free(u->fname);
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

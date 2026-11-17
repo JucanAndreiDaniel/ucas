@@ -1,0 +1,217 @@
+src/sat.c:349:25: warning: Array access (via field 'clen') results in a null pointer dereference [core.NullDereference]
+  349 |                         int c = ws[i], len = s->clen[c], k;
+      |                                              ^
+src/sat.c:544:6: note: Assuming 'goal' is not equal to L_FALSE
+  544 |         if (goal == L_FALSE)
+      |             ^~~~~~~~~~~~~~~
+src/sat.c:544:2: note: Taking false branch
+  544 |         if (goal == L_FALSE)
+      |         ^
+src/sat.c:546:2: note: Null pointer value stored to 's.clen'
+  546 |         memset(&s, 0, sizeof s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+src/sat.c:557:14: note: Assuming 'i' is >= field 'nv'
+  557 |         for (i = 0; i < s.nv; i++)
+      |                     ^~~~~~~~
+src/sat.c:557:2: note: Loop condition is false. Execution continues on line 559
+  557 |         for (i = 0; i < s.nv; i++)
+      |         ^
+src/sat.c:568:3: note: Calling 'clause'
+  568 |                 clause(&s, &u, 1);
+      |                 ^~~~~~~~~~~~~~~~~
+src/sat.c:311:9: note: Field 'unsat' is 0
+  311 |         if (s->unsat)
+      |                ^
+src/sat.c:311:2: note: Taking false branch
+  311 |         if (s->unsat)
+      |         ^
+src/sat.c:313:6: note: 'n' is equal to 1
+  313 |         if (n == 1) {
+      |             ^
+src/sat.c:313:2: note: Taking true branch
+  313 |         if (n == 1) {
+      |         ^
+src/sat.c:315:7: note: Assuming 'v' is not equal to 0
+  315 |                 if (v == 0)
+      |                     ^~~~~~
+src/sat.c:315:3: note: Taking false branch
+  315 |                 if (v == 0)
+      |                 ^
+src/sat.c:317:12: note: Assuming 'v' is >= 0
+  317 |                 else if (v < 0)
+      |                          ^~~~~
+src/sat.c:317:8: note: Taking false branch
+  317 |                 else if (v < 0)
+      |                      ^
+src/sat.c:319:3: note: Returning without writing to 's->clen'
+  319 |                 return;
+      |                 ^
+src/sat.c:568:3: note: Returning from 'clause'
+  568 |                 clause(&s, &u, 1);
+      |                 ^~~~~~~~~~~~~~~~~
+src/sat.c:574:2: note: Loop condition is true.  Entering loop body
+  574 |         while (top > 0) {
+      |         ^
+src/sat.c:577:7: note: Assuming 'v' is equal to 0
+  577 |                 if (v == 0)
+      |                     ^~~~~~
+src/sat.c:577:3: note: Taking true branch
+  577 |                 if (v == 0)
+      |                 ^
+src/sat.c:578:4: note:  Execution continues on line 574
+  578 |                         continue;
+      |                         ^
+src/sat.c:574:2: note: Loop condition is false. Execution continues on line 600
+  574 |         while (top > 0) {
+      |         ^
+src/sat.c:600:2: note: Calling 'clause'
+  600 |         clause(&s, &goal, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/sat.c:311:9: note: Field 'unsat' is 0
+  311 |         if (s->unsat)
+      |                ^
+src/sat.c:311:2: note: Taking false branch
+  311 |         if (s->unsat)
+      |         ^
+src/sat.c:313:6: note: 'n' is equal to 1
+  313 |         if (n == 1) {
+      |             ^
+src/sat.c:313:2: note: Taking true branch
+  313 |         if (n == 1) {
+      |         ^
+src/sat.c:315:7: note: 'v' is not equal to 0
+  315 |                 if (v == 0)
+      |                     ^
+src/sat.c:315:3: note: Taking false branch
+  315 |                 if (v == 0)
+      |                 ^
+src/sat.c:317:12: note: 'v' is < 0
+  317 |                 else if (v < 0)
+      |                          ^
+src/sat.c:317:8: note: Taking true branch
+  317 |                 else if (v < 0)
+      |                      ^
+src/sat.c:318:4: note: Calling 'assign'
+  318 |                         assign(s, c[0], -1);
+      |                         ^~~~~~~~~~~~~~~~~~~
+src/sat.c:299:26: note: Assuming the condition is true
+  299 |         s->as[v] = (signed char)!NEG(l);
+      |                                 ^~~~~~~
+src/sat.c:303:1: note: Returning without writing to 's->clen'
+  303 | }
+      | ^
+src/sat.c:318:4: note: Returning from 'assign'
+  318 |                         assign(s, c[0], -1);
+      |                         ^~~~~~~~~~~~~~~~~~~
+src/sat.c:319:3: note: Returning without writing to 's->clen'
+  319 |                 return;
+      |                 ^
+src/sat.c:600:2: note: Returning from 'clause'
+  600 |         clause(&s, &goal, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/sat.c:601:6: note: Calling 'solve'
+  601 |         r = solve(&s, budget);
+      |             ^~~~~~~~~~~~~~~~~
+src/sat.c:477:9: note: Field 'unsat' is 0
+  477 |         if (s->unsat) {
+      |                ^
+src/sat.c:477:2: note: Taking false branch
+  477 |         if (s->unsat) {
+      |         ^
+src/sat.c:481:2: note: Loop condition is true.  Entering loop body
+  481 |         for (;;) {
+      |         ^
+src/sat.c:482:11: note: Calling 'propagate'
+  482 |                 int c = propagate(s);
+      |                         ^~~~~~~~~~~~
+src/sat.c:343:2: note: Loop condition is true.  Entering loop body
+  343 |         while (s->qhead < s->ntrail) {
+      |         ^
+src/sat.c:348:19: note: Assuming 'i' is < 'n'
+  348 |                 for (i = j = 0; i < n; i++) {
+      |                                 ^~~~~
+src/sat.c:348:3: note: Loop condition is true.  Entering loop body
+  348 |                 for (i = j = 0; i < n; i++) {
+      |                 ^
+src/sat.c:349:25: note: Array access (via field 'clen') results in a null pointer dereference
+  349 |                         int c = ws[i], len = s->clen[c], k;
+      |                                              ^  ~~~~
+src/sat.c:736:11: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
+  736 |                 lit x = aig_xor(g, a->b[i], b->b[i]);
+      |                         ^
+src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+src/sat.c:1002:3: note: Calling 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sat.c:860:18: note: Assuming 'i' is >= 0
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |                         ^~~~~~
+src/sat.c:860:2: note: Loop condition is true.  Entering loop body
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |         ^
+src/sat.c:862:3: note: Loop condition is false. Execution continues on line 864
+  862 |                 for (j = w; j > 0; j--)
+      |                 ^
+src/sat.c:866:3: note: Calling 'w_sub'
+  866 |                 w_sub(g, &d, &r, &bb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+src/sat.c:759:2: note: Calling 'w_not'
+  759 |         w_not(g, &nb, b);
+      |         ^~~~~~~~~~~~~~~~
+src/sat.c:690:2: note: Loop condition is false. Execution continues on line 759
+  690 |         for (i = 0; i < a->w; i++)
+      |         ^
+src/sat.c:759:2: note: Returning from 'w_not'
+  759 |         w_not(g, &nb, b);
+      |         ^~~~~~~~~~~~~~~~
+src/sat.c:760:2: note: Calling 'addc'
+  760 |         addc(g, r, a, &nb, L_TRUE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sat.c:735:7: note: The value 0 is assigned to 'i'
+  735 |         for (i = 0; i < a->w; i++) {
+      |              ^~~~~
+src/sat.c:735:2: note: Loop condition is true.  Entering loop body
+  735 |         for (i = 0; i < a->w; i++) {
+      |         ^
+src/sat.c:736:11: note: 3rd function call argument is an uninitialized value
+  736 |                 lit x = aig_xor(g, a->b[i], b->b[i]);
+      |                         ^                   ~~~~~~~
+src/sat.c:844:12: warning: 4th function call argument is an uninitialized value [core.CallAndMessage]
+  844 |                 x.b[i] = aig_mux(g, s, t->b[i], e->b[i]);
+      |                          ^
+src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+src/sat.c:1002:3: note: Calling 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sat.c:860:18: note: Assuming 'i' is < 0
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |                         ^~~~~~
+src/sat.c:860:2: note: Loop condition is false. Execution continues on line 872
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |         ^
+src/sat.c:876:3: note: Calling 'w_mux'
+  876 |                 w_mux(g, q, bz, &z, &qq);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+src/sat.c:843:7: note: The value 0 is assigned to 'i'
+  843 |         for (i = 0; i < t->w; i++)
+      |              ^~~~~
+src/sat.c:843:14: note: Assuming 'i' is < field 'w'
+  843 |         for (i = 0; i < t->w; i++)
+      |                     ^~~~~~~~
+src/sat.c:843:2: note: Loop condition is true.  Entering loop body
+  843 |         for (i = 0; i < t->w; i++)
+      |         ^
+src/sat.c:844:12: note: 4th function call argument is an uninitialized value
+  844 |                 x.b[i] = aig_mux(g, s, t->b[i], e->b[i]);
+      |                          ^                      ~~~~~~~
+3 warnings generated.

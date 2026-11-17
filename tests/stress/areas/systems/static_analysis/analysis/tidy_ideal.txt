@@ -1,0 +1,92 @@
+/home/andrew/Code/ucas/src/ideal.c:99:39: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   22 | mono_cmp(const struct mring *R, const uint32_t *a, const uint32_t *b)
+      |                                       ^
+/home/andrew/Code/ucas/src/ideal.c:102:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  102 |         uint64_t da = 0, db = 0;
+      |         ^
+/home/andrew/Code/ucas/src/ideal.c:141:5: warning: no header providing "u64" is directly included [misc-include-cleaner]
+   19 |     u64 p)
+      |     ^
+/home/andrew/Code/ucas/src/ideal.c:148:12: warning: no header providing "nt_isprime" is directly included [misc-include-cleaner]
+  148 |         if (p && !nt_isprime(p))
+      |                   ^
+/home/andrew/Code/ucas/src/ideal.c:155:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   22 |                 snprintf(R->name[i], sizeof R->name[i], "%s", names[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ideal.c:487:3: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  487 |                 int64_t k;
+      |                 ^
+/home/andrew/Code/ucas/src/ideal.c:492:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  492 |                     (k = z_to_i64(e)) > 100000)
+      |                      ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:492:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ideal.c:492:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ideal.c:499:10: warning: Branch condition evaluates to a garbage value [clang-analyzer-core.uninitialized.Branch]
+  499 |                 while (k) {
+      |                        ^
+/home/andrew/Code/ucas/src/ideal.c:601:7: note: Calling 'pexpr'
+  601 |         ok = pexpr(&t);
+      |              ^~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:573:7: note: Calling 'pterm'
+  573 |         if (!pterm(f))
+      |              ^~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:535:7: note: Calling 'punary'
+  535 |         if (!punary(f))
+      |              ^~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:516:6: note: Assuming the condition is false
+  516 |         if (*pp == '-') {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:516:2: note: Taking false branch
+  516 |         if (*pp == '-') {
+      |         ^
+/home/andrew/Code/ucas/src/ideal.c:523:6: note: Assuming the condition is false
+  523 |         if (*pp == '+') {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:523:2: note: Taking false branch
+  523 |         if (*pp == '+') {
+      |         ^
+/home/andrew/Code/ucas/src/ideal.c:527:9: note: Calling 'ppow'
+  527 |         return ppow(f);
+      |                ^~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:481:6: note: Assuming the condition is false
+  481 |         if (!pbase(f))
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:481:2: note: Taking false branch
+  481 |         if (!pbase(f))
+      |         ^
+/home/andrew/Code/ucas/src/ideal.c:484:6: note: Assuming the condition is true
+  484 |         if (*pp == '^' || (pp[0] == '*' && pp[1] == '*')) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:484:17: note: Left side of '||' is true
+  484 |         if (*pp == '^' || (pp[0] == '*' && pp[1] == '*')) {
+      |                        ^
+/home/andrew/Code/ucas/src/ideal.c:487:3: note: 'k' declared without an initial value
+  487 |                 int64_t k;
+      |                 ^~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:489:9: note: '?' condition is true
+  489 |                 pp += *pp == '^' ? 1 : 2;
+      |                       ^
+/home/andrew/Code/ucas/src/ideal.c:491:7: note: Assuming the condition is true
+  491 |                 if (!z_parse(pp, &e, &q) || z_sign(e) < 0 || !z_fits_i64(e) ||
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ideal.c:491:28: note: Left side of '||' is true
+  491 |                 if (!z_parse(pp, &e, &q) || z_sign(e) < 0 || !z_fits_i64(e) ||
+      |                                          ^
+/home/andrew/Code/ucas/src/ideal.c:499:10: note: Branch condition evaluates to a garbage value
+  499 |                 while (k) {
+      |                        ^
+/home/andrew/Code/ucas/src/ideal.c:500:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  500 |                         if (k & 1)
+      |                             ^ ~
+/home/andrew/Code/ucas/src/ideal.c:502:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  502 |                         k >>= 1;
+      |                         ^ ~~~
+/home/andrew/Code/ucas/src/ideal.c:656:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |         k = (k + 1) & 7;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/ideal.c:723:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  723 |         uint8_t *dead;
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

@@ -1,0 +1,281 @@
+/home/andrew/Code/ucas/src/prove_model.c:53:47: warning: no header providing "z_from_i64" is directly included [misc-include-cleaner]
+   14 |                         hss_bockstein(&bc[nbc].S, hcx_cochains(s), z_from_i64(p),
+      |                                                                    ^
+/home/andrew/Code/ucas/src/prove_model.c:64:8: warning: Excessive padding in 'struct val' (8 padding bytes, where 0 is optimal). Optimal fields order: i, y, sort, sp, n, ny, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+   64 | struct val {
+      | ~~~~~~~^~~~~
+   65 |         int sort;
+      |         ~~~~~~~~~
+   66 |         int64_t i;              /* int; cx: the space */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   67 |         int sp, n;              /* el: the group H^n(spaces[sp]) */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   68 |         int64_t y[8];           /* el: canonical coordinates */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   69 |         int ny;
+      |         ~~~~~~~
+   70 | };
+      | ~
+/home/andrew/Code/ucas/src/prove_model.c:64:8: note: Excessive padding in 'struct val' (8 padding bytes, where 0 is optimal). Optimal fields order: i, y, sort, sp, n, ny, consider reordering the fields or adding explicit padding members
+   64 | struct val {
+      | ~~~~~~~^~~~~
+   65 |         int sort;
+      |         ~~~~~~~~~
+   66 |         int64_t i;              /* int; cx: the space */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   67 |         int sp, n;              /* el: the group H^n(spaces[sp]) */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   68 |         int64_t y[8];           /* el: canonical coordinates */
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   69 |         int ny;
+      |         ~~~~~~~
+   70 | };
+      | ~
+/home/andrew/Code/ucas/src/prove_model.c:66:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   19 |         int64_t i;              /* int; cx: the space */
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:104:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  104 |         switch (KOP(t)) {
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:150:28: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  150 |         if (!symis(t, "H") || !(c = bv(KA(t, 0))) || c->sort == KS_INT ||
+      |                                 ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:150:28: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:150:28: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:165:31: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  165 |         if (!symis(t, "bock") || !(c = bv(KA(t, 0))) || !ival(KA(t, 1), &v))
+      |                                    ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:165:31: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:165:31: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:172:21: warning: no header providing "fgab" is directly included [misc-include-cleaner]
+  172 | static const struct fgab *
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:189:2: warning: no header providing "zint" is directly included [misc-include-cleaner]
+  189 |         zint y[8], *x;
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:205:3: warning: no header providing "ab_from_canon" is directly included [misc-include-cleaner]
+  205 |                 ab_from_canon(H, y, x);
+      |                 ^
+/home/andrew/Code/ucas/src/prove_model.c:256:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  256 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                       ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:256:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:256:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:270:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                       ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:270:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:270:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:272:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  272 |                     !(H = hn(sp, 2, n)))
+      |                       ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:272:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:272:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:277:9: warning: no header providing "z_is_zero" is directly included [misc-include-cleaner]
+  277 |                                 if (z_is_zero(H->d[H->ntriv + k]))
+      |                                     ^
+/home/andrew/Code/ucas/src/prove_model.c:289:17: warning: no header providing "z_to_i64" is directly included [misc-include-cleaner]
+  289 |                                 int64_t d = z_to_i64(H->d[H->ntriv + k]), o;
+      |                                             ^
+/home/andrew/Code/ucas/src/prove_model.c:295:15: warning: Division by zero [clang-analyzer-core.DivideZero]
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                       ~~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:243:10: note: Assuming index is less than the number of 'uint8_t' elements in the region
+  243 |         switch (KOP(f)) {
+      |                 ^
+/home/andrew/Code/ucas/src/prove.h:72:17: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                 ^~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:243:2: note: Control jumps to 'case KO_PRED:'  at line 260
+  243 |         switch (KOP(f)) {
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:261:3: note:  Execution continues on line 265
+  261 |                 break;
+      |                 ^
+/home/andrew/Code/ucas/src/prove_model.c:265:2: note: Taking false branch
+  265 |         if (symis(f, "prime"))
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:267:2: note: Taking false branch
+  267 |         if (symis(f, "fintype"))
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:269:27: note: Left side of '||' is true
+  269 |         if (symis(f, "zsummand") || symis(f, "zpksummand")) {
+      |                                  ^
+/home/andrew/Code/ucas/src/prove_model.c:270:9: note: Assuming 'x' is non-null
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                       ^
+/home/andrew/Code/ucas/src/prove_model.c:270:7: note: Left side of '||' is false
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:270:30: note: Assuming field 'sort' is equal to KS_EL
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:270:7: note: Left side of '||' is false
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:270:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/prove_model.c:271:37: note: Assuming 'sp' is equal to field 'sp'
+  271 |                     !hgroup(KA(f, 1), &sp, &n) || x->sp != sp || x->n != n ||
+      |                                                   ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:270:7: note: Left side of '||' is false
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:271:52: note: Assuming 'n' is equal to field 'n'
+  271 |                     !hgroup(KA(f, 1), &sp, &n) || x->sp != sp || x->n != n ||
+      |                                                                  ^~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:270:7: note: Left side of '||' is false
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:272:9: note: Assuming 'H' is non-null
+  272 |                     !(H = hn(sp, 2, n)))
+      |                       ^
+/home/andrew/Code/ucas/src/prove_model.c:270:3: note: Taking false branch
+  270 |                 if (!(x = bv(KA(f, 0))) || x->sort != KS_EL ||
+      |                 ^
+/home/andrew/Code/ucas/src/prove_model.c:274:3: note: Taking false branch
+  274 |                 if (symis(f, "zsummand")) {
+      |                 ^
+/home/andrew/Code/ucas/src/prove_model.c:281:7: note: Assuming the condition is false
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:281:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/prove_model.c:281:30: note: Assuming the condition is false
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                                            ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:281:7: note: Left side of '||' is false
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:281:53: note: Assuming 'K' is >= 0
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                                                                   ^~~~~
+/home/andrew/Code/ucas/src/prove_model.c:281:7: note: Left side of '||' is false
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                     ^
+/home/andrew/Code/ucas/src/prove_model.c:281:62: note: Assuming 'K' is <= 30
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                                                                            ^~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:281:3: note: Taking false branch
+  281 |                 if (!ival(KA(f, 2), &P) || !ival(KA(f, 3), &K) || K < 0 || K > 30)
+      |                 ^
+/home/andrew/Code/ucas/src/prove_model.c:286:11: note: Assuming the condition is false
+  286 |                         while (K-- > 0)
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:286:4: note: Loop condition is false. Execution continues on line 288
+  286 |                         while (K-- > 0)
+      |                         ^
+/home/andrew/Code/ucas/src/prove_model.c:288:16: note: Assuming 'k' is < field 'ninv'
+  288 |                         for (k = 0; k < H->ninv; k++) {
+      |                                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:288:4: note: Loop condition is true.  Entering loop body
+  288 |                         for (k = 0; k < H->ninv; k++) {
+      |                         ^
+/home/andrew/Code/ucas/src/prove_model.c:290:9: note: Assuming the condition is false
+  290 |                                 if (!x->y[k])
+      |                                     ^~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:290:5: note: Taking false branch
+  290 |                                 if (!x->y[k])
+      |                                 ^
+/home/andrew/Code/ucas/src/prove_model.c:292:9: note: Assuming 'd' is not equal to 0
+  292 |                                 if (d == 0)
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:292:5: note: Taking false branch
+  292 |                                 if (d == 0)
+      |                                 ^
+/home/andrew/Code/ucas/src/prove_model.c:294:13: note: Calling 'gcd64'
+  294 |                                 o = d / gcd64(d, x->y[k]);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:220:6: note: Assuming 'a' is >= 0
+  220 |         if (a < 0)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/prove_model.c:220:2: note: Taking false branch
+  220 |         if (a < 0)
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:222:6: note: Assuming 'b' is >= 0, which participates in a condition later
+  222 |         if (b < 0)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/prove_model.c:222:2: note: Taking false branch
+  222 |         if (b < 0)
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:224:2: note: Loop condition is true.  Entering loop body
+  224 |         while (b) {
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:224:2: note: Loop condition is false. Execution continues on line 229
+/home/andrew/Code/ucas/src/prove_model.c:294:13: note: Returning from 'gcd64'
+  294 |                                 o = d / gcd64(d, x->y[k]);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:295:5: note: The value 0 is assigned to 'ord'
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:296:9: note: Assuming the condition is false
+  296 |                                 if (x->y[k] == 1) {
+      |                                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:296:5: note: Taking false branch
+  296 |                                 if (x->y[k] == 1) {
+      |                                 ^
+/home/andrew/Code/ucas/src/prove_model.c:288:16: note: Assuming 'k' is < field 'ninv'
+  288 |                         for (k = 0; k < H->ninv; k++) {
+      |                                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:288:4: note: Loop condition is true.  Entering loop body
+  288 |                         for (k = 0; k < H->ninv; k++) {
+      |                         ^
+/home/andrew/Code/ucas/src/prove_model.c:290:9: note: Assuming the condition is false
+  290 |                                 if (!x->y[k])
+      |                                     ^~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:290:5: note: Taking false branch
+  290 |                                 if (!x->y[k])
+      |                                 ^
+/home/andrew/Code/ucas/src/prove_model.c:292:9: note: Assuming 'd' is not equal to 0
+  292 |                                 if (d == 0)
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:292:5: note: Taking false branch
+  292 |                                 if (d == 0)
+      |                                 ^
+/home/andrew/Code/ucas/src/prove_model.c:295:23: note: Passing the value 0 via 1st parameter 'a'
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                                   ^~~
+/home/andrew/Code/ucas/src/prove_model.c:295:17: note: Calling 'gcd64'
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:220:6: note: 'a' is >= 0
+  220 |         if (a < 0)
+      |             ^
+/home/andrew/Code/ucas/src/prove_model.c:220:2: note: Taking false branch
+  220 |         if (a < 0)
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:222:6: note: Assuming 'b' is >= 0
+  222 |         if (b < 0)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/prove_model.c:222:2: note: Taking false branch
+  222 |         if (b < 0)
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:224:2: note: Loop condition is false. Execution continues on line 229
+  224 |         while (b) {
+      |         ^
+/home/andrew/Code/ucas/src/prove_model.c:229:2: note: Returning zero (loaded from 'a')
+  229 |         return a;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:295:17: note: Returning from 'gcd64'
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:295:15: note: Division by zero
+  295 |                                 ord = ord / gcd64(ord, o) * o;
+      |                                       ~~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:316:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  316 |                     !(x = bv(KA(jt, 1))) || x->sort != KS_EL || x->sp != sp ||
+      |                       ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:316:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:316:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:334:18: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  334 | find_group(kt f, uint32_t depth, int *sp, int *n)
+      |                  ^
+/home/andrew/Code/ucas/src/prove_model.c:495:18: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  495 |                         if (!r || !(H = hn(sp, 2, n)) || H->ninv > 8)
+      |                                     ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_model.c:495:18: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/prove_model.c:495:18: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/prove_model.c:526:21: warning: no header providing "ab_str" is directly included [misc-include-cleaner]
+  526 |                                     spaces[sp], ab_str(H));
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

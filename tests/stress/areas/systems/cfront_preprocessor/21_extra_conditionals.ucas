@@ -1,0 +1,64 @@
+c lower nofile
+```c
+#define ONE 1
+#define ZERO 0
+#define BIG 1000
+int u1(int x){
+#if ONE && !ZERO
+ return x+1;
+#else
+ return x+2;
+#endif
+}
+int u2(int x){
+#if BIG / 100 == 10
+ return x+3;
+#else
+ return x+4;
+#endif
+}
+int u3(int x){
+#if ONE << 3 == 8
+ return x+5;
+#else
+ return x+6;
+#endif
+}
+int u4(int x){
+#if 7 & 3 == 3
+ return x+7;
+#else
+ return x+8;
+#endif
+}
+int u5(int x){
+#if defined(ONE) && defined(ZERO) && !defined(ABSENT)
+ return x+9;
+#else
+ return x+10;
+#endif
+}
+int u6(int x){
+#if ZERO
+ return x+11;
+#elif ONE
+ return x+12;
+#else
+ return x+13;
+#endif
+}
+int u7(int x){
+#if 'a' < 'z'
+ return x+14;
+#else
+ return x+15;
+#endif
+}
+int u8(int x){
+#if (2 + 3) * (4 - 1) == 15
+ return x+16;
+#else
+ return x+17;
+#endif
+}
+```

@@ -1,0 +1,59 @@
+> closed sum(i, 1, n, i)
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, i)
+  = n*(n + 1)/2
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> closed sum(i, 1, n, i^2)
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, i^2)
+  = n*(n + 1)*(2n + 1)/6
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> closed sum(i, 1, n, i^3)
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, i^3)
+  = n^2*(n + 1)^2/4
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> closed sum(i, 0, n, 2^i)
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 0, n, 2^i)
+  = 2^(n + 1) - 1
+  method: geometric
+  check: equals direct iteration at all 62 points of the domain
+  but at 1 points the closed form is undefined (an intermediate leaves the 64-bit range) where iteration is not, e.g. n=62
+> closed prod(i, 1, n, i)
+  note: n is a bound of prod: taken as int in 0..100
+prod(i, 1, n, i)
+  no closed form found
+  prod of i: a factorial-like product (Gamma function); no elementary closed form; see 'continuous' for Stirling's approximation
+> x[0] = 1
+> x[k+1] = 2*x[k]
+> closed x
+x[n]
+  = 2^n
+  method: linear recurrence (characteristic roots)
+  characteristic polynomial x - 2, roots 2
+  check: equals direct iteration at all 61 points of the domain
+> f[0] = 0
+> f[1] = 1
+> f[k+2] = f[k+1] + f[k]
+> closed f
+f[n]
+  = int(floor(0.4472135955*1.618033989^real(n) - 0.4472135955*(-0.6180339887)^real(n) + 0.5))
+  method: linear recurrence (characteristic roots)
+  characteristic polynomial x^2 - x - 1, roots (1 + √5)/2 = 1.618033989, (1 - √5)/2 = -0.6180339887
+  check: equals direct iteration at all 61 points of the domain
+> closed sum(i, 1, n, i*(i+1))
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, i*(i + 1))
+  = n*(n + 1)*(n + 2)/3
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> closed sum(i, 1, n, (2*i-1))
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, 2i - 1)
+  = n^2
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain

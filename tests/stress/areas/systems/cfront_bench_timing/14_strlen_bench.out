@@ -1,0 +1,14 @@
+> c optimize nofile bench budget 0
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 0 by SAT, 1 structural) for x86-64-v3
+  mylen (line 1): a scan for the terminating zero: n += strlen(s + n)
+    proof: structural (C99 7.21.6.3: strlen counts the characters before the first null; the loop steps over exactly those, reading the same bytes (a signed counter past its maximum is UB)); cost: a byte loop -> the C library's strlen
+    before: while(s[n])n++;
+    after:  n += strlen((const char *)s + n);
+  mylen (line 1): not lowered: line 1: a parameter that is not an integer or a float (s)
+  check: the original does not compile:
+cc: error: unrecognized command-line option ‘-fsanitize-minimal-runtime’
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  #include <string.h>
+  int mylen(const char*s){int n=0;n += strlen((const char *)s + n);return n;}

@@ -1,0 +1,42 @@
+> mu(c: bool, a: u1, b: u1) = c ? a : b
+> table mu
+  c=0, a=0, b=0  ->  0
+  c=1, a=0, b=0  ->  0
+  c=0, a=1, b=0  ->  0
+  c=1, a=1, b=0  ->  1
+  c=0, a=0, b=1  ->  1
+  c=1, a=0, b=1  ->  0
+  c=0, a=1, b=1  ->  1
+  c=1, a=1, b=1  ->  1
+> mi(c: bool) = c ? 7 : 9
+> table mi
+  c=0  ->  9
+  c=1  ->  7
+> mb(c: bool, a: bool) = c ? a : !a
+> table mb
+  c=0, a=0  ->  1
+  c=1, a=0  ->  0
+  c=0, a=1  ->  0
+  c=1, a=1  ->  1
+> nma(c: bool, d: bool, a: bool, b: bool) = c ? (d ? a : b) : b
+> nmb(c: bool, d: bool, a: bool, b: bool) = (c & d) ? a : b
+> equiv nma ~ nmb
+nma and nmb are equal on the domain of nma (exhaustive)
+> pa(x: bool) = x where x == 0
+> pb(x: bool) = 0
+> equiv pa ~ pb
+pa and pb are equal on the domain of pa (exhaustive)
+  domain: x in 0..1 by the where clause (1 points enumerated)
+> pc(x: bool) = !x where x == 1
+> pd(x: bool) = 0
+> equiv pc ~ pd
+pc and pd are equal on the domain of pc (exhaustive)
+  domain: x in 0..1 by the where clause (1 points enumerated)
+> k1(x: bool) = 1
+> k2(x: bool) = 1
+> equiv k1 ~ k2
+k1 and k2 are equal on the domain of k1 (exhaustive)
+> k3(x: bool) = 1
+> k4(x: bool) = 0
+> equiv k3 ~ k4
+k3 and k4 differ at 2 points, e.g. x=0: 1 vs 0

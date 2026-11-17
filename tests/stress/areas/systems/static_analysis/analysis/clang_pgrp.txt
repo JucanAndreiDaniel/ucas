@@ -1,0 +1,61 @@
+src/pgrp.c:321:2: warning: Null pointer passed to 2nd parameter expecting 'nonnull' [core.NonNullParamChecker]
+  321 |         memcpy(G->base, s->base, (size_t)s->nb * sizeof *G->base);
+      |         ^
+src/pgrp.c:1297:14: note: Assuming 'a' is >= 'n'
+ 1297 |         for (a = 0; a < n; a++)
+      |                     ^~~~~
+src/pgrp.c:1297:2: note: Loop condition is false. Execution continues on line 1300
+ 1297 |         for (a = 0; a < n; a++)
+      |         ^
+src/pgrp.c:1300:2: note: Calling 'pg_init'
+ 1300 |         pg_init(r, n, g, n);
+      |         ^~~~~~~~~~~~~~~~~~~
+src/pgrp.c:391:2: note: Calling 'pg_build'
+  391 |         pg_build(G, n, gens, ngens, NULL, 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/pgrp.c:362:6: note: 'n' is <= 0
+  362 |         if (n <= 0)
+      |             ^
+src/pgrp.c:362:2: note: Taking true branch
+  362 |         if (n <= 0)
+      |         ^
+src/pgrp.c:364:14: note: 'k' is >= 'ngens'
+  364 |         for (k = 0; k < ngens; k++) {
+      |                     ^
+src/pgrp.c:364:2: note: Loop condition is false. Execution continues on line 375
+  364 |         for (k = 0; k < ngens; k++) {
+      |         ^
+src/pgrp.c:375:2: note: Null pointer value stored to 's.base'
+  375 |         memset(&s, 0, sizeof s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+src/pgrp.c:378:2: note: Calling 'ss_run'
+  378 |         ss_run(&s, gens, ngens, pre, npre);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/pgrp.c:263:2: note: Loop condition is false. Execution continues on line 265
+  263 |         for (i = 0; i < npre; i++)
+      |         ^
+src/pgrp.c:265:14: note: 'k' is >= 'ngens'
+  265 |         for (k = 0; k < ngens; k++) {
+      |                     ^
+src/pgrp.c:265:2: note: Loop condition is false. Execution continues on line 273
+  265 |         for (k = 0; k < ngens; k++) {
+      |         ^
+src/pgrp.c:273:2: note: Loop condition is false. Execution continues on line 275
+  273 |         for (l = 0; l < s->nb; l++)
+      |         ^
+src/pgrp.c:276:2: note: Loop condition is false. Execution continues on line 308
+  276 |         while (l >= 0) {
+      |         ^
+src/pgrp.c:310:1: note: Returning without writing to 's->base'
+  310 | }
+      | ^
+src/pgrp.c:378:2: note: Returning from 'ss_run'
+  378 |         ss_run(&s, gens, ngens, pre, npre);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/pgrp.c:383:2: note: Calling 'ss_pack'
+  383 |         ss_pack(&T, &s);
+      |         ^~~~~~~~~~~~~~~
+src/pgrp.c:321:2: note: Null pointer passed to 2nd parameter expecting 'nonnull'
+  321 |         memcpy(G->base, s->base, (size_t)s->nb * sizeof *G->base);
+      |         ^               ~~~~~~~
+1 warning generated.

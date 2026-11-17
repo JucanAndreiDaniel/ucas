@@ -1,0 +1,61 @@
+> show 1+2
+_() = 3
+  -> int
+> show sin(x)
+_(x: real) = sin(x)
+  -> real
+> parse x*x+2*x+1
+(((x * x) + (2 * x)) + 1)
+> range x*x x: u8
+01_baseline.ucas:4:12: error: unexpected ':' after the statement
+    range x*x x: u8
+               ^
+> equiv (x*y)^5 (y*x)^5
+01_baseline.ucas:5:22: error: expected an expression
+    equiv (x*y)^5 (y*x)^5
+                         ^
+> table x*x x: u4
+01_baseline.ucas:6:12: error: unexpected ':' after the statement
+    table x*x x: u4
+               ^
+> diff x^3
+d/dx x^3 = 3x^2
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> integrate x^2 from 0 to 1
+∫ x^2 dx
+  = x^3/3 + C
+  check: d/dx of it equals the integrand at 401 points of [0, 1] (max difference 1.1e-16)
+  from 0 to 1: F(1) - F(0) = 0.333333333333333
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 0.333333333333333, estimated error 3.7e-15
+  the two agree to 0
+> expand (x+1)^5
+  ucas: expand (x+1)^5
+expand (x + 1)^5
+  = x^5 + 5x^4 + 10x^3 + 10x^2 + 5x + 1
+  check: exact (both sides have the same normal form)
+> factor x^2-1
+factor x^2 - 1
+  = (x - 1)*(x + 1)
+  check: exact (both sides have the same normal form)
+  (factors are irreducible over the rationals)
+> solve x^2 = 4 for x
+  ucas: solve x^2 = 4 for x
+solve x^2 = 4 for x
+  x = -2
+  x = 2
+  check: each solution substituted (2 values): residual 0
+> ring Z/7 field
+  a field: yes (7 is prime: every nonzero a has an inverse, a^(7-2)); so also an integral domain
+> inverse 3 mod 11
+3^-1 = 4 mod 11
+  how: extended Euclid: 4*3 - 1*11 = 1
+  check: 3 * 4 = 12 = 1*11 + 1
+> what is the range of x squared for a signed byte x?
+  ucas: it(x: i8) = x^2
+  ucas: range it
+range of it -> i8:
+  -127..121   (44 distinct values)
+  values: -127, -124, -119, -112..-111, -103, -95, -92, -87, -79, -71, -63, -60, -55, -47, -39, -31, -28, -23, -15, -7, 0..1, 4, 9, 16..17, ...
+  fits in i8
+  over all 256 points of the domain

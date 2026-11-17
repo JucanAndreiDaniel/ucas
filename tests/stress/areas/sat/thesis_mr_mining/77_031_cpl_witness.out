@@ -1,0 +1,16 @@
+> f(x: u16) = (x*7) & 1023
+> g(x: u16) = ((x*7) & 1023) + (x == 255 ? 1 : 0)
+> equiv f g
+f and g differ at 1 point, e.g. x=255: 761 vs 762
+> equiv g f
+g and f differ at 1 point, e.g. x=255: 762 vs 761
+> range f
+range of f -> u16:
+  0..1023   (1024 distinct values)
+  fits in u10
+  over all 65536 points of the domain
+> range g
+range of g -> u16:
+  0..1023   (1024 distinct values)
+  fits in u10
+  over all 65536 points of the domain

@@ -1,0 +1,39 @@
+> g1(a: u32) = a + (a << 1)
+> find g1 3 snippets
+find g1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  derived, but not cheaper under gt1030 (cost 3, as written 2): a + (a << 1): the factor a of 2 terms taken out once
+  cost 2   a + (a + a)                              the snippet database's program with these values (cost 2 under gt1030, where it was grown) (proved by SAT)
+  cost 3   3a                                       exact (proved by SAT)
+  cost 3   a - (-a - a)                             exact (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g2(a: u32) = a ^ (a >> 1)
+  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+> find g2 3 snippets
+find g2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a xor a >> 1                             the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g3(a: u32) = -a
+> find g3 2 snippets
+find g3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   -a                                       the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  cost 2   a - (a + a)                              exact (proved by SAT)
+  [searched every term up to cost 2: 1077 distinct columns; 'more' continues]
+> g4(a: u32) = a & 0xff
+> find g4 2 snippets
+find g4: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 4 has its values (455881 programs of 1 input, 32 bits, grown under gt1030)
+  cost 1   a & 0xff                                 mask (proved by SAT)
+  cost 3   a + (a << 8) & 0xff                      mask (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g5(a: u32) = (a * 3) ^ 5
+> find g5 2 snippets
+find g5: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 4 has its values (455881 programs of 1 input, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> g6(a: u32) = a ^ 0xffffffff
+> find g6 2 snippets
+find g6: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 4 has its values (455881 programs of 1 input, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

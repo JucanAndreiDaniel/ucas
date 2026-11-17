@@ -1,0 +1,13 @@
+> f(a: u8, b: u8) = (a + b) / 2
+> g(a: u8, b: u8) = (a & b) + ((a xor b) >> 1)
+> f2(a: u8, b: u8) = u8((a + b) / 2)
+> g2(a: u8, b: u8) = u8((a & b) + ((a xor b) >> 1))
+> f1(a: u8, b: u8) = u8((a + b) / 2)
+> equiv f g
+f and g differ at 32640 points, e.g. a=255, b=1: 0 vs 128
+> equiv f2 g2
+f2 and g2 differ at 32640 points, e.g. a=255, b=1: 0 vs 128
+> equiv f1 g
+f1 and g differ at 32640 points, e.g. a=255, b=1: 0 vs 128
+> equiv f f2
+f and f2 are equal on the domain of f (exhaustive)

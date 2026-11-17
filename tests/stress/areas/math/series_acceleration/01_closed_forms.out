@@ -1,0 +1,47 @@
+> sum(i, 1, 1000000, 1/i^2)
+  note: 1/i^2 would divide integers by the index i: i taken as real
+1.64493
+> sum(i, 1, 100000, 1/(i*(i+1)))
+  note: 1/(i*(i + 1)) would divide integers by the index i: i taken as real
+0.99999
+> closed(sum(i, 1, n, i^2))
+  note: n is a bound of sum: taken as int in 0..100
+sum(i, 1, n, i^2)
+  = n*(n + 1)*(2n + 1)/6
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> sum(i, 1, 100000, 1/2^i)
+  note: 1/2^i would divide integers by the index i: i taken as real
+_() = sum(i, 1, 100000, 1/2^i)
+  -> real
+> sum(i, 1, 100000, i/2^i)
+  note: i/2^i would divide integers by the index i: i taken as real
+_() = sum(i, 1, 100000, i/2^i)
+  -> real
+> prod(i, 2, 100000, 1 - 1/i^2)
+  note: 1 - 1/i^2 would divide integers by the index i: i taken as real
+0.500005
+> prod(i, 1, 100000, 1 + 1/i^2)
+  note: 1/i^2 + 1 would divide integers by the index i: i taken as real
+3.67604
+> sum(i, 1, 100000, (-1)^(i+1)/i)
+  note: (-1)^(i + 1)/i would divide integers by the index i: i taken as real
+0.693142
+> radius x^n/n
+power series sum(n, 1, inf, x^n/n) in x
+  center x = 0; coefficients a_n = 1/n of x^(n)
+  radius of convergence R = 1 (ratio test: |a_(n+1)/a_n| -> 1)
+  at x = -1: converges conditionally (alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1))
+  at x = 1: diverges (limit comparison with the harmonic series sum 1/n (p = 1): a_n n -> 1)
+  interval of convergence: [-1, 1)
+  sum = -log(1 - x)    for |x| < 1 (-log(1 - u))
+> radius x^n/n!
+power series sum(n, 0, inf, x^n/n!) in x
+  center x = 0; coefficients a_n = 1/n! of x^(n)
+  radius of convergence R = inf (ratio test: |a_(n+1)/a_n| -> 0)
+  interval of convergence: every x (absolutely)
+  sum = e^x    for |x| < inf (e^u)
+> converge 1/(n*log(n)^2)
+sum(n, 2, inf, 1/(n*log(n)^2))
+  converges absolutely: integral test: int f = -1/log(n) has the finite limit 0 as n -> inf
+  partial sums: S_10 = 1.700396385, S_1000 = 1.96500938

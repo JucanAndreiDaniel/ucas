@@ -1,0 +1,13 @@
+# gate names that collide with builtins / commands / constants
+basis b1 { cost(x) = ~x }
+basis b2 { gates(x) = ~x }
+basis b3 { lut(x) = ~x }
+basis b4 { and(x, y) = x & y }
+basis b5 { pi(x) = ~x }
+n(a: u1) = ~a
+a2(a: u1, b: u1) = a & b
+gates n basis b1
+gates n basis b2
+gates n basis b3
+gates a2 basis b4
+gates n basis b5

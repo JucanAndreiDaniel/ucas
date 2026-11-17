@@ -1,0 +1,16 @@
+> f(x: f32 in 0.001..100) = 1/sqrt(x+f32(1e-2))
+> g(x: f32 in 0.001..100) = 1/sqrt(x-f32(1e-2))
+> equiv f g
+f and g differ at 65536 points of the sample, e.g. x=0.00100000005: 9.53462601 vs -nan
+> error g ~ f
+error of g against f:
+  max abs error 442.355 at x=0.0100049507
+  max rel error 62.5662 (6.26e+03%) at x=0.0100049507
+  mean rel error 0.242159 over 52725 points
+  max 50231145 ulp
+  approximation is NaN/inf/undefined at 12811 points where the target is finite, e.g. x=0.00100000005
+  rounding, first order in u = 2^-24: 3 rounded operations, each taken as correctly rounded; relative to the value, the largest over 3305 inputs
+    worst case  1.49e-07 (2.5 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 6 u here (it gains from about 16 operations of similar weight on)
+    expected    5.16e-08 (0.866 u): the root mean square if they are independent and uniform in [-u, u]
+    for 3 operations of equal weight: gamma_3 = 3 u / (1 - 3 u) = 1.79e-07, gamma~_3(4) = 4 sqrt(3) u = 4.13e-07

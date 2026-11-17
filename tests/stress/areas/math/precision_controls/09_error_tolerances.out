@@ -1,0 +1,40 @@
+> q(x: f32 in 0..1) = x*x
+> error q ~ (x*x)
+error of q against x*x:
+  max abs error 1.24268e-05 at x=-9.98
+  max rel error 1.52002e-07 (1.52e-05%) at x=4.22
+  mean rel error 4.4415e-08 over 1001 points
+  max 2 ulp
+  rounding, first order in u = 2^-24: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4095 inputs
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]
+> q2(x: f32 in 0..1) = sin(x)
+> error q2 ~ sin
+  note: sin alone read as sin(x)
+error of q2 against sin(x):
+  max abs error 4.57711e-07 at x=-9.52
+  max rel error 6.58866e-05 (0.00659%) at x=-3.14
+  mean rel error 7.21185e-07 over 1001 points
+  max 901 ulp
+  rounding, first order in u = 2^-24: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4095 inputs
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]
+> q3(x: real in 0..1) = x+1
+> error q3 ~ (x+1)
+error of q3 against x + 1:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 1001 points
+> q4(x: f64 in 0..1) = x*0.1
+> error q4 ~ (x*0.1)
+error of q4 against 0.1x:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 1001 points
+  max 0 ulp
+  rounding, first order in u = 2^-53: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4095 inputs
+    worst case  1.11e-16 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    6.41e-17 (0.577 u): the root mean square if they are independent and uniform in [-u, u]

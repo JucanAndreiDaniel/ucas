@@ -1,0 +1,33 @@
+> t1(a: f32) = a * 2.0
+> find t1 1 snippets t2(a: i32) = a + 1
+06_find_types.ucas:2:22: error: unexpected '(' after the statement
+    find t1 1 snippets t2(a: i32) = a + 1
+                         ^
+> find t2 1 snippets fx_add
+06_find_types.ucas:3:26: error: find on a float result needs one f16, f32 or f64 parameter
+    find t2 1 snippets fx_add
+                             ^
+> t3(a: u8, b: u8) = a + b
+> find t3 1 snippets fx_add
+find t3: 1024 points (sampled; matches verified on the whole domain), computing in u8, costs from gt1030
+  snippet database: not consulted: it holds programs of 32-bit inputs, a is u8
+  cost 1   a + b                                    exact
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> t4(a: u16, b: u16) = a + b
+> find t4 1 snippets fx_add
+find t4: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
+  snippet database: not consulted: it holds programs of 32-bit inputs, a is u16
+  cost 1   a + b                                    exact (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> t5(a: u32, b: u32) = a / b
+> find t5 1 snippets fx_add
+find t5: 1021 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: not consulted: t5 is undefined at one of its points
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16432 distinct columns, bank full; 'more' continues]
+> t6(a: u32, b: u32) = a >> b
+> find t6 1 snippets fx_add
+find t6: 6 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: not consulted: t6 is undefined at one of its points
+  cost 2   a >> b                                   exact (proved by SAT)
+  [searched every term up to cost 2: 1775 distinct columns; 'more' continues]

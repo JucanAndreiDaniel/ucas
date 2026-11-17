@@ -1,0 +1,48 @@
+> pde heat { u_t = 0.1 u_xx; u(x, 0) = sin(pi x); x in 0..1; t in 0..0.5 }
+> dsolve heat steps 2
+pde heat: u_t = 0.1u_xx on x in [0, 1], t in [0, 0.5]
+  coefficients: u_xx 0.1, u_x 0, u 0
+  boundary: Dirichlet, u = 0 at both ends
+  method: Crank-Nicolson, 200 intervals, dt = 0.005 (100 steps)
+  grid check: 200 and 400 intervals differ by at most 4.2e-06
+  separation of variables, sine series (100 modes) agrees with the finer grid to 1.4e-06
+      x          u(x, 0.5)
+      0          0
+      0.5        0.61049942
+      1          0
+> pde wave { u_tt = u_xx; u(x, 0) = sin(pi x); x in 0..1; t in 0..0.2 }
+> dsolve wave steps 2
+pde wave: u_tt = u_xx on x in [0, 1], t in [0, 0.2]
+  coefficients: u_xx 1, u_x 0, u 0, u_t 0
+  boundary: Dirichlet, u = 0 at both ends
+  method: leapfrog (central differences in x and t), 200 intervals, dt = 0.004 (50 steps)
+  grid check: 200 and 400 intervals differ by at most 1e-06
+  separation of variables, sine series (100 modes) agrees with the finer grid to 3.4e-07
+      x          u(x, 0.2)
+      0          0
+      0.5        0.80901734
+      1          0
+> pde adv { u_t = -u_x; u(x, 0) = exp(-100 (x-0.3)^2); x in 0..1; t in 0..0.2; periodic }
+> dsolve adv steps 2
+pde adv: u_t = -u_x on x in [0, 1], t in [0, 0.2]
+  coefficients: u_xx 0, u_x -1, u 0
+  boundary: periodic
+  method: Lax-Wendroff, 200 intervals, dt = 0.004 (50 steps)
+  grid check: 200 and 400 intervals differ by at most 0.00088
+  the exact solution u0(x + V t) e^(R t) agrees with the finer grid to 0.00029
+      x          u(x, 0.2)
+      0          1.476302e-11
+      0.5        0.99998618
+      1          1.476302e-11
+> pde src { u_t = u_xx + 1; u(x,0) = 0; u(0,t) = 0; u(1,t) = 0; x in 0..1; t in 0..0.2 }
+> dsolve src steps 2
+pde src: u_t = u_xx + 1 on x in [0, 1], t in [0, 0.2]
+  coefficients: u_xx 1, u_x 0, u 0; plus a source term
+  boundary: Dirichlet (given values)
+  method: Crank-Nicolson, 200 intervals, dt = 0.005 (40 steps)
+  grid check: 200 and 400 intervals differ by at most 5.1e-06
+  (no series solution for this case: the grid check is the error estimate)
+      x          u(x, 0.2)
+      0          0
+      0.5        0.10708122
+      1          0

@@ -1,0 +1,98 @@
+src/kcheck.c:171:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+  171 |         qsort(p->t, (size_t)p->n, sizeof *p->t, cmcmp);
+      |         ^
+src/kcheck.c:836:12: note: Assuming the condition is false
+  836 |         kthm p0 = kthm_nprem(th) > 0 ? kthm_prem(th, 0) : 0;
+      |                   ^~~~~~~~~~~~~~~~~~
+src/kcheck.c:836:12: note: '?' condition is false
+src/kcheck.c:837:12: note: Assuming the condition is false
+  837 |         kthm p1 = kthm_nprem(th) > 1 ? kthm_prem(th, 1) : 0;
+      |                   ^~~~~~~~~~~~~~~~~~
+src/kcheck.c:837:12: note: '?' condition is false
+src/kcheck.c:838:12: note: Assuming the condition is false
+  838 |         kthm p2 = kthm_nprem(th) > 2 ? kthm_prem(th, 2) : 0;
+      |                   ^~~~~~~~~~~~~~~~~~
+src/kcheck.c:838:12: note: '?' condition is false
+src/kcheck.c:842:14: note: Assuming the condition is false
+  842 |         for (i = 0; i < (int)kthm_nprem(th); i++)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+src/kcheck.c:842:2: note: Loop condition is false. Execution continues on line 847
+  842 |         for (i = 0; i < (int)kthm_nprem(th); i++)
+      |         ^
+src/kcheck.c:847:6: note: Assuming the condition is false
+  847 |         if (!c_closed(c, 0)) {
+      |             ^~~~~~~~~~~~~~~
+src/kcheck.c:847:2: note: Taking false branch
+  847 |         if (!c_closed(c, 0)) {
+      |         ^
+src/kcheck.c:851:2: note: Control jumps to 'case KR_LIN:'  at line 984
+  851 |         switch (r) {
+      |         ^
+src/kcheck.c:988:15: note: Assuming the condition is true
+  988 |                 for (k = 0; k < kthm_nprem(th); k++) {
+      |                             ^~~~~~~~~~~~~~~~~~
+src/kcheck.c:988:3: note: Loop condition is true.  Entering loop body
+  988 |                 for (k = 0; k < kthm_nprem(th); k++) {
+      |                 ^
+src/kcheck.c:993:8: note: Assuming 't' is not equal to KNONE
+  993 |                         if (t == KNONE || KSORT(co) != KS_INT || !c_closed(co, 0))
+      |                             ^~~~~~~~~~
+src/kcheck.c:993:8: note: Left side of '||' is false
+src/kcheck.c:993:22: note: Assuming the condition is false
+  993 |                         if (t == KNONE || KSORT(co) != KS_INT || !c_closed(co, 0))
+      |                                           ^~~~~~~~~~~~~~~~~~~
+src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+src/kcheck.c:993:8: note: Left side of '||' is false
+  993 |                         if (t == KNONE || KSORT(co) != KS_INT || !c_closed(co, 0))
+      |                             ^
+src/kcheck.c:993:4: note: Taking false branch
+  993 |                         if (t == KNONE || KSORT(co) != KS_INT || !c_closed(co, 0))
+      |                         ^
+src/kcheck.c:995:8: note: 'sort' is < 0
+  995 |                         if (sort < 0)
+      |                             ^~~~
+src/kcheck.c:995:4: note: Taking true branch
+  995 |                         if (sort < 0)
+      |                         ^
+src/kcheck.c:997:8: note: Assuming the condition is false
+  997 |                         if (KSORT(t) != sort)
+      |                             ^~~~~~~~~~~~~~~~
+src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+src/kcheck.c:997:4: note: Taking false branch
+  997 |                         if (KSORT(t) != sort)
+      |                         ^
+src/kcheck.c:999:8: note: 'ge' is 1
+  999 |                         if (ge) {
+      |                             ^~
+src/kcheck.c:999:4: note: Taking true branch
+  999 |                         if (ge) {
+      |                         ^
+src/kcheck.c:1000:20: note: Calling 'cpoly'
+ 1000 |                                 struct cp cp = cpoly(co);
+      |                                                ^~~~~~~~~
+src/kcheck.c:330:18: note: 'r.t' initialized to a null pointer value
+  330 |         struct cp a, b, r = {0};
+      |                         ^
+src/kcheck.c:333:2: note: Control jumps to 'case KO_NEG:'  at line 344
+  333 |         switch (KOP(t)) {
+      |         ^
+src/kcheck.c:346:3: note: Calling 'cp_addto'
+  346 |                 cp_addto(&r, &a, -1);
+      |                 ^~~~~~~~~~~~~~~~~~~~
+src/kcheck.c:265:14: note: Assuming 'i' is >= field 'n'
+  265 |         for (i = 0; i < b->n; i++)
+      |                     ^~~~~~~~
+src/kcheck.c:265:2: note: Loop condition is false. Execution continues on line 267
+  265 |         for (i = 0; i < b->n; i++)
+      |         ^
+src/kcheck.c:267:2: note: Calling 'cp_norm'
+  267 |         cp_norm(r);
+      |         ^~~~~~~~~~
+src/kcheck.c:171:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  171 |         qsort(p->t, (size_t)p->n, sizeof *p->t, cmcmp);
+      |         ^     ~~~~
+1 warning generated.

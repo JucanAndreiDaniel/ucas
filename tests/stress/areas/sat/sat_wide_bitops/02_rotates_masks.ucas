@@ -1,0 +1,11 @@
+# Rotates via shift-or, with n guaranteed 1..w-1 (no shift-by-width UB).
+rl(x: u16, n: u16 in 1..15) = (x << n) | (x >> (16 - n))
+rr(x: u16, n: u16 in 1..15) = (x >> n) | (x << (16 - n))
+equiv rl rr
+rl2(x: u16, n: u16 in 1..15) = (x >> (16 - n)) | (x << n)
+equiv rl rl2
+rng(x: u16, n: u16 in 1..15) = (x << n) & 0xffff
+range rng
+mask8(x: u8) = x & 0x0f
+range mask8
+domain mask8

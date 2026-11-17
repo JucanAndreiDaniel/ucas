@@ -1,0 +1,60 @@
+> f(x: u32) = x*7 + 11
+> divk(x: u32) = x / 7
+> divp(x: u32) = x / 8
+> g(x: f32, y: f32, z: f32) = x*y + z
+> model dear_imul : gt1030 { imul: 100 }
+> cost f model dear_imul
+cost of f under dear_imul: 100 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 100   = 100  (a*b + c; saves 1)
+> cost f model gt1030
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> model cheap_imul : gt1030 { imul: 1 }
+> cost f model cheap_imul
+cost of f under cheap_imul: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 1     = 1  (a*b + c; saves 1)
+> model no_fuse : gt1030 { nofuse imad }
+> cost f model no_fuse
+cost of f under no_fuse: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> model div_dear : gt1030 { idivk: 500 }
+> cost divk model div_dear
+cost of divk under div_dear: 500 (1 operations, shared subterms counted once)
+  idivk            1 x 500   = 500
+> cost divk model gt1030
+cost of divk under gt1030: 8.75 (1 operations, shared subterms counted once)
+  idivk            1 x 8.75  = 8.75
+> cost divp model div_dear
+cost of divp under div_dear: 2 (1 operations, shared subterms counted once)
+  shift            1 x 2     = 2
+> cost divp model gt1030
+cost of divp under gt1030: 2 (1 operations, shared subterms counted once)
+  shift            1 x 2     = 2
+> model fadd_dear : x86v3 { fadd: 100 }
+> cost g model fadd_dear
+cost of g under fadd_dear: 104 (2 operations, shared subterms counted once)
+  fadd             1 x 100   = 100
+  fmul             1 x 4     = 4
+> cost g model x86v3
+cost of g under x86v3: 8 (2 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+  fmul             1 x 4     = 4
+> model zero_imul : skl { imul: 0 }
+> cost f model zero_imul
+cost of f under zero_imul: 1 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 0     = 0
+> model huge_imul : skl { imul: 1e9 }
+> cost f model huge_imul
+cost of f under huge_imul: 1e+09 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 1e+09 = 1e+09
+> model dup : gt1030 { imul: 5, imul: 7 }
+> cost f model dup
+cost of f under dup: 7 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 7     = 7  (a*b + c; saves 1)

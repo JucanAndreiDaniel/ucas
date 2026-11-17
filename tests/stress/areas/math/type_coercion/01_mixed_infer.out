@@ -1,0 +1,71 @@
+> show 1 + 2
+_() = 3
+  -> int
+> show u8(1) + i8(2)
+  note: mixing u8 and i8: computed as u8
+_() = 3
+  -> u8
+> show i8(2) + u8(1)
+  note: mixing i8 and u8: computed as u8
+_() = 3
+  -> u8
+> show u32(1) + i32(2)
+  note: mixing u32 and i32: computed as u32
+_() = 3
+  -> u32
+> show u64(1) + i64(2)
+  note: mixing u64 and i64: computed as u64
+_() = 3
+  -> u64
+> show u8(200) + i8(-100)
+  note: mixing u8 and i8: computed as u8
+_() = 100
+  -> u8
+> show u8(1) + i8(-2)
+  note: mixing u8 and i8: computed as u8
+_() = 255
+  -> u8
+> show u64(1) - i64(2)
+  note: mixing u64 and i64: computed as u64
+_() = 18446744073709551615
+  -> u64
+> show i64(-1) < u64(1)
+  note: mixing i64 and u64: computed as u64
+_() = 0
+  -> bool
+> show u32(1) < i32(-1)
+  note: mixing u32 and i32: computed as u32
+_() = 1
+  -> bool
+> show i32(-1) < u32(1)
+  note: mixing i32 and u32: computed as u32
+_() = 0
+  -> bool
+> show u8(255) == i8(-1)
+  note: mixing u8 and i8: computed as u8
+_() = 1
+  -> bool
+> show f16(1) + f32(2)
+_() = 3
+  -> f32
+> show f16(1) + f64(2)
+_() = 3
+  -> f64
+> show f32(1) + f64(2)
+_() = 3
+  -> f64
+> show f16(1) * f32(2) + f64(3)
+_() = 5
+  -> f64
+> show int(3) + f64(0.5)
+_() = 3.5
+  -> f64
+> show real(3) + f64(0.5)
+_() = 3.5
+  -> f64
+> show bool(1) + int(2)
+_() = 3
+  -> int
+> show (1 < 2) + 3
+_() = 4
+  -> int

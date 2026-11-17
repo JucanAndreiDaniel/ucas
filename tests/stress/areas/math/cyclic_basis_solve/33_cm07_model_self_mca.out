@@ -1,0 +1,12 @@
+> model m : m { iadd: 1, fadd: 1, fmul: 2 }
+> f(x: f32) = x*x + 1
+> mca f on skl
+mca of f on skl (skylake)
+  straight-line code: 2 instructions, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  vmulps    x*x                     4   0.5    1  p01       
+     1  vaddps    x*x + 1                 4   0.5    1  p01       0
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 1.00
+  bounds: critical path 8.00, ports 1.00 (p0), front end 0.50 (2 uops / 4)
+  simulated: 8.00 cycles, limited by the critical path

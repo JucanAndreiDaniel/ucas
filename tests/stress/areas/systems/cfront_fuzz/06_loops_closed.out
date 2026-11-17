@@ -1,0 +1,35 @@
+> c optimize nofile budget 3
+c optimize: 5 functions, 3 rewrites proved (0 exhaustive, 0 by SAT, 3 by induction) for x86-64-v3
+  sum (line 1): loop in closed form: s += sum of degree 1 in i
+    proof: induction (sum of a polynomial of degree <= 2 by forward differences and C(T,k), exact mod 2^w); cost 3.0 -> 15.8 (before: per iteration of the loop)
+    before: {int s=0;for(int i=0;i<n;i++)s+=i;return s;}
+  sq (line 2): loop in closed form: s += sum of degree 2 in i
+    proof: induction (sum of a polynomial of degree <= 2 by forward differences and C(T,k), exact mod 2^w); cost 6.0 -> 27.0 (before: per iteration of the loop)
+    before: {int s=0;for(int i=0;i<n;i++)s+=i*i;return s;}
+  series (line 3): loop in closed form: s += sum of degree 1 in i
+    proof: induction (sum of a polynomial of degree <= 2 by forward differences and C(T,k), exact mod 2^w); cost 7.0 -> 20.0 (before: per iteration of the loop)
+    before: {int s=0;for(int i=0;i<n;i++)s+=2*i+1;return s;}
+  step2 (line 4): not lowered: a loop that may run more than 66 times
+  step2 (line 4): not vectorised: a step other than 1
+  downto (line 5): not lowered: a loop that may run more than 66 times
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int sum(int n){
+  	const uint64_t cf_t0 = ((((int32_t)((n)) > (int32_t)(((int32_t)0)))) ? (uint64_t)(((uint64_t)(((int64_t)((n)))))) : (uint64_t)(((uint64_t)0ull)));
+  	const uint64_t cf_t1 = ((uint64_t)((uint64_t)(cf_t0) - (uint64_t)(((uint64_t)1ull))));
+  	return (int)((int32_t)(((((uint64_t)(((uint64_t)((uint64_t)(cf_t0) & (uint64_t)(((uint64_t)1ull))))) == (uint64_t)(((uint64_t)0ull)))) ? (uint64_t)(((uint64_t)((uint64_t)(((uint64_t)((uint64_t)(cf_t0) >> (((uint64_t)1ull))))) * (uint64_t)(cf_t1)))) : (uint64_t)(((uint64_t)((uint64_t)(cf_t0) * (uint64_t)(((uint64_t)((uint64_t)(cf_t1) >> (((uint64_t)1ull)))))))))));
+  }
+  int sq(int n){
+  	const uint64_t cf_t0 = ((((int32_t)((n)) > (int32_t)(((int32_t)0)))) ? (uint64_t)(((uint64_t)(((int64_t)((n)))))) : (uint64_t)(((uint64_t)0ull)));
+  	const uint64_t cf_t1 = ((uint64_t)((uint64_t)(cf_t0) - (uint64_t)(((uint64_t)1ull))));
+  	const uint64_t cf_t2 = ((((uint64_t)(((uint64_t)((uint64_t)(cf_t0) & (uint64_t)(((uint64_t)1ull))))) == (uint64_t)(((uint64_t)0ull)))) ? (uint64_t)(((uint64_t)((uint64_t)(((uint64_t)((uint64_t)(cf_t0) >> (((uint64_t)1ull))))) * (uint64_t)(cf_t1)))) : (uint64_t)(((uint64_t)((uint64_t)(cf_t0) * (uint64_t)(((uint64_t)((uint64_t)(cf_t1) >> (((uint64_t)1ull)))))))));
+  	return (int)((int32_t)((uint32_t)(((int32_t)(cf_t2))) + (uint32_t)(((int32_t)((uint32_t)(((int32_t)2)) * (uint32_t)(((int32_t)(((uint64_t)((uint64_t)(((uint64_t)12297829382473034411ull)) * (uint64_t)(((uint64_t)((uint64_t)(cf_t2) * (uint64_t)(((uint64_t)((uint64_t)(cf_t0) - (uint64_t)(((uint64_t)2ull))))))))))))))))));
+  }
+  int series(int n){
+  	const uint64_t cf_t0 = ((((int32_t)((n)) > (int32_t)(((int32_t)0)))) ? (uint64_t)(((uint64_t)(((int64_t)((n)))))) : (uint64_t)(((uint64_t)0ull)));
+  	const uint64_t cf_t1 = ((uint64_t)((uint64_t)(cf_t0) - (uint64_t)(((uint64_t)1ull))));
+  	return (int)((int32_t)((uint32_t)(((int32_t)(cf_t0))) + (uint32_t)(((int32_t)((uint32_t)(((int32_t)2)) * (uint32_t)(((int32_t)(((((uint64_t)(((uint64_t)((uint64_t)(cf_t0) & (uint64_t)(((uint64_t)1ull))))) == (uint64_t)(((uint64_t)0ull)))) ? (uint64_t)(((uint64_t)((uint64_t)(((uint64_t)((uint64_t)(cf_t0) >> (((uint64_t)1ull))))) * (uint64_t)(cf_t1)))) : (uint64_t)(((uint64_t)((uint64_t)(cf_t0) * (uint64_t)(((uint64_t)((uint64_t)(cf_t1) >> (((uint64_t)1ull)))))))))))))))));
+  }
+  int step2(int n){int s=0;for(int i=0;i<n;i+=2)s+=i;return s;}
+  int downto(int n){int s=0;for(int i=n;i>0;i--)s+=i;return s;}

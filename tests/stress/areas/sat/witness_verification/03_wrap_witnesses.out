@@ -1,0 +1,12 @@
+> f(x: u4) = x*x + 3
+> wrap f
+wrap analysis of f:
+  x*x   (u4)
+      nuw fails: unsigned wrap at 12 points, e.g. x=4
+      nsw fails: signed wrap at 11 points, e.g. x=3
+  x*x + 3   (u4)
+      nuw holds
+      nsw holds
+  end to end: differs from the mathematical result at 12 points, e.g. x=4
+      exact for: 0..3
+  over all 16 points of the domain

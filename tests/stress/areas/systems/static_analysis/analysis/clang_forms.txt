@@ -1,0 +1,70 @@
+src/forms.c:4155:4: warning: Value stored to 'o2' is never read [deadcode.DeadStores]
+ 4155 |                         o2 = O_SIN;
+      |                         ^    ~~~~~
+src/forms.c:4155:4: note: Value stored to 'o2' is never read
+ 4155 |                         o2 = O_SIN;
+      |                         ^    ~~~~~
+src/forms.c:4942:10: warning: Array subscript is undefined [core.uninitialized.ArraySubscript]
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^                   ~~~~~~~~~
+src/forms.c:4919:6: note: Assuming the condition is false
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/forms.c:4919:2: note: Taking false branch
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+src/forms.c:4921:2: note: Loop condition is true.  Entering loop body
+ 4921 |         for (k = 0; words[k]; k++)
+      |         ^
+src/forms.c:4922:7: note: Assuming the condition is true
+ 4922 |                 if (!strcmp(words[k], w))
+      |                     ^~~~~~~~~~~~~~~~~~~~
+src/forms.c:4922:3: note: Taking true branch
+ 4922 |                 if (!strcmp(words[k], w))
+      |                 ^
+src/forms.c:4923:4: note:  Execution continues on line 4924
+ 4923 |                         break;
+      |                         ^
+src/forms.c:4924:6: note: Left side of '||' is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |             ^
+src/forms.c:4924:19: note: Assuming the condition is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+src/forms.c:4924:2: note: Taking false branch
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |         ^
+src/forms.c:4929:6: note: Assuming the condition is false
+ 4929 |         if (!cmdp_eos(p))
+      |             ^~~~~~~~~~~~
+src/forms.c:4929:2: note: Taking false branch
+ 4929 |         if (!cmdp_eos(p))
+      |         ^
+src/forms.c:4931:2: note: Taking false branch
+ 4931 |         if (has_assign(rest)) {
+      |         ^
+src/forms.c:4938:6: note: Assuming the condition is true
+ 4938 |         if (!strcmp(w, "nthroots") || !strcmp(w, "unity")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+src/forms.c:4938:29: note: Left side of '||' is true
+ 4938 |         if (!strcmp(w, "nthroots") || !strcmp(w, "unity")) {
+      |                                    ^
+src/forms.c:4942:3: note: Loop condition is true.  Entering loop body
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                 ^
+src/forms.c:4942:10: note: Array subscript is undefined
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^                   ~~~~~~~~~
+2 warnings generated.

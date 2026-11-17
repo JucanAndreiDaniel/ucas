@@ -1,0 +1,15 @@
+> f_magic_plus65536(x: f32 in 0.01..100) = asfloat(0x5f3759df - (asuint(x)>>1))
+> g_magic_plus65536(x: f32 in 0.01..100) = asfloat(1597528543 - (asuint(x)>>1))
+> equiv f_magic_plus65536 g_magic_plus65536
+f_magic_plus65536 and g_magic_plus65536 differ at 65536 points of the sample, e.g. x=0.0100000007: 10.3394413 vs 10.4019413
+> error g_magic_plus65536 ~ f_magic_plus65536
+error of g_magic_plus65536 against f_magic_plus65536:
+  max abs error 0.0625 at x=0.0100000007
+  max rel error 0.00781246 (0.781%) at x=59.6752319
+  mean rel error 0.00543931 over 65536 points
+  max 65536 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]

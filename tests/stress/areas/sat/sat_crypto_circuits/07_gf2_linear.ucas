@@ -1,0 +1,12 @@
+# Linear maps over GF(2): dot products as parity of masked AND.
+d0(x: u8) = popcount(x & 0xb5) & 1
+d0b(x: u8) = ((x&1) xor ((x>>2)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>7)&1)) & 1
+equiv d0 d0b
+d1(x: u8) = popcount(x & 0x6d) & 1
+lin(x: u8) = (d0(x) << 1) | d1(x)
+linxor(x: u8, y: u8) = lin(x xor y)
+linadd(x: u8, y: u8) = lin(x) xor lin(y)
+equiv linxor linadd
+range lin
+kernel(x: u8) = d0(x) == 0 ? 1 : 0 where (x & 0x4a) == 0
+range kernel

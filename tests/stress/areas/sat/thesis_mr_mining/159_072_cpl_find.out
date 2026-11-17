@@ -1,0 +1,11 @@
+> f(x: u4) = (x*x) xor 5
+> find f 1
+find f: 16 points, computing in u4, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 4 as written):
+  cost 3   u4(udot4x8(x, x)) xor 5
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  cost 4   x*x xor 5                                xor constant
+  [searched every term up to cost 4: 93719 distinct columns; 'more' continues]

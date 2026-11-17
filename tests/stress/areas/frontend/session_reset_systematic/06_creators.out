@@ -1,0 +1,37 @@
+> a(x: u8) = x+1
+> b(x: u8) = x*2
+> let c of x be x plus 3
+  ucas: c(x) = x + 3
+  ucas: show c
+c(x: real) = x + 3
+  -> real
+> define d of x as x squared
+  ucas: d(x) = x^2
+  ucas: show d
+d(x: real) = x^2
+  -> real
+> use zen4
+cost model: zen4
+> basis myb { and(x,y) = x&y cost 3 }
+06_creators.ucas:6:28: error: 'cost' is not defined
+    basis myb { and(x,y) = x&y cost 3 }
+                               ^
+> model mym { class: cost, fuse f(a: u8) = a+1 : 1 }
+06_creators.ucas:7:13: error: unknown cost class 'class' (see 'models')
+    model mym { class: cost, fuse f(a: u8) = a+1 : 1 }
+                ^
+> show 7+8
+_() = 15
+  -> int
+> what is 2 plus 2?
+  ucas: 2 + 2
+4
+> funcs
+a(x: u8) = x + 1
+  -> u8
+b(x: u8) = 2x
+  -> u8
+c(x: real) = x + 3
+  -> real
+d(x: real) = x^2
+  -> real

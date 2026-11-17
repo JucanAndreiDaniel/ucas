@@ -1,0 +1,901 @@
+/home/andrew/Code/ucas/src/gfield.c:43:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   43 |                 if (q > ((u128)1 << 64))
+      |                                  ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:52:2: warning: Out of bound access to memory preceding the field 'f' [clang-analyzer-security.ArrayBound]
+   52 |         R->f[deg] = 1;
+      |         ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:41:14: note: Assuming 'i' is >= 'deg'
+   41 |         for (i = 0; i < deg; i++) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:41:2: note: Loop condition is false. Execution continues on line 46
+   41 |         for (i = 0; i < deg; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:50:14: note: Assuming 'i' is > 'deg'
+   50 |         for (i = 0; i <= deg; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:50:2: note: Loop condition is false. Execution continues on line 52
+   50 |         for (i = 0; i <= deg; i++)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:52:2: note: Access of the field 'f' at a negative index
+   52 |         R->f[deg] = 1;
+      |         ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:93:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   93 |                         d[i] = a >> i & 1;
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:93:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   93 |                         d[i] = a >> i & 1;
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/gfield.c:112:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  112 |                         a |= (d[i] & 1) << i;
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/gfield.c:112:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  112 |                         a |= (d[i] & 1) << i;
+      |                                         ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:116:18: warning: Out of bound access to memory after the end of 'd' [clang-analyzer-security.ArrayBound]
+  116 |                 a = a * R->n + d[i];
+      |                                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:18: note: Calling 'rp_monic'
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |                         ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:681:9: note: Field 'd' is >= 0
+  681 |         if (a->d < 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:681:2: note: Taking false branch
+  681 |         if (a->d < 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:683:7: note: Calling 'r_inv'
+  683 |         if (!r_inv(R, a->c[a->d], &li))
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:306:6: note: Assuming field 'deg' is not equal to 1
+  306 |         if (R->deg == 1) {
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:306:2: note: Taking false branch
+  306 |         if (R->deg == 1) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:310:6: note: Assuming field 'field' is 0
+  310 |         if (R->field) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:310:2: note: Taking false branch
+  310 |         if (R->field) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:316:6: note: Assuming field 'nprime' is not equal to 0
+  316 |         if (R->nprime) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:316:2: note: Taking true branch
+  316 |         if (R->nprime) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:326:7: note: Assuming field 'd' is equal to 0
+  326 |                 if (G.d != 0)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:326:3: note: Taking false branch
+  326 |                 if (G.d != 0)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:329:15: note: Assuming 'i' is > field 'd'
+  329 |                 for (i = 0; i <= S.d; i++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:329:3: note: Loop condition is false. Execution continues on line 331
+  329 |                 for (i = 0; i <= S.d; i++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:331:10: note: Calling 'r_pack'
+  331 |                 *out = r_pack(R, d);
+      |                        ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:108:9: note: Field 'deg' is not equal to 1
+  108 |         if (R->deg == 1)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:108:2: note: Taking false branch
+  108 |         if (R->deg == 1)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:110:6: note: Assuming field 'n' is not equal to 2
+  110 |         if (R->n == 2) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:110:2: note: Taking false branch
+  110 |         if (R->n == 2) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:115:23: note: Assuming 'i' is >= 0
+  115 |         for (i = R->deg - 1; i >= 0; i--)
+      |                              ^~~~~~
+/home/andrew/Code/ucas/src/gfield.c:115:2: note: Loop condition is true.  Entering loop body
+  115 |         for (i = R->deg - 1; i >= 0; i--)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:116:18: note: Access of 'd' at index 2147483647, while it holds only 64 'unsigned long' elements
+  116 |                 a = a * R->n + d[i];
+      |                                ^~~~
+/home/andrew/Code/ucas/src/gfield.c:167:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  167 |                 if (b >> i & 1)
+      |                       ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:167:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  167 |                 if (b >> i & 1)
+      |                            ~ ^
+/home/andrew/Code/ucas/src/gfield.c:168:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  168 |                         p ^= (u128)a << i;
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:171:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  171 |                         fm |= (u128)1 << i;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:173:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  173 |                 if (p >> i & 1)
+      |                       ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:173:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  173 |                 if (p >> i & 1)
+      |                            ~ ^
+/home/andrew/Code/ucas/src/gfield.c:174:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  174 |                         p ^= fm << (i - d);
+      |                                 ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:226:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  226 |                         if (b & 1)
+      |                               ~ ^
+/home/andrew/Code/ucas/src/gfield.c:229:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                         b >>= 1;
+      |                           ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:250:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  250 |                 if (e & 1)
+      |                       ~ ^
+/home/andrew/Code/ucas/src/gfield.c:253:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  253 |                 e >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:326:11: warning: The left operand of '!=' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  326 |                 if (G.d != 0)
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:18: note: Calling 'rp_monic'
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |                         ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:681:9: note: Field 'd' is >= 0
+  681 |         if (a->d < 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:681:2: note: Taking false branch
+  681 |         if (a->d < 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:683:7: note: Calling 'r_inv'
+  683 |         if (!r_inv(R, a->c[a->d], &li))
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:306:6: note: Assuming field 'deg' is not equal to 1
+  306 |         if (R->deg == 1) {
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:306:2: note: Taking false branch
+  306 |         if (R->deg == 1) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:310:6: note: Assuming field 'field' is 0
+  310 |         if (R->field) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:310:2: note: Taking false branch
+  310 |         if (R->field) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:316:6: note: Assuming field 'nprime' is not equal to 0
+  316 |         if (R->nprime) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:316:2: note: Taking true branch
+  316 |         if (R->nprime) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:325:3: note: Calling 'rp_xgcd'
+  325 |                 rp_xgcd(&B, &G, &S, &T, &A, &F);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:716:9: note: Assuming field 'd' is >= 0
+  716 |         while (r1.d >= 0) {
+      |                ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:716:2: note: Loop condition is true.  Entering loop body
+  716 |         while (r1.d >= 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:717:7: note: Assuming the condition is true
+  717 |                 if (!rp_divmod(R, &r0, &r1, &q, &tmp))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:717:3: note: Taking true branch
+  717 |                 if (!rp_divmod(R, &r0, &r1, &q, &tmp))
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:718:4: note: Returning without writing to 'g->d'
+  718 |                         return 0;
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:325:3: note: Returning from 'rp_xgcd'
+  325 |                 rp_xgcd(&B, &G, &S, &T, &A, &F);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:326:11: note: The left operand of '!=' is a garbage value
+  326 |                 if (G.d != 0)
+      |                     ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:335:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  335 |         if (R->qm1 < (1u << 20)) {
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:388:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   15 |         uint32_t i;
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:403:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  403 |         if (R->qm1 >= (1u << 16))
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:420:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  420 |         uint8_t *u;
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:427:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  427 |         k ^= k >> 33;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:429:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |         k ^= k >> 33;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:442:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  442 |                 cap <<= 1;
+      |                     ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:498:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 if (p > ((u64)1 << 44))
+      |                                 ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:538:29: warning: parameter 'R' is unused [misc-unused-parameters]
+  538 | rp_const(const struct ring *R, struct rpoly *a, u64 c)
+      |                             ^
+/home/andrew/Code/ucas/src/gfield.c:555:32: warning: parameter 'B' is unused [misc-unused-parameters]
+   31 | rp_from_mod(const struct ring *B, struct rpoly *f, const u64 *c, int deg)
+      |             ~~~~~~~~~~~~~~~~~~~^~
+/home/andrew/Code/ucas/src/gfield.c:649:11: warning: The left operand of '<' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                  ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1339:2: note: Calling 'rp_gcd'
+ 1339 |         rp_gcd(R, &c, &f, &fd);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:695:2: note: Loop condition is true.  Entering loop body
+  695 |         while (y.d >= 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:696:3: note: Taking true branch
+  696 |                 if (!rp_divmod(R, &x, &y, NULL, &r))
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:697:4: note: Returning without writing to 'g->d'
+  697 |                         return 0;
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:1339:2: note: Returning from 'rp_gcd'
+ 1339 |         rp_gcd(R, &c, &f, &fd);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1340:2: note: Calling 'rp_divmod'
+ 1340 |         rp_divmod(R, &f, &c, &w, NULL);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:11: note: The left operand of '<' is a garbage value
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |             ~~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:657:11: warning: Out of bound access to memory preceding 'rr.c' [clang-analyzer-security.ArrayBound]
+  657 |                 u64 c = rr.c[i];
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is < 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking true branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1333:15: note: Assuming 'j' is > field 'd'
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1333:3: note: Loop condition is false. Execution continues on line 1335
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1336:3: note: Calling 'sff'
+ 1336 |                 sff(R, &g, mult * (int)p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:6: note: Assuming field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1340:2: note: Calling 'rp_divmod'
+ 1340 |         rp_divmod(R, &f, &c, &w, NULL);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Assuming field 'd' is >= 0
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/gfield.c:649:18: note: Assuming the condition is false
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:2: note: Taking false branch
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:652:6: note: Assuming field 'd' is < 0
+  652 |         if (qq.d < 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:652:2: note: Taking true branch
+  652 |         if (qq.d < 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:654:2: note: Loop condition is false. Execution continues on line 656
+  654 |         for (i = 0; i <= qq.d; i++)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:656:17: note: Assuming 'i' is >= field 'd'
+  656 |         for (i = rr.d; i >= b->d; i--) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:656:2: note: Loop condition is true.  Entering loop body
+  656 |         for (i = rr.d; i >= b->d; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:657:11: note: Access of 'rr.c' at a negative index
+  657 |                 u64 c = rr.c[i];
+      |                         ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:661:3: warning: Out of bound access to memory preceding 'qq.c' [clang-analyzer-security.ArrayBound]
+  661 |                 qq.c[i - b->d] = c;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1341:2: note: Loop condition is true.  Entering loop body
+ 1341 |         while (w.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1344:9: note: Field 'd' is > 0
+ 1344 |                 if (z.d > 0)
+      |                       ^
+/home/andrew/Code/ucas/src/gfield.c:1344:3: note: Taking true branch
+ 1344 |                 if (z.d > 0)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1341:2: note: Loop condition is false. Execution continues on line 1351
+ 1341 |         while (w.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1351:6: note: Assuming field 'd' is > 0
+ 1351 |         if (c.d > 0) {
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1351:2: note: Taking true branch
+ 1351 |         if (c.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1356:15: note: Assuming 'j' is > field 'd'
+ 1356 |                 for (j = 0; j <= g.d; j++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1356:3: note: Loop condition is false. Execution continues on line 1358
+ 1356 |                 for (j = 0; j <= g.d; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1359:3: note: Calling 'sff'
+ 1359 |                 sff(R, &g, mult * (int)p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:6: note: Assuming field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1341:9: note: Assuming field 'd' is > 0
+ 1341 |         while (w.d > 0) {
+      |                ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1341:2: note: Loop condition is true.  Entering loop body
+ 1341 |         while (w.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1343:3: note: Calling 'rp_divmod'
+ 1343 |                 rp_divmod(R, &w, &y, &z, NULL);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Assuming field 'd' is >= 0
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/gfield.c:649:28: note: Assuming index is less than 512, the number of 'const u64' elements in 'y.c'
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                                   ^~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:18: note: Assuming the condition is false
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:2: note: Taking false branch
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:652:6: note: Assuming field 'd' is < 0
+  652 |         if (qq.d < 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:652:2: note: Taking true branch
+  652 |         if (qq.d < 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:654:2: note: Loop condition is false. Execution continues on line 656
+  654 |         for (i = 0; i <= qq.d; i++)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:656:17: note: Assuming 'i' is >= field 'd'
+  656 |         for (i = rr.d; i >= b->d; i--) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:656:2: note: Loop condition is true.  Entering loop body
+  656 |         for (i = rr.d; i >= b->d; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:657:11: note: Assuming index is less than 512, the number of 'u64' elements in 'rr.c'
+  657 |                 u64 c = rr.c[i];
+      |                         ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:658:7: note: Assuming 'c' is not equal to 0
+  658 |                 if (c == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/gfield.c:658:3: note: Taking false branch
+  658 |                 if (c == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:661:3: note: Access of 'qq.c' at a negative index
+  661 |                 qq.c[i - b->d] = c;
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:774:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  774 |                 if (e & 1)
+      |                       ~ ^
+/home/andrew/Code/ucas/src/gfield.c:777:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  777 |                 e >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:1003:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1003 |         if (swaps & 1)
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/gfield.c:1158:8: warning: Out of bound access to memory preceding 'p' [clang-analyzer-security.ArrayBound]
+ 1158 |         *cp = p[n];
+      |               ^~~~
+/home/andrew/Code/ucas/src/gfield.c:1112:2: note: Calling 'rm_init'
+ 1112 |         rm_init(&h, n, n);
+      |         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:875:26: note: Assuming 'r' is <= 0
+  875 |         m->a = xcalloc((size_t)(r > 0 ? r : 1) * (c > 0 ? c : 1), sizeof *m->a);
+      |                                 ^~~~~
+/home/andrew/Code/ucas/src/gfield.c:875:26: note: 'r' is <= 0
+  875 |         m->a = xcalloc((size_t)(r > 0 ? r : 1) * (c > 0 ? c : 1), sizeof *m->a);
+      |                                 ^
+/home/andrew/Code/ucas/src/gfield.c:875:26: note: '?' condition is false
+/home/andrew/Code/ucas/src/gfield.c:875:44: note: 'c' is <= 0
+  875 |         m->a = xcalloc((size_t)(r > 0 ? r : 1) * (c > 0 ? c : 1), sizeof *m->a);
+      |                                                   ^
+/home/andrew/Code/ucas/src/gfield.c:875:44: note: '?' condition is false
+/home/andrew/Code/ucas/src/gfield.c:1112:2: note: Returning from 'rm_init'
+ 1112 |         rm_init(&h, n, n);
+      |         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1114:15: note: Assuming the condition is false
+ 1114 |         for (mm = 1; mm < n - 1; mm++) {
+      |                      ^~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1114:2: note: Loop condition is false. Execution continues on line 1143
+ 1114 |         for (mm = 1; mm < n - 1; mm++) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1144:14: note: 'k' is > 'n'
+ 1144 |         for (k = 1; k <= n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/gfield.c:1144:2: note: Loop condition is false. Execution continues on line 1158
+ 1144 |         for (k = 1; k <= n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1158:8: note: Access of 'p' at a negative index
+ 1158 |         *cp = p[n];
+      |               ^~~~
+/home/andrew/Code/ucas/src/gfield.c:1200:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |         rng_state ^= rng_state << 13;
+      |                                ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:1201:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1201 |         rng_state ^= rng_state >> 7;
+      |                                ~~ ^
+/home/andrew/Code/ucas/src/gfield.c:1202:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1202 |         rng_state ^= rng_state << 17;
+      |                                ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:1230:29: warning: parameter 'R' is unused [misc-unused-parameters]
+ 1230 | fac_push(const struct ring *R, const struct rpoly *g, int m)
+      |          ~~~~~~~~~~~~~~~~~~~^~
+/home/andrew/Code/ucas/src/gfield.c:1341:13: warning: The left operand of '>' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1341 |         while (w.d > 0) {
+      |                    ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is < 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking true branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1333:15: note: Assuming 'j' is > field 'd'
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1333:3: note: Loop condition is false. Execution continues on line 1335
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1336:3: note: Calling 'sff'
+ 1336 |                 sff(R, &g, mult * (int)p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:6: note: Assuming field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1340:2: note: Calling 'rp_divmod'
+ 1340 |         rp_divmod(R, &f, &c, &w, NULL);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Assuming field 'd' is < 0
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:15: note: Left side of '||' is true
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                      ^
+/home/andrew/Code/ucas/src/gfield.c:650:3: note: Returning without writing to 'q->d'
+  650 |                 return 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1340:2: note: Returning from 'rp_divmod'
+ 1340 |         rp_divmod(R, &f, &c, &w, NULL);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1341:13: note: The left operand of '>' is a garbage value
+ 1341 |         while (w.d > 0) {
+      |                ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:1344:11: warning: The left operand of '>' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1344 |                 if (z.d > 0)
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1341:2: note: Loop condition is true.  Entering loop body
+ 1341 |         while (w.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1343:3: note: Calling 'rp_divmod'
+ 1343 |                 rp_divmod(R, &w, &y, &z, NULL);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:9: note: Field 'd' is >= 0
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:649:6: note: Left side of '||' is false
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:649:18: note: Assuming the condition is true
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:649:2: note: Taking true branch
+  649 |         if (b->d < 0 || !r_inv(R, b->c[b->d], &li))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:650:3: note: Returning without writing to 'q->d'
+  650 |                 return 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1343:3: note: Returning from 'rp_divmod'
+ 1343 |                 rp_divmod(R, &w, &y, &z, NULL);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1344:11: note: The left operand of '>' is a garbage value
+ 1344 |                 if (z.d > 0)
+      |                     ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:1351:10: warning: The left operand of '>' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1351 |         if (c.d > 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1419:6: note: Calling 'rp_factor'
+ 1419 |         k = rp_factor(R, f, fac, mult, RMAXDEG + 1, &lead);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1375:12: note: Field 'd' is >= 0
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/gfield.c:1375:10: note: '?' condition is true
+ 1375 |         *lead = f.d >= 0 ? f.c[f.d] : 0;
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1376:8: note: Field 'd' is >= 1
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |               ^
+/home/andrew/Code/ucas/src/gfield.c:1376:6: note: Left side of '||' is false
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1376:2: note: Taking false branch
+ 1376 |         if (f.d < 1 || !rp_monic(R, &f))
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1378:2: note: Calling 'sff'
+ 1378 |         sff(R, &f, 1);
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:9: note: Field 'd' is < 0
+ 1328 |         if (fd.d < 0) {
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking true branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1333:15: note: Assuming 'j' is <= field 'd'
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1333:3: note: Loop condition is true.  Entering loop body
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1333:15: note: Assuming 'j' is > field 'd'
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1333:3: note: Loop condition is false. Execution continues on line 1335
+ 1333 |                 for (j = 0; j <= g.d; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:1336:3: note: Calling 'sff'
+ 1336 |                 sff(R, &g, mult * (int)p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:6: note: Assuming field 'd' is >= 0
+ 1328 |         if (fd.d < 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1328:2: note: Taking false branch
+ 1328 |         if (fd.d < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1339:2: note: Calling 'rp_gcd'
+ 1339 |         rp_gcd(R, &c, &f, &fd);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:695:11: note: Field 'd' is >= 0
+  695 |         while (y.d >= 0) {
+      |                  ^
+/home/andrew/Code/ucas/src/gfield.c:695:2: note: Loop condition is true.  Entering loop body
+  695 |         while (y.d >= 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:696:7: note: Assuming the condition is true
+  696 |                 if (!rp_divmod(R, &x, &y, NULL, &r))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:696:3: note: Taking true branch
+  696 |                 if (!rp_divmod(R, &x, &y, NULL, &r))
+      |                 ^
+/home/andrew/Code/ucas/src/gfield.c:697:4: note: Returning without writing to 'g->d'
+  697 |                         return 0;
+      |                         ^
+/home/andrew/Code/ucas/src/gfield.c:1339:2: note: Returning from 'rp_gcd'
+ 1339 |         rp_gcd(R, &c, &f, &fd);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1341:9: note: Assuming field 'd' is <= 0
+ 1341 |         while (w.d > 0) {
+      |                ^~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1341:2: note: Loop condition is false. Execution continues on line 1351
+ 1341 |         while (w.d > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1351:10: note: The left operand of '>' is a garbage value
+ 1351 |         if (c.d > 0) {
+      |             ~~~ ^
+/home/andrew/Code/ucas/src/gfield.c:1427:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1427 |                         if (qd > ((u128)1 << 64)) {
+      |                                           ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:1452:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1452 |                         if (l >> 64) {
+      |                               ~~ ^~
+/home/andrew/Code/ucas/src/gfield.c:1459:2: warning: Address of stack memory associated with local variable 'mult' is still referred to by the global variable 'multv' upon returning to the caller.  This will be a dangling reference [clang-analyzer-core.StackAddressEscape]
+ 1413 |         return res;
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Assuming field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:9: note: Field 'd' is >= 1
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                ^
+/home/andrew/Code/ucas/src/gfield.c:1417:6: note: Left side of '||' is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/gfield.c:1417:18: note: Assuming the condition is false
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gfield.c:1417:2: note: Taking false branch
+ 1417 |         if (f->d < 1 || f->c[0] == 0)
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1420:2: note: Loop condition is false. Execution continues on line 1459
+ 1420 |         for (i = 0; i < k; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/gfield.c:1459:2: note: Address of stack memory associated with local variable 'mult' is still referred to by the global variable 'multv' upon returning to the caller.  This will be a dangling reference
+ 1413 |         return res;
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

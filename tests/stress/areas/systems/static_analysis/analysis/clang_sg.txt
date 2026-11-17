@@ -1,0 +1,345 @@
+src/sg.c:1958:17: warning: Right shift overflows the capacity of 'uint64_t' [core.BitwiseShift]
+ 1958 |         r->k |= ((a->k >> j) & 1) << i;
+      |                        ^
+src/sg.c:2119:10: note: Calling 'int_width'
+ 2119 |         int w = int_width(N.ty[e]), i, op = N.op[e];
+      |                 ^~~~~~~~~~~~~~~~~~
+src/sg.c:1895:9: note: Assuming the condition is true
+ 1895 |         return TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 0;
+      |                ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:1895:26: note: Left side of '||' is true
+ 1895 |         return TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 0;
+      |                                 ^
+src/sg.c:1895:2: note: Returning value, which participates in a condition later
+ 1895 |         return TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 0;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:2119:10: note: Returning from 'int_width'
+ 2119 |         int w = int_width(N.ty[e]), i, op = N.op[e];
+      |                 ^~~~~~~~~~~~~~~~~~
+src/sg.c:2123:6: note: Assuming the condition is false
+ 2123 |         if (is_const(e) && TY_ISINT(N.ty[e])) {
+      |             ^~~~~~~~~~~
+src/sg.c:2123:18: note: Left side of '&&' is false
+ 2123 |         if (is_const(e) && TY_ISINT(N.ty[e])) {
+      |                         ^
+src/sg.c:2128:6: note: Assuming 'depth' is <= 200
+ 2128 |         if (depth > 200 || --cx->budget < 0)
+      |             ^~~~~~~~~~~
+src/sg.c:2128:6: note: Left side of '||' is false
+src/sg.c:2128:21: note: Assuming the condition is false
+ 2128 |         if (depth > 200 || --cx->budget < 0)
+      |                            ^~~~~~~~~~~~~~~~
+src/sg.c:2128:2: note: Taking false branch
+ 2128 |         if (depth > 200 || --cx->budget < 0)
+      |         ^
+src/sg.c:2130:6: note: Assuming 'op' is not equal to O_VAR
+ 2130 |         if (op == O_VAR && N.ki[e] >= MAXP && N.ki[e] < NSLOT &&
+      |             ^~~~~~~~~~~
+src/sg.c:2130:18: note: Left side of '&&' is false
+ 2130 |         if (op == O_VAR && N.ki[e] >= MAXP && N.ki[e] < NSLOT &&
+      |                         ^
+src/sg.c:2135:6: note: Assuming 'op' is not equal to O_INDEX
+ 2135 |         if (op == O_INDEX)
+      |             ^~~~~~~~~~~~~
+src/sg.c:2135:2: note: Taking false branch
+ 2135 |         if (op == O_INDEX)
+      |         ^
+src/sg.c:2137:6: note: Assuming 'op' is not equal to O_ADD
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |             ^~~~~~~~~~~
+src/sg.c:2137:6: note: Left side of '||' is false
+src/sg.c:2137:21: note: Assuming 'op' is not equal to O_SUB
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |                            ^~~~~~~~~~~
+src/sg.c:2137:6: note: Left side of '||' is false
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |             ^
+src/sg.c:2137:36: note: Assuming 'op' is not equal to O_MUL
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |                                           ^~~~~~~~~~~
+src/sg.c:2137:6: note: Left side of '||' is false
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |             ^
+src/sg.c:2137:51: note: Assuming 'op' is not equal to O_DIV
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |                                                          ^~~~~~~~~~~
+src/sg.c:2137:6: note: Left side of '||' is false
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |             ^
+src/sg.c:2138:6: note: Assuming 'op' is not equal to O_MOD
+ 2138 |             op == O_MOD || (!w && (op == O_AND || op == O_OR || op == O_XOR ||
+      |             ^~~~~~~~~~~
+src/sg.c:2137:6: note: Left side of '||' is false
+ 2137 |         if (op == O_ADD || op == O_SUB || op == O_MUL || op == O_DIV ||
+      |             ^
+src/sg.c:2138:22: note: Assuming 'w' is not equal to 0
+ 2138 |             op == O_MOD || (!w && (op == O_AND || op == O_OR || op == O_XOR ||
+      |                             ^~
+src/sg.c:2138:25: note: Left side of '&&' is false
+ 2138 |             op == O_MOD || (!w && (op == O_AND || op == O_OR || op == O_XOR ||
+      |                                ^
+src/sg.c:2163:7: note: 'w' is not equal to 0
+ 2163 |         if (!w)
+      |              ^
+src/sg.c:2163:2: note: Taking false branch
+ 2163 |         if (!w)
+      |         ^
+src/sg.c:2165:2: note: Control jumps to 'case O_CAST:'  at line 2230
+ 2165 |         switch (op) {
+      |         ^
+src/sg.c:2233:8: note: Value assigned to 'a.k'
+ 2233 |                 if (!aff_of(N.a[e], cx, &a, depth + 1))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:2233:7: note: Assuming the condition is false
+ 2233 |                 if (!aff_of(N.a[e], cx, &a, depth + 1))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:2233:3: note: Taking false branch
+ 2233 |                 if (!aff_of(N.a[e], cx, &a, depth + 1))
+      |                 ^
+src/sg.c:2235:7: note: Assuming 'wa' is 0
+ 2235 |                 if (!wa)
+      |                     ^~~
+src/sg.c:2235:3: note: Taking true branch
+ 2235 |                 if (!wa)
+      |                 ^
+src/sg.c:2237:15: note: 'i' is < 'w'
+ 2237 |                 for (i = 0; i < w; i++) {
+      |                             ^
+src/sg.c:2237:3: note: Loop condition is true.  Entering loop body
+ 2237 |                 for (i = 0; i < w; i++) {
+      |                 ^
+src/sg.c:2238:12: note: Assuming 'i' is >= 'wa'
+ 2238 |                         int j = i < wa ? i : sgn ? wa - 1 : -1;
+      |                                 ^~~~~~
+src/sg.c:2238:12: note: '?' condition is false
+src/sg.c:2238:25: note: 'sgn' is 1
+ 2238 |                         int j = i < wa ? i : sgn ? wa - 1 : -1;
+      |                                              ^~~
+src/sg.c:2238:25: note: '?' condition is true
+src/sg.c:2238:4: note: 'j' initialized here
+ 2238 |                         int j = i < wa ? i : sgn ? wa - 1 : -1;
+      |                         ^~~~~
+src/sg.c:2239:8: note: Assuming 'j' is >= 0
+ 2239 |                         if (j < 0)
+      |                             ^~~~~
+src/sg.c:2239:4: note: Taking false branch
+ 2239 |                         if (j < 0)
+      |                         ^
+src/sg.c:2241:23: note: Passing value via 4th parameter 'j'
+ 2241 |                         aff_take(r, i, &a, j);
+      |                                            ^
+src/sg.c:2241:4: note: Calling 'aff_take'
+ 2241 |                         aff_take(r, i, &a, j);
+      |                         ^~~~~~~~~~~~~~~~~~~~~
+src/sg.c:1958:17: note: The result of right shift is undefined because the right operand is >= 2147483647, not smaller than 64, the capacity of 'uint64_t'
+ 1958 |         r->k |= ((a->k >> j) & 1) << i;
+      |                   ~~~~~^~~~
+src/sg.c:3394:56: warning: Right operand is negative in left shift [core.BitwiseShift]
+ 3394 |         return *hi < CIV_TOP && (w >= 63 || *hi < ((int64_t)1 << (w - 1)));
+      |                                                               ^
+src/sg.c:3646:6: note: Assuming the condition is false
+ 3646 |         if (TYK(ty) != K_UINT || f->np == MAXP || !cclass_available(g->m,
+      |             ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:3646:6: note: Left side of '||' is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:3646:27: note: Assuming field 'np' is not equal to MAXP
+ 3646 |         if (TYK(ty) != K_UINT || f->np == MAXP || !cclass_available(g->m,
+      |                                  ^~~~~~~~~~~~~
+src/sg.c:3646:6: note: Left side of '||' is false
+ 3646 |         if (TYK(ty) != K_UINT || f->np == MAXP || !cclass_available(g->m,
+      |             ^
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:3646:44: note: Assuming the condition is false
+ 3646 |         if (TYK(ty) != K_UINT || f->np == MAXP || !cclass_available(g->m,
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~
+ 3647 |             C_SG_BALLOT))
+      |             ~~~~~~~~~~~~
+src/sg.c:3646:2: note: Taking false branch
+ 3646 |         if (TYK(ty) != K_UINT || f->np == MAXP || !cclass_available(g->m,
+      |         ^
+src/sg.c:3650:6: note: Assuming the condition is true
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |             ^~~~~~~~~~~~~~~~~~~
+src/sg.c:3650:6: note: Left side of '&&' is true
+src/sg.c:3650:29: note: Assuming the condition is true
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |                                    ^~~~~~~~~~~~~~~~~~~
+src/sg.c:3650:6: note: Left side of '&&' is true
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |             ^
+src/sg.c:3650:52: note: Assuming the condition is true
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |                                                           ^~~~~~~~~~~~~~~~~~~
+src/sg.c:3650:6: note: Left side of '&&' is true
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |             ^
+src/sg.c:3651:6: note: Assuming the condition is true
+ 3651 |             !((uint64_t)(N.ki[N.b[body]] + 1) & (uint64_t)N.ki[N.b[body]])) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3650:2: note: Taking true branch
+ 3650 |         if (N.op[body] == O_AND && is_const(N.b[body]) && N.ki[N.b[body]] > 0 &&
+      |         ^
+src/sg.c:3652:21: note: Field 'w' is < 64
+ 3652 |                 for (k->w = 1; k->w < 64 && (uint64_t)N.ki[N.b[body]] >> k->w;
+      |                                   ^
+src/sg.c:3652:18: note: Left side of '&&' is true
+ 3652 |                 for (k->w = 1; k->w < 64 && (uint64_t)N.ki[N.b[body]] >> k->w;
+      |                                ^
+src/sg.c:3652:3: note: Loop condition is false. Execution continues on line 3655
+ 3652 |                 for (k->w = 1; k->w < 64 && (uint64_t)N.ki[N.b[body]] >> k->w;
+      |                 ^
+src/sg.c:3665:9: note: Field 'w' is >= 1
+ 3665 |         if (k->w < 1 || k->w >= Tw || !civ_of(&cv, c->inc, &tlo, &thi, 0) ||
+      |                ^
+src/sg.c:3665:6: note: Left side of '||' is false
+ 3665 |         if (k->w < 1 || k->w >= Tw || !civ_of(&cv, c->inc, &tlo, &thi, 0) ||
+      |             ^
+src/sg.c:3665:18: note: Assuming 'Tw' is > field 'w'
+ 3665 |         if (k->w < 1 || k->w >= Tw || !civ_of(&cv, c->inc, &tlo, &thi, 0) ||
+      |                         ^~~~~~~~~~
+src/sg.c:3665:6: note: Left side of '||' is false
+ 3665 |         if (k->w < 1 || k->w >= Tw || !civ_of(&cv, c->inc, &tlo, &thi, 0) ||
+      |             ^
+src/sg.c:3665:33: note: Calling 'civ_of'
+ 3665 |         if (k->w < 1 || k->w >= Tw || !civ_of(&cv, c->inc, &tlo, &thi, 0) ||
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3403:6: note: 'depth' is <= 64
+ 3403 |         if (depth > 64)
+      |             ^~~~~
+src/sg.c:3403:2: note: Taking false branch
+ 3403 |         if (depth > 64)
+      |         ^
+src/sg.c:3405:2: note: Control jumps to 'case O_CAST:'  at line 3429
+ 3405 |         switch (op) {
+      |         ^
+src/sg.c:3430:8: note: Assuming the condition is true
+ 3430 |                 if (!TY_ISINT(N.ty[e]) || !civ_of(c, N.a[e], lo, hi, depth + 1))
+      |                      ^~~~~~~~~~~~~~~~~
+src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:3430:8: note: Left side of '||' is true
+src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^
+src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+src/sg.c:3430:7: note: Assuming the condition is false
+ 3430 |                 if (!TY_ISINT(N.ty[e]) || !civ_of(c, N.a[e], lo, hi, depth + 1))
+      |                     ^~~~~~~~~~~~~~~~~~
+src/sg.c:3430:7: note: Left side of '||' is false
+src/sg.c:3430:29: note: Assuming the condition is false
+ 3430 |                 if (!TY_ISINT(N.ty[e]) || !civ_of(c, N.a[e], lo, hi, depth + 1))
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3430:3: note: Taking false branch
+ 3430 |                 if (!TY_ISINT(N.ty[e]) || !civ_of(c, N.a[e], lo, hi, depth + 1))
+      |                 ^
+src/sg.c:3432:10: note: Calling 'civ_fit'
+ 3432 |                 return civ_fit(N.ty[e], lo, hi);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3384:6: note: Assuming the condition is false
+ 3384 |         if (TYK(t) == K_BOOL)
+      |             ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/sg.c:3384:2: note: Taking false branch
+ 3384 |         if (TYK(t) == K_BOOL)
+      |         ^
+src/sg.c:3386:23: note: Left side of '&&' is false
+ 3386 |         if (TYK(t) == K_UINT && w < 63) {
+      |                              ^
+src/sg.c:3394:9: note: Assuming the condition is true
+ 3394 |         return *hi < CIV_TOP && (w >= 63 || *hi < ((int64_t)1 << (w - 1)));
+      |                ^~~~~~~~~~~~~
+src/sg.c:3394:9: note: Left side of '&&' is true
+src/sg.c:3394:27: note: 'w' is < 63
+ 3394 |         return *hi < CIV_TOP && (w >= 63 || *hi < ((int64_t)1 << (w - 1)));
+      |                                  ^
+src/sg.c:3394:27: note: Left side of '||' is false
+src/sg.c:3394:56: note: The result of left shift is undefined because the right operand is negative
+ 3394 |         return *hi < CIV_TOP && (w >= 63 || *hi < ((int64_t)1 << (w - 1)));
+      |                                                    ~~~~~~~~~~~^~~~~~~~~~
+src/sg.c:3727:29: warning: Right shift overflows the capacity of 'int64_t' [core.BitwiseShift]
+ 3727 |                         cb = (cb + k->xb[i + 1]) >> k->w;
+      |                              ~~~~~~~~~~~~~~~~~~~~^~~~~~~
+src/sg.c:3715:8: note: Calling 'sg_replaced'
+ 3715 |         f1z = sg_replaced(f1, k->vb, Zc);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:860:6: note: Assuming the condition is true
+  860 |         if (setjmp(fail_jmp) == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+src/sg.c:860:2: note: Taking true branch
+  860 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+src/sg.c:864:2: note: Returning value (loaded from 'r'), which participates in a condition later
+  864 |         return r;
+      |         ^~~~~~~~
+src/sg.c:3715:8: note: Returning from 'sg_replaced'
+ 3715 |         f1z = sg_replaced(f1, k->vb, Zc);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3716:6: note: Assuming 'f1z' is not equal to 0
+ 3716 |         if (!f1z || !proved_eq(&f2, f1z, ripple(Zc, L, W, k->w, ty, k->masked),
+      |             ^~~~
+src/sg.c:3716:6: note: Left side of '||' is false
+src/sg.c:3716:35: note: Calling 'ripple'
+ 3716 |         if (!f1z || !proved_eq(&f2, f1z, ripple(Zc, L, W, k->w, ty, k->masked),
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3512:14: note: Assuming 'k' is >= 'W'
+ 3512 |         for (k = 0; k < W; k++) {
+      |                     ^~~~~
+src/sg.c:3512:2: note: Loop condition is false. Execution continues on line 3518
+ 3512 |         for (k = 0; k < W; k++) {
+      |         ^
+src/sg.c:3518:6: note: Assuming 'masked' is not equal to 0
+ 3518 |         if (masked)
+      |             ^~~~~~
+src/sg.c:3518:2: note: Taking true branch
+ 3518 |         if (masked)
+      |         ^
+src/sg.c:3519:47: note: Calling 'wmask'
+ 3519 |                 r = mk_bin(O_AND, r, mk_const_i(T, (int64_t)wmask(w)));
+      |                                                             ^~~~~~~~
+src/sg.c:1889:9: note: Assuming 'w' is >= 64
+ 1889 |         return w >= 64 ? ~0ULL : (1ULL << w) - 1;
+      |                ^~~~~~~
+src/sg.c:1889:9: note: '?' condition is true
+src/sg.c:3519:47: note: Returning from 'wmask'
+ 3519 |                 r = mk_bin(O_AND, r, mk_const_i(T, (int64_t)wmask(w)));
+      |                                                             ^~~~~~~~
+src/sg.c:3716:35: note: Returning from 'ripple'
+ 3716 |         if (!f1z || !proved_eq(&f2, f1z, ripple(Zc, L, W, k->w, ty, k->masked),
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/sg.c:3716:2: note: Taking false branch
+ 3716 |         if (!f1z || !proved_eq(&f2, f1z, ripple(Zc, L, W, k->w, ty, k->masked),
+      |         ^
+src/sg.c:3722:14: note: Assuming 'i' is < field 'ns'
+ 3722 |         for (i = 0; i < k->ns; i++) {
+      |                     ^~~~~~~~~
+src/sg.c:3722:2: note: Loop condition is true.  Entering loop body
+ 3722 |         for (i = 0; i < k->ns; i++) {
+      |         ^
+src/sg.c:3727:29: note: The result of right shift is undefined because the right operand is >= 64, not smaller than 64, the capacity of 'int64_t'
+ 3727 |                         cb = (cb + k->xb[i + 1]) >> k->w;
+      |                              ~~~~~~~~~~~~~~~~~~~~^~~~~~~
+3 warnings generated.

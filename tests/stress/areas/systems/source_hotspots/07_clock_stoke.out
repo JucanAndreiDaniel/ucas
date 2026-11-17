@@ -1,0 +1,19 @@
+> f(x: u32 in 0..255) = (x*3+1)/2
+> stoke f steps 200
+stoke f under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg udot4x8 sdot4x8 sudot4x8 udot4x8sat sdot4x8sat sudot4x8sat),
+  4 chains of 200 proposals, seed 1; f as written costs 5
+  800 proposals, 680 accepted, 0 at distance 0 on the 40 tests (0 counterexamples joined them), 0 verified
+  -> nothing cheaper than 5 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> g(x: u8) = x&15
+> find g 2 stoke
+find g: 256 points, computing in u8, costs from gt1030
+  cost 1   x & 15                                   mask
+  cost 1   x & 8 | x & 7                            exact
+  [searched every term up to cost 3: 18122 distinct columns; 'more' continues]
+stoke g under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 200000 proposals, seed 1; g as written costs 1
+  800000 proposals, 662505 accepted, 661172 at distance 0 on the 40 tests (0 counterexamples joined them), 3 verified
+  -> nothing cheaper than 1 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> show g
+g(x: u8) = x & 15
+  -> u8

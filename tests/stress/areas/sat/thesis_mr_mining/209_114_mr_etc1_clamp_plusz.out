@@ -1,0 +1,16 @@
+> f(v: i8, m: i8) = min(max(v + m, 0), 255)
+  note: literal 255 does not fit i8; it becomes -1
+> g(v: i8, m: i8) = v + m
+> f2(v: i8, m: i8) = 0 + (min(max(v + m, 0), 255))
+  note: literal 255 does not fit i8; it becomes -1
+> g2(v: i8, m: i8) = 0 + (v + m)
+> f1(v: i8, m: i8) = 0 + (min(max(v + m, 0), 255))
+  note: literal 255 does not fit i8; it becomes -1
+> equiv f g
+f and g differ at 65280 points, e.g. v=-128, m=-128: -1 vs 0
+> equiv f2 g2
+f2 and g2 differ at 65280 points, e.g. v=-128, m=-128: -1 vs 0
+> equiv f1 g
+f1 and g differ at 65280 points, e.g. v=-128, m=-128: -1 vs 0
+> equiv f f2
+f and f2 are equal on the domain of f (exhaustive)

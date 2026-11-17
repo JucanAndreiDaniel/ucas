@@ -1,0 +1,316 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/winograd.c:34:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   34 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   35 | #include "fuse.h"
+/home/andrew/Code/ucas/src/winograd.c:47:8: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   38 | #include "winograd.h"
+   39 | 
+   40 | #include <math.h>
+   41 | #include <stdlib.h>
+   42 | #include <string.h>
+   43 | 
+   44 | #define WG_MAXT 16
+   45 | 
+   46 | static int
+   47 | gather(nid e, nid *x, nid *y, int n)
+      |        ^
+/home/andrew/Code/ucas/src/winograd.c:51:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+   51 |         if (N.op[e] == O_ADD) {
+      |             ^
+/home/andrew/Code/ucas/src/winograd.c:51:17: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+   51 |         if (N.op[e] == O_ADD) {
+      |                        ^
+/home/andrew/Code/ucas/src/winograd.c:55:17: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+   55 |         if (N.op[e] == O_MUL) {
+      |                        ^
+/home/andrew/Code/ucas/src/winograd.c:66:2: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+   66 |         nid s = t[0];
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:219:6: note: Assuming the condition is false
+  219 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:219:2: note: Taking false branch
+  219 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:221:6: note: Assuming the condition is false
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:221:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/winograd.c:221:36: note: Assuming the condition is false
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:221:2: note: Taking false branch
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:226:9: note: Assuming the condition is false
+  226 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:226:2: note: Loop condition is false. Execution continues on line 244
+  226 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:245:2: note: Calling 'winograd_run'
+  245 |         winograd_run(f, rows, cols, tol);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:110:47: note: Assuming the condition is true
+  110 |         int n = gather(f->body, x, y, 0), h, j, fp = TY_FP(N.ty[f->body]);
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/winograd.c:110:47: note: Left side of '||' is true
+  110 |         int n = gather(f->body, x, y, 0), h, j, fp = TY_FP(N.ty[f->body]);
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+/home/andrew/Code/ucas/src/winograd.c:115:6: note: 'n' is < 2
+  115 |         if (n < 2 || (n & 1))
+      |             ^
+/home/andrew/Code/ucas/src/winograd.c:115:12: note: Left side of '||' is true
+  115 |         if (n < 2 || (n & 1))
+      |                   ^
+/home/andrew/Code/ucas/src/winograd.c:119:2: note: Loop condition is false. Execution continues on line 125
+  119 |         for (j = 0; j < h; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:125:7: note: Calling 'sum_of'
+  125 |         xi = sum_of(xx, h);
+      |              ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:66:2: note: Assigned value is uninitialized
+   66 |         nid s = t[0];
+      |         ^       ~~~~
+/home/andrew/Code/ucas/src/winograd.c:70:7: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+   70 |                 s = mk_bin(O_ADD, s, t[i]);
+      |                     ^
+/home/andrew/Code/ucas/src/winograd.c:77:19: warning: no header providing "func" is directly included [misc-include-cleaner]
+   77 | amax(const struct func *f, nid e)
+      |                   ^
+/home/andrew/Code/ucas/src/winograd.c:81:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+   81 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:82:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+   82 |         case O_CONST:
+      |              ^
+/home/andrew/Code/ucas/src/winograd.c:83:15: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+   83 |                 return fabs(TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e]);
+      |                             ^
+/home/andrew/Code/ucas/src/winograd.c:83:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/winograd.c:84:7: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   84 |         case O_VAR:
+      |              ^
+/home/andrew/Code/ucas/src/winograd.c:87:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                 if (TY_FP(f->p[N.ki[e]].ty))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/winograd.c:91:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+   91 |         case O_CAST: case O_NEG:
+      |              ^
+/home/andrew/Code/ucas/src/winograd.c:91:20: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+   91 |         case O_CAST: case O_NEG:
+      |                           ^
+/home/andrew/Code/ucas/src/winograd.c:93:19: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+   93 |         case O_ADD: case O_SUB: case O_MUL:
+      |                          ^
+/home/andrew/Code/ucas/src/winograd.c:106:15: warning: no header providing "model" is directly included [misc-include-cleaner]
+  106 |         const struct model *m = model_active();
+      |                      ^
+/home/andrew/Code/ucas/src/winograd.c:106:26: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+  106 |         const struct model *m = model_active();
+      |                                 ^
+/home/andrew/Code/ucas/src/winograd.c:107:19: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  107 |         const char *mn = sym_str(m->name);
+      |                          ^
+/home/andrew/Code/ucas/src/winograd.c:110:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  110 |         int n = gather(f->body, x, y, 0), h, j, fp = TY_FP(N.ty[f->body]);
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/winograd.c:113:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  113 |         struct sbuf how = {0};
+      |                ^
+/home/andrew/Code/ucas/src/winograd.c:115:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  115 |         if (n < 2 || (n & 1))
+      |                       ^ ~
+/home/andrew/Code/ucas/src/winograd.c:116:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  116 |                 fail("winograd: %s is not a sum of an even number of products "
+      |                 ^
+/home/andrew/Code/ucas/src/winograd.c:117:32: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  117 |                     "(x0*y0 + x1*y1 + ...)", node_str(f->body));
+      |                                              ^
+/home/andrew/Code/ucas/src/winograd.c:120:39: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  120 |                 pr[j] = mk_bin(O_MUL, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]),
+      |                                                     ^
+/home/andrew/Code/ucas/src/winograd.c:120:41: note: make conversion explicit to silence this warning
+   41 |                 pr[j] = mk_bin(O_MUL, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]),
+      |                                                       ^~~~~
+      |                                                       (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:120:41: note: perform multiplication in a wider type
+  120 |                 pr[j] = mk_bin(O_MUL, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]),
+      |                                                       ^
+      |                                                       (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:121:35: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  121 |                     mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                 ^
+/home/andrew/Code/ucas/src/winograd.c:121:37: note: make conversion explicit to silence this warning
+  121 |                     mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                   ^~~~~
+      |                                                   (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:121:37: note: perform multiplication in a wider type
+  121 |                     mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                   ^
+      |                                                   (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:122:25: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  122 |                 xx[j] = mk_bin(O_MUL, x[2 * j], x[2 * j + 1]);
+      |                                       ^
+/home/andrew/Code/ucas/src/winograd.c:122:27: note: make conversion explicit to silence this warning
+  122 |                 xx[j] = mk_bin(O_MUL, x[2 * j], x[2 * j + 1]);
+      |                                         ^~~~~
+      |                                         (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:122:27: note: perform multiplication in a wider type
+  122 |                 xx[j] = mk_bin(O_MUL, x[2 * j], x[2 * j + 1]);
+      |                                         ^
+      |                                         (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:123:25: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  123 |                 yy[j] = mk_bin(O_MUL, y[2 * j], y[2 * j + 1]);
+      |                                       ^
+/home/andrew/Code/ucas/src/winograd.c:123:27: note: make conversion explicit to silence this warning
+  123 |                 yy[j] = mk_bin(O_MUL, y[2 * j], y[2 * j + 1]);
+      |                                         ^~~~~
+      |                                         (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:123:27: note: perform multiplication in a wider type
+  123 |                 yy[j] = mk_bin(O_MUL, y[2 * j], y[2 * j + 1]);
+      |                                         ^
+      |                                         (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:129:7: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  129 |         XI = mk_var(MAXP + 1, sym_cstr("xi"), N.ty[xi]);
+      |              ^
+/home/andrew/Code/ucas/src/winograd.c:129:14: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+  129 |         XI = mk_var(MAXP + 1, sym_cstr("xi"), N.ty[xi]);
+      |                     ^
+/home/andrew/Code/ucas/src/winograd.c:129:24: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  129 |         XI = mk_var(MAXP + 1, sym_cstr("xi"), N.ty[xi]);
+      |                               ^
+/home/andrew/Code/ucas/src/winograd.c:140:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   41 |         printf("winograd %s: %d products as %d pair products and two "
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:143:44: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  143 |         printf("  per output: %s - (xi + eta)\n", shared_str(sum_of(pr, h),
+      |                                                   ^
+/home/andrew/Code/ucas/src/winograd.c:159:32: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  159 |                 double s = 0, u = ldexp(1.0, TYW(N.ty[f->body]) == 64 ? -53 :
+      |                                              ^
+/home/andrew/Code/ucas/src/winograd.c:159:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/winograd.c:160:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  160 |                     TYW(N.ty[f->body]) == 16 ? -11 : -24), g, a;
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/winograd.c:163:30: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  163 |                         a = amax(f, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]));
+      |                                                   ^
+/home/andrew/Code/ucas/src/winograd.c:163:32: note: make conversion explicit to silence this warning
+  163 |                         a = amax(f, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]));
+      |                                                     ^~~~~
+      |                                                     (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:163:32: note: perform multiplication in a wider type
+  163 |                         a = amax(f, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]));
+      |                                                     ^
+      |                                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:164:44: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  164 |                         g = amax(f, mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                                 ^
+/home/andrew/Code/ucas/src/winograd.c:164:46: note: make conversion explicit to silence this warning
+  164 |                         g = amax(f, mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                                   ^~~~~
+      |                                                                   (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/winograd.c:164:46: note: perform multiplication in a wider type
+  164 |                         g = amax(f, mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
+      |                                                                   ^
+      |                                                                   (ptrdiff_t)
+/home/andrew/Code/ucas/src/winograd.c:213:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   41 |         uint32_t at = cmdp_pos(p);
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:213:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+  213 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/winograd.c:217:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  217 |         int64_t v;
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:219:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+  219 |         if (!cmdp_word(p, w, sizeof w))
+      |              ^
+/home/andrew/Code/ucas/src/winograd.c:221:36: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |                                           ^
+/home/andrew/Code/ucas/src/winograd.c:222:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+  222 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/winograd.c:225:6: warning: no header providing "cmdp_func" is directly included [misc-include-cleaner]
+  225 |         f = cmdp_func(p, stop);
+      |             ^
+/home/andrew/Code/ucas/src/winograd.c:226:10: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+  226 |         while (!cmdp_eos(p)) {
+      |                 ^
+/home/andrew/Code/ucas/src/winograd.c:227:7: warning: no header providing "cmdp_kw" is directly included [misc-include-cleaner]
+  227 |                 if (cmdp_kw(p, "rows")) {
+      |                     ^
+/home/andrew/Code/ucas/src/winograd.c:228:9: warning: no header providing "cmdp_int" is directly included [misc-include-cleaner]
+  228 |                         if (!cmdp_int(p, &v) || v < 1)
+      |                              ^
+/home/andrew/Code/ucas/src/winograd.c:236:10: warning: no header providing "cmdp_number" is directly included [misc-include-cleaner]
+  236 |                         tol = cmdp_number(p, stop);
+      |                               ^
+/home/andrew/Code/ucas/src/winograd.c:240:4: warning: no header providing "cmdp_fail_here" is directly included [misc-include-cleaner]
+  240 |                         cmdp_fail_here(p);
+      |                         ^
+/home/andrew/Code/ucas/src/winograd.c:244:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+  244 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/winograd.c:267:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  267 |         if ((q = strstr(buf, " of ")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:267:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/winograd.c:267:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/winograd.c:276:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  276 |         if ((q = strstr(buf, " rows")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:276:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/winograd.c:276:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/winograd.c:280:7: warning: 'atol' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  280 |                 r = atol(d);
+      |                     ^
+/home/andrew/Code/ucas/src/winograd.c:282:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  282 |         if ((q = strstr(buf, " col")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/winograd.c:282:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/winograd.c:282:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/winograd.c:286:7: warning: 'atol' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  286 |                 c = atol(d);
+      |                     ^
+/home/andrew/Code/ucas/src/winograd.c:288:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  288 |         snprintf(out, sizeof out, "winograd %s rows %ld cols %ld", name,
+      |         ^

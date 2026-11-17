@@ -1,0 +1,48 @@
+> f01(x: u32) = x + x
+> g01(x: u32) = x << 1
+> equiv f01 g01
+f01 and g01 are equal on the domain of f01 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> f02(x: u32, y: u32) = ~(x & y)
+> g02(x: u32, y: u32) = ~x | ~y
+> equiv f02 g02
+f02 and g02 are equal on the domain of f02 (proved by SAT: 97 AIG nodes, 0 conflicts)
+> f03(x: u64, y: u64) = x * y
+> g03(x: u64, y: u64) = y * x
+> equiv f03 g03
+f03 and g03 are equal on the domain of f03 (proved by algebra: both sides expand to one polynomial in x, y mod 2^64)
+> f04(x: u64, y: u64) = (x + y) - y
+> g04(x: u64, y: u64) = x
+> equiv f04 g04
+f04 and g04 are equal on the domain of f04 (proved by SAT: 1527 AIG nodes, 2643 conflicts)
+> f05(x: u64, y: u64) = x & (x | y)
+> g05(x: u64, y: u64) = x
+> equiv f05 g05
+f05 and g05 are equal on the domain of f05 (proved by SAT: 512 AIG nodes, 137 conflicts)
+> f06(x: u64) = (x xor 0x0123456789ABCDEF) xor 0x0123456789ABCDEF
+> g06(x: u64) = x
+> equiv f06 g06
+f06 and g06 are equal on the domain of f06 (proved by SAT: 65 AIG nodes, 0 conflicts)
+> f07(x: u64) = x - x
+> g07(x: u64) = x * 0
+> equiv f07 g07
+f07 and g07 are equal on the domain of f07 (proved by SAT: 65 AIG nodes, 0 conflicts)
+> f08(x: u32, y: u32) = (x xor y) + 2*(x & y)
+> g08(x: u32, y: u32) = x + y
+> equiv f08 g08
+f08 and g08 are equal on the domain of f08 (proved by SAT: 737 AIG nodes, 977 conflicts)
+> f09(x: u64) = ~x
+> g09(x: u64) = -x - 1
+> equiv f09 g09
+f09 and g09 are equal on the domain of f09 (proved by SAT: 883 AIG nodes, 261 conflicts)
+> f10(x: u32) = x + x + x
+> g10(x: u32) = x * 3
+> equiv f10 g10
+f10 and g10 are equal on the domain of f10 (proved by SAT: 811 AIG nodes, 1207 conflicts)
+> f11(x: u64, y: u64) = (x & y) + (x xor y)
+> g11(x: u64, y: u64) = x | y
+> equiv f11 g11
+f11 and g11 are equal on the domain of f11 (proved by SAT: 1275 AIG nodes, 402 conflicts)
+> f12(x: u32, y: u32) = x xor y
+> g12(x: u32, y: u32) = (x | y) - (x & y)
+> equiv f12 g12
+f12 and g12 are equal on the domain of f12 (proved by SAT: 636 AIG nodes, 291 conflicts)

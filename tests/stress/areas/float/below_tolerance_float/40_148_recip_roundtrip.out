@@ -1,0 +1,14 @@
+> f_recip_roundtrip(x: f32 in 0.01..100) = 1/(1/x)
+> g_recip_roundtrip(x: f32 in 0.01..100) = x
+> equiv f_recip_roundtrip g_recip_roundtrip
+f_recip_roundtrip and g_recip_roundtrip differ at 11086 points of the sample, e.g. x=0.103021018: 0.103021011 vs 0.103021018
+> error g_recip_roundtrip ~ f_recip_roundtrip
+error of g_recip_roundtrip against f_recip_roundtrip:
+  max abs error 7.62939e-06 at x=94.9273758
+  max rel error 8.41139e-08 (8.41e-06%) at x=0.0110721616
+  mean rel error 1.13603e-08 over 65536 points
+  max 1 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]

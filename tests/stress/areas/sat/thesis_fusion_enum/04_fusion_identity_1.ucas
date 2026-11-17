@@ -1,0 +1,22 @@
+# Fusion pairs (Semantic Fusion / YinYang): one generator tree,
+# two provably-equal emitters. equiv must prove equal; error ~0.
+f_ident_add0(x: u8, y: u8) = (x + y)
+g_ident_add0(x: u8, y: u8) = ((x + y) + 0)
+equiv f_ident_add0 g_ident_add0
+error g_ident_add0 ~ f_ident_add0
+f_ident_xor0(x: u8, y: u8) = (x xor y)
+g_ident_xor0(x: u8, y: u8) = ((x xor y) xor 0)
+equiv f_ident_xor0 g_ident_xor0
+error g_ident_xor0 ~ f_ident_xor0
+f_ident_or0(x: u8, y: u8) = (x | y)
+g_ident_or0(x: u8, y: u8) = ((x | y) | 0)
+equiv f_ident_or0 g_ident_or0
+error g_ident_or0 ~ f_ident_or0
+f_ident_mul1(x: u8, y: u8) = (x * y)
+g_ident_mul1(x: u8, y: u8) = ((x * y) * 1)
+equiv f_ident_mul1 g_ident_mul1
+error g_ident_mul1 ~ f_ident_mul1
+f_ident_xorcancel(x: u8, y: u8) = (x & y)
+g_ident_xorcancel(x: u8, y: u8) = (((x & y) xor 3) xor 3)
+equiv f_ident_xorcancel g_ident_xorcancel
+error g_ident_xorcancel ~ f_ident_xorcancel

@@ -1,0 +1,11 @@
+# MR mined from tests/etc2:e4bits,e4
+# meaning-preserving rewrite: plusz
+f(v: u8) = u8((u8(v) << 4) | v)
+g(v: u8) = u8(v) * 17
+f2(v: u8) = 0 + (u8((u8(v) << 4) | v))
+g2(v: u8) = 0 + (u8(v) * 17)
+f1(v: u8) = 0 + (u8((u8(v) << 4) | v))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

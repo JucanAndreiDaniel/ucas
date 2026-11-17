@@ -1,0 +1,57 @@
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify nofile functions
+function level (the GLSL source read by ScarletNX's GLSL ES parser): 2 functions; each one's domain inferred from every call (abstract interpretation from main, 2 rounds)
+  f (line 4), called from main (line 5)
+    the branch `if (x > 100u) { return 999u; }` (line 4) never changes the result
+      uint f(uint x) {
+          return x * 2u;
+      }
+    proof: exhaustive: ucas equiv of the two as ucas functions on every point of the inferred domain (8 points)
+    cost under gt1030 (a loop priced per iteration times its trips): 10.625 -> 2 per call
+    relies on: x in 0..7 at every call: main (line 5)
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify nofile functions
+function level (the GLSL source read by ScarletNX's GLSL ES parser): 2 functions; each one's domain inferred from every call (abstract interpretation from main, 2 rounds)
+  f (line 4), called from main (line 5)
+    line 4: `x & 255u` can be `x` (the result is the same)
+      uint f(uint x) {
+          return x + 1u;
+      }
+    proof: exhaustive: ucas equiv of the two as ucas functions on every point of the inferred domain (16 points)
+    cost under gt1030 (a loop priced per iteration times its trips): 2 -> 1 per call
+    relies on: x in 0..15 at every call: main (line 5)
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify nofile functions
+function level (the GLSL source read by ScarletNX's GLSL ES parser): 2 functions; each one's domain inferred from every call (abstract interpretation from main, 2 rounds)
+  f (line 4), called from main (line 5)
+    the else side of `if (x == 1u) { return 2u; } else { return 3u; }` (line 4) is never needed
+      uint f(uint x) {
+          if (x == 0u) {
+              return 1u;
+          } else {
+              return 2u;
+          }
+      }
+    proof: exhaustive: ucas equiv of the two as ucas functions on every point of the inferred domain (2 points)
+    cost under gt1030 (a loop priced per iteration times its trips): 17.25 -> 8.625 per call
+    relies on: x in 0..1 at every call: main (line 5)
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify nofile
+simplify: 62 SPIR-V instructions, 2 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 6 -> 5 (-16.7%)
+  counting the strength reductions any driver also does: 7 -> 5 (-28.6%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 a multiply by a power of two is a shift
+  fused by the model in the result (one instruction for several):
+    shr_add          1 x 2     = 2  ((a >> k) + b; saves 1)
+  by kind:
+       1  equals its operand                            -1
+  rewrites:
+    %38 = OpUMod %uint %36 %uint_256
+      ->  %36   (equals its operand; -1)
+      (line 4: void main(){ uint i=gl_GlobalInvocationID.x; v[i]=(v[i]*8u)/4u + (v[i]&255u)%256u; })
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 2099 bytes, checksum dcf4db56)

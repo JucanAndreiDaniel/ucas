@@ -1,0 +1,76 @@
+> laplace sin(a*x) x s
+  note: the last word x is read as the variable (write *x to multiply by it)
+L{sin(a*x)}(s) = a/(s^2 + a^2)
+  region of convergence: Re(s) > 0
+  one-sided: f(x) for x >= 0 (0 before)
+  rules: sin/cos table
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4 with a = 7/10: max relative difference 2.2e-16
+> laplace 1/t
+07_malformed_defaults.ucas:2:9: error: t^-1: the integral diverges at t = 0 (p <= -1)
+    laplace 1/t
+            ^
+> laplace exp(-x^2)
+07_malformed_defaults.ucas:3:9: error: laplace: no rule for the factor e^(-x^2)
+    laplace exp(-x^2)
+            ^
+> laplace log(x)
+07_malformed_defaults.ucas:4:9: error: laplace: no rule for the factor log(x)
+    laplace log(x)
+            ^
+> fourier 1/x
+07_malformed_defaults.ucas:5:9: error: fourier: no rule for 1/x (e^(-ax^2), e^(-a|x|), e^(-ax) u(x), 1/(x^2 + a^2), boxes, sin(ax)/x, delta, x^n, cos/sin modulation)
+    fourier 1/x
+            ^
+> fourier x
+F{x}(w) = 0
+  convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
+  delta terms: f does not decay, the transform is a distribution (not checked numerically)
+> fourier x^2
+F{x^2}(w) = 0
+  convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
+  delta terms: f does not decay, the transform is a distribution (not checked numerically)
+> fourier exp(x)
+07_malformed_defaults.ucas:8:9: error: fourier: no rule for e^x (e^(-ax^2), e^(-a|x|), e^(-ax) u(x), 1/(x^2 + a^2), boxes, sin(ax)/x, delta, x^n, cos/sin modulation)
+    fourier exp(x)
+            ^
+> ilaplace 1/(s-a)(s-b)
+  note: 1/(s - a)*(s - b) read as 1/((s - a)*(s - b)); write (1/...)... for the other reading
+07_malformed_defaults.ucas:9:10: error: ilaplace: no rule for 1/((s - a)*(s - b)) (rational functions of s, times e^(-as); (s - a)^(-p))
+    ilaplace 1/(s-a)(s-b)
+             ^
+> ztrans 1/(z-1)
+07_malformed_defaults.ucas:10:8: error: ztrans: no rule for the factor 1/(z - 1)
+    ztrans 1/(z-1)
+           ^
+> dtft [1,1,1] w
+07_malformed_defaults.ucas:1:2: error: unexpected ']' in 1] w
+    1] w
+     ^
+> dft [1,2,3]
+DFT of 3 values (X[k] = sum_n x[n] e^(-2 pi i k n/N); direct sum, N^2 operations)
+  k    X[k]                         |.|            arg
+  0    6                            6              0
+  1    -3/2 + sqrt(3)i/2            sqrt(3)        5pi/6
+  2    -3/2 - sqrt(3)i/2            sqrt(3)        -5pi/6
+  check: the inverse transform gives the input back (max difference 4.4e-16); Parseval: sum |x|^2 = 14, sum |X|^2/N = 14
+  bin k is the frequency k/N cycles per sample; k > N/2 are the negative frequencies k - N
+> integrate 1/x^2 wrt x from -1 to 1
+∫ 1/x^2 dx
+  = -1/x + C
+  method: partial fractions, Hermite reduction for the repeated factors
+  check: d/dx of it equals the integrand at 400 points of [-1, 1] (max difference 0)
+  numeric: the integrand is undefined or infinite inside the interval (singular or divergent)
+  quasi-Monte Carlo does not settle either: 8 replicates of 4096 Sobol points give 3.81e+04 with a standard error of 6.3e+03: no value (a pole, or an integral that does not exist)
+> radius 0
+07_malformed_defaults.ucas:14:8: error: which variable is the index?  (sum(n, 1, inf, ...))
+    radius 0
+           ^
+> implicit x^y=y^x for y wrt x
+on the curve x^y - y^x = 0, y as a function of x:
+  dy/dx = -F_x/F_y = (y^x*log(y) - y*x^(y - 1))/(log(x)*x^y - x*y^(x - 1))
+  holds where F_y = log(x)*x^y - x*y^(x - 1) != 0 (the implicit function theorem: there y is locally a differentiable function of x)
+  check: matches the slope of the curve (points solved by bisection and Newton) at 12 points (max relative difference 4e-12)
+> diff x x 20
+07_malformed_defaults.ucas:16:12: error: the order is 1 to 12
+    diff x x 20
+               ^

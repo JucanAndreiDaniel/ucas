@@ -1,0 +1,45 @@
+> sf_0(x: u8, y: u8) = (x + y)
+> sg_0(x: u8, y: u8) = (y + x)
+> equiv sf_0 sg_0
+sf_0 and sg_0 are equal on the domain of sf_0 (exhaustive)
+> error sg_0 ~ sf_0
+error of sg_0 against sf_0:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> sf_1(x: u8, y: u8) = (x * y)
+> sg_1(x: u8, y: u8) = (y * x)
+> equiv sf_1 sg_1
+sf_1 and sg_1 are equal on the domain of sf_1 (exhaustive)
+> error sg_1 ~ sf_1
+error of sg_1 against sf_1:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> sf_2(x: u8, y: u8, z: u8) = ((x + y) + z)
+> sg_2(x: u8, y: u8, z: u8) = (x + (y + z))
+> equiv sf_2 sg_2
+sf_2 and sg_2 are equal on the domain of sf_2 (proved by SAT: 324 AIG nodes, 2248 conflicts)
+> error sg_2 ~ sf_2
+error of sg_2 against sf_2:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> sf_3(x: u8, y: u8, z: u8) = (x * (y + z))
+> sg_3(x: u8, y: u8, z: u8) = ((x * y) + (x * z))
+> equiv sf_3 sg_3
+sf_3 and sg_3 are equal on the domain of sf_3 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> error sg_3 ~ sf_3
+error of sg_3 against sf_3:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+> sf_4(x: u8, y: u8) = (x * y)
+> sg_4(x: u8, y: u8) = ((x * y) * 1)
+> equiv sf_4 sg_4
+sf_4 and sg_4 are equal on the domain of sf_4 (exhaustive)
+> error sg_4 ~ sf_4
+error of sg_4 against sf_4:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points

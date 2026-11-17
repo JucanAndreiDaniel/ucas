@@ -1,0 +1,28 @@
+> parse a mod b
+(a % b)
+> parse a % b
+(a % b)
+> parse 5 mod 3
+2
+> parse -5 mod 3
+-2
+> parse -5 % 3
+-2
+> parse 7 % 3 == 1
+1
+> parse 7 mod 3 == 1
+1
+> parse not a and b or c
+(((!(a != 0)) && (b != 0)) || (c != 0))
+> parse a && b || !c
+(((a != 0) && (b != 0)) || (!(c != 0)))
+> parse a and b or not c
+(((a != 0) && (b != 0)) || (!(c != 0)))
+> parse (not a)
+(!(a != 0))
+> parse not (a and b)
+(!((a != 0) && (b != 0)))
+> parse 1 && 2 || 3
+1
+> parse not 1 and 0
+0

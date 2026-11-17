@@ -1,0 +1,27 @@
+> guess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+> fit guess ~ nosuchfunc
+fit guess to nosuchfunc (max relative error, 257 sample points):
+  K = 546308096  (0x20900000)
+  objective 306.2
+  asfloat(546308096 - (asuint(f32(nosuchfunc)) >> 1))
+  max abs error 47.5 at nosuchfunc=-0.02
+  max rel error 2375 (2.38e+05%) at nosuchfunc=-0.02
+  mean rel error 6.23812 over 1001 points
+  max 1092616192 ulp
+> f2(x: f32 in 0..1, A: u32, B: u32) = asfloat(A - (asuint(x)>>1)) + B*1e-8
+> fit f2 ~ sin
+  note: sin alone read as sin(x)
+fit f2 to sin(x) (max relative error, 257 sample points):
+  A = 546313902  (0x209016ae)
+  B = 420963572  (0x191764f4)
+  objective 252.716
+  asfloat(546313902 - (asuint(f32(x)) >> 1)) + 4.20963573
+  max abs error 43.3125 at x=-0.02
+  max rel error 2642.16 (2.64e+05%) at x=3.14
+  mean rel error 19.9628 over 1001 points
+  max 2147922800 ulp
+> g(x: f32) = asfloat(0x5f3759df - (asuint(x) >> 1))
+> fit g ~ x
+12_fit_odd.ucas:7:10: error: g has no parameters left to fit (it takes 1, x takes 1)
+    fit g ~ x
+             ^

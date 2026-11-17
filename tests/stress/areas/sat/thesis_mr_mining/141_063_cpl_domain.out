@@ -1,0 +1,22 @@
+> f(x: u8) = x/(x&15)
+> domain f
+domain of f:
+  x: u8, 0..255
+  requires x & 15 != 0  (in x/(x & 15))
+  defined at 240 of 256 points
+  defined for: 1..15, 17..31, 33..47, 49..63, 65..79, 81..95, 97..111, 113..127, 129..143, 145..159, 161..175, 177..191, 193..207, 209..223, 225..239, 241..255
+  undefined e.g. at x=0; x=16; x=32; x=48
+  C undefined behaviour at 16 points, e.g. x=0
+  over all 256 points of the domain
+> range f
+range of f -> u8:
+  1..241   (64 distinct values)
+  values: 1..15, 17..31, 33, 35..39, 41..43, 45, 49, 53..54, 57, 59, 61, 65, 70, 73, 75, 81, 89, 97, 105, 113, 121, 129, 145, 161, ...
+  fits in u8
+  undefined at 16 points
+  over all 256 points of the domain
+> wrap f
+wrap analysis of f:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain

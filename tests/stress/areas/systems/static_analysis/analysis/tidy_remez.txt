@@ -1,0 +1,954 @@
+/home/andrew/Code/ucas/src/remez.c:30:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+   30 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:30:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/remez.c:31:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+   20 | 
+   21 | #include <math.h>
+   22 | #include <stdlib.h>
+   23 | #include <string.h>
+   24 | 
+   25 | /* ---- reference evaluator ---- */
+   26 | 
+   27 | static int
+   28 | lsupported(int op)
+   29 | {
+   30 |         switch (op) {
+   31 |         case O_CONST: case O_VAR: case O_NEG: case O_ABS: case O_SIGN:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:31:21: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   31 |         case O_CONST: case O_VAR: case O_NEG: case O_ABS: case O_SIGN:
+      |                            ^
+/home/andrew/Code/ucas/src/remez.c:31:33: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+   31 |         case O_CONST: case O_VAR: case O_NEG: case O_ABS: case O_SIGN:
+      |                                        ^
+/home/andrew/Code/ucas/src/remez.c:31:45: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+   31 |         case O_CONST: case O_VAR: case O_NEG: case O_ABS: case O_SIGN:
+      |                                                    ^
+/home/andrew/Code/ucas/src/remez.c:31:57: warning: no header providing "O_SIGN" is directly included [misc-include-cleaner]
+   31 |         case O_CONST: case O_VAR: case O_NEG: case O_ABS: case O_SIGN:
+      |                                                                ^
+/home/andrew/Code/ucas/src/remez.c:32:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+   32 |         case O_SQRT: case O_EXP: case O_LOG: case O_SIN: case O_COS:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:32:20: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+   32 |         case O_SQRT: case O_EXP: case O_LOG: case O_SIN: case O_COS:
+      |                           ^
+/home/andrew/Code/ucas/src/remez.c:32:32: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+   32 |         case O_SQRT: case O_EXP: case O_LOG: case O_SIN: case O_COS:
+      |                                       ^
+/home/andrew/Code/ucas/src/remez.c:32:44: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+   32 |         case O_SQRT: case O_EXP: case O_LOG: case O_SIN: case O_COS:
+      |                                                   ^
+/home/andrew/Code/ucas/src/remez.c:32:56: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+   32 |         case O_SQRT: case O_EXP: case O_LOG: case O_SIN: case O_COS:
+      |                                                               ^
+/home/andrew/Code/ucas/src/remez.c:33:7: warning: no header providing "O_TAN" is directly included [misc-include-cleaner]
+   33 |         case O_TAN: case O_FLOOR: case O_CEIL: case O_ROUNDEVEN: case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:33:19: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+   33 |         case O_TAN: case O_FLOOR: case O_CEIL: case O_ROUNDEVEN: case O_CAST:
+      |                          ^
+/home/andrew/Code/ucas/src/remez.c:33:33: warning: no header providing "O_CEIL" is directly included [misc-include-cleaner]
+   33 |         case O_TAN: case O_FLOOR: case O_CEIL: case O_ROUNDEVEN: case O_CAST:
+      |                                        ^
+/home/andrew/Code/ucas/src/remez.c:33:46: warning: no header providing "O_ROUNDEVEN" is directly included [misc-include-cleaner]
+   33 |         case O_TAN: case O_FLOOR: case O_CEIL: case O_ROUNDEVEN: case O_CAST:
+      |                                                     ^
+/home/andrew/Code/ucas/src/remez.c:33:64: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+   33 |         case O_TAN: case O_FLOOR: case O_CEIL: case O_ROUNDEVEN: case O_CAST:
+      |                                                                       ^
+/home/andrew/Code/ucas/src/remez.c:34:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+   34 |         case O_ADD:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:35:7: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+   35 |         case O_SUB: case O_MUL: case O_DIV: case O_POW: case O_MIN:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:35:19: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+   35 |         case O_SUB: case O_MUL: case O_DIV: case O_POW: case O_MIN:
+      |                          ^
+/home/andrew/Code/ucas/src/remez.c:35:31: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+   35 |         case O_SUB: case O_MUL: case O_DIV: case O_POW: case O_MIN:
+      |                                      ^
+/home/andrew/Code/ucas/src/remez.c:35:43: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+   35 |         case O_SUB: case O_MUL: case O_DIV: case O_POW: case O_MIN:
+      |                                                  ^
+/home/andrew/Code/ucas/src/remez.c:35:55: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+   35 |         case O_SUB: case O_MUL: case O_DIV: case O_POW: case O_MIN:
+      |                                                              ^
+/home/andrew/Code/ucas/src/remez.c:36:7: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:36:19: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |                          ^
+/home/andrew/Code/ucas/src/remez.c:36:30: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |                                     ^
+/home/andrew/Code/ucas/src/remez.c:36:41: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |                                                ^
+/home/andrew/Code/ucas/src/remez.c:36:52: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |                                                           ^
+/home/andrew/Code/ucas/src/remez.c:36:63: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+   36 |         case O_MAX: case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT:
+      |                                                                      ^
+/home/andrew/Code/ucas/src/remez.c:37:7: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+   37 |         case O_GE: case O_LAND: case O_LOR: case O_LNOT: case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:37:18: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+   37 |         case O_GE: case O_LAND: case O_LOR: case O_LNOT: case O_SEL:
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:37:31: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+   37 |         case O_GE: case O_LAND: case O_LOR: case O_LNOT: case O_SEL:
+      |                                      ^
+/home/andrew/Code/ucas/src/remez.c:37:43: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+   37 |         case O_GE: case O_LAND: case O_LOR: case O_LNOT: case O_SEL:
+      |                                                  ^
+/home/andrew/Code/ucas/src/remez.c:37:56: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+   37 |         case O_GE: case O_LAND: case O_LOR: case O_LNOT: case O_SEL:
+      |                                                               ^
+/home/andrew/Code/ucas/src/remez.c:38:7: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+   38 |         case O_BARRIER: case O_SEC: case O_CSC: case O_COT: case O_ATAN:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:38:23: warning: no header providing "O_SEC" is directly included [misc-include-cleaner]
+   38 |         case O_BARRIER: case O_SEC: case O_CSC: case O_COT: case O_ATAN:
+      |                              ^
+/home/andrew/Code/ucas/src/remez.c:38:35: warning: no header providing "O_CSC" is directly included [misc-include-cleaner]
+   38 |         case O_BARRIER: case O_SEC: case O_CSC: case O_COT: case O_ATAN:
+      |                                          ^
+/home/andrew/Code/ucas/src/remez.c:38:47: warning: no header providing "O_COT" is directly included [misc-include-cleaner]
+   38 |         case O_BARRIER: case O_SEC: case O_CSC: case O_COT: case O_ATAN:
+      |                                                      ^
+/home/andrew/Code/ucas/src/remez.c:38:59: warning: no header providing "O_ATAN" is directly included [misc-include-cleaner]
+   38 |         case O_BARRIER: case O_SEC: case O_CSC: case O_COT: case O_ATAN:
+      |                                                                  ^
+/home/andrew/Code/ucas/src/remez.c:39:7: warning: no header providing "O_COPYSIGN" is directly included [misc-include-cleaner]
+   39 |         case O_COPYSIGN: case O_FMA: case O_LAMBERTW: case O_LAMBERTWM1:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:39:24: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+   39 |         case O_COPYSIGN: case O_FMA: case O_LAMBERTW: case O_LAMBERTWM1:
+      |                               ^
+/home/andrew/Code/ucas/src/remez.c:39:36: warning: no header providing "O_LAMBERTW" is directly included [misc-include-cleaner]
+   39 |         case O_COPYSIGN: case O_FMA: case O_LAMBERTW: case O_LAMBERTWM1:
+      |                                           ^
+/home/andrew/Code/ucas/src/remez.c:39:53: warning: no header providing "O_LAMBERTWM1" is directly included [misc-include-cleaner]
+   39 |         case O_COPYSIGN: case O_FMA: case O_LAMBERTW: case O_LAMBERTWM1:
+      |                                                            ^
+/home/andrew/Code/ucas/src/remez.c:41:7: warning: no header providing "O_ASIN" is directly included [misc-include-cleaner]
+   41 |         case O_ASIN: case O_ACOS: case O_ATAN2: case O_SINH: case O_COSH:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:41:20: warning: no header providing "O_ACOS" is directly included [misc-include-cleaner]
+   41 |         case O_ASIN: case O_ACOS: case O_ATAN2: case O_SINH: case O_COSH:
+      |                           ^
+/home/andrew/Code/ucas/src/remez.c:41:33: warning: no header providing "O_ATAN2" is directly included [misc-include-cleaner]
+   41 |         case O_ASIN: case O_ACOS: case O_ATAN2: case O_SINH: case O_COSH:
+      |                                        ^
+/home/andrew/Code/ucas/src/remez.c:41:47: warning: no header providing "O_SINH" is directly included [misc-include-cleaner]
+   41 |         case O_ASIN: case O_ACOS: case O_ATAN2: case O_SINH: case O_COSH:
+      |                                                      ^
+/home/andrew/Code/ucas/src/remez.c:41:60: warning: no header providing "O_COSH" is directly included [misc-include-cleaner]
+   41 |         case O_ASIN: case O_ACOS: case O_ATAN2: case O_SINH: case O_COSH:
+      |                                                                   ^
+/home/andrew/Code/ucas/src/remez.c:42:7: warning: no header providing "O_TANH" is directly included [misc-include-cleaner]
+   42 |         case O_TANH: case O_ASINH: case O_ACOSH: case O_ATANH:
+      |              ^
+/home/andrew/Code/ucas/src/remez.c:42:20: warning: no header providing "O_ASINH" is directly included [misc-include-cleaner]
+   42 |         case O_TANH: case O_ASINH: case O_ACOSH: case O_ATANH:
+      |                           ^
+/home/andrew/Code/ucas/src/remez.c:42:34: warning: no header providing "O_ACOSH" is directly included [misc-include-cleaner]
+   42 |         case O_TANH: case O_ASINH: case O_ACOSH: case O_ATANH:
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:42:48: warning: no header providing "O_ATANH" is directly included [misc-include-cleaner]
+   42 |         case O_TANH: case O_ASINH: case O_ACOSH: case O_ATANH:
+      |                                                       ^
+/home/andrew/Code/ucas/src/remez.c:49:27: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   49 | lref_init(struct lref *r, nid body, int slot)
+      |                           ^
+/home/andrew/Code/ucas/src/remez.c:51:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   22 |         uint8_t *mark = xcalloc(N.n, 1);
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:51:18: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+   51 |         uint8_t *mark = xcalloc(N.n, 1);
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:51:26: warning: no header providing "N" is directly included [misc-include-cleaner]
+   51 |         uint8_t *mark = xcalloc(N.n, 1);
+      |                                 ^
+/home/andrew/Code/ucas/src/remez.c:52:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   52 |         uint32_t *map = xcalloc(N.n, sizeof *map);
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:53:12: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+   53 |         nid *st = xmalloc(N.n * sizeof *st), g;
+      |                   ^
+/home/andrew/Code/ucas/src/remez.c:67:18: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+   67 |                     N.op[g] == O_UNDEF || N.op[g] == O_TABLE)
+      |                                ^
+/home/andrew/Code/ucas/src/remez.c:67:40: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+   67 |                     N.op[g] == O_UNDEF || N.op[g] == O_TABLE)
+      |                                                      ^
+/home/andrew/Code/ucas/src/remez.c:91:14: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+   91 |                         r->k[k] = TY_FP(N.ty[g]) ? (ld)N.kr[g] : (ld)N.ki[g];
+      |                                   ^
+/home/andrew/Code/ucas/src/remez.c:91:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/remez.c:103:3: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  103 |                 plan_build(&r->dp, roots, 1, 1);
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:105:29: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+  105 |                 r->in_i = xcalloc((size_t)MAXP * CH, sizeof *r->in_i);
+      |                                           ^
+/home/andrew/Code/ucas/src/remez.c:105:36: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  105 |                 r->in_i = xcalloc((size_t)MAXP * CH, sizeof *r->in_i);
+      |                                                  ^
+/home/andrew/Code/ucas/src/remez.c:124:3: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  124 |                 plan_free(&r->dp);
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:139:3: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  139 |                 plan_run(&r->dp, 1, r->in_i, r->in_r);
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:140:7: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  140 |                 if (COLF(&r->dp, r->root)[0] & F_UNDEF)
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:140:34: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  140 |                 if (COLF(&r->dp, r->root)[0] & F_UNDEF)
+      |                                                ^
+/home/andrew/Code/ucas/src/remez.c:140:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  140 |                 if (COLF(&r->dp, r->root)[0] & F_UNDEF)
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:142:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  142 |                 return TY_FP(r->dp.ty[r->root]) ? COLR(&r->dp, r->root)[0] :
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/remez.c:142:37: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  142 |                 return TY_FP(r->dp.ty[r->root]) ? COLR(&r->dp, r->root)[0] :
+      |                                                   ^
+/home/andrew/Code/ucas/src/remez.c:143:11: warning: no header providing "COLI" is directly included [misc-include-cleaner]
+  143 |                     (ld)COLI(&r->dp, r->root)[0];
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:176:27: warning: no header providing "lambert_w" is directly included [misc-include-cleaner]
+  176 |                 case O_LAMBERTW: v[k] = lambert_w((double)a, 0); break;
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:181:3: warning: switch has 2 consecutive identical branches [bugprone-branch-clone]
+  181 |                 case O_CAST: v[k] = a; break;
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:182:34: note: last of these clones ends here
+  182 |                 case O_BARRIER: v[k] = a; break;
+      |                                                ^
+/home/andrew/Code/ucas/src/remez.c:584:5: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  584 |                                 switch (r->op[k]) {
+      |                                 ^
+/home/andrew/Code/ucas/src/remez.c:656:7: warning: Out of bound access to memory after the end of 'b' [clang-analyzer-security.ArrayBound]
+  656 |                 t = b[k];
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:6: note: Assuming field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_REMEZ:'  at line 1427
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1428:10: note: Field 'nq' is > 0
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                        ^
+/home/andrew/Code/ucas/src/remez.c:1428:8: note: Left side of '&&' is true
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                      ^
+/home/andrew/Code/ucas/src/remez.c:1428:20: note: Calling 'fit_remez'
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:6: note: Assuming the condition is false
+ 1286 |         if (N > MAXREF - 1) {
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:2: note: Taking false branch
+ 1286 |         if (N > MAXREF - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1291:14: note: Assuming 'i' is >= 'N'
+ 1291 |         for (i = 0; i < N; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is false. Execution continues on line 1303
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1303:2: note: Loop condition is true.  Entering loop body
+ 1303 |         for (it = 0; it < 60; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1304:8: note: Calling 'solve_ref'
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                      ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1151:6: note: 'npt' is equal to 'N'
+ 1151 |         if (npt != N)
+      |             ^~~
+/home/andrew/Code/ucas/src/remez.c:1151:2: note: Taking false branch
+ 1151 |         if (npt != N)
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1153:14: note: 'i' is >= 'N'
+ 1153 |         for (i = 0; i < N; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:1153:2: note: Loop condition is false. Execution continues on line 1158
+ 1153 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: Assuming 'm' is not equal to 0
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |                            ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: '?' condition is true
+/home/andrew/Code/ucas/src/remez.c:1158:2: note: Loop condition is true.  Entering loop body
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1159:15: note: 'i' is >= 'N'
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/remez.c:1159:3: note: Loop condition is false. Execution continues on line 1175
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1175:8: note: Calling 'lsolve'
+ 1175 |                 if (!lsolve(A, b, N))
+      |                      ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:629:14: note: 'k' is >= 'n'
+  629 |         for (k = 0; k < n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:629:2: note: Loop condition is false. Execution continues on line 655
+  629 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:655:18: note: Assuming 'k' is >= 0
+  655 |         for (k = n - 1; k >= 0; k--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/remez.c:655:2: note: Loop condition is true.  Entering loop body
+  655 |         for (k = n - 1; k >= 0; k--) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:656:7: note: Access of 'b' at index 2147483647, while it holds only 82 'long double' elements
+  656 |                 t = b[k];
+      |                     ^~~~
+/home/andrew/Code/ucas/src/remez.c:747:13: warning: Out of bound access to memory after the end of 'rs' [clang-analyzer-security.ArrayBound]
+  747 |                 tmp[0] += m[i];
+      |                           ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:8: note: Field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |               ^
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_ECON:'  at line 1420
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1421:8: note: Calling 'fit_econ'
+ 1421 |                 ok = fit_econ(&c, &why);
+      |                      ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1066:9: note: Field 'nk' is <= 0
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1066:6: note: Left side of '||' is false
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1066:19: note: Assuming field 'nd' is <= 0
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |                          ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1066:6: note: Left side of '||' is false
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1066:32: note: Assuming field 'taylor' is non-null
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |                                       ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1066:2: note: Taking false branch
+ 1066 |         if (c->nk > 0 || c->nd > 0 || !c->pb->taylor) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1070:6: note: Assuming the condition is false
+ 1070 |         if (!reduced_series(c, rs, &nr) || nr < c->nq + 4) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1070:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/remez.c:1070:37: note: Assuming the condition is false
+ 1070 |         if (!reduced_series(c, rs, &nr) || nr < c->nq + 4) {
+      |                                            ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1070:2: note: Taking false branch
+ 1070 |         if (!reduced_series(c, rs, &nr) || nr < c->nq + 4) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1078:15: note: Assuming 'j' is >= 'nr'
+ 1078 |                 for (j = 0; j < nr; j++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/remez.c:1078:3: note: Loop condition is false. Execution continues on line 1085
+ 1078 |                 for (j = 0; j < nr; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1085:7: note: Assuming the condition is false
+ 1085 |                 if (!(tail < 1e-3L * head)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1085:3: note: Taking false branch
+ 1085 |                 if (!(tail < 1e-3L * head)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1090:2: note: Calling 'mono2cheb'
+ 1090 |         mono2cheb(rs, nr, al, be, ch);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:735:18: note: Assuming 'i' is >= 0
+  735 |         for (i = n - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/remez.c:735:2: note: Loop condition is true.  Entering loop body
+  735 |         for (i = n - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:737:3: note: Loop condition is true.  Entering loop body
+  737 |                 for (j = 0; j <= deg; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:739:8: note: 'j' is equal to 0
+  739 |                         if (j == 0)
+      |                             ^
+/home/andrew/Code/ucas/src/remez.c:739:4: note: Taking true branch
+  739 |                         if (j == 0)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:737:3: note: Loop condition is false. Execution continues on line 747
+  737 |                 for (j = 0; j <= deg; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:747:13: note: Access of 'rs' at index 2147483647, while it holds only 48 'long double' elements
+  747 |                 tmp[0] += m[i];
+      |                           ^~~~
+/home/andrew/Code/ucas/src/remez.c:1162:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1162 |                         sgn = (i & 1) ? -1 : 1;
+      |                                ^ ~
+/home/andrew/Code/ucas/src/remez.c:1164:9: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1164 |                         T[1] = zr[i];
+      |                              ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:6: note: Assuming field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_REMEZ:'  at line 1427
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1428:10: note: Field 'nq' is > 0
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                        ^
+/home/andrew/Code/ucas/src/remez.c:1428:8: note: Left side of '&&' is true
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                      ^
+/home/andrew/Code/ucas/src/remez.c:1428:20: note: Calling 'fit_remez'
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:6: note: Assuming the condition is false
+ 1286 |         if (N > MAXREF - 1) {
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:2: note: Taking false branch
+ 1286 |         if (N > MAXREF - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1291:14: note: Assuming 'i' is >= 'N'
+ 1291 |         for (i = 0; i < N; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is false. Execution continues on line 1303
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1303:2: note: Loop condition is true.  Entering loop body
+ 1303 |         for (it = 0; it < 60; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1304:8: note: Calling 'solve_ref'
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                      ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1151:6: note: 'npt' is equal to 'N'
+ 1151 |         if (npt != N)
+      |             ^~~
+/home/andrew/Code/ucas/src/remez.c:1151:2: note: Taking false branch
+ 1151 |         if (npt != N)
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1153:14: note: 'i' is >= 'N'
+ 1153 |         for (i = 0; i < N; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:1153:2: note: Loop condition is false. Execution continues on line 1158
+ 1153 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: Assuming 'm' is 0
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |                            ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: '?' condition is false
+/home/andrew/Code/ucas/src/remez.c:1158:2: note: Loop condition is true.  Entering loop body
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1159:8: note: The value 0 is assigned to 'i'
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1159:15: note: 'i' is < 'N'
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/remez.c:1159:3: note: Loop condition is true.  Entering loop body
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1161:13: note: Assuming the condition is true
+ 1161 |                         int nT = n > m + 1 ? n : m + 1;
+      |                                  ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1161:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/remez.c:1162:10: note: '?' condition is false
+ 1162 |                         sgn = (i & 1) ? -1 : 1;
+      |                               ^
+/home/andrew/Code/ucas/src/remez.c:1164:9: note: Assigned value is uninitialized
+ 1164 |                         T[1] = zr[i];
+      |                              ^ ~~~~~
+/home/andrew/Code/ucas/src/remez.c:1168:18: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1168 |                                 A[i * N + j] = T[j];
+      |                                              ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:8: note: Field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |               ^
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_REMEZ:'  at line 1427
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1428:10: note: Field 'nq' is > 0
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                        ^
+/home/andrew/Code/ucas/src/remez.c:1428:8: note: Left side of '&&' is true
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                      ^
+/home/andrew/Code/ucas/src/remez.c:1428:20: note: Calling 'fit_remez'
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:2: note: Taking false branch
+ 1286 |         if (N > MAXREF - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1291:14: note: Assuming 'i' is < 'N'
+ 1291 |         for (i = 0; i < N; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is true.  Entering loop body
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1292:32: note: Assuming the condition is false
+ 1292 |                 ld G, W, z = -cosl(PI * i / (N - 1 > 0 ? N - 1 : 1));
+      |                                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1292:32: note: '?' condition is false
+/home/andrew/Code/ucas/src/remez.c:1293:7: note: 'N' is equal to 1
+ 1293 |                 if (N == 1)
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:1293:3: note: Taking true branch
+ 1293 |                 if (N == 1)
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1295:3: note: Loop condition is true.  Entering loop body
+ 1295 |                 for (k = 0; k < 20; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1297:8: note: Assuming 'W' is not equal to 0
+ 1297 |                         if (W != 0)
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/remez.c:1297:4: note: Taking true branch
+ 1297 |                         if (W != 0)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1298:5: note:  Execution continues on line 1301
+ 1298 |                                 break;
+      |                                 ^
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is false. Execution continues on line 1303
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1303:2: note: Loop condition is true.  Entering loop body
+ 1303 |         for (it = 0; it < 60; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1304:8: note: Calling 'solve_ref'
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                      ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1151:6: note: 'npt' is equal to 'N'
+ 1151 |         if (npt != N)
+      |             ^~~
+/home/andrew/Code/ucas/src/remez.c:1151:2: note: Taking false branch
+ 1151 |         if (npt != N)
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1153:2: note: Loop condition is true.  Entering loop body
+ 1153 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1155:7: note: Assuming the condition is false
+ 1155 |                 if (W[i] == 0)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1155:3: note: Taking false branch
+ 1155 |                 if (W[i] == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1153:2: note: Loop condition is false. Execution continues on line 1158
+ 1153 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: Assuming 'm' is not equal to 0
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |                            ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: '?' condition is true
+/home/andrew/Code/ucas/src/remez.c:1158:2: note: Loop condition is true.  Entering loop body
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1159:3: note: Loop condition is true.  Entering loop body
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1161:13: note: Assuming the condition is false
+ 1161 |                         int nT = n > m + 1 ? n : m + 1;
+      |                                  ^~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1161:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/remez.c:1162:10: note: '?' condition is false
+ 1162 |                         sgn = (i & 1) ? -1 : 1;
+      |                               ^
+/home/andrew/Code/ucas/src/remez.c:1165:16: note: Assuming 'j' is >= 'nT'
+ 1165 |                         for (j = 2; j < nT; j++)
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/remez.c:1165:4: note: Loop condition is false. Execution continues on line 1167
+ 1165 |                         for (j = 2; j < nT; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1167:16: note: 'j' is < 'n'
+ 1167 |                         for (j = 0; j < n; j++)
+      |                                     ^
+/home/andrew/Code/ucas/src/remez.c:1167:4: note: Loop condition is true.  Entering loop body
+ 1167 |                         for (j = 0; j < n; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1167:16: note: Assuming 'j' is < 'n'
+ 1167 |                         for (j = 0; j < n; j++)
+      |                                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1167:4: note: Loop condition is true.  Entering loop body
+ 1167 |                         for (j = 0; j < n; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1167:23: note: The value 2 is assigned to 'j'
+ 1167 |                         for (j = 0; j < n; j++)
+      |                                            ^~~
+/home/andrew/Code/ucas/src/remez.c:1167:16: note: Assuming 'j' is < 'n'
+ 1167 |                         for (j = 0; j < n; j++)
+      |                                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1167:4: note: Loop condition is true.  Entering loop body
+ 1167 |                         for (j = 0; j < n; j++)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1168:18: note: Assigned value is uninitialized
+ 1168 |                                 A[i * N + j] = T[j];
+      |                                              ^ ~~~~
+/home/andrew/Code/ucas/src/remez.c:1178:12: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1178 |                         c->q[j] = b[j];
+      |                                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:8: note: Field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |               ^
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_REMEZ:'  at line 1427
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1428:10: note: Field 'nq' is > 0
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                        ^
+/home/andrew/Code/ucas/src/remez.c:1428:8: note: Left side of '&&' is true
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                      ^
+/home/andrew/Code/ucas/src/remez.c:1428:20: note: Calling 'fit_remez'
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1286:2: note: Taking false branch
+ 1286 |         if (N > MAXREF - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1291:14: note: Assuming 'i' is >= 'N'
+ 1291 |         for (i = 0; i < N; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is false. Execution continues on line 1303
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1303:2: note: Loop condition is true.  Entering loop body
+ 1303 |         for (it = 0; it < 60; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1304:8: note: Calling 'solve_ref'
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                      ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1151:6: note: 'npt' is equal to 'N'
+ 1151 |         if (npt != N)
+      |             ^~~
+/home/andrew/Code/ucas/src/remez.c:1151:2: note: Taking false branch
+ 1151 |         if (npt != N)
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1153:14: note: 'i' is >= 'N'
+ 1153 |         for (i = 0; i < N; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:1153:2: note: Loop condition is false. Execution continues on line 1158
+ 1153 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: Assuming 'm' is not equal to 0
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |                            ^
+/home/andrew/Code/ucas/src/remez.c:1158:21: note: '?' condition is true
+/home/andrew/Code/ucas/src/remez.c:1158:2: note: Loop condition is true.  Entering loop body
+ 1158 |         for (it = 0; it < (m ? 16 : 1); it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1159:15: note: 'i' is >= 'N'
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/remez.c:1159:3: note: Loop condition is false. Execution continues on line 1175
+ 1159 |                 for (i = 0; i < N; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1175:8: note: Calling 'lsolve'
+ 1175 |                 if (!lsolve(A, b, N))
+      |                      ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:629:14: note: 'k' is >= 'n'
+  629 |         for (k = 0; k < n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:629:2: note: Loop condition is false. Execution continues on line 655
+  629 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:655:18: note: 'k' is < 0
+  655 |         for (k = n - 1; k >= 0; k--) {
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:655:2: note: Loop condition is false. Execution continues on line 661
+  655 |         for (k = n - 1; k >= 0; k--) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:661:14: note: 'k' is >= 'n'
+  661 |         for (k = 0; k < n; k++)
+      |                     ^
+/home/andrew/Code/ucas/src/remez.c:661:2: note: Loop condition is false. Execution continues on line 664
+  661 |         for (k = 0; k < n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:664:2: note: Returning without writing to '*b'
+  664 |         return 1;
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1175:8: note: Returning from 'lsolve'
+ 1175 |                 if (!lsolve(A, b, N))
+      |                      ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1175:3: note: Taking false branch
+ 1175 |                 if (!lsolve(A, b, N))
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1177:8: note: The value 0 is assigned to 'j'
+ 1177 |                 for (j = 0; j < n; j++)
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1177:15: note: 'j' is < 'n'
+ 1177 |                 for (j = 0; j < n; j++)
+      |                             ^
+/home/andrew/Code/ucas/src/remez.c:1177:3: note: Loop condition is true.  Entering loop body
+ 1177 |                 for (j = 0; j < n; j++)
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1178:12: note: Assigned value is uninitialized
+ 1178 |                         c->q[j] = b[j];
+      |                                 ^ ~~~~
+/home/andrew/Code/ucas/src/remez.c:1335:6: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1335 |                                         hi--;
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:1335:10: note: end of the original
+ 1335 |                                         hi--;
+      |                                             ^
+/home/andrew/Code/ucas/src/remez.c:1341:6: note: clone 1 starts here
+ 1341 |                                         hi--;
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:1337:6: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1337 |                                         lo++;
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:1337:10: note: end of the original
+ 1337 |                                         lo++;
+      |                                             ^
+/home/andrew/Code/ucas/src/remez.c:1339:6: note: clone 1 starts here
+ 1339 |                                         lo++;
+      |                                         ^
+/home/andrew/Code/ucas/src/remez.c:1392:2: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+ 1392 |         memcpy(c->q, bq, sizeof bq);
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1392:2: note: Other elements might also be undefined
+ 1392 |         memcpy(c->q, bq, sizeof bq);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Assuming field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:10: note: Field 'nt' is >= 1
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:20: note: Assuming the condition is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:6: note: Left side of '||' is false
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |             ^
+/home/andrew/Code/ucas/src/remez.c:1405:55: note: Assuming field 'xb' is > field 'xa'
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |                                                              ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1405:2: note: Taking false branch
+ 1405 |         if (pb->nt < 1 || pb->nt + pb->nd > AMAXC - AMAXK || !(pb->xb > pb->xa)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1409:2: note: Taking false branch
+ 1409 |         if (!setup(&c, pb)) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1413:8: note: Field 'nq' is not equal to 0
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |               ^
+/home/andrew/Code/ucas/src/remez.c:1413:16: note: Left side of '&&' is false
+ 1413 |         if (c.nq == 0 && c.nd == 0) {
+      |                       ^
+/home/andrew/Code/ucas/src/remez.c:1415:9: note: Control jumps to 'case FM_REMEZ:'  at line 1427
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/remez.c:1428:10: note: Field 'nq' is > 0
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                        ^
+/home/andrew/Code/ucas/src/remez.c:1428:8: note: Left side of '&&' is true
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                      ^
+/home/andrew/Code/ucas/src/remez.c:1428:20: note: Calling 'fit_remez'
+ 1428 |                 ok = c.nq > 0 && fit_remez(&c, r, &why);
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1283:5: note: 'bq' declared without an initial value
+ 1283 |         ld bq[AMAXC], bd[AMAXC];
+      |            ^~
+/home/andrew/Code/ucas/src/remez.c:1286:2: note: Taking false branch
+ 1286 |         if (N > MAXREF - 1) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1291:14: note: Assuming 'i' is >= 'N'
+ 1291 |         for (i = 0; i < N; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/remez.c:1291:2: note: Loop condition is false. Execution continues on line 1303
+ 1291 |         for (i = 0; i < N; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1303:2: note: Loop condition is true.  Entering loop body
+ 1303 |         for (it = 0; it < 60; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1304:7: note: Assuming the condition is true
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1304:3: note: Taking true branch
+ 1304 |                 if (!solve_ref(c, zr, N)) {
+      |                 ^
+/home/andrew/Code/ucas/src/remez.c:1305:8: note: Assuming the condition is true
+ 1305 |                         if (best < INFINITY)
+      |                             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1305:4: note: Taking true branch
+ 1305 |                         if (best < INFINITY)
+      |                         ^
+/home/andrew/Code/ucas/src/remez.c:1306:5: note:  Execution continues on line 1388
+ 1306 |                                 break;
+      |                                 ^
+/home/andrew/Code/ucas/src/remez.c:1388:6: note: Assuming the condition is false
+ 1388 |         if (best == INFINITY) {
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/remez.c:1388:2: note: Taking false branch
+ 1388 |         if (best == INFINITY) {
+      |         ^
+/home/andrew/Code/ucas/src/remez.c:1392:2: note: The first element of the 2nd argument is undefined
+ 1392 |         memcpy(c->q, bq, sizeof bq);
+      |         ^            ~~
+/home/andrew/Code/ucas/src/remez.c:1415:9: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1415 |         } else switch (pb->method) {
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

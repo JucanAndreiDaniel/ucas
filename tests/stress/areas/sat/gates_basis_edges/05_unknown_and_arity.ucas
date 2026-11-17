@@ -1,0 +1,12 @@
+# unknown symbols inside a gate body, and wrong gate arities
+basis u1 { g(x, y) = x & k }
+basis u2 { g(x, y) = foo(x, y) }
+basis a0 { g() = 1 }
+basis a4 { g(p, q, r, s) = p }
+basis ok { g(x, y) = x & y }
+f(a: u1, b: u1) = a & b
+gates f basis u1
+gates f basis u2
+gates f basis a0
+gates f basis a4
+gates f basis ok

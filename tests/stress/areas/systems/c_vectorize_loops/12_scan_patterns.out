@@ -1,0 +1,10 @@
+> c optimize nofile vectorize
+c optimize: 3 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  count (line 1): not lowered: line 1: a parameter that is not an integer or a float (s)
+  memchr_ (line 2): not lowered: line 2: the function does not return an integer or a float
+  memcmp_ (line 3): not lowered: line 3: a parameter that is not an integer or a float (a)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int count(const char*s,char c){int n=0;while(s[n]==c)n++;return n;}
+  const char* memchr_(const char*s,int c,int n){for(int i=0;i<n;i++)if(s[i]==c)return s+i;return 0;}
+  int memcmp_(const char*a,const char*b,int n){for(int i=0;i<n;i++)if(a[i]!=b[i])return a[i]-b[i];return 0;}

@@ -1,0 +1,42 @@
+> f1(a: u32, b: u32) = ((a + b) | (a - b)) & ~((a + b) & (a - b))
+> find f1 1
+find f1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> find f1 1 snippets
+find f1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a + b xor a - b                          the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> f2(a: u32, b: u32) = a + b
+> find f2 1 snippets
+find f2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   a + b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> f3(a: u32, b: u32) = a ^ b
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
+> find f3 1 snippets
+find f3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 3 has its values (78812 programs of 2 inputs, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> f4(a: u32, b: u32) = a & b
+> find f4 1 snippets
+find f4: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   a & b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> f5(a: u32, b: u32) = a * b
+> find f5 1 snippets
+find f5: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a*b                                      the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> f6(a: u32, b: u32) = a - b
+> find f6 1 snippets
+find f6: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   a - b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> f7(a: u32, b: u32) = (a << 1) + (a >> 31)
+> find f7 1 snippets
+find f7: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 3 has its values (78812 programs of 2 inputs, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

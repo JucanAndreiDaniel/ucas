@@ -1,0 +1,120 @@
+src/report.c:680:22: warning: The left operand of '==' is a garbage value [core.UndefinedBinaryOperatorResult]
+  680 |                                 rep_check(key[5] == '_' && strcmp(key, "check_failed") ?
+      |                                           ~~~~~~ ^
+src/report.c:654:9: note: Assuming 'p' is < 'end'
+  654 |         while (p < end && *p) {
+      |                ^~~~~~~
+src/report.c:654:9: note: Left side of '&&' is true
+src/report.c:654:2: note: Loop condition is true.  Entering loop body
+  654 |         while (p < end && *p) {
+      |         ^
+src/report.c:656:7: note: Assuming 'e' is not equal to NULL
+  656 |                 if (e == NULL || e > end)
+      |                     ^~~~~~~~~
+src/report.c:656:7: note: Left side of '||' is false
+src/report.c:656:20: note: Assuming 'e' is <= 'end'
+  656 |                 if (e == NULL || e > end)
+      |                                  ^~~~~~~
+src/report.c:656:3: note: Taking false branch
+  656 |                 if (e == NULL || e > end)
+      |                 ^
+src/report.c:658:15: note: Assuming 's' is < 'e'
+  658 |                 for (s = p; s < e && *s == ' '; s++)
+      |                             ^~~~~
+src/report.c:658:15: note: Left side of '&&' is true
+src/report.c:658:24: note: Assuming the condition is true
+  658 |                 for (s = p; s < e && *s == ' '; s++)
+      |                                      ^~~~~~~~~
+src/report.c:658:3: note: Loop condition is true.  Entering loop body
+  658 |                 for (s = p; s < e && *s == ' '; s++)
+      |                 ^
+src/report.c:658:15: note: Assuming 's' is >= 'e'
+  658 |                 for (s = p; s < e && *s == ' '; s++)
+      |                             ^~~~~
+src/report.c:658:21: note: Left side of '&&' is false
+  658 |                 for (s = p; s < e && *s == ' '; s++)
+      |                                   ^
+src/report.c:661:10: note: Assuming 'q' is <= 's'
+  661 |                 while (q > s && (q[-1] == ' ' || q[-1] == '\r'))
+      |                        ^~~~~
+src/report.c:661:16: note: Left side of '&&' is false
+  661 |                 while (q > s && (q[-1] == ' ' || q[-1] == '\r'))
+      |                              ^
+src/report.c:663:7: note: Assuming 'q' is > 's'
+  663 |                 if (q <= s || (s == p && q - s > 1 && s[0] == '>' && s[1] == ' ') ||
+      |                     ^~~~~~
+src/report.c:663:7: note: Left side of '||' is false
+src/report.c:663:18: note: 's' is not equal to 'p'
+  663 |                 if (q <= s || (s == p && q - s > 1 && s[0] == '>' && s[1] == ' ') ||
+      |                                ^
+src/report.c:663:25: note: Left side of '&&' is false
+  663 |                 if (q <= s || (s == p && q - s > 1 && s[0] == '>' && s[1] == ' ') ||
+      |                                       ^
+src/report.c:664:8: note: Assuming the condition is false
+  664 |                     (q - s > 6 && !strncmp(s, "note: ", 6)))
+      |                      ^~~~~~~~~
+src/report.c:664:18: note: Left side of '&&' is false
+  664 |                     (q - s > 6 && !strncmp(s, "note: ", 6)))
+      |                                ^
+src/report.c:666:12: note: 's' is not equal to 'p'
+  666 |                 else if (s == p)
+      |                          ^
+src/report.c:666:8: note: Taking false branch
+  666 |                 else if (s == p)
+      |                      ^
+src/report.c:668:12: note: Assuming the condition is false
+  668 |                 else if (q - s > 9 && !strncmp(s, "assuming ", 9))
+      |                          ^~~~~~~~~
+src/report.c:668:22: note: Left side of '&&' is false
+  668 |                 else if (q - s > 9 && !strncmp(s, "assuming ", 9))
+      |                                    ^
+src/report.c:670:12: note: Assuming the condition is false
+  670 |                 else if (s - p >= 2 && q - s > 3 && s[0] == 'w' &&
+      |                          ^~~~~~~~~~
+src/report.c:670:23: note: Left side of '&&' is false
+  670 |                 else if (s - p >= 2 && q - s > 3 && s[0] == 'w' &&
+      |                                     ^
+src/report.c:673:8: note: Taking true branch
+  673 |                 else if ((ll = label_len(s, (size_t)(q - s))) != 0) {
+      |                      ^
+src/report.c:676:4: note: Calling 'field_key'
+  676 |                         field_key(key, sizeof key, s, ll);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/report.c:425:14: note: 'i' is < 'len'
+  425 |         for (i = 0; i < len && j + 1 < n; i++) {
+      |                     ^
+src/report.c:425:14: note: Left side of '&&' is true
+src/report.c:425:2: note: Loop condition is true.  Entering loop body
+  425 |         for (i = 0; i < len && j + 1 < n; i++) {
+      |         ^
+src/report.c:427:7: note: Assuming the condition is false
+  427 |                 if (isalnum(c)) {
+      |                     ^~~~~~~~~~
+/usr/include/ctype.h:189:21: note: expanded from macro 'isalnum'
+  189 | # define isalnum(c)     __isctype((c), _ISalnum)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/report.c:427:3: note: Taking false branch
+  427 |                 if (isalnum(c)) {
+      |                 ^
+src/report.c:425:14: note: 'i' is >= 'len'
+  425 |         for (i = 0; i < len && j + 1 < n; i++) {
+      |                     ^
+src/report.c:425:22: note: Left side of '&&' is false
+  425 |         for (i = 0; i < len && j + 1 < n; i++) {
+      |                             ^
+src/report.c:676:4: note: Returning from 'field_key'
+  676 |                         field_key(key, sizeof key, s, ll);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/report.c:677:8: note: Assuming the condition is true
+  677 |                         if (!strncmp(key, "check", 5)) {
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/report.c:677:4: note: Taking true branch
+  677 |                         if (!strncmp(key, "check", 5)) {
+      |                         ^
+src/report.c:680:22: note: The left operand of '==' is a garbage value
+  680 |                                 rep_check(key[5] == '_' && strcmp(key, "check_failed") ?
+      |                                           ~~~~~~ ^
+1 warning generated.

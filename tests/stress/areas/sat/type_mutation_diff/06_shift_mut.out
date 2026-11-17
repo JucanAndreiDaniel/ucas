@@ -1,0 +1,58 @@
+> s_shift_basic_u8(x: u8, y: u8) = x >> 1
+> m_shift_basic_u8(x: u8, y: u8) = x << 1
+> equiv s_shift_basic_u8 m_shift_basic_u8
+s_shift_basic_u8 and m_shift_basic_u8 differ at 65280 points, e.g. x=1, y=0: 0 vs 2
+> s_shift_basic_u32(x: u32, y: u32) = x >> 1
+> m_shift_basic_u32(x: u32, y: u32) = x << 1
+> equiv s_shift_basic_u32 m_shift_basic_u32
+s_shift_basic_u32 and m_shift_basic_u32 differ at 65533 points of the sample, e.g. x=4294967295, y=0: 2147483647 vs 4294967294
+> s_shl_add_u8(x: u8) = x << 1
+> m_shl_add_u8(x: u8) = x + x
+> equiv s_shl_add_u8 m_shl_add_u8
+s_shl_add_u8 and m_shl_add_u8 are equal on the domain of s_shl_add_u8 (exhaustive)
+> s_shl_add_u32(x: u32) = x << 1
+> m_shl_add_u32(x: u32) = x + x
+> equiv s_shl_add_u32 m_shl_add_u32
+s_shl_add_u32 and m_shl_add_u32 are equal on the domain of s_shl_add_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_shr_div_u8(x: u8) = x >> 1
+> m_shr_div_u8(x: u8) = x / 2
+> equiv s_shr_div_u8 m_shr_div_u8
+s_shr_div_u8 and m_shr_div_u8 are equal on the domain of s_shr_div_u8 (exhaustive)
+> s_shr_div_u32(x: u32) = x >> 1
+> m_shr_div_u32(x: u32) = x / 2
+> equiv s_shr_div_u32 m_shr_div_u32
+s_shr_div_u32 and m_shr_div_u32 are equal on the domain of s_shr_div_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_shl_roundtrip_u8(x: u8) = (x << 2) >> 2
+> m_shl_roundtrip_u8(x: u8) = x & (~3)
+  note: literal -4 does not fit u8; it becomes 252
+> equiv s_shl_roundtrip_u8 m_shl_roundtrip_u8
+s_shl_roundtrip_u8 and m_shl_roundtrip_u8 differ at 240 points, e.g. x=1: 1 vs 0
+> s_shl_roundtrip_u32(x: u32) = (x << 2) >> 2
+> m_shl_roundtrip_u32(x: u32) = x & (~3)
+  note: literal -4 does not fit u32; it becomes 4294967292
+> equiv s_shl_roundtrip_u32 m_shl_roundtrip_u32
+s_shl_roundtrip_u32 and m_shl_roundtrip_u32 differ at 61310 points of the sample, e.g. x=4294967295: 1073741823 vs 4294967292
+> s_shift_bad_rt_u8(x: u8) = (x << 2) >> 2
+> m_shift_bad_rt_u8(x: u8) = x >> 2
+> equiv s_shift_bad_rt_u8 m_shift_bad_rt_u8
+s_shift_bad_rt_u8 and m_shift_bad_rt_u8 differ at 252 points, e.g. x=1: 1 vs 0
+> s_shift_bad_rt_u32(x: u32) = (x << 2) >> 2
+> m_shift_bad_rt_u32(x: u32) = x >> 2
+> equiv s_shift_bad_rt_u32 m_shift_bad_rt_u32
+s_shift_bad_rt_u32 and m_shift_bad_rt_u32 differ at 65532 points of the sample, e.g. x=1: 1 vs 0
+> s_shift_amt_u8(x: u8, y: u8) = x << y
+> m_shift_amt_u8(x: u8, y: u8) = x >> y
+> equiv s_shift_amt_u8 m_shift_amt_u8
+s_shift_amt_u8 and m_shift_amt_u8 differ at 1701 points, e.g. x=1, y=1: 2 vs 0
+> s_shift_amt_u32(x: u32, y: u32) = x << y
+> m_shift_amt_u32(x: u32, y: u32) = x >> y
+> equiv s_shift_amt_u32 m_shift_amt_u32
+s_shift_amt_u32 and m_shift_amt_u32 differ at 2 points of the sample, e.g. x=1, y=1: 2 vs 0
+> s_shr_sign_u8(x: u8) = x >> 3
+> m_shr_sign_u8(x: u8) = x / 8
+> equiv s_shr_sign_u8 m_shr_sign_u8
+s_shr_sign_u8 and m_shr_sign_u8 are equal on the domain of s_shr_sign_u8 (exhaustive)
+> s_shr_sign_u32(x: u32) = x >> 3
+> m_shr_sign_u32(x: u32) = x / 8
+> equiv s_shr_sign_u32 m_shr_sign_u32
+s_shr_sign_u32 and m_shr_sign_u32 are equal on the domain of s_shr_sign_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)

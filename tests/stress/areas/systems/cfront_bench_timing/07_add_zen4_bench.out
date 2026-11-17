@@ -1,0 +1,9 @@
+> c optimize nofile target zen4 bench budget 0
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for zen4
+  add (line 1): no cheaper form: lowered: 2 inputs, cost 1.0
+  note: this host lacks avx512f, so the checks ran with -march=native (the scalar fallbacks of zen4-only paths)
+  check: the original does not compile:
+cc: error: unrecognized command-line option ‘-fsanitize-minimal-runtime’
+optimised C:
+  /* optimised by ucas cfront for zen4 (znver4); every rewrite proved, see the report */
+  int add(int a,int b){return a+b;}

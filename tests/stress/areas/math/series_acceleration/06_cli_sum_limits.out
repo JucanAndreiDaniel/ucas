@@ -1,0 +1,16 @@
+> sum(i, 1, 1000, 1/2^i)
+  note: 1/2^i would divide integers by the index i: i taken as real
+1
+> sum(i, 1, 100000, 1/2^i)
+  note: 1/2^i would divide integers by the index i: i taken as real
+_() = sum(i, 1, 100000, 1/2^i)
+  -> real
+> sum(i, 0, 100, 1/i!)
+06_cli_sum_limits.ucas:3:19: error: expected ')', found '!'
+    sum(i, 0, 100, 1/i!)
+                      ^
+> sum(i, 0, 100, 1/factorial(i))
+  note: factorial(...) read as multiplication: factorial is not a function
+  note: 1/factorial*real(i) read as 1/(factorial*real(i)); write (1/...)... for the other reading
+_(factorial: real) = sum(i, 0, 100, 1/(factorial*real(i)))
+  -> real

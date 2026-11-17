@@ -1,0 +1,10 @@
+# Magic-constant fitting on rsqrt and friends.  The reported "best" K is
+# sampled and is NOT the true minimax (see FINDINGS.md).
+rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)
+guess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+fit guess ~ rsqrt
+find rsqrt 2
+fit guess ~ rsqrt metric maxabs
+fit guess ~ rsqrt metric rms
+rsqrt2(x: f32 in 1..2) = 1/sqrt(x)
+fit guess ~ rsqrt2

@@ -1,0 +1,13 @@
+# rop: graphics fixed-function states (rop.c) — NO existing stress area
+acc(s: u32 in 0..255, d: u32 in 0..1000000) = d + s
+rop acc
+bits(s: u32, d: u32) = d | s
+rop bits
+cnt(d: u8) = d + 1
+rop cnt
+sat(d: u8) = d == 255 ? 255 : d + 1
+rop sat
+tog(s: u16, d: u16) = d xor s
+rop tog
+mx(s: f32, d: f32) = max(s, d)
+rop mx

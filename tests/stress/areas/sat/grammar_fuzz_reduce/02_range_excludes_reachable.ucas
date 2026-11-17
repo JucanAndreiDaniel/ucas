@@ -1,0 +1,11 @@
+# WRONG: the sampled `range` excludes values that are plainly reachable at
+# corner inputs.  The tool's own sound interval bound includes them.
+a(x: u16, y: u16) = x & y
+range a
+show a(65535, 65535)
+b(x: u16, y: u16) = (x & y) + (x xor y)
+range b
+show b(0, 0)
+c(x: u16, y: u16) = x * y
+range c
+show c(255, 257)

@@ -1,0 +1,2699 @@
+/home/andrew/Code/ucas/src/adamfit.c:91:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   62 |         uint8_t op[AF_MAXN], a[AF_MAXN], b[AF_MAXN], c[AF_MAXN], k[AF_MAXN];
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:103:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  103 |         int64_t C[AF_MAXK], B;
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:134:11: warning: no header providing "PATH_MAX" is directly included [misc-include-cleaner]
+   61 |         char dir[PATH_MAX], bin[PATH_MAX];
+      |                  ^
+/home/andrew/Code/ucas/src/adamfit.c:141:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  141 |         uint64_t seed;
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:156:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  156 |         uint32_t capseen;
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:208:16: warning: no header providing "CLOCK_MONOTONIC" is directly included [misc-include-cleaner]
+   59 |         clock_gettime(CLOCK_MONOTONIC, &t);
+      |                       ^
+/home/andrew/Code/ucas/src/adamfit.c:235:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   62 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:237:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+  237 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:278:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  278 |         if ((i = sh_add(s, Q_C, 0, 0, 0)) < 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:278:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:278:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:360:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  360 |         return h | 1;
+      |                  ~ ^
+/home/andrew/Code/ucas/src/adamfit.c:410:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  410 |                 if (!F.oint && !(F.ops & (1u << op)))
+      |                                              ~~ ^~
+/home/andrew/Code/ucas/src/adamfit.c:477:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  477 |                 if ((r = horner(&s, sq, d)) >= 0 && sh_add(&s, Q_MUL, r, 0, 0) >= 0)
+      |                      ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:477:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:477:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:497:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  497 |         if (F.ops & (1u << Q_SQRT))
+      |                         ~~ ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:523:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  523 |         if ((t = affine_onto(&s, INT_MAX, -1)) >= 0 && (c = sh_const(&s)) >= 0 &&
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:523:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:523:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:523:52: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  523 |         if ((t = affine_onto(&s, INT_MAX, -1)) >= 0 && (c = sh_const(&s)) >= 0 &&
+      |                                                         ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:523:52: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:523:52: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:587:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         if (F.ops & (1u << Q_SQRT)) {
+      |                                         ~~ ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:620:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  620 |                 if ((F.ops & (1u << i)) && qarity[i] < size)
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:731:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  731 |         for (set = 1; set < (1u << nmon) && F.nsh < F.count; set++) {
+      |                                 ~~ ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:734:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                         if (set & (1u << k)) {
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:751:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  751 |         if (TYK(t) == K_SINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:752:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 return TYW(t) >= 64 ? INT64_MIN : -((int64_t)1 << (TYW(t) - 1));
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:752:25: warning: no header providing "INT64_MIN" is directly included [misc-include-cleaner]
+  752 |                 return TYW(t) >= 64 ? INT64_MIN : -((int64_t)1 << (TYW(t) - 1));
+      |                                       ^
+/home/andrew/Code/ucas/src/adamfit.c:752:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 return TYW(t) >= 64 ? INT64_MIN : -((int64_t)1 << (TYW(t) - 1));
+      |                                                     ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:752:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 return TYW(t) >= 64 ? INT64_MIN : -((int64_t)1 << (TYW(t) - 1));
+      |                                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:759:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  759 |         if (TYK(t) == K_SINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:760:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |                 return TYW(t) >= 64 ? INT64_MAX : ((int64_t)1 << (TYW(t) - 1)) - 1;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:760:25: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+  760 |                 return TYW(t) >= 64 ? INT64_MAX : ((int64_t)1 << (TYW(t) - 1)) - 1;
+      |                                       ^
+/home/andrew/Code/ucas/src/adamfit.c:760:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |                 return TYW(t) >= 64 ? INT64_MAX : ((int64_t)1 << (TYW(t) - 1)) - 1;
+      |                                                    ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:760:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |                 return TYW(t) >= 64 ? INT64_MAX : ((int64_t)1 << (TYW(t) - 1)) - 1;
+      |                                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:761:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  761 |         if (TYK(t) == K_BOOL)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:763:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |         return TYW(t) >= 63 ? INT64_MAX : ((int64_t)1 << TYW(t)) - 1;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:763:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |         return TYW(t) >= 63 ? INT64_MAX : ((int64_t)1 << TYW(t)) - 1;
+      |                                            ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:763:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |         return TYW(t) >= 63 ? INT64_MAX : ((int64_t)1 << TYW(t)) - 1;
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:770:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |         if (TYK(F.oty) == K_INT || F.ow >= 64)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:774:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  774 |                 return (int64_t)((uint64_t)v << sh) >> sh;
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:774:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  774 |                 return (int64_t)((uint64_t)v << sh) >> sh;
+      |                                              ~~ ^~
+/home/andrew/Code/ucas/src/adamfit.c:776:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  776 |         return (int64_t)((uint64_t)v & (((uint64_t)1 << F.ow) - 1));
+      |                                                      ~~ ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:830:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  830 |         nc = F.nv > 1 ? 1 << F.nv : 0;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/adamfit.c:838:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  838 |                                 t = (i >> v) & 1;
+      |                                     ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:838:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  838 |                                 t = (i >> v) & 1;
+      |                                      ^ ~~
+/home/andrew/Code/ucas/src/adamfit.c:871:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  871 |         F.exhaustive = cnt <= AF_EXH;
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:76:17: note: expanded from macro 'AF_EXH'
+   76 | #define AF_EXH (1L << 22)       /* domains enumerated up to this */
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:926:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  926 |                         if (COLF(&p, loc)[i] & F_UNDEF)
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1125:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1125 |                                         flt |= s[j] == '.';
+      |                                         ^~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:1205:3: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+ 1205 |                 fclose(fp);
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is not equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is not equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking true branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2606:3: note: Calling 'native_build'
+ 2606 |                 native_build();
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1165:58: note: 'tmp' is null
+ 1165 |         snprintf(F.dir, sizeof F.dir, "%s/ucas-adamfit-XXXXXX", tmp && *tmp ? tmp :
+      |                                                                 ^~~
+/home/andrew/Code/ucas/src/adamfit.c:1165:62: note: Left side of '&&' is false
+ 1165 |         snprintf(F.dir, sizeof F.dir, "%s/ucas-adamfit-XXXXXX", tmp && *tmp ? tmp :
+      |                                                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1167:2: note: Taking false branch
+ 1167 |         if (mkdtemp(F.dir) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1170:6: note: Assuming field 'kind' is not equal to TK_GLSL
+ 1170 |         if (F.kind == TK_GLSL)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1170:2: note: Taking false branch
+ 1170 |         if (F.kind == TK_GLSL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1186:6: note: Assuming field 'oint' is not equal to 0
+ 1186 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1186:2: note: Taking true branch
+ 1186 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1191:14: note: Assuming 'v' is >= field 'nv'
+ 1191 |         for (v = 0; v < F.nv; v++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1191:2: note: Loop condition is false. Execution continues on line 1193
+ 1191 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1198:14: note: Assuming pointer value is null
+ 1198 |                 FILE *fp = fopen(src, "w");
+      |                            ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1198:14: note: Assuming that 'fopen' fails
+ 1198 |                 FILE *fp = fopen(src, "w");
+      |                            ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1198:3: note: 'fp' initialized here
+ 1198 |                 FILE *fp = fopen(src, "w");
+      |                 ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1199:7: note: 'fp' is equal to NULL
+ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+      |                     ^~
+/home/andrew/Code/ucas/src/adamfit.c:1199:18: note: Left side of '||' is true
+ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:1200:8: note: 'fp' is null
+ 1200 |                         if (fp)
+      |                             ^~
+/home/andrew/Code/ucas/src/adamfit.c:1200:4: note: Taking false branch
+ 1200 |                         if (fp)
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1205:3: note: Null pointer passed to 1st parameter expecting 'nonnull'
+ 1205 |                 fclose(fp);
+      |                 ^      ~~
+/home/andrew/Code/ucas/src/adamfit.c:1221:2: warning: Attempt to release already released memory [clang-analyzer-unix.Malloc]
+ 1221 |         free(out.p);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is not equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is not equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking true branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2606:3: note: Calling 'native_build'
+ 2606 |                 native_build();
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1165:58: note: 'tmp' is null
+ 1165 |         snprintf(F.dir, sizeof F.dir, "%s/ucas-adamfit-XXXXXX", tmp && *tmp ? tmp :
+      |                                                                 ^~~
+/home/andrew/Code/ucas/src/adamfit.c:1165:62: note: Left side of '&&' is false
+ 1165 |         snprintf(F.dir, sizeof F.dir, "%s/ucas-adamfit-XXXXXX", tmp && *tmp ? tmp :
+      |                                                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1167:2: note: Taking false branch
+ 1167 |         if (mkdtemp(F.dir) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1170:6: note: Assuming field 'kind' is not equal to TK_GLSL
+ 1170 |         if (F.kind == TK_GLSL)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1170:2: note: Taking false branch
+ 1170 |         if (F.kind == TK_GLSL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1186:6: note: Assuming field 'oint' is not equal to 0
+ 1186 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1186:2: note: Taking true branch
+ 1186 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1191:14: note: Assuming 'v' is >= field 'nv'
+ 1191 |         for (v = 0; v < F.nv; v++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1191:2: note: Loop condition is false. Execution continues on line 1193
+ 1191 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1199:7: note: 'fp' is not equal to NULL
+ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+      |                     ^~
+/home/andrew/Code/ucas/src/adamfit.c:1199:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/adamfit.c:1199:3: note: Taking false branch
+ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1209:28: note: 'cc' is null
+ 1209 |                 char *argv[] = {(char *)(cc && *cc ? cc : "cc"), "-std=gnu11", "-O1",
+      |                                          ^~
+/home/andrew/Code/ucas/src/adamfit.c:1209:31: note: Left side of '&&' is false
+ 1209 |                 char *argv[] = {(char *)(cc && *cc ? cc : "cc"), "-std=gnu11", "-O1",
+      |                                             ^
+/home/andrew/Code/ucas/src/adamfit.c:1214:6: note: Assuming 'rc' is not equal to 0
+ 1214 |         if (rc != 0) {
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1214:2: note: Taking true branch
+ 1214 |         if (rc != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1216:31: note: Assuming field 'p' is non-null
+ 1216 |                 snprintf(m, sizeof m, "%s", out.p ? out.p : "");
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1216:31: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1217:3: note: Memory is released
+ 1217 |                 free(out.p);
+      |                 ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1218:56: note: Assuming field 'kind' is not equal to TK_GLSL
+ 1218 |                 fail("adamfit: the %s did not compile with %s:\n%s", F.kind ==
+      |                                                                      ^~~~~~~~~
+ 1219 |                     TK_GLSL ? "GLSL (as C)" : "C", cc && *cc ? cc : "cc", m);
+      |                     ~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1218:56: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:1219:38: note: 'cc' is null
+ 1219 |                     TK_GLSL ? "GLSL (as C)" : "C", cc && *cc ? cc : "cc", m);
+      |                                                    ^~
+/home/andrew/Code/ucas/src/adamfit.c:1219:41: note: Left side of '&&' is false
+ 1219 |                     TK_GLSL ? "GLSL (as C)" : "C", cc && *cc ? cc : "cc", m);
+      |                                                       ^
+/home/andrew/Code/ucas/src/adamfit.c:1221:2: note: Attempt to release already released memory
+ 1221 |         free(out.p);
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |              ~~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:1236:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:1238:2: warning: Null pointer passed to 4th parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+ 1238 |         fwrite(&nn, 8, 1, fp);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2607:2: note: Calling 'measuring'
+ 2607 |         measuring();
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: Assuming field 'exhaustive' is 0
+  872 |         F.nm = F.exhaustive ? (long)cnt : AF_NV;
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:873:14: note: 'v' is >= field 'nv'
+  873 |         for (v = 0; v < F.nv; v++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:873:2: note: Loop condition is false. Execution continues on line 875
+  873 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:876:14: note: Assuming 'i' is >= field 'nm'
+  876 |         for (i = 0; i < F.nm; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:876:2: note: Loop condition is false. Execution continues on line 898
+  876 |         for (i = 0; i < F.nm; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:898:2: note: Calling 'ref_batch'
+  898 |         ref_batch(F.mx, F.nm, F.my);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:6: note: Assuming field 'kind' is not equal to TK_UCAS
+  946 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:2: note: Taking true branch
+  946 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:947:3: note: Calling 'native_batch'
+  947 |                 native_batch(xs, n, ys);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:12: note: Assuming pointer value is null
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:12: note: Assuming that 'fopen' fails
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:7: note: Value assigned to 'fp'
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |              ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:2: note: Taking true branch
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1238:2: note: Null pointer passed to 4th parameter expecting 'nonnull'
+ 1238 |         fwrite(&nn, 8, 1, fp);
+      |         ^                 ~~
+/home/andrew/Code/ucas/src/adamfit.c:1259:2: warning: Attempt to release already released memory [clang-analyzer-unix.Malloc]
+ 1259 |         free(out.p);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2607:2: note: Calling 'measuring'
+ 2607 |         measuring();
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: Assuming field 'exhaustive' is 0
+  872 |         F.nm = F.exhaustive ? (long)cnt : AF_NV;
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:873:14: note: 'v' is >= field 'nv'
+  873 |         for (v = 0; v < F.nv; v++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:873:2: note: Loop condition is false. Execution continues on line 875
+  873 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:876:14: note: Assuming 'i' is >= field 'nm'
+  876 |         for (i = 0; i < F.nm; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:876:2: note: Loop condition is false. Execution continues on line 898
+  876 |         for (i = 0; i < F.nm; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:898:2: note: Calling 'ref_batch'
+  898 |         ref_batch(F.mx, F.nm, F.my);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:6: note: Assuming field 'kind' is not equal to TK_UCAS
+  946 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:2: note: Taking true branch
+  946 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:947:3: note: Calling 'native_batch'
+  947 |                 native_batch(xs, n, ys);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:2: note: Taking false branch
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:14: note: 'i' is >= 'n'
+ 1239 |         for (i = 0; i < n; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:2: note: Loop condition is false. Execution continues on line 1247
+ 1239 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1252:6: note: Assuming 'rc' is not equal to 0
+ 1252 |         if (rc != 0) {
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1252:2: note: Taking true branch
+ 1252 |         if (rc != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1254:31: note: Assuming field 'p' is non-null
+ 1254 |                 snprintf(m, sizeof m, "%s", out.p ? out.p : "");
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1254:31: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1255:3: note: Memory is released
+ 1255 |                 free(out.p);
+      |                 ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1257:18: note: Assuming the condition is false
+ 1257 |                     F.cfn, rc, m[0] ? ":\n" : "", m);
+      |                                ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:1257:18: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:1259:2: note: Attempt to release already released memory
+ 1259 |         free(out.p);
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1260:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |              ~~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1260:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:1260:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:1276:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+ 1276 |         fclose(fp);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2607:2: note: Calling 'measuring'
+ 2607 |         measuring();
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: Assuming field 'exhaustive' is 0
+  872 |         F.nm = F.exhaustive ? (long)cnt : AF_NV;
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:873:14: note: 'v' is >= field 'nv'
+  873 |         for (v = 0; v < F.nv; v++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:873:2: note: Loop condition is false. Execution continues on line 875
+  873 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:876:14: note: Assuming 'i' is >= field 'nm'
+  876 |         for (i = 0; i < F.nm; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:876:2: note: Loop condition is false. Execution continues on line 898
+  876 |         for (i = 0; i < F.nm; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:898:2: note: Calling 'ref_batch'
+  898 |         ref_batch(F.mx, F.nm, F.my);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:6: note: Assuming field 'kind' is not equal to TK_UCAS
+  946 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:2: note: Taking true branch
+  946 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:947:3: note: Calling 'native_batch'
+  947 |                 native_batch(xs, n, ys);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:2: note: Taking false branch
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:14: note: 'i' is >= 'n'
+ 1239 |         for (i = 0; i < n; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:2: note: Loop condition is false. Execution continues on line 1247
+ 1239 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1252:6: note: Assuming 'rc' is equal to 0
+ 1252 |         if (rc != 0) {
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1252:2: note: Taking false branch
+ 1252 |         if (rc != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1260:12: note: Assuming pointer value is null
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |                   ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1260:12: note: Assuming that 'fopen' fails
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |                   ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1260:7: note: Value assigned to 'fp'
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |              ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1260:2: note: Taking true branch
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1262:14: note: 'i' is >= 'n'
+ 1262 |         for (i = 0; i < n; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1262:2: note: Loop condition is false. Execution continues on line 1276
+ 1262 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1276:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+ 1276 |         fclose(fp);
+      |         ^      ~~
+/home/andrew/Code/ucas/src/adamfit.c:1276:2: warning: Use of a stream that might be already closed [clang-analyzer-unix.Stream]
+ 1276 |         fclose(fp);
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2607:2: note: Calling 'measuring'
+ 2607 |         measuring();
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: Assuming field 'exhaustive' is 0
+  872 |         F.nm = F.exhaustive ? (long)cnt : AF_NV;
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:872:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:873:14: note: 'v' is >= field 'nv'
+  873 |         for (v = 0; v < F.nv; v++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:873:2: note: Loop condition is false. Execution continues on line 875
+  873 |         for (v = 0; v < F.nv; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:876:14: note: Assuming 'i' is < field 'nm'
+  876 |         for (i = 0; i < F.nm; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:876:2: note: Loop condition is true.  Entering loop body
+  876 |         for (i = 0; i < F.nm; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:878:15: note: Assuming 'v' is >= field 'nv'
+  878 |                 for (v = 0; v < F.nv; v++) {
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:878:3: note: Loop condition is false. Execution continues on line 876
+  878 |                 for (v = 0; v < F.nv; v++) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:876:14: note: Assuming 'i' is >= field 'nm'
+  876 |         for (i = 0; i < F.nm; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:876:2: note: Loop condition is false. Execution continues on line 898
+  876 |         for (i = 0; i < F.nm; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:898:2: note: Calling 'ref_batch'
+  898 |         ref_batch(F.mx, F.nm, F.my);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:6: note: Assuming field 'kind' is not equal to TK_UCAS
+  946 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:946:2: note: Taking true branch
+  946 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:947:3: note: Calling 'native_batch'
+  947 |                 native_batch(xs, n, ys);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1236:2: note: Taking false branch
+ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:2: note: Loop condition is true.  Entering loop body
+ 1239 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1240:15: note: Assuming 'v' is >= field 'nv'
+ 1240 |                 for (v = 0; v < F.nv; v++) {
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1240:3: note: Loop condition is false. Execution continues on line 1239
+ 1240 |                 for (v = 0; v < F.nv; v++) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1239:2: note: Loop condition is false. Execution continues on line 1247
+ 1239 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1252:6: note: Assuming 'rc' is equal to 0
+ 1252 |         if (rc != 0) {
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1252:2: note: Taking false branch
+ 1252 |         if (rc != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1260:2: note: Taking false branch
+ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1262:2: note: Loop condition is true.  Entering loop body
+ 1262 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1267:3: note: Taking true branch
+ 1267 |                 if (fread(&r, 8, 1, fp) != 1) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1268:4: note: Stream is closed here
+ 1268 |                         fclose(fp);
+      |                         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1271:7: note: Assuming field 'oint' is 0
+ 1271 |                 if (F.oint)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1271:3: note: Taking false branch
+ 1271 |                 if (F.oint)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1262:2: note: Loop condition is false. Execution continues on line 1276
+ 1262 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1276:2: note: Use of a stream that might be already closed
+ 1276 |         fclose(fp);
+      |         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1311:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1311 |                 switch (s->op[i]) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1376:16: warning: Out of bound access to memory around 'gg' [clang-analyzer-security.ArrayBound]
+ 1376 |                 double *gi = gg[i], *ga = gg[s->a[i]], *gb = gg[s->b[i]],
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1354:6: note: Assuming the condition is false
+ 1354 |         if (!forward(s, th))
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1354:2: note: Taking false branch
+ 1354 |         if (!forward(s, th))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1356:14: note: Assuming 't' is >= field 'nt'
+ 1356 |         for (t = 0; t < F.nt; t++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1356:2: note: Loop condition is false. Execution continues on line 1361
+ 1356 |         for (t = 0; t < F.nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1361:14: note: Assuming 'i' is >= field 'nk'
+ 1361 |         for (i = 0; i < s->nk; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1361:2: note: Loop condition is false. Execution continues on line 1363
+ 1361 |         for (i = 0; i < s->nk; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1363:6: note: Assuming 'M' is not equal to 0
+ 1363 |         if (M == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1363:2: note: Taking false branch
+ 1363 |         if (M == 0)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1365:14: note: 't' is >= field 'nt'
+ 1365 |         for (t = 0; t < F.nt; t++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1365:2: note: Loop condition is false. Execution continues on line 1367
+ 1365 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1367:14: note: Assuming 'i' is >= field 'n'
+ 1367 |         for (i = 0; i < s->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1367:2: note: Loop condition is false. Execution continues on line 1369
+ 1367 |         for (i = 0; i < s->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1369:14: note: 't' is >= field 'nt'
+ 1369 |         for (t = 0; t < F.nt; t++) {
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1369:2: note: Loop condition is false. Execution continues on line 1375
+ 1369 |         for (t = 0; t < F.nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1375:17: note: Assuming 'i' is >= field 'nv'
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1375:2: note: Loop condition is true.  Entering loop body
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1376:16: note: Access of 'gg' at a negative or overflowing index, while it holds only 40 'double[264]' elements
+ 1376 |                 double *gi = gg[i], *ga = gg[s->a[i]], *gb = gg[s->b[i]],
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1376:16: warning: Out of bound access to memory preceding 'gg' [clang-analyzer-security.ArrayBound]
+ 1376 |                 double *gi = gg[i], *ga = gg[s->a[i]], *gb = gg[s->b[i]],
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1354:6: note: Assuming the condition is false
+ 1354 |         if (!forward(s, th))
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1354:2: note: Taking false branch
+ 1354 |         if (!forward(s, th))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1356:14: note: Assuming 't' is >= field 'nt'
+ 1356 |         for (t = 0; t < F.nt; t++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1356:2: note: Loop condition is false. Execution continues on line 1361
+ 1356 |         for (t = 0; t < F.nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1361:14: note: Assuming 'i' is >= field 'nk'
+ 1361 |         for (i = 0; i < s->nk; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1361:2: note: Loop condition is false. Execution continues on line 1363
+ 1361 |         for (i = 0; i < s->nk; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1363:6: note: Assuming 'M' is not equal to 0
+ 1363 |         if (M == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1363:2: note: Taking false branch
+ 1363 |         if (M == 0)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1365:14: note: 't' is >= field 'nt'
+ 1365 |         for (t = 0; t < F.nt; t++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1365:2: note: Loop condition is false. Execution continues on line 1367
+ 1365 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1367:14: note: Assuming 'i' is < field 'n'
+ 1367 |         for (i = 0; i < s->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1367:2: note: Loop condition is true.  Entering loop body
+ 1367 |         for (i = 0; i < s->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1367:14: note: Assuming 'i' is >= field 'n'
+ 1367 |         for (i = 0; i < s->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1367:2: note: Loop condition is false. Execution continues on line 1369
+ 1367 |         for (i = 0; i < s->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1369:14: note: 't' is >= field 'nt'
+ 1369 |         for (t = 0; t < F.nt; t++) {
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1369:2: note: Loop condition is false. Execution continues on line 1375
+ 1369 |         for (t = 0; t < F.nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1375:17: note: Assuming 'i' is >= field 'nv'
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1375:2: note: Loop condition is true.  Entering loop body
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1379:3: note: 'Default' branch taken. Execution continues on line 1375
+ 1379 |                 switch (s->op[i]) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1375:17: note: Assuming 'i' is >= field 'nv'
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1375:2: note: Loop condition is true.  Entering loop body
+ 1375 |         for (i = root; i >= F.nv; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1376:16: note: Access of 'double[264]' element in 'gg' at negative index -1
+ 1376 |                 double *gi = gg[i], *ga = gg[s->a[i]], *gb = gg[s->b[i]],
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1379:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1379 |                 switch (s->op[i]) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1559:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1559 |                         switch (s->op[i]) {
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1642:14: warning: Out of bound access to memory after the end of 'c' [clang-analyzer-security.ArrayBound]
+ 1642 |                 double v = b[i];
+      |                            ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2609:6: note: Assuming field 'rel' is >= 0
+ 2609 |         if (F.rel < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2609:2: note: Taking false branch
+ 2609 |         if (F.rel < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: Assuming field 'oint' is 0
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: Assuming field 'nv' is equal to 1
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2617:6: note: Assuming the condition is false
+ 2617 |         if (sample(n1) < 8)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2617:2: note: Taking false branch
+ 2617 |         if (sample(n1) < 8)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2620:6: note: Assuming field 'tol_ulp' is <= 0
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2620:20: note: Left side of '&&' is false
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2623:13: note: Assuming field 'tol_err' is <= 0
+ 2623 |         } else if (F.tol_err > 0) {
+      |                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2623:9: note: Taking false branch
+ 2623 |         } else if (F.tol_err > 0) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2628:7: note: Assuming field 'oint' is 0
+ 2628 |                 if (F.oint) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2628:3: note: Taking false branch
+ 2628 |                 if (F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2631:14: note: Assuming field 'w' is 0
+ 2631 |                 } else if (F.w && F.rel) {
+      |                            ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2631:18: note: Left side of '&&' is false
+ 2631 |                 } else if (F.w && F.rel) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:14: note: Field 'w' is not equal to 32
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:12: note: '?' condition is false
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2640:6: note: Assuming field 'oint' is 0
+ 2640 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2640:2: note: Taking false branch
+ 2640 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2643:7: note: Assuming field 'nv' is not equal to 1
+ 2643 |                 if (F.nv == 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2643:3: note: Taking false branch
+ 2643 |                 if (F.nv == 1)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: Assuming field 'oint' is not equal to 0
+ 2652 |         printf(" (%s) -> %s: %d %s", b.p, F.oint ? ty_str(F.oty) : fmtname(F.w),
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: Assuming field 'oint' is not equal to 0
+ 2653 |             F.nsh, F.oint ? "fixed-point forms" : "shapes");
+      |                    ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2654:9: note: Field 'oint' is not equal to 0
+ 2654 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2654:2: note: Taking false branch
+ 2654 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2661:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2661 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2661:2: note: Taking false branch
+ 2661 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2667:6: note: Assuming field 'exhaustive' is 0
+ 2667 |         if (F.exhaustive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2667:2: note: Taking false branch
+ 2667 |         if (F.exhaustive)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:35: note: Field 'oint' is not equal to 0
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                          ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:33: note: '?' condition is true
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                        ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:20: note: Field 'oint' is not equal to 0
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:18: note: '?' condition is true
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: Assuming field 'kind' is equal to TK_C
+ 2683 |         rep_str("language", F.kind == TK_C ? "c" : F.kind == TK_GLSL ? "glsl" :
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: Assuming field 'oint' is not equal to 0
+ 2686 |         rep_str("result", F.oint ? ty_str(F.oty) : fmtname(F.w));
+      |                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2698:14: note: Assuming 'i' is >= field 'nsh'
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2698:2: note: Loop condition is false. Execution continues on line 2732
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2734:6: note: Assuming field 'oint' is 0
+ 2734 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2734:2: note: Taking false branch
+ 2734 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |              ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2743:8: note: Field 'oint' is 0
+ 2743 |         if (F.oint)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2743:2: note: Taking false branch
+ 2743 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Assuming 'i' is < field 'nsh'
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2746:27: note: Assuming the condition is false
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:2: note: Loop condition is false. Execution continues on line 2758
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: 'i' is < field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2759:27: note: 'n2' is < 'm2'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                                  ^~
+/home/andrew/Code/ucas/src/adamfit.c:2759:2: note: Loop condition is true.  Entering loop body
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Assuming field 'ok' is not equal to 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2760:21: note: Assuming field 'pick' is 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                                   ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:3: note: Taking true branch
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Assuming 'i' is >= field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2759:24: note: Left side of '&&' is false
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:9: note: Field 'oint' is 0
+ 2765 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:2: note: Taking true branch
+ 2765 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: Assuming field 'nv' is not equal to 1
+ 2766 |                 sample(F.nv == 1 ? 257 : AF_T);
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2767:7: note: Assuming field 'autom' is not equal to 0
+ 2767 |                 if (!F.autom)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2767:3: note: Taking false branch
+ 2767 |                 if (!F.autom)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2773:2: note: Loop condition is true.  Entering loop body
+ 2773 |         for (i = 0; i < n2; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2777:7: note: Assuming field 'oint' is 0
+ 2777 |                 if (!F.oint) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2777:3: note: Taking true branch
+ 2777 |                 if (!F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2783:9: note: Calling 'polish'
+ 2783 |                         er = polish(s, th);
+      |                              ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:14: note: Assuming 't' is >= field 'nt'
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:2: note: Loop condition is false. Execution continues on line 1728
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1729:2: note: Loop condition is true.  Entering loop body
+ 1729 |         for (r = 0; r < 24; r++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: 'r' is equal to 0
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1731:3: note: Calling 'lm'
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1673:2: note: Taking false branch
+ 1673 |         if (!jacobian(s, th, e, J))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1676:2: note: Loop condition is true.  Entering loop body
+ 1676 |         for (it = 0; it < iters; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1679:15: note: 'i' is >= 'n'
+ 1679 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/adamfit.c:1679:3: note: Loop condition is false. Execution continues on line 1690
+ 1679 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1690:3: note: Loop condition is true.  Entering loop body
+ 1690 |                 for (;;) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1692:16: note: 'i' is >= 'n'
+ 1692 |                         for (i = 0; i < n; i++) {
+      |                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1692:4: note: Loop condition is false. Execution continues on line 1698
+ 1692 |                         for (i = 0; i < n; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1698:8: note: Calling 'solve'
+ 1698 |                         if (solve(n, B, c, d)) {
+      |                             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1615:14: note: 'k' is >= 'n'
+ 1615 |         for (k = 0; k < n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1615:2: note: Loop condition is false. Execution continues on line 1641
+ 1615 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1641:18: note: Assuming 'i' is >= 0
+ 1641 |         for (i = n - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1641:2: note: Loop condition is true.  Entering loop body
+ 1641 |         for (i = n - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1642:14: note: Access of 'c' at index 2147483647, while it holds only 8 'double' elements
+ 1642 |                 double v = b[i];
+      |                            ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:1661:14: warning: The left operand of '*' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1661 |                 s2 += u[t] * e[t] * e[t];
+      |                            ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2609:6: note: Assuming field 'rel' is >= 0
+ 2609 |         if (F.rel < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2609:2: note: Taking false branch
+ 2609 |         if (F.rel < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: Assuming field 'oint' is 0
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: Assuming field 'nv' is equal to 1
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2617:6: note: Assuming the condition is false
+ 2617 |         if (sample(n1) < 8)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2617:2: note: Taking false branch
+ 2617 |         if (sample(n1) < 8)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2620:6: note: Assuming field 'tol_ulp' is <= 0
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2620:20: note: Left side of '&&' is false
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2623:13: note: Assuming field 'tol_err' is <= 0
+ 2623 |         } else if (F.tol_err > 0) {
+      |                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2623:9: note: Taking false branch
+ 2623 |         } else if (F.tol_err > 0) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2628:7: note: Assuming field 'oint' is 0
+ 2628 |                 if (F.oint) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2628:3: note: Taking false branch
+ 2628 |                 if (F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2631:14: note: Assuming field 'w' is 0
+ 2631 |                 } else if (F.w && F.rel) {
+      |                            ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2631:18: note: Left side of '&&' is false
+ 2631 |                 } else if (F.w && F.rel) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:14: note: Field 'w' is not equal to 32
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:12: note: '?' condition is false
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2640:6: note: Assuming field 'oint' is 0
+ 2640 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2640:2: note: Taking false branch
+ 2640 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2643:7: note: Assuming field 'nv' is not equal to 1
+ 2643 |                 if (F.nv == 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2643:3: note: Taking false branch
+ 2643 |                 if (F.nv == 1)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: Assuming field 'oint' is not equal to 0
+ 2652 |         printf(" (%s) -> %s: %d %s", b.p, F.oint ? ty_str(F.oty) : fmtname(F.w),
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: Assuming field 'oint' is not equal to 0
+ 2653 |             F.nsh, F.oint ? "fixed-point forms" : "shapes");
+      |                    ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2654:9: note: Field 'oint' is not equal to 0
+ 2654 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2654:2: note: Taking false branch
+ 2654 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2661:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2661 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2661:2: note: Taking false branch
+ 2661 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2667:6: note: Assuming field 'exhaustive' is 0
+ 2667 |         if (F.exhaustive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2667:2: note: Taking false branch
+ 2667 |         if (F.exhaustive)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:35: note: Field 'oint' is not equal to 0
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                          ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:33: note: '?' condition is true
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                        ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:20: note: Field 'oint' is not equal to 0
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:18: note: '?' condition is true
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: Assuming field 'kind' is equal to TK_C
+ 2683 |         rep_str("language", F.kind == TK_C ? "c" : F.kind == TK_GLSL ? "glsl" :
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: Assuming field 'oint' is not equal to 0
+ 2686 |         rep_str("result", F.oint ? ty_str(F.oty) : fmtname(F.w));
+      |                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2698:14: note: Assuming 'i' is >= field 'nsh'
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2698:2: note: Loop condition is false. Execution continues on line 2732
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2734:6: note: Assuming field 'oint' is 0
+ 2734 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2734:2: note: Taking false branch
+ 2734 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |              ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2743:8: note: Field 'oint' is 0
+ 2743 |         if (F.oint)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2743:2: note: Taking false branch
+ 2743 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Assuming 'i' is < field 'nsh'
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2746:27: note: Assuming the condition is false
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:2: note: Loop condition is false. Execution continues on line 2758
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: 'i' is < field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2759:27: note: 'n2' is < 'm2'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                                  ^~
+/home/andrew/Code/ucas/src/adamfit.c:2759:2: note: Loop condition is true.  Entering loop body
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Assuming field 'ok' is not equal to 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2760:21: note: Assuming field 'pick' is 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                                   ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:3: note: Taking true branch
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Assuming 'i' is >= field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2759:24: note: Left side of '&&' is false
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:9: note: Field 'oint' is 0
+ 2765 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:2: note: Taking true branch
+ 2765 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: Assuming field 'nv' is not equal to 1
+ 2766 |                 sample(F.nv == 1 ? 257 : AF_T);
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2767:7: note: Assuming field 'autom' is not equal to 0
+ 2767 |                 if (!F.autom)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2767:3: note: Taking false branch
+ 2767 |                 if (!F.autom)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2773:2: note: Loop condition is true.  Entering loop body
+ 2773 |         for (i = 0; i < n2; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2777:7: note: Assuming field 'oint' is 0
+ 2777 |                 if (!F.oint) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2777:3: note: Taking true branch
+ 2777 |                 if (!F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2783:9: note: Calling 'polish'
+ 2783 |                         er = polish(s, th);
+      |                              ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:14: note: Assuming 't' is >= field 'nt'
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:2: note: Loop condition is false. Execution continues on line 1728
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1729:2: note: Loop condition is true.  Entering loop body
+ 1729 |         for (r = 0; r < 24; r++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: 'r' is equal to 0
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1731:3: note: Calling 'lm'
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1673:6: note: Assuming the condition is false
+ 1673 |         if (!jacobian(s, th, e, J))
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1673:2: note: Taking false branch
+ 1673 |         if (!jacobian(s, th, e, J))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1675:8: note: Calling 'wsse'
+ 1675 |         cur = wsse(e, u);
+      |               ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1660:7: note: The value 0 is assigned to 't'
+ 1660 |         for (t = 0; t < F.nt; t++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1660:14: note: Assuming 't' is < field 'nt'
+ 1660 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1660:2: note: Loop condition is true.  Entering loop body
+ 1660 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1661:14: note: The left operand of '*' is a garbage value
+ 1661 |                 s2 += u[t] * e[t] * e[t];
+      |                       ~~~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:1702:6: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+ 1702 |                                         memcpy(th, tr, sizeof(double) * (size_t)n);
+      |                                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1702:6: note: Other elements might also be undefined
+ 1702 |                                         memcpy(th, tr, sizeof(double) * (size_t)n);
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2609:6: note: Assuming field 'rel' is >= 0
+ 2609 |         if (F.rel < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2609:2: note: Taking false branch
+ 2609 |         if (F.rel < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: Assuming field 'oint' is 0
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: Assuming field 'nv' is equal to 1
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2617:6: note: Assuming the condition is false
+ 2617 |         if (sample(n1) < 8)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2617:2: note: Taking false branch
+ 2617 |         if (sample(n1) < 8)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2620:6: note: Assuming field 'tol_ulp' is <= 0
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2620:20: note: Left side of '&&' is false
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2623:13: note: Assuming field 'tol_err' is <= 0
+ 2623 |         } else if (F.tol_err > 0) {
+      |                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2623:9: note: Taking false branch
+ 2623 |         } else if (F.tol_err > 0) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2628:7: note: Assuming field 'oint' is 0
+ 2628 |                 if (F.oint) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2628:3: note: Taking false branch
+ 2628 |                 if (F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2631:14: note: Assuming field 'w' is 0
+ 2631 |                 } else if (F.w && F.rel) {
+      |                            ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2631:18: note: Left side of '&&' is false
+ 2631 |                 } else if (F.w && F.rel) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:14: note: Field 'w' is not equal to 32
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:12: note: '?' condition is false
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2640:6: note: Assuming field 'oint' is 0
+ 2640 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2640:2: note: Taking false branch
+ 2640 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2643:7: note: Assuming field 'nv' is not equal to 1
+ 2643 |                 if (F.nv == 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2643:3: note: Taking false branch
+ 2643 |                 if (F.nv == 1)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: Assuming field 'oint' is not equal to 0
+ 2652 |         printf(" (%s) -> %s: %d %s", b.p, F.oint ? ty_str(F.oty) : fmtname(F.w),
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: Assuming field 'oint' is not equal to 0
+ 2653 |             F.nsh, F.oint ? "fixed-point forms" : "shapes");
+      |                    ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2654:9: note: Field 'oint' is not equal to 0
+ 2654 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2654:2: note: Taking false branch
+ 2654 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2661:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2661 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2661:2: note: Taking false branch
+ 2661 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2667:6: note: Assuming field 'exhaustive' is 0
+ 2667 |         if (F.exhaustive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2667:2: note: Taking false branch
+ 2667 |         if (F.exhaustive)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:35: note: Field 'oint' is not equal to 0
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                          ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:33: note: '?' condition is true
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                        ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:20: note: Field 'oint' is not equal to 0
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:18: note: '?' condition is true
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: Assuming field 'kind' is equal to TK_C
+ 2683 |         rep_str("language", F.kind == TK_C ? "c" : F.kind == TK_GLSL ? "glsl" :
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: Assuming field 'oint' is not equal to 0
+ 2686 |         rep_str("result", F.oint ? ty_str(F.oty) : fmtname(F.w));
+      |                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2698:14: note: Assuming 'i' is >= field 'nsh'
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2698:2: note: Loop condition is false. Execution continues on line 2732
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2734:6: note: Assuming field 'oint' is 0
+ 2734 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2734:2: note: Taking false branch
+ 2734 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |              ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2743:8: note: Field 'oint' is 0
+ 2743 |         if (F.oint)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2743:2: note: Taking false branch
+ 2743 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Assuming 'i' is < field 'nsh'
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2746:27: note: Assuming the condition is false
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:2: note: Loop condition is false. Execution continues on line 2758
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: 'i' is < field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2759:27: note: 'n2' is < 'm2'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                                  ^~
+/home/andrew/Code/ucas/src/adamfit.c:2759:2: note: Loop condition is true.  Entering loop body
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Assuming field 'ok' is not equal to 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2760:21: note: Assuming field 'pick' is 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                                   ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:3: note: Taking true branch
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Assuming 'i' is >= field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2759:24: note: Left side of '&&' is false
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:9: note: Field 'oint' is 0
+ 2765 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:2: note: Taking true branch
+ 2765 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: Assuming field 'nv' is not equal to 1
+ 2766 |                 sample(F.nv == 1 ? 257 : AF_T);
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2767:7: note: Assuming field 'autom' is not equal to 0
+ 2767 |                 if (!F.autom)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2767:3: note: Taking false branch
+ 2767 |                 if (!F.autom)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2773:2: note: Loop condition is true.  Entering loop body
+ 2773 |         for (i = 0; i < n2; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2777:7: note: Assuming field 'oint' is 0
+ 2777 |                 if (!F.oint) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2777:3: note: Taking true branch
+ 2777 |                 if (!F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2783:9: note: Calling 'polish'
+ 2783 |                         er = polish(s, th);
+      |                              ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:14: note: Assuming 't' is >= field 'nt'
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:2: note: Loop condition is false. Execution continues on line 1728
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1729:2: note: Loop condition is true.  Entering loop body
+ 1729 |         for (r = 0; r < 24; r++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: 'r' is equal to 0
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1731:3: note: Calling 'lm'
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1673:2: note: Taking false branch
+ 1673 |         if (!jacobian(s, th, e, J))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1676:2: note: Loop condition is true.  Entering loop body
+ 1676 |         for (it = 0; it < iters; it++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1677:55: note: 'tr' declared without an initial value
+ 1677 |                 double A[AF_MAXK][AF_MAXK], g[AF_MAXK], d[AF_MAXK], tr[AF_MAXK];
+      |                                                                     ^~
+/home/andrew/Code/ucas/src/adamfit.c:1679:15: note: 'i' is >= 'n'
+ 1679 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/adamfit.c:1679:3: note: Loop condition is false. Execution continues on line 1690
+ 1679 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1690:3: note: Loop condition is true.  Entering loop body
+ 1690 |                 for (;;) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1692:16: note: 'i' is >= 'n'
+ 1692 |                         for (i = 0; i < n; i++) {
+      |                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:1692:4: note: Loop condition is false. Execution continues on line 1698
+ 1692 |                         for (i = 0; i < n; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1698:4: note: Taking true branch
+ 1698 |                         if (solve(n, B, c, d)) {
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1699:17: note: 'i' is >= 'n'
+ 1699 |                                 for (i = 0; i < n; i++)
+      |                                             ^
+/home/andrew/Code/ucas/src/adamfit.c:1699:5: note: Loop condition is false. Execution continues on line 1701
+ 1699 |                                 for (i = 0; i < n; i++)
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1701:9: note: Assuming the condition is true
+ 1701 |                                 if (jacobian(s, tr, ne, NJ) && wsse(ne, u) < cur) {
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1701:9: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:1701:36: note: Assuming the condition is true
+ 1701 |                                 if (jacobian(s, tr, ne, NJ) && wsse(ne, u) < cur) {
+      |                                                                ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1701:5: note: Taking true branch
+ 1701 |                                 if (jacobian(s, tr, ne, NJ) && wsse(ne, u) < cur) {
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1702:6: note: The first element of the 2nd argument is undefined
+ 1702 |                                         memcpy(th, tr, sizeof(double) * (size_t)n);
+      |                                         ^          ~~
+/home/andrew/Code/ucas/src/adamfit.c:1746:16: warning: The left expression of the compound assignment uses uninitialized memory [clang-analyzer-core.uninitialized.Assign]
+ 1746 |                         sum += u[t] *= fabs(e[t]) / m + 1e-300;
+      |                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2609:6: note: Assuming field 'rel' is >= 0
+ 2609 |         if (F.rel < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2609:2: note: Taking false branch
+ 2609 |         if (F.rel < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: Assuming field 'oint' is 0
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: Assuming field 'nv' is equal to 1
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2617:6: note: Assuming the condition is false
+ 2617 |         if (sample(n1) < 8)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2617:2: note: Taking false branch
+ 2617 |         if (sample(n1) < 8)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2620:6: note: Assuming field 'tol_ulp' is <= 0
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2620:20: note: Left side of '&&' is false
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2623:13: note: Assuming field 'tol_err' is <= 0
+ 2623 |         } else if (F.tol_err > 0) {
+      |                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2623:9: note: Taking false branch
+ 2623 |         } else if (F.tol_err > 0) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2628:7: note: Assuming field 'oint' is 0
+ 2628 |                 if (F.oint) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2628:3: note: Taking false branch
+ 2628 |                 if (F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2631:14: note: Assuming field 'w' is 0
+ 2631 |                 } else if (F.w && F.rel) {
+      |                            ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2631:18: note: Left side of '&&' is false
+ 2631 |                 } else if (F.w && F.rel) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:14: note: Field 'w' is not equal to 32
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:12: note: '?' condition is false
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2640:6: note: Assuming field 'oint' is 0
+ 2640 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2640:2: note: Taking false branch
+ 2640 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2643:7: note: Assuming field 'nv' is not equal to 1
+ 2643 |                 if (F.nv == 1)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2643:3: note: Taking false branch
+ 2643 |                 if (F.nv == 1)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: Assuming field 'oint' is not equal to 0
+ 2652 |         printf(" (%s) -> %s: %d %s", b.p, F.oint ? ty_str(F.oty) : fmtname(F.w),
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: Assuming field 'oint' is not equal to 0
+ 2653 |             F.nsh, F.oint ? "fixed-point forms" : "shapes");
+      |                    ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2654:9: note: Field 'oint' is not equal to 0
+ 2654 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2654:2: note: Taking false branch
+ 2654 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2661:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2661 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2661:2: note: Taking false branch
+ 2661 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2667:6: note: Assuming field 'exhaustive' is 0
+ 2667 |         if (F.exhaustive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2667:2: note: Taking false branch
+ 2667 |         if (F.exhaustive)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:35: note: Field 'oint' is not equal to 0
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                          ^
+/home/andrew/Code/ucas/src/adamfit.c:2674:33: note: '?' condition is true
+ 2674 |             F.steps, F.restarts, F.nt, F.oint ? "absolute" : F.rel ? "relative" :
+      |                                        ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:20: note: Field 'oint' is not equal to 0
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2675:18: note: '?' condition is true
+ 2675 |             "absolute", F.oint ? "; then the integers C, B and the shift by CMA-ES "
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: Assuming field 'kind' is equal to TK_C
+ 2683 |         rep_str("language", F.kind == TK_C ? "c" : F.kind == TK_GLSL ? "glsl" :
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2683:22: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: Assuming field 'oint' is not equal to 0
+ 2686 |         rep_str("result", F.oint ? ty_str(F.oty) : fmtname(F.w));
+      |                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2686:20: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2698:14: note: Assuming 'i' is >= field 'nsh'
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2698:2: note: Loop condition is false. Execution continues on line 2732
+ 2698 |         for (i = 0; i < F.nsh; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2734:6: note: Assuming field 'oint' is 0
+ 2734 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2734:2: note: Taking false branch
+ 2734 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |              ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: Assuming the condition is false
+ 2742 |         m2 = F.count / 4 < 8 ? 8 : F.count / 4 > AF_STAGE2 ? AF_STAGE2 : F.count / 4;
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2742:29: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2743:8: note: Field 'oint' is 0
+ 2743 |         if (F.oint)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2743:2: note: Taking false branch
+ 2743 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Assuming 'i' is < field 'nsh'
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2746:27: note: Assuming the condition is false
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |                                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2746:2: note: Loop condition is false. Execution continues on line 2758
+ 2746 |         for (i = 0; i < F.nsh && n2 < m2 * 2 / 3; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: 'i' is < field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2759:27: note: 'n2' is < 'm2'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                                  ^~
+/home/andrew/Code/ucas/src/adamfit.c:2759:2: note: Loop condition is true.  Entering loop body
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Assuming field 'ok' is not equal to 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:2760:21: note: Assuming field 'pick' is 0
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                                   ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2760:3: note: Taking true branch
+ 2760 |                 if (F.sh[i].ok && !F.sh[i].pick) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2759:14: note: Assuming 'i' is >= field 'nsh'
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2759:24: note: Left side of '&&' is false
+ 2759 |         for (i = 0; i < F.nsh && n2 < m2; i++)
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:9: note: Field 'oint' is 0
+ 2765 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2765:2: note: Taking true branch
+ 2765 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: Assuming field 'nv' is not equal to 1
+ 2766 |                 sample(F.nv == 1 ? 257 : AF_T);
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2766:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2767:7: note: Assuming field 'autom' is not equal to 0
+ 2767 |                 if (!F.autom)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2767:3: note: Taking false branch
+ 2767 |                 if (!F.autom)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2773:2: note: Loop condition is true.  Entering loop body
+ 2773 |         for (i = 0; i < n2; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2777:7: note: Assuming field 'oint' is 0
+ 2777 |                 if (!F.oint) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2777:3: note: Taking true branch
+ 2777 |                 if (!F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2783:9: note: Calling 'polish'
+ 2783 |                         er = polish(s, th);
+      |                              ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:14: note: Assuming 't' is < field 'nt'
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:2: note: Loop condition is true.  Entering loop body
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1726:14: note: Assuming 't' is >= field 'nt'
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1726:2: note: Loop condition is false. Execution continues on line 1728
+ 1726 |         for (t = 0; t < F.nt; t++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1729:2: note: Loop condition is true.  Entering loop body
+ 1729 |         for (r = 0; r < 24; r++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: 'r' is equal to 0
+ 1731 |                 lm(s, th, u, r == 0 ? 60 : 12);
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:1731:16: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:1732:3: note: Taking false branch
+ 1732 |                 if (!jacobian(s, th, e, J))
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1734:3: note: Loop condition is true.  Entering loop body
+ 1734 |                 for (t = 0; t < F.nt; t++)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1735:8: note: Assuming the condition is false
+ 1735 |                         if (fabs(e[t]) > m)
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1735:4: note: Taking false branch
+ 1735 |                         if (fabs(e[t]) > m)
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1734:3: note: Loop condition is true.  Entering loop body
+ 1734 |                 for (t = 0; t < F.nt; t++)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1735:8: note: Assuming the condition is false
+ 1735 |                         if (fabs(e[t]) > m)
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1735:4: note: Taking false branch
+ 1735 |                         if (fabs(e[t]) > m)
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:1734:3: note: Loop condition is false. Execution continues on line 1737
+ 1734 |                 for (t = 0; t < F.nt; t++)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1737:7: note: Assuming 'm' is >= 'be'
+ 1737 |                 if (m < be) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1737:3: note: Taking false branch
+ 1737 |                 if (m < be) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1741:7: note: Assuming 'm' is not equal to 0
+ 1741 |                 if (m == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1741:3: note: Taking false branch
+ 1741 |                 if (m == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1745:3: note: Loop condition is true.  Entering loop body
+ 1745 |                 for (t = 0; t < F.nt; t++)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1745:25: note: The value 1 is assigned to 't'
+ 1745 |                 for (t = 0; t < F.nt; t++)
+      |                                       ^~~
+/home/andrew/Code/ucas/src/adamfit.c:1745:3: note: Loop condition is true.  Entering loop body
+ 1745 |                 for (t = 0; t < F.nt; t++)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:1746:16: note: The left expression of the compound assignment uses uninitialized memory
+ 1746 |                         sum += u[t] *= fabs(e[t]) / m + 1e-300;
+      |                                ~~~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:1778:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1778 |         return v >= 0 ? v >> s : -((-v + (((int64_t)1 << s) - 1)) >> s);
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/adamfit.c:1778:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1778 |         return v >= 0 ? v >> s : -((-v + (((int64_t)1 << s) - 1)) >> s);
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:1778:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1778 |         return v >= 0 ? v >> s : -((-v + (((int64_t)1 << s) - 1)) >> s);
+      |                                            ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:2038:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2038 |                                 C[k] = (int64_t)(var & 1 ? ceil(s->th[k] * sc) :
+      |                                                  ^~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:2041:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2041 |                             (var & 2 || !sft ? 0 : sc / 2));
+      |                              ^~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:2045:5: warning: The last accessed element (at index 8) in the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+ 2045 |                                 memcpy(Cs[sft], C, sizeof C);
+      |                                 ^               ~
+/home/andrew/Code/ucas/src/adamfit.c:2045:5: note: Other elements might also be undefined
+ 2045 |                                 memcpy(Cs[sft], C, sizeof C);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1987:6: note: Assuming 'nip' is not equal to 0
+ 1987 |         if (nip == 0) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:1987:6: note: 'nip' is not equal to 0
+ 1987 |         if (nip == 0) {
+      |             ^~~
+/home/andrew/Code/ucas/src/adamfit.c:1987:2: note: Taking false branch
+ 1987 |         if (nip == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2007:14: note: Assuming 'k' is >= field 'nm'
+ 2007 |         for (k = 0; k < s->nm; k++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2007:2: note: Loop condition is false. Execution continues on line 2031
+ 2007 |         for (k = 0; k < s->nm; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2031:2: note: Loop condition is true.  Entering loop body
+ 2031 |         for (sft = 0; sft < 63; sft++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2034:3: note: 'C' declared without an initial value
+ 2034 |                 int64_t C[AF_MAXK + 1];
+      |                 ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2035:3: note: Loop condition is true.  Entering loop body
+ 2035 |                 for (var = 0; var < 4; var++) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2037:16: note: 'k' is >= field 'nm'
+ 2037 |                         for (k = 0; k < s->nm; k++)
+      |                                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2037:4: note: Loop condition is false. Execution continues on line 2040
+ 2037 |                         for (k = 0; k < s->nm; k++)
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2041:9: note: Left side of '||' is false
+ 2041 |                             (var & 2 || !sft ? 0 : sc / 2));
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:2041:21: note: 'sft' is 0
+ 2041 |                             (var & 2 || !sft ? 0 : sc / 2));
+      |                                          ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2041:9: note: '?' condition is true
+ 2041 |                             (var & 2 || !sft ? 0 : sc / 2));
+      |                              ^
+/home/andrew/Code/ucas/src/adamfit.c:2042:8: note: Assuming the condition is true
+ 2042 |                         e = ibound(s, C) > 4.0e18 ? INFINITY : ierr(s, C, sft);
+      |                             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2042:8: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2043:8: note: Assuming 'e' is < 'be'
+ 2043 |                         if (e < be) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2043:4: note: Taking true branch
+ 2043 |                         if (e < be) {
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2045:5: note: The last accessed element (at index 8) in the 2nd argument is undefined
+ 2045 |                                 memcpy(Cs[sft], C, sizeof C);
+      |                                 ^               ~
+/home/andrew/Code/ucas/src/adamfit.c:2059:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2059 |                                         used |= top[q] == sft;
+      |                                         ^~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:2083:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2083 |                 o.radius = 1 << 16;
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/adamfit.c:2101:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2101 |                 int even = (s->B & 1) == 0;
+      |                             ^~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:2103:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2103 |                         even &= (s->C[k] & 1) == 0;
+      |                         ^~~~ ~~
+/home/andrew/Code/ucas/src/adamfit.c:2103:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2103 |                         even &= (s->C[k] & 1) == 0;
+      |                                  ^~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:2148:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2148 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2148:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/adamfit.c:2277:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   62 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2288:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2288 |         if ((f = func_find(sym)) != NULL)
+      |              ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2288:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:2288:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:2363:4: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 2363 |                         d = ae;
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2363:10: note: end of the original
+ 2363 |                         d = ae;
+      |                               ^
+/home/andrew/Code/ucas/src/adamfit.c:2369:4: note: clone 1 starts here
+ 2369 |                         d = ae;
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:2421:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2421 |                 ty_t t64 = TY(K_SINT, 64);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:2585:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2585 |         switch (k) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2585:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/adamfit.c:2657:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2657 |                         if (F.ops & (1u << i))
+      |                                         ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:2664:28: warning: Dereference of null pointer [clang-analyzer-core.NullDereference]
+ 2664 |                     getenv("UCAS_CC") && *getenv("UCAS_CC") ? getenv("UCAS_CC") : "cc",
+      |                                          ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:6: note: Assuming field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2605:8: note: Field 'kind' is equal to TK_UCAS
+ 2605 |         if (F.kind != TK_UCAS)
+      |               ^
+/home/andrew/Code/ucas/src/adamfit.c:2605:2: note: Taking false branch
+ 2605 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2609:6: note: Assuming field 'rel' is >= 0
+ 2609 |         if (F.rel < 0) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2609:2: note: Taking false branch
+ 2609 |         if (F.rel < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: Assuming field 'oint' is 0
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: Assuming field 'nv' is equal to 1
+ 2616 |         n1 = F.oint ? AF_T : F.nv == 1 ? 66 : 128;
+      |                              ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2616:23: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2617:6: note: Assuming the condition is false
+ 2617 |         if (sample(n1) < 8)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2617:2: note: Taking false branch
+ 2617 |         if (sample(n1) < 8)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2620:6: note: Assuming field 'tol_ulp' is <= 0
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2620:20: note: Left side of '&&' is false
+ 2620 |         if (F.tol_ulp > 0 && F.w && F.rel && !F.oint) {
+      |                           ^
+/home/andrew/Code/ucas/src/adamfit.c:2623:13: note: Assuming field 'tol_err' is <= 0
+ 2623 |         } else if (F.tol_err > 0) {
+      |                    ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2623:9: note: Taking false branch
+ 2623 |         } else if (F.tol_err > 0) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2628:7: note: Assuming field 'oint' is 0
+ 2628 |                 if (F.oint) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2628:3: note: Taking false branch
+ 2628 |                 if (F.oint) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2631:14: note: Assuming field 'w' is 0
+ 2631 |                 } else if (F.w && F.rel) {
+      |                            ^~~
+/home/andrew/Code/ucas/src/adamfit.c:2631:18: note: Left side of '&&' is false
+ 2631 |                 } else if (F.w && F.rel) {
+      |                                ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:14: note: Field 'w' is not equal to 32
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:2635:12: note: '?' condition is false
+ 2635 |                         F.tol = F.w == 32 ? 1e-7 : 1e-15;
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:2640:6: note: Assuming field 'oint' is not equal to 0
+ 2640 |         if (F.oint)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2640:2: note: Taking true branch
+ 2640 |         if (F.oint)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: Assuming field 'oint' is not equal to 0
+ 2652 |         printf(" (%s) -> %s: %d %s", b.p, F.oint ? ty_str(F.oty) : fmtname(F.w),
+      |                                           ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2652:36: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: Assuming field 'oint' is not equal to 0
+ 2653 |             F.nsh, F.oint ? "fixed-point forms" : "shapes");
+      |                    ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2653:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/adamfit.c:2654:9: note: Field 'oint' is not equal to 0
+ 2654 |         if (!F.oint) {
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:2654:2: note: Taking false branch
+ 2654 |         if (!F.oint) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2661:6: note: Assuming field 'kind' is not equal to TK_UCAS
+ 2661 |         if (F.kind != TK_UCAS)
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2661:2: note: Taking true branch
+ 2661 |         if (F.kind != TK_UCAS)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:2663:34: note: Assuming field 'kind' is not equal to TK_GLSL
+ 2663 |                     "contraction, -fwrapv)\n", F.kind == TK_GLSL ? "GLSL" : "C", F.cfn,
+      |                                                ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2663:34: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:2664:7: note: Left side of '&&' is true
+ 2664 |                     getenv("UCAS_CC") && *getenv("UCAS_CC") ? getenv("UCAS_CC") : "cc",
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2664:28: note: Dereference of null pointer
+ 2664 |                     getenv("UCAS_CC") && *getenv("UCAS_CC") ? getenv("UCAS_CC") : "cc",
+      |                                          ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2845:7: warning: 'nl' is confusable with 'n1' [misc-confusable-identifiers]
+ 2845 |                 int nl = n2 < F.list ? n2 : F.list;
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:2597:35: note: other declaration found here
+ 2597 |         int i, done = 0, nt = 0, n2, m2, n1;
+      |                                          ^
+/home/andrew/Code/ucas/src/adamfit.c:2982:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2982 |                 return 1u << Q_ADD;
+      |                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2984:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2984 |                 return 1u << Q_SUB;
+      |                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2986:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2986 |                 return 1u << Q_MUL;
+      |                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2988:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2988 |                 return 1u << Q_DIV;
+      |                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:2991:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2991 |                         return 1u << i;
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3005:11: warning: Out of bound access to memory after the end of 'F.vname' [clang-analyzer-security.ArrayBound]
+ 3005 |         snprintf(F.vname[v], sizeof F.vname[v], "%s", name);
+      |                  ^
+/home/andrew/Code/ucas/src/adamfit.c:3386:6: note: Assuming the condition is false
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3386:2: note: Taking false branch
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/adamfit.c:3388:35: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:2: note: Taking false branch
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3420:7: note: Assuming the condition is true
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3420:3: note: Taking true branch
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3421:17: note: Assuming the condition is true
+ 3421 |                         ucas_named = !cmdp_eos(p);      /* "(x: u8) / 3", "2*x" */
+      |                                      ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:7: note: 'ucas_named' is 1
+ 3432 |                 if (ucas_named)
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:3: note: Taking true branch
+ 3432 |                 if (ucas_named)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3437:6: note: 'src' is null
+ 3437 |         if (src) {
+      |             ^~~
+/home/andrew/Code/ucas/src/adamfit.c:3437:2: note: Taking false branch
+ 3437 |         if (src) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3458:3: note: Calling 'target_ucas'
+ 3458 |                 target_ucas(f);
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3039:42: note: Assuming field 'anon' is 0
+ 3039 |         snprintf(F.fname, sizeof F.fname, "%s", F.f.anon ? node_str(F.f.body) :
+      |                                                 ^~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3039:42: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:3041:6: note: Assuming field 'np' is >= 1
+ 3041 |         if (F.f.np < 1)
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3041:2: note: Taking false branch
+ 3041 |         if (F.f.np < 1)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3043:14: note: 'v' is < field 'np'
+ 3043 |         for (v = 0; v < F.f.np; v++) {
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:3043:2: note: Loop condition is true.  Entering loop body
+ 3043 |         for (v = 0; v < F.f.np; v++) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3046:15: note: Assuming the condition is true
+ 3046 |                 double lo = TY_ISINT(p->ty) ? (double)p->lo : p->rlo;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/adamfit.c:3046:15: note: Left side of '||' is true
+ 3046 |                 double lo = TY_ISINT(p->ty) ? (double)p->lo : p->rlo;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+/home/andrew/Code/ucas/src/adamfit.c:3046:15: note: '?' condition is false
+ 3046 |                 double lo = TY_ISINT(p->ty) ? (double)p->lo : p->rlo;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:21: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:3047:15: note: Left side of '||' is true
+ 3047 |                 double hi = TY_ISINT(p->ty) ? (double)p->hi : p->rhi;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+/home/andrew/Code/ucas/src/adamfit.c:3047:15: note: '?' condition is false
+ 3047 |                 double hi = TY_ISINT(p->ty) ? (double)p->hi : p->rhi;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:21: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                     ^
+/home/andrew/Code/ucas/src/adamfit.c:3048:3: note: Calling 'add_param'
+ 3048 |                 add_param(sym_str(p->name), p->ty, ranged, lo, hi);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3003:6: note: Assuming 'v' is >= AF_MAXV
+ 3003 |         if (v >= AF_MAXV)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3003:2: note: Taking true branch
+ 3003 |         if (v >= AF_MAXV)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3005:11: note: Access of 'F.vname' at an overflowing index, while it holds only 4 'char[40]' elements
+ 3005 |         snprintf(F.vname[v], sizeof F.vname[v], "%s", name);
+      |                  ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3009:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3009 |         F.vint[v] = TY_ISINT(t) && TYK(t) != K_LIT;
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3009:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3009 |         F.vint[v] = TY_ISINT(t) && TYK(t) != K_LIT;
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3010:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3010 |         F.vw[v] = TYK(t) == K_FLOAT ? TYW(t) : 0;
+      |                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3010:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3010 |         F.vw[v] = TYK(t) == K_FLOAT ? TYW(t) : 0;
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3011:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3011 |         if (TYK(t) == K_FLOAT && TYW(t) == 16)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3011:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3011 |         if (TYK(t) == K_FLOAT && TYW(t) == 16)
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3023:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3023 |         F.oint = TY_ISINT(t) && TYK(t) != K_LIT;
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3023:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3023 |         F.oint = TY_ISINT(t) && TYK(t) != K_LIT;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3024:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3024 |         F.ow = TYK(t) == K_INT ? 64 : TYW(t);
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3024:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3024 |         F.ow = TYK(t) == K_INT ? 64 : TYW(t);
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3025:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3025 |         F.osigned = TYK(t) == K_SINT || TYK(t) == K_INT;
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3025:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3025 |         F.osigned = TYK(t) == K_SINT || TYK(t) == K_INT;
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3026:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3026 |         if (TYK(t) == K_INT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3027:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3027 |                 F.oty = TY(K_SINT, 64);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3046:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3046 |                 double lo = TY_ISINT(p->ty) ? (double)p->lo : p->rlo;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3047:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3047 |                 double hi = TY_ISINT(p->ty) ? (double)p->hi : p->rhi;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3067:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3067 |                 return TY_F32;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3069:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3069 |                 return TY_F64;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3071:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3071 |                 return TY(K_SINT, 32);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3073:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3073 |                 return TY(K_UINT, 32);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3075:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3075 |                 return TY(K_BOOL, 1);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/adamfit.c:3120:4: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:3120:4: note: Other elements might also be undefined
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3386:6: note: Assuming the condition is false
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3386:2: note: Taking false branch
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/adamfit.c:3388:35: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:2: note: Taking false branch
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3420:7: note: Assuming the condition is true
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3420:3: note: Taking true branch
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3421:17: note: Assuming the condition is false
+ 3421 |                         ucas_named = !cmdp_eos(p);      /* "(x: u8) / 3", "2*x" */
+      |                                      ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:7: note: 'ucas_named' is 0
+ 3432 |                 if (ucas_named)
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:3: note: Taking false branch
+ 3432 |                 if (ucas_named)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3434:8: note: Taking false branch
+ 3434 |                 else if (!code_target(&src, &glsl))
+      |                      ^
+/home/andrew/Code/ucas/src/adamfit.c:3437:6: note: Assuming 'src' is non-null
+ 3437 |         if (src) {
+      |             ^~~
+/home/andrew/Code/ucas/src/adamfit.c:3437:2: note: Taking true branch
+ 3437 |         if (src) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3441:7: note: Assuming the condition is false
+ 3441 |                 if (cmdp_word(p, want, sizeof want)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3441:3: note: Taking false branch
+ 3441 |                 if (cmdp_word(p, want, sizeof want)) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3452:7: note: 'glsl' is 1
+ 3452 |                 if (glsl)
+      |                     ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3452:3: note: Taking true branch
+ 3452 |                 if (glsl)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3453:4: note: Calling 'target_glsl'
+ 3453 |                         target_glsl(src, want);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3187:10: note: Calling 'glsl_funcs'
+ 3187 |         int n = glsl_funcs(src, g, 64), k = -1, v;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3088:9: note: Assuming the condition is true
+ 3088 |         while (*p && n < max) {
+      |                ^~
+/home/andrew/Code/ucas/src/adamfit.c:3088:9: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:3088:2: note: Loop condition is true.  Entering loop body
+ 3088 |         while (*p && n < max) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3089:7: note: Assuming the condition is false
+ 3089 |                 if (p[0] == '/' && p[1] == '/') {
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3089:19: note: Left side of '&&' is false
+ 3089 |                 if (p[0] == '/' && p[1] == '/') {
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3094:19: note: Left side of '&&' is false
+ 3094 |                 if (p[0] == '/' && p[1] == '*') {
+      |                                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3099:7: note: Assuming the condition is false
+ 3099 |                 if (*p == '#') {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3099:3: note: Taking false branch
+ 3099 |                 if (*p == '#') {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3104:7: note: Assuming the condition is false
+ 3104 |                 if (*p == '{') {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3104:3: note: Taking false branch
+ 3104 |                 if (*p == '{') {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3110:7: note: Assuming the condition is false
+ 3110 |                 if (*p == '}') {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3110:3: note: Taking false branch
+ 3110 |                 if (*p == '}') {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3116:7: note: 'depth' is equal to 0
+ 3116 |                 if (depth == 0 && (isalpha((unsigned char)*p) || *p == '_')) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3116:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/adamfit.c:3116:22: note: Assuming the condition is true
+ 3116 |                 if (depth == 0 && (isalpha((unsigned char)*p) || *p == '_')) {
+      |                                    ^
+/usr/include/ctype.h:190:21: note: expanded from macro 'isalpha'
+  190 | # define isalpha(c)     __isctype((c), _ISalpha)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3116:49: note: Left side of '||' is true
+ 3116 |                 if (depth == 0 && (isalpha((unsigned char)*p) || *p == '_')) {
+      |                                                               ^
+/home/andrew/Code/ucas/src/adamfit.c:3118:4: note: Loop condition is false. Execution continues on line 3120
+ 3118 |                         while (is_word(*q))
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:3120:4: note: The first element of the 2nd argument is undefined
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ^               ~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3192:44: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3192 |                 if (want[0] ? !strcmp(g[v].name, want) : strcmp(g[v].name, "main"))
+      |                                                          ^                        
+      |                                                                                    != 0
+/home/andrew/Code/ucas/src/adamfit.c:3197:6: warning: Out of bound access to memory preceding 'g' [clang-analyzer-security.ArrayBound]
+ 3197 |         if (g[k].np > AF_MAXV)
+      |             ^
+/home/andrew/Code/ucas/src/adamfit.c:3386:6: note: Assuming the condition is false
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3386:2: note: Taking false branch
+ 3386 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/adamfit.c:3388:35: note: Assuming the condition is false
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3388:2: note: Taking false branch
+ 3388 |         if (strcmp(w, "adamfit") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3420:7: note: Assuming the condition is true
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3420:3: note: Taking true branch
+ 3420 |                 if (!cmdp_word(p, nw, sizeof nw))
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3421:17: note: Assuming the condition is false
+ 3421 |                         ucas_named = !cmdp_eos(p);      /* "(x: u8) / 3", "2*x" */
+      |                                      ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:7: note: 'ucas_named' is 0
+ 3432 |                 if (ucas_named)
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3432:3: note: Taking false branch
+ 3432 |                 if (ucas_named)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3434:8: note: Taking false branch
+ 3434 |                 else if (!code_target(&src, &glsl))
+      |                      ^
+/home/andrew/Code/ucas/src/adamfit.c:3437:6: note: 'src' is non-null
+ 3437 |         if (src) {
+      |             ^~~
+/home/andrew/Code/ucas/src/adamfit.c:3437:2: note: Taking true branch
+ 3437 |         if (src) {
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3441:7: note: Assuming the condition is false
+ 3441 |                 if (cmdp_word(p, want, sizeof want)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3441:3: note: Taking false branch
+ 3441 |                 if (cmdp_word(p, want, sizeof want)) {
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3452:7: note: 'glsl' is 1
+ 3452 |                 if (glsl)
+      |                     ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3452:3: note: Taking true branch
+ 3452 |                 if (glsl)
+      |                 ^
+/home/andrew/Code/ucas/src/adamfit.c:3453:4: note: Calling 'target_glsl'
+ 3453 |                         target_glsl(src, want);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3189:6: note: Assuming 'n' is not equal to 0
+ 3189 |         if (n == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3189:2: note: Taking false branch
+ 3189 |         if (n == 0)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3191:14: note: Assuming 'v' is >= 'n'
+ 3191 |         for (v = 0; v < n; v++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3191:2: note: Loop condition is false. Execution continues on line 3194
+ 3191 |         for (v = 0; v < n; v++)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3194:6: note: 'k' is < 0
+ 3194 |         if (k < 0)
+      |             ^
+/home/andrew/Code/ucas/src/adamfit.c:3194:2: note: Taking true branch
+ 3194 |         if (k < 0)
+      |         ^
+/home/andrew/Code/ucas/src/adamfit.c:3195:53: note: Assuming the condition is false
+ 3195 |                 fail("adamfit: no function %s in the GLSL block", want[0] ? want :
+      |                                                                   ^~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3195:53: note: '?' condition is false
+/home/andrew/Code/ucas/src/adamfit.c:3197:6: note: Access of 'struct gsig' element in 'g' at negative index -1
+ 3197 |         if (g[k].np > AF_MAXV)
+      |             ^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3266:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3266 |                 if (t == 0 || TYK(t) == K_BOOL) {
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3316:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 3316 |         strcpy(F.code, src);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3316:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 3316 |         strcpy(F.code, src);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3393:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3393 |         F.ops = 1u << Q_ADD | 1u << Q_SUB | 1u << Q_MUL | 1u << Q_DIV |
+      |                    ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3393:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3393 |         F.ops = 1u << Q_ADD | 1u << Q_SUB | 1u << Q_MUL | 1u << Q_DIV |
+      |                                  ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3393:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3393 |         F.ops = 1u << Q_ADD | 1u << Q_SUB | 1u << Q_MUL | 1u << Q_DIV |
+      |                                                ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3393:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3393 |         F.ops = 1u << Q_ADD | 1u << Q_SUB | 1u << Q_MUL | 1u << Q_DIV |
+      |                                                              ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3394:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3394 |             1u << Q_FMA | 1u << Q_SQRT;
+      |                ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3394:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3394 |             1u << Q_FMA | 1u << Q_SQRT;
+      |                              ~~ ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3424:31: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3424 |                         for (k = 0; optwords[k] && strcmp(nw, optwords[k]); k++)
+      |                                                    ^                      
+      |                                                                            != 0
+/home/andrew/Code/ucas/src/adamfit.c:3433:4: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 3433 |                         src = NULL;
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:3433:14: note: end of the original
+ 3433 |                         src = NULL;
+      |                                   ^
+/home/andrew/Code/ucas/src/adamfit.c:3435:4: note: clone 1 starts here
+ 3435 |                         src = NULL;
+      |                         ^
+/home/andrew/Code/ucas/src/adamfit.c:3494:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3494 |                                         bit = 1u << Q_ADD;
+      |                                                  ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3496:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3496 |                                         bit = 1u << Q_SUB;
+      |                                                  ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3498:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3498 |                                         bit = 1u << Q_MUL;
+      |                                                  ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3500:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3500 |                                         bit = 1u << Q_DIV;
+      |                                                  ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3506:15: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3506 |                                         if ((bit = op_bit(ow)) == 0) {
+      |                                              ~~~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3506:15: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3506:15: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:3514:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3514 |                         if (!(F.ops & (1u << Q_ADD | 1u << Q_MUL | 1u << Q_FMA)))
+      |                                           ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3514:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3514 |                         if (!(F.ops & (1u << Q_ADD | 1u << Q_MUL | 1u << Q_FMA)))
+      |                                                         ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3514:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3514 |                         if (!(F.ops & (1u << Q_ADD | 1u << Q_MUL | 1u << Q_FMA)))
+      |                                                                       ~~ ^~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3601:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3601 |                         if (TYK(F.vty[v]) == K_INT)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3624:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3624 |                 if (TYK(F.oty) == K_BOOL)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3630:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3630 |                 F.w = fmt >= 0 ? fmt : TYK(F.oty) == K_FLOAT ? TYW(F.oty) : 32;
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3630:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3630 |                 F.w = fmt >= 0 ? fmt : TYK(F.oty) == K_FLOAT ? TYW(F.oty) : 32;
+      |                                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3631:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3631 |                 if (TYK(F.oty) == K_FLOAT && TYW(F.oty) == 16)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3631:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3631 |                 if (TYK(F.oty) == K_FLOAT && TYW(F.oty) == 16)
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/adamfit.c:3635:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3635 |                         if (!F.vint[v] && TYK(F.vty[v]) == K_REAL) {
+      |                                           ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/adamfit.c:3694:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 3694 |         strcpy(buf, sent);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3694:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 3694 |         strcpy(buf, sent);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3703:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3703 |                 if ((q = ci_find(s, autos[i])) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3703:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3703:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:3709:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3709 |                 if ((q = ci_find(s, post[i])) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3709:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3709:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:3743:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3743 |         if ((q = strstr(s, " from ")) != NULL && strstr(q, " to ")) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3743:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3743:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:3751:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3751 |         if ((q = strstr(s, " on ")) != NULL && strstr(q, ".."))
+      |              ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3751:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3751:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/adamfit.c:3753:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3753 |         if ((q = strstr(s, " over ")) != NULL && strstr(q, "..")) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/adamfit.c:3753:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/adamfit.c:3753:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

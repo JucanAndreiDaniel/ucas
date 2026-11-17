@@ -1,0 +1,53 @@
+> c optimize nofile budget 5 assume x 0 100
+c optimize: 1 function, 1 rewrite proved (1 exhaustive, 0 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 4.8 -> 0.0 cycles
+  engines: bound 1
+  absval (line 1): a comparison decided by a proved bound
+    proof: exhaustive (exhaustive: 101 inputs); cost 4.8 -> 0.0
+    engine: bound; lemma: the value is in [0, 100] (bound.c: f is nondecreasing in x, so take x = 0:;      0)
+    over: x in [0, 100] (assumed)
+    before: {return x<0?-x:x;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int absval(int x){
+  	return (int)(x);
+  }
+> c optimize nofile budget 5 assume x -100 -1
+c optimize: 1 function, 1 rewrite proved (1 exhaustive, 0 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 4.8 -> 1.0 cycles
+  absneg (line 1): a ?: that always takes its first arm
+    proof: exhaustive (exhaustive: 100 inputs); cost 4.8 -> 1.0
+    over: x in [-100, -1] (assumed)
+    before: {return x<0?-x:x;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int absneg(int x){
+  	return (int)((int32_t)(0u - (uint32_t)((x))));
+  }
+> c optimize nofile budget 5 assume x 0 1000
+c optimize: 1 function, 1 rewrite proved (1 exhaustive, 0 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 6.0 -> 4.0 cycles
+  div7 (line 1): x / 7 for x <= 1000: (x * 1171) >> 13 in 32 bits
+    proof: exhaustive (exhaustive: 1001 inputs); cost 6.0 -> 4.0
+    over: x in [0, 1000] (assumed)
+    before: {return x/7;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  unsigned div7(unsigned x){
+  	return (unsigned int)((uint32_t)((uint32_t)(((uint32_t)((uint32_t)(((uint32_t)1171u)) * (uint32_t)((x))))) >> (((uint32_t)13u))));
+  }
+> c optimize nofile budget 5 assume n 0 31
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  shl (line 1): no cheaper form: lowered: 2 inputs, cost 1.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int shl(int x,int n){return x<<n;}
+> c optimize nofile budget 5 assume y 1 100
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  divv (line 1): no cheaper form: lowered: 2 inputs, cost 26.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int divv(int x,int y){return x/y;}

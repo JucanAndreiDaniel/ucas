@@ -1,0 +1,27 @@
+# Batch 04: FP numeric tables (fast-math sensitive). table ... max 6 keeps it small.
+a1(x: f32 in -3.14..3.14) = sin(x)
+table a1 max 6
+a2(x: f32 in -3.14..3.14) = cos(x)
+table a2 max 6
+a3(x: f32 in -5..5) = exp(x)
+table a3 max 6
+a4(x: f32 in 0.01..10) = log(x)
+table a4 max 6
+a5(x: f32 in 0.01..10) = sqrt(x)
+table a5 max 6
+a6(x: f32 in -1..1) = asin(x)
+table a6 max 6
+a7(x: f32 in -1..1) = atan(x)
+table a7 max 6
+a8(x: f32 in -2..2) = sinh(x) + cosh(x) + tanh(x)
+table a8 max 6
+a9(x: f32 in 0.1..5) = exp(2.5*log(x)) + 1/exp(1.5*log(x))
+table a9 max 6
+a10(x: f32 in -3..3) = sin(x)^2 + cos(x)^2 - 1
+table a10 max 6
+b1(x: f64 in -1..1) = sin(x)/x
+table b1 max 6
+b2(x: f64 in 1..1000) = log(x) + log(1/x)
+table b2 max 6
+b3(x: f64 in -10..10) = exp(x)/(1+exp(x))
+table b3 max 6

@@ -1,0 +1,334 @@
+/home/andrew/Code/ucas/src/egraph.c:27:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   27 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   28 | 
+/home/andrew/Code/ucas/src/egraph.c:39:2: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   28 | 
+   29 | #include <stdlib.h>
+   30 | #include <string.h>
+   31 | 
+   32 | #define EG_NODES 10000
+   33 | #define EG_ROUNDS 10
+   34 | #define EG_MATCHES 2048
+   35 | #define EG_INF 1e30f
+   36 | 
+   37 | struct en {
+   38 |         int op;                 /* O_* of an operation; O_NONE a leaf */
+   39 |         ty_t ty;
+      |         ^
+/home/andrew/Code/ucas/src/egraph.c:40:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   29 | #include <stdlib.h>
+   30 | #include <string.h>
+   31 | 
+   32 | #define EG_NODES 10000
+   33 | #define EG_ROUNDS 10
+   34 | #define EG_MATCHES 2048
+   35 | #define EG_INF 1e30f
+   36 | 
+   37 | struct en {
+   38 |         int op;                 /* O_* of an operation; O_NONE a leaf */
+   39 |         ty_t ty;
+   40 |         uint32_t a, b;          /* classes; NOTOK: none */
+      |         ^
+/home/andrew/Code/ucas/src/egraph.c:41:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   41 |         nid leaf;
+      |         ^
+/home/andrew/Code/ucas/src/egraph.c:93:8: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   93 | static uint64_t
+      |        ^
+/home/andrew/Code/ucas/src/egraph.c:109:14: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  109 |         return b == NOTOK ? NOTOK : eg_find(b);
+      |                     ^
+/home/andrew/Code/ucas/src/egraph.c:133:22: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  133 | eg_const(uint32_t c, int64_t *v)
+      |                      ^
+/home/andrew/Code/ucas/src/egraph.c:139:20: warning: no header providing "O_NONE" is directly included [misc-include-cleaner]
+  139 |                 if (G.n[i].op == O_NONE && N.op[G.n[i].leaf] == O_CONST) {
+      |                                  ^
+/home/andrew/Code/ucas/src/egraph.c:139:30: warning: no header providing "N" is directly included [misc-include-cleaner]
+  139 |                 if (G.n[i].op == O_NONE && N.op[G.n[i].leaf] == O_CONST) {
+      |                                            ^
+/home/andrew/Code/ucas/src/egraph.c:139:51: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  139 |                 if (G.n[i].op == O_NONE && N.op[G.n[i].leaf] == O_CONST) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/egraph.c:164:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  164 |         if ((i = eg_lookup(op, ty, a, b, leaf, &slot)) != NOTOK)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:164:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:164:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:172:9: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+  172 |                 G.n = xrealloc(G.n, G.cap * sizeof *G.n);
+      |                       ^
+/home/andrew/Code/ucas/src/egraph.c:191:22: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  191 |         if (op != O_NONE && TY_ISINT(ty) && TY_SIZED(ty)) {
+      |                             ^
+/home/andrew/Code/ucas/src/egraph.c:191:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/egraph.c:191:38: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+  191 |         if (op != O_NONE && TY_ISINT(ty) && TY_SIZED(ty)) {
+      |                                             ^
+/home/andrew/Code/ucas/src/egraph.c:191:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/egraph.c:193:3: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  193 |                 uint8_t fl = 0;
+      |                 ^
+/home/andrew/Code/ucas/src/egraph.c:194:10: warning: no header providing "ity" is directly included [misc-include-cleaner]
+  194 |                 struct ity it;
+      |                        ^
+/home/andrew/Code/ucas/src/egraph.c:196:4: warning: no header providing "ity_of" is directly included [misc-include-cleaner]
+  196 |                         ity_of(&it, ty, 0);
+      |                         ^
+/home/andrew/Code/ucas/src/egraph.c:197:8: warning: no header providing "scalar_int" is directly included [misc-include-cleaner]
+  197 |                         v = scalar_int(op, &it, &it, x, b == NOTOK ? x : y, 0, &fl);
+      |                             ^
+/home/andrew/Code/ucas/src/egraph.c:198:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         if (!(fl & (F_UNDEF | F_UB))) {
+      |                                  ~ ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:198:16: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  198 |                         if (!(fl & (F_UNDEF | F_UB))) {
+      |                                     ^
+/home/andrew/Code/ucas/src/egraph.c:198:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         if (!(fl & (F_UNDEF | F_UB))) {
+      |                                     ^       ~
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/egraph.c:198:26: warning: no header providing "F_UB" is directly included [misc-include-cleaner]
+  198 |                         if (!(fl & (F_UNDEF | F_UB))) {
+      |                                               ^
+/home/andrew/Code/ucas/src/egraph.c:199:26: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  199 |                                 uint32_t k = eg_leaf(mk_const_i(ty, int_norm(ty, v)));
+      |                                                      ^
+/home/andrew/Code/ucas/src/egraph.c:199:41: warning: no header providing "int_norm" is directly included [misc-include-cleaner]
+  199 |                                 uint32_t k = eg_leaf(mk_const_i(ty, int_norm(ty, v)));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/egraph.c:211:15: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  211 |         return op == O_ADD || op == O_SUB || op == O_MUL || op == O_AND ||
+      |                      ^
+/home/andrew/Code/ucas/src/egraph.c:211:30: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  211 |         return op == O_ADD || op == O_SUB || op == O_MUL || op == O_AND ||
+      |                                     ^
+/home/andrew/Code/ucas/src/egraph.c:211:45: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  211 |         return op == O_ADD || op == O_SUB || op == O_MUL || op == O_AND ||
+      |                                                    ^
+/home/andrew/Code/ucas/src/egraph.c:211:60: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  211 |         return op == O_ADD || op == O_SUB || op == O_MUL || op == O_AND ||
+      |                                                                   ^
+/home/andrew/Code/ucas/src/egraph.c:212:12: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  212 |             op == O_OR || op == O_XOR || op == O_SHL || op == O_NEG ||
+      |                   ^
+/home/andrew/Code/ucas/src/egraph.c:212:26: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  212 |             op == O_OR || op == O_XOR || op == O_SHL || op == O_NEG ||
+      |                                 ^
+/home/andrew/Code/ucas/src/egraph.c:212:41: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  212 |             op == O_OR || op == O_XOR || op == O_SHL || op == O_NEG ||
+      |                                                ^
+/home/andrew/Code/ucas/src/egraph.c:212:56: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  212 |             op == O_OR || op == O_XOR || op == O_SHL || op == O_NEG ||
+      |                                                               ^
+/home/andrew/Code/ucas/src/egraph.c:213:12: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  213 |             op == O_NOT;
+      |                   ^
+/home/andrew/Code/ucas/src/egraph.c:221:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  221 |         if (!eg_op(N.op[t]) || !TY_ISINT(N.ty[t]) || !TY_SIZED(N.ty[t]) ||
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/egraph.c:221:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  221 |         if (!eg_op(N.op[t]) || !TY_ISINT(N.ty[t]) || !TY_SIZED(N.ty[t]) ||
+      |                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/egraph.c:222:17: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  222 |             N.ty[t] == TY_BOOL)
+      |                        ^
+/home/andrew/Code/ucas/src/egraph.c:222:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:224:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  224 |         if ((a = eg_term(N.a[t])) == NOTOK)
+      |              ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:224:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:224:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:226:6: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  226 |         if (opinfo[N.op[t]].arity > 1 && (b = eg_term(N.b[t])) == NOTOK)
+      |             ^
+/home/andrew/Code/ucas/src/egraph.c:226:38: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  226 |         if (opinfo[N.op[t]].arity > 1 && (b = eg_term(N.b[t])) == NOTOK)
+      |                                           ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:226:38: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:226:38: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:245:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  245 |                         if ((j = eg_lookup(e->op, e->ty, a, b, e->leaf, &slot)) !=
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:245:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:245:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:247:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  247 |                                 changed |= eg_union(G.cls[i], G.cls[j]);
+      |                                 ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/egraph.c:302:39: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  302 |         if (N.op[p] == O_CONST || N.op[p] == O_VAR)
+      |                                              ^
+/home/andrew/Code/ucas/src/egraph.c:368:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  368 |         if ((a = einst(N.a[p], b)) == NOTOK)
+      |              ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:368:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:368:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:370:38: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  370 |         if (opinfo[N.op[p]].arity > 1 && (c = einst(N.b[p], b)) == NOTOK)
+      |                                           ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:370:38: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:370:38: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:391:9: warning: no header providing "mk_raw" is directly included [misc-include-cleaner]
+  391 |         return mk_raw(op, TY(K_UINT, 32), a, b, 0, 0, 0);
+      |                ^
+/home/andrew/Code/ucas/src/egraph.c:391:20: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  391 |         return mk_raw(op, TY(K_UINT, 32), a, b, 0, 0, 0);
+      |                           ^
+/home/andrew/Code/ucas/src/egraph.c:391:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:391:23: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  391 |         return mk_raw(op, TY(K_UINT, 32), a, b, 0, 0, 0);
+      |                              ^
+/home/andrew/Code/ucas/src/egraph.c:397:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  397 |         return mk_raw(op, TY(K_UINT, 32), a, 0, 0, 0, 0);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:404:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  404 |         ty_t u = TY(K_UINT, 32);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:457:12: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  457 |                     k >= TYW(e->ty))
+      |                          ^
+/home/andrew/Code/ucas/src/egraph.c:457:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/egraph.c:460:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  460 |                     int_norm(e->ty, (int64_t)1 << k))), 0);
+      |                                     ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/egraph.c:469:24: warning: no header providing "model" is directly included [misc-include-cleaner]
+  469 | eg_opcost(const struct model *m, int op)
+      |                        ^
+/home/andrew/Code/ucas/src/egraph.c:471:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  471 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/egraph.c:471:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/egraph.c:472:50: warning: no header providing "C_IADD" is directly included [misc-include-cleaner]
+  472 |         case O_ADD: case O_SUB: case O_NEG: return m->c[C_IADD];
+      |                                                         ^
+/home/andrew/Code/ucas/src/egraph.c:473:26: warning: no header providing "C_IMUL" is directly included [misc-include-cleaner]
+  473 |         case O_MUL: return m->c[C_IMUL];
+      |                                 ^
+/home/andrew/Code/ucas/src/egraph.c:474:26: warning: no header providing "C_SHIFT" is directly included [misc-include-cleaner]
+  474 |         case O_SHL: return m->c[C_SHIFT];
+      |                                 ^
+/home/andrew/Code/ucas/src/egraph.c:476:14: warning: no header providing "C_LOGIC" is directly included [misc-include-cleaner]
+  476 |         return m->c[C_LOGIC];
+      |                     ^
+/home/andrew/Code/ucas/src/egraph.c:494:37: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  494 |                 if (opinfo[e->op].arity > 1 && (b = eg_build(e->b, choice,
+      |                                                 ~~^~~~~~~~~~~~~~~~~~~~~~~~
+  495 |                     depth + 1)) == 0)
+      |                     ~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:494:37: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:494:37: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:498:8: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  498 |                         a = mk_cast(e->ty, a);
+      |                             ^
+/home/andrew/Code/ucas/src/egraph.c:501:36: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  501 |                 return opinfo[e->op].arity > 1 ? mk_bin(e->op, a, b) :
+      |                                                  ^
+/home/andrew/Code/ucas/src/egraph.c:502:7: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  502 |                     mk_un(e->op, a);
+      |                     ^
+/home/andrew/Code/ucas/src/egraph.c:512:36: warning: no header providing "rwrule" is directly included [misc-include-cleaner]
+  512 | egraph_best(nid root, const struct rwrule *rr, int nr, char *stat,
+      |                                    ^
+/home/andrew/Code/ucas/src/egraph.c:515:26: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+  515 |         const struct model *m = model_active();
+      |                                 ^
+/home/andrew/Code/ucas/src/egraph.c:522:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  522 |         G.htcap = 1 << 15;
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/egraph.c:523:9: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  523 |         G.ht = xcalloc(G.htcap, sizeof *G.ht);
+      |                ^
+/home/andrew/Code/ucas/src/egraph.c:525:12: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  525 |         pvar[0] = mk_var(0, sym_cstr("a"), TY(K_UINT, 32));
+      |                   ^
+/home/andrew/Code/ucas/src/egraph.c:525:22: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  525 |         pvar[0] = mk_var(0, sym_cstr("a"), TY(K_UINT, 32));
+      |                             ^
+/home/andrew/Code/ucas/src/egraph.c:525:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  525 |         pvar[0] = mk_var(0, sym_cstr("a"), TY(K_UINT, 32));
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:526:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  526 |         pvar[1] = mk_var(1, sym_cstr("b"), TY(K_UINT, 32));
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:527:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  527 |         pvar[2] = mk_var(2, sym_cstr("c"), TY(K_UINT, 32));
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/egraph.c:536:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  536 |         if ((rc = eg_term(root)) == NOTOK) {
+      |              ~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:536:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:536:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:537:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   29 |                 snprintf(stat, nstat, "the body alone fills the graph");
+      |                 ^
+/home/andrew/Code/ucas/src/egraph.c:572:14: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  572 |                                                 if ((t = einst(to, &res[q])) != NOTOK)
+      |                                                      ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/egraph.c:572:14: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/egraph.c:572:14: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/egraph.c:586:9: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  586 |         cost = xmalloc(G.nc * sizeof *cost);
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
