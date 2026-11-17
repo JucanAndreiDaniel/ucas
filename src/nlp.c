@@ -367,6 +367,16 @@ struct word {
 static struct word W[MAXW + 4];
 static int nw, wi;
 
+/*
+ * Bound on recursive-descent work for one sentence.  Ambiguous phrases used
+ * to be re-parsed speculatively at every nesting level (2^n on inputs like
+ * "the sqrt of the sqrt of ..."), which a 320-word cap cannot stop.  The
+ * constant-start guard in const_interval() removes that exponential path;
+ * this counter is a backstop for any other shape that tries too many readings.
+ */
+#define MAX_PARSE_STEPS 200000L
+static long parse_steps;
+
 static void
 push(int k, const char *s, size_t n, int sp)
 {
@@ -1560,7 +1570,7 @@ static const char *const reserved[] = {
 	"would", "could", "should", "might", "may", "must", "each", "every",
 	"some", "both", "plus", "minus", "times", "squared", "cubed", "half",
 	"twice", "value", "values", "number", "numbers", "between", "equal",
-	"equals", "less", "more", "greater", "smaller", "larger", "bigger",
+	"equals", "unequal", "less", "more", "greater", "smaller", "larger", "bigger",
 	"sum", "product", "difference", "quotient", "ratio", "power", "root",
 	"square", "cube", "divided", "multiplied", "mod", "modulo", "xor",
 	"bitwise", "shifted", "left", "right", "true", "false", "pi",
@@ -1899,6 +1909,29 @@ var_atom(const char *name)
 static struct var Vsave[MAXV];
 
 /*
+ * Can the next token begin a literal constant?  const_interval() speculates
+ * by parsing a whole expression and throwing it away when no interval
+ * follows; without this check a nested "the sqrt of the sqrt of ..." made
+ * every level parse its operand twice (2^n).  An interval's ends are always
+ * literals, so anything else cannot start one.
+ */
+static int
+constant_start(void)
+{
+	int64_t v;
+
+	if (issym("[") || issym("(") || issym("-") || issym("+") ||
+	    W[wi].k == W_NUM)
+		return 1;
+	if (W[wi].k != W_WORD)
+		return 0;
+	if (isw(wi, "pi") || isw(wi, "e") || isw(wi, "inf") ||
+	    isw(wi, "infinity") || isw(wi, "true") || isw(wi, "false"))
+		return 1;
+	return numword_val(W[wi].s, &v);
+}
+
+/*
  * The constant ends of an interval: [a, b], (a, b), a to b, a..b, and
  * after "between", a and b.  Nothing is consumed when there is none.
  */
@@ -1908,6 +1941,8 @@ const_interval(struct ex *a, struct ex *b, int between)
 	jmp_buf saved;
 	int s = wi, ok = 0, br, nvs = nv, nos = norder;
 
+	if (!constant_start())
+		return 0;
 	memcpy(saved, nl_jmp, sizeof saved);
 	memcpy(Vsave, V, sizeof V);
 	quiet++;
@@ -3064,6 +3099,8 @@ parse_expr(int minprec)
 	struct decl d;
 	int s, k;
 
+	if (++parse_steps > MAX_PARSE_STEPS)
+		nfail("sentence has too many readings");
 	l = parse_postfix(parse_prefix(minprec), minprec);
 	for (;;) {
 		s = wi;
@@ -3194,6 +3231,21 @@ parse_expr(int minprec)
 			if (l.isbool || r.isbool) {
 				l = mkbin(l, o->kind == B_AND ? "&&" : "||", r, o->prec);
 				l.isbool = 1;
+			} else if (o->kind == B_AND && !l.lit && !r.lit &&
+			    (Q.cmd == C_RANGE || Q.cmd == C_DOMAIN ||
+			    Q.cmd == C_WRAP || Q.cmd == C_CRIT || Q.cmd == C_TABLE)) {
+				/*
+				 * "the range of x squared and y cubed" is a list
+				 * of quantities, not a bitmask.  The old default
+				 * silently made it x^2 & y^3, giving an empty
+				 * range.  Say what was taken and how to get &.
+				 */
+				if (!dry && !quiet)
+					printf("  note: \"and\" between quantities in "
+					    "a value question: read as a list joined "
+					    "by +, not bitwise & (say \"bitwise and\" "
+					    "for &, or ask for each separately)\n");
+				l = mkbin(l, "+", r, P_ADD);
 			} else {
 				static const char *const ao[] = {"bitwise (& and |)",
 					"logical (&& and ||)"};
@@ -5089,11 +5141,25 @@ second_target(void)
 	cur_mask = 1;
 }
 
+/* "unequal" was spell-corrected to "equal", inverting the answer.  There is
+ * no negation of the equality check to emit, so refuse it explicitly. */
+static void
+reject_unequal(void)
+{
+	int k;
+
+	for (k = 0; k < nw; k++)
+		if (isw(k, "unequal"))
+			nfail("I can't negate an equality check: ask \"is A equal "
+			    "to B\" and invert the yes/no answer");
+}
+
 static int
 yes_no(int s0)
 {
 	int s;
 
+	reject_unequal();
 	cur_mask = 1;
 	if (mat("there ?any|some")) {
 		/* "is there overflow in f", "are there critical points of f" */
@@ -7652,6 +7718,7 @@ reset_sentence(int pass)
 	arn = 0;
 	memset(&Q, 0, sizeof Q);
 	wi = 0;
+	parse_steps = 0;
 	norder = 0;
 	cur_mask = 1;
 	incond = quiet = 0;

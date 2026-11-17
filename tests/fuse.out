@@ -503,7 +503,6 @@ find sd: 1024 points (sampled; matches verified on the whole domain), computing 
       q0 = floor(a/7) is an integer below 2^24, an f32, and f32(a) * 0.142857149 >= a/7 >= q0: the product rounded to nearest is not below q0
       a/7 <= q0 + 6/7, so the exact product is at most q0 + 6/7 + 6.39e-06 (1000 times the excess); it is below 256, where rounding adds at most 7.63e-06: it stays below q0 + 1, as 6.39e-06 + 7.63e-06 < 1/7
       the conversion to i32 truncates toward zero: of a value in [q0, q0 + 1) it is q0 = a / 7
-  cost 5   (1171u32(a) >> 13) + u32(b)              all of them: the division a/7 as a multiply and a shift in u32, then drops the conversion i32(...) (derived; the drops proved by SAT)
   nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > sm(a: i32 in 0..100000) = a % 10
@@ -569,7 +568,6 @@ find sd: 1024 points (sampled; matches verified on the whole domain), computing 
       q0 = floor(a/7) is an integer below 2^24, an f32, and f32(a) * 0.142857149 >= a/7 >= q0: the product rounded to nearest is not below q0
       a/7 <= q0 + 6/7, so the exact product is at most q0 + 6/7 + 6.39e-06 (1000 times the excess); it is below 256, where rounding adds at most 7.63e-06: it stays below q0 + 1, as 6.39e-06 + 7.63e-06 < 1/7
       the conversion to i32 truncates toward zero: of a value in [q0, q0 + 1) it is q0 = a / 7
-  cost 5   (1171u32(a) >> 13) + u32(b)              all of them: the division a/7 as a multiply and a shift in u32, then drops the conversion i32(...) (derived; the drops proved by SAT)
   nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > use gt1030

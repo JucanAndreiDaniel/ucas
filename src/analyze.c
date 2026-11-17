@@ -1984,14 +1984,28 @@ rebind(const struct func *f, const struct func *g)
  */
 int equiv_nanbits;
 
+/* a `real` is evaluated in double: equal mathematical expressions can end
+ * up a few ulps apart (catastrophic cancellation can mean many ulps at a
+ * small magnitude).  A relative tolerance below the gap of any real
+ * counterexample we print keeps sampling from refuting a true identity on
+ * the strength of its last rounding bit.  Machine floats keep exact
+ * IEEE comparison: their rounding is the value being compared. */
+#define REAL_EQ_TOL 1e-9
+
 static int
 same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 {
 	if (TY_FP(t) && isnan(ar) && isnan(br) && equiv_nanbits &&
 	    TYK(t) == K_FLOAT)
 		return fbits(TYW(t), ar) == fbits(TYW(t), br);
-	if (TY_FP(t))
-		return (isnan(ar) && isnan(br)) || ar == br;
+	if (TY_FP(t)) {
+		if ((isnan(ar) && isnan(br)) || ar == br)
+			return 1;
+		if (TYK(t) == K_REAL && !isnan(ar) && !isnan(br))
+			return fabs(ar - br) <= REAL_EQ_TOL *
+			    fmax(1.0, fmax(fabs(ar), fabs(br)));
+		return 0;
+	}
 	return a == b;
 }
 
@@ -2215,16 +2229,52 @@ equiv_lanes(const struct func *f, nid a, nid b, struct sbuf *wit,
  */
 int equiv_algebra;
 
+/* not in ucas.h: an empty domain compares no points, so an UNSAT circuit
+ * proves nothing.  Reported as vacuous, never as a SAT proof. */
+#define EQ_VACUOUS 5
+
+/* When the two results are integers of *different* types, compare in a
+ * wide signed domain that keeps the value each one denotes: casting b to
+ * a's type makes a narrowing cast (u8(x) vs i32(x)) or a reinterpretation
+ * (u8(x) vs i8(x)) look like an identity.  Other result types keep the
+ * refinement comparison in a's type: an inferred `~ expr` is read in f's
+ * result type, which is what those comparisons are for. */
+static ty_t
+equiv_cmp_ty(ty_t ta, ty_t tb)
+{
+	if (ta == tb || !TY_ISINT(ta) || !TY_ISINT(tb))
+		return ta;
+	return TY(K_SINT, 64);
+}
+
 int
 equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
     struct eqproof *pr)
 {
 	int sampled, m;
+	ty_t ct;
 
 	memset(pr, 0, sizeof *pr);
+	ct = equiv_cmp_ty(N.ty[a], N.ty[b]);
+	a = mk_cast(ct, a);
+	b = mk_cast(ct, b);
 	if ((N.fl[a] | N.fl[b]) & NF_LANES)
 		return equiv_lanes(f, a, b, wit, pr);
 	m = equiv_scan(f, a, b, wit, &sampled, 1, &pr->points);
+	/* a grid over a real parameter is a sample, not an exhaustive proof:
+	 * there are infinitely many points between its rungs */
+	if (!sampled && m == 0) {
+		int jj;
+		for (jj = 0; jj < f->np; jj++)
+			if (TYK(f->p[jj].ty) == K_REAL) {
+				sampled = 1;
+				break;
+			}
+	}
+	if (m == 0 && pr->points == 0) {
+		pr->how = EQ_VACUOUS;
+		return 0;
+	}
 	pr->how = sampled ? EQ_SAMPLED : EQ_EXHAUSTIVE;
 	if (m || !sampled)
 		return m;
@@ -2282,6 +2332,10 @@ eqproof_text(struct sbuf *b, const struct eqproof *pr)
 		break;
 	case EQ_ALGEBRA:
 		sb_puts(b, pr->alg);
+		break;
+	case EQ_VACUOUS:
+		sb_puts(b, "vacuously equal: the domain has no points to "
+		    "compare");
 		break;
 	default:
 		sb_puts(b, pr->how == EQ_UNDECIDED ? "not decided: the lanes' "
@@ -2349,9 +2403,12 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 		rep_bool("nanbits", nanbits > 0);
 	rep_int("mismatch_points", m);
 	rep_str("method", pr.how == EQ_EXHAUSTIVE ? "exhaustive" :
-	    pr.how == EQ_SAT ? "sat" : pr.how == EQ_ALGEBRA ? "algebra" :
+	    pr.how == EQ_SAT ? "sat" : pr.how == EQ_VACUOUS ? "vacuous" :
+	    pr.how == EQ_ALGEBRA ? "algebra" :
 	    pr.sat_status == 1 ? "sat_counterexample" : pr.how ==
 	    EQ_UNDECIDED ? "undecided" : "sampled");
+	if (pr.how == EQ_VACUOUS)
+		rep_str("why", "the domain has no points to compare");
 	if (pr.sat_status != 0 || pr.how == EQ_SAT) {
 		rep_obj("sat");
 		rep_str("result", pr.how == EQ_SAT ? "proved" :
@@ -2367,12 +2424,14 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	}
 	if (m)
 		rep_str("counterexample", sb_str(&w));
-	if (m == 0 && pr.how != EQ_UNDECIDED)
+	if (m == 0 && pr.how != EQ_UNDECIDED && pr.how != EQ_VACUOUS)
 		rep_proof(pr.how == EQ_SAMPLED ? "numeric" : pr.how == EQ_SAT ?
 		    "sat" : pr.how == EQ_ALGEBRA ? "derivation" : "exhaustive",
 		    pr.how == EQ_EXHAUSTIVE ?
 		    "every point of the domain" : sb_str(&how));
-	if (m == 0 && pr.how == EQ_UNDECIDED)
+	if (m == 0 && pr.how == EQ_VACUOUS)
+		printf("%s and %s: %s\n", fname(f), fname(g), sb_str(&how));
+	else if (m == 0 && pr.how == EQ_UNDECIDED)
 		printf("%s and %s: %s\n", fname(f), fname(g), sb_str(&how));
 	else if (m == 0)
 		printf("%s and %s are equal on the domain of %s (%s)\n",

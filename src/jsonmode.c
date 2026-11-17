@@ -3181,6 +3181,38 @@ chain_start(void)
 	chained = 1;
 }
 
+/* Write all n bytes, or fail. */
+static int
+wr_all(int fd, const void *p, size_t n)
+{
+	const char *b = p;
+	while (n) {
+		ssize_t k = write(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
+/* Read exactly n bytes, or fail. */
+static int
+rd_all(int fd, void *p, size_t n)
+{
+	char *b = p;
+	while (n) {
+		ssize_t k = read(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
 /* 1: this process is the child that ran the request (the new server) */
 static int
 run_with_timeout(const struct jv *rq, double secs)
@@ -3192,6 +3224,7 @@ run_with_timeout(const struct jv *rq, double secs)
 	char c;
 	struct jv *resp;
 	double left;
+	uint64_t rlen;
 
 	chain_start();
 	if (pipe(sp) != 0)
@@ -3204,11 +3237,28 @@ run_with_timeout(const struct jv *rq, double secs)
 		return -1;
 	}
 	if (pid == 0) {
+		/* Capture the reply in memory: the child must never write to
+		 * the shared stdout, or a late/partial write can desynchronise
+		 * the reply stream when the parent hits the deadline. */
+		char *rbuf = NULL; size_t rn = 0;
+		FILE *mem = open_memstream(&rbuf, &rn);
+		FILE *saved = jout;
 		close(sp[0]);
+		if (mem)
+			jout = mem;
 		resp = handle(rq);
 		respond(resp);
 		jv_free(resp);
-		(void)!write(sp[1], "k", 1);
+		fflush(NULL);
+		if (mem) {
+			fclose(mem);
+			jout = saved;
+		}
+		rlen = mem ? (uint64_t)rn : 0;
+		if (wr_all(sp[1], &rlen, sizeof rlen) == 0 &&
+		    (!mem || wr_all(sp[1], rbuf, rn) == 0))
+			(void)!wr_all(sp[1], "k", 1);
+		free(rbuf);
 		close(sp[1]);
 		if (reset_wanted && !oneshot)
 			self_exec();
@@ -3239,8 +3289,33 @@ run_with_timeout(const struct jv *rq, double secs)
 		pf.events = POLLIN;
 		if (poll(&pf, 1, (int)(left * 1000) + 1) <= 0)
 			continue;
-		if (read(sp[0], &c, 1) == 1)
+		{
+			/* reply from the child: [u64 length][bytes] then 'k'.
+			 * Only the parent writes to stdout: no partial or late
+			 * child writes can desynchronise the reply stream. */
+			char *rbuf = NULL;
+			if (rd_all(sp[0], &rlen, sizeof rlen) != 0 ||
+			    rlen > (1ULL << 30) ||
+			    (rlen && (rbuf = malloc((size_t)rlen)) == NULL)) {
+				kill(pid, SIGKILL);
+				waitpid(pid, NULL, 0);
+				close(sp[0]);
+				resp = error_response(jv_get(rq, "id"),
+				    jv_gets(rq, "cmd"), "internal",
+				    "worker reply was corrupt");
+				respond(resp);
+				jv_free(resp);
+				return 0;
+			}
+			if (rlen) {
+				rd_all(sp[0], rbuf, (size_t)rlen);
+				fwrite(rbuf, 1, (size_t)rlen, jout);
+				fflush(jout);
+				free(rbuf);
+			}
+			(void)read(sp[0], &c, 1);   /* 'k' */
 			_exit(0);   /* the child is the server now */
+		}
 		/* closed without the byte: it died */
 		waitpid(pid, &st, 0);
 		close(sp[0]);
@@ -3270,7 +3345,15 @@ json_serve(const struct jv *rq)
 
 	a = jv_get(rq, "args");
 	t = jv_get(a, "timeout_s");
-	if (t && t->t == J_NUM && t->num > 0) {
+	if (t) {
+		if (t->t != J_NUM || !(t->num > 0) || t->num > 86400) {
+			resp = error_response(jv_get(rq, "id"),
+			    jv_gets(rq, "cmd"), "bad_request",
+			    "timeout_s must be a number in (0, 86400]");
+			respond(resp);
+			jv_free(resp);
+			return;
+		}
 		if (run_with_timeout(rq, t->num) >= 0)
 			return;
 	}

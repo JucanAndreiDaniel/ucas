@@ -8,9 +8,9 @@ fneg(x: i8) = u8(x)
 gneg(x: i8) = x
   -> i8
 > equiv fneg gneg
-fneg and gneg are equal on the domain of fneg (exhaustive)
+fneg and gneg differ at 128 points, e.g. x=-128: 128 vs -128
 > equiv gneg fneg
-gneg and fneg are equal on the domain of gneg (exhaustive)
+gneg and fneg differ at 128 points, e.g. x=-128: -128 vs 128
 > const255(x: i8 in -1..-1) = 255
 > constm1(x: i8 in -1..-1) = -1
 > show const255
@@ -22,9 +22,9 @@ constm1(x: i8 in -1..-1) = -1
 > equiv fneg const255
 fneg and const255 differ at 255 points, e.g. x=-128: 128 vs 255
 > equiv fneg constm1
-fneg and constm1 differ at 255 points, e.g. x=-128: 128 vs 255
+fneg and constm1 differ at 256 points, e.g. x=-128: 128 vs -1
 > equiv gneg const255
-gneg and const255 differ at 255 points, e.g. x=-128: -128 vs -1
+gneg and const255 differ at 256 points, e.g. x=-128: -128 vs 255
 > equiv gneg constm1
 gneg and constm1 differ at 255 points, e.g. x=-128: -128 vs -1
 > a(x: u8) = x
@@ -46,6 +46,6 @@ range of b -> i8:
   fits in i8
   over all 256 points of the domain
 > equiv a b
-a and b are equal on the domain of a (exhaustive)
+a and b differ at 128 points, e.g. x=128: 128 vs -128
 > equiv b a
-b and a are equal on the domain of b (exhaustive)
+b and a differ at 128 points, e.g. x=128: -128 vs 128
