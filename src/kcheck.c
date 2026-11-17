@@ -137,14 +137,33 @@ struct cl {
 
 static int cbad;	/* overflow */
 
+/* Use the exact same bound as knorm.c's cadd()/cmul(): a coefficient must
+ * fit in [-INT64_MAX, INT64_MAX], checked with __int128 so no precision is
+ * lost near the 64-bit edge.  The old long-double 9.2e18 guard rejected
+ * coefficients in (9.2e18, INT64_MAX] that knorm.c accepts, so a proof the
+ * prover built could be rejected by its own independent re-check. */
 static long long
-ov(long double v)
+ovadd(long long a, long long b)
 {
-	if (v > 9.2e18L || v < -9.2e18L) {
+	__int128 r = (__int128)a + b;
+
+	if (r > INT64_MAX || r < -INT64_MAX) {
 		cbad = 1;
 		return 0;
 	}
-	return (long long)v;
+	return (long long)r;
+}
+
+static long long
+ovmul(long long a, long long b)
+{
+	__int128 r = (__int128)a * b;
+
+	if (r > INT64_MAX || r < -INT64_MAX) {
+		cbad = 1;
+		return 0;
+	}
+	return (long long)r;
 }
 
 static char *
@@ -171,7 +190,7 @@ cp_norm(struct cp *p)
 	qsort(p->t, (size_t)p->n, sizeof *p->t, cmcmp);
 	for (i = 0; i < p->n; i++) {
 		if (k && !strcmp(p->t[k - 1].m, p->t[i].m)) {
-			p->t[k - 1].c = ov((long double)p->t[k - 1].c + p->t[i].c);
+			p->t[k - 1].c = ovadd(p->t[k - 1].c, p->t[i].c);
 			free(p->t[i].m);
 		} else
 			p->t[k++] = p->t[i];
@@ -250,7 +269,7 @@ cp_mul(const struct cp *a, const struct cp *b)
 	for (i = 0; i < a->n; i++)
 		for (j = 0; j < b->n; j++) {
 			char *m = mono_mul(a->t[i].m, b->t[j].m);
-			cp_add1(&r, m, ov((long double)a->t[i].c * b->t[j].c));
+			cp_add1(&r, m, ovmul(a->t[i].c, b->t[j].c));
 			free(m);
 		}
 	cp_norm(&r);
@@ -263,7 +282,7 @@ cp_addto(struct cp *r, const struct cp *b, long long s)
 	int i;
 
 	for (i = 0; i < b->n; i++)
-		cp_add1(r, b->t[i].m, ov((long double)b->t[i].c * s));
+		cp_add1(r, b->t[i].m, ovmul(b->t[i].c, s));
 	cp_norm(r);
 }
 

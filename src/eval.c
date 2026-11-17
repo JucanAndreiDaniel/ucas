@@ -1063,7 +1063,7 @@ scalar_float(int op, int w, double a, double b, uint8_t *fl)
 	case O_ABS: { uint64_t u; memcpy(&u, &a, 8); u &= ~(1ULL << 63);
 	              memcpy(&r, &u, 8); break; }
 	case O_SIGN: r = isnan(a) ? a : (a > 0) - (a < 0); break;
-	case O_SQRT: lr = sqrtl((long double)a); longpath = 1; break;
+	case O_SQRT: r = sqrt(a); break;
 	case O_EXP: lr = expl((long double)a); longpath = 1; break;
 	case O_LOG: lr = logl((long double)a); longpath = 1; break;
 	case O_SIN: lr = sinl((long double)a); longpath = 1; break;

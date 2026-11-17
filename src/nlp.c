@@ -477,6 +477,48 @@ push_word(const char *s, size_t n, int sp)
 static struct func *user_fn(const char *name);
 static int pending_name(const char *w);
 
+/*
+ * Is the clen-byte sequence at s one well-formed UTF-8 character?  The
+ * tokenizer echoes an unreadable character in its diagnostic, but must not
+ * echo raw bytes when they are a malformed sequence (overlong encoding,
+ * surrogate or out-of-range codepoint): that would put invalid UTF-8 in the
+ * reply.  Valid multibyte characters are echoed unchanged.
+ */
+static int
+utf8_seq_ok(const unsigned char *s, size_t clen)
+{
+	unsigned char a, b, c, d;
+
+	if (clen == 1)
+		return s[0] < 0x80;
+	if (clen == 2) {
+		a = s[0]; b = s[1];
+		return a >= 0xc2 && a <= 0xdf && b >= 0x80 && b <= 0xbf;
+	}
+	if (clen == 3) {
+		a = s[0]; b = s[1]; c = s[2];
+		if (b < 0x80 || b > 0xbf || c < 0x80 || c > 0xbf)
+			return 0;
+		if (a == 0xe0)
+			return b >= 0xa0;	/* no overlong 3-byte forms */
+		if (a == 0xed)
+			return b <= 0x9f;	/* no UTF-16 surrogates */
+		return a >= 0xe1 && a <= 0xef;
+	}
+	if (clen == 4) {
+		a = s[0]; b = s[1]; c = s[2]; d = s[3];
+		if (b < 0x80 || b > 0xbf || c < 0x80 || c > 0xbf ||
+		    d < 0x80 || d > 0xbf)
+			return 0;
+		if (a == 0xf0)
+			return b >= 0x90;	/* no overlong 4-byte forms */
+		if (a == 0xf4)
+			return b <= 0x8f;	/* not above U+10FFFF */
+		return a >= 0xf1 && a <= 0xf3;
+	}
+	return 0;
+}
+
 static void
 tokenize(const char *s)
 {
@@ -631,8 +673,8 @@ tokenize(const char *s)
 		}
 		{
 			unsigned char c = (unsigned char)s[i];
-			size_t clen = 1, k2;
-			char cp[8];
+			size_t clen = 1, k2, o = 0;
+			char cp[8], esc[16];
 
 			if (c >= 0xf0 && i + 3 < n)
 				clen = 4;
@@ -645,11 +687,17 @@ tokenize(const char *s)
 					clen = 1;
 					break;
 				}
-			if (clen > 1) {
+			/* echo a real UTF-8 character as-is; escape every byte of a
+			 * malformed sequence so the diagnostic stays valid UTF-8 */
+			if (clen > 1 && utf8_seq_ok((const unsigned char *)s + i,
+			    clen)) {
 				snprintf(cp, sizeof cp, "%.*s", (int)clen, s + i);
 				nfail("I can't read the character '%s'", cp);
 			}
-			nfail("I can't read the character '\\x%02x'", c);
+			for (k2 = 0; k2 < clen && o + 4 < sizeof esc; k2++)
+				o += (size_t)snprintf(esc + o, sizeof esc - o,
+				    "\\x%02x", (unsigned char)s[i + k2]);
+			nfail("I can't read the character '%s'", esc);
 		}
 	}
 	for (k = 0; k < 4; k++)
@@ -1187,39 +1235,82 @@ ordinal_scale(const char *w)
 	return 0;
 }
 
-/* printf has no portable conversion for __int128: build the decimal */
-static void
+#define I128_MAX ((__int128)(((unsigned __int128)-1) >> 1))
+
+/*
+ * printf has no portable conversion for __int128: build the decimal.
+ *
+ * ucas accepts bare integer literals only up to u64 and only promotes a
+ * constant arithmetic expression to an arbitrary-precision int when every
+ * operand fits in i64.  So a value above i64 is emitted as a sum of terms
+ * "chunk*10^k" whose chunks are at most 18 decimal digits (below i64) --
+ * that stays exact wherever the expression is used.  Values that reduce to
+ * an i64 coefficient keep the familiar "coef*10^z" form.
+ *
+ * Returns 2 when a bigint (chunked) expression was emitted, 1 otherwise.
+ */
+static int
 i128_dec(__int128 v, char *out, size_t n)
 {
-	char rev[48];
+	char rev[48], dig[48], buf[192];
 	unsigned __int128 u;
-	size_t k = 0, z = 0;
+	size_t k = 0, z = 0, nd = 0, pos, i, o = 0;
+	int neg = v < 0, first = 1;
+	const unsigned __int128 i64max = 9223372036854775807ULL;
 
-	u = v < 0 ? (unsigned __int128)(-(v + 1)) + 1 : (unsigned __int128)v;
-	/* ucas rejects bare integer literals above u64: when a larger value
-	 * ends in zeros, keep it exact as a coefficient times a power of ten
-	 * so it stays an arbitrary-precision int. */
-	if (u > 9223372036854775807ULL) {
+	u = neg ? (unsigned __int128)(-(v + 1)) + 1 : (unsigned __int128)v;
+	/* ucas rejects a bare literal above u64: factor out trailing zeros
+	 * while the coefficient is large, keeping the "coef*10^z" form exact. */
+	if (u > i64max) {
 		while (u > 1000000000ULL && u % 10 == 0) {
 			u /= 10;
 			z++;
 		}
-		if (z) {
-			snprintf(out, n, "%llu*10^%zu", (unsigned long long)u, z);
-			return;
-		}
 	}
+	if (u <= i64max) {
+		if (neg && o + 1 < sizeof buf)
+			buf[o++] = '-';
+		do {
+			rev[k++] = (char)('0' + u % 10);
+			u /= 10;
+		} while (u);
+		while (k > 0 && o + 1 < sizeof buf)
+			buf[o++] = rev[--k];
+		if (z && o < sizeof buf)
+			o += (size_t)snprintf(buf + o, sizeof buf - o, "*10^%zu", z);
+		buf[o < sizeof buf ? o : sizeof buf - 1] = 0;
+		snprintf(out, n, "%s", buf);
+		return 1;
+	}
+	/* the reduced coefficient still exceeds i64: split its decimal digits
+	 * into i64-sized chunks and write a sum of chunk*10^k terms */
 	do {
-		rev[k++] = (char)('0' + u % 10);
+		dig[nd++] = (char)('0' + u % 10);
 		u /= 10;
-	} while (u);
-	if (v < 0 && k < sizeof rev)
-		rev[k++] = '-';
-	if (k >= n)
-		k = n - 1;
-	while (k > 0)
-		*out++ = rev[--k];
-	*out = 0;
+	} while (u && nd < sizeof dig);
+	if (neg && o + 1 < sizeof buf)
+		buf[o++] = '-';
+	if (neg && o + 1 < sizeof buf)
+		buf[o++] = '(';
+	for (pos = 0; pos < nd; pos += 18) {
+		size_t cnt = nd - pos > 18 ? 18 : nd - pos;
+		unsigned long long chunk = 0;
+
+		for (i = cnt; i > 0; i--)
+			chunk = chunk * 10 + (unsigned)(dig[pos + i - 1] - '0');
+		if (!chunk)
+			continue;
+		if (!first)
+			o += (size_t)snprintf(buf + o, sizeof buf - o, " + ");
+		o += (size_t)snprintf(buf + o, sizeof buf - o, "%llu*10^%zu",
+		    chunk, pos + z);
+		first = 0;
+	}
+	if (neg && o + 1 < sizeof buf)
+		buf[o++] = ')';
+	buf[o < sizeof buf ? o : sizeof buf - 1] = 0;
+	snprintf(out, n, "%s", buf);
+	return 2;
 }
 
 /* "two hundred fifty-six", "a thousand", "one billion billion" */
@@ -1261,10 +1352,17 @@ number_words(char *out, size_t outn)
 			continue;
 		}
 		if (any && mult_word(w, &m)) {
-			if (scaled)
-				total *= m;   /* "billion billion": 10^9 * 10^9 */
-			else
-				total += (cur ? cur : 1) * m;
+			if (scaled) {
+				/* "billion billion": 10^9 * 10^9 */
+				if (total && (__int128)m > I128_MAX / total)
+					nfail("that number is too large for me");
+				total *= m;
+			} else {
+				__int128 add = (__int128)(cur ? cur : 1) * m;
+				if (total > I128_MAX - add)
+					nfail("that number is too large for me");
+				total += add;
+			}
 			cur = 0;
 			small = 0;
 			scaled = 1;
@@ -1272,14 +1370,38 @@ number_words(char *out, size_t outn)
 			continue;
 		}
 		if (any && !strcmp(w, "and") &&
-		    (isw(wi - 1, "hundred") || isw(wi - 1, "thousand") ||
-		    mult_word(W[wi - 1].s, &m)) &&
-		    numword_val(W[wi + 1].s, &nv)) {
+		    (total || isw(wi - 1, "hundred") ||
+		    isw(wi - 1, "thousand") || mult_word(W[wi - 1].s, &m))) {
 			/* "one billion and one" reads as one number, just as
-			 * "one thousand and one" (and "one billion plus one")
-			 * already do. */
-			wi++;
-			continue;
+			 * "one thousand and one" already does.  The scale word
+			 * need not be the word right before "and": in "one
+			 * billion one and one" it is `total`, not `cur`, that
+			 * carries it, so testing only W[wi-1] missed the case. */
+			if (numword_val(W[wi + 1].s, &nv)) {
+				/* fold it in here rather than letting the loop
+				 * read it: the loop's "three four" guard would
+				 * reject the word after "and" when cur is small
+				 * ("one billion one and one"). */
+				cur += nv;
+				small = 1;
+				scaled = 0;
+				wi += 2;
+				continue;
+			}
+			/* likewise "one billion and 2": a bare digit after
+			 * "and" belongs to the same number, but this loop only
+			 * understands word-form numbers, so fold it in here. */
+			if (W[wi + 1].k == W_NUM && is_int(W[wi + 1].s)) {
+				int64_t f = strtoll(W[wi + 1].o, NULL, 10);
+
+				if (f >= 0 && f <= 9) {
+					cur += f;
+					small = 1;
+					scaled = 0;
+					wi += 2;
+					continue;
+				}
+			}
 		}
 		break;
 	}
@@ -1287,34 +1409,60 @@ number_words(char *out, size_t outn)
 		wi = s;
 		return 0;
 	}
-	i128_dec(total + cur, out, outn);
-	return 1;
+	if (cur > I128_MAX - total)
+		nfail("that number is too large for me");
+	return i128_dec(total + cur, out, outn);
 }
 
-/* "point one four": digits spoken singly after a whole number */
-static void
+/*
+ * "point one four": digits spoken singly after a whole number.  Returns 1
+ * when the digits had to be emitted as an addition rather than a ".digits"
+ * suffix (the caller then gives the result addition precedence).
+ */
+static int
 spelled_point(char *s, size_t n)
 {
 	int64_t d;
-	size_t len = strlen(s);
+	size_t len = strlen(s), nd = 0;
+	char frac[24];
 	int any = 0;
 
 	if (!isw(wi, "point"))
-		return;
+		return 0;
 	wi++;
 	while (W[wi].k == W_WORD && numword_val(W[wi].s, &d) &&
 	    d >= 0 && d <= 9) {
-		if (len + 3 >= n)
+		if (nd + 1 >= sizeof frac || nd >= 18)
 			break;
-		if (!any) {
-			s[len++] = '.';
-			s[len] = 0;
-			any = 1;
-		}
-		s[len++] = (char)('0' + d);
-		s[len] = 0;
+		frac[nd++] = (char)('0' + d);
 		wi++;
+		any = 1;
 	}
+	if (!any)
+		return 0;
+	frac[nd] = 0;
+	/*
+	 * A plain whole number simply takes the ".digits" suffix.  But
+	 * i128_dec() emits large values as "coef*10^z" or a sum of chunks:
+	 * appending ".5" to "999000000*10^12" would parse as a power with a
+	 * fractional exponent (999000000*10^12.5), not a decimal.  Add the
+	 * digits as an exact fraction scaled by a power of ten instead.
+	 */
+	if (strpbrk(s, "*+(")) {
+		unsigned long long f = 0;
+		size_t i;
+
+		for (i = 0; i < nd; i++)
+			f = f * 10 + (unsigned)(frac[i] - '0');
+		if (len + 40 < n)
+			snprintf(s + len, n - len, " + %llu/10^%zu", f, nd);
+		return 1;
+	}
+	if (len + nd + 2 <= n) {
+		s[len++] = '.';
+		memcpy(s + len, frac, nd + 1);
+	}
+	return 0;
 }
 
 /* "half", "thirds", "billionth": the denominator */
@@ -2780,10 +2928,10 @@ parse_prefix(int minprec)
 {
 	struct ex e, a, b, c;
 	struct func *f;
-	static char nbuf[64];
+	static char nbuf[192];
 	struct decl d;
 	int64_t v, den;
-	int s = wi, s1, k;
+	int s = wi, s1, k, biglit, spelled_add;
 
 	switch (W[wi].k) {
 	case W_END:
@@ -2834,11 +2982,17 @@ parse_prefix(int minprec)
 		}
 		goto fraction;
 	}
-	if (number_words(nbuf, sizeof nbuf)) {
-		spelled_point(nbuf, sizeof nbuf);
+	biglit = number_words(nbuf, sizeof nbuf);
+	if (biglit) {
+		spelled_add = spelled_point(nbuf, sizeof nbuf);
 		/* nbuf is static and a recursive parse_prefix reuses it, so
 		 * keep our own copy in the arena before building on it. */
 		e = num(S("%s", nbuf));
+		/* a chunked bigint sum, or a decimal folded in as an addition,
+		 * must be parenthesised inside another product or power, so
+		 * give it addition precedence */
+		if (biglit == 2 || spelled_add)
+			e.prec = P_ADD;
 		number_scale(&e);
 fraction:
 		if (mixed_number(&e)) {
@@ -3860,7 +4014,7 @@ parse_model(void)
 static int
 small_number(int *n)
 {
-	char nbuf[64];
+	char nbuf[192];
 	int s = wi;
 
 	if (W[wi].k == W_NUM && is_int(W[wi].s)) {

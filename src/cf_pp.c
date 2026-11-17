@@ -41,6 +41,8 @@ struct ptbuf {
 	uint32_t n, cap;
 };
 
+static struct ptok synth(const char *s, size_t n, const struct ptok *like);
+
 static void
 pt_push(struct ptbuf *b, const struct ptok *t)
 {
@@ -81,6 +83,7 @@ static struct {
 static uint32_t s_define, s_undef, s_include, s_if, s_ifdef, s_ifndef,
     s_elif, s_else, s_endif, s_defined, s_va, s_pragma, s_line, s_error,
     s_warning, s_hash, s_hashhash, s_lp, s_rp, s_comma, s_ellipsis;
+static uint32_t s_curline, s_curfile;
 
 static void
 pp_syms(void)
@@ -106,6 +109,50 @@ pp_syms(void)
 	s_rp = sym_cstr(")");
 	s_comma = sym_cstr(",");
 	s_ellipsis = sym_cstr("...");
+	s_curline = sym_cstr("__LINE__");
+	s_curfile = sym_cstr("__FILE__");
+}
+
+/* the line of a byte offset in the main file (for __LINE__ in a macro) */
+static uint32_t
+line_at(uint32_t off)
+{
+	const char *s = PP.u->ftext[0];
+	uint32_t line = 1, k;
+
+	for (k = 0; k < off && s[k]; k++)
+		if (s[k] == '\n')
+			line++;
+	return line;
+}
+
+/* __LINE__ and __FILE__ are dynamic: they expand to the current token's
+ * line and file, in ordinary text and in #if expressions alike.  For a
+ * token out of a macro expansion the invocation's line/file is used, not
+ * the macro definition's. */
+static int
+dyn_macro(const struct ptok *t, struct ptok *out)
+{
+	char buf[512];
+	const char *f;
+	uint32_t line;
+	int invoked = (t->fl & CTF_MACRO) && t->grp && t->o0;
+
+	if (t->kind != CK_ID)
+		return 0;
+	line = invoked ? line_at(t->o0) : t->line;
+	f = PP.u->fname[invoked ? 0 : t->file];
+	if (t->sym == s_curline) {
+		snprintf(buf, sizeof buf, "%u", line);
+		*out = synth(buf, strlen(buf), t);
+		return 1;
+	}
+	if (t->sym == s_curfile) {
+		snprintf(buf, sizeof buf, "\"%s\"", f ? f : "");
+		*out = synth(buf, strlen(buf), t);
+		return 1;
+	}
+	return 0;
 }
 
 static void
@@ -185,8 +232,24 @@ lex_file(int file, struct ptbuf *out)
 			continue;
 		}
 		if (p[0] == '/' && p[1] == '/') {
-			while (*p && *p != '\n')
+			/* Translation phase 2 splices backslash-newline before
+			 * comments are recognised, so a `//` comment continues
+			 * across a spliced line. */
+			while (*p && *p != '\n') {
+				if (*p == '\\' && p[1] == '\n') {
+					p += 2;
+					line++;
+					lstart = p;
+					continue;
+				}
+				if (*p == '\\' && p[1] == '\r' && p[2] == '\n') {
+					p += 3;
+					line++;
+					lstart = p;
+					continue;
+				}
 				p++;
+			}
 			space = 1;
 			continue;
 		}
@@ -659,6 +722,13 @@ expand_into(struct ptbuf *in, struct ptbuf *out, uint32_t grp, uint32_t o0,
 			continue;
 		}
 		r.f[r.nf - 1].i++;
+		{
+			struct ptok d;
+			if (dyn_macro(t, &d)) {
+				pt_push(out, &d);
+				continue;
+			}
+		}
 		if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
 		    !m->active) {
 			struct ptok nt = *t, *q;
@@ -686,9 +756,37 @@ struct cexp {
 	struct ptok *t;
 	uint32_t n, i;
 	int err;
+	int skip;		/* >0: consume tokens of a dead operand without
+				 * evaluating (so division by zero there is fine) */
 };
 
-static int64_t cx_cond(struct cexp *c);
+/*
+ * C evaluates #if in intmax_t/uintmax_t with the usual arithmetic
+ * conversions: a U-suffixed or too-large constant is uintmax_t, and a
+ * negative operand is then converted to the large unsigned value.  A value
+ * carries its signedness so comparisons and arithmetic can apply those
+ * conversions; the bit pattern is always kept in v.
+ */
+struct cv {
+	int64_t v;
+	int u;			/* 1: uintmax_t */
+};
+
+static struct cv
+cvs(int64_t v)
+{
+	struct cv r = {v, 0};
+	return r;
+}
+
+static struct cv
+cvu(uint64_t v)
+{
+	struct cv r = {(int64_t)v, 1};
+	return r;
+}
+
+static struct cv cx_cond(struct cexp *c);
 
 static int
 cx_is(struct cexp *c, const char *s)
@@ -701,61 +799,122 @@ cx_is(struct cexp *c, const char *s)
 	return 0;
 }
 
-static int64_t
+/* the numeric value of a character constant, like the C frontend's lexer */
+static int
+cx_charval(const char *s, size_t len)
+{
+	const char *e = s + len, *p = s;
+	int v = 0, k;
+
+	if (*p == 'L' || *p == 'u' || *p == 'U')
+		p++;
+	while (p < e && *p != '\'')
+		p++;
+	if (p < e)
+		p++;
+	if (p >= e)
+		return 0;
+	if (*p != '\\')
+		return (unsigned char)*p;
+	p++;
+	if (p >= e)
+		return 0;
+	switch (*p) {
+	case 'n': return 10;
+	case 't': return 9;
+	case 'r': return 13;
+	case 'a': return 7;
+	case 'b': return 8;
+	case 'f': return 12;
+	case 'v': return 11;
+	case '\\': return '\\';
+	case '\'': return '\'';
+	case '"': return '"';
+	case '?': return '?';
+	case 'x':
+		p++;
+		while (p < e && isxdigit((unsigned char)*p)) {
+			int d = isdigit((unsigned char)*p) ? *p - '0' :
+			    tolower((unsigned char)*p) - 'a' + 10;
+			v = v * 16 + d;
+			p++;
+		}
+		return v;
+	default:
+		if (*p >= '0' && *p <= '7') {
+			for (k = 0; k < 3 && p < e && *p >= '0' && *p <= '7'; k++)
+				v = v * 8 + (*p++ - '0');
+			return v;
+		}
+		return (unsigned char)*p;
+	}
+}
+
+static struct cv
 cx_prim(struct cexp *c)
 {
 	struct ptok *t;
-	int64_t v;
+	struct cv v, r;
 
 	if (c->i >= c->n) {
-		c->err = 1;
-		return 0;
+		if (!c->skip)
+			c->err = 1;
+		return cvs(0);
 	}
 	if (cx_is(c, "(")) {
 		v = cx_cond(c);
-		if (!cx_is(c, ")"))
+		if (!cx_is(c, ")") && !c->skip)
 			c->err = 1;
 		return v;
 	}
 	if (cx_is(c, "!"))
-		return !cx_prim(c);
-	if (cx_is(c, "-"))
-		return -cx_prim(c);
+		return cvs(!cx_prim(c).v);
+	if (cx_is(c, "-")) {
+		v = cx_prim(c);
+		return v.u ? cvu(0 - (uint64_t)v.v) :
+		    cvs((int64_t)(0 - (uint64_t)v.v));
+	}
 	if (cx_is(c, "+"))
 		return cx_prim(c);
-	if (cx_is(c, "~"))
-		return ~cx_prim(c);
+	if (cx_is(c, "~")) {
+		v = cx_prim(c);
+		return v.u ? cvu(~(uint64_t)v.v) : cvs(~v.v);
+	}
 	t = &c->t[c->i++];
 	if (t->kind == CK_NUM) {
-		char buf[64];
+		char buf[64], *p;
+		uint64_t x;
+		int u = 0;
+
 		snprintf(buf, sizeof buf, "%.*s", (int)t->len, ptext(t));
-		return (int64_t)strtoull(buf, NULL, 0);
+		x = strtoull(buf, NULL, 0);
+		for (p = buf; *p; p++)
+			if (*p == 'u' || *p == 'U')
+				u = 1;
+		/* an unsuffixed constant too large for intmax_t is uintmax_t
+		 * (gcc's extension; C99 makes it a constraint violation) */
+		if (x > (uint64_t)INT64_MAX)
+			u = 1;
+		return u ? cvu(x) : cvs((int64_t)x);
 	}
 	if (t->kind == CK_CHAR) {
+		int q = cx_charval(ptext(t), t->len);
 		const char *s = ptext(t);
-		while (*s != '\'')
-			s++;
-		s++;
-		if (*s == '\\') {
-			s++;
-			switch (*s) {
-			case 'n': return 10;
-			case 't': return 9;
-			case '0': return 0;
-			case '\\': return '\\';
-			case '\'': return '\'';
-			default: return *s;
-			}
-		}
-		return (unsigned char)*s;
+
+		/* a plain char constant has type int; on this target char is
+		 * signed, so '\xff' is -1 */
+		if (*s == 'L' || *s == 'u' || *s == 'U')
+			return cvs(q);
+		return cvs((int64_t)(int8_t)(uint8_t)q);
 	}
 	if (t->kind == CK_ID)
-		return 0;	/* an identifier left after expansion */
-	c->err = 1;
-	return 0;
+		return cvs(0);	/* an identifier left after expansion */
+	if (!c->skip)
+		c->err = 1;
+	return cvs(0);
 }
 
-static int64_t
+static struct cv
 cx_bin(struct cexp *c, int lev)
 {
 	static const char *const ops[][5] = {
@@ -763,7 +922,7 @@ cx_bin(struct cexp *c, int lev)
 		{"<=", ">=", "<", ">"}, {"<<", ">>"}, {"+", "-"},
 		{"*", "/", "%"}
 	};
-	int64_t a, b;
+	struct cv a, b, r;
 	int k;
 
 	if (lev == 10)
@@ -778,41 +937,99 @@ cx_bin(struct cexp *c, int lev)
 			}
 		if (op == NULL)
 			return a;
+		/* C's &&, || do not evaluate the right operand when the left
+		 * already decides the result. */
+		if (!c->skip && ((lev == 0 && !strcmp(op, "||") && a.v) ||
+		    (lev == 1 && !strcmp(op, "&&") && !a.v))) {
+			c->skip++;
+			b = cx_bin(c, lev + 1);
+			c->skip--;
+			continue;
+		}
 		b = cx_bin(c, lev + 1);
-		if (!strcmp(op, "||")) a = a || b;
-		else if (!strcmp(op, "&&")) a = a && b;
-		else if (!strcmp(op, "|")) a |= b;
-		else if (!strcmp(op, "^")) a ^= b;
-		else if (!strcmp(op, "&")) a &= b;
-		else if (!strcmp(op, "==")) a = a == b;
-		else if (!strcmp(op, "!=")) a = a != b;
-		else if (!strcmp(op, "<=")) a = a <= b;
-		else if (!strcmp(op, ">=")) a = a >= b;
-		else if (!strcmp(op, "<")) a = a < b;
-		else if (!strcmp(op, ">")) a = a > b;
-		else if (!strcmp(op, "<<")) a = (int64_t)((uint64_t)a << (b & 63));
-		else if (!strcmp(op, ">>")) a >>= (b & 63);
-		else if (!strcmp(op, "+")) a = (int64_t)((uint64_t)a + (uint64_t)b);
-		else if (!strcmp(op, "-")) a = (int64_t)((uint64_t)a - (uint64_t)b);
-		else if (!strcmp(op, "*")) a = (int64_t)((uint64_t)a * (uint64_t)b);
-		else if (b == 0) c->err = 1;
-		else if (!strcmp(op, "/")) a = (b == -1) ? -a : a / b;
-		else a = (b == -1) ? 0 : a % b;
+		if (c->skip)
+			continue;
+		if (!strcmp(op, "||")) r = cvs(a.v || b.v);
+		else if (!strcmp(op, "&&")) r = cvs(a.v && b.v);
+		else if (!strcmp(op, "|"))
+			r = a.u || b.u ? cvu((uint64_t)a.v | (uint64_t)b.v) :
+			    cvs(a.v | b.v);
+		else if (!strcmp(op, "^"))
+			r = a.u || b.u ? cvu((uint64_t)a.v ^ (uint64_t)b.v) :
+			    cvs(a.v ^ b.v);
+		else if (!strcmp(op, "&"))
+			r = a.u || b.u ? cvu((uint64_t)a.v & (uint64_t)b.v) :
+			    cvs(a.v & b.v);
+		else if (!strcmp(op, "==") || !strcmp(op, "!=") ||
+		    !strcmp(op, "<=") || !strcmp(op, ">=") ||
+		    !strcmp(op, "<") || !strcmp(op, ">")) {
+			int eq = !strcmp(op, "==") || !strcmp(op, "!=");
+			int cmp;
+			if (a.u || b.u) {
+				uint64_t ua = (uint64_t)a.v, ub = (uint64_t)b.v;
+				cmp = eq ? ua == ub : !strcmp(op, "<=") ? ua <= ub :
+				    !strcmp(op, ">=") ? ua >= ub :
+				    !strcmp(op, "<") ? ua < ub : ua > ub;
+			} else {
+				cmp = eq ? a.v == b.v : !strcmp(op, "<=") ? a.v <= b.v :
+				    !strcmp(op, ">=") ? a.v >= b.v :
+				    !strcmp(op, "<") ? a.v < b.v : a.v > b.v;
+			}
+			r = cvs(!strcmp(op, "!=") ? !cmp : cmp);
+		} else if (!strcmp(op, "<<")) {
+			int sh = (int)(b.v & 63);
+			r = a.u ? cvu((uint64_t)a.v << sh) :
+			    cvs((int64_t)((uint64_t)a.v << sh));
+		} else if (!strcmp(op, ">>")) {
+			int sh = (int)(b.v & 63);
+			r = a.u ? cvu((uint64_t)a.v >> sh) : cvs(a.v >> sh);
+		} else if (!strcmp(op, "+"))
+			r = a.u || b.u ? cvu((uint64_t)a.v + (uint64_t)b.v) :
+			    cvs((int64_t)((uint64_t)a.v + (uint64_t)b.v));
+		else if (!strcmp(op, "-"))
+			r = a.u || b.u ? cvu((uint64_t)a.v - (uint64_t)b.v) :
+			    cvs((int64_t)((uint64_t)a.v - (uint64_t)b.v));
+		else if (!strcmp(op, "*"))
+			r = a.u || b.u ? cvu((uint64_t)a.v * (uint64_t)b.v) :
+			    cvs((int64_t)((uint64_t)a.v * (uint64_t)b.v));
+		else if (b.v == 0) {
+			c->err = 1;
+			r = a;
+		} else if (a.u || b.u) {
+			uint64_t ua = (uint64_t)a.v, ub = (uint64_t)b.v;
+			r = cvu(!strcmp(op, "/") ? ua / ub : ua % ub);
+		} else if (b.v == -1) {
+			/* avoid INT64_MIN / -1 UB in the evaluator itself */
+			r = cvs(!strcmp(op, "/") ? (int64_t)(0 - (uint64_t)a.v) : 0);
+		} else
+			r = cvs(!strcmp(op, "/") ? a.v / b.v : a.v % b.v);
+		a = r;
 	}
 }
 
-static int64_t
+static struct cv
 cx_cond(struct cexp *c)
 {
-	int64_t a = cx_bin(c, 0), b, d;
+	struct cv a = cx_bin(c, 0), b, d;
 
 	if (!cx_is(c, "?"))
 		return a;
+	if (a.v) {
+		b = cx_cond(c);
+		if (!cx_is(c, ":") && !c->skip)
+			c->err = 1;
+		c->skip++;
+		d = cx_cond(c);
+		c->skip--;
+		return b;
+	}
+	c->skip++;
 	b = cx_cond(c);
-	if (!cx_is(c, ":"))
+	c->skip--;
+	if (!cx_is(c, ":") && !c->skip)
 		c->err = 1;
 	d = cx_cond(c);
-	return a ? b : d;
+	return d;
 }
 
 /* evaluate the directive line t[0..n) */
@@ -822,7 +1039,7 @@ pp_ifexpr(struct ptok *t, uint32_t n, const struct ptok *at)
 	struct ptbuf in = {0}, out = {0};
 	struct cexp c;
 	uint32_t i;
-	int64_t v;
+	struct cv v;
 
 	for (i = 0; i < n; i++) {
 		if (t[i].sym == s_defined) {
@@ -854,7 +1071,7 @@ pp_ifexpr(struct ptok *t, uint32_t n, const struct ptok *at)
 		pp_error(at, "#if: cannot evaluate the expression%s", "");
 	free(in.t);
 	free(out.t);
-	return v != 0;
+	return v.v != 0;
 }
 
 /* ---- the built-in preludes for system headers ---- */
@@ -1221,6 +1438,13 @@ process(struct reader *r, struct ptbuf *out)
 		r->f[r->nf - 1].i++;
 		if (!on)
 			continue;
+		{
+			struct ptok d;
+			if (dyn_macro(t, &d)) {
+				pt_push(out, &d);
+				continue;
+			}
+		}
 		if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
 		    !m->active) {
 			struct ptok nt = *t, *q;

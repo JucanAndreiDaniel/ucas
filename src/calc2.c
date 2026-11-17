@@ -202,6 +202,52 @@ check_interval(const struct func *f, int s, double *lo, double *hi)
 /* catch a fail() from diff_node and friends: 0 if it failed */
 static nid simp(nid e, int agg);
 
+/*
+ * tidy() (closed.c) rebuilds a three-operand node through mk_bin when the
+ * op is missing from IS_OP3 -- as fma is -- which leaves its third operand
+ * NULL and makes the printer recurse on node 0.  diff_node() itself handles
+ * fma correctly, so a derivative tree containing one is already right: just
+ * leave such a tree unsimplified rather than handing it to tidy().
+ */
+static int
+has_fma(nid e)
+{
+	uint8_t *mark;
+	nid *st, g;
+	uint32_t sp = 0;
+	int found = 0;
+
+	if (e == 0 || e >= N.n)
+		return 0;
+	mark = xcalloc(N.n, 1);
+	st = xmalloc(N.n * sizeof *st);
+	st[sp++] = e;
+	mark[e] = 1;
+	while (sp && !found) {
+		g = st[--sp];
+		if (N.op[g] == O_FMA) {
+			found = 1;
+			break;
+		}
+		if (N.a[g] && N.a[g] < N.n && !mark[N.a[g]])
+			mark[N.a[g]] = 1, st[sp++] = N.a[g];
+		if (N.b[g] && N.b[g] < N.n && !mark[N.b[g]])
+			mark[N.b[g]] = 1, st[sp++] = N.b[g];
+		if (N.c[g] && N.c[g] < N.n && !mark[N.c[g]])
+			mark[N.c[g]] = 1, st[sp++] = N.c[g];
+	}
+	free(mark);
+	free(st);
+	return found;
+}
+
+/* simplify d only when it is safe to do so */
+static nid
+simp_diff(nid d)
+{
+	return has_fma(d) ? d : simp(d, 0);
+}
+
 static nid
 try_diff(nid e, int slot, int quiet)
 {
@@ -210,7 +256,7 @@ try_diff(nid e, int slot, int quiet)
 
 	memcpy(saved, fail_jmp, sizeof saved);
 	if (setjmp(fail_jmp) == 0)
-		d = simp(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot), 0);
+		d = simp_diff(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot));
 	memcpy(fail_jmp, saved, sizeof saved);
 	if (quiet)
 		notes_drop();
@@ -220,7 +266,7 @@ try_diff(nid e, int slot, int quiet)
 static nid
 dif(nid e, int slot)
 {
-	return simp(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot), 0);
+	return simp_diff(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot));
 }
 
 /* ---- simplification of derivative and limit expressions ---- */
@@ -2835,10 +2881,13 @@ c2_taylor(struct func *f, int slot, double a, int n)
 		}
 	}
 	for (k = 0; k <= n; k++) {
-		nid v = tidy(subst(g[k], map, NSLOT));
+		nid v = subst(g[k], map, NSLOT);
+		if (!has_fma(v))
+			v = tidy(v);
 		if (k)
 			fact *= k;
-		c[k] = tidy(DIV(v, KR(fact)));
+		v = DIV(v, KR(fact));
+		c[k] = has_fma(v) ? v : tidy(v);
 		if (N.op[c[k]] == O_UNDEF) {
 			printf("no Taylor series of %s at %s = %s: the %d%s "
 			    "derivative is undefined there\n", fname2(f), x, fnum(a),
@@ -4166,6 +4215,44 @@ struct side_res {
 	double est, err, last, earlier;
 };
 
+/* Replace a trig function whose argument lands on an exact zero at the limit
+ * point by the constant 0.  Double pi/2 is not exactly pi/2, so cos(pi/2)
+ * evaluates to ~6e-17; in a shifted reciprocal such as 1/(cos x + 1e-20)
+ * that residue makes the substituted value a spurious huge finite number
+ * (~1.6e16) instead of the true limit 1e20.  Bare reciprocal-trig poles
+ * (sec x, 1/cos(x)^2) are deliberately left alone: snapping them to 1/0
+ * loses the one-sided sign information, and the numeric-side override below
+ * already handles them.  Returns the rebuilt node and sets *changed. */
+static nid
+snap_trig_zeros(nid e, struct lctx *c, int *changed)
+{
+	nid a, b, d;
+	int op = N.op[e];
+	struct lv la;
+	double v, w;
+
+	if (!e || op == O_CONST || op == O_VAR || op == O_UNDEF ||
+	    op == O_TABLE || !(N.fl[e] & NF_VAR))
+		return e;
+	if (op == O_COS || op == O_SIN || op == O_TAN) {
+		la = lim(N.a[e], c);
+		if (la.k == LV_NUM) {
+			v = la.v;
+			w = op == O_COS ? (v - M_PI / 2) / M_PI : v / M_PI;
+			if (isfinite(w) && fabs(w - round(w)) < 1e-9) {
+				*changed = 1;
+				return KR(0);
+			}
+		}
+	}
+	a = N.a[e] ? snap_trig_zeros(N.a[e], c, changed) : 0;
+	b = N.b[e] ? snap_trig_zeros(N.b[e], c, changed) : 0;
+	d = N.c[e] ? snap_trig_zeros(N.c[e], c, changed) : 0;
+	if (a == N.a[e] && b == N.b[e] && d == N.c[e])
+		return e;
+	return mk_op(op, a, b, d);
+}
+
 static void
 limit_side(nid e, int slot, double a, int side, struct side_res *s)
 {
@@ -4186,11 +4273,32 @@ limit_side(nid e, int slot, double a, int side, struct side_res *s)
 	/* cos(pi/2), sin(pi), ... are ~1e-16 rather than exactly 0 in double.
 	 * Substituting that residue at a finite point makes a reciprocal look
 	 * like a large but finite limit (1/cos(pi/2) ~ 1.6e16).  When the
-	 * samples plainly grow without bound, the point is a pole: trust the
-	 * numeric side over the spurious huge finite value. */
+	 * samples plainly grow without bound the point is usually a pole:
+	 * trust the numeric side over the spurious huge finite value.  But a
+	 * shifted trig denominator (1/(cos x + 1e-20)) is genuinely finite:
+	 * recompute with the trig zero snapped to exact 0 before overriding. */
 	if (s->l.k == LV_NUM && fabs(s->l.v) > 1e11 &&
-	    (s->nk == LV_PINF || s->nk == LV_NINF))
-		s->l = LK(s->nk);
+	    (s->nk == LV_PINF || s->nk == LV_NINF)) {
+		struct lctx c;
+		nid es;
+		int changed = 0, done = 0;
+
+		memset(&c, 0, sizeof c);
+		c.slot = slot;
+		c.a = a;
+		c.side = side;
+		c.log = &s->log;
+		es = snap_trig_zeros(e, &c, &changed);
+		if (changed) {
+			struct lv t = lim(es, &c);
+			if (t.k == LV_NUM && isfinite(t.v)) {
+				s->l = t;
+				done = 1;
+			}
+		}
+		if (!done)
+			s->l = LK(s->nk);
+	}
 }
 
 /* a limit's value as data: {"kind", "value", "text"} */

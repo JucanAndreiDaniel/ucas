@@ -1,0 +1,39 @@
+> approx sin(x) in 0..1 degree 3 as f32 list 1
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 1] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    3    0.00118      0.00119      0.00109      
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00263 (0.0186) 3/2 7.32e-06 (0.000239) 1/4 7.27e-05 (0.00193) 3/4 5.28e-08 (6.68e-06)
+    1/6 1.96e-06 (0.000197) 3/6 3.68e-10 (1.83e-07)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.021 2: 0.00518 3: 3.33e-05
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   3     horner+fma  1.84e+04 ulp             0.00111       0.000921      3    at x=5.16979963e-26
+      x*P(x^2): x*fma(-0.158355534, s, 0.998905718) where s = x*x
+      rounding of ap1, first order, 3 operations, relative, in u = 2^-24: worst case 2.19, probable no better (under 16 operations), expected 0.824; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'
+> approx more 2147483647
+  2   rational  3/2   horner+fma  127 ulp                  1.23e-05      6.39e-06      7    at x=0.522133231
+      x*P(x^2)/Q(x^2): x*fma(-0.114737645, s, 1.00000727)/fma(0.0520578437, s, 1.0) where s = x*x
+  3   rational  3/4   horner+fma  4.96 ulp                 4.55e-07      2.69e-07      8    at x=0.060507264
+      x*P(x^2)/Q(x^2): x*fma(-0.10482274, s, 0.99999994)/fma(fma(0.00198200531, s, 0.061842259), s, 1.0) where s = x*x
+  4   rational  3/6   horner+fma  4.38 ulp                 4.26e-07      2.43e-07      10   at x=0.521904349
+      x*P(x^2)/Q(x^2): x*fma(fma(0.0, s, -0.10222058), s, 1.0)/fma(fma(fma(6.30255599e-05, s, 0.0024075387), s, 0.0644460991), s, 1.0) where s = x*x
+  5   rational  3/4   horner+rcp  2.96 ulp                 2.04e-07      1.59e-07      12   at x=0.060507264
+      x*P(x^2)/Q(x^2): x*fma(fma(-q0, den, fma(-0.10482274, s, 0.99999994)), rc, q0) where s = x*x, den = fma(fma(0.00198200531, s, 0.061842259), s, 1.0), rc = 1.0/den, q0 = fma(-0.10482274, s, 0.99999994)*rc
+  6   rational  3/6   horner+rcp  2.24 ulp                 1.68e-07      1.24e-07      14   at x=0.517051935
+      x*P(x^2)/Q(x^2): x*fma(fma(-q0, den, fma(fma(0.0, s, -0.10222058), s, 1.0)), rc, q0) where s = x*x, den = fma(fma(fma(6.30255599e-05, s, 0.0024075387), s, 0.0644460991), s, 1.0), rc = 1.0/den, q0 = fma(fma(0.0, s, -0.10222058), s, 1.0)*rc
+  7   rational  3/2   horner+rcp  124 ulp                  1.23e-05      6.27e-06      11   at x=0.523582816
+      x*P(x^2)/Q(x^2): x*fma(fma(-q0, den, fma(-0.114737645, s, 1.00000727)), rc, q0) where s = x*x, den = fma(0.0520578437, s, 1.0), rc = 1.0/den, q0 = fma(-0.114737645, s, 1.00000727)*rc
+  8   piecewise 3     horner+fma  558 ulp                  6.15e-05      1.76e-05      16.5 at x=3.04984842e-05
+      2 pieces, copysign(.., x): copysign(fma(fma(fma(k3, t, k2), t, k1), t, k0), x) where a = abs(x), lo = a < 0.5, t = a - (lo ? f32(0.0) : f32(0.75)), k0 = lo ? f32(0.0) : f32(0.681624889), k1 = lo ? f32(1.00003326) : f32(0.731722891), k2 = lo ? f32(-0.000979645178) : f32(-0.339046389), k3 = lo ? f32(-0.162897348) : f32(-0.122353747)
+  9   reduced   3     horner+fma  3.22e+04 ulp             0.00228       0.00192       18   at x=0.999969482
+      quadrant r=x-k*pi/2 (2-part), sin+cos: asfloat(asuint((q & 1) == 0 ? r*fma(-0.161524847, s, 0.99958992) : fma(-0.473688334, s, 0.997719109)) xor ((q & 2) << 30)) where j = x*0.636619747 + 12582912.0, q = asuint(j), k = j - 12582912.0, r = fma(k, 4.45445494e-06, fma(k, -1.57080078, x)), s = r*r
+> approx more 1
+no more candidates

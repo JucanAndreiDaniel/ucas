@@ -19,6 +19,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* bound.c: exact integer endpoints alongside the (possibly rounded) double
+ * bounds; see range_proved. */
+int prove_bounds_exact(const struct func *f, struct pbound *pb,
+    int64_t *lo_exact, int64_t *hi_exact);
+
 #define EXH (1ULL << 22)
 #define NSAMPLE (1ULL << 16)
 
@@ -591,39 +596,62 @@ range_real1(struct func *f)
  * exact.
  */
 static void
-range_proved(const struct func *f, double smn, double smx)
+range_proved(const struct func *f, double smn, double smx,
+    int64_t smn_i, int64_t smx_i)
 {
 	struct pbound pb;
-	int exact_lo, exact_hi;
-	double tol = TY_FP(N.ty[f->body]) ? 1e-12 * fmax(1, fmax(fabs(smn),
-	    fabs(smx))) : 0;
+	struct sbuf bl = {0}, bh = {0}, both = {0};
+	int64_t lo_i = 0, hi_i = 0;
+	int exact_lo, exact_hi, ilo, ihi;
+	ty_t t = N.ty[f->body];
+	int intres = TY_ISINT(t);
+	double tol = TY_FP(t) ? 1e-12 * fmax(1, fmax(fabs(smn), fabs(smx))) : 0;
 
-	if (!prove_bounds(f, &pb))
+	if (!prove_bounds_exact(f, &pb, &lo_i, &hi_i))
 		return;
-	exact_lo = pb.have_lo && fabs(pb.lo - smn) <= tol;
-	exact_hi = pb.have_hi && fabs(pb.hi - smx) <= tol;
+	/* An exact integer extremum is kept as int64: cval()'s double rounds
+	 * 2^w-1 up to 2^w for i56..i64, which made the rounded proof bound and
+	 * the rounded sample agree on a value neither can take. */
+	ilo = intres && pb.have_lo == 1;
+	ihi = intres && pb.have_hi == 1;
+	if (intres) {
+		exact_lo = ilo && !ilt(t, lo_i, smn_i) && !ilt(t, smn_i, lo_i);
+		exact_hi = ihi && !ilt(t, hi_i, smx_i) && !ilt(t, smx_i, hi_i);
+	} else {
+		exact_lo = pb.have_lo && fabs(pb.lo - smn) <= tol;
+		exact_hi = pb.have_hi && fabs(pb.hi - smx) <= tol;
+	}
+	if (ilo)
+		fmt_val(&bl, t, lo_i, 0);
+	else
+		sb_printf(&bl, "%.17g", pb.lo);
+	if (ihi)
+		fmt_val(&bh, t, hi_i, 0);
+	else
+		sb_printf(&bh, "%.17g", pb.hi);
+	sb_printf(&both, "%s..%s", sb_str(&bl), sb_str(&bh));
+
 	printf("  proved bound (monotonicity, exact algebra): ");
 	if (pb.have_lo)
-		printf("%.17g", pb.lo);
+		printf("%s", sb_str(&bl));
 	else
 		printf("(none)");
 	printf("..");
 	if (pb.have_hi)
-		printf("%.17g", pb.hi);
+		printf("%s", sb_str(&bh));
 	else
 		printf("(none)");
 	printf("\n");
 	if (exact_lo && exact_hi)
 		printf("  the sample reaches both ends: the range is exactly "
-		    "%.17g..%.17g (proved%s)\n", pb.lo, pb.hi,
-		    TY_FP(N.ty[f->body]) ? "; the end values evaluated in double" :
-		    "");
+		    "%s (proved%s)\n", sb_str(&both),
+		    TY_FP(t) ? "; the end values evaluated in double" : "");
 	else if (exact_hi)
 		printf("  the sample reaches the upper end: the maximum is "
-		    "exactly %.17g (proved)\n", pb.hi);
+		    "exactly %s (proved)\n", sb_str(&bh));
 	else if (exact_lo)
 		printf("  the sample reaches the lower end: the minimum is "
-		    "exactly %.17g (proved)\n", pb.lo);
+		    "exactly %s (proved)\n", sb_str(&bl));
 	if (pb.have_hi)
 		printf("    max: %s\n", sb_str(&pb.why_hi));
 	if (pb.have_lo)
@@ -633,12 +661,22 @@ range_proved(const struct func *f, double smn, double smx)
 		    "loose)\n");
 	rep_obj("proved_bound");
 	if (pb.have_lo) {
-		rep_num("min", pb.lo);
+		if (ilo && TYK(t) == K_UINT && TYW(t) == 64)
+			rep_exact("min", pb.lo, sb_str(&bl));
+		else if (ilo)
+			rep_int("min", lo_i);
+		else
+			rep_num("min", pb.lo);
 		rep_bool("min_exact", exact_lo);
 		rep_str("min_steps", sb_str(&pb.why_lo));
 	}
 	if (pb.have_hi) {
-		rep_num("max", pb.hi);
+		if (ihi && TYK(t) == K_UINT && TYW(t) == 64)
+			rep_exact("max", pb.hi, sb_str(&bh));
+		else if (ihi)
+			rep_int("max", hi_i);
+		else
+			rep_num("max", pb.hi);
 		rep_bool("max_exact", exact_hi);
 		rep_str("max_steps", sb_str(&pb.why_hi));
 	}
@@ -647,6 +685,9 @@ range_proved(const struct func *f, double smn, double smx)
 		rep_proof("symbolic", "monotonicity and exact algebra give "
 		    "bounds that the sample reaches");
 	pbound_free(&pb);
+	free(bl.p);
+	free(bh.p);
+	free(both.p);
 }
 
 void
@@ -822,11 +863,11 @@ cmd_range(struct func *f)
 		if (any)
 			range_proved(f, int_unsigned(t) ? (double)(uint64_t)mn :
 			    (double)mn, int_unsigned(t) ? (double)(uint64_t)mx :
-			    (double)mx);
+			    (double)mx, mn, mx);
 	}
 	/* several real parameters: a grid, so a proof is worth having */
 	if (any && TYK(t) == K_REAL && f->np >= 2)
-		range_proved(f, rmn, rmx);
+		range_proved(f, rmn, rmx, 0, 0);
 	free(bm);
 	run_close(&r);
 }
@@ -979,7 +1020,12 @@ list_conditions(const struct func *f, int *nc)
 			    node_str(N.a[n]));
 			break;
 		case O_TAN:
+		case O_SEC:
 			COND("cos(%s) != 0", node_str(N.a[n]));
+			break;
+		case O_CSC:
+		case O_COT:
+			COND("sin(%s) != 0", node_str(N.a[n]));
 			break;
 		case O_ASIN: case O_ACOS: case O_ATAN2: case O_ACOSH:
 		case O_ATANH:   /* forms.c */
@@ -1166,21 +1212,35 @@ domain_real1(struct func *f)
 	}
 	rep_end();
 	rep_list("except");
-	/* isolated singularities: a denominator crossing zero */
+	/* isolated singularities: a denominator crossing zero.  sec/csc/cot
+	 * are partial real functions with an implicit denominator (cos or sin
+	 * of the argument), so expose that denominator to the same scan. */
 	{
-		uint8_t *mark = xcalloc(N.n, 1);
-		uint32_t g;
-		for (g = 1; g < N.n; g++) {
-			nid den;
+		uint8_t *mark;
+		uint32_t g, nlim = N.n, q;
+		nid dens[128];
+		int nd = 0;
+		for (g = 1; g < nlim && nd < 128; g++) {
+			nid den = 0;
+			if (TYK(N.ty[g]) != K_REAL || plan_loc(&dp, g) == NOTOK)
+				continue;
+			if (N.op[g] == O_DIV)
+				den = N.b[g];
+			else if (N.op[g] == O_SEC)
+				den = mk_un(O_COS, N.a[g]);
+			else if (N.op[g] == O_CSC || N.op[g] == O_COT)
+				den = mk_un(O_SIN, N.a[g]);
+			if (!den || is_const(den))
+				continue;
+			dens[nd++] = den;
+		}
+		mark = xcalloc(N.n, 1);
+		for (q = 0; q < (uint32_t)nd; q++) {
+			nid den = dens[q];
 			struct plan pp;
 			double a, fa, b, fb, step;
 			int k;
-			if (N.op[g] != O_DIV || TYK(N.ty[g]) != K_REAL)
-				continue;
-			if (plan_loc(&dp, g) == NOTOK)
-				continue;
-			den = N.b[g];
-			if (is_const(den) || mark[den])
+			if (mark[den])
 				continue;
 			mark[den] = 1;
 			plan_build(&pp, &den, 1, 0);
@@ -1294,10 +1354,14 @@ cmd_domain(struct func *f)
 	 * always-undefined body still leaves zero defined points.  Decide
 	 * after the run, never before, so an empty domain is not called
 	 * total. */
-	if (ndef == 0)
-		printf("  empty domain: undefined at every point of the "
-		    "parameter types\n");
-	else if (nc == 0)
+	if (ndef == 0) {
+		if (r.d.exhaustive)
+			printf("  empty domain: undefined at every point of the "
+			    "parameter types\n");
+		else
+			printf("  no sampled point was defined (empty on the "
+			    "sample; not proven)\n");
+	} else if (nc == 0)
 		printf("  no conditions: total on its parameter types\n");
 	rep_int("defined_points", (long long)ndef);
 	rep_int("points", (long long)seen);
@@ -1835,6 +1899,40 @@ crit_int1(struct func *f)
 	run_close(&r);
 }
 
+/*
+ * Refine an off-grid stationary point where the derivative only *touches*
+ * zero (an even-multiplicity root: cos(x)+1 at pi, -tan(x)^2 at 0).  Such a
+ * root never flips the sign of f', so `bisect` cannot find it; |f'| is
+ * locally V-shaped there, so minimise |f'| on the bracket by ternary search.
+ * Returns 0 if the bracket ever evaluates undefined.
+ */
+static int
+touch_min(struct plan *p, uint32_t loc, double a, double b,
+    double *outx, double *outd)
+{
+	double m1, m2, f1, f2;
+	int k, ok1, ok2;
+
+	for (k = 0; k < 90; k++) {
+		m1 = a + (b - a) / 3;
+		m2 = b - (b - a) / 3;
+		if (m1 == a || m1 == b || m2 == a || m2 == b)
+			break;
+		ok1 = eval_at(p, loc, m1, &f1);
+		ok2 = eval_at(p, loc, m2, &f2);
+		if (!ok1 || !ok2)
+			return 0;
+		f1 = fabs(f1);
+		f2 = fabs(f2);
+		if (f1 < f2)
+			b = m2;
+		else
+			a = m1;
+	}
+	*outx = 0.5 * (a + b);
+	return eval_at(p, loc, *outx, outd);
+}
+
 void
 cmd_crit(struct func *f)
 {
@@ -1896,10 +1994,13 @@ cmd_crit(struct func *f)
 	}
 	{
 		/*
-		 * Points are found where f' changes sign between grid points, or
-		 * is 0 on the grid; a run of grid points where f' is exactly 0
-		 * (an f32 rounding plateau, cos(x) - 1 near 0) is one point.  A
-		 * sampled float domain is swept more than once (by value, by bit
+		 * Points are found where f' changes sign between grid points, is
+		 * 0 on the grid, or only touches 0 off-grid (an even-multiplicity
+		 * root: cos(x)+1 at pi).  A run of grid points where f' is exactly
+		 * 0 is handled by its width: one or two nodes is an isolated
+		 * stationary point, a wider run is a flat continuum (a plateau or
+		 * a rounding/underflow artefact), never a single arbitrary point.
+		 * A sampled float domain is swept more than once (by value, by bit
 		 * pattern): a step back restarts the scan, and a point found again
 		 * is not listed twice.
 		 */
@@ -1909,7 +2010,10 @@ cmd_crit(struct func *f)
 		const char **ck = xmalloc(MAXC * sizeof *ck);
 		double span = r.d.rhi[0] - r.d.rlo[0], zlo = 0, zhi = 0, zd0 = 0;
 		int nc = 0, inzero = 0, zd0ok = 0, k2;
-		double h = span * 1e-7;
+		double h = span * 1e-7, step = span / 4000;
+		/* rolling three-point window for off-grid touching zeros */
+		double xm2 = 0, dm2 = 0, xm1 = 0, dm1 = 0;
+		int okm2 = 0, okm1 = 0, fdm1 = -1;
 #define ADDC(c_, kind_, w_) do { double c__ = (c_), fc__ = 0; int q__; \
 	for (q__ = 0; q__ < nc; q__++) \
 		if (fabs(cx[q__] - c__) <= fmax(span * 1e-9, fabs(c__) * 1e-6) || \
@@ -1920,6 +2024,35 @@ cmd_crit(struct func *f)
 		eval_at(&dp, dp.root[0], c__, &fc__); \
 		cx[nc] = c__; cf[nc] = fc__; ck[nc] = (kind_); cz[nc] = (w_); \
 		nc++; } } while (0)
+/* close a run of f' == 0, classifying it by its width and the sign of f'
+ * on either side.  A flat ray (no sign on one side) or an underflow plateau
+ * (same sign on both sides) has no isolated stationary point to report. */
+#define CLOSEZERO(cv_, cok_, cf_) do { \
+	double zc__ = zlo == zhi ? zlo : (zlo <= 0 && zhi >= 0) ? 0 : (zlo + zhi) / 2; \
+	double zw__ = zhi > zlo ? fmax(zhi - zc__, zc__ - zlo) : 0; \
+	int zwide__ = zhi - zlo > step; \
+	int zchg__ = zd0ok && (cok_) && (cf_) && ((zd0 > 0) != ((cv_) > 0)); \
+	inzero = 0; \
+	if (zwide__) { \
+		if (zchg__) \
+			ADDC(zc__, zd0 < 0 ? "local minimum" : "local maximum", zw__); \
+	} else { \
+		const char *kind__; \
+		if (zchg__) \
+			kind__ = zd0 < 0 ? "local minimum" : "local maximum"; \
+		else if (zd0ok && (cok_) && (cf_)) \
+			kind__ = "stationary inflection"; \
+		else { \
+			double dl2, dr2; \
+			int okl = eval_at(&dp, dp.root[1], zc__ - h, &dl2); \
+			int okr = eval_at(&dp, dp.root[1], zc__ + h, &dr2); \
+			kind__ = okl && okr && dl2 < 0 && dr2 > 0 ? "local minimum" : \
+			    okl && okr && dl2 > 0 && dr2 < 0 ? "local maximum" : \
+			    "stationary inflection"; \
+		} \
+		ADDC(zc__, kind__, zw__); \
+	} \
+} while (0)
 		while ((np = run_next(&r)) != 0) {
 			for (i = 0; i < np; i++) {
 				int fdef, ddef;
@@ -1928,10 +2061,15 @@ cmd_crit(struct func *f)
 					continue;
 				x = r.in_r[i];
 				if (prevfdef != -1 && x <= prevx) {
-					/* the next sweep */
+					/* the next sweep: close a run that ended its
+					 * predecessor at this boundary */
+					if (inzero)
+						CLOSEZERO(0, 0, 0);
 					prevfdef = -1;
 					prevok = 0;
 					inzero = 0;
+					okm2 = okm1 = 0;
+					fdm1 = -1;
 				}
 				fdef = !(COLF(&r.p, fl)[i] & F_UNDEF) &&
 				    !isnan(COLR(&r.p, fl)[i]);
@@ -1947,26 +2085,7 @@ cmd_crit(struct func *f)
 					}
 					zhi = x;
 				} else if (inzero) {
-					/* the end of a run of zeros: one point */
-					double c = zlo == zhi ? zlo : (zlo <= 0 && zhi >= 0) ?
-					    0 : (zlo + zhi) / 2;
-					const char *kind;
-					inzero = 0;
-					if (zd0ok && ddef && fdef && (zd0 > 0) != (dv > 0))
-						kind = zd0 < 0 ? "local minimum" :
-						    "local maximum";
-					else if (zd0ok && ddef && fdef)
-						kind = "stationary inflection";
-					else {
-						double dl2, dr2;
-						int okl = eval_at(&dp, dp.root[1], c - h, &dl2);
-						int okr = eval_at(&dp, dp.root[1], c + h, &dr2);
-						kind = okl && okr && dl2 < 0 && dr2 > 0 ?
-						    "local minimum" : okl && okr && dl2 > 0 &&
-						    dr2 < 0 ? "local maximum" :
-						    "stationary inflection";
-					}
-					ADDC(c, kind, zhi > zlo ? fmax(zhi - c, c - zlo) : 0);
+					CLOSEZERO(dv, ddef, fdef);
 				} else if (fdef && prevfdef == 1 && ddef && prevok &&
 				    (dv > 0) != (prevd > 0)) {
 					double c = bisect(&dp, dp.root[1], prevx, x, 0), dl2,
@@ -1988,13 +2107,37 @@ cmd_crit(struct func *f)
 					double c = bisect(&dp, dp.root[1], prevx, x, 1);
 					ADDC(c, "not differentiable", 0);
 				}
+				/* Off-grid zero where f' only touches: |f'| has a local
+				 * minimum at xm1 that is zero to the local scale. */
+				if (okm2 && okm1 && ddef && fdm1 == 1 && !inzero &&
+				    dm2 != 0 && dm1 != 0 && dv != 0 &&
+				    (dm2 > 0) == (dm1 > 0) && (dm1 > 0) == (dv > 0) &&
+				    fabs(dm1) < fabs(dm2) && fabs(dm1) <= fabs(dv)) {
+					double xc = 0, dc = 0, scale = fmax(fabs(dm2), fabs(dv));
+					if (touch_min(&dp, dp.root[1], xm2, x, &xc, &dc) &&
+					    fabs(dc) <= scale * 1e-8) {
+						double dl2, dr2;
+						int okl = eval_at(&dp, dp.root[1], xc - h, &dl2);
+						int okr = eval_at(&dp, dp.root[1], xc + h, &dr2);
+						const char *kind = !okl || !okr ? "stationary point" :
+						    dl2 < 0 && dr2 > 0 ? "local minimum" :
+						    dl2 > 0 && dr2 < 0 ? "local maximum" :
+						    "stationary inflection";
+						ADDC(xc, kind, 0);
+					}
+				}
 				prevok = ddef;
 				if ((dv != 0 || !ddef) && !inzero)
 					prevd = dv;
 				prevx = x;
 				prevfdef = fdef;
+				xm2 = xm1; dm2 = dm1; okm2 = okm1;
+				xm1 = x;  dm1 = dv; okm1 = ddef; fdm1 = fdef;
 			}
 		}
+		if (inzero)   /* a flat ray reaching the end of the samples */
+			CLOSEZERO(0, 0, 0);
+#undef CLOSEZERO
 #undef ADDC
 		/* in order of x */
 		for (k2 = 1; k2 < nc; k2++) {
@@ -2089,10 +2232,9 @@ cmd_crit(struct func *f)
 
 /* ---- equivalence, error, fit ---- */
 
-static nid
-rebind(const struct func *f, const struct func *g)
+static void
+rebind_map(const struct func *f, const struct func *g, nid *map)
 {
-	nid map[MAXP];
 	int j;
 
 	if (g->np > f->np)
@@ -2101,7 +2243,55 @@ rebind(const struct func *f, const struct func *g)
 	for (j = 0; j < g->np; j++)
 		map[j] = mk_cast(g->p[j].ty, mk_var((uint32_t)j, f->p[j].name,
 		    f->p[j].ty));
+}
+
+static nid
+rebind(const struct func *f, const struct func *g)
+{
+	nid map[MAXP];
+
+	rebind_map(f, g, map);
 	return subst(g->body, map, g->np);
+}
+
+/* G's declared domain: its own `where` clause plus any declared ranges.
+ * equiv compares on F's domain, but G must be defined there too: a point
+ * outside G's domain is a difference (G is undefined), not an identity. */
+static nid
+rebind_where(const struct func *f, const struct func *g)
+{
+	nid map[MAXP], w = 0;
+	int j;
+
+	rebind_map(f, g, map);
+	if (g->where) {
+		w = subst(g->where, map, g->np);
+		/* The same condition on F is already assumed by the scan and
+		 * by nsat_equiv: adding it again only bloats the circuit. */
+		if (w == f->where)
+			w = 0;
+	}
+	for (j = 0; j < g->np; j++) {
+		nid x = map[j], c;
+
+		if (!g->p[j].ranged)
+			continue;
+		/* F's iterator already restricts to the same range. */
+		if (f->p[j].ranged && f->p[j].lo == g->p[j].lo &&
+		    f->p[j].hi == g->p[j].hi && f->p[j].rlo == g->p[j].rlo &&
+		    f->p[j].rhi == g->p[j].rhi)
+			continue;
+		if (TY_FP(g->p[j].ty))
+			c = mk_bin(O_LAND,
+			    mk_bin(O_GE, x, mk_const_r(g->p[j].rlo)),
+			    mk_bin(O_LE, x, mk_const_r(g->p[j].rhi)));
+		else
+			c = mk_bin(O_LAND,
+			    mk_bin(O_GE, x, mk_const_i(g->p[j].ty, g->p[j].lo)),
+			    mk_bin(O_LE, x, mk_const_i(g->p[j].ty, g->p[j].hi)));
+		w = w ? mk_bin(O_LAND, w, c) : c;
+	}
+	return w;
 }
 
 /*
@@ -2112,16 +2302,24 @@ int equiv_nanbits;
 
 /* a `real` is evaluated in double: equal mathematical expressions can end
  * up a few ulps apart (catastrophic cancellation can mean many ulps at a
- * small magnitude).  A relative tolerance below the gap of any real
- * counterexample we print keeps sampling from refuting a true identity on
- * the strength of its last rounding bit.  Machine floats keep exact
- * IEEE comparison: their rounding is the value being compared. */
+ * small magnitude).  A relative tolerance keeps sampling from refuting a
+ * true identity on the strength of its last rounding bit.  It is only a
+ * heuristic, never a proof: cmd_equiv discloses when it decided a match.
+ * Machine floats keep exact IEEE comparison: their rounding is the value
+ * being compared. */
 #define REAL_EQ_TOL 1e-9
+#define STR1(x) #x
+#define STR(x) STR1(x)
 
 /* Set when algebra has proved the two real expressions differ by a nonzero
  * constant.  The tolerance would then hide a genuine difference whose size
  * is below it: compare the double results exactly to find a witness. */
 static int equiv_real_exact;
+
+/* How many sampled points the tolerance (rather than exact equality) called
+ * a match.  Reported by cmd_equiv so a sub-tolerance difference is not
+ * silently hidden. */
+static uint64_t equiv_tol_matches;
 
 static int
 same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
@@ -2134,11 +2332,17 @@ same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 			return 1;
 		/* A tolerance is only a sampling heuristic.  When there is an
 		 * algebraic certificate of a nonzero (possibly tiny) difference
-		 * it must not turn a refuted identity into an apparent equality. */
-		if (TYK(t) == K_REAL && !isnan(ar) && !isnan(br) &&
-		    !equiv_real_exact)
-			return fabs(ar - br) <= REAL_EQ_TOL *
-			    fmax(1.0, fmax(fabs(ar), fabs(br)));
+		 * it must not turn a refuted identity into an apparent equality.
+		 * Non-finite values are compared exactly: inf - inf is NaN and
+		 * TOL * inf is inf, so a finite/infinite pair would otherwise
+		 * satisfy `inf <= inf` and be called equal. */
+		if (TYK(t) == K_REAL && !equiv_real_exact && isfinite(ar) &&
+		    isfinite(br) &&
+		    fabs(ar - br) <= REAL_EQ_TOL *
+		    fmax(1.0, fmax(fabs(ar), fabs(br)))) {
+			equiv_tol_matches++;
+			return 1;
+		}
 		return 0;
 	}
 	return a == b;
@@ -2164,25 +2368,31 @@ fmt_res(struct sbuf *b, ty_t t, int64_t vi, double vr)
 /*
  * Compare a and b on f's domain.  refine: points where a is undefined are
  * outside the domain (b may be anything there); otherwise both must be
- * undefined together.
+ * undefined together.  gw, when nonzero, is g's rebound domain condition:
+ * where it is false or undefined, b is undefined, so a point at which f is
+ * defined but g is not is a difference.
  */
 static int
 equiv_scan(const struct func *f, nid a, nid b, struct sbuf *wit, int *sampled,
-    int refine, uint64_t *npts)
+    int refine, uint64_t *npts, nid gw)
 {
 	struct run r;
-	nid roots[2];
-	uint32_t np, i, la, lb;
+	nid roots[3];
+	uint32_t np, i, la, lb, lgw = NOTOK;
 	int64_t mism = 0;
 	uint64_t seen = 0;
 	ty_t t;
 
 	roots[0] = a;
 	roots[1] = mk_cast(N.ty[a], b);
+	if (gw)
+		roots[2] = gw;
 	t = N.ty[a];
-	run_open(&r, f, roots, 2, 0, EXH, 1001, NSAMPLE);
+	run_open(&r, f, roots, gw ? 3 : 2, 0, EXH, 1001, NSAMPLE);
 	la = r.p.root[0];
 	lb = r.p.root[1];
+	if (gw)
+		lgw = r.p.root[2];
 	while ((np = run_next(&r)) != 0) {
 		for (i = 0; i < np; i++) {
 			int ua, ub;
@@ -2190,6 +2400,10 @@ equiv_scan(const struct func *f, nid a, nid b, struct sbuf *wit, int *sampled,
 				continue;
 			ua = COLF(&r.p, la)[i] & F_UNDEF;
 			ub = COLF(&r.p, lb)[i] & F_UNDEF;
+			if (lgw != NOTOK &&
+			    ((COLF(&r.p, lgw)[i] & F_UNDEF) ||
+			    COLI(&r.p, lgw)[i] == 0))
+				ub = 1;
 			if (ua && (ub || refine))
 				continue;
 			seen++;
@@ -2225,7 +2439,7 @@ equiv_scan(const struct func *f, nid a, nid b, struct sbuf *wit, int *sampled,
 int
 equiv_check(const struct func *f, nid a, nid b, struct sbuf *wit, int *sampled)
 {
-	return equiv_scan(f, a, b, wit, sampled, 0, NULL);
+	return equiv_scan(f, a, b, wit, sampled, 0, NULL, 0);
 }
 
 /*
@@ -2388,8 +2602,10 @@ equiv_cmp_ty(ty_t ta, ty_t tb)
 	return TY(K_SINT, 64);
 }
 
-int
-equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
+/* gw is G's rebound declared domain (where + ranges), or 0 when G has no
+ * restriction of its own.  See rebind_where and equiv_scan. */
+static int
+equiv_decide_g(const struct func *f, nid a, nid b, nid gw, struct sbuf *wit,
     struct eqproof *pr)
 {
 	int sampled, m, real;
@@ -2398,16 +2614,19 @@ equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
 	struct sbuf conds = {0};
 
 	memset(pr, 0, sizeof *pr);
+	equiv_tol_matches = 0;
 	ct = equiv_cmp_ty(N.ty[a], N.ty[b]);
 	a = mk_cast(ct, a);
 	b = mk_cast(ct, b);
 	if ((N.fl[a] | N.fl[b]) & NF_LANES)
 		return equiv_lanes(f, a, b, wit, pr);
 	real = TYK(ct) == K_REAL;
-	m = equiv_scan(f, a, b, wit, &sampled, 1, &pr->points);
-	/* a grid over a real parameter is a sample, not an exhaustive proof:
-	 * there are infinitely many points between its rungs */
-	if (!sampled && m == 0) {
+	m = equiv_scan(f, a, b, wit, &sampled, 1, &pr->points, gw);
+	/* A grid over a real parameter is a sample, not an exhaustive proof:
+	 * there are infinitely many points between its rungs.  This holds for
+	 * a counterexample too -- a real-grid mismatch is not an exhaustive
+	 * verdict, only a witness found on the sample. */
+	if (!sampled) {
 		int jj;
 		for (jj = 0; jj < f->np; jj++)
 			if (TYK(f->p[jj].ty) == K_REAL) {
@@ -2441,7 +2660,8 @@ equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
 			struct sbuf ew = {0};
 			int em;
 			equiv_real_exact = 1;
-			em = equiv_scan(f, a, b, wit ? &ew : NULL, &sampled, 1, NULL);
+			em = equiv_scan(f, a, b, wit ? &ew : NULL, &sampled, 1,
+			    NULL, gw);
 			equiv_real_exact = 0;
 			pr->how = EQ_ALGEBRA;
 			snprintf(pr->alg, sizeof pr->alg,
@@ -2486,27 +2706,46 @@ equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
 		pr->sat_why = nsat_floats ? "a real value" : "a float or real value";
 		return 0;
 	}
-	nsat_equiv(f, a, b, NSAT_BUDGET, &pr->sat);
-	if (pr->sat.status == -1 && !nsat_narrow) {
-		/* again with the parameters cut to their ranges' bits: a
-		 * smaller circuit for the same question */
-		nsat_narrow = 1;
-		nsat_equiv(f, a, b, NSAT_BUDGET, &pr->sat);
-		nsat_narrow = 0;
-	}
-	pr->sat_status = pr->sat.status;
-	pr->sat_why = pr->sat.why;
-	if (pr->sat.status == 0)
-		pr->how = EQ_SAT;
-	else if (pr->sat.status == 1) {
-		if (point_differs(f, a, b, pr->sat.in, wit))
-			return 1;
-		/* the evaluator disagrees with the circuit: not a proof
-		 * either way; say so */
-		pr->sat_status = -3;
-		pr->sat_why = "its counterexample did not reproduce";
+	/* G's own domain is not an assumption of nsat_equiv (it only knows
+	 * f->where).  Make b undefined where G's condition fails: division
+	 * by gw (1 inside G's domain, 0 outside) gives an undefined result
+	 * outside it, which both the circuit and the evaluator's recheck
+	 * treat as a difference. */
+	{
+		nid bsat = b;
+
+		if (gw)
+			bsat = mk_bin(O_DIV, b,
+			    mk_cast(N.ty[b], mk_cast(TY(K_SINT, 64), gw)));
+		nsat_equiv(f, a, bsat, NSAT_BUDGET, &pr->sat);
+		if (pr->sat.status == -1 && !nsat_narrow) {
+			/* again with the parameters cut to their ranges' bits:
+			 * a smaller circuit for the same question */
+			nsat_narrow = 1;
+			nsat_equiv(f, a, bsat, NSAT_BUDGET, &pr->sat);
+			nsat_narrow = 0;
+		}
+		pr->sat_status = pr->sat.status;
+		pr->sat_why = pr->sat.why;
+		if (pr->sat.status == 0)
+			pr->how = EQ_SAT;
+		else if (pr->sat.status == 1) {
+			if (point_differs(f, a, bsat, pr->sat.in, wit))
+				return 1;
+			/* the evaluator disagrees with the circuit: not a proof
+			 * either way; say so */
+			pr->sat_status = -3;
+			pr->sat_why = "its counterexample did not reproduce";
+		}
 	}
 	return 0;
+}
+
+int
+equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
+    struct eqproof *pr)
+{
+	return equiv_decide_g(f, a, b, 0, wit, pr);
 }
 
 /* " (exhaustive)", " (proved by SAT: ...)", " (sampled, not proved ...)" */
@@ -2554,7 +2793,7 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	struct sbuf w = {0}, how = {0};
 	struct eqproof pr;
 	int m, j, flt, rflt;
-	nid gb = rebind(f, g);
+	nid gb = rebind(f, g), gw = 0;
 
 	if (g->np != f->np)
 		fail("%s and %s take different numbers of parameters", fname(f),
@@ -2564,6 +2803,9 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 			fail("parameter %d has a value in each lane (lanes) in one "
 			    "of %s and %s and not in the other", j + 1, fname(f),
 			    fname(g));
+	/* G's declared where clause and ranges are part of its domain: where
+	 * they fail, G is undefined even if its expression evaluates. */
+	gw = rebind_where(f, g);
 	flt = nsat_has_float(f, f->body) || nsat_has_float(f, gb);
 	if (flt && ftz < 0 && equiv_need_ftz)
 		fail("\"ftz\" is missing: equiv of float formulas over JSON or "
@@ -2581,12 +2823,22 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	nsat_floats = 1;
 	equiv_algebra = 1;
 	equiv_real_exact = 0;
-	m = equiv_decide(f, f->body, gb, &w, &pr);
+	m = equiv_decide_g(f, f->body, gb, gw, &w, &pr);
 	equiv_algebra = 0;
 	equiv_real_exact = 0;
 	float_ftz = nsat_ftz = nsat_floats = 0;
 	equiv_nanbits = nsat_nanbits = 0;
 	eqproof_text(&how, &pr);
+	/* A relative tolerance is a sampling heuristic, not a proof.  Say so
+	 * whenever it is what made two real results compare equal. */
+	if (equiv_tol_matches && pr.how != EQ_ALGEBRA && pr.how != EQ_SAT &&
+	    pr.how != EQ_UNDECIDED) {
+		if (m == 0)
+			sb_printf(&how, "; equal only within tolerance "
+			    STR(REAL_EQ_TOL) ", not proved exactly equal");
+		else
+			sb_printf(&how, "; some differences are within tolerance " STR(REAL_EQ_TOL));
+	}
 	rep_begin("equiv");
 	rep_bool("equal", m == 0 && pr.how != EQ_UNDECIDED);
 	rep_bool("exhaustive", pr.how == EQ_EXHAUSTIVE);
@@ -2595,6 +2847,10 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	if (rflt)
 		rep_bool("nanbits", nanbits > 0);
 	rep_int("mismatch_points", m);
+	if (equiv_tol_matches && pr.how != EQ_ALGEBRA && pr.how != EQ_SAT &&
+	    pr.how != EQ_UNDECIDED)
+		rep_str("tolerance_note", "equal within tolerance " STR(REAL_EQ_TOL) ", "
+		    "not proved exactly equal");
 	rep_str("method", pr.how == EQ_EXHAUSTIVE ? "exhaustive" :
 	    pr.how == EQ_SAT ? "sat" : pr.how == EQ_VACUOUS ? "vacuous" :
 	    pr.how == EQ_ALGEBRA ? "algebra" :

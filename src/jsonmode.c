@@ -3519,33 +3519,42 @@ run_with_timeout(const struct jv *rq, double secs)
 		{
 			/* reply from the child: [u64 length][bytes] then 'k'.
 			 * Only the parent writes to stdout: no partial or late
-			 * child writes can desynchronise the reply stream. */
-			char *rbuf = NULL;
-			if (rd_all(sp[0], &rlen, sizeof rlen) != 0 ||
-			    rlen > (1ULL << 30) ||
-			    (rlen && (rbuf = malloc((size_t)rlen)) == NULL)) {
-				kill(pid, SIGKILL);
-				waitpid(pid, NULL, 0);
-				close(sp[0]);
+			 * child writes can desynchronise the reply stream.
+			 *
+			 * Probe for one byte first.  A clean EOF here means the
+			 * worker died before writing any reply, which is an
+			 * evaluation crash (decoded below), not a corrupt reply.
+			 * A partial header/body, on the other hand, is a reply
+			 * that went wrong and must take the "corrupt" path. */
+			unsigned char first;
+			ssize_t g = read(sp[0], &first, 1);
+			if (g < 0 && errno == EINTR)
+				continue;
+			if (g == 1) {
+				char *rbuf = NULL;
+				/* first byte of the u64 length, in memory order */
+				*(unsigned char *)&rlen = first;
+				if (rd_all(sp[0], (char *)&rlen + 1,
+				    sizeof rlen - 1) != 0 ||
+				    rlen > (1ULL << 30) ||
+				    (rlen && (rbuf = malloc((size_t)rlen)) == NULL))
+					goto corrupt;
+				if (rlen) {
+					if (rd_all(sp[0], rbuf, (size_t)rlen) != 0) {
+						free(rbuf);
+						goto corrupt;
+					}
+					fwrite(rbuf, 1, (size_t)rlen, jout);
+					fflush(jout);
+					free(rbuf);
+				}
+				(void)read(sp[0], &c, 1);   /* 'k' */
+				/* Replay done: only now may the child become the server. */
+				(void)!wr_all(ap[1], "k", 1);
 				close(ap[1]);
-				resp = error_response(jv_get(rq, "id"),
-				    jv_gets(rq, "cmd"), "internal",
-				    "worker reply was corrupt");
-				respond(resp);
-				jv_free(resp);
-				return 0;
+				_exit(0);   /* the child is the server now */
 			}
-			if (rlen) {
-				rd_all(sp[0], rbuf, (size_t)rlen);
-				fwrite(rbuf, 1, (size_t)rlen, jout);
-				fflush(jout);
-				free(rbuf);
-			}
-			(void)read(sp[0], &c, 1);   /* 'k' */
-			/* Replay done: only now may the child become the server. */
-			(void)!wr_all(ap[1], "k", 1);
-			close(ap[1]);
-			_exit(0);   /* the child is the server now */
+			/* no byte: the worker died before replying, fall through */
 		}
 		/* closed without the byte: it died.  If waitpid fails there is
 		 * no status to decode: st is unwritten, so reporting a signal
@@ -3569,6 +3578,17 @@ run_with_timeout(const struct jv *rq, double secs)
 			resp = error_response(jv_get(rq, "id"), jv_gets(rq, "cmd"),
 			    "internal", m);
 		}
+		respond(resp);
+		jv_free(resp);
+		return 0;
+	corrupt:
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
+		close(sp[0]);
+		close(ap[1]);
+		resp = error_response(jv_get(rq, "id"),
+		    jv_gets(rq, "cmd"), "internal",
+		    "worker reply was corrupt");
 		respond(resp);
 		jv_free(resp);
 		return 0;

@@ -12,7 +12,7 @@
   shrneg(x: i32) = x >> -1
     defined where (no C UB): 0
   shlvar(x: i32, n: i32) = x << n
-    defined where (no C UB): n >= 0 && n < 32
+    defined where (no C UB): n >= 0 && n < 32 && (x >= 0 && x <= 0x7fffffff >> n)
   shrvar(x: i32, n: i32) = x >> n
     defined where (no C UB): n >= 0 && n < 32
   shluvar(x: u32, n: u32) = x << n
@@ -20,8 +20,10 @@
   shruvar(x: u32, n: u32) = x >> n
     defined where (no C UB): n >= 0 && n < 32
   shl31(x: i32) = x << 31
+    defined where (no C UB): x >= 0 && x <= 0
   shr31(x: i32) = x >> 0x1f
   shl0(x: i32) = x
+    defined where (no C UB): x >= 0 && x <= 2147483647
   shlassign(x: i32) = x << 32
     defined where (no C UB): 0
   shlcast(x: u32) = i32(x << 32)

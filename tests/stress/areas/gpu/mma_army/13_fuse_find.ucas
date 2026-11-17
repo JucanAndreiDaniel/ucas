@@ -1,0 +1,14 @@
+# Find with fusions and proved input widths (fusewidth.ucas): XMAD folds a
+# narrow multiply-add only where the inputs' ranges prove the width;
+# demanded bits let a low-half read take the narrow form.
+model xmad : gt1030 { mul16: 1
+  fuse xmad(a: u16, b: u16, c: int) = a * b + c : mul16
+  fuse mul16(a: u16, b: u16) = a * b : mul16 }
+m1(a: u32 in 0..60000, b: u32 in 0..60000, c: u32) = a * b + c
+cost m1 model xmad
+m2(a: u32, b: u32, c: u32) = (a & 0xffff) * (b >> 16) + c
+cost m2 model xmad
+m6(a: u32 in 0..255, b: u32 in 0..255, c: u32) = a * b + c
+use xmad
+find m6 1
+use gt1030

@@ -982,7 +982,18 @@ const_tok(int a, int b)
 	e = calc_parse_text(buf, &tmp, TY_REAL);
 	if (tmp.np || !is_const(e))
 		fail("plot: expected a number, found '%s'", buf);
-	return TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+	{
+		double v = TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+
+		/* 'inf' parses as a constant while '-inf' and 'nan' do not.
+		 * Reject it here too, so every number the user supplies (a
+		 * range endpoint, an 'at' point, a tangent point, ...) is
+		 * finite; an infinite axis cannot be drawn or reported as
+		 * JSON (rep_num would emit null). */
+		if (!isfinite(v))
+			fail("plot: expected a number, found '%s'", buf);
+		return v;
+	}
 }
 
 /* the end of a value starting at i: before '..', ',' or an option */
@@ -2241,6 +2252,15 @@ vrange(double *v, int n, int haspole, int lg, double *lo, double *hi,
 	}
 	*lo = lg ? pow(10, mn) : mn;
 	*hi = lg ? pow(10, mx) : mx;
+	/* A span near DBL_MAX overflows in the 5% margin above (mx - mn
+	 * and the margin itself become +/-inf).  The sample extrema are
+	 * finite and known, so fall back to them rather than report an
+	 * infinite axis -- which would print "[-inf, inf]" and be null in
+	 * JSON.  Finite ranges never take these branches. */
+	if (!isfinite(*lo))
+		*lo = *vmin;
+	if (!isfinite(*hi))
+		*hi = *vmax;
 	free(s);
 	return clipped;
 }
@@ -4862,8 +4882,11 @@ plot_surf(int si)
 		fps = O.fps > 0 ? O.fps : 12;
 		if (nfr < 2)
 			nfr = 2;
-		if (nfr > 180)
-			nfr = 180;
+		/* 180 frames of 560x440 take ~11.6 s to render and build an
+		 * ~8.6 MB GIF, past an 8 s client budget.  120 frames render
+		 * in ~6.9 s; keep the same up-front cap as a response guard. */
+		if (nfr > 120)
+			nfr = 120;
 		W = 560;
 		H = 440;
 	}

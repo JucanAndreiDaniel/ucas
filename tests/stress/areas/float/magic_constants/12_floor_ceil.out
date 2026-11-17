@@ -10,7 +10,8 @@ flp and rfp differ at 64669 points of the sample, e.g. x=9.99999939e+29: 9.50737
 > equiv ceilbit ~ rceilp
 ceilbit and rceilp differ at 65266 points of the sample, e.g. x=0: 5.87747175e-39 vs 0
 > idem(a: u32, b: u32) = (a & b) + (a ^ b)
-  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+  note: "^" between integers, next to bitwise operators: read as power, not xor (bitwise exclusive or) (write xor or ** to say which)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > idem2(a: u32, b: u32) = a | b
 > equiv idem ~ idem2
-idem and idem2 are equal on the domain of idem (proved by SAT: 635 AIG nodes, 197 conflicts)
+idem and idem2 differ at 65535 points of the sample, e.g. a=0, b=4294967294: 0 vs 4294967294

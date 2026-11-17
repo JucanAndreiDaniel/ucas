@@ -828,26 +828,32 @@ dispatch(const struct jv *msg)
 	    "jsonrpc");
 	int notif = id == NULL;
 
+	/* A message with no id is a notification: JSON-RPC forbids any reply,
+	 * including an error for a malformed one.  Set the suppress flag before
+	 * the invalid-request branch so a bad notification cannot emit an
+	 * unsolicited id:null reply and desync the reply stream.  Every exit
+	 * path below clears it (notifications that get dropped, invalid ones,
+	 * and completed calls alike). */
+	notifying = notif;
 	if (msg->t != J_OBJ || jr == NULL || strcmp(jr, "2.0") || method == NULL ||
 	    (id && id->t != J_STR && id->t != J_NUM)) {
 		if (msg->t == J_OBJ && method == NULL && (jv_get(msg, "result") ||
 		    jv_get(msg, "error")))
-			return;		/* a response to us: we send no requests */
+			goto out;	/* a response to us: we send no requests */
 		rpc_error(id && (id->t == J_STR || id->t == J_NUM) ? id : NULL,
 		    -32600, "invalid request");
-		return;
+		goto out;
 	}
 	if (params && params->t != J_OBJ) {
 		if (!notif)
 			rpc_error(id, -32602, "params must be an object");
-		return;
+		goto out;
 	}
 	/* Drop only genuine notifications.  A tools/call without an id is a
 	 * notification too, but it still has to run: otherwise a session/define
 	 * sent without an id silently fails to register the definition. */
 	if (notif && strcmp(method, "tools/call"))
-		return;		/* notifications/initialized, cancelled ... */
-	notifying = notif;
+		goto out;	/* notifications/initialized, cancelled ... */
 	if (!strcmp(method, "initialize"))
 		initialize(id, params);
 	else if (!strcmp(method, "ping"))
@@ -900,6 +906,7 @@ dispatch(const struct jv *msg)
 		snprintf(m, sizeof m, "method not found: %.100s", method);
 		rpc_error(id, -32601, m);
 	}
+out:
 	notifying = 0;
 }
 

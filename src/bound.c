@@ -534,12 +534,23 @@ relation(struct bctx *c, nid w, int j, int up, char *txt, size_t ntxt)
 	return 0;
 }
 
+/* Like prove_bounds, but also hands back the exact integer extremum when a
+ * side is an exact integer constant (have_* == 1).  *lo_exact/*hi_exact are
+ * only valid when the matching have_* is 1.  The double in pb is necessarily
+ * rounded for wide types (2^w-1 -> 2^w), so callers that claim an exact range
+ * must use these values, not pb.lo/pb.hi. */
+int prove_bounds_exact(const struct func *f, struct pbound *pb,
+    int64_t *lo_exact, int64_t *hi_exact);
+
 /*
  * The maximum (up) or minimum of f->body, proved; 1 with *val and the
- * steps, 0 when it cannot be shown.
+ * steps, 0 when it cannot be shown.  When the result is an exact integer
+ * constant, *exact holds it (and *is_exact is set): cval() alone would round
+ * a wide value such as 2^55-1 up to 2^55.
  */
 static int
-prove_side(const struct func *f, int up, double *val, struct sbuf *steps)
+prove_side(const struct func *f, int up, double *val, struct sbuf *steps,
+    int64_t *exact, int *is_exact)
 {
 	struct bctx c;
 	nid e = f->body;
@@ -549,6 +560,8 @@ prove_side(const struct func *f, int up, double *val, struct sbuf *steps)
 	int64_t lo[MAXP], hi[MAXP];
 	const char *fn = f->anon ? "f" : sym_str(f->name);
 
+	if (is_exact)
+		*is_exact = 0;
 	memset(&c, 0, sizeof c);
 	c.f = f;
 	for (j = 0; j < f->np; j++) {
@@ -637,6 +650,11 @@ prove_side(const struct func *f, int up, double *val, struct sbuf *steps)
 			goto out;
 		if (is_const(e)) {
 			*val = cval(e);
+			if (exact && isint(e)) {
+				*exact = N.ki[e];
+				if (is_exact)
+					*is_exact = 1;
+			}
 			ok = 1;
 		} else if (steps->n == 0) {
 			goto out;   /* nothing beyond plain intervals */
@@ -665,11 +683,38 @@ prove_bounds(const struct func *f, struct pbound *pb)
 	note_mute++;
 	memcpy(saved, fail_jmp, sizeof saved);
 	if (setjmp(fail_jmp) == 0) {
-		pb->have_hi = prove_side(f, 1, &pb->hi, &pb->why_hi);
-		pb->have_lo = prove_side(f, 0, &pb->lo, &pb->why_lo);
+		pb->have_hi = prove_side(f, 1, &pb->hi, &pb->why_hi, NULL, NULL);
+		pb->have_lo = prove_side(f, 0, &pb->lo, &pb->why_lo, NULL, NULL);
 	}
 	memcpy(fail_jmp, saved, sizeof saved);
 	note_mute--;
+	return pb->have_lo || pb->have_hi;
+}
+
+int
+prove_bounds_exact(const struct func *f, struct pbound *pb,
+    int64_t *lo_exact, int64_t *hi_exact)
+{
+	int64_t lv = 0, hv = 0;
+	int li = 0, hi = 0;
+	jmp_buf saved;
+
+	memset(pb, 0, sizeof *pb);
+	*lo_exact = *hi_exact = 0;
+	if (f->np == 0)
+		return 0;
+	note_mute++;
+	memcpy(saved, fail_jmp, sizeof saved);
+	if (setjmp(fail_jmp) == 0) {
+		pb->have_hi = prove_side(f, 1, &pb->hi, &pb->why_hi, &hv, &hi);
+		pb->have_lo = prove_side(f, 0, &pb->lo, &pb->why_lo, &lv, &li);
+	}
+	memcpy(fail_jmp, saved, sizeof saved);
+	note_mute--;
+	if (hi)
+		*hi_exact = hv;
+	if (li)
+		*lo_exact = lv;
 	return pb->have_lo || pb->have_hi;
 }
 

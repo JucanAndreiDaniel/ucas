@@ -542,7 +542,7 @@ holes(uint32_t t)
 {
 	const int64_t *c = COL(t), *y = F.y;
 	uint32_t i, p = NOTOK;
-	int64_t a, b, k;
+	int64_t a, b, k, dy, dc;
 	int base = F.cost[t], cost;
 	uint64_t acc;
 
@@ -558,9 +558,17 @@ holes(uint32_t t)
 	    (is_kleaf(F.a[t]) || is_kleaf(F.b[t])) && F.op[t] != O_SHL &&
 	    F.op[t] != O_SHR && F.op[t] != O_MUL)
 		return;
-	/* y = a*t + b */
-	if ((y[p] - y[0]) % (c[p] - c[0]) == 0) {
-		a = (y[p] - y[0]) / (c[p] - c[0]);
+	/* y = a*t + b.  Both differences can wrap (an unsigned shift target
+	 * reaches INT64_MIN), and C's % / trap when the dividend is INT64_MIN
+	 * and the divisor -1 -- which happened on such a target.  Work out the
+	 * differences without signed overflow and skip a division that would
+	 * trap; the affine template is just not available at these points. */
+	dy = (int64_t)((uint64_t)y[p] - (uint64_t)y[0]);
+	dc = (int64_t)((uint64_t)c[p] - (uint64_t)c[0]);
+	if (dc == 0 || (dy == INT64_MIN && dc == -1))
+		return;
+	if (dy % dc == 0) {
+		a = dy / dc;
 		b = int_norm(F.W, y[0] - (int64_t)((uint64_t)a * (uint64_t)c[0]));
 		for (i = 0; i < F.P; i++)
 			if (int_norm(F.W, (int64_t)((uint64_t)wrapmul(a, c[i]) +

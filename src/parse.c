@@ -45,6 +45,7 @@
 #include "x86.h"
 #include "fuse.h"
 int node_aig_depth_check(nid root);	/* node.c: guard before bit-blasting */
+nid mk_const_r_decimal(double v);	/* node.c: decimal-literal constant */
 int homalg_command(struct P *p);	/* homalg.h */
 int ec_command(struct P *p);	/* ec.h (absalg.h names a parameter I) */
 
@@ -312,11 +313,12 @@ number(struct P *p)
 					    "it underflows to zero", (int)n, s);
 			}
 			adv(p);
-			c = mk_const_r(d);
-			/* Remember that this value was written as a decimal, so
-			 * solve/alg can tell it apart from a rational such as
-			 * 1/3 that happens to fold to the same double. */
-			N.fl[c] |= NF_DECIMAL;
+			/* Bake the provenance into the node at creation time.
+			 * O_CONST nodes are interned by flags as well as value,
+			 * so this decimal-literal node stays distinct from a
+			 * rational such as 1/3 (or a cast integer) that folds to
+			 * the same double; NF_DECIMAL cannot leak onto those. */
+			c = mk_const_r_decimal(d);
 			if (f32)
 				return mk_cast(TY_F32, c);
 			return c;
@@ -1841,8 +1843,18 @@ parse_expr(struct P *p, int minbp)
 			    bitwise_context(p, opat)) {
 				static const char *const xo[] = {
 				    "xor (bitwise exclusive or)", "power"};
+				/* Default to power, the documented meaning of "^",
+				 * just as when no bitwise operator is nearby.  With
+				 * the old default (xor) the same `1 ^ x` was read as
+				 * power in `f(x)=1^x` but as xor in
+				 * `g(x)=(1^x) xor 0`, so a value-preserving rewrite
+				 * changed the answer and equiv falsely reported a
+				 * difference (fuzz NLP-1).  The question is still
+				 * asked next to bitwise operators, and an explicit
+				 * assume.caret=xor still selects xor; only the
+				 * no-assume default is now context-independent. */
 				int k = nlp_ask_pref("caret", "\"^\" between integers, "
-				    "next to bitwise operators", xo, 2, 0,
+				    "next to bitwise operators", xo, 2, 1,
 				    "write xor or ** to say which");
 				if (nlp_asked)
 					fail_quiet();
@@ -2351,12 +2363,14 @@ cmd_func(struct P *p)
 }
 
 /*
- * A bare name that stands alone as an argument to equiv names a function,
- * not the start of an anonymous expression ("x+0"): report an undefined one
- * instead of letting cmd_func turn it into a free identity variable (which
- * would make `equiv f nosuch` look equal to f).  Other commands legitimately
- * take free variables (egf n, error two ~ x), so the strict check belongs
- * here, not in cmd_func itself.
+ * A bare name that stands alone as the argument to commands which take a
+ * named function (equiv, and the analysis commands show/table/range/wrap/
+ * domain) names a function, not the start of an anonymous expression
+ * ("x+0"): report an undefined one instead of letting cmd_func turn it into
+ * a free identity variable (which would make `equiv f nosuch` look equal to
+ * f, or `table nosuch` print a confident identity table).  Other commands
+ * legitimately take free variables (egf n, error two ~ x), so the strict
+ * check belongs here, not in cmd_func itself.
  */
 static struct func *
 cmd_named_func(struct P *p)
@@ -2895,7 +2909,12 @@ parse_basis(struct P *p)
 			if (pk(p) == T_MINUS)
 				fail("gate cost must be a non-negative integer");
 			c = number(p);
-			if (!is_const(c) || N.ki[c] < 0 || N.ki[c] > INT32_MAX)
+			/* is_const() is also true for real literals, whose value
+			 * lives in kr[c] and whose ki[c] reads as 0; without the
+			 * TY_FP test a "cost 2.9" would silently become a
+			 * phantom cost-0 gate. */
+			if (!is_const(c) || TY_FP(N.ty[c]) || N.ki[c] < 0 ||
+			    N.ki[c] > INT32_MAX)
 				fail("gate cost must be a non-negative integer "
 				    "that fits in an int");
 			g->cost = (int)N.ki[c];
@@ -3682,29 +3701,21 @@ cmd_func_text(const char *src)
 	return f;
 }
 
-/* equiv_scan enumerates at most 1001 points before it samples and falls
- * through to the SAT/AIG path.  A function whose whole parameter domain fits
- * that budget is compared exhaustively and never bit-blasts, however deep
- * its body: the AIG depth guard must not reject it. */
+/* equiv_scan enumerates the whole parameter domain (run_open -> diter_init
+ * with maxexh == EXH) before it samples and falls through to the SAT/AIG
+ * path.  A function whose real domain fits that budget is compared
+ * exhaustively and never bit-blasts, however deep its body: the AIG depth
+ * guard must not reject it.  Build the very same iterator here so the
+ * decision includes declared `in`/`where` bounds: deriving the size from
+ * TYW alone would send a 2-point `x: u16 in 0..1` domain down the AIG path
+ * and wrongly refuse a deep-but-exhaustive comparison. */
 static int
 equiv_exhaustive(const struct func *f)
 {
-	uint64_t pts = 1;
-	int i, w;
-	ty_t t;
+	struct diter d;
 
-	for (i = 0; i < f->np; i++) {
-		t = f->p[i].ty;
-		if (!TY_SIZED(t))
-			return 0;
-		w = TYW(t);
-		if (w > 10)
-			return 0;
-		pts *= (uint64_t)1 << w;
-		if (pts > 1001)
-			return 0;
-	}
-	return 1;
+	diter_init(&d, f, 1ULL << 22, 1001, 0);	/* maxexh = analyze.c:EXH */
+	return d.exhaustive;
 }
 
 /*
@@ -4191,7 +4202,9 @@ statement(struct P *p)
 			    p->t->kind[p->i + 2] == T_NUM)
 				fail("find: the number of results must be from 0 to %d",
 				    INT_MAX);
-			if (!strcmp(cmd, "equiv"))
+			if (!strcmp(cmd, "equiv") || !strcmp(cmd, "show") ||
+			    !strcmp(cmd, "table") || !strcmp(cmd, "range") ||
+			    !strcmp(cmd, "wrap") || !strcmp(cmd, "domain"))
 				f = cmd_named_func(p);
 			else
 				f = cmd_func(p);

@@ -1302,6 +1302,7 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 	/* subgroup operations as the circuits of their lanes (sg.c) */
 	a = sg_lower(a);
 	b = sg_lower(b);
+	b = mk_cast(N.ty[a], b);
 	memset(out, 0, sizeof *out);
 	memset(&B, 0, sizeof B);
 	if (!nsat_supported(f) || !bw(N.ty[a]) || (!nsat_floats &&
@@ -1335,7 +1336,6 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 		ext64(&B.par[j], &x, pt);
 		assume = aig_and(B.g, assume, in_bounds(&f->p[j], &B.par[j]));
 	}
-	b = mk_cast(N.ty[a], b);
 	ctx_init(&root, NULL, 0);
 	if (where)
 		vw = blast(&root, where);
@@ -1346,8 +1346,18 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 	if (fp_err)
 		unsup(fp_err);
 	if (B.why) {
-		out->status = -2;
-		out->why = B.why;
+		/* b is a: refinement holds on any domain, however the two
+		 * sides are built.  When a node's operation has no circuit (a
+		 * power, an arbitrary float division, sqrt, ...) the graph
+		 * cannot prove it, and reporting "unsupported" would turn a
+		 * reflexive check into a mere sample.  Keep the trivial proof
+		 * instead; supported reflexive cases never reach here. */
+		if (a == b)
+			out->status = 0;
+		else {
+			out->status = -2;
+			out->why = B.why;
+		}
 		out->nodes = aig_nodes(B.g);
 		goto done;
 	}

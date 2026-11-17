@@ -612,7 +612,7 @@ ecq_tate(const struct ec *E0, zint p, struct ecq_local *L)
 				/* a2/p X^2 + a4/(p mx) X + a6/(p mx my) */
 				qa = z_divexact(a2, p);
 				qb = z_divexact(a4, z_mul(p, mx));
-				qc = z_divexact(a6, z_mul(p, z_mul(mx, my)));
+				qc = z_divexact(a6, z_mul(mx, my));
 				n = quad_roots(qa, qb, qc, p, &dbl, &root);
 				if (!dbl) {
 					L->cp = n ? 4 : 2;

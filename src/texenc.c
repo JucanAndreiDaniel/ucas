@@ -1990,6 +1990,27 @@ texenc_table(struct P *p, const char *const *stop)
 	return cmdp_func(p, stop);
 }
 
+/* a footprint's BH: only decimal digits, so 6x6x6 and 6x6foo are not a 6x6 */
+static int
+footprint_h(const char *s, int64_t *v)
+{
+	int64_t n = 0;
+
+	if (!*s)
+		return 0;
+	for (; *s; s++) {
+		if (*s < '0' || *s > '9')
+			return 0;
+		n = n * 10 + (*s - '0');
+		if (n > 1000000)
+			return 0;
+	}
+	if (n <= 0)
+		return 0;
+	*v = n;
+	return 1;
+}
+
 int
 texenc_command(struct P *p)
 {
@@ -2014,7 +2035,7 @@ texenc_command(struct P *p)
 		/* the footprint: 6x6 reads as 6 and x6, or 6 x 6 */
 		astc = 1;
 		if (!cmdp_int(p, &bw) || !cmdp_word(p, w, sizeof w) || w[0] != 'x' ||
-		    (w[1] ? (bh = atoi(w + 1)) <= 0 : !cmdp_int(p, &bh)))
+		    (w[1] ? !footprint_h(w + 1, &bh) : !cmdp_int(p, &bh)))
 			fail("texenc: astc takes a block's footprint, BWxBH (6x6, 8x5, "
 			    "...)");
 		W = bw;
@@ -2124,7 +2145,9 @@ texenc_nlp_raw(const char *sent)
 			srgb = 1;
 		else if (sscanf(w, "%dx%d", &a, &b) == 2 && a > 0 && b > 0 &&
 		    a < 100 && b < 100)
-			snprintf(fp, sizeof fp, "%dx%d", a, b);
+			/* keep the whole token, so a 3-D or suffixed footprint
+			 * reaches texenc's domain check instead of disappearing */
+			snprintf(fp, sizeof fp, "%s", w);
 		else if ((!strcmp(prev, "within") || !strcmp(prev, "tol")) &&
 		    (w[0] == '.' || (w[0] >= '0' && w[0] <= '9')))
 			snprintf(tol, sizeof tol, "%s", w);

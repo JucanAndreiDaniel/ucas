@@ -5,11 +5,12 @@ find k1: 1024 points (sampled; matches verified on the whole domain), computing 
   cost 3   -(-a - b)                                affine fit (proved by SAT)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > k2(a: u16, b: u16) = (a ^ b) << 1
-  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+  note: "^" between integers, next to bitwise operators: read as power, not xor (bitwise exclusive or) (write xor or ** to say which)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > find k2 2 snippets
 find k2: 1024 points (sampled; matches verified on the whole domain), computing in u16, costs from gt1030
-  cost 2   (a xor b) + (a xor b)                    the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
-  cost 3   2(a xor b)                               affine fit (proved by SAT)
+  snippet database: no program up to cost 3 has its values (78331 programs of 2 inputs, 16 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > k3(a: u16, b: u16) = a & ~b
 > find k3 2 snippets

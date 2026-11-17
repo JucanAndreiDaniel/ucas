@@ -781,9 +781,35 @@ integrate(nid e, double a, double b, struct integ *I, int want_exact)
 		if (g6 && g9 && isfinite(v6) && isfinite(v9) &&
 		    fabs(v9) > fabs(v6) &&
 		    fabs(v9 - v6) > 1e-2 * fabs(v9) + 1e-12) {
-			/* grows without bound as the trim shrinks: divergent */
-			I->diverge = divergent_end(e, a, b);
-			I->good = 0;
+			/* Growth between two trims alone cannot distinguish a
+			 * divergent x^-p (p >= 1) from an integrable cusp x^-p with
+			 * p < 1: for p close to 1 the tail (1e-4)^(1-p) is still a
+			 * percent or more, so a convergent arclength such as x^0.1
+			 * was wrongly called divergent.  Estimate the blow-up exponent
+			 * from the integrand near the end and require p >= 1. */
+			int end = divergent_end(e, a, b);
+			double c = end == 1 ? a : b, s = end == 1 ? 1 : -1;
+			double t1 = 1e-6 * (b - a), t2 = 1e-8 * (b - a), p = 0;
+			int o1, o2;
+			double u1 = eval_const_at(e, 0, c + s * t1, &o1);
+			double u2 = eval_const_at(e, 0, c + s * t2, &o2);
+			if (o1 && o2 && isfinite(u1) && isfinite(u2) &&
+			    u1 != 0 && u2 != 0)
+				p = log(fabs(u2) / fabs(u1)) / log(t1 / t2);
+			if (p >= 0.999) {
+				/* grows without bound as the trim shrinks: divergent */
+				I->diverge = end;
+				I->good = 0;
+			} else {
+				/* an improper but convergent integral: the finer trim
+				 * is the value, the trim difference its uncertainty */
+				I->good = 1;
+				I->trim = 1;
+				I->v = v9;
+				I->tdiff = fabs(v9 - v6);
+				I->err = e9 + I->tdiff;
+				I->nev = n6 + n9;
+			}
 		} else if (!I->good && g6 && g9 &&
 		    fabs(v9 - v6) <= 1e-2 * fabs(v9) + 1e-12) {
 			I->good = 1;

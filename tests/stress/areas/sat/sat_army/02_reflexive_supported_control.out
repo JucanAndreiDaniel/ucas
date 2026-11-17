@@ -1,0 +1,11 @@
+> s(x: u32) = (x xor (x << 13)) xor ((x xor (x << 13)) >> 17)
+> t(x: u32) = x xor (x << 13) xor ((x xor (x << 13)) >> 17)
+> equiv s t
+s and t are equal on the domain of s (proved by SAT: 135 AIG nodes, 0 conflicts)
+> u(x: u32) = t + 1
+> equiv s u
+s and u differ at 65534 points of the sample, e.g. x=0: 0 vs 8193
+> v(x: u32) = x * 3
+> w(x: u32) = x + x + x
+> equiv v w
+v and w are equal on the domain of v (proved by SAT: 811 AIG nodes, 1209 conflicts)

@@ -135,7 +135,7 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `c_vectorize_loops` — 18 goldens
 - `cfront_bench_timing` — 22 goldens
 - `cfront_float_semantics` — 19 goldens
-- `cfront_fuzz` — 31 goldens
+- `cfront_fuzz` — 30 goldens
 - `cfront_preprocessor` — 23 goldens
 - `cfront_ub_contracts` — 14 goldens
 - `coverage_gap_analysis` — 0 goldens

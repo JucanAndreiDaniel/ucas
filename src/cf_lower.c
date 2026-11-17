@@ -25,6 +25,8 @@
  *   - x / 0, x % 0, shifts by a negative amount or the width or more,
  *     out-of-range table indices and reads of uninitialised locals are
  *     undefined nodes (C UB); INT_MIN / -1 is UB in C (a condition);
+ *     so are a negative left operand or an unrepresentable result of a
+ *     signed << (6.5.7p4), suppressed under wrapv;
  *   - >> of a negative value is arithmetic (implementation-defined;
  *     GCC and clang do this); char is signed.
  *
@@ -48,11 +50,12 @@
  * expression is larger than this cannot be decided in reasonable time, so
  * treat it as "may not terminate" instead of trying to prove it. */
 #define CF_OBL_NODES 4096
-/* node.c's has_bitwise (used whenever an expression is printed) walks every
- * root-to-leaf path with a depth cutoff of 64.  A deeper expression with
- * predicated selects makes that walk exponential, so refuse to hand one
- * back to a caller that will print it. */
-#define CF_PRINT_DEPTH 48
+/* node.c's has_bitwise (used whenever an expression is printed) walks
+ * root-to-leaf paths and has its own depth cutoff of 64.  A lowering-time
+ * "too deep to print" guard was tried here but rejected perfectly legal
+ * unrolled loops (which routinely reach a DAG depth of several hundred),
+ * so lowering no longer refuses a value on account of its depth: that
+ * concern belongs at the print boundary, not here. */
 
 struct lctx {
 	nid brk, cont;		/* conditions collected (bool) */
@@ -240,6 +243,30 @@ budget(void)
 		lfail(0, "the lowered program is too large%s", "");
 }
 
+/* the k-th child of a node.  O_TABLE nodes keep their (possibly many)
+ * entries in N.lst starting at N.a[]; every other node has three child
+ * slots N.a[]/N.b[]/N.c[].  Callers use dag_nchild() to bound k, so no
+ * fixed-size "gather all children" array is needed (tables can be far
+ * wider than three entries). */
+static nid
+dag_child(nid n, uint32_t k)
+{
+	if (N.op[n] == O_TABLE)
+		return k < N.b[n] ? N.lst[N.a[n] + k] : 0;
+	if (k == 0)
+		return N.a[n];
+	if (k == 1)
+		return N.b[n];
+	return k == 2 ? N.c[n] : 0;
+}
+
+/* number of children to visit for a node */
+static uint32_t
+dag_nchild(nid n)
+{
+	return N.op[n] == O_TABLE ? N.b[n] : 3;
+}
+
 /* maximum nesting depth of a DAG (children have smaller ids) */
 static int
 dag_depth(nid root)
@@ -254,19 +281,13 @@ dag_depth(nid root)
 	if (!dep)
 		return 0;
 	for (i = 1; i <= root; i++) {
-		uint32_t n = i, ch[3];
-		int nch = 0, m = 0;
-		if (N.op[n] == O_TABLE) {
-			for (j = 0; j < N.b[n]; j++)
-				ch[nch++] = N.lst[N.a[n] + j];
-		} else {
-			ch[nch++] = N.a[n];
-			ch[nch++] = N.b[n];
-			ch[nch++] = N.c[n];
+		uint32_t n = i, nc = dag_nchild(n);
+		int m = 0;
+		for (j = 0; j < nc; j++) {
+			nid c = dag_child(n, j);
+			if (c && c < N.n && (int)dep[c] > m)
+				m = (int)dep[c];
 		}
-		for (j = 0; j < (uint32_t)nch; j++)
-			if (ch[j] && ch[j] < N.n && (int)dep[ch[j]] > m)
-				m = (int)dep[ch[j]];
 		dep[n] = (uint32_t)(m + 1);
 	}
 	d = (int)dep[root];
@@ -296,21 +317,13 @@ dag_size(nid root, int cap)
 	st[top++] = root;
 	while (top) {
 		nid x = st[--top];
-		nid ch[3];
-		int nch = 0;
+		uint32_t nc;
 
 		if (++n > cap)
 			break;
-		if (N.op[x] == O_TABLE) {
-			for (j = 0; j < N.b[x]; j++)
-				ch[nch++] = N.lst[N.a[x] + j];
-		} else {
-			ch[nch++] = N.a[x];
-			ch[nch++] = N.b[x];
-			ch[nch++] = N.c[x];
-		}
-		for (j = 0; j < (uint32_t)nch; j++) {
-			nid y = ch[j];
+		nc = dag_nchild(x);
+		for (j = 0; j < nc; j++) {
+			nid y = dag_child(x, j);
 			if (y && y < N.n && !seen[y]) {
 				seen[y] = 1;
 				st[top++] = y;
@@ -759,6 +772,8 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 	if (CT.kind[ct_unqual(ta)] == CT_PTR || CT.kind[ct_unqual(tb)] == CT_PTR)
 		lfail(at, "pointer arithmetic%s", "");
 	if (op == O_SHL || op == O_SHR) {
+		ty_t aty;
+		int w;
 		rt = ct_promote(ta);
 		a = conv(a, rt, at);
 		b = conv(b, ct_promote(tb), at);
@@ -767,6 +782,26 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 		 * even under wrapv (which only makes signed overflow wrap). */
 		add_cond(g, band(mk_bin(O_GE, b, mk_const_i(N.ty[b], 0)),
 		    mk_bin(O_LT, b, mk_const_i(N.ty[b], TYW(N.ty[a])))));
+		aty = N.ty[a];
+		if (L.ub && op == O_SHL && TYK(aty) == K_SINT) {
+			/* C99 6.5.7p4: left-shifting a negative value, or a
+			 * value whose shifted result is not representable in
+			 * the promoted result type, is undefined -- as in
+			 * clang UBSan.  wrapv (L.ub == 0) suppresses it, just
+			 * as it suppresses signed +,-,* overflow.  With
+			 * 0 <= b < w already required, a*2^b fits iff
+			 * a <= max>>b; use that instead of computing the
+			 * (possibly overflowing) shift itself. */
+			int64_t mx;
+			nid mxsh;
+			w = TYW(aty);
+			mx = w >= 64 ? INT64_MAX :
+			    ((int64_t)1 << (w - 1)) - 1;
+			mxsh = mk_bin(O_SHR, mk_const_i(aty, mx),
+			    mk_cast(aty, b));
+			add_cond(g, band(mk_bin(O_GE, a, mk_const_i(aty, 0)),
+			    mk_bin(O_LE, a, mxsh)));
+		}
 		return mk_bin(op, a, b);
 	}
 	if (opinfo[op].fl & OF_CMP) {
@@ -1378,8 +1413,6 @@ cf_lower_func(struct cf_unit *u, uint32_t fn, struct cf_value *v, int ub)
 			return 0;
 		}
 	}
-	if (dag_depth(v->e) > CF_PRINT_DEPTH)
-		lfail(0, "the lowered program is too large%s", "");
 	lower_end();
 	return 1;
 }
@@ -1399,7 +1432,12 @@ cf_lower_expr(struct cf_unit *u, uint32_t fn, uint32_t e, struct cf_value *v)
 	if (!ct_is_lowered(u->A.ty[e]))
 		lfail(e, "not an integer or float expression%s", "");
 	v->e = ex(e, T1);
-	v->where = 0;
+	/* Keep the expression's UB domain: an always-undefined expression
+	 * (e.g. an out-of-range float-to-int cast) must not be "proved" a
+	 * rewrite over an empty domain.  Signed overflow conditions are not
+	 * added here (ub is 0), but shift-count and float-to-int range checks
+	 * are unconditional and do show up in L.where. */
+	v->where = L.where;
 	lower_end();
 	return 1;
 }

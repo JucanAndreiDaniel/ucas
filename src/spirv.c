@@ -15682,9 +15682,12 @@ spirv_simplify(const char *src, double budget, int nofile)
 			    "for every input (refinement)");
 		else
 			rep_proof("derivation", "each rewrite carries its own proof "
-			    "and domain: derived rewrites hold only where their "
-			    "stated assumptions do (see holds_where), the rest "
-			    "bit-blasted and proved equal for every input "
+			    "and domain: algebra rewrites are unconditional ring "
+			    "identities modulo 2^w (checked by proof and random "
+			    "sampling, not SAT); derived rewrites (identities, "
+			    "lane maps, subgroup counts) hold only where their "
+			    "stated assumptions do (see holds_where); the rest "
+			    "are bit-blasted and proved equal for every input "
 			    "(refinement)");
 	}
 	if (ntriv) {

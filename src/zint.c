@@ -18,6 +18,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 /* ---- the arena ---- */
 
@@ -1023,19 +1024,51 @@ z_isprime(zint a)
 	return ok;
 }
 
-/* Pollard rho (Brent) on a composite n > 2^64; 0 if no factor found */
+/* floor(sqrt(a)) for a >= 0, by integer Newton iteration.  Starting from
+ * 2^ceil(bits/2) (an upper bound) halves the number of bits each step, so
+ * this is a handful of divisions even for a multi-thousand-bit integer. */
 static zint
-rho(zint n, int64_t c)
+z_isqrt(zint a)
+{
+	zint x, y;
+
+	if (z_is_zero(a))
+		return Z_ZERO;
+	x = z_pow(z_from_i64(2), (z_bits(a) + 1) / 2);
+	for (;;) {
+		y = z_div_floor(z_add(x, z_div_floor(a, x)), z_from_i64(2));
+		if (z_cmp(y, x) >= 0)
+			return x;
+		x = y;
+	}
+}
+
+/*
+ * Pollard rho (Brent) on a composite n > 2^64; 0 if no factor found.
+ * deadline bounds the whole factoring attempt: a number whose smallest
+ * factor is out of reach must report "not fully factored" promptly rather
+ * than spin until the caller's wall-clock timeout kills it.  The clock is
+ * sampled only every 4096 iterations (it is much slower than the inner
+ * arithmetic).
+ */
+static zint
+rho(zint n, int64_t c, clock_t deadline)
 {
 	zint x = mk_small(2), y = x, q = Z_ONE, g = Z_ONE, ys = x, cc;
-	long r = 1, k, i, it = 0;
+	long r = 1, k, i, it = 0, ticks = 0;
 	const long lim = 1L << 18;
+#define RHO_TICK() do { \
+	if ((++ticks & 4095) == 0 && clock() >= deadline) \
+		return 0; \
+} while (0)
 
 	cc = mk_small(c);
 	while (z_is_one(g) && it < lim) {
 		x = y;
-		for (i = 0; i < r; i++)
+		for (i = 0; i < r; i++) {
 			y = z_mod(z_add(z_mul(y, y), cc), n);
+			RHO_TICK();
+		}
 		k = 0;
 		while (k < r && z_is_one(g)) {
 			long lim2 = r - k < 64 ? r - k : 64;
@@ -1043,6 +1076,7 @@ rho(zint n, int64_t c)
 			for (i = 0; i < lim2; i++) {
 				y = z_mod(z_add(z_mul(y, y), cc), n);
 				q = z_mod(z_mul(q, z_abs(z_sub(x, y))), n);
+				RHO_TICK();
 			}
 			g = z_gcd(q, n);
 			k += lim2;
@@ -1050,11 +1084,12 @@ rho(zint n, int64_t c)
 		}
 		r *= 2;
 	}
+#undef RHO_TICK
 	if (z_eq(g, n)) {
 		do {
 			ys = z_mod(z_add(z_mul(ys, ys), cc), n);
 			g = z_gcd(z_abs(z_sub(x, ys)), n);
-		} while (z_is_one(g));
+		} while (z_is_one(g) && clock() < deadline);
 	}
 	if (z_is_one(g) || z_eq(g, n))
 		return 0;
@@ -1068,6 +1103,9 @@ z_factor(zint a, zint *p, int *e, int max, int *complete)
 	int ns = 0, np = 0, i, j, comp = 1;
 	static const int small[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31,
 	    37, 41, 43, 47};
+	/* A hard cofactor must degrade to "not fully factored" promptly: the
+	 * default path used to spin for ~25 s on a squared 61-bit prime. */
+	clock_t deadline = clock() + (clock_t)(5.0 * CLOCKS_PER_SEC);
 
 	zmark mk;
 
@@ -1114,8 +1152,20 @@ z_factor(zint a, zint *p, int *e, int max, int *complete)
 			ADDP(n, 1);
 			continue;
 		}
+		/* A perfect square (notably p^2 for a >64-bit prime p) is
+		 * resolved by one integer sqrt instead of ~sqrt(p) rho
+		 * iterations.  The factors are pushed for the normal path to
+		 * classify: p itself is prime or gets factored further. */
+		if (ns + 2 <= 128) {
+			zint s = z_isqrt(n);
+			if (z_eq(z_mul(s, s), n)) {
+				stack[ns++] = s;
+				stack[ns++] = s;
+				continue;
+			}
+		}
 		for (i = 1; i < 6 && f == 0; i++)
-			f = rho(n, i);
+			f = rho(n, i, deadline);
 		if (f == 0 || ns + 2 > 128) {
 			ADDP(n, 1);
 			comp = 0;

@@ -1,0 +1,63 @@
+c lower nofile
+```c
+// C #if evaluates in intmax_t/uintmax_t with the usual arithmetic conversions.
+// A negative operand compared with an unsigned one converts to the large
+// unsigned value, so these branches are the opposite of a signed comparison.
+int u1(int x){
+#if -1 < 1U
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u2(int x){
+#if 0xFFFFFFFFFFFFFFFF > 0
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u3(int x){
+#if -1 <= 0U
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u4(int x){
+#if 9223372036854775808 > 0
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u5(int x){
+#if '\xff' < 0
+ return 111;
+#else
+ return 222;
+#endif
+}
+// controls: signed comparisons keep the signed reading
+int u6(int x){
+#if -1 < 1
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u7(int x){
+#if 1U < 2U
+ return 111;
+#else
+ return 222;
+#endif
+}
+int u8(int x){
+#if 0x7fffffffffffffff > 0
+ return 111;
+#else
+ return 222;
+#endif
+}
+```

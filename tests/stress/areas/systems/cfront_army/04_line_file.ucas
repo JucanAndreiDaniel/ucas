@@ -1,0 +1,17 @@
+c lower nofile
+```c
+// __LINE__ and __FILE__ are standard C99 predefined macros.
+#define HERE __LINE__
+#define F __FILE__
+int l1(void){return __LINE__;}
+int l2(void){return HERE;}
+int l3(void){return HERE;}
+int l4(void){return sizeof(__FILE__);}
+int l5(void){return sizeof(F);}
+// controls: preprocessor conditionals still work with __LINE__
+#if __LINE__ > 0
+int l6(void){return 1;}
+#else
+int l6(void){return 2;}
+#endif
+```

@@ -1088,6 +1088,33 @@ done:
 	ar_release(mk);
 }
 
+/*
+ * conv() (poly.c) keeps monomial exponents in uint8_t, so a power with a
+ * numeric exponent of magnitude > 255 cannot be expanded and is left as an
+ * opaque atom.  That hides the underlying variable: x^256 and x^64 become two
+ * unrelated atoms, so mp_gcd(x^256-1, x^64-1) is 1 even though the true gcd
+ * is x^64-1.  Blessing that with "cofactors coprime" would certify a wrong
+ * answer.  at_node[] holds every atom collected by the two rf_of() calls,
+ * so an O_POW atom with a large numeric exponent (and a non-numeric base)
+ * is exactly the case conv() could not take apart.
+ */
+static int
+big_pow_atoms(void)
+{
+	double v, base;
+	int k;
+
+	for (k = 0; k < nat; k++) {
+		nid e = at_node[k];
+		if (e == 0 || N.op[e] != O_POW)
+			continue;
+		if (num_of(N.b[e], &v) && fabs(v) > 255 &&
+		    !num_of(N.a[e], &base))
+			return 1;
+	}
+	return 0;
+}
+
 void
 alg_cmd2(const char *cmd, nid a, nid b, nid var)
 {
@@ -1127,6 +1154,16 @@ alg_cmd2(const char *cmd, nid a, nid b, nid var)
 				rep_strf("result", "%lld", (long long)(gg ?
 				    llabs(x.n / gg * y.n) : 0));
 			}
+			goto done;
+		}
+		if (big_pow_atoms()) {
+			printf("  %s not computed: a power above the exponent limit "
+			    "(255) was treated as an opaque atom; result "
+			    "unverified\n", cmd);
+			rep_check("not_computed", -1, -1, 0,
+			    "gcd/lcm not computed: a power with exponent above "
+			    "255 was treated as an opaque atom; the result is "
+			    "unverified");
 			goto done;
 		}
 		g = mp_gcd(ra.n, rb.n);

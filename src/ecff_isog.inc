@@ -289,6 +289,7 @@ cmd_ecdivpoly(void)
 	struct px *f, psi;
 	nn nv;
 	int n, i, counts[600], top, nr;
+	int leftover = 0, bigdeg = 0;
 	static char buf[100000];
 	u64 roots[64 * FW];
 
@@ -328,12 +329,45 @@ cmd_ecdivpoly(void)
 		if (g.d > 0)
 			px_divmod(CF, &sq, NULL, &psi, &g);
 		top = px_ddf(CF, &sq, counts, 599);
+		leftover = bigdeg = 0;
 		{
 			size_t o = 0;
+			int accounted = 0;
+			/* buf still holds the psi_n text from px_print() above; never
+			 * fall back to it when there is nothing to tabulate. */
+			buf[0] = '\0';
 			for (i = 1; i <= 599 && i <= (top > 0 ? top : 599); i++)
-				if (counts[i])
+				if (counts[i]) {
 					o += (size_t)snprintf(buf + o, sizeof buf - o, "%s%d of "
 					    "degree %d", o ? ", " : "", counts[i], i);
+					accounted += counts[i] * i;
+				}
+			leftover = sq.d - accounted;
+			if (top < 0) {
+				/* px_ddf sets top = -1 when the squarefree part still has
+				 * a factor left over after degree 599: every remaining
+				 * irreducible factor has degree > 599 and is NOT in
+				 * counts[].  Report its total degree honestly. */
+				if (leftover >= 2 * 600) {
+					/* could be several untabulated factors; do not
+					 * guess an individual degree */
+					o += (size_t)snprintf(buf + o, sizeof buf - o,
+					    "%sfactors of total degree %d (each of degree > "
+					    "599, not tabulated)", o ? ", " : "", leftover);
+				} else {
+					/* every remaining factor has degree >= 600, so
+					 * leftover < 1200 means exactly one of them, of
+					 * this exact degree */
+					bigdeg = leftover;
+					o += (size_t)snprintf(buf + o, sizeof buf - o,
+					    "%s1 of degree %d", o ? ", " : "", bigdeg);
+				}
+			}
+			if (!o && top >= 0)
+				/* psi has a constant squarefree part (psi is inseparable,
+				 * e.g. when p divides n): nothing was tabulated */
+				snprintf(buf, sizeof buf,
+				    "none (squarefree part is constant)");
 			printf("  irreducible factors: %s\n", buf);
 		}
 		px_free(&g);
@@ -354,9 +388,25 @@ cmd_ecdivpoly(void)
 				}
 				L = L / g * i;
 			}
-		printf("  torsion field: the x-coordinates of E[%d] lie in F_p^%d (the "
-		    "lcm of the factor degrees)%s\n", n, L, full ?
-		    " (all rational)" : "");
+		if (bigdeg) {	/* exactly one untabulated irreducible factor */
+			int g = L, b = bigdeg, t;
+			while (b) {
+				t = g % b;
+				g = b;
+				b = t;
+			}
+			L = L / g * bigdeg;
+		}
+		if (top < 0 && !bigdeg) {
+			/* factor degrees are not fully known: do NOT print a false
+			 * lcm (the old code printed F_p^1 from an empty lcm) */
+			printf("  torsion field: not determined -- some irreducible factor "
+			    "degrees exceed the tabulation limit (599); total untabulated "
+			    "degree %d\n", leftover);
+		} else
+			printf("  torsion field: the x-coordinates of E[%d] lie in F_p^%d "
+			    "(the lcm of the factor degrees)%s\n", n, L, full ?
+			    " (all rational)" : "");
 	}
 	for (i = 0; i <= n + 2; i++)
 		px_free(&f[i]);

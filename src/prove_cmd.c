@@ -389,12 +389,20 @@ cmd_prove(const char *rest)
 	if (th) {
 		index_lemmas();
 		k = kcheck(th, msg, sizeof msg, &steps);
+		if (!k) {
+			/* the prover produced a certificate that its own
+			 * checker rejects: do not store it or claim a proof */
+			printf("%s: proof failed recheck: %s\n", name, msg);
+			rep_bool("proved", 0);
+			rep_bool("rechecked", 0);
+			rep_str("reason", msg);
+			return;
+		}
 		klemmas[li].th = th;
 		printf("%s: proved automatically (%u kernel inferences); "
-		    "independent re-check: %s\n", name, total_inferences(th),
-		    k ? "ok" : msg);
+		    "independent re-check: ok\n", name, total_inferences(th));
 		rep_bool("proved", 1);
-		rep_bool("rechecked", k);
+		rep_bool("rechecked", 1);
 		return;
 	}
 	/* the library's theorem proofs, replayed on this statement */
@@ -412,13 +420,23 @@ cmd_prove(const char *rest)
 			if (th) {
 				index_lemmas();
 				k = kcheck(th, msg, sizeof msg, &steps);
+				if (!k) {
+					/* a replay whose certificate fails its own
+					 * re-check is not a proof: do not store it */
+					printf("%s: proof failed recheck (proof of %s): "
+					    "%s\n", name, sym_str(klemmas[i].name),
+					    msg);
+					rep_bool("proved", 0);
+					rep_bool("rechecked", 0);
+					rep_str("reason", msg);
+					return;
+				}
 				klemmas[li].th = th;
 				printf("%s: proved by the proof of %s (%u kernel "
-				    "inferences); independent re-check: %s\n", name,
-				    sym_str(klemmas[i].name), total_inferences(th),
-				    k ? "ok" : msg);
+				    "inferences); independent re-check: ok\n", name,
+				    sym_str(klemmas[i].name), total_inferences(th));
 				rep_bool("proved", 1);
-				rep_bool("rechecked", k);
+				rep_bool("rechecked", 1);
 				return;
 			}
 			printf("  the proof of %s does not apply: %s\n",

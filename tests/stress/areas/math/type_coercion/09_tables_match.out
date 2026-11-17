@@ -5,14 +5,17 @@ _() = 1
 _() = 1
   -> u8
 > show match 1 { 0 => u8(1), _ => i8(2) }
-_() = 2
-  -> u8
+09_tables_match.ucas:4:6: error: undefined function match
+    show match 1 { 0 => u8(1), _ => i8(2) }
+         ^
 > show match 1 { 0 => 3, _ => 4.5 }
-_() = 4.5
-  -> real
+09_tables_match.ucas:5:6: error: undefined function match
+    show match 1 { 0 => 3, _ => 4.5 }
+         ^
 > show match 1 { 0=>u8(1), 1=>i8(-1), _=>f32(2.5) }
-_() = -1
-  -> f32
+09_tables_match.ucas:6:6: error: undefined function match
+    show match 1 { 0=>u8(1), 1=>i8(-1), _=>f32(2.5) }
+         ^
 > days(m: u8) = match m { 2 => 28, 4 | 6 | 9 | 11 => 30, _ => 31 }
 > show days
 days(m: u8) = m == 2 ? 28 : m == 4 || m == 6 || m == 9 || m == 11 ? 30 : 31
