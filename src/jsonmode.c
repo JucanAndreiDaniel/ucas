@@ -1470,8 +1470,9 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
     const char *what)
 {
 	static const char *const names[] = {"it", "that", "it3", "it4"};
-	const struct jv *body, *ps;
+	const struct jv *body, *ps, *w;
 	const char *nm;
+	int k;
 
 	if (v->t == J_STR)
 		return text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
@@ -1493,6 +1494,17 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	sb_puts(&r->pre, " = ");
 	if (!render_expr(r, &r->pre, body, what, 1))
 		return 0;
+	if ((w = jv_get(v, "where")) != NULL) {
+		if (w->t != J_ARR)
+			return bad(r, "bad_request", "%s.where: an array of strings",
+			    what);
+		for (k = 0; k < w->n; k++) {
+			if (w->v[k]->t != J_STR || !text_ok(r, what, w->v[k]->s))
+				return bad(r, "bad_request", "%s.where[%d]: a string",
+				    what, k);
+			sb_printf(&r->pre, "%s%s", k ? ", " : " where ", w->v[k]->s);
+		}
+	}
 	sb_putc(&r->pre, '\n');
 	sb_puts(b, nm);
 	return 1;
@@ -2315,7 +2327,8 @@ static const char schema_defs[] =
 "that) and then named\", \"oneOf\": [{\"type\": \"string\"}, {\"type\": "
 "\"object\", \"required\": [\"body\"], \"properties\": {\"body\": "
 "{\"$ref\": \"#/$defs/expression\"}, \"params\": {\"$ref\": "
-"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}}, "
+"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}, "
+"\"where\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, "
 "\"additionalProperties\": false}, {\"$ref\": \"#/$defs/expression\"}]}}";
 
 static const char schema_response[] =
@@ -2971,6 +2984,15 @@ handle(const struct jv *rq)
 	text = cap_end();
 	text = rep_text_cap(text);
 	rep_text_fill(text);
+	/*
+	 * English "forget everything" drops nlp.c's preferences on its own,
+	 * but leaves definitions, JSON assumptions and the model/basis
+	 * registries behind.  Treat it as a full reset, answered first and
+	 * restarted afterwards just like cmd:reset.
+	 */
+	if (!strcmp(cmd, "english") && text &&
+	    strstr(text, "forgot every assumption"))
+		reset_wanted = 1;
 	pieces = rep_collect();
 	if (!strcmp(cmd, "schema"))
 		;
@@ -3143,6 +3165,21 @@ self_exec(void)
 	execvp(sargv[0], sargv);
 	fprintf(stderr, "ucas: reset: cannot restart: %s\n", strerror(errno));
 	_exit(1);
+}
+
+/*
+ * Drop the whole session and rebuild a fresh one: user functions (including
+ * the auto-named it / that / _), both assumption stores, the active cost
+ * model and custom bases/models all live in registries with no in-process
+ * clear, so restarting with the same argv (the prelude rebuilds the
+ * defaults) is the only complete reset.  cmd:reset reaches this through
+ * reset_wanted in json_serve(); this entry point is for other frontends'
+ * reset paths, such as a fresh MCP initialize handshake.
+ */
+void
+json_reset_all(void)
+{
+	self_exec();
 }
 
 static int chained;

@@ -740,12 +740,13 @@ cmd_range(struct func *f)
 		rep_num("max", rmx);
 	}
 	if (!any)
-		printf(r.d.exhaustive ? "  empty (undefined everywhere)\n" :
-		    "  no value: none of the %llu points sampled is in the "
-		    "domain\n", (unsigned long long)r.d.pos);
-	else if (TY_FP(t))
-		printf("  [%.9g, %.9g]\n", rmn, rmx);
-	else {
+		printf("  empty (undefined everywhere)\n");
+	else if (TY_FP(t)) {
+		printf("  [%.9g, %.9g]", rmn, rmx);
+		if (!r.d.exhaustive)
+			printf("  (sampled min/max; not a sound bound)");
+		printf("\n");
+	} else {
 		struct sbuf b = {0};
 		fmt_val(&b, t, mn, 0);
 		rep_exact("min", (double)mn, sb_str(&b));
@@ -762,6 +763,8 @@ cmd_range(struct func *f)
 		if (bm)
 			printf("   (%llu distinct values)",
 			    (unsigned long long)ndist);
+		if (!r.d.exhaustive)
+			printf("  (sampled min/max; not a sound bound)");
 		printf("\n");
 		if (bm && ndist <= 64) {
 			int64_t *vals = xmalloc(ndist * sizeof *vals);
@@ -790,8 +793,9 @@ cmd_range(struct func *f)
 	if (nund)
 		printf("  undefined at %llu points\n", (unsigned long long)nund);
 	if (nnan || ninf)
-		printf("  IEEE: NaN at %llu points, ±inf at %llu points\n",
-		    (unsigned long long)nnan, (unsigned long long)ninf);
+		printf("  IEEE: NaN at %llu points, ±inf at %llu points%s\n",
+		    (unsigned long long)nnan, (unsigned long long)ninf,
+		    r.d.exhaustive ? "" : "  (sampled counts; not bounds)");
 	domain_note(&r, seen);
 	if (!r.d.exhaustive && TY_ISINT(t)) {
 		struct ival *iv = xcalloc(r.p.n, sizeof *iv);
@@ -1172,9 +1176,11 @@ cmd_domain(struct func *f)
 	rep_list("conditions");
 	list_conditions(f, &nc);
 	rep_end();
-	if (nc == 0)
-		printf("  no conditions: total on its parameter types\n");
 	if (f->np == 1 && TYK(f->p[0].ty) == K_REAL) {
+		/* domain_real1 has no defined-count to check, so keep the
+		 * original "no conditions" note here. */
+		if (nc == 0)
+			printf("  no conditions: total on its parameter types\n");
 		domain_real1(f);
 		return;
 	}
@@ -1218,6 +1224,15 @@ cmd_domain(struct func *f)
 	}
 	printf("  defined at %llu of %llu points\n", (unsigned long long)ndef,
 	    (unsigned long long)seen);
+	/* "No conditions" only means the function can be total: UB or an
+	 * always-undefined body still leaves zero defined points.  Decide
+	 * after the run, never before, so an empty domain is not called
+	 * total. */
+	if (ndef == 0)
+		printf("  empty domain: undefined at every point of the "
+		    "parameter types\n");
+	else if (nc == 0)
+		printf("  no conditions: total on its parameter types\n");
 	rep_int("defined_points", (long long)ndef);
 	rep_int("points", (long long)seen);
 	rep_bool("exhaustive", r.d.exhaustive);
