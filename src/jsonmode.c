@@ -3339,7 +3339,7 @@ rd_all(int fd, void *p, size_t n)
 static int
 run_with_timeout(const struct jv *rq, double secs)
 {
-	int sp[2], st = 0;
+	int sp[2], ap[2], st = 0;
 	pid_t pid;
 	struct pollfd pf;
 	struct timespec t0, t1;
@@ -3351,11 +3351,21 @@ run_with_timeout(const struct jv *rq, double secs)
 	chain_start();
 	if (pipe(sp) != 0)
 		return -1;
+	/* The child becomes the next server as soon as it has handed us its
+	 * reply.  Without this acknowledgement it can write the *next*
+	 * request's reply before we have replayed this one, swapping ids. */
+	if (pipe(ap) != 0) {
+		close(sp[0]);
+		close(sp[1]);
+		return -1;
+	}
 	fflush(NULL);
 	pid = fork();
 	if (pid < 0) {
 		close(sp[0]);
 		close(sp[1]);
+		close(ap[0]);
+		close(ap[1]);
 		return -1;
 	}
 	if (pid == 0) {
@@ -3366,6 +3376,7 @@ run_with_timeout(const struct jv *rq, double secs)
 		FILE *mem = open_memstream(&rbuf, &rn);
 		FILE *saved = jout;
 		close(sp[0]);
+		close(ap[1]);		/* we read the ack from ap[0] */
 		if (mem)
 			jout = mem;
 		resp = handle(rq);
@@ -3382,11 +3393,21 @@ run_with_timeout(const struct jv *rq, double secs)
 			(void)!wr_all(sp[1], "k", 1);
 		free(rbuf);
 		close(sp[1]);
+		/* Do not carry on as the server until the parent has replayed
+		 * this reply to stdout: otherwise the next request's reply can
+		 * overtake this one and the two get the wrong ids. */
+		{
+			char ack;
+			while (read(ap[0], &ack, 1) < 0 && errno == EINTR)
+				;
+		}
+		close(ap[0]);
 		if (reset_wanted && !oneshot)
 			self_exec();
 		return 1;
 	}
 	close(sp[1]);
+	close(ap[0]);		/* we write the ack to ap[1] */
 	clock_gettime(CLOCK_MONOTONIC, &t0);
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &t1);
@@ -3396,6 +3417,7 @@ run_with_timeout(const struct jv *rq, double secs)
 			kill(pid, SIGKILL);
 			waitpid(pid, NULL, 0);
 			close(sp[0]);
+			close(ap[1]);
 			{
 				char m[120];
 				snprintf(m, sizeof m, "timed out after %g s; the state "
@@ -3422,6 +3444,7 @@ run_with_timeout(const struct jv *rq, double secs)
 				kill(pid, SIGKILL);
 				waitpid(pid, NULL, 0);
 				close(sp[0]);
+				close(ap[1]);
 				resp = error_response(jv_get(rq, "id"),
 				    jv_gets(rq, "cmd"), "internal",
 				    "worker reply was corrupt");
@@ -3436,6 +3459,9 @@ run_with_timeout(const struct jv *rq, double secs)
 				free(rbuf);
 			}
 			(void)read(sp[0], &c, 1);   /* 'k' */
+			/* Replay done: only now may the child become the server. */
+			(void)!wr_all(ap[1], "k", 1);
+			close(ap[1]);
 			_exit(0);   /* the child is the server now */
 		}
 		/* closed without the byte: it died.  If waitpid fails there is
@@ -3444,6 +3470,7 @@ run_with_timeout(const struct jv *rq, double secs)
 		{
 			pid_t w = waitpid(pid, &st, 0);
 			close(sp[0]);
+			close(ap[1]);
 			char m[120];
 			if (w > 0 && WIFSIGNALED(st))
 				snprintf(m, sizeof m, "the evaluation crashed "

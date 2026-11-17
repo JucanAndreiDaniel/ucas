@@ -21,6 +21,7 @@
  */
 #include "ucas.h"
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -799,7 +800,7 @@ gates_synth(const struct basis *bs, int nin, uint64_t tt, uint64_t care,
 	s->tg[0] = tt & s->care;
 	s->active[0] = 1;
 	s->ntg = 1;
-	s->mincost = 255;
+	s->mincost = INT_MAX;
 	for (gi = 0; gi < bs->ng; gi++)
 		if (bs->g[gi].cost < s->mincost)
 			s->mincost = bs->g[gi].cost;
@@ -966,7 +967,7 @@ cmd_gates(struct func *f, struct basis *bs, int maxcost, int emit)
 		outk[nout] = (int)k;
 		uniq[nout++] = t;
 	}
-	s->mincost = 255;
+	s->mincost = INT_MAX;
 	for (gi = 0; gi < bs->ng; gi++)
 		if (bs->g[gi].cost < s->mincost)
 			s->mincost = bs->g[gi].cost;

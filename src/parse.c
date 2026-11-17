@@ -294,10 +294,16 @@ number(struct P *p)
 				isreal = 1;
 		if (isreal) {
 			double d = strtod(buf, NULL);
+			nid c;
 			adv(p);
+			c = mk_const_r(d);
+			/* Remember that this value was written as a decimal, so
+			 * solve/alg can tell it apart from a rational such as
+			 * 1/3 that happens to fold to the same double. */
+			N.fl[c] |= NF_DECIMAL;
 			if (f32)
-				return mk_cast(TY_F32, mk_const_r(d));
-			return mk_const_r(d);
+				return mk_cast(TY_F32, c);
+			return c;
 		}
 		v = strtoull(buf, NULL, 10);
 	}
@@ -2328,6 +2334,29 @@ cmd_func(struct P *p)
 	return f;
 }
 
+/*
+ * A bare name that stands alone as an argument to equiv names a function,
+ * not the start of an anonymous expression ("x+0"): report an undefined one
+ * instead of letting cmd_func turn it into a free identity variable (which
+ * would make `equiv f nosuch` look equal to f).  Other commands legitimately
+ * take free variables (egf n, error two ~ x), so the strict check belongs
+ * here, not in cmd_func itself.
+ */
+static struct func *
+cmd_named_func(struct P *p)
+{
+	uint32_t at = p->i;
+
+	if (pk(p) == T_ID && func_find(tsym(p, at)) == NULL &&
+	    builtin(p, at) == NULL &&
+	    (at + 1 >= p->t->n || p->t->kind[at + 1] == T_NL ||
+	    p->t->kind[at + 1] == T_EOF || p->t->kind[at + 1] == T_TILDE ||
+	    word_in(p, at + 1, stopwords) || p->t->kind[at + 1] == T_ID ||
+	    p->t->kind[at + 1] == T_NUM))
+		fail("undefined function %s", sym_str(tsym(p, at)));
+	return cmd_func(p);
+}
+
 /* ---- prelude: bases and the cost model ---- */
 
 static const char prelude[] =
@@ -2848,13 +2877,12 @@ parse_basis(struct P *p)
 		if (accept_kw(p, "cost")) {
 			nid c;
 			if (pk(p) == T_MINUS)
-				fail("gate cost must be a non-negative integer "
-				    "(0..255)");
+				fail("gate cost must be a non-negative integer");
 			c = number(p);
-			if (!is_const(c) || N.ki[c] < 0 || N.ki[c] > 255)
-				fail("gate cost must be an integer between 0 and "
-				    "255 (it is stored as 8 bits)");
-			g->cost = (uint8_t)N.ki[c];
+			if (!is_const(c) || N.ki[c] < 0 || N.ki[c] > INT32_MAX)
+				fail("gate cost must be a non-negative integer "
+				    "that fits in an int");
+			g->cost = (int)N.ki[c];
 		}
 		/* commit only once the whole gate parsed and validated */
 		if (g->lut) {
@@ -4132,7 +4160,10 @@ statement(struct P *p)
 				cmd_npn();
 				return;
 			}
-			f = cmd_func(p);
+			if (!strcmp(cmd, "equiv"))
+				f = cmd_named_func(p);
+			else
+				f = cmd_func(p);
 			if (!strcmp(cmd, "show")) {
 				expect_eos(p);
 				notes_flush();
@@ -4181,7 +4212,8 @@ statement(struct P *p)
 				int metric = 0, ftz = -1, nanbits = -1;
 				accept(p, T_TILDE);
 				accept_kw(p, "to");
-				g = cmd_func(p);
+				g = !strcmp(cmd, "equiv") ? cmd_named_func(p) :
+				    cmd_func(p);
 				while (!strcmp(cmd, "equiv")) {
 					if (accept_kw(p, "ftz"))
 						ftz = 1;

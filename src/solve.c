@@ -23,6 +23,36 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Does e contain a floating constant written as a decimal literal, i.e. a
+ * rounded decimal such as 0.3333333333333333?  A rational written as a
+ * quotient (1/3, x/3) folds to the same double but is exact as written, so
+ * it is NOT flagged — the parser marks only decimal literals with
+ * NF_DECIMAL. */
+static int
+rounded_consts(nid e, int depth)
+{
+	nid op[3];
+	int i, ar;
+
+	if (!e || depth > 100)
+		return 0;
+	if (N.op[e] == O_CONST) {
+		if (!TY_FP(N.ty[e]))
+			return 0;
+		return (N.fl[e] & NF_DECIMAL) != 0;
+	}
+	ar = opinfo[N.op[e]].arity;
+	if (ar < 0 || ar > 3)
+		return 0;
+	op[0] = N.a[e];
+	op[1] = N.b[e];
+	op[2] = N.c[e];
+	for (i = 0; i < ar; i++)
+		if (rounded_consts(op[i], depth + 1))
+			return 1;
+	return 0;
+}
+
 /* ---- text of exact numbers ---- */
 
 static char *
@@ -868,7 +898,11 @@ static void
 print_sols(nid g, int slot, const char *xn)
 {
 	int i, any = 0, k;
+	int rounded = rounded_consts(g, 0);
 
+	if (rounded)
+		printf("  note: a coefficient is a rounded decimal (numbers in "
+		    "expressions are doubles), so the solutions are approximate\n");
 	for (i = 0; i < nS; i++) {
 		if (S[i].mult == 0)
 			continue;
@@ -877,7 +911,7 @@ print_sols(nid g, int slot, const char *xn)
 		rep_obj(NULL);
 		rep_str(xn, S[i].text);
 		rep_num("value", S[i].v);
-		rep_bool("exact", S[i].general != -1);
+		rep_bool("exact", S[i].general != -1 && !rounded);
 		if (S[i].general == 1) {
 			rep_num("period", S[i].per);
 			rep_str("general", "k any integer");

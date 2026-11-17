@@ -574,6 +574,29 @@ node(int op, ty_t t, nid a, nid b, nid c)
 
 /* ---- implicit conversions ---- */
 
+/*
+ * The bool result of a comparison against a machine-typed (uN/iN) operand
+ * implicitly carries that operand's width.  Recover it here so arithmetic
+ * that mixes such a bool with a folded literal wraps to the declared machine
+ * type instead of being computed as an unbounded literal.  Returns 0 when the
+ * node is not such a comparison.
+ */
+static ty_t
+cmp_machine_ty(nid b)
+{
+	ty_t t;
+
+	if (TYK(N.ty[b]) != K_BOOL || !(opinfo[N.op[b]].fl & OF_CMP))
+		return 0;
+	t = N.a[b] ? N.ty[N.a[b]] : 0;
+	if (TYK(t) == K_UINT || TYK(t) == K_SINT)
+		return t;
+	t = N.b[b] ? N.ty[N.b[b]] : 0;
+	if (TYK(t) == K_UINT || TYK(t) == K_SINT)
+		return t;
+	return 0;
+}
+
 static ty_t
 common(ty_t x, ty_t y, int *mix)
 {
@@ -864,8 +887,13 @@ mk_bin(int op, nid a, nid b)
 			t = TY_REAL;
 		if (t == TY_BOOL && !(opinfo[op].fl & OF_CMP) &&
 		    op != O_AND && op != O_OR && op != O_XOR &&
-		    op != O_MIN && op != O_MAX)
-			t = TY_LIT;
+		    op != O_MIN && op != O_MAX) {
+			ty_t bt = cmp_machine_ty(a);
+
+			if (!bt)
+				bt = cmp_machine_ty(b);
+			t = bt ? bt : TY_LIT;
+		}
 		if (mix)
 			note("mixing %s and %s: computed as %s", ty_str(ta),
 			    ty_str(tb), ty_str(t));

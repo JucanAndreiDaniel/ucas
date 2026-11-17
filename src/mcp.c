@@ -259,6 +259,10 @@ cmd_index(const char *name)
 
 /* ---- JSON-RPC ---- */
 
+/* a JSON-RPC notification (no id) is being handled: JSON-RPC forbids a reply,
+ * but the call must still run and mutate the session (e.g. session/define). */
+static int notifying;
+
 static struct jv *
 copy(const struct jv *v)
 {
@@ -266,6 +270,8 @@ copy(const struct jv *v)
 	struct jv *r;
 	char err[64];
 
+	if (v == NULL)		/* a notification has no id */
+		return jv_new(J_NULL);
 	jv_write(&b, v);
 	r = jv_parse(b.p, err, sizeof err, NULL);
 	free(b.p);
@@ -276,8 +282,13 @@ static void
 send(struct jv *msg)
 {
 	struct sbuf b = {0};
-	FILE *o = json_out();
+	FILE *o;
 
+	if (notifying) {	/* notifications must not be answered */
+		jv_free(msg);
+		return;
+	}
+	o = json_out();
 	jv_write(&b, msg);
 	sb_putc(&b, '\n');
 	fputs(b.p, o);
@@ -831,8 +842,12 @@ dispatch(const struct jv *msg)
 			rpc_error(id, -32602, "params must be an object");
 		return;
 	}
-	if (notif)
+	/* Drop only genuine notifications.  A tools/call without an id is a
+	 * notification too, but it still has to run: otherwise a session/define
+	 * sent without an id silently fails to register the definition. */
+	if (notif && strcmp(method, "tools/call"))
 		return;		/* notifications/initialized, cancelled ... */
+	notifying = notif;
 	if (!strcmp(method, "initialize"))
 		initialize(id, params);
 	else if (!strcmp(method, "ping"))
@@ -885,6 +900,7 @@ dispatch(const struct jv *msg)
 		snprintf(m, sizeof m, "method not found: %.100s", method);
 		rpc_error(id, -32601, m);
 	}
+	notifying = 0;
 }
 
 int

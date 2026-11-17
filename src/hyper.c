@@ -1950,6 +1950,39 @@ hy_bare(const struct toks *t, uint32_t b)
 			free(text);
 			return 0;
 		}
+		/*
+		 * The complex fallback is for a bare partial operation:
+		 * sqrt(-1), log(-1), asin(2), (-8)^(1/3).  When the undefined
+		 * subterm is nested in other arithmetic, its undefinedness
+		 * must propagate (F_UNDEF) instead of being resolved in the
+		 * complex plane: sqrt(-1)*0 is undefined, not the complex
+		 * number 0, and sqrt(-1)/sqrt(-1) is not 1.  Only take the
+		 * fallback when every operand of the whole expression is
+		 * itself defined; otherwise report the expression undefined.
+		 */
+		{
+			nid arg[3] = {N.a[e], N.b[e], N.c[e]};
+			int ar = opinfo[N.op[e]].arity, j, nested = 0;
+
+			if (ar > 3)
+				ar = 3;
+			for (j = 0; j < ar; j++) {
+				int aok = 0;
+				if (!arg[j])
+					continue;
+				eval_const_at(arg[j], 0, 0, &aok);
+				if (!aok) {
+					nested = 1;
+					break;
+				}
+			}
+			if (nested) {
+				free(text);
+				notes_drop();
+				printf("undefined\n");
+				return 1;
+			}
+		}
 		S.lg = 1;
 		memset(&tmp, 0, sizeof tmp);
 		tmp.name = sym_cstr("_");

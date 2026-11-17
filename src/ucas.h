@@ -276,6 +276,9 @@ extern const struct opinfo opinfo[O_NOPS];
 		      * in it: part of a value per lane */
 #define NF_LANEREAD 16 /* reads a parameter's value in another lane, which
 			* has no exact value here (sg_lane_copy) */
+#define NF_DECIMAL 64 /* constant came from a decimal literal (as written);
+			 * set only on the literal node, not on constants
+			 * folded from rational expressions such as 1/3 */
 #define NF_LANES 32  /* reads a `lanes` parameter in another lane: a free
 		      * word there, which only SAT gives a value (sg.c) */
 #define NF_INH (NF_VAR | NF_SG | NF_LANE | NF_LANEREAD | NF_LANES)
@@ -395,7 +398,8 @@ extern int nfuncs;
 #define MAXGATE 24
 struct gate {
 	uint32_t name;
-	uint8_t arity, tt, cost, symm; /* symm bit (i*3+j): args i,j interchangeable */
+	uint8_t arity, tt, symm; /* symm bit (i*3+j): args i,j interchangeable */
+	int cost;               /* declared gate cost; int so 256/65536 work */
 	uint8_t lut;    /* "= lut": any function of its inputs, the table per use
 			 * (vpternlog, LOP3) */
 	nid body;

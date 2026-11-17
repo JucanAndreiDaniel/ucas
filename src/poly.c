@@ -227,6 +227,43 @@ qexact(double v, aq *r)
 	return 0;
 }
 
+/* Is a floating constant exactly the rational it denotes, as written?
+ * qexact() only compares h/k with v in double arithmetic, so on its own it
+ * calls a rounded double "exact": it snaps 0.3333333333333333 to 1/3 because
+ * both are the same double.  Accept the fraction only when n/d is v's exact
+ * dyadic value (an integer up to 2^53, or a dyadic fraction such as 0.5);
+ * a decimal whose double is merely an approximation is not accepted. */
+int
+qexact_ok(double v, aq *r)
+{
+	int64_t n, m;
+	double f;
+	int e, k;
+
+	if (!isfinite(v) || fabs(v) > 9e15)
+		return 0;
+	if (!qexact(v, r) || r->d <= 0)
+		return 0;
+	if (v == floor(v))
+		return llabs((int64_t)v) <= ((int64_t)1 << 53);
+	n = r->n < 0 ? -r->n : r->n;
+	f = frexp(fabs(v), &e);		/* v = m * 2^k, m integral */
+	m = (int64_t)ldexp(f, 53);
+	k = e - 53;
+	if (k >= 0) {
+		i128 lhs = n, rhs = (i128)r->d * m;
+		if (k > 40)
+			return 0;
+		return lhs == (rhs << k);
+	}
+	{
+		i128 lhs = n, rhs = (i128)r->d * m;
+		if (-k > 70)
+			return 0;
+		return (lhs << -k) == rhs;
+	}
+}
+
 /* ---- atoms ---- */
 
 nid at_node[AV];
@@ -1903,6 +1940,10 @@ conv(nid e, struct rf *r, struct mp *dall, int depth)
 		num_of(e, &v);
 		{
 			aq c;
+			/* A rational such as 1/3 folds to a non-dyadic double, but it
+			 * is still exact as written.  qexact() accepts it; the
+			 * decimal-literal case is handled honestly by the caller
+			 * via NF_DECIMAL (see solve.c). */
 			if (qexact(v, &c)) {
 				*r = rf_poly(mp_const(c));
 				return 1;
@@ -1952,7 +1993,7 @@ conv(nid e, struct rf *r, struct mp *dall, int depth)
 		if (TY_FP(N.ty[e]) && is_const(N.a[e])) {
 			aq c;
 			num_of(N.a[e], &v);
-			if (qexact(v, &c)) {
+			if (qexact_ok(v, &c)) {
 				*r = rf_poly(mp_const(c));
 				return 1;
 			}
@@ -1977,7 +2018,7 @@ conv(nid e, struct rf *r, struct mp *dall, int depth)
 		/* u^(k + p/q) = u^k u^(p/q) */
 		if (num_of(N.b[e], &v) && fabs(v) < 64 && v != floor(v)) {
 			aq ex;
-			if (qexact(v, &ex) && ex.d <= 12) {
+			if (qexact_ok(v, &ex) && ex.d <= 12) {
 				int64_t kk = ex.n / ex.d;
 				aq fr;
 				nid at;
