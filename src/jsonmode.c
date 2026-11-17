@@ -763,13 +763,13 @@ static const struct jcmd cmds[] = {
 	    "instruction-set features", {{NULL, 0, 0, NULL, NULL, NULL}}},
 	/* x86-64 (x86*.c, cfx86.c): cost models, mca, intrinsics */
 	{"x86_models", "x86 models", 1, 0, "the x86 µarch cost models (skl "
-	    "skx glc rpl zen4 x86v2 x86v3 x86v4)", {{NULL, 0, 0, NULL, NULL,
+	    "skx glc rpl zen2 zen4 x86v2 x86v3 x86v4)", {{NULL, 0, 0, NULL, NULL,
 	    NULL}}},
 	{"x86_model", "model", 1, 0, "one x86 µarch: features, ports, and per "
 	    "instruction class latency, reciprocal throughput, uops and ports "
 	    "at xmm/ymm/zmm (with where each number comes from)",
-	    {TX("name", " %s", "skl skx glc rpl zen4 x86v2 x86v3 x86v4, or an "
-	    "alias: skylake, znver4 ...")}},
+	    {TX("name", " %s", "skl skx glc rpl zen2 zen4 x86v2 x86v3 x86v4, or "
+	    "an alias: skylake, znver4 ...")}},
 	{"mca", "mca", 1, 0, "a cycle-level throughput estimate of a "
 	    "function's x86 code (critical path, port pressure, front end; no "
 	    "caches or mispredictions)", {F("f", " %s", "the function"),
@@ -1512,6 +1512,41 @@ render_expr_func(struct req *r, struct sbuf *b, const struct jv *v,
 	return sb_puts(b, nm), 1;
 }
 
+/*
+ * Does S have the form "name(params) = body" (a function definition written
+ * inline)?  Spliced into "mca <s> on X" the grammar reads the '(' as a product
+ * and the '=' as '==', inventing a comparison; such a string must be defined
+ * first and only its name passed to the command.  A comparison "f(...) == e"
+ * is not a definition (the two '=' characters rule it out).
+ */
+static int
+def_str_name(const char *s, char *nm, size_t nn)
+{
+	const char *p = s, *name, *end, *q;
+	int par = 0;
+
+	while (*p == ' ' || *p == '\t') p++;
+	name = p;
+	if (!(isalpha((unsigned char)*p) || *p == '_'))
+		return 0;
+	while (isalnum((unsigned char)*p) || *p == '_') p++;
+	end = p;
+	while (*p == ' ' || *p == '\t') p++;
+	if (*p != '(' || (size_t)(end - name) >= nn)
+		return 0;
+	for (q = p; *q; q++) {
+		if (*q == '(') par++;
+		else if (*q == ')' && --par == 0) { q++; break; }
+	}
+	if (par != 0) return 0;
+	while (*q == ' ' || *q == '\t') q++;
+	if (*q != '=' || q[1] == '=')
+		return 0;
+	memcpy(nm, name, (size_t)(end - name));
+	nm[end - name] = 0;
+	return 1;
+}
+
 /* a function argument; an object is defined first (as it, that, ...) */
 static int
 render_func(struct req *r, struct sbuf *b, const struct jv *v,
@@ -1520,11 +1555,19 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	static const char *const names[] = {"it", "that", "it3", "it4"};
 	const struct jv *body, *ps, *w;
 	const char *nm;
+	char inm[64];
 	int k;
 
-	if (v->t == J_STR)
+	if (v->t == J_STR) {
+		if (!text_ok(r, what, v->s))
+			return 0;
+		if (def_str_name(v->s, inm, sizeof inm)) {
+			sb_printf(&r->pre, "%s\n", v->s);
+			return sb_puts(b, inm), 1;
+		}
 		return r->exprfn ? render_expr_func(r, b, v, what) :
-		    text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
+		    sb_puts(b, v->s), 1;
+	}
 	if (v->t != J_OBJ || (body = jv_get(v, "body")) == NULL) {
 		if (v->t == J_OBJ && (jv_get(v, "op") || jv_get(v, "var") ||
 		    jv_get(v, "num") || jv_get(v, "expr")))
@@ -2596,6 +2639,38 @@ cmd_limit(struct req *r)
 	return 1;
 }
 
+/*
+ * Render a JSON integer bound exactly.  The double in jv.num rounds
+ * INT64_MAX up to 2^63, so casting it to long long wraps to INT64_MIN and
+ * corrupts the bound before spirv_assume() ever sees it.  The parser keeps
+ * the original token text in jv.s, so parse that instead; reject anything
+ * that is not an exact, in-range integer rather than silently wrapping.
+ */
+static int
+render_int64(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	char *end;
+	long long q;
+
+	if (v->s) {
+		errno = 0;
+		q = strtoll(v->s, &end, 10);
+		if (errno == 0 && *end == '\0') {
+			sb_printf(b, "%lld", q);
+			return 1;
+		}
+	}
+	/* a token in floating form (1e3) or a value built in code: accept an
+	 * integral double that is exactly representable as an int64 */
+	if (!isfinite(v->num) || v->num != floor(v->num) ||
+	    v->num < -9223372036854775808.0 || v->num >= 9223372036854775808.0)
+		return bad(r, "bad_request", "%s: an integer in [INT64_MIN, "
+		    "INT64_MAX]", what);
+	sb_printf(b, "%lld", (long long)v->num);
+	return 1;
+}
+
 /* spirv_simplify given C (lang "c", or C by its content): c optimize */
 static int spirv_is_c;
 
@@ -2624,8 +2699,12 @@ cmd_spirv(struct req *r, const char **code)
 				    rg->v[0]->t != J_NUM || rg->v[1]->t != J_NUM)
 					return bad(r, "bad_request", "ranges: {\"name\": "
 					    "[lo, hi]} with integers");
-				sb_printf(&r->stmt, " assume %s %lld %lld", v->k[k],
-				    (long long)rg->v[0]->num, (long long)rg->v[1]->num);
+				sb_printf(&r->stmt, " assume %s ", v->k[k]);
+				if (!render_int64(r, &r->stmt, rg->v[0], "ranges lo"))
+					return 0;
+				sb_puts(&r->stmt, " ");
+				if (!render_int64(r, &r->stmt, rg->v[1], "ranges hi"))
+					return 0;
 			}
 		if ((v = jv_get(r->args, "nofile")) != NULL && v->t == J_TRUE)
 			sb_puts(&r->stmt, " nofile");
@@ -2651,8 +2730,12 @@ cmd_spirv(struct req *r, const char **code)
 			    rg->v[0]->t != J_NUM || rg->v[1]->t != J_NUM)
 				return bad(r, "bad_request", "ranges: {\"name\": [lo, "
 				    "hi]} with integers");
-			sb_printf(&r->stmt, " assume %s %lld %lld", v->k[k],
-			    (long long)rg->v[0]->num, (long long)rg->v[1]->num);
+			sb_printf(&r->stmt, " assume %s ", v->k[k]);
+			if (!render_int64(r, &r->stmt, rg->v[0], "ranges lo"))
+				return 0;
+			sb_puts(&r->stmt, " ");
+			if (!render_int64(r, &r->stmt, rg->v[1], "ranges hi"))
+				return 0;
 		}
 	if ((v = jv_get(r->args, "float_only")) != NULL && v->t == J_TRUE)
 		sb_puts(&r->stmt, " float");

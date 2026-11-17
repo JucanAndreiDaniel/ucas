@@ -31,8 +31,8 @@ opt_uarch(struct P *p)
 		return -1;
 	}
 	if ((ua = uarch_find(w)) < 0)
-		fail("unknown x86 µarch '%s' (skl skx glc rpl zen4 x86v2 x86v3 "
-		    "x86v4)", w);
+		fail("unknown x86 µarch '%s' (skl skx glc rpl zen2 zen4 x86v2 "
+		    "x86v3 x86v4)", w);
 	return ua;
 }
 
@@ -128,7 +128,8 @@ x86_command(struct P *p)
 	if (!strcmp(w, "mca")) {
 		struct func *f;
 		if (cmdp_eos(p))
-			fail("mca F [on skl|skx|glc|rpl|zen4|x86v2|x86v3|x86v4]");
+			fail("mca F [on skl|skx|glc|rpl|zen2|zen4|x86v2|x86v3|"
+			    "x86v4]");
 		f = cmdp_func(p, mca_stop);
 		ua = opt_uarch(p);
 		if (!cmdp_eos(p))

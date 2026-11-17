@@ -6,14 +6,16 @@ _() = 9218868437227405311
 _() = 1.797693135e+308
   -> real
 > show 1.797693135e+308
-_() = inf
-  -> real
+07_roundtrip_f64.ucas:4:6: error: the real literal 1.797693135e+308 is too large: it overflows to infinity (the largest finite real is about 1.8e308)
+    show 1.797693135e+308
+         ^
 > show f64_bits(1.7976931348623157e+308)
 _() = 9218868437227405311
   -> u64
 > show f64_bits(1.797693135e+308)
-_() = 9218868437227405312
-  -> u64
+07_roundtrip_f64.ucas:6:15: error: the real literal 1.797693135e+308 is too large: it overflows to infinity (the largest finite real is about 1.8e308)
+    show f64_bits(1.797693135e+308)
+                  ^
 > show asfloat(u64(0x3fd5555555555555))
 _() = 0.33333333333333331
   -> f64

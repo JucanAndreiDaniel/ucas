@@ -44,6 +44,8 @@
 #define MAXLV MAXN		/* sequential: one per element; parallel: 2 log n + 1 */
 #define MAXGIF (6 << 20)	/* fits the bot's 8 MiB output as base64, and
 				 * Discord's 10 MB attachments */
+#define MAXMCPGIF (3 << 20)	/* MCP/--json carry base64 inline and cap it
+				 * at 4 MiB: base64 is 4/3 of these bytes */
 
 enum { AL_HILLIS, AL_BLELLOCH, AL_SEQ };
 static const char *const alname[] = {"Hillis-Steele", "Blelloch",
@@ -1411,11 +1413,12 @@ xr_finish(int fps, double seconds, const char *name, int nofile)
 			gif_frame(&g, D.px, d);
 		}
 		gif_end(&g);
-		/* too large for the chat: fewer frames rather than none */
-		if (!(nlp_defer || rep_small_files) || g.out.n <= MAXGIF || fps <= 5)
+		/* too large for inline/chat: fewer frames rather than none */
+		if (!(nlp_defer || rep_small_files) ||
+		    g.out.n <= (rep_small_files ? MAXMCPGIF : MAXGIF) || fps <= 5)
 			break;
-		printf("  note: at %d fps the GIF is %zu bytes, over the chat's "
-		    "limit: rendering at %d fps\n", fps, g.out.n, fps / 2);
+		printf("  note: at %d fps the GIF is %zu bytes, over the inline "
+		    "image limit: rendering at %d fps\n", fps, g.out.n, fps / 2);
 		fps /= 2;
 		free(g.out.p);
 	}

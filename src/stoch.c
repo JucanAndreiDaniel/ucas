@@ -48,6 +48,7 @@
 #include "texenc.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -117,10 +118,29 @@ runif(void)
 uint64_t
 stoch_seed(void)
 {
-	const char *e = getenv("UCAS_SEED");
+	const char *e = getenv("UCAS_SEED"), *p;
+	char *end;
+	unsigned long long v;
 
-	if (e != NULL && *e)
-		return strtoull(e, NULL, 10);
+	if (e == NULL || !*e)
+		return 1;
+	p = e;
+	while (isspace((unsigned char)*p))
+		p++;
+	/* Only a plain, unsigned decimal number is a seed.  strtoull() alone
+	 * silently maps "abc" to 0, wraps a leading '-' to 2^64-n, saturates
+	 * on overflow and ignores trailing junk, which lets a typo change a
+	 * probabilistic verdict without any diagnostic. */
+	if (!isdigit((unsigned char)*p))	/* rejects sign and empty */
+		goto bad;
+	errno = 0;
+	v = strtoull(p, &end, 10);
+	if (errno == ERANGE || *end != '\0')
+		goto bad;
+	return (uint64_t)v;
+bad:
+	fprintf(stderr, "ucas: warning: ignoring malformed UCAS_SEED=\"%s\" "
+	    "(using seed 1)\n", e);
 	return 1;
 }
 
@@ -218,6 +238,19 @@ poly_deg(nid e, int *deg, int depth)
 		if (TY_FP(t) && N.kr[e] != floor(N.kr[e]))
 			return 0;
 		if (TY_FP(t) && fabs(N.kr[e]) > 9e15)
+			return 0;
+		/*
+		 * The field has PIT_P elements.  An integer constant whose
+		 * magnitude reaches PIT_P folds to a different residue in
+		 * redp(): a difference polynomial that is a nonzero multiple
+		 * of PIT_P then vanishes at every sampled point, and pit would
+		 * falsely claim "equal over the integers" (and equiv "equal
+		 * for every input").  Refuse such polynomials; the S-Z bound
+		 * only licenses the integer verdict when reduction mod PIT_P
+		 * is injective on the constants.
+		 */
+		if (!TY_FP(t) &&
+		    (N.ki[e] >= (int64_t)PIT_P || N.ki[e] <= -(int64_t)PIT_P))
 			return 0;
 		*deg = 0;
 		return 1;

@@ -1203,19 +1203,41 @@ z_parse(const char *s, zint *out, const char **end)
 	return 1;
 }
 
+/*
+ * Decimal conversion is quadratic: one 64-bit-by-constant division per limb
+ * for each 9-digit output chunk.  A 10^1000000 literal needed ~33 s just to
+ * print, twice, so cap the full rendering.  The bound is far above every
+ * value the stress goldens print (10^50000, 2^100000) and leaves arithmetic
+ * and bits: reporting untouched.
+ */
+#define Z_PRINT_MAX_DIGITS 300000U
+
 void
 z_print(struct sbuf *b, zint a)
 {
 	struct zv v;
-	uint32_t *t, n, i;
+	uint32_t *t, n, i, m;
 	uint32_t *chunks;
 	uint32_t nc = 0;
+	size_t bits;
 
 	if (Z_IS_SMALL(a)) {
 		sb_printf(b, "%lld", (long long)sval(a));
 		return;
 	}
 	view(a, &v);
+	/* each limb is below 10^10, so 10*n is a safe upper bound on digits */
+	if ((uint64_t)v.n * 10 > Z_PRINT_MAX_DIGITS) {
+		m = v.n;
+		while (m && v.d[m - 1] == 0)
+			m--;
+		bits = m ? (size_t)(m - 1) * 32 + (size_t)(32 - nlz32(v.d[m - 1])) : 0;
+		sb_printf(b, "[integer with about %zu decimal digits: full "
+		    "printing is disabled above %u digits; use arithmetic or "
+		    "bits]", (size_t)((double)bits * 0.3010299956639812) + 1,
+		    Z_PRINT_MAX_DIGITS);
+		return;
+	}
 	n = v.n;
 	t = scratch(3, n);
 	memcpy(t, v.d, n * sizeof *t);

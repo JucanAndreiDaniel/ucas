@@ -267,10 +267,13 @@ print_check(nid a, nid b, const char *cond)
 	int one, n;
 	uint64_t m = 0;
 
-	/* "same normal form over Q" is only a proof when the result was
+	/* "same normal form over Q" is only a proof when both sides were
 	 * printed exactly: a rounded decimal coefficient makes the claim
-	 * vacuous (both sides snap to the same rational). */
-	if (!rounded_coefs(b, 0) && exact_same(a, b)) {
+	 * vacuous (both sides snap to the same rational).  Check the input
+	 * too — e.g. simplify 22/7 echoes a 10-digit decimal on the left and
+	 * the exact 22/7 on the right; copying that decimal gives a different
+	 * value, so an "exact" claim there is misleading. */
+	if (!rounded_coefs(a, 0) && !rounded_coefs(b, 0) && exact_same(a, b)) {
 		printf("  check: exact (both sides have the same normal form)\n");
 		rep_check("normal_form", -1, -1, 1, "both sides have the same "
 		    "normal form");
@@ -515,6 +518,53 @@ nlen(nid e)
 	return n;
 }
 
+/*
+ * rf_of() hands out atom slots in the order the atoms first appear in the
+ * expression, and that order decides the monomial order, the sign of a
+ * polynomial's content and the order of the factors when a normal form is
+ * printed.  The same rational written two ways (1/x - 1/y versus
+ * (y - x)/(x*y)) therefore gets two different "normal forms", so simplify,
+ * expand and factor are not idempotent even though each claims an exact
+ * normal form.  Convert once to discover the atoms, put them into a stable
+ * order based on how they print, then convert again with that canonical
+ * atom table.  The result then depends only on the expression, not on the
+ * order in which its subterms happened to be visited.
+ */
+static int
+rf_of_canon(nid e, struct rf *r, struct mp *dall)
+{
+	char key[AV][512];
+	nid at[AV];
+	int i, j, n;
+
+	if (!rf_of(e, r, dall))
+		return 0;
+	n = nat;
+	if (n < 2)
+		return 1;
+	for (i = 0; i < n; i++) {
+		snprintf(key[i], sizeof key[i], "%s", node_str(at_node[i]));
+		at[i] = at_node[i];
+	}
+	/* insertion sort, key and atom together */
+	for (i = 1; i < n; i++) {
+		char kk[512];
+		nid v = at[i];
+		memcpy(kk, key[i], sizeof kk);
+		for (j = i - 1; j >= 0 && strcmp(key[j], kk) > 0; j--) {
+			at[j + 1] = at[j];
+			memcpy(key[j + 1], key[j], sizeof key[j]);
+		}
+		at[j + 1] = v;
+		memcpy(key[j + 1], kk, sizeof kk);
+	}
+	atoms_reset();
+	for (i = 0; i < n; i++)
+		at_node[i] = at[i];
+	nat = n;
+	return rf_of(e, r, dall);
+}
+
 nid
 alg_simplify(nid e, struct sbuf *conds)
 {
@@ -532,7 +582,7 @@ alg_simplify(nid e, struct sbuf *conds)
 	}
 	e = simp_rec(e, conds, 0);
 	atoms_reset();
-	if (!rf_of(e, &r, &dall)) {
+	if (!rf_of_canon(e, &r, &dall)) {
 		ar_release(mk);
 		nat = saved_nat;
 		memcpy(at_node, saved_at, sizeof saved_at);
@@ -614,7 +664,7 @@ static int
 conv_or_say(nid e, struct rf *r, struct mp *dall)
 {
 	atoms_reset();
-	if (!rf_of(e, r, dall)) {
+	if (!rf_of_canon(e, r, dall)) {
 		if (alg_ovf)
 			printf("  the coefficients grow past 64 bits: not done\n");
 		else

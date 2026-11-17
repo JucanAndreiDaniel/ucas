@@ -2253,6 +2253,47 @@ snap_x(double c, double h)
 	return c;
 }
 
+/*
+ * Equality tests like `x == c ? ... : ...` put an isolated point of
+ * discontinuity at an arbitrary real c that a fixed grid will generally
+ * miss.  Collect the constant side of every comparison involving the
+ * parameter so those points can be classified explicitly.
+ */
+static void
+spike_points(nid e, struct func *f, int slot, double *out, int *n, int max)
+{
+	int op;
+
+	if (!e || !(N.fl[e] & NF_VAR) || N.op[e] == O_VAR ||
+	    N.op[e] == O_TABLE)
+		return;
+	op = N.op[e];
+	if ((op == O_EQ || op == O_NE) && (N.fl[e] & NF_VAR)) {
+		nid cn = 0;
+		if (N.a[e] && !(N.fl[N.a[e]] & NF_VAR))
+			cn = N.a[e];
+		else if (N.b[e] && !(N.fl[N.b[e]] & NF_VAR))
+			cn = N.b[e];
+		if (cn) {
+			struct ev ce;
+			double y;
+			int k;
+			ev_open(&ce, f, cn, slot, 0);
+			if (ev1(&ce, 0, &y) && isfinite(y)) {
+				for (k = 0; k < *n; k++)
+					if (fabs(out[k] - y) < 1e-12 * (1 + fabs(y)))
+						break;
+				if (k == *n && *n < max)
+					out[(*n)++] = y;
+			}
+			ev_close(&ce);
+		}
+	}
+	spike_points(N.a[e], f, slot, out, n, max);
+	spike_points(N.b[e], f, slot, out, n, max);
+	spike_points(N.c[e], f, slot, out, n, max);
+}
+
 static void
 disc_analyse(struct func *f, int s, struct disc *D)
 {
@@ -2294,12 +2335,42 @@ disc_analyse(struct func *f, int s, struct disc *D)
 	}
 	if (D->ndom > MAXDI)
 		D->ndom = MAXDI;
+	/* Overflow guard: the evaluator reports a float that overflows to
+	 * infinity as undefined (its value is 0 with F_UNDEF).  A run of such
+	 * samples next to an enormous finite value is not a domain hole: in
+	 * exact arithmetic f is defined there, only too large for a double.
+	 * Collapse that gap onto the genuine domain edge so we do not report a
+	 * spurious finite interval of undefinedness (e.g. exp(1/x) on (0, 1/ln
+	 * DBL_MAX)). */
+	for (i = 0; i + 1 < (uint32_t)D->ndom; i++) {
+		int l = -1, r = -1, j;
+		for (j = 0; j < (int)g.n; j++) {
+			if (g.ok[j] && g.x[j] <= D->db[i])
+				l = j;
+			if (g.ok[j] && g.x[j] >= D->da[i + 1]) {
+				r = j;
+				break;
+			}
+		}
+		if ((l >= 0 && fabs(g.y[l]) > 1e100) ||
+		    (r >= 0 && fabs(g.y[r]) > 1e100))
+			D->da[i + 1] = D->db[i];
+	}
 	/* gaps between defined intervals and the domain's inner ends */
 	for (i = 0; i < (uint32_t)D->ndom; i++) {
 		if (D->da[i] > lo)
 			disc_classify(&e, D, D->da[i], scale);
 		if (D->db[i] < hi)
 			disc_classify(&e, D, D->db[i], scale);
+	}
+	/* isolated discontinuities at off-grid comparison constants */
+	if (!D->elementary) {
+		double cp[32];
+		int nc = 0, k;
+		spike_points(f->body, f, s, cp, &nc, 32);
+		for (k = 0; k < nc; k++)
+			if (cp[k] > lo && cp[k] < hi)
+				disc_classify(&e, D, cp[k], scale);
 	}
 	/* jumps between grid points */
 	for (i = 1; i + 1 < g.n; i++) {

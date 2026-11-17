@@ -568,15 +568,41 @@ infer_use(const struct sins *I, int k, char *ty, size_t n, int *ptr)
 		return;
 	}
 	if (strstr(op, "Equal") || strstr(op, "Less") || strstr(op, "Greater")) {
-		/* a comparison: the other operand's type, else by the opcode */
-		int other = k == 2 ? 3 : 2, j;
-		if (other < I->nop)
+		/* a comparison: the other operand's type, else by the opcode.
+		 * The opcode only fixes signedness (U/S/F), not width: inferring
+		 * 32 bits from OpULessThan when the other operand is %ulong_8
+		 * proves on the wrong domain. */
+		int other = k == 1 ? 2 : 1, j;
+		if (other < I->nop) {
+			const char *on = I->opnd[other];
+			/* a value defined by an instruction: its result type */
 			for (j = 0; j < V.nin; j++)
 				if (V.in[j].res >= 0 && V.in[j].nop > 0 &&
-				    !strcmp(V.id[V.in[j].res].name, I->opnd[other])) {
+				    !strcmp(V.id[V.in[j].res].name, on)) {
 					snprintf(ty, n, "%s", V.in[j].opnd[0]);
 					return;
 				}
+			/* a glslang-named constant (%ulong_8, %long_n1, ...) or a
+			 * scalar type name carries its type in the name itself;
+			 * such constants are not instructions, so the loop above
+			 * cannot see them. */
+			if (on && on[0] == '%') {
+				const char *u = strchr(on + 1, '_'), *d;
+				char tbuf[48];
+				if (u != NULL) {
+					snprintf(tbuf, sizeof tbuf, "%.*s",
+					    (int)(u - on), on);
+					if (is_scalar_name(tbuf + 1, &d)) {
+						snprintf(ty, n, "%s", tbuf);
+						return;
+					}
+				}
+				if (is_scalar_name(on + 1, &d)) {
+					snprintf(ty, n, "%s", on);
+					return;
+				}
+			}
+		}
 		fl = op[2] == 'F';
 		snprintf(ty, n, fl ? "%%float" : op[2] == 'U' ? "%%uint" : "%%int");
 		return;

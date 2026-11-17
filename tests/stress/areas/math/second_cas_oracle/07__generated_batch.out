@@ -76,7 +76,7 @@ expand (5x + 5)*(x^2 - 2x + 6)
 > expand (a*x+b)*(c*x+d)
   ucas: expand (a*x+b)*(c*x+d)
 expand (a*x + b)*(c*x + d)
-  = a*x^2*c + a*x*d + x*b*c + b*d
+  = a*c*x^2 + a*d*x + b*c*x + b*d
   check: exact (both sides have the same normal form)
 > expand (x^2+x+1)^2
   ucas: expand (x^2+x+1)^2
@@ -327,8 +327,9 @@ cancel 2x/(4x^2)
   check: exact (both sides have the same normal form)
 > cancel (-4x^3 - 2x^2 - 2x + 2)/(6x - 3)
 cancel (-4x^3 - 2x^2 - 2x + 2)/(6x - 3)
-  = -2x^2/3 - 2x/3 - 0.6666666667
-  note: coefficients are printed rounded (numbers in expressions are doubles), so no exact check is printed
+  = -2x^2/3 - 2x/3 - 2/3
+  holds where 2x - 1 != 0 (cancelled there)
+  check: exact (both sides have the same normal form)
 > cancel (x^4-1)/(x^2-1)
 cancel (x^4 - 1)/(x^2 - 1)
   = x^2 + 1
@@ -675,7 +676,7 @@ resultant x^2 + 1, x^3 - 1
 > discriminant a*x^2 + b*x + c
 discriminant a*x^2 + b*x + c
   in x (degree 2): b^2 - 4a*c
-  check: at sample values of the coefficients the numeric polynomial's discriminant is -0.7279, the formula gives -0.7279 (agrees)
+  check: at sample values of the coefficients the numeric polynomial's discriminant is -1.3928, the formula gives -1.3928 (agrees)
 > discriminant x^3 - 3x + 1
 discriminant x^3 - 3x + 1
   in x (degree 3): 81

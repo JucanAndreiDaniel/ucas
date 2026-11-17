@@ -136,11 +136,60 @@ static int complex_n;
 static char excl[512];
 static int symbolic_done;
 
+/* NaN and infinity are not real numbers: never let either become a solution.
+ * A vacuous substitution check (0 sample points) must not make one look valid. */
+static int
+finite_sol(double v)
+{
+	return isfinite(v);
+}
+
+/* a constant expression such as 0/0 or 1/0 (possibly under a real() cast)
+ * has no real value; unlike num_of(), this looks through casts and folds */
+static int
+nonfinite_const(nid e, int depth)
+{
+	nid a[3];
+	int i, ar;
+	double v;
+
+	if (!e || depth > 40)
+		return 0;
+	if (num_of(e, &v))
+		return !finite_sol(v);
+	if (N.op[e] == O_DIV && num_of(N.b[e], &v) && v == 0)
+		return 1;
+	ar = opinfo[N.op[e]].arity;
+	if (ar < 0 || ar > 3)
+		return 0;
+	a[0] = N.a[e];
+	a[1] = N.b[e];
+	a[2] = N.c[e];
+	for (i = 0; i < ar; i++)
+		if (nonfinite_const(a[i], depth + 1))
+			return 1;
+	return 0;
+}
+
+static int
+have_sol(double v)
+{
+	int i;
+
+	for (i = 0; i < nS; i++)
+		if (S[i].mult && !S[i].general && finite_sol(S[i].v) &&
+		    fabs(S[i].v - v) <= 1e-9 * fmax(1, fabs(v)))
+			return 1;
+	return 0;
+}
+
 static void
 addsol(const char *text, double v, int mult)
 {
 	int i;
 
+	if (!finite_sol(v))
+		return;
 	for (i = 0; i < nS; i++)
 		if (!S[i].general && fabs(S[i].v - v) <= 1e-12 * fmax(1, fabs(v))) {
 			S[i].mult += mult;
@@ -153,6 +202,92 @@ addsol(const char *text, double v, int mult)
 		S[nS].general = 0;
 		nS++;
 	}
+}
+
+static double
+horner(const double *c, int d, double x)
+{
+	double v = c[d];
+	int i;
+
+	for (i = d - 1; i >= 0; i--)
+		v = v * x + c[i];
+	return v;
+}
+
+static int
+have_out(const double *o, int n, double v)
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		if (fabs(o[i] - v) <= 1e-9 * fmax(1, fabs(v)))
+			return 1;
+	return 0;
+}
+
+/* Real roots of a polynomial by sign changes and bisection.  The complex
+ * root finder (poly_roots) stops at degree 14 and can fail to converge when
+ * an irreducible polynomial has many real roots, so high degrees are handled
+ * here instead of being reported as "no real solution".  Tangencies (roots of
+ * even multiplicity without a sign change) are not isolated; callers using
+ * this as a fallback account for them in the complex-solution count. */
+static int
+real_roots_bisect(const double *c, int d, double *out, int max)
+{
+	double B = 2, scale = fabs(c[d]), l = 0, h, xp, gp = 0;
+	enum { M = 40000 };
+	int i, j, n = 0, okp = 0;
+
+	if (d < 1 || max <= 0 || !finite_sol(scale) || scale == 0)
+		return 0;
+	for (i = 0; i < d; i++) {
+		double a = fabs(c[i]) / scale, b;
+		if (!finite_sol(a) || a == 0)
+			continue;
+		b = pow(a, 1.0 / (d - i));
+		if (finite_sol(b) && b > l)
+			l = b;
+	}
+	B = 2 * fmax(2.0, l);
+	if (B > 1e6)
+		B = 1e6;
+	h = 2 * B / M;
+	xp = -B;
+	for (j = 0; j <= M; j++) {
+		double x = -B + h * j, v = horner(c, d, x);
+		int ok = finite_sol(v);
+		if (ok && v == 0) {
+			if (n < max && !have_out(out, n, x))
+				out[n++] = x;
+		} else if (ok && okp && j && (v < 0) != (gp < 0)) {
+			double a = xp, b = x, ga = gp, m = 0;
+			int k;
+			for (k = 0; k < 100; k++) {
+				double gm;
+				m = 0.5 * (a + b);
+				gm = horner(c, d, m);
+				if (!finite_sol(gm) || gm == 0)
+					break;
+				if ((gm < 0) == (ga < 0))
+					a = m, ga = gm;
+				else
+					b = m;
+			}
+			m = 0.5 * (a + b);
+			if (fabs(m - nearbyint(m)) <= 1e-10 * fmax(1, fabs(m)))
+				m = nearbyint(m);
+			if (n < max && !have_out(out, n, m))
+				out[n++] = m;
+		}
+		if (ok) {
+			gp = v;
+			okp = 1;
+			xp = x;
+		} else
+			okp = 0;
+	}
+	return n;
 }
 
 /* the real roots of an irreducible f (monic, over Q) */
@@ -336,13 +471,26 @@ roots_irred(const struct up *f, int mult)
 	}
 	/* numeric */
 	{
-		double c[UD + 1];
+		double c[UD + 1], br[UD + 1];
 		struct root r[UD + 1];
-		int n, i;
-		if (f->d > 14)
-			return;
+		int n, i, nb;
 		for (i = 0; i <= f->d; i++)
 			c[i] = qd(f->c[i]);
+		if (f->d >= 13) {
+			/* poly_roots stops past degree 14 and can fail to converge
+			 * on an irreducible polynomial with many real roots (e.g. a
+			 * product of seven quadratics): isolate the real roots here
+			 * rather than issuing an unsound "no real solution". */
+			nb = real_roots_bisect(c, f->d, br, UD);
+			for (i = 0; i < nb; i++) {
+				snprintf(t, sizeof t, "%.15g", br[i]);
+				addsol(t, br[i], mult);
+				if (nS)
+					S[nS - 1].general = -1;   /* numeric */
+			}
+			complex_n += (f->d - nb) * mult;
+			return;
+		}
 		n = poly_roots(c, f->d, r);
 		for (i = 0; i < n; i++) {
 			if (r[i].im != 0) {
@@ -367,6 +515,12 @@ roots_up(const struct up *u)
 	if (u->d < 1)
 		return;
 	n = up_factor(u, f, m, UD, &partial);
+	if (n == 0) {
+		/* factorisation gave up (e.g. a degree-14 or -20 polynomial);
+		 * solve the whole polynomial numerically instead of dropping it */
+		roots_irred(u, 1);
+		return;
+	}
 	for (i = 0; i < n; i++)
 		roots_irred(&f[i], m[i]);
 }
@@ -616,6 +770,19 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 		ar_release(mk);
 		goto numeric;
 	}
+	/* A non-finite coefficient (0/0, 1/0) is not a real solution and cannot
+	 * make an equation true over the reals.  Reject it before any path can
+	 * turn it into a "solution" with a vacuous substitution check. */
+	for (i = 0; i < nat; i++) {
+		if (nonfinite_const(at_node[i], 0)) {
+			ar_release(mk);
+			rep_end();
+			rep_bool("inconsistent", 1);
+			printf("  no real solution\n");
+			symbolic_done = 1;
+			return;
+		}
+	}
 	vs = mp_vars(r.n) | mp_vars(r.d) | mp_vars(dall);
 	if (vs == (1u << xv)) {
 		/* rational in x */
@@ -630,6 +797,7 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 			rep_end();
 			rep_bool("every_value", 1);
 			ar_release(mk);
+			symbolic_done = 1;   /* print_sols must not add "no real solution" */
 			return;
 		}
 		if (n.d == 0) {
@@ -662,8 +830,18 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 			if ((vs & (1u << i)) && has_slot(at_node[i], slot))
 				any = 1;
 		if (!any) {
+			/* The unknown cancelled: a zero equation is an identity (all
+			 * reals), a nonzero constant is a contradiction. */
+			int identity = mp_deg(r.n, xv) < 0;
 			ar_release(mk);
-			printf("  %s does not occur in the equation\n", xn);
+			if (identity) {
+				printf("  every %s is a solution (where the equation is "
+				    "defined)\n", xn);
+				rep_end();
+				rep_bool("every_value", 1);
+				symbolic_done = 1;
+			} else
+				printf("  %s does not occur in the equation\n", xn);
 			return;
 		}
 	}
@@ -714,13 +892,17 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 				ok = 0;
 		if (ok) {
 			nid sols[2], mapx[NSLOT];
-			int ns = 0, s;
+			int ns = 0, s, bad[2] = {0, 0}, kept = 0;
 			if (dg == 1) {
-				sols[ns++] = rf_node(rf_norm((struct rf){mp_neg(C), B}), 0);
-				printf("  %s = %s\n", xn, node_str(sols[0]));
-				rep_obj(NULL);
-				rep_expr(xn, sols[0]);
-				rep_end();
+				sols[ns] = rf_node(rf_norm((struct rf){mp_neg(C), B}), 0);
+				bad[ns] = nonfinite_const(sols[ns], 0);
+				ns++;
+				if (!bad[0]) {
+					printf("  %s = %s\n", xn, node_str(sols[0]));
+					rep_obj(NULL);
+					rep_expr(xn, sols[0]);
+					rep_end();
+				}
 				if (!mp_isconst(B, NULL))
 					rep_cond("%s != 0", mp_str(B));
 				if (!mp_isconst(B, NULL))
@@ -733,6 +915,9 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 				for (s = 0; s < 2; s++)
 					sols[ns++] = DIV(s ? SUB(nb, sq) : ADD(nb, sq), den);
 				for (s = 0; s < 2; s++) {
+					bad[s] = nonfinite_const(sols[s], 0);
+					if (bad[s])
+						continue;
 					printf("  %s = (%s %s %s)/%s%s%s\n", xn, node_str(nb),
 					    s ? "-" : "+", node_str(sq), N.op[den] == O_MUL ? "(" :
 					    "", node_str(den), N.op[den] == O_MUL ? ")" : "");
@@ -751,16 +936,28 @@ solve1(nid g, nid x, int slot, const char *xn, const char *eqt)
 				printf("  real when the discriminant %s >= 0\n", mp_str(D));
 			}
 			ar_release(mk);
+			for (s = 0; s < ns; s++)
+				if (!bad[s])
+					kept++;
+			if (!kept) {
+				rep_end();
+				rep_bool("inconsistent", 1);
+				printf("  no real solution\n");
+				symbolic_done = 1;
+				return;
+			}
 			for (s = 0; s < ns; s++) {
 				double w;
 				int n;
+				if (bad[s])
+					continue;
 				memset(mapx, 0, sizeof mapx);
 				mapx[slot] = sols[s];
 				n = alg_check(subst(g, mapx, NSLOT), KR(0), &w, NULL);
 				rep_check("substitution", n, w, w <= 1e-8, NULL);
 				printf("  check: %s = %s substituted, the equation holds at %d "
 				    "sample points of the other variables (residual %.2g)\n",
-				    xn, ns == 1 ? "it" : s ? "the second" : "the first", n, w);
+				    xn, kept == 1 ? "it" : s ? "the second" : "the first", n, w);
 			}
 			symbolic_done = 1;
 			return;
@@ -1171,38 +1368,88 @@ solve_poly2(const nid *eq, const nid *vars)
 	roots_up(&u);
 	{
 		struct sol xs[MAXSOL];
+		double fx[MAXSOL], fy[MAXSOL];
 		int nx = nS;
 		memcpy(xs, S, sizeof xs);
 		for (i = 0; i < nx; i++) {
-			/* P(x0, y) = 0 and Q(x0, y) = 0: the y roots of P that Q shares */
-			double xv0 = xs[i].v, c[UD + 1];
-			struct root rr[UD + 1];
-			int dg = mp_deg(P, yv), k, nr;
-			double xvals[AV] = {0};
-			if (dg < 1) {
-				dg = mp_deg(Q, yv);
-			}
+			/* At x = xs[i] both equations become polynomials in y.  Try
+			 * each of them: when the leading coefficient of one vanishes
+			 * there, that polynomial is identically zero and only the other
+			 * one yields the common y roots.  Using just P used to drop the
+			 * branch x = 0 of systems such as x*y = 0, x + y = 1. */
+			double xv0 = xs[i].v, cp[UD + 1], cq[UD + 1];
+			double yc[4 * (UD + 1)], br[UD + 1];
+			struct root rp[UD + 1], rq[UD + 1];
+			int dp = mp_deg(P, yv), dq = mp_deg(Q, yv), k;
+			int dp2, dq2, nyc = 0, np = 0, nq = 0;
+			double xvals[AV] = {0}, scale;
 			xvals[xv] = xv0;
-			for (k = 0; k <= dg && k <= UD; k++) {
-				struct mp ck = mp_coef(mp_deg(P, yv) >= 1 ? P : Q, yv, k);
-				c[k] = mp_eval(ck, xvals);
+			for (k = 0; k <= dp && k <= UD; k++)
+				cp[k] = mp_eval(mp_coef(P, yv, k), xvals);
+			for (k = 0; k <= dq && k <= UD; k++)
+				cq[k] = mp_eval(mp_coef(Q, yv, k), xvals);
+			scale = 0;
+			for (k = 0; k <= dp; k++)
+				scale = fmax(scale, fabs(cp[k]));
+			dp2 = dp;
+			while (dp2 >= 0 && fabs(cp[dp2]) <= 1e-12 * fmax(1, scale))
+				dp2--;
+			scale = 0;
+			for (k = 0; k <= dq; k++)
+				scale = fmax(scale, fabs(cq[k]));
+			dq2 = dq;
+			while (dq2 >= 0 && fabs(cq[dq2]) <= 1e-12 * fmax(1, scale))
+				dq2--;
+			if (dp2 >= 1 && dp2 <= 14)
+				np = poly_roots(cp, dp2, rp);
+			if (dq2 >= 1 && dq2 <= 14)
+				nq = poly_roots(cq, dq2, rq);
+			for (k = 0; k < np; k++)
+				if (rp[k].im == 0 && finite_sol(rp[k].re) &&
+				    !have_out(yc, nyc, rp[k].re))
+					yc[nyc++] = rp[k].re;
+			for (k = 0; k < nq; k++)
+				if (rq[k].im == 0 && finite_sol(rq[k].re) &&
+				    !have_out(yc, nyc, rq[k].re))
+					yc[nyc++] = rq[k].re;
+			/* bisection also covers degrees above poly_roots' limit */
+			if (dp2 >= 1) {
+				int m = real_roots_bisect(cp, dp2, br, UD);
+				for (k = 0; k < m; k++)
+					if (!have_out(yc, nyc, br[k]))
+						yc[nyc++] = br[k];
 			}
-			nr = dg >= 1 ? poly_roots(c, dg, rr) : 0;
-			for (j = 0; j < nr; j++) {
-				double pv, qv;
-				if (rr[j].im != 0)
-					continue;
-				xvals[yv] = rr[j].re;
+			if (dq2 >= 1) {
+				int m = real_roots_bisect(cq, dq2, br, UD);
+				for (k = 0; k < m; k++)
+					if (!have_out(yc, nyc, br[k]))
+						yc[nyc++] = br[k];
+			}
+			for (k = 0; k < nyc; k++) {
+				double pv, qv, yv0 = yc[k];
+				int d, dup = 0;
+				xvals[yv] = yv0;
 				pv = mp_eval(P, xvals);
 				qv = mp_eval(Q, xvals);
-				if (fabs(pv) + fabs(qv) > 1e-6 * (1 + fabs(xv0) +
-				    fabs(rr[j].re)))
+				if (!finite_sol(pv) || !finite_sol(qv) ||
+				    fabs(pv) + fabs(qv) > 1e-6 * (1 + fabs(xv0) +
+				    fabs(yv0)))
 					continue;
+				for (d = 0; d < n; d++)
+					if (fabs(fx[d] - xv0) <= 1e-9 * fmax(1, fabs(xv0)) &&
+					    fabs(fy[d] - yv0) <= 1e-9 * fmax(1, fabs(yv0))) {
+						dup = 1;
+						break;
+					}
+				if (dup)
+					continue;
+				fx[n] = xv0;
+				fy[n] = yv0;
 				printf("  %s = %s, %s = %s\n", xn, xs[i].text, yn,
-				    c2_fnum(rr[j].re));
+				    c2_fnum(yv0));
 				rep_obj(NULL);
 				rep_str(xn, xs[i].text);
-				rep_str(yn, c2_fnum(rr[j].re));
+				rep_str(yn, c2_fnum(yv0));
 				rep_end();
 				worst = fmax(worst, fabs(pv) + fabs(qv));
 				n++;

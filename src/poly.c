@@ -1618,6 +1618,279 @@ is_homog(struct mp a)
 	return 1;
 }
 
+/* ---- univariate factorisation past UD (sparse mp, exponent <= 255) ----
+ * struct up is capped at UD=40, so up_of_mp() rejects larger univariate
+ * polynomials.  Do the square-free decomposition and the cheap factor
+ * searches directly on the sparse mp (whose exponents are uint8_t), so a
+ * reducible polynomial such as x^41-1 is not returned whole with a false
+ * "irreducible over the rationals" claim.  If the search cannot finish, the
+ * caller is told through *partial so the honest note is printed instead. */
+
+#define HD 255
+
+/* primitive integer coefficients of univariate a in v; 0 on overflow */
+static int
+mp_ints(struct mp a, int v, int64_t *A, int *deg)
+{
+	aq c[HD + 1];
+	int64_t l = 1, g = 0;
+	int d = mp_deg(a, v), i, k;
+
+	if (d < 0 || d > HD || alg_ovf)
+		return 0;
+	for (i = 0; i <= d; i++)
+		c[i] = qi(0);
+	for (i = 0; i < a.n; i++) {
+		for (k = 0; k < AV; k++)
+			if (k != v && a.t[i].e[k])
+				return 0;
+		k = a.t[i].e[v];
+		if (k > d)
+			return 0;
+		c[k] = a.t[i].c;
+		l = lcm64(l, c[k].d);
+	}
+	if (alg_ovf)
+		return 0;
+	for (i = 0; i <= d; i++) {
+		i128 t = (i128)c[i].n * (l / c[i].d);
+		if (t > INT64_MAX || t < -INT64_MAX)
+			return 0;
+		A[i] = (int64_t)t;
+		g = gcd64(g, A[i]);
+	}
+	if (g == 0)
+		return 0;
+	if (A[d] < 0)
+		g = -g;
+	for (i = 0; i <= d; i++)
+		A[i] /= g;
+	*deg = d;
+	return 1;
+}
+
+/* Horner evaluation of a univariate mp at a rational point */
+static aq
+mp_evalq(struct mp a, int v, aq x)
+{
+	int d = mp_deg(a, v), k;
+	aq s = qi(0);
+
+	for (k = d; k >= 0; k--) {
+		struct mp cc = mp_coef(a, v, k);
+		aq ck;
+		if (cc.n == 0)
+			continue;
+		if (!mp_isconst(cc, &ck))
+			return (aq){1, 1};
+		s = qadd(qmul(s, x), ck);
+	}
+	return alg_ovf ? qi(1) : s;
+}
+
+/* Yun square-free decomposition into monic, pairwise coprime pieces */
+static int
+mp_sqfree_hi(struct mp a, int v, struct mp *s, int max)
+{
+	struct mp b = mp_prim(a), d, g, c, y, t, w;
+	int i = 0, n = 0;
+
+	if (mp_deg(b, v) < 1 || alg_ovf)
+		return 0;
+	d = mp_diff(b, v);
+	g = mp_gcd(b, d);
+	if (!mp_divexact(b, g, &c) || !mp_divexact(d, g, &y))
+		return 0;
+	t = mp_diff(c, v);
+	y = mp_sub(y, t);
+	while (mp_deg(c, v) > 0 && i < max && !alg_ovf) {
+		w = mp_gcd(c, y);
+		s[i] = w;
+		if (mp_deg(w, v) > 0)
+			n = i + 1;
+		if (!mp_divexact(c, w, &c) || !mp_divexact(y, w, &y))
+			break;
+		t = mp_diff(c, v);
+		y = mp_sub(y, t);
+		i++;
+	}
+	return n;
+}
+
+/* Cyclotomic polynomials Phi_m, m = 1..HD, as integer coefficient arrays.
+ * Kept off the arithmetic arena: the table is small and reused, while the
+ * arena must not be flooded just to test a possible cyclotomic factor. */
+static int64_t cyc_co[HD + 1][HD + 1];
+static int cyc_d[HD + 1], cyc_ready;
+
+static void
+cyc_hi_build(void)
+{
+	int64_t tmp[HD + 1], quo[HD + 1];
+	int m, d, i, j;
+
+	if (cyc_ready)
+		return;
+	for (m = 0; m <= HD; m++) {
+		cyc_d[m] = -1;
+		memset(cyc_co[m], 0, sizeof cyc_co[m]);
+	}
+	for (m = 1; m <= HD; m++) {
+		for (i = 0; i <= m; i++)
+			tmp[i] = 0;
+		tmp[m] = 1;
+		tmp[0] = -1;
+		cyc_d[m] = m;
+		for (d = 1; d < m; d++)
+			if (m % d == 0 && cyc_d[d] >= 0) {
+				int db = cyc_d[d], da = cyc_d[m];
+				for (i = da - db; i >= 0; i--) {
+					quo[i] = tmp[i + db];
+					for (j = 0; j <= db; j++)
+						tmp[i + j] -= quo[i] * cyc_co[d][j];
+				}
+				memcpy(tmp, quo, (size_t)(da - db + 1) *
+				    sizeof *tmp);
+				cyc_d[m] = da - db;
+			}
+		memcpy(cyc_co[m], tmp, (size_t)(cyc_d[m] + 1) * sizeof *tmp);
+	}
+	cyc_ready = 1;
+}
+
+static struct mp
+cyc_mp(int v, int k)
+{
+	struct mp r = mp_new(cyc_d[k] + 1);
+	int j;
+
+	for (j = cyc_d[k]; j >= 0; j--)
+		if (cyc_co[k][j]) {
+			memset(&r.t[r.n], 0, sizeof r.t[r.n]);
+			r.t[r.n].c = qi(cyc_co[k][j]);
+			r.t[r.n].e[v] = (uint8_t)j;
+			r.n++;
+		}
+	return r;
+}
+
+/* squarefree g: strip monomial/rational/cyclotomic factors */
+static int
+mp_factor_sqf_hi(struct mp g0, int v, struct mp *f, int *m, int max,
+    int *partial)
+{
+	struct mp g = g0, lin;
+	int64_t A[HD + 1], dp[512], dq[512];
+	int d, np, nq, i, j, s, k, n = 0;
+
+	if (mp_deg(g, v) > 0 && mp_coef(g, v, 0).n == 0) {
+		if (n < max) {
+			f[n] = mp_atom(v);
+			m[n++] = 1;
+		}
+		if (!mp_divexact(g, mp_atom(v), &g))
+			return -1;
+	}
+	if (mp_deg(g, v) >= 1 && mp_ints(g, v, A, &d)) {
+		np = divs(A[0], dp, 512);
+		nq = divs(A[d], dq, 512);
+		if (np < 0 || nq < 0)
+			*partial = 1;
+		for (i = 0; i < np && mp_deg(g, v) >= 1; i++)
+			for (j = 0; j < nq && mp_deg(g, v) >= 1; j++)
+				for (s = -1; s <= 1; s += 2) {
+					aq r, val;
+					int so = alg_ovf;
+					if (gcd64(dp[i], dq[j]) != 1)
+						continue;
+					r = qmk(s * dp[i], dq[j]);
+					val = mp_evalq(g, v, r);
+					if (val.n != 0 || alg_ovf) {
+						alg_ovf = so;
+						continue;
+					}
+					lin = mp_sub(mp_atom(v), mp_const(r));
+					if (n < max) {
+						f[n] = lin;
+						m[n++] = 1;
+					}
+					if (!mp_divexact(g, lin, &g))
+						return -1;
+				}
+	} else if (mp_deg(g, v) >= 1)
+		*partial = 1;
+	if (mp_deg(g, v) <= 0)
+		return n;
+	if (mp_deg(g, v) <= 3) {
+		if (n < max) {
+			f[n] = g;
+			m[n++] = 1;
+		}
+		return n;
+	}
+	cyc_hi_build();
+	for (k = 3; k <= HD && mp_deg(g, v) >= 4; k++) {
+		struct mp q2, ck;
+		if (cyc_d[k] < 2 || cyc_d[k] >= mp_deg(g, v))
+			continue;
+		ck = cyc_mp(v, k);
+		if (!mp_divexact(g, ck, &q2))
+			continue;
+		if (n < max) {
+			f[n] = ck;
+			m[n++] = 1;
+		}
+		g = q2;
+	}
+	if (mp_deg(g, v) <= 0)
+		return n;
+	if (mp_deg(g, v) <= 3) {
+		if (n < max) {
+			f[n] = g;
+			m[n++] = 1;
+		}
+		return n;
+	}
+	for (k = 3; k <= HD; k++)
+		if (cyc_d[k] == mp_deg(g, v) && mp_eq(g, cyc_mp(v, k))) {
+			if (n < max) {
+				f[n] = g;
+				m[n++] = 1;
+			}
+			return n;
+		}
+	*partial = 1;
+	if (n < max) {
+		f[n] = g;
+		m[n++] = 1;
+	}
+	return n;
+}
+
+static int
+mp_factor_uni_hi(struct mp a, int v, struct mp *f, int *m, int max,
+    int *partial)
+{
+	struct mp s[HD];
+	int ns, n = 0, i, k;
+
+	if (mp_deg(a, v) < 1 || mp_deg(a, v) > HD || alg_ovf)
+		return -1;
+	ns = mp_sqfree_hi(a, v, s, HD);
+	if (ns <= 0 || alg_ovf)
+		return -1;
+	for (i = 0; i < ns; i++) {
+		int c = mp_factor_sqf_hi(s[i], v, f + n, m + n, max - n,
+		    partial);
+		if (c < 0 || alg_ovf)
+			return -1;
+		for (k = 0; k < c; k++)
+			m[n + k] *= i + 1;
+		n += c;
+	}
+	return n;
+}
+
 /* a primitive and squarefree, no monomial or variable content */
 static int
 factor_prim(struct mp a, int mult, struct mp *f, int *m, int n, int max,
@@ -1632,8 +1905,18 @@ factor_prim(struct mp a, int mult, struct mp *f, int *m, int n, int max,
 		return n;
 	if (nv == 1) {
 		v = topvar(vs);
-		if (!up_of_mp(a, v, &u))
+		if (!up_of_mp(a, v, &u)) {
+			int hn = mp_factor_uni_hi(a, v, f + n, m + n, max - n,
+			    partial);
+			int ii;
+			if (hn >= 0) {
+				for (ii = 0; ii < hn; ii++)
+					m[n + ii] *= mult;
+				return n + hn;
+			}
+			*partial = 1;
 			return factor_add(a, mult, f, m, n, max);
+		}
 		up_n = up_factor(&u, uf, um, UD, &pp);
 		if (pp)
 			*partial = 1;
@@ -2000,7 +2283,11 @@ conv(nid e, struct rf *r, struct mp *dall, int depth)
 		}
 		goto atom;
 	case O_POW:
-		if (num_of(N.b[e], &v) && v == floor(v) && fabs(v) <= 64 &&
+		/* A monomial exponent is stored in uint8_t, so integer powers up
+		 * to 255 are exact and belong in the polynomial.  Treating a
+		 * larger power (e.g. x^65) as an opaque atom loses the shared
+		 * variable and makes gcd/resultant/discriminant silently wrong. */
+		if (num_of(N.b[e], &v) && v == floor(v) && fabs(v) <= 255 &&
 		    !(num_of(N.a[e], &v) && v == M_E)) {
 			num_of(N.b[e], &v);
 			k = (int)v;
@@ -2126,7 +2413,9 @@ qmul_node(aq c, nid x)
 	else if (c.d == 1)
 		r = kmul((double)c.n, x);
 	else
-		r = DIV(c.n == 1 ? x : kmul((double)c.n, x), KR((double)c.d));
+		r = mk_raw(O_DIV, TY_REAL,
+		    c.n == 1 ? x : kmul((double)c.n, x), KR((double)c.d),
+		    0, 0, 0);
 	return neg ? mk_un(O_NEG, r) : r;
 }
 
@@ -2151,7 +2440,11 @@ mono_node(const struct mono *m)
 	if (r == 0)
 		return q_cnode((aq){1, c.d});
 	if (c.d != 1)
-		r = DIV(r, KR((double)c.d));
+		/* DIV() would constant-fold a numeric coefficient such as 2/3
+		 * into the rounded double 0.6666666667.  Build the quotient
+		 * directly so the printed form (and the structured result)
+		 * keeps the exact fraction. */
+		r = mk_raw(O_DIV, TY_REAL, r, KR((double)c.d), 0, 0, 0);
 	return r;
 }
 
@@ -2234,7 +2527,7 @@ fprod_node(aq c, const struct mp *f, const int *m, int n)
 	if (r == 0)
 		r = KR(1);
 	if (ac.d != 1)
-		r = DIV(r, KR((double)ac.d));
+		r = mk_raw(O_DIV, TY_REAL, r, KR((double)ac.d), 0, 0, 0);
 	return neg ? mk_un(O_NEG, r) : r;
 }
 

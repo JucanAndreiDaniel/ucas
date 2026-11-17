@@ -50,6 +50,7 @@ int ec_command(struct P *p);	/* ec.h (absalg.h names a parameter I) */
 
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -293,8 +294,23 @@ number(struct P *p)
 			if (buf[i] == '.' || buf[i] == 'e' || buf[i] == 'E')
 				isreal = 1;
 		if (isreal) {
-			double d = strtod(buf, NULL);
+			double d;
 			nid c;
+			errno = 0;
+			d = strtod(buf, NULL);
+			if (!isfinite(d))
+				fail("the real literal %.*s is too large: it "
+				    "overflows to infinity (the largest finite "
+				    "real is about 1.8e308)", (int)n, s);
+			if (d == 0.0 && errno == ERANGE) {
+				int nz = 0;
+				for (i = 0; i < j; i++)
+					if (buf[i] >= '1' && buf[i] <= '9')
+						nz = 1;
+				if (nz)
+					fail("the real literal %.*s is too small: "
+					    "it underflows to zero", (int)n, s);
+			}
 			adv(p);
 			c = mk_const_r(d);
 			/* Remember that this value was written as a decimal, so
@@ -3339,7 +3355,14 @@ opt_int(struct P *p, const char *kw, int dflt)
 {
 	if (accept_kw(p, kw)) {
 		nid v = number(p);
-		return (int)N.ki[v];
+		int64_t x = N.ki[v];
+		/* a u64 literal stores its bits in ki; a value above INT_MAX
+		 * would wrap when cast, and a negative one silently changes
+		 * the meaning of the option (e.g. an empty table). */
+		if (TY_FP(N.ty[v]) || x < 0 || (uint64_t)x > INT_MAX)
+			fail("%s: expected a non-negative integer of at most %d",
+			    kw, INT_MAX);
+		return (int)x;
 	}
 	return dflt;
 }
@@ -4160,6 +4183,14 @@ statement(struct P *p)
 				cmd_npn();
 				return;
 			}
+			/* a negative result count is not a function expression:
+			 * reject it here before cmd_func reads "f - 1" as one. */
+			if (!strcmp(cmd, "find") && pk(p) == T_ID &&
+			    func_find(tsym(p, p->i)) && p->i + 2 < p->t->n &&
+			    p->t->kind[p->i + 1] == T_MINUS &&
+			    p->t->kind[p->i + 2] == T_NUM)
+				fail("find: the number of results must be from 0 to %d",
+				    INT_MAX);
 			if (!strcmp(cmd, "equiv"))
 				f = cmd_named_func(p);
 			else
@@ -4283,8 +4314,15 @@ statement(struct P *p)
 				int want = 5, maxc = 0, stoke, snip, saturate;
 				uint32_t fnm2 = f->name;
 				char sname[96] = "";
-				if (pk(p) == T_NUM)
-					want = (int)N.ki[number(p)];
+				if (pk(p) == T_NUM) {
+					nid v = number(p);
+					int64_t x = N.ki[v];
+					if (TY_FP(N.ty[v]) || x < 0 ||
+					    (uint64_t)x > INT_MAX)
+						fail("find: the number of results must "
+						    "be from 0 to %d", INT_MAX);
+					want = (int)x;
+				}
 				maxc = opt_int(p, "max", 0);
 				stoke = accept_kw(p, "stoke");	/* then the MCMC search */
 				saturate = accept_kw(p, "saturate");

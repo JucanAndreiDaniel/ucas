@@ -2762,6 +2762,25 @@ snap(cplx z)
 	return re + I * im;
 }
 
+/* Newton on a multiple zero stops a little short of the exact pole */
+static cplx
+snap_pole(cplx z)
+{
+	cplx w = snap(z);
+	double re = creal(w), im = cimag(w), s = cabs(w) > 1 ? cabs(w) : 1;
+	double r;
+
+	r = nearbyint(re * 1e6) / 1e6;
+	if (fabs(r - re) < 1e-8 * s)
+		re = r;
+	r = nearbyint(im * 1e6) / 1e6;
+	if (fabs(r - im) < 1e-8 * s)
+		im = r;
+	if (fabs(im) < 1e-8 * s)
+		im = 0;
+	return re + I * im;
+}
+
 /* Newton from a grid: zeros of f (or of 1/f) in |Re|, |Im| <= R */
 static int
 newton_zeros(double R, int inv, struct zr *out, int max)
@@ -2774,8 +2793,11 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 			cplx z = -R + 2 * R * (a + 0.37) / G + I * (-R + 2 * R *
 			    (b + 0.61) / G), w, w1;
 			int ok = 0, k;
-			for (it = 0; it < 60; it++) {
-				double h = 1e-7 * (cabs(z) > 1 ? cabs(z) : 1);
+			/* a multiple zero of 1/f needs more steps: m=4 approaches
+			 * it at only 3/4 of the distance per iteration */
+			for (it = 0; it < (inv ? 240 : 60); it++) {
+				double h = (inv ? 1e-12 : 1e-7) *
+				    (cabs(z) > 1 ? cabs(z) : 1);
 				cplx d;
 				if (!fz(z, &w) || !fz(z + h, &w1))
 					break;
@@ -2791,7 +2813,14 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 				if (d == 0)
 					break;
 				z -= w / d;
-				if (cabs(w / d) < 1e-14 * (cabs(z) + 1)) {
+				/* A zero of 1/f of order m > 1 is approached only linearly:
+				 * the step cannot shrink to 1e-14 in 60 iterations and a
+				 * finite-difference derivative stalls near such a zero.  For
+				 * poles accept once 1/f is small and the step is small; the
+				 * check after the loop still confirms |f| is large (so an
+				 * analytic function that merely grows is not a pole). */
+				if (cabs(w / d) < (inv ? 1e-9 : 1e-14) * (cabs(z) + 1) &&
+				    (!inv || cabs(w) < 1e-8)) {
 					ok = 1;
 					break;
 				}
@@ -2805,9 +2834,10 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 					continue;
 			} else if (fz(z, &w) && cabs(w) < 1e8)
 				continue;
-			z = snap(z);
+			z = inv ? snap_pole(z) : snap(z);
 			for (k = 0; k < n; k++)
-				if (cabs(out[k].z - z) < 1e-7 * (cabs(z) + 1))
+				if (cabs(out[k].z - z) < (inv ? 1e-6 : 1e-7) *
+				    (cabs(z) + 1))
 					break;
 			if (k == n && n < max) {
 				out[n].z = z;
