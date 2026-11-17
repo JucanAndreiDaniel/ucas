@@ -88,6 +88,10 @@ func_new(uint32_t name)
 /* ---- parser state ---- */
 
 #define MAXBIND 32
+/* Deeply nested expressions otherwise recurse until the C stack overflows
+ * (the parser in prefix/parse_expr and, for a built tree, the node.c tree
+ * walks).  One shared cap keeps the limit and the error text consistent. */
+#define EXPR_DEPTH_LIMIT 1600
 struct P {
 	struct toks *t;
 	uint32_t i;
@@ -95,6 +99,7 @@ struct P {
 	int autop;
 	ty_t autoty;
 	int abs_depth;
+	int expr_depth;   /* expression nesting, bounded to keep the stack safe */
 	int fnarg;
 	int top_jux;
 	int top_paren;    /* the last operand was parenthesized */
@@ -1467,10 +1472,37 @@ parse_piecewise(struct P *p)
 
 /* ---- expressions ---- */
 
+/* Table literals are the only prefix form with a large scratch array.  Keep
+ * it in a helper so its 4 KB does not sit in every recursive prefix() frame. */
+static nid
+parse_table(struct P *p)
+{
+	nid items[1024];
+	int n = 0, saved = p->abs_depth;
+
+	p->abs_depth = 0;
+	adv(p);
+	skip_nl(p);
+	if (pk(p) != T_RB) {
+		do {
+			skip_nl(p);
+			if (n == 1024)
+				fail("table too long");
+			items[n++] = parse_expr(p, 0);
+			skip_nl(p);
+		} while (accept(p, T_COMMA));
+	}
+	expect(p, T_RB);
+	p->abs_depth = saved;
+	if (n == 0)
+		fail("empty table");
+	return mk_table(items, (uint32_t)n);
+}
+
 static nid
 prefix(struct P *p)
 {
-	nid e, items[1024];
+	nid e;
 	int n, saved;
 
 	diag_tok = p->i;
@@ -1549,25 +1581,7 @@ prefix(struct P *p)
 		    "absolute values");
 		break;
 	case T_LB:
-		saved = p->abs_depth;
-		p->abs_depth = 0;
-		adv(p);
-		n = 0;
-		skip_nl(p);
-		if (pk(p) != T_RB) {
-			do {
-				skip_nl(p);
-				if (n == 1024)
-					fail("table too long");
-				items[n++] = parse_expr(p, 0);
-				skip_nl(p);
-			} while (accept(p, T_COMMA));
-		}
-		expect(p, T_RB);
-		p->abs_depth = saved;
-		if (n == 0)
-			fail("empty table");
-		return mk_table(items, (uint32_t)n);
+		return parse_table(p);
 	case T_LC:
 		if (cs_is_block(p))
 			return calc_block(p);
@@ -1654,10 +1668,16 @@ bitwise_context(struct P *p, uint32_t i)
 static nid
 parse_expr(struct P *p, int minbp)
 {
-	nid lhs = prefix(p), rhs, c, x;
-	int lastjux = p->top_jux, op, bp, chained = 0, prevcmp = 0;
-	int lparen = p->top_paren, rparen;
+	nid lhs, rhs, c, x;
+	int lastjux, op, bp, chained = 0, prevcmp = 0;
+	int lparen, rparen;
 	nid prevr = 0;
+
+	if (++p->expr_depth > EXPR_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", EXPR_DEPTH_LIMIT);
+	lhs = prefix(p);
+	lastjux = p->top_jux;
+	lparen = p->top_paren;
 
 	for (;;) {
 		diag_tok = p->i;
@@ -1823,6 +1843,7 @@ parse_expr(struct P *p, int minbp)
 	}
 	p->top_jux = lastjux;
 	p->top_paren = lparen;
+	p->expr_depth--;
 	return lhs;
 }
 
@@ -4473,6 +4494,7 @@ run_source1(const char *src, const char *file, int echo)
 			p->xstop = NULL;
 			p->force_ty = 0;
 			p->abs_depth = 0;
+			p->expr_depth = 0;
 			p->fnarg = 0;
 			p->nb = 0;
 			p->fusepat = 0;

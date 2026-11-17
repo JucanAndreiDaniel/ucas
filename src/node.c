@@ -850,6 +850,10 @@ mk_bin(int op, nid a, nid b)
 	default:
 		if (op == O_DIV && is_const(a) && is_const(b) &&
 		    TYK(ta) == K_LIT && TYK(tb) == K_LIT && N.ki[b] != 0 &&
+		    /* INT_MIN % -1 traps; its quotient is not representable
+		     * anyway.  Leave the pair alone so the evaluator flags the
+		     * division as UB instead of promoting to real here. */
+		    !(N.ki[a] == INT64_MIN && N.ki[b] == -1) &&
 		    N.ki[a] % N.ki[b] != 0) {
 			ta = tb = TY_REAL;
 			a = conv(a, TY_REAL);
@@ -1365,6 +1369,11 @@ mk_index(nid tab, nid i)
 
 static nid *smemo;
 static uint32_t smemon;
+/* The depth of the subtree rewrite below.  Inlining a call can expand an
+ * expression exponentially (f(n) = f(n-1)(f(n-1)(x))), so rebuilt trees can
+ * be arbitrarily deep even though each parsed expression was shallow. */
+#define NODE_DEPTH_LIMIT 12000
+static int rebuild_depth;
 /* sg_lower: subgroup operations are spelled out over their lanes, and
  * what has none is left as it is */
 static int sg_lowering;
@@ -1383,6 +1392,8 @@ rebuild(nid n, const nid *map, int nmap)
 		return n;
 	if (smemo[n])
 		return smemo[n];
+	if (++rebuild_depth > NODE_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", NODE_DEPTH_LIMIT);
 	switch (N.op[n]) {
 	case O_CONST:
 	case O_UNDEF:
@@ -1478,6 +1489,7 @@ rebuild(nid n, const nid *map, int nmap)
 			r = mk_bin(N.op[n], rebuild(N.a[n], map, nmap),
 			    rebuild(N.b[n], map, nmap));
 	}
+	rebuild_depth--;
 	smemo[n] = r;
 	return r;
 }
@@ -1487,10 +1499,16 @@ subst(nid root, const nid *map, int nmap)
 {
 	nid *saved = smemo, r;
 	uint32_t savedn = smemon;
+	int savedd = rebuild_depth;
 
+	/* rebuild is only entered through subst (and recursively from it),
+	 * so a rewrite starts at depth zero; fail() longjmps past the restore
+	 * but the next subst resets it again. */
+	rebuild_depth = 0;
 	smemon = N.n;
 	smemo = xcalloc(smemon, sizeof *smemo);
 	r = rebuild(root, map, nmap);
+	rebuild_depth = savedd;
 	free(smemo);
 	smemo = saved;
 	smemon = savedn;

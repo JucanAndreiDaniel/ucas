@@ -44,6 +44,15 @@
 #define CF_UNROLL 66
 #define CF_MAXNODES 400000
 #define CF_INLINE 4
+/* equiv_decide compares NSAMPLE (65536) points; a loop obligation whose
+ * expression is larger than this cannot be decided in reasonable time, so
+ * treat it as "may not terminate" instead of trying to prove it. */
+#define CF_OBL_NODES 4096
+/* node.c's has_bitwise (used whenever an expression is printed) walks every
+ * root-to-leaf path with a depth cutoff of 64.  A deeper expression with
+ * predicated selects makes that walk exponential, so refuse to hand one
+ * back to a caller that will print it. */
+#define CF_PRINT_DEPTH 48
 
 struct lctx {
 	nid brk, cont;		/* conditions collected (bool) */
@@ -229,6 +238,88 @@ budget(void)
 {
 	if (N.n - L.nbase > CF_MAXNODES)
 		lfail(0, "the lowered program is too large%s", "");
+}
+
+/* maximum nesting depth of a DAG (children have smaller ids) */
+static int
+dag_depth(nid root)
+{
+	uint32_t *dep;
+	uint32_t i, j;
+	int d;
+
+	if (!root || root >= N.n)
+		return 0;
+	dep = calloc(N.n, sizeof *dep);
+	if (!dep)
+		return 0;
+	for (i = 1; i <= root; i++) {
+		uint32_t n = i, ch[3];
+		int nch = 0, m = 0;
+		if (N.op[n] == O_TABLE) {
+			for (j = 0; j < N.b[n]; j++)
+				ch[nch++] = N.lst[N.a[n] + j];
+		} else {
+			ch[nch++] = N.a[n];
+			ch[nch++] = N.b[n];
+			ch[nch++] = N.c[n];
+		}
+		for (j = 0; j < (uint32_t)nch; j++)
+			if (ch[j] && ch[j] < N.n && (int)dep[ch[j]] > m)
+				m = (int)dep[ch[j]];
+		dep[n] = (uint32_t)(m + 1);
+	}
+	d = (int)dep[root];
+	free(dep);
+	return d;
+}
+
+/* number of distinct nodes in a DAG, counted up to a cap */
+static int
+dag_size(nid root, int cap)
+{
+	uint8_t *seen;
+	nid *st;
+	uint32_t top = 0, j;
+	int n = 0;
+
+	if (!root || root >= N.n)
+		return 0;
+	seen = calloc(N.n, 1);
+	st = malloc(sizeof(*st) * N.n);
+	if (!seen || !st) {
+		free(seen);
+		free(st);
+		return cap + 1;
+	}
+	seen[root] = 1;
+	st[top++] = root;
+	while (top) {
+		nid x = st[--top];
+		nid ch[3];
+		int nch = 0;
+
+		if (++n > cap)
+			break;
+		if (N.op[x] == O_TABLE) {
+			for (j = 0; j < N.b[x]; j++)
+				ch[nch++] = N.lst[N.a[x] + j];
+		} else {
+			ch[nch++] = N.a[x];
+			ch[nch++] = N.b[x];
+			ch[nch++] = N.c[x];
+		}
+		for (j = 0; j < (uint32_t)nch; j++) {
+			nid y = ch[j];
+			if (y && y < N.n && !seen[y]) {
+				seen[y] = 1;
+				st[top++] = y;
+			}
+		}
+	}
+	free(seen);
+	free(st);
+	return n;
 }
 
 static void
@@ -1257,8 +1348,13 @@ cf_lower_func(struct cf_unit *u, uint32_t fn, struct cf_value *v, int ub)
 		struct eqproof pr;
 		nid ob = mk_cast(TY(K_UINT, 8), L.obl);
 		cf_value_func(v, &f);
-		if (equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL, &pr) ||
-		    pr.how == EQ_SAMPLED) {
+		/* A deeply unrolled obligation (a nested loop with a whole-function
+		 * trip count, say) is far too big for the 65536-point comparison
+		 * equiv_decide runs.  It cannot be discharged cheaply, so report
+		 * the same "may run too long" failure as a counterexample. */
+		if (dag_size(ob, CF_OBL_NODES) > CF_OBL_NODES ||
+		    equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL,
+		    &pr) || pr.how == EQ_SAMPLED) {
 			snprintf(L.why, sizeof L.why, "a loop that may run more "
 			    "than %d times", CF_UNROLL);
 			v->e = 0;
@@ -1267,6 +1363,8 @@ cf_lower_func(struct cf_unit *u, uint32_t fn, struct cf_value *v, int ub)
 			return 0;
 		}
 	}
+	if (dag_depth(v->e) > CF_PRINT_DEPTH)
+		lfail(0, "the lowered program is too large%s", "");
 	lower_end();
 	return 1;
 }

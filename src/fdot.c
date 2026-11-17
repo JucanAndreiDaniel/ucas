@@ -169,7 +169,7 @@ build_isum(const struct fterm *t, int n, int G, int w, int *nsl)
 int
 fdot_find(const struct func *f)
 {
-	struct fterm t[FD_MAXT];
+	struct fterm t[FD_MAXT] = {0};
 	struct func g;
 	struct dotres r;
 	struct sbuf why = {0}, pf = {0};
