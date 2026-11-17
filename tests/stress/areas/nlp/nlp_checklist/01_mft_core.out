@@ -1,0 +1,216 @@
+> what is the range of x squared for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> does x times 2 plus 1 overflow for a signed byte x?
+  ucas: it(x: i8) = x*2 + 1
+  ucas: wrap it
+wrap analysis of it:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  2x + 1   (i8)
+      nuw holds
+      nsw holds (C requires it: signed overflow is UB)
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain
+> is x times x the same as x squared for an unsigned byte x?
+  ucas: it(x: u8) = x*x
+  ucas: that(x: u8) = x^2
+  ucas: equiv it that
+it and that are equal on the domain of it (exhaustive)
+> what are the critical points of x cubed minus 3x?
+  ucas: it(x) = x^3 - 3*x
+  ucas: crit it
+critical points of it:
+  it' = 3x^2 - 3
+  x ≈ -1: local maximum, it = 2
+  x ≈ 1: local minimum, it = -2
+  searched [-10, 10] (default; give x a range)
+> the derivative of sin x squared with respect to x?
+  ucas: it(x) = sin(x^2)
+  ucas: diff it x
+d/dx it = 2x*cos(x^2)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-10)
+> the integral of x squared times sin x from 0 to pi?
+  ucas: it(x) = x^2*sin(x)
+  ucas: integrate it from 0 to pi
+∫ x^2*sin(x) dx
+  = 2x*sin(x) + 2cos(x) - x^2*cos(x) + C
+  check: d/dx of it equals the integrand at 401 points of [0, 3.14159] (max difference 8.9e-16)
+  from 0 to 3.14159: F(3.14159) - F(0) = 5.86960440108936
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 5.86960440108936, estimated error 6.5e-14
+  the two agree to 0
+> the sum of i squared for i from 1 to n?
+  ucas: it(n: int in 0..100) = sum(i, 1, n, i^2)
+  ucas: show it
+it(n: int in 0..100) = sum(i, 1, n, i^2)
+  -> int
+> the product of i for i from 1 to n?
+  ucas: it(n: int in 0..100) = prod(i, 1, n, i)
+  ucas: show it
+it(n: int in 0..100) = prod(i, 1, n, i)
+  -> int
+> the closed form of the sum of i squared for i from 1 to n?
+  ucas: it(n: int in 0..100) = sum(i, 1, n, i^2)
+  ucas: closed it
+sum(i, 1, n, i^2)
+  = n*(n + 1)*(2n + 1)/6
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> find 2 cheaper implementations of x squared plus 1 for an unsigned byte x?
+  ucas: it(x: u8) = x^2 + 1
+  ucas: find it 2
+find it: 256 points, computing in u8, costs from gt1030
+  cost 3   x*x + 1                                  affine fit
+  cost 4   x^2 + 1                                  polynomial (Horner)
+  [searched every term up to cost 4: 65536 distinct columns, bank full; 'more' continues]
+> show a table of x squared for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: table it
+  x=0  ->  0
+  x=1  ->  1
+  x=2  ->  4
+  x=3  ->  9
+  x=4  ->  16
+  x=5  ->  25
+  x=6  ->  36
+  x=7  ->  49
+  x=8  ->  64
+  x=9  ->  81
+  x=10  ->  100
+  x=11  ->  121
+  x=12  ->  144
+  x=13  ->  169
+  x=14  ->  196
+  x=15  ->  225
+  x=16  ->  0
+  x=17  ->  33
+  x=18  ->  68
+  x=19  ->  105
+  x=20  ->  144
+  x=21  ->  185
+  x=22  ->  228
+  x=23  ->  17
+  x=24  ->  64
+  x=25  ->  113
+  x=26  ->  164
+  x=27  ->  217
+  x=28  ->  16
+  x=29  ->  73
+  x=30  ->  132
+  x=31  ->  193
+  x=32  ->  0
+  x=33  ->  65
+  x=34  ->  132
+  x=35  ->  201
+  x=36  ->  16
+  x=37  ->  89
+  x=38  ->  164
+  x=39  ->  241
+  x=40  ->  64
+  x=41  ->  145
+  x=42  ->  228
+  x=43  ->  57
+  x=44  ->  144
+  x=45  ->  233
+  x=46  ->  68
+  x=47  ->  161
+  x=48  ->  0
+  x=49  ->  97
+  x=50  ->  196
+  x=51  ->  41
+  x=52  ->  144
+  x=53  ->  249
+  x=54  ->  100
+  x=55  ->  209
+  x=56  ->  64
+  x=57  ->  177
+  x=58  ->  36
+  x=59  ->  153
+  x=60  ->  16
+  x=61  ->  137
+  x=62  ->  4
+  x=63  ->  129
+> where is 1/x defined for x an unsigned byte?
+  ucas: it(x: u8) = 1/x
+  ucas: domain it
+domain of it:
+  x: u8, 0..255
+  requires x != 0  (in 1/x)
+  defined at 255 of 256 points
+  defined for: 1..255
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 256 points of the domain
+> what is the smallest value of x squared minus 2x for x an unsigned byte?
+  ucas: it(x: u8) = x^2 - 2*x
+  ucas: range it
+range of it -> u8:
+  0..255   (44 distinct values)
+  values: 0, 3, 8, 15..16, 24, 32, 35, 40, 48, 56, 63..64, 67, 72, 80, 88, 96, 99, 104, 112, 120, 128, 131, 136, 143..144, ...
+  fits in u8
+  over all 256 points of the domain
+> what is the largest value of x squared minus 2x for x an unsigned byte?
+  ucas: it(x: u8) = x^2 - 2*x
+  ucas: range it
+range of it -> u8:
+  0..255   (44 distinct values)
+  values: 0, 3, 8, 15..16, 24, 32, 35, 40, 48, 56, 63..64, 67, 72, 80, 88, 96, 99, 104, 112, 120, 128, 131, 136, 143..144, ...
+  fits in u8
+  over all 256 points of the domain
+> gates for x & y for unsigned 2-bit x and unsigned 2-bit y?
+  ucas: it(x: u2, y: u2) = x & y
+  ucas: gates it
+gates for it: 4 input bits -> 2 output bits, basis c
+  minimal: cost 2, 2 steps (no program of cost <= 1 exists; 6 candidates searched)
+  checked: the program reproduces every output bit on all 16 care inputs
+  t0 = and(x0, y0)               = x0 & y0
+  t1 = and(x1, y1)               = x1 & y1
+  r1 = t1
+  r0 = t0
+> how accurate is x times x as an approximation of x squared for x an unsigned byte?
+  ucas: that(x: u8) = x^2
+  ucas: it(x: u8) = x*x
+  ucas: error it ~ that
+error of it against that:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 256 points
+> solve the ODE y' = -y with y(0) = 1?
+  ucas: y' = -y
+  ucas: y(0) = 1
+  ucas: dsolve y
+y' = -y, y(0) = 1
+  (on [0, 10]; 'dsolve y to T' for another end)
+  linear with constant coefficients: eigenvalues -1
+  y(t) = exp(-t)
+  check: satisfies the equations at 201 points of [0, 10] (max relative residual 0) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 213 steps) agrees with it to 7.8e-12
+      t            y(t)
+      0            1
+      1            0.3678794412
+      2            0.1353352832
+      3            0.04978706837
+      4            0.01831563889
+      5            0.006737946999
+      6            0.002478752177
+      7            0.0009118819656
+      8            0.0003354626279
+      9            0.0001234098041
+      10           4.539992976e-05
+> define f of x be x squared plus 1 where x is an unsigned byte?
+  ucas: f(x: u8) = x^2 + 1
+  ucas: show f
+f(x: u8) = x^2 + 1
+  -> u8
+> show a table of the function f?
+  sorry: I don't understand "function f" here
+> forget everything?
+  ok: forgot every assumption

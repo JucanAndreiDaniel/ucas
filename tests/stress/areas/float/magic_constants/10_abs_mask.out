@@ -1,0 +1,19 @@
+> ab(x: f32) = asfloat(asuint(x) & 0x7fffffff)
+> rf(x: f32) = abs(x)
+> equiv ab ~ rf
+ab and rf are equal on the domain of ab (proved by SAT: 2728 AIG nodes, 278 conflicts)
+> equiv ab ~ rf nanbits
+ab and rf are equal on the domain of ab (proved by SAT: 2916 AIG nodes, 287 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> equiv ab ~ rf ftz
+ab and rf differ at 255 points of the sample, e.g. x=-4.91007275e-39: 4.91007275e-39 vs 0
+  every float operation flushed subnormals to zero (ftz)
+> equiv ab ~ rf noftz
+ab and rf are equal on the domain of ab (proved by SAT: 2728 AIG nodes, 278 conflicts)
+> idb(x: f32) = asfloat(asuint(x))
+> idf(x: f32) = x
+> equiv idb ~ idf
+idb and idf are equal on the domain of idb (proved by SAT: 2733 AIG nodes, 382 conflicts)
+> equiv idb ~ idf nanbits
+idb and idf are equal on the domain of idb (proved by SAT: 2921 AIG nodes, 240 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)

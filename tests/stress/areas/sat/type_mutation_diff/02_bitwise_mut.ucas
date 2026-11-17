@@ -1,0 +1,66 @@
+# OpFuzz type-aware operator mutation: 02_bitwise_mut
+# 9 seeds, each mutated by one same-signature operator swap.
+# u8 -> exhaustive ground truth; u32 -> sat/algebra proof on wide type.
+# --- andor_basic [andor] identity=False: x & y  <->  x | y ---
+s_andor_basic_u8(x: u8, y: u8) = x & y
+m_andor_basic_u8(x: u8, y: u8) = x | y
+equiv s_andor_basic_u8 m_andor_basic_u8
+s_andor_basic_u32(x: u32, y: u32) = x & y
+m_andor_basic_u32(x: u32, y: u32) = x | y
+equiv s_andor_basic_u32 m_andor_basic_u32
+# --- and_self [andor] identity=True: x & x  <->  x | x ---
+s_and_self_u8(x: u8) = x & x
+m_and_self_u8(x: u8) = x | x
+equiv s_and_self_u8 m_and_self_u8
+s_and_self_u32(x: u32) = x & x
+m_and_self_u32(x: u32) = x | x
+equiv s_and_self_u32 m_and_self_u32
+# --- demorgan [andor] identity=True: ~(x & y)  <->  ~x | ~y ---
+s_demorgan_u8(x: u8, y: u8) = ~(x & y)
+m_demorgan_u8(x: u8, y: u8) = ~x | ~y
+equiv s_demorgan_u8 m_demorgan_u8
+s_demorgan_u32(x: u32, y: u32) = ~(x & y)
+m_demorgan_u32(x: u32, y: u32) = ~x | ~y
+equiv s_demorgan_u32 m_demorgan_u32
+# --- demorgan_bad [andor] identity=False: ~(x & y)  <->  ~x & ~y ---
+s_demorgan_bad_u8(x: u8, y: u8) = ~(x & y)
+m_demorgan_bad_u8(x: u8, y: u8) = ~x & ~y
+equiv s_demorgan_bad_u8 m_demorgan_bad_u8
+s_demorgan_bad_u32(x: u32, y: u32) = ~(x & y)
+m_demorgan_bad_u32(x: u32, y: u32) = ~x & ~y
+equiv s_demorgan_bad_u32 m_demorgan_bad_u32
+# --- absorb1 [andor] identity=True: x & (x | y)  <->  x ---
+s_absorb1_u8(x: u8, y: u8) = x & (x | y)
+m_absorb1_u8(x: u8, y: u8) = x
+equiv s_absorb1_u8 m_absorb1_u8
+s_absorb1_u32(x: u32, y: u32) = x & (x | y)
+m_absorb1_u32(x: u32, y: u32) = x
+equiv s_absorb1_u32 m_absorb1_u32
+# --- absorb2 [andor] identity=True: x | (x & y)  <->  x ---
+s_absorb2_u8(x: u8, y: u8) = x | (x & y)
+m_absorb2_u8(x: u8, y: u8) = x
+equiv s_absorb2_u8 m_absorb2_u8
+s_absorb2_u32(x: u32, y: u32) = x | (x & y)
+m_absorb2_u32(x: u32, y: u32) = x
+equiv s_absorb2_u32 m_absorb2_u32
+# --- distributive [andor] identity=True: (x | y) & (x | z)  <->  x | (y & z) ---
+s_distributive_u8(x: u8, y: u8, z: u8) = (x | y) & (x | z)
+m_distributive_u8(x: u8, y: u8, z: u8) = x | (y & z)
+equiv s_distributive_u8 m_distributive_u8
+s_distributive_u32(x: u32, y: u32, z: u32) = (x | y) & (x | z)
+m_distributive_u32(x: u32, y: u32, z: u32) = x | (y & z)
+equiv s_distributive_u32 m_distributive_u32
+# --- and_zero [andor] identity=False: x & 0  <->  x | 0 ---
+s_and_zero_u8(x: u8, y: u8) = x & 0
+m_and_zero_u8(x: u8, y: u8) = x | 0
+equiv s_and_zero_u8 m_and_zero_u8
+s_and_zero_u32(x: u32, y: u32) = x & 0
+m_and_zero_u32(x: u32, y: u32) = x | 0
+equiv s_and_zero_u32 m_and_zero_u32
+# --- mask_then [andor] identity=True: (x & y) | (x & ~y)  <->  x ---
+s_mask_then_u8(x: u8, y: u8) = (x & y) | (x & ~y)
+m_mask_then_u8(x: u8, y: u8) = x
+equiv s_mask_then_u8 m_mask_then_u8
+s_mask_then_u32(x: u32, y: u32) = (x & y) | (x & ~y)
+m_mask_then_u32(x: u32, y: u32) = x
+equiv s_mask_then_u32 m_mask_then_u32

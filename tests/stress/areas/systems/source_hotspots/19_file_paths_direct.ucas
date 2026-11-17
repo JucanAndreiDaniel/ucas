@@ -1,0 +1,16 @@
+# Odd path tokens without an image-consuming shader.
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file /dev/null
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file /etc/hostname
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file a/b/c/d/e.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```

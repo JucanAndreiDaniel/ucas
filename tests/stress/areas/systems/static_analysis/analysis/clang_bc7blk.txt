@@ -1,0 +1,52 @@
+src/bc7blk.c:748:13: warning: Left shift overflows the capacity of 'int' [core.BitwiseShift]
+  748 |                                     ((1 << M->epb) - 1);
+      |                                       ~~^~~~~~~~~
+src/bc7blk.c:727:6: note: Assuming 'mi' is >= 0
+  727 |         if (mi < 0)
+      |             ^~~~~~
+src/bc7blk.c:727:2: note: Taking false branch
+  727 |         if (mi < 0)
+      |         ^
+src/bc7blk.c:731:14: note: 'r' is < 32
+  731 |         for (r = 0; r < 32 && bc6runs[mi][r].n; r++) {
+      |                     ^
+src/bc7blk.c:731:14: note: Left side of '&&' is true
+src/bc7blk.c:731:2: note: Loop condition is false. Execution continues on line 741
+  731 |         for (r = 0; r < 32 && bc6runs[mi][r].n; r++) {
+      |         ^
+src/bc7blk.c:741:7: note: Assuming field 'pb' is 0
+  741 |         ns = M->pb ? 2 : 1;
+      |              ^~~~~
+src/bc7blk.c:741:7: note: '?' condition is false
+src/bc7blk.c:742:2: note: Loop condition is true.  Entering loop body
+  742 |         for (c = 0; c < 3; c++) {
+      |         ^
+src/bc7blk.c:743:7: note: Assuming 'sgn' is not equal to 0
+  743 |                 if (sgn)
+      |                     ^~~
+src/bc7blk.c:743:3: note: Taking true branch
+  743 |                 if (sgn)
+      |                 ^
+src/bc7blk.c:744:14: note: Calling 'bc6_sext'
+  744 |                         e[0][c] = bc6_sext(e[0][c], M->epb);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/bc7blk.c:667:9: note: Assuming 'bits' is >= 32
+  667 |         return bits >= 32 ? v : (v ^ (1 << (bits - 1))) - (1 << (bits - 1));
+      |                ^~~~~~~~~~
+src/bc7blk.c:667:9: note: '?' condition is true
+src/bc7blk.c:744:14: note: Returning from 'bc6_sext'
+  744 |                         e[0][c] = bc6_sext(e[0][c], M->epb);
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/bc7blk.c:745:3: note: Loop condition is true.  Entering loop body
+  745 |                 for (i = 1; i < 2 * ns; i++) {
+      |                 ^
+src/bc7blk.c:746:8: note: Assuming field 'trans' is not equal to 0
+  746 |                         if (M->trans) {
+      |                             ^~~~~~~~
+src/bc7blk.c:746:4: note: Taking true branch
+  746 |                         if (M->trans) {
+      |                         ^
+src/bc7blk.c:748:13: note: The result of left shift is undefined because the right operand is >= 32, not smaller than 32, the capacity of 'int'
+  748 |                                     ((1 << M->epb) - 1);
+      |                                       ~~^~~~~~~~~
+1 warning generated.

@@ -1,0 +1,29 @@
+> f(x: i8) = x / (x-100)
+> domain f
+domain of f:
+  x: i8, -128..127
+  requires x - 100 != 0  (in x/(x - 100))
+  C assumes not (x == min and x - 100 == -1)  (in x/(x - 100))
+  C assumes x - 100 does not overflow i8  (signed overflow)
+  defined at 255 of 256 points
+  defined for: -128..99, 101..127
+  undefined e.g. at x=100
+  C undefined behaviour at 101 points, e.g. x=-128
+  over all 256 points of the domain
+> range f
+range of f -> i8:
+  -99..101   (36 distinct values)
+  values: -99, -49, -32, -24, -19, -15, -13, -11..0, 4..13, 15, 17, 21, 26, 34, 51, 101
+  fits in i8
+  undefined at 1 points
+  over all 256 points of the domain
+> wrap f
+wrap analysis of f:
+  x - 100   (i8)
+      nuw fails: unsigned wrap at 100 points, e.g. x=0
+      nsw fails: signed wrap at 100 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 51 points, e.g. x=-128
+      exact for: -77..99, 101..127
+  over all 256 points of the domain
+> equiv f f
+f and f are equal on the domain of f (exhaustive)

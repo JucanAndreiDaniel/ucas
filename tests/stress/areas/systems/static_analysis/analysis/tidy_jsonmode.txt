@@ -1,0 +1,930 @@
+/home/andrew/Code/ucas/src/jsonmode.c:44:1: warning: included header types.h is not used directly [misc-include-cleaner]
+   44 | #include <sys/types.h>
+      | ^~~~~~~~~~~~~~~~~~~~~~
+   45 | #include <sys/wait.h>
+/home/andrew/Code/ucas/src/jsonmode.c:51:1: warning: included header mman.h is not used directly [misc-include-cleaner]
+   51 | #include <sys/mman.h>
+      | ^~~~~~~~~~~~~~~~~~~~~
+   52 | #include <fcntl.h>
+/home/andrew/Code/ucas/src/jsonmode.c:52:1: warning: included header fcntl.h is not used directly [misc-include-cleaner]
+   52 | #include <fcntl.h>
+      | ^~~~~~~~~~~~~~~~~~
+   53 | 
+/home/andrew/Code/ucas/src/jsonmode.c:1176:8: warning: no header providing "FILE" is directly included [misc-include-cleaner]
+   42 | static FILE *jout;              /* responses: the real stdout */
+      |        ^
+/home/andrew/Code/ucas/src/jsonmode.c:1178:20: warning: no header providing "PATH_MAX" is directly included [misc-include-cleaner]
+   39 | static char outdir[PATH_MAX] = ".";
+      |                    ^
+/home/andrew/Code/ucas/src/jsonmode.c:1179:28: warning: no header providing "REP_FILES_WRITE" is directly included [misc-include-cleaner]
+ 1179 | static int default_fmode = REP_FILES_WRITE;
+      |                            ^
+/home/andrew/Code/ucas/src/jsonmode.c:1203:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   42 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1204:2: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+ 1204 |         vsnprintf(r->err, sizeof r->err, fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1205:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+ 1205 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1278:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1278 |         if ((x = jv_get(v, "num")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1278:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1278:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1291:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1291 |         if ((s = jv_gets(v, "var")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1291:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1291:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1298:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1298 |         if ((s = jv_gets(v, "expr")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1298:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1298:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1304:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1304 |         if ((op = jv_gets(v, "op")) == NULL)
+      |              ~~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1304:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1304:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1352:15: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1352 |                 if (!top || strcmp(op, "="))
+      |                             ^              
+      |                                             != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1360:15: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1360 |                 if (!top || strcmp(op, "="))
+      |                             ^              
+      |                                             != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1413:33: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1413 |                 else if (p->t == J_OBJ && (nm = jv_gets(p, "name")) != NULL)
+      |                                            ~~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1413:33: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1413:33: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1425:25: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1425 |                         if (!is_ident(ty) && strncmp(ty, "cd(", 3))
+      |                                              ^                    
+      |                                                                    != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1431:4: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+ 1431 |                         snprintf(what, sizeof what, "parameter %s has no type", nm);
+      |                         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1432:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1432 |                         if ((a = rep_answer("param_type", what, tys, 2, 0)) != NULL)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1432:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1432:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1432:13: warning: no header providing "rep_answer" is directly included [misc-include-cleaner]
+   31 |                         if ((a = rep_answer("param_type", what, tys, 2, 0)) != NULL)
+      |                                  ^
+/home/andrew/Code/ucas/src/jsonmode.c:1433:30: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 1433 |                                 sb_printf(b, ": %s", tys[atoi(a) - 1]);
+      |                                                          ^
+/home/andrew/Code/ucas/src/jsonmode.c:1435:5: warning: no header providing "rep_ask" is directly included [misc-include-cleaner]
+ 1435 |                                 rep_ask("param_type", what, tys, 2, 0, "give "
+      |                                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1452 |                 if (p && (u = jv_get(p, "uniform")) && u->t == J_TRUE)
+      |                           ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+ 1452 |                 if (p && (u = jv_get(p, "uniform")) && u->t == J_TRUE)
+      |                           ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/jsonmode.c:1452:15: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1457:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1457 |                                 if (strcmp(p->k[i], "name") && strcmp(p->k[i], "type") &&
+      |                                     ^
+      |                                                             != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1458:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1458 |                                     strcmp(p->k[i], "range") && strcmp(p->k[i], "uniform"))
+      |                                     ^
+      |                                                              != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1458:37: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1458 |                                     strcmp(p->k[i], "range") && strcmp(p->k[i], "uniform"))
+      |                                                                 ^                         
+      |                                                                                            != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1478:29: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1478 |         if (v->t != J_OBJ || (body = jv_get(v, "body")) == NULL) {
+      |                               ~~~~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1478:29: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1478:29: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1487:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1487 |                 nm = names[r->nfunc++ & 3];
+      |                            ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/jsonmode.c:1491:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1491 |         if ((ps = jv_get(v, "params")) != NULL && !render_params(r, &r->pre, ps))
+      |              ~~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1491:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1491:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1558:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1558 |         switch (p->type) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1681:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1681 |                         if ((rr = jv_get(c, "residue")) == NULL ||
+      |                              ~~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1681:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1681:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1682:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1682 |                             (mm = jv_get(c, "modulus")) == NULL)
+      |                              ~~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1682:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1682:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1755:27: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1755 |                         for (q = 0; keys[q] && strcmp(keys[q], e->k[j]); q++)
+      |                                                ^                       
+      |                                                                         != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1761:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1761 |                 if ((s = jv_gets(e, "color")) != NULL ||
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1761:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1761:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1762:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1762 |                     (s = jv_gets(e, "colour")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1762:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1762:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1768:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1768 |                 if ((s = jv_gets(e, "pattern")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1768:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1768:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1769:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1769 |                         if (strcmp(s, "noise") && strcmp(s, "gradient") &&
+      |                             ^
+      |                                                != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1770:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1770 |                             strcmp(s, "checker") && strcmp(s, "checkerboard"))
+      |                             ^
+      |                                                  != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1770:32: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1770 |                             strcmp(s, "checker") && strcmp(s, "checkerboard"))
+      |                                                     ^                        
+      |                                                                               != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1775:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1775 |                 if ((s = jv_gets(e, "file")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1775:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1775:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1781:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1781 |                 if ((s = jv_gets(e, "png_base64")) != NULL ||
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1781:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1781:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1782:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1782 |                     (s = jv_gets(e, "base64")) != NULL ||
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1782:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1782:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1783:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1783 |                     (s = jv_gets(e, "image_base64")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1783:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1783:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1801:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1801 |                 if ((s = jv_gets(e, "format")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1801:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1801:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1808:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1808 |                 if ((x = jv_get(e, "width")) != NULL || jv_get(e, "height")) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1808:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1808:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1817:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1817 |                 if ((s = jv_gets(e, "filter")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1817:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1817:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1818:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1818 |                         if (strcmp(s, "nearest") && strcmp(s, "linear"))
+      |                             ^
+      |                                                  != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1823:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1823 |                 if ((s = jv_gets(e, "address")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1823:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1823:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1824:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1824 |                         if (strcmp(s, "repeat") && strcmp(s, "clamp") &&
+      |                             ^
+      |                                                 != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1825:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1825 |                             strcmp(s, "mirror") && strcmp(s, "border"))
+      |                             ^
+      |                                                 != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1825:31: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1825 |                             strcmp(s, "mirror") && strcmp(s, "border"))
+      |                                                    ^                  
+      |                                                                        != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1908:38: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1908 |                                 if (!strncmp(fr, " over ", 6) && strncmp(rv->s, "GF", 2) &&
+      |                                                                  ^
+      |                                                                                          != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1909:9: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1909 |                                     strncmp(rv->s, "gf", 2))
+      |                                     ^                      
+      |                                                             != 0
+/home/andrew/Code/ucas/src/jsonmode.c:1949:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1949 |                 if ((v = jv_get(r->args, p->name)) == NULL)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:1949:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:1949:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:1983:2: warning: no header providing "fflush" is directly included [misc-include-cleaner]
+ 1983 |         fflush(stdout);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:1984:11: warning: no header providing "tmpfile" is directly included [misc-include-cleaner]
+ 1984 |         cap_fp = tmpfile();
+      |                  ^
+/home/andrew/Code/ucas/src/jsonmode.c:2004:7: warning: no header providing "fileno" is directly included [misc-include-cleaner]
+ 2004 |         dup2(fileno(cap_fp), 1);
+      |              ^
+/home/andrew/Code/ucas/src/jsonmode.c:2013:2: warning: no header providing "off_t" is directly included [misc-include-cleaner]
+ 2013 |         off_t left = -1;
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2020:35: warning: no header providing "SEEK_CUR" is directly included [misc-include-cleaner]
+ 2020 |                 left = lseek(fileno(cap_fp), 0, SEEK_CUR);
+      |                                                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2024:2: warning: function 'rewind' has no error detection; 'fseek' should be used instead [bugprone-unsafe-functions]
+ 2024 |         rewind(cap_fp);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2024:2: warning: no header providing "rewind" is directly included [misc-include-cleaner]
+/home/andrew/Code/ucas/src/jsonmode.c:2025:40: warning: Value of 'errno' was not checked and may be overwritten by function 'fread' [clang-analyzer-unix.Errno]
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2800:7: note: Assuming field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2800:11: note: Field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |                  ^
+/home/andrew/Code/ucas/src/jsonmode.c:2800:7: note: '?' condition is true
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^
+/home/andrew/Code/ucas/src/jsonmode.c:2801:10: note: Field 't' is equal to J_OBJ
+ 2801 |         if (rq->t != J_OBJ)
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2801:2: note: Taking false branch
+ 2801 |         if (rq->t != J_OBJ)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2804:14: note: Assuming 'k' is >= field 'n'
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2804:2: note: Loop condition is false. Execution continues on line 2812
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2812:6: note: Assuming the condition is false
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2812:2: note: Taking false branch
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2815:2: note: Taking false branch
+ 2815 |         if ((r.c = find_cmd(cmd)) == NULL) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2822:6: note: Assuming 'a' is null
+ 2822 |         if (a && a->t != J_OBJ)
+      |             ^
+/home/andrew/Code/ucas/src/jsonmode.c:2822:8: note: Left side of '&&' is false
+ 2822 |         if (a && a->t != J_OBJ)
+      |               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2828:47: note: Left side of '&&' is false
+ 2828 |         equiv_need_ftz = !strcmp(r.c->name, "equiv") && jv_get(a, "ftz") == NULL;
+      |                                                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2829:51: note: Left side of '&&' is false
+ 2829 |         equiv_need_nanbits = !strcmp(r.c->name, "equiv") &&
+      |                                                          ^
+/home/andrew/Code/ucas/src/jsonmode.c:2831:6: note: Assuming the condition is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2831:39: note: Left side of '&&' is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |                                              ^
+/home/andrew/Code/ucas/src/jsonmode.c:2835:13: note: Assuming the condition is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2835:49: note: Left side of '&&' is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                                                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2836:6: note: Assuming the condition is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2836:40: note: Left side of '&&' is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |                                               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2845:6: note: Assuming field 'ecode' is null
+ 2845 |         if (!r.ecode) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2845:2: note: Taking true branch
+ 2845 |         if (!r.ecode) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2850:7: note: Assuming the condition is false
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2850:3: note: Taking false branch
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2852:12: note: Assuming the condition is false
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2852:8: note: Taking false branch
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2854:12: note: Assuming the condition is false
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2854:8: note: Taking false branch
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2856:12: note: Assuming the condition is false
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2856:8: note: Taking false branch
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2858:12: note: Assuming the condition is false
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2858:12: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/jsonmode.c:2859:7: note: Assuming the condition is false
+ 2859 |                     !strcmp(cmd, "infinite_product"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2858:8: note: Taking false branch
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2861:12: note: Assuming the condition is false
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                          ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2861:8: note: Taking false branch
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2866:14: note: Assuming the condition is false
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2866:10: note: Taking false branch
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2878:14: note: Assuming field 'special' is not equal to 0
+ 2878 |                 } else if (!r.c->special) {
+      |                            ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2878:10: note: Taking false branch
+ 2878 |                 } else if (!r.c->special) {
+      |                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2892:8: note: Field 'ecode' is null
+ 2892 |         if (r.ecode) {
+      |               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2892:2: note: Taking false branch
+ 2892 |         if (r.ecode) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2908:16: note: Assuming field 'p' is null
+ 2908 |         sb_puts(&src, r.pre.p ? r.pre.p : "");
+      |                       ^~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2908:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/jsonmode.c:2909:16: note: Assuming field 'p' is null
+ 2909 |         sb_puts(&src, r.stmt.p ? r.stmt.p : "");
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2909:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/jsonmode.c:2913:7: note: Assuming 'id' is null
+ 2913 |                 if (id) {
+      |                     ^~
+/home/andrew/Code/ucas/src/jsonmode.c:2913:3: note: Taking false branch
+ 2913 |                 if (id) {
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2923:2: note: Taking true branch
+ 2923 |         if (!strcmp(cmd, "schema")) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2971:9: note: Calling 'cap_end'
+ 2971 |         text = cap_end();
+      |                ^~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2017:6: note: Assuming 'cap_fp' is not equal to NULL
+ 2017 |         if (cap_fp == NULL)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2017:2: note: Taking false branch
+ 2017 |         if (cap_fp == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2019:6: note: Assuming 'cap_shm' is 0
+ 2019 |         if (cap_shm)
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2019:2: note: Taking false branch
+ 2019 |         if (cap_shm)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2024:2: note: After calling 'rewind' reading 'errno' is required to find out if the call has failed
+ 2024 |         rewind(cap_fp);
+      |         ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:10: note: 'left' is < 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                 ^~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:19: note: Left side of '||' is true
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                          ^
+/home/andrew/Code/ucas/src/jsonmode.c:2025:54: note: 'left' is < 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                                             ^~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:64: note: Left side of '&&' is false
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                                                       ^
+/home/andrew/Code/ucas/src/jsonmode.c:2025:40: note: Value of 'errno' was not checked and may be overwritten by function 'fread'
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2026 |             left < (off_t)sizeof buf ? (size_t)left : sizeof buf, cap_fp)) > 0) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:40: warning: no header providing "fread" is directly included [misc-include-cleaner]
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2033:2: warning: Value of 'errno' was not checked and may be overwritten by function 'fclose' [clang-analyzer-unix.Errno]
+ 2033 |         fclose(cap_fp);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2800:7: note: Assuming field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2800:11: note: Field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |                  ^
+/home/andrew/Code/ucas/src/jsonmode.c:2800:7: note: '?' condition is true
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^
+/home/andrew/Code/ucas/src/jsonmode.c:2801:10: note: Field 't' is equal to J_OBJ
+ 2801 |         if (rq->t != J_OBJ)
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2801:2: note: Taking false branch
+ 2801 |         if (rq->t != J_OBJ)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2804:14: note: Assuming 'k' is >= field 'n'
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2804:2: note: Loop condition is false. Execution continues on line 2812
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2812:6: note: Assuming the condition is false
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2812:2: note: Taking false branch
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2815:2: note: Taking false branch
+ 2815 |         if ((r.c = find_cmd(cmd)) == NULL) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2822:6: note: Assuming 'a' is null
+ 2822 |         if (a && a->t != J_OBJ)
+      |             ^
+/home/andrew/Code/ucas/src/jsonmode.c:2822:8: note: Left side of '&&' is false
+ 2822 |         if (a && a->t != J_OBJ)
+      |               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2828:47: note: Left side of '&&' is false
+ 2828 |         equiv_need_ftz = !strcmp(r.c->name, "equiv") && jv_get(a, "ftz") == NULL;
+      |                                                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2829:51: note: Left side of '&&' is false
+ 2829 |         equiv_need_nanbits = !strcmp(r.c->name, "equiv") &&
+      |                                                          ^
+/home/andrew/Code/ucas/src/jsonmode.c:2831:6: note: Assuming the condition is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2831:39: note: Left side of '&&' is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |                                              ^
+/home/andrew/Code/ucas/src/jsonmode.c:2835:13: note: Assuming the condition is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2835:49: note: Left side of '&&' is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                                                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2836:6: note: Assuming the condition is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2836:40: note: Left side of '&&' is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |                                               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2845:6: note: Assuming field 'ecode' is null
+ 2845 |         if (!r.ecode) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2845:2: note: Taking true branch
+ 2845 |         if (!r.ecode) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2850:7: note: Assuming the condition is false
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2850:3: note: Taking false branch
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2852:12: note: Assuming the condition is false
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2852:8: note: Taking false branch
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2854:12: note: Assuming the condition is false
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2854:8: note: Taking false branch
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2856:12: note: Assuming the condition is false
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2856:8: note: Taking false branch
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2858:12: note: Assuming the condition is false
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2858:12: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/jsonmode.c:2859:7: note: Assuming the condition is false
+ 2859 |                     !strcmp(cmd, "infinite_product"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2858:8: note: Taking false branch
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2861:12: note: Assuming the condition is false
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                          ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2861:8: note: Taking false branch
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2866:14: note: Assuming the condition is false
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2866:10: note: Taking false branch
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2878:14: note: Assuming field 'special' is not equal to 0
+ 2878 |                 } else if (!r.c->special) {
+      |                            ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2878:10: note: Taking false branch
+ 2878 |                 } else if (!r.c->special) {
+      |                        ^
+/home/andrew/Code/ucas/src/jsonmode.c:2892:8: note: Field 'ecode' is null
+ 2892 |         if (r.ecode) {
+      |               ^
+/home/andrew/Code/ucas/src/jsonmode.c:2892:2: note: Taking false branch
+ 2892 |         if (r.ecode) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2908:16: note: Assuming field 'p' is null
+ 2908 |         sb_puts(&src, r.pre.p ? r.pre.p : "");
+      |                       ^~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2908:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/jsonmode.c:2909:16: note: Assuming field 'p' is null
+ 2909 |         sb_puts(&src, r.stmt.p ? r.stmt.p : "");
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2909:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/jsonmode.c:2913:7: note: Assuming 'id' is null
+ 2913 |                 if (id) {
+      |                     ^~
+/home/andrew/Code/ucas/src/jsonmode.c:2913:3: note: Taking false branch
+ 2913 |                 if (id) {
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2923:2: note: Taking true branch
+ 2923 |         if (!strcmp(cmd, "schema")) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2971:9: note: Calling 'cap_end'
+ 2971 |         text = cap_end();
+      |                ^~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2017:6: note: Assuming 'cap_fp' is not equal to NULL
+ 2017 |         if (cap_fp == NULL)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2017:2: note: Taking false branch
+ 2017 |         if (cap_fp == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2019:6: note: Assuming 'cap_shm' is not equal to 0
+ 2019 |         if (cap_shm)
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2019:2: note: Taking true branch
+ 2019 |         if (cap_shm)
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2024:2: note: After calling 'rewind' reading 'errno' is required to find out if the call has failed
+ 2024 |         rewind(cap_fp);
+      |         ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:10: note: 'left' is >= 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                 ^~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:10: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/jsonmode.c:2025:22: note: Assuming 'left' is <= 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2025:32: note: Left side of '&&' is false
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                       ^
+/home/andrew/Code/ucas/src/jsonmode.c:2033:2: note: Value of 'errno' was not checked and may be overwritten by function 'fclose'
+ 2033 |         fclose(cap_fp);
+      |         ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2033:2: warning: no header providing "fclose" is directly included [misc-include-cleaner]
+ 2033 |         fclose(cap_fp);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2080:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   41 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2084:6: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+ 2084 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/home/andrew/Code/ucas/src/jsonmode.c:2087:3: warning: no header providing "rep_failed" is directly included [misc-include-cleaner]
+ 2087 |                 rep_failed();
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2114:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2114 |                         if (TY_FP(pp->ty) || pp->ty == TY_REAL) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/jsonmode.c:2114:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2114 |                         if (TY_FP(pp->ty) || pp->ty == TY_REAL) {
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/jsonmode.c:2161:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2161 |         switch (p->type) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2226:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2226 |         switch (p->type) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2478:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2478 |         if ((ps = jv_get(r->args, "params")) != NULL &&
+      |              ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2478:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2478:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2484:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2484 |         if ((w = jv_get(r->args, "where")) != NULL)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2484:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2484:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2499:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2499 |         if ((v = jv_get(r->args, "var")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2499:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2499:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2528:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2528 |                 if ((v = jv_get(r->args, "budget")) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2528:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2528:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2533:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2533 |                 if ((v = jv_get(r->args, "ranges")) != NULL)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2533:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2533:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2543:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2543 |                 if ((v = jv_get(r->args, "nofile")) != NULL && v->t == J_TRUE)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2543:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2543:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2547:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2547 |         if ((v = jv_get(r->args, "model")) != NULL && v->t == J_STR) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2547:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2547:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2553:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2553 |         if ((v = jv_get(r->args, "budget")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2553:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2553:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2558:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2558 |         if ((v = jv_get(r->args, "nofile")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2558:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2558:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2560:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2560 |         if ((v = jv_get(r->args, "ranges")) != NULL)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2560:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2560:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2570:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2570 |         if ((v = jv_get(r->args, "float_only")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2570:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2570:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2572:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2572 |         if ((v = jv_get(r->args, "exact")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2572:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2572:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2574:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2574 |         if ((v = jv_get(r->args, "ulp")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2574:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2574:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2579:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2579 |         if ((v = jv_get(r->args, "approx")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2579:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2579:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2581:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2581 |         if ((v = jv_get(r->args, "percomp")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2581:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2581:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2583:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2583 |         if ((v = jv_get(r->args, "search")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2583:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2583:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2584:25: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2584 |                 if (v->t != J_STR || (strcmp(v->s, "anneal") &&
+      |                                       ^
+      |                                                              != 0
+/home/andrew/Code/ucas/src/jsonmode.c:2589:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2589 |         if ((v = jv_get(r->args, "seed")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2589:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2589:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2594:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2594 |         if ((v = jv_get(r->args, "advice")) != NULL && v->t == J_TRUE)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2594:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2594:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2596:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2596 |         if ((v = jv_get(r->args, "overdraw")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2596:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2596:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2601:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2601 |         if ((v = jv_get(r->args, "sink")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2601:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2601:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2611:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2611 |         if ((v = jv_get(r->args, "texture")) != NULL) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2611:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2611:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2614:24: warning: 'sscanf' used to convert a string to an unsigned integer value, but function will not report conversion errors; consider using 'strtoul' instead [bugprone-unchecked-string-to-number-conversion]
+ 2614 |                 if (v->t != J_STR || sscanf(v->s, "%u %u %c", &a, &b, &extra) != 2 ||
+      |                                      ^
+/home/andrew/Code/ucas/src/jsonmode.c:2614:24: warning: no header providing "sscanf" is directly included [misc-include-cleaner]
+/home/andrew/Code/ucas/src/jsonmode.c:2620:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2620 |         if ((v = jv_get(r->args, "functions")) != NULL)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2620:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2620:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2622:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2622 |         if ((v = jv_get(r->args, "float_ranges")) != NULL)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2622:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2622:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2760:2: warning: no header providing "fputs" is directly included [misc-include-cleaner]
+ 2760 |         fputs(b.p, jout);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2805:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2805 |                 if (strcmp(rq->k[k], "id") && strcmp(rq->k[k], "cmd") &&
+      |                     ^
+      |                                            != 0
+/home/andrew/Code/ucas/src/jsonmode.c:2806:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2806 |                     strcmp(rq->k[k], "args")) {
+      |                     ^                       
+      |                                              != 0
+/home/andrew/Code/ucas/src/jsonmode.c:2812:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |              ~~~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2812:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2812:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2815:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2815 |         if ((r.c = find_cmd(cmd)) == NULL) {
+      |              ~~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2815:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2815:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2831:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |              ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2831:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2831:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2832:37: warning: no header providing "REP_FILES_BASE64" is directly included [misc-include-cleaner]
+ 2832 |                 fmode = !strcmp(v->s, "base64") ? REP_FILES_BASE64 :
+      |                                                   ^
+/home/andrew/Code/ucas/src/jsonmode.c:2833:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2833 |                     !strcmp(v->s, "both") ? REP_FILES_WRITE | REP_FILES_BASE64 :
+      |                                             ^               ~
+/home/andrew/Code/ucas/src/report.h:79:25: note: expanded from macro 'REP_FILES_WRITE'
+   79 | #define REP_FILES_WRITE 1
+      |                         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2836:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2836:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2836:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2840:2: warning: no header providing "rep_request" is directly included [misc-include-cleaner]
+ 2840 |         rep_request(jv_get(a, "assume"), session, defaults, fmode, outdir);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2882 |                         if (!strcmp(cmd, "animate") && (code = jv_gets(a, "code")) &&
+      |                                                         ~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+ 2882 |                         if (!strcmp(cmd, "animate") && (code = jv_gets(a, "code")) &&
+      |                                                         ~~~~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/jsonmode.c:2882:41: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/jsonmode.c:2893:3: warning: no header providing "rep_error" is directly included [misc-include-cleaner]
+ 2893 |                 rep_error(r.ecode, r.err);   /* unless an ambiguity is there */
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2894:12: warning: no header providing "rep_collect" is directly included [misc-include-cleaner]
+ 2894 |                 pieces = rep_collect();
+      |                          ^
+/home/andrew/Code/ucas/src/jsonmode.c:2924:3: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 2924 |                 rep_begin("schema");
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2936:16: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2936 |                         if (as_c && strncmp(cmd, "c_", 2))
+      |                                     ^                    
+      |                                                           != 0
+/home/andrew/Code/ucas/src/jsonmode.c:2937:5: warning: no header providing "printf" is directly included [misc-include-cleaner]
+ 2937 |                                 printf("  note: the code is C: optimised by the C frontend "
+      |                                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:2972:9: warning: no header providing "rep_text_cap" is directly included [misc-include-cleaner]
+ 2972 |         text = rep_text_cap(text);
+      |                ^
+/home/andrew/Code/ucas/src/jsonmode.c:2973:2: warning: no header providing "rep_text_fill" is directly included [misc-include-cleaner]
+ 2973 |         rep_text_fill(text);
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:3077:35: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3077 |         if (results && results->n > 1 && strcmp(cmd, "english")) {
+      |                                          ^                     
+      |                                                                 != 0
+/home/andrew/Code/ucas/src/jsonmode.c:3101:12: warning: multilevel pointer conversion from 'struct jv **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 3101 |                         memmove(resp->v + k, resp->v + k + 1,
+      |                                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:3101:25: warning: multilevel pointer conversion from 'struct jv **' to 'const void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 3101 |                         memmove(resp->v + k, resp->v + k + 1,
+      |                                              ^
+/home/andrew/Code/ucas/src/jsonmode.c:3103:12: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 3103 |                         memmove(resp->k + k, resp->k + k + 1,
+      |                                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:3103:25: warning: multilevel pointer conversion from 'char **' to 'const void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 3103 |                         memmove(resp->k + k, resp->k + k + 1,
+      |                                              ^
+/home/andrew/Code/ucas/src/jsonmode.c:3134:3: warning: no header providing "ssize_t" is directly included [misc-include-cleaner]
+ 3134 |                 ssize_t n = readlink("/proc/self/exe", path, sizeof path - 1);
+      |                 ^
+/home/andrew/Code/ucas/src/jsonmode.c:3144:2: warning: no header providing "fprintf" is directly included [misc-include-cleaner]
+ 3144 |         fprintf(stderr, "ucas: reset: cannot restart: %s\n", strerror(errno));
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:3174:45: warning: no header providing "EINTR" is directly included [misc-include-cleaner]
+   36 |                 while (read(lp[0], &c, 1) > 0 || errno == EINTR)
+      |                                                           ^
+/home/andrew/Code/ucas/src/jsonmode.c:3190:9: warning: no header providing "pollfd" is directly included [misc-include-cleaner]
+   44 |         struct pollfd pf;
+      |                ^
+/home/andrew/Code/ucas/src/jsonmode.c:3218:16: warning: no header providing "CLOCK_MONOTONIC" is directly included [misc-include-cleaner]
+   36 |         clock_gettime(CLOCK_MONOTONIC, &t0);
+      |                       ^
+/home/andrew/Code/ucas/src/jsonmode.c:3239:15: warning: no header providing "POLLIN" is directly included [misc-include-cleaner]
+ 3239 |                 pf.events = POLLIN;
+      |                             ^
+/home/andrew/Code/ucas/src/jsonmode.c:3240:7: warning: no header providing "poll" is directly included [misc-include-cleaner]
+ 3240 |                 if (poll(&pf, 1, (int)(left * 1000) + 1) <= 0)
+      |                     ^
+/home/andrew/Code/ucas/src/jsonmode.c:3352:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3352 |                             !strcmp(m, "both") ? REP_FILES_WRITE | REP_FILES_BASE64 :
+      |                                                  ^               ~
+/home/andrew/Code/ucas/src/report.h:79:25: note: expanded from macro 'REP_FILES_WRITE'
+   79 | #define REP_FILES_WRITE 1
+      |                         ^
+/home/andrew/Code/ucas/src/jsonmode.c:3362:9: warning: The 1st argument to 'fdopen' is -1 but should be >= 0 [clang-analyzer-unix.StdCLibraryFunctions]
+ 3362 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+/home/andrew/Code/ucas/src/jsonmode.c:3337:6: note: Assuming the condition is false
+ 3337 |         if (!strcmp(argv[i], "--json-schema")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3337:2: note: Taking false branch
+ 3337 |         if (!strcmp(argv[i], "--json-schema")) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:3344:12: note: Assuming 'i' is >= 'argc'
+ 3344 |         for (i++; i < argc; i++) {
+      |                   ^~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3344:2: note: Loop condition is false. Execution continues on line 3361
+ 3344 |         for (i++; i < argc; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/jsonmode.c:3361:7: note: Assuming that 'dup' fails
+ 3361 |         fd = dup(1);
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3361:2: note: Value assigned to 'fd'
+ 3361 |         fd = dup(1);
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3362:9: note: The 1st argument to 'fdopen' is -1 but should be >= 0
+ 3362 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+/home/andrew/Code/ucas/src/jsonmode.c:3362:9: warning: no header providing "fdopen" is directly included [misc-include-cleaner]
+ 3362 |         jout = fdopen(fd, "w");
+      |                ^
+/home/andrew/Code/ucas/src/jsonmode.c:3397:9: warning: The 1st argument to 'fdopen' is -1 but should be >= 0 [clang-analyzer-unix.StdCLibraryFunctions]
+ 3397 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+/home/andrew/Code/ucas/src/jsonmode.c:3396:7: note: Assuming that 'dup' fails
+ 3396 |         fd = dup(1);
+      |              ^~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3396:2: note: Value assigned to 'fd'
+ 3396 |         fd = dup(1);
+      |         ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/jsonmode.c:3397:9: note: The 1st argument to 'fdopen' is -1 but should be >= 0
+ 3397 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+/home/andrew/Code/ucas/src/jsonmode.c:3500:14: warning: no header providing "rep_small_files" is directly included [misc-include-cleaner]
+ 3500 |             small = rep_small_files;
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

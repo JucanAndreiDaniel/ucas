@@ -1,0 +1,87 @@
+> n64(x: i64) = -x
+> wrap n64
+wrap analysis of n64:
+  -x   (i64)
+      nuw fails: unsigned wrap at 65535 points, e.g. x=-9223372036854775808
+      nsw fails: signed wrap at 1 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-9223372036854775808
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> domain n64
+domain of n64:
+  x: i64, -9223372036854775808..9223372036854775807
+  C assumes -x does not overflow i64  (signed overflow)
+  defined at 65536 of 65536 points
+  C undefined behaviour at 1 points, e.g. x=-9223372036854775808
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> range n64
+range of n64 -> i64:
+  -9223372036854775808..9223372036854775807  (sampled min/max; not a sound bound)
+  fits in i64
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): -9223372036854775808..9223372036854775807
+  proved bound (monotonicity, exact algebra): -9.2233720368547758e+18..9.2233720368547758e+18
+  the sample reaches both ends: the range is exactly -9.2233720368547758e+18..9.2233720368547758e+18 (proved)
+    max: n64 is nonincreasing in x, so take x = -9223372036854775808:
+      --9223372036854775808
+      in 9.2233720368547758e+18..9.2233720368547758e+18 by intervals
+    min: n64 is nonincreasing in x, so take x = 9223372036854775807:
+      -9223372036854775807
+> a64(x: i64) = x + 9223372036854775807
+> wrap a64
+wrap analysis of a64:
+  x + 9223372036854775807   (i64)
+      nuw fails: unsigned wrap at 32754 points, e.g. x=-9223372036854775807
+      nsw fails: signed wrap at 32780 points, e.g. x=9223372036854775807  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32780 points, e.g. x=9223372036854775807
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> m64(x: i64) = x * 3
+> wrap m64
+wrap analysis of m64:
+  3x   (i64)
+      nuw fails: unsigned wrap at 43813 points, e.g. x=-9223372036854775808
+      nsw fails: signed wrap at 43908 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 43908 points, e.g. x=-9223372036854775808
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> dbl64(x: i64) = x + x
+> wrap dbl64
+wrap analysis of dbl64:
+  x + x   (i64)
+      nuw fails: unsigned wrap at 32755 points, e.g. x=-9223372036854775808
+      nsw fails: signed wrap at 32917 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32917 points, e.g. x=-9223372036854775808
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> sub64(x: i64) = x - -9223372036854775808
+> wrap sub64
+wrap analysis of sub64:
+  x - -9223372036854775808   (i64)
+      nuw fails: unsigned wrap at 32781 points, e.g. x=9223372036854775807
+      nsw fails: signed wrap at 32781 points, e.g. x=9223372036854775807  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32781 points, e.g. x=9223372036854775807
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> min64(x: i64 in {-9223372036854775808}) = x / -1
+> wrap min64
+wrap analysis of min64:
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 1 points, e.g. x=-9223372036854775808
+  over all 1 points of the domain
+> domain min64
+domain of min64:
+  x: i64, -9223372036854775808..-9223372036854775808
+  where x == -9223372036854775808
+  defined at 1 of 1 points
+  no conditions: total on its parameter types
+  C undefined behaviour at 1 points, e.g. x=-9223372036854775808
+  over all 1 points of the domain
+> range min64
+range of min64 -> i64:
+  -9223372036854775808..-9223372036854775808
+  fits in i64
+  over all 1 points of the domain
+> negmin64(x: i64 in {-9223372036854775808}) = -x
+> wrap negmin64
+wrap analysis of negmin64:
+  -x   (i64)
+      nuw fails: unsigned wrap at 1 points, e.g. x=-9223372036854775808
+      nsw fails: signed wrap at 1 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-9223372036854775808
+  over all 1 points of the domain

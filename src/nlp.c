@@ -267,12 +267,24 @@ clarify(const char *key, const char *what, const char *const *opt, int nopt,
 		return dflt;
 	if (nlp_defer || rep_on) {
 		const char *a;
-		if (nlp_asked)
-			return dflt;   /* one question at a time */
-		/* JSON mode: args.assume answers, else an ambiguity */
+		/* JSON mode: args.assume answers, else an ambiguity.  Check
+		 * the answer first: a second ambiguity in one sentence may
+		 * have its own args.assume key even when the first was
+		 * already asked. */
 		a = rep_on ? rep_answer(key, what, opt, nopt, dflt) : NULL;
 		if (a != NULL)
 			return atoi(a) - 1;
+		if (nlp_asked) {
+			/* one question at a time, but never hide the rest */
+			if (rep_on) {
+				char t[600];
+				snprintf(t, sizeof t, "%s: also ambiguous: %s; read "
+				    "as %s%s%s", key ? key : "question", what,
+				    opt[dflt], hint ? "; " : "", hint ? hint : "");
+				rep_note("ambiguous", t);
+			}
+			return dflt;
+		}
 		if ((a = next_answer()) == NULL) {
 			if (rep_on)
 				rep_ask(key, what, opt, nopt, dflt, hint);
@@ -367,6 +379,16 @@ struct word {
 static struct word W[MAXW + 4];
 static int nw, wi;
 
+/*
+ * Bound on recursive-descent work for one sentence.  Ambiguous phrases used
+ * to be re-parsed speculatively at every nesting level (2^n on inputs like
+ * "the sqrt of the sqrt of ..."), which a 320-word cap cannot stop.  The
+ * constant-start guard in const_interval() removes that exponential path;
+ * this counter is a backstop for any other shape that tries too many readings.
+ */
+#define MAX_PARSE_STEPS 200000L
+static long parse_steps;
+
 static void
 push(int k, const char *s, size_t n, int sp)
 {
@@ -380,7 +402,8 @@ push(int k, const char *s, size_t n, int sp)
 	w->k = k;
 	w->sp = sp;
 	if (n >= sizeof w->s)
-		n = sizeof w->s - 1;
+		nfail("a word or number is too long for me (at most %zu "
+		    "characters)", sizeof w->s - 1);
 	memcpy(w->o, s, n);
 	for (i = 0; i < n; i++)
 		w->s[i] = tolower((unsigned char)s[i]);
@@ -606,7 +629,28 @@ tokenize(const char *s)
 			i += strlen(sy[k]);
 			continue;
 		}
-		nfail("I can't read the character '%c'", s[i]);
+		{
+			unsigned char c = (unsigned char)s[i];
+			size_t clen = 1, k2;
+			char cp[8];
+
+			if (c >= 0xf0 && i + 3 < n)
+				clen = 4;
+			else if (c >= 0xe0 && i + 2 < n)
+				clen = 3;
+			else if (c >= 0xc0 && i + 1 < n)
+				clen = 2;
+			for (k2 = 1; k2 < clen; k2++)
+				if (((unsigned char)s[i + k2] & 0xc0) != 0x80) {
+					clen = 1;
+					break;
+				}
+			if (clen > 1) {
+				snprintf(cp, sizeof cp, "%.*s", (int)clen, s + i);
+				nfail("I can't read the character '%s'", cp);
+			}
+			nfail("I can't read the character '\\x%02x'", c);
+		}
 	}
 	for (k = 0; k < 4; k++)
 		memset(&W[nw + k], 0, sizeof W[0]);
@@ -1115,52 +1159,125 @@ mult_word(const char *w, int64_t *m)
 		*m = 1000000;
 	else if (!strcmp(w, "billion"))
 		*m = 1000000000;
+	else if (!strcmp(w, "trillion"))
+		*m = 1000000000000LL;
 	else
 		return 0;
 	return 1;
 }
 
-/* "two hundred fifty-six", "a thousand" */
-static int
-number_words(int64_t *out)
+/* "a millionth", "two billionths": the denominator of an ordinal scale
+ * word, so "one billionth" is 1/1000000000, not 1000000000. */
+static int64_t
+ordinal_scale(const char *w)
 {
-	int s = wi, any = 0, small = 0;
-	int64_t total = 0, cur = 0, v, m;
+	int64_t m;
+	size_t n = strlen(w);
+
+	if (!strcmp(w, "hundredth"))
+		return 100;
+	if (n > 3 && !strcmp(w + n - 3, "ths"))
+		n--;			/* "billionths" */
+	if (n > 2 && !strcmp(w + n - 2, "th")) {
+		char t[32];
+		snprintf(t, sizeof t, "%.*s", (int)(n - 2), w);
+		if (mult_word(t, &m))
+			return m;
+	}
+	return 0;
+}
+
+/* printf has no portable conversion for __int128: build the decimal */
+static void
+i128_dec(__int128 v, char *out, size_t n)
+{
+	char rev[48];
+	unsigned __int128 u;
+	size_t k = 0, z = 0;
+
+	u = v < 0 ? (unsigned __int128)(-(v + 1)) + 1 : (unsigned __int128)v;
+	/* ucas rejects bare integer literals above u64: when a larger value
+	 * ends in zeros, keep it exact as a coefficient times a power of ten
+	 * so it stays an arbitrary-precision int. */
+	if (u > 9223372036854775807ULL) {
+		while (u > 1000000000ULL && u % 10 == 0) {
+			u /= 10;
+			z++;
+		}
+		if (z) {
+			snprintf(out, n, "%llu*10^%zu", (unsigned long long)u, z);
+			return;
+		}
+	}
+	do {
+		rev[k++] = (char)('0' + u % 10);
+		u /= 10;
+	} while (u);
+	if (v < 0 && k < sizeof rev)
+		rev[k++] = '-';
+	if (k >= n)
+		k = n - 1;
+	while (k > 0)
+		*out++ = rev[--k];
+	*out = 0;
+}
+
+/* "two hundred fifty-six", "a thousand", "one billion billion" */
+static int
+number_words(char *out, size_t outn)
+{
+	int s = wi, any = 0, small = 0, scaled = 0;
+	int64_t nv, m;
+	__int128 total = 0, cur = 0, v;
 
 	for (;;) {
 		const char *w = W[wi].s;
 		if (W[wi].k != W_WORD)
 			break;
-		if (numword_val(w, &v) && !(small && v < 10 && cur % 10)) {
+		if (numword_val(w, &nv) && !(small && nv < 10 && cur % 10)) {
 			if (any && cur % 100 && cur % 100 < 20)
 				break;   /* "three four": two numbers */
+			v = nv;
 			cur += v;
 			any = small = 1;
+			scaled = 0;
 			wi++;
 			continue;
 		}
 		if (!any && !strcmp(w, "a") && (isw(wi + 1, "hundred") ||
-		    mult_word(W[wi + 1].s, &m))) {
+		    mult_word(W[wi + 1].s, &m) ||
+		    ordinal_scale(W[wi + 1].s))) {
 			cur = 1;
 			any = 1;
+			scaled = 0;
 			wi++;
 			continue;
 		}
 		if (any && !strcmp(w, "hundred")) {
 			cur = (cur ? cur : 1) * 100;
 			small = 0;
+			scaled = 0;
 			wi++;
 			continue;
 		}
 		if (any && mult_word(w, &m)) {
-			total += (cur ? cur : 1) * m;
+			if (scaled)
+				total *= m;   /* "billion billion": 10^9 * 10^9 */
+			else
+				total += (cur ? cur : 1) * m;
 			cur = 0;
 			small = 0;
+			scaled = 1;
 			wi++;
 			continue;
 		}
-		if (any && !strcmp(w, "and") && (isw(wi - 1, "hundred") ||
-		    isw(wi - 1, "thousand")) && numword_val(W[wi + 1].s, &v)) {
+		if (any && !strcmp(w, "and") &&
+		    (isw(wi - 1, "hundred") || isw(wi - 1, "thousand") ||
+		    mult_word(W[wi - 1].s, &m)) &&
+		    numword_val(W[wi + 1].s, &nv)) {
+			/* "one billion and one" reads as one number, just as
+			 * "one thousand and one" (and "one billion plus one")
+			 * already do. */
 			wi++;
 			continue;
 		}
@@ -1170,12 +1287,38 @@ number_words(int64_t *out)
 		wi = s;
 		return 0;
 	}
-	*out = total + cur;
+	i128_dec(total + cur, out, outn);
 	return 1;
 }
 
-/* "half", "thirds": the denominator */
-static int
+/* "point one four": digits spoken singly after a whole number */
+static void
+spelled_point(char *s, size_t n)
+{
+	int64_t d;
+	size_t len = strlen(s);
+	int any = 0;
+
+	if (!isw(wi, "point"))
+		return;
+	wi++;
+	while (W[wi].k == W_WORD && numword_val(W[wi].s, &d) &&
+	    d >= 0 && d <= 9) {
+		if (len + 3 >= n)
+			break;
+		if (!any) {
+			s[len++] = '.';
+			s[len] = 0;
+			any = 1;
+		}
+		s[len++] = (char)('0' + d);
+		s[len] = 0;
+		wi++;
+	}
+}
+
+/* "half", "thirds", "billionth": the denominator */
+static int64_t
 fraction_word(int i)
 {
 	static const char *const fr[] = {"half", "halves", "third", "thirds",
@@ -1185,9 +1328,11 @@ fraction_word(int i)
 		10, 10};
 	int k;
 
-	if (W[i].k != W_WORD || (k = lookup(fr, W[i].s)) < 0)
+	if (W[i].k != W_WORD)
 		return 0;
-	return den[k];
+	if ((k = lookup(fr, W[i].s)) >= 0)
+		return den[k];
+	return ordinal_scale(W[i].s);
 }
 
 /*
@@ -1213,8 +1358,8 @@ number_scale(struct ex *e)
 static int
 mixed_number(struct ex *e)
 {
-	int s = wi, den;
-	int64_t k = 1, v;
+	int s = wi;
+	int64_t den, k = 1, v;
 
 	if (!isw(wi, "and"))
 		return 0;
@@ -1242,8 +1387,8 @@ mixed_number(struct ex *e)
 	}
 	wi++;
 	/* the parentheses matter: "1*2 + 1/2" would be one and a half * 2 */
-	*e = mkatom(S("(%s*%d + %lld)/%d", e->s, den, (long long)k, den),
-	    e->ity, 0);
+	*e = mkatom(S("(%s*%lld + %lld)/%lld", e->s, (long long)den,
+	    (long long)k, (long long)den), e->ity, 0);
 	return 1;
 }
 
@@ -1560,7 +1705,7 @@ static const char *const reserved[] = {
 	"would", "could", "should", "might", "may", "must", "each", "every",
 	"some", "both", "plus", "minus", "times", "squared", "cubed", "half",
 	"twice", "value", "values", "number", "numbers", "between", "equal",
-	"equals", "less", "more", "greater", "smaller", "larger", "bigger",
+	"equals", "unequal", "less", "more", "greater", "smaller", "larger", "bigger",
 	"sum", "product", "difference", "quotient", "ratio", "power", "root",
 	"square", "cube", "divided", "multiplied", "mod", "modulo", "xor",
 	"bitwise", "shifted", "left", "right", "true", "false", "pi",
@@ -1899,6 +2044,29 @@ var_atom(const char *name)
 static struct var Vsave[MAXV];
 
 /*
+ * Can the next token begin a literal constant?  const_interval() speculates
+ * by parsing a whole expression and throwing it away when no interval
+ * follows; without this check a nested "the sqrt of the sqrt of ..." made
+ * every level parse its operand twice (2^n).  An interval's ends are always
+ * literals, so anything else cannot start one.
+ */
+static int
+constant_start(void)
+{
+	int64_t v;
+
+	if (issym("[") || issym("(") || issym("-") || issym("+") ||
+	    W[wi].k == W_NUM)
+		return 1;
+	if (W[wi].k != W_WORD)
+		return 0;
+	if (isw(wi, "pi") || isw(wi, "e") || isw(wi, "inf") ||
+	    isw(wi, "infinity") || isw(wi, "true") || isw(wi, "false"))
+		return 1;
+	return numword_val(W[wi].s, &v);
+}
+
+/*
  * The constant ends of an interval: [a, b], (a, b), a to b, a..b, and
  * after "between", a and b.  Nothing is consumed when there is none.
  */
@@ -1908,6 +2076,8 @@ const_interval(struct ex *a, struct ex *b, int between)
 	jmp_buf saved;
 	int s = wi, ok = 0, br, nvs = nv, nos = norder;
 
+	if (!constant_start())
+		return 0;
 	memcpy(saved, nl_jmp, sizeof saved);
 	memcpy(Vsave, V, sizeof V);
 	quiet++;
@@ -2610,9 +2780,10 @@ parse_prefix(int minprec)
 {
 	struct ex e, a, b, c;
 	struct func *f;
+	static char nbuf[64];
 	struct decl d;
-	int64_t v;
-	int s = wi, s1, k, den;
+	int64_t v, den;
+	int s = wi, s1, k;
 
 	switch (W[wi].k) {
 	case W_END:
@@ -2663,8 +2834,11 @@ parse_prefix(int minprec)
 		}
 		goto fraction;
 	}
-	if (number_words(&v)) {
-		e = num(S("%lld", (long long)v));
+	if (number_words(nbuf, sizeof nbuf)) {
+		spelled_point(nbuf, sizeof nbuf);
+		/* nbuf is static and a recursive parse_prefix reuses it, so
+		 * keep our own copy in the arena before building on it. */
+		e = num(S("%s", nbuf));
 		number_scale(&e);
 fraction:
 		if (mixed_number(&e)) {
@@ -2672,7 +2846,7 @@ fraction:
 				e = mkbin(e, "*", parse_expr(P_UNARY), P_MUL);
 		} else if ((den = fraction_word(wi)) != 0) {
 			wi++;
-			e = mkbin(e, "/", num(S("%d", den)), P_MUL);
+			e = mkbin(e, "/", num(S("%lld", (long long)den)), P_MUL);
 			e.lit = 1;
 			if (mat("of")) {
 				e = mkbin(e, "*", parse_expr(P_UNARY), P_MUL);
@@ -3016,7 +3190,7 @@ parse_postfix(struct ex e, int minprec)
 			e = mkbin(e, "*", x, P_MUL);
 			continue;
 		}
-		if (e.lit && mat("percent of|%")) {
+		if (e.lit && (mat("percent of|%") || mat("% of"))) {
 			if (W[wi - 1].k == W_SYM && !mat("of")) {
 				wi = s;
 				break;
@@ -3059,14 +3233,26 @@ parse_postfix(struct ex e, int minprec)
 static struct ex
 parse_expr(int minprec)
 {
-	struct ex l, r, c;
+	struct ex l, r, c, cmp_mid;
 	const struct bop *o;
 	struct decl d;
-	int s, k;
+	int s, k, cmp_chain = 0;
 
+	if (++parse_steps > MAX_PARSE_STEPS)
+		nfail("sentence has too many readings");
+	cmp_mid.s = NULL;	/* right operand of a comparison, for chains */
 	l = parse_postfix(parse_prefix(minprec), minprec);
 	for (;;) {
 		s = wi;
+		/* "x always greater than 0": "always"/"ever" are adverbs
+		 * before the comparison, not part of either operand.  Only
+		 * skip them when an operator follows, so the odd/even
+		 * ambiguity still sees the adverb as its escape hint. */
+		if (isw(wi, "always") || isw(wi, "ever")) {
+			wi++;
+			if (peek_bop() == NULL)
+				wi = s;
+		}
 		/* in a condition: "x is positive", "n is not even" */
 		if (incond && P_CMP >= minprec && mat("is|are")) {
 			int neg = mat("not");
@@ -3194,6 +3380,21 @@ parse_expr(int minprec)
 			if (l.isbool || r.isbool) {
 				l = mkbin(l, o->kind == B_AND ? "&&" : "||", r, o->prec);
 				l.isbool = 1;
+			} else if (o->kind == B_AND && !l.lit && !r.lit &&
+			    (Q.cmd == C_RANGE || Q.cmd == C_DOMAIN ||
+			    Q.cmd == C_WRAP || Q.cmd == C_CRIT || Q.cmd == C_TABLE)) {
+				/*
+				 * "the range of x squared and y cubed" is a list
+				 * of quantities, not a bitmask.  The old default
+				 * silently made it x^2 & y^3, giving an empty
+				 * range.  Say what was taken and how to get &.
+				 */
+				if (!dry && !quiet)
+					printf("  note: \"and\" between quantities in "
+					    "a value question: read as a list joined "
+					    "by +, not bitwise & (say \"bitwise and\" "
+					    "for &, or ask for each separately)\n");
+				l = mkbin(l, "+", r, P_ADD);
 			} else {
 				static const char *const ao[] = {"bitwise (& and |)",
 					"logical (&& and ||)"};
@@ -3211,10 +3412,51 @@ parse_expr(int minprec)
 			r = parse_expr(o->prec + 1);
 			l = mkbin(r, o->op, l, o->prec);
 			continue;
-		default:
+		default: {
 			r = parse_expr(o->prec + 1);
-			l = mkbin(l, o->op, r, o->prec);
+			/* "x + 1 squared": the word-form power can cover the
+			 * whole expression.  The equivalent "the square of
+			 * x + 1" already asks; do the same here. */
+			if (r.pword && r.prec == P_POW && o->prec == P_ADD &&
+			    l.prec != P_POW && !l.isbool) {
+				struct ex base = mkatom(r.pb, r.ity, 0);
+				const char *opt[2];
+				const char *phrase = !strcmp(r.pe, "2") ? "squared" :
+				    !strcmp(r.pe, "3") ? "cubed" : "power";
+				const char *how = !strcmp(r.pe, "2") ?
+				    "the square of" : !strcmp(r.pe, "3") ?
+				    "the cube of" : "the power of";
+				base.prec = r.pbprec;
+				opt[0] = S("%s %s %s", paren(l, o->prec, 1),
+				    o->op, r.s);
+				opt[1] = S("(%s %s %s)^%s", paren(l, o->prec, 1),
+				    o->op, base.s, r.pe);
+				if (clarify(NULL, S("what does \"%s\" apply to",
+				    phrase), opt, 2, 0, S("say \"%s the quantity "
+				    "...\" for the second", how))) {
+					l = mkpow(mkbin(l, o->op, base, o->prec),
+					    num(r.pe), 0);
+				} else
+					l = mkbin(l, o->op, r, o->prec);
+				cmp_mid.s = NULL;
+				continue;
+			}
+			if (o->prec == P_CMP && cmp_chain && cmp_mid.s) {
+				/* "1 < 2 < 3" means 1 < 2 && 2 < 3: a bool
+				 * left operand cannot be compared again. */
+				l = mkbin(l, "&&",
+				    mkbin(cmp_mid, o->op, r, o->prec), P_AND);
+				l.isbool = 1;
+				cmp_mid = r;
+			} else {
+				l = mkbin(l, o->op, r, o->prec);
+				cmp_chain = o->prec == P_CMP;
+				cmp_mid.s = NULL;
+				if (cmp_chain)
+					cmp_mid = r;
+			}
 			continue;
+		}
 		}
 	}
 	return l;
@@ -3484,7 +3726,7 @@ parse_clause(void)
 	struct ex e;
 	int s = wi, st, s2, n;
 
-	st = mat("for|where|with|given|assuming|when|whenever|on|letting") ||
+	st = mat("for|where|whilst|with|given|assuming|when|whenever|on|letting") ||
 	    mat("such|so that") || mat("over all|every|each|any") ||
 	    mat("let") || mat("and") || mat("at");
 	/* "on [a, b]", "from a to b", "between a and b": the only variable */
@@ -3618,7 +3860,7 @@ parse_model(void)
 static int
 small_number(int *n)
 {
-	int64_t v;
+	char nbuf[64];
 	int s = wi;
 
 	if (W[wi].k == W_NUM && is_int(W[wi].s)) {
@@ -3626,8 +3868,8 @@ small_number(int *n)
 		wi++;
 		return 1;
 	}
-	if (number_words(&v)) {
-		*n = (int)v;
+	if (number_words(nbuf, sizeof nbuf)) {
+		*n = atoi(nbuf);
 		return 1;
 	}
 	wi = s;
@@ -4005,9 +4247,14 @@ named_target(struct tgt *t, const char *name)
 static void
 target(struct tgt *t, int minprec)
 {
-	int s = wi;
+	int s;
 	const struct bop *o;
 
+	/* "differentiate, x squared": a separator right after the verb is
+	 * not part of the operand. */
+	while (issym(",") || issym(";"))
+		wi++;
+	s = wi;
 	memset(t, 0, sizeof *t);
 	if (mat("it|this|that|them ?function|expression|formula|one") ||
 	    mat("the|that|this same|last|previous ?function|expression|formula|"
@@ -5089,11 +5336,25 @@ second_target(void)
 	cur_mask = 1;
 }
 
+/* "unequal" was spell-corrected to "equal", inverting the answer.  There is
+ * no negation of the equality check to emit, so refuse it explicitly. */
+static void
+reject_unequal(void)
+{
+	int k;
+
+	for (k = 0; k < nw; k++)
+		if (isw(k, "unequal"))
+			nfail("I can't negate an equality check: ask \"is A equal "
+			    "to B\" and invert the yes/no answer");
+}
+
 static int
 yes_no(int s0)
 {
 	int s;
 
+	reject_unequal();
 	cur_mask = 1;
 	if (mat("there ?any|some")) {
 		/* "is there overflow in f", "are there critical points of f" */
@@ -5153,7 +5414,9 @@ yes_no(int s0)
 				o[1] = odd ? "an odd number for every input" :
 				    "an even number for every input";
 				if (clarify(NULL, S("\"%s\"", odd ? "odd" : "even"), o,
-				    2, 0, "say \"an odd function\" or \"always odd\"")) {
+				    2, 0, odd ? "say \"an odd function\" or "
+				    "\"always odd\"" :
+				    "say \"an even function\" or \"always even\"")) {
 					Q.prop = odd ? PR_ODDV : PR_EVENV;
 					Q.cmd = C_PROP;
 					return 1;
@@ -5212,6 +5475,10 @@ yes_no(int s0)
 	    "non-zero|bounded|even|odd") || mat("bigger|larger|greater|smaller|"
 	    "less|more than")) {
 		wi = s0;
+		/* "is x always greater than 0": the quantifier is an adverb,
+		 * not part of the comparison.  Skip it before reparsing or
+		 * the comparison is dropped and the plain variable is read. */
+		mat("?always|ever|really|possibly");
 		/* a comparison with a function in it: answer with its range */
 		incond++;
 		target(&Q.a, P_TERN);
@@ -6732,8 +6999,8 @@ sentence(void)
 		plot_sentence();
 		return;
 	}
-	if (mat("simplify|expand|normalize|normalise|canonicalize|show|display|"
-	    "print")) {
+	if (mat("simplify|expand|normalize|normalise|canonicalize|analyse|analyze|"
+	    "centre|center|show|display|print")) {
 		if ((c = noun_cmd()) != 0) {
 			cmd_after_noun(c);
 			return;
@@ -7652,6 +7919,7 @@ reset_sentence(int pass)
 	arn = 0;
 	memset(&Q, 0, sizeof Q);
 	wi = 0;
+	parse_steps = 0;
 	norder = 0;
 	cur_mask = 1;
 	incond = quiet = 0;
@@ -7857,11 +8125,36 @@ qmc_phrase(const char *sent)
 	return sent;
 }
 
+/* "modular inverse of N" is a normal way to ask for an inverse; leaving
+ * "modular" for spellfix makes it "modulo inverse of", which no handler
+ * understands.  Reword before any raw handler or the tokenizer sees it. */
+static const char *
+modular_inverse(const char *sent)
+{
+	static char buf[1024];
+	const char *p = sent, *m;
+
+	while (isspace((unsigned char)*p))
+		p++;
+	if (!strncasecmp(p, "modular", 7)) {
+		m = p + 7;
+		while (isspace((unsigned char)*m))
+			m++;
+		if (!strncasecmp(m, "inverse", 7) &&
+		    (m[7] == 0 || !isalnum((unsigned char)m[7]))) {
+			snprintf(buf, sizeof buf, "inverse%s", m + 7);
+			return buf;
+		}
+	}
+	return sent;
+}
+
 /* translate one sentence; 0 when it failed (and said why) */
 static int
 translate(const char *sent)
 {
 	need_more = NULL;
+	sent = modular_inverse(sent);
 	sent = qmc_phrase(sent);
 	{
 		/* an equation or ODE to classify: props.c reads it as written */
@@ -8106,6 +8399,39 @@ nlp_translate(const char *req, struct sbuf *dst)
 	return 1;
 }
 
+/* A ";" right after a verb that still needs its operand is not a command
+ * separator: "differentiate; x squared" is one request, not a bare verb
+ * followed by a bare expression. */
+static int
+verb_wants_arg(const char *p, const char *q)
+{
+	static const char *const v[] = {"differentiate", "derive", "integrate",
+	    "tabulate", "enumerate", "approximate", "approx", "simplify",
+	    "normalise", "normalize", "analyse", "analyze", "centre", "center",
+	    "factor", "factorise", "factorize", "expand", "solve", "find",
+	    "show", "plot", "graph", "compute", "calculate", "evaluate", NULL};
+	char w[32];
+	const char *e = q;
+	size_t n, i;
+
+	while (e > p && isspace((unsigned char)e[-1]))
+		e--;
+	while (e > p && !isspace((unsigned char)e[-1]))
+		e--;
+	n = (size_t)(q - e);
+	while (n > 0 && isspace((unsigned char)e[n - 1]))
+		n--;
+	if (n == 0 || n >= sizeof w)
+		return 0;
+	for (i = 0; i < n; i++)
+		w[i] = (char)tolower((unsigned char)e[i]);
+	w[n] = 0;
+	for (i = 0; v[i]; i++)
+		if (!strcmp(w, v[i]))
+			return 1;
+	return 0;
+}
+
 void
 nlp_run(const char *line, size_t n, const char *file, int echo)
 {
@@ -8146,6 +8472,30 @@ nlp_run(const char *line, size_t n, const char *file, int echo)
 	q = p + strlen(p);
 	while (q > p && isspace((unsigned char)q[-1]))
 		*--q = 0;
+	/* A trailing "!" on an English request is punctuation.  Leave it
+	 * alone on a math line: "radius ... of x^n/n!" needs its factorial. */
+	if (q > p && q[-1] == '!') {
+		static const char *const lead[] = {"differentiate", "derive",
+		    "integrate", "simplify", "analyse", "analyze", "normalise",
+		    "normalize", "what", "whats", "is", "are", "does", "do",
+		    "show", "find", "give", "tell", "compute", "calculate",
+		    "evaluate", "solve", "factor", "plot", "graph", "the", NULL};
+		const char *e = p + strcspn(p, " \t");
+		char w[32];
+		size_t n = (size_t)(e - p), i;
+		int k;
+
+		if (n > 0 && n < sizeof w) {
+			for (i = 0; i < n; i++)
+				w[i] = (char)tolower((unsigned char)p[i]);
+			w[n] = 0;
+			for (k = 0; lead[k]; k++)
+				if (!strcmp(w, lead[k])) {
+					*--q = 0;
+					break;
+				}
+		}
+	}
 	if (echo)
 		printf("> %s\n", p);
 	run_source("", file, 0);   /* the prelude, before looking up names */
@@ -8153,6 +8503,11 @@ nlp_run(const char *line, size_t n, const char *file, int echo)
 	start = p;
 	for (q = p;; q++) {
 		int end = *q == 0 || *q == ';';
+		if (end && *q == ';' && verb_wants_arg(start, q)) {
+			/* the verb needs the words after the ";": one request */
+			*q = ' ';
+			end = 0;
+		}
 		if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
 		    isalnum((unsigned char)q[-1])))) && q[1] != '=' &&
 		    !(q > p && isdigit((unsigned char)q[-1]) &&
@@ -8241,11 +8596,16 @@ static const char *const starters[] = {"what", "whats", "how", "is", "are",
 	"synthesize", "synthesise", "factor", "forget", "hey",
 	"hi", "ok", "okay", "so", "now", "also", "the", "whether", "get",
 	"work", "figure", "tune", "calibrate", "speed", "improve", "name",
+	"it", "make",
 	"call", "declare", "thanks", "verify", "alt", "alts", "alternatives",
 	"alternative", "approximate", "expand", "rewrite", "linearize",
 	"linearise", "classify", "characterize", "characterise", "describe",
 	"draw", "sketch", "visualize", "visualise", "render", "depict",
-	"illustrate", "chart", "shade", "rotate", "spin", NULL};
+	"illustrate", "chart", "shade", "rotate", "spin",
+	/* British verbs: without these the English detector hands them to
+	 * the raw ucas parser, which makes them implicit variables. */
+	"analyse", "analyze", "normalise", "normalize", "centre", "center",
+	NULL};
 static const char *const vocab[] = {"principal", "branch", "lambert",
 	"productlog", "lower", "upper", "plus", "minus", "times", "multiplied",
 	"divided", "squared", "cubed", "square", "root", "cube", "sum",
@@ -8261,7 +8621,17 @@ static const char *const vocab[] = {"principal", "branch", "lambert",
 	"maximum", "minimum", "unsigned", "signed", "byte", "bytes", "integer",
 	"integers", "bit", "from", "to", "with", "respect", "over", "one",
 	"two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
-	"hundred", "thousand", "overflow", "range", "from", "using", "with",
+	"hundred", "thousand", "million", "billion", "trillion",
+	"hundredth", "thousandth", "millionth", "billionth", "trillionth",
+	/* English verbs whose bare form would otherwise fall through to the
+	 * ucas parser and silently become a bogus implicit function */
+	"simplify", "simplifying", "normalize", "normalise", "analyse",
+	"analyze", "centre", "center", "factorise", "factorize", "modular",
+	/* regional synonyms: still not understood, but read as English so a
+	 * bad clause is rejected instead of emitted as raw ucas */
+	"whilst", "amongst", "perchance", "hereafter", "henceforth",
+	"whereupon", "thereof", "therein", "forthwith",
+	"overflow", "range", "from", "using", "with",
 	"cheby", "cheb", "chebyshev", "poly", "polynomial", "minimax", "remez",
 	"crit", "critical", "nocrit", "points", "radians", "degrees", "deg",
 	"approximation", "commutative", "additive", "associative",
@@ -8397,6 +8767,38 @@ word_at(const char *s, size_t n, size_t *i, char *w, size_t wn)
 
 int homalg_line(const char *s, size_t n);	/* homalg_cmd.c */
 int ec_word(const char *w);	/* ec_cmd.c */
+
+/*
+ * "7/8 of 64": a documented fraction-of expression.  "of" is the only
+ * English word, so the word count below does not see a request; ucas would
+ * otherwise read "of" as the product o*f.
+ */
+static int
+number_of_number(const char *s, size_t n, size_t i)
+{
+	size_t k, m;
+
+	for (k = i; k + 1 < n; k++) {
+		if (s[k] != 'o' || s[k + 1] != 'f')
+			continue;
+		if (k > i && !isspace((unsigned char)s[k - 1]))
+			continue;
+		if (k + 2 < n && !isspace((unsigned char)s[k + 2]) &&
+		    s[k + 2] != '?')
+			continue;
+		m = k;
+		while (m > i && isspace((unsigned char)s[m - 1]))
+			m--;
+		if (m == i || !isdigit((unsigned char)s[m - 1]))
+			continue;
+		m = k + 2;
+		while (m < n && isspace((unsigned char)s[m]))
+			m++;
+		if (m < n && isdigit((unsigned char)s[m]))
+			return 1;
+	}
+	return 0;
+}
 
 int
 nlp_is_english(const char *s, size_t n)
@@ -8651,8 +9053,8 @@ nlp_is_english(const char *s, size_t n)
 				"that", "between", "fraction", "fractions", "terms", "like",
 				"polynomial", "expression", "out", "completely", NULL};
 			static const char *const alg_starts[] = {"decompose",
-				"factorise", "factorize", "combine", "plug", "multiply",
-				"partial", NULL};
+				"factor", "factorise", "factorize", "combine", "plug",
+				"multiply", "partial", NULL};
 			if (in_list(alg_starts, w1) && !user_fn(w1) &&
 			    (strcmp(w1, "partial") || strstr(s, "fraction")))
 				return 1;
@@ -8691,7 +9093,9 @@ nlp_is_english(const char *s, size_t n)
 			 * "parse a < b", "dsolve a to 4" are ucas; "show a
 			 * table of ..." is not
 			 */
-			if (strlen(w2) <= 2)
+			/* "of" is a preposition here, never a ucas variable:
+			 * "wrap of x+1" is a request, not a product o*f*x */
+			if (strlen(w2) <= 2 && strcmp(w2, "of"))
 				return english_words(s + j2, n - j2, 1) >= 1;
 			return 1;
 		} else if (!user_fn(w1) && in_list(starters, w1)) {
@@ -8714,7 +9118,8 @@ nlp_is_english(const char *s, size_t n)
 		}
 		j++;
 	}
-	return count >= 2 || (count == 1 && words >= 2);
+	return count >= 2 || (count == 1 && words >= 2) ||
+	    number_of_number(s, n, i);
 }
 
 /*

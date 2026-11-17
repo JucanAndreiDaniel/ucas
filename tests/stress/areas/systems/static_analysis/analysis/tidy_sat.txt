@@ -1,0 +1,605 @@
+/home/andrew/Code/ucas/src/sat.c:24:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   10 | #include <stdio.h>
+   11 | #include <stdlib.h>
+   12 | #include <string.h>
+   13 | 
+   14 | #include "ucas.h"
+   15 | #include "sat.h"
+   16 | 
+   17 | extern long aig_conflicts;
+   18 | 
+   19 | /* ---- the graph ---- */
+   20 | 
+   21 | struct aig {
+   22 |         lit *f0, *f1;           /* fan-ins; f0 == f1 == 0 for an input */
+   23 |         int n, cap;             /* nodes; node 0 is the constant */
+   24 |         uint32_t *ht;           /* strash: node index + 1, 0 = empty */
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:81:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   81 |         return node_new(g, 0, 0) << 1;
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/sat.c:87:22: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   87 |         return (uint32_t)(((uint64_t)a * 0x9e3779b1u + b * 0x85ebca6bu) &
+      |                             ^
+/home/andrew/Code/ucas/src/sat.c:87:49: warning: performing an implicit widening conversion to type 'uint64_t' (aka 'unsigned long') of a multiplication performed in type 'unsigned int' [bugprone-implicit-widening-of-multiplication-result]
+   87 |         return (uint32_t)(((uint64_t)a * 0x9e3779b1u + b * 0x85ebca6bu) &
+      |                                                        ^
+/home/andrew/Code/ucas/src/sat.c:87:49: note: make conversion explicit to silence this warning
+   10 |         return (uint32_t)(((uint64_t)a * 0x9e3779b1u + b * 0x85ebca6bu) &
+      |                                                        ^~~~~~~~~~~~~~~
+      |                                                        (uint64_t)(    )
+/home/andrew/Code/ucas/src/sat.c:87:49: note: perform multiplication in a wider type
+   87 |         return (uint32_t)(((uint64_t)a * 0x9e3779b1u + b * 0x85ebca6bu) &
+      |                                                        ^
+      |                                                        (uint64_t)
+/home/andrew/Code/ucas/src/sat.c:128:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  128 |                         return nd << 1;
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/sat.c:133:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  133 |         return nd << 1;
+      |                   ~~ ^
+/home/andrew/Code/ucas/src/sat.c:206:10: warning: 'signed char' to 'int' conversion; consider casting to 'unsigned char' first. [bugprone-signed-char-misuse]
+  206 |         int a = s->as[VAR(l)];
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:206:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |         int a = s->as[VAR(l)];
+      |                       ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:208:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |         return a < 0 ? -1 : a ^ (int)NEG(l);
+      |                             ^ ~
+/home/andrew/Code/ucas/src/sat.c:284:17: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  284 |         if ((s->act[v] += s->inc) > 1e100) {
+      |              ~~~~~~~~~~^~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:284:17: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/sat.c:284:17: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/sat.c:297:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  297 |         int v = (int)VAR(l);
+      |                      ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:349:25: warning: Array access (via field 'clen') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  349 |                         int c = ws[i], len = s->clen[c], k;
+      |                                              ^
+/home/andrew/Code/ucas/src/sat.c:544:6: note: Assuming 'goal' is not equal to L_FALSE
+  544 |         if (goal == L_FALSE)
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:544:6: note: 'goal' is not equal to L_FALSE
+  544 |         if (goal == L_FALSE)
+      |             ^~~~
+/home/andrew/Code/ucas/src/sat.c:544:2: note: Taking false branch
+  544 |         if (goal == L_FALSE)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:546:2: note: Null pointer value stored to 's.clen'
+  546 |         memset(&s, 0, sizeof s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:557:14: note: Assuming 'i' is >= field 'nv'
+  557 |         for (i = 0; i < s.nv; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:557:2: note: Loop condition is false. Execution continues on line 559
+  557 |         for (i = 0; i < s.nv; i++)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:568:3: note: Calling 'clause'
+  568 |                 clause(&s, &u, 1);
+      |                 ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:311:9: note: Field 'unsat' is 0
+  311 |         if (s->unsat)
+      |                ^
+/home/andrew/Code/ucas/src/sat.c:311:2: note: Taking false branch
+  311 |         if (s->unsat)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:313:6: note: 'n' is equal to 1
+  313 |         if (n == 1) {
+      |             ^
+/home/andrew/Code/ucas/src/sat.c:313:2: note: Taking true branch
+  313 |         if (n == 1) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:315:7: note: Assuming 'v' is not equal to 0
+  315 |                 if (v == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/sat.c:315:3: note: Taking false branch
+  315 |                 if (v == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:317:12: note: Assuming 'v' is >= 0
+  317 |                 else if (v < 0)
+      |                          ^~~~~
+/home/andrew/Code/ucas/src/sat.c:317:8: note: Taking false branch
+  317 |                 else if (v < 0)
+      |                      ^
+/home/andrew/Code/ucas/src/sat.c:319:3: note: Returning without writing to 's->clen'
+  319 |                 return;
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:568:3: note: Returning from 'clause'
+  568 |                 clause(&s, &u, 1);
+      |                 ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:574:2: note: Loop condition is true.  Entering loop body
+  574 |         while (top > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:577:7: note: Assuming 'v' is equal to 0
+  577 |                 if (v == 0)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/sat.c:577:3: note: Taking true branch
+  577 |                 if (v == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:578:4: note:  Execution continues on line 574
+  578 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:574:2: note: Loop condition is false. Execution continues on line 600
+  574 |         while (top > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:600:2: note: Calling 'clause'
+  600 |         clause(&s, &goal, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:311:9: note: Field 'unsat' is 0
+  311 |         if (s->unsat)
+      |                ^
+/home/andrew/Code/ucas/src/sat.c:311:2: note: Taking false branch
+  311 |         if (s->unsat)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:313:6: note: 'n' is equal to 1
+  313 |         if (n == 1) {
+      |             ^
+/home/andrew/Code/ucas/src/sat.c:313:2: note: Taking true branch
+  313 |         if (n == 1) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:315:7: note: 'v' is not equal to 0
+  315 |                 if (v == 0)
+      |                     ^
+/home/andrew/Code/ucas/src/sat.c:315:3: note: Taking false branch
+  315 |                 if (v == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:317:12: note: 'v' is < 0
+  317 |                 else if (v < 0)
+      |                          ^
+/home/andrew/Code/ucas/src/sat.c:317:8: note: Taking true branch
+  317 |                 else if (v < 0)
+      |                      ^
+/home/andrew/Code/ucas/src/sat.c:318:4: note: Calling 'assign'
+  318 |                         assign(s, c[0], -1);
+      |                         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:299:26: note: Assuming the condition is true
+  299 |         s->as[v] = (signed char)!NEG(l);
+      |                                 ^~~~~~~
+/home/andrew/Code/ucas/src/sat.c:303:1: note: Returning without writing to 's->clen'
+  303 | }
+      | ^
+/home/andrew/Code/ucas/src/sat.c:318:4: note: Returning from 'assign'
+  318 |                         assign(s, c[0], -1);
+      |                         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:319:3: note: Returning without writing to 's->clen'
+  319 |                 return;
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:600:2: note: Returning from 'clause'
+  600 |         clause(&s, &goal, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:601:6: note: Calling 'solve'
+  601 |         r = solve(&s, budget);
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:477:9: note: Field 'unsat' is 0
+  477 |         if (s->unsat) {
+      |                ^
+/home/andrew/Code/ucas/src/sat.c:477:2: note: Taking false branch
+  477 |         if (s->unsat) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:481:2: note: Loop condition is true.  Entering loop body
+  481 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:482:11: note: Calling 'propagate'
+  482 |                 int c = propagate(s);
+      |                         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:343:2: note: Loop condition is true.  Entering loop body
+  343 |         while (s->qhead < s->ntrail) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:348:19: note: Assuming 'i' is < 'n'
+  348 |                 for (i = j = 0; i < n; i++) {
+      |                                 ^~~~~
+/home/andrew/Code/ucas/src/sat.c:348:3: note: Loop condition is true.  Entering loop body
+  348 |                 for (i = j = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:349:25: note: Array access (via field 'clen') results in a null pointer dereference
+  349 |                         int c = ws[i], len = s->clen[c], k;
+      |                                              ^  ~~~~
+/home/andrew/Code/ucas/src/sat.c:389:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  389 |                 int v = (int)VAR(l);
+      |                              ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:409:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  409 |                         int v = (int)VAR(cl[k]);
+      |                                      ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:419:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  419 |                 while (!s->seen[VAR(s->trail[idx])])
+      |                                 ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:422:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  422 |                 confl = s->rsn[VAR(p)];
+      |                                ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:423:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  423 |                 s->seen[VAR(p)] = 0;
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:441:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  441 |                 s->seen[VAR(out[k])] = 0;
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:442:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  442 |                 if (s->lev[VAR(out[k])] > *bt) {
+      |                            ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:443:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  443 |                         *bt = s->lev[VAR(out[k])];
+      |                                      ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:462:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  462 |                 size = (size - 1) >> 1;
+      |                        ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/sat.c:466:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  466 |         return 1 << (seq < 20 ? seq : 20);
+      |                ^ ~~
+/home/andrew/Code/ucas/src/sat.c:561:8: warning: multilevel pointer conversion from 'void *' to 'int **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  561 |         s.w = xcalloc((size_t)s.nv * 2, sizeof *s.w);
+      |               ^
+/home/andrew/Code/ucas/src/sat.c:572:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  572 |         stack[top++] = (int)VAR(goal);
+      |                             ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:573:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  573 |         in[VAR(goal)] = 1;
+      |            ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:591:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  591 |                 if (!in[VAR(a)]) {
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:592:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                         in[VAR(a)] = 1;
+      |                            ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:593:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  593 |                         stack[top++] = (int)VAR(a);
+      |                                             ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:595:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  595 |                 if (!in[VAR(b)]) {
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:596:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |                         in[VAR(b)] = 1;
+      |                            ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:597:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  597 |                         stack[top++] = (int)VAR(b);
+      |                                             ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:613:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |                                 g->val[i] = (signed char)((g->val[VAR(g->f0[i])] ^
+      |                                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+  614 |                                     (int)NEG(g->f0[i])) & (g->val[VAR(g->f1[i])] ^
+      |                                     ~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/sat.c:613:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |                                 g->val[i] = (signed char)((g->val[VAR(g->f0[i])] ^
+      |                                                            ^~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/sat.c:613:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |                                 g->val[i] = (signed char)((g->val[VAR(g->f0[i])] ^
+      |                                                                   ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:614:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  614 |                                     (int)NEG(g->f0[i])) & (g->val[VAR(g->f1[i])] ^
+      |                                                            ^~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/sat.c:614:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  614 |                                     (int)NEG(g->f0[i])) & (g->val[VAR(g->f1[i])] ^
+      |                                                                   ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:622:7: warning: multilevel pointer conversion from 'int **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  622 |         free(s.w);
+      |              ^
+/home/andrew/Code/ucas/src/sat.c:645:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  645 |         return (g->val ? g->val[VAR(a)] : 0) ^ (int)NEG(a);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/sat.c:645:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  645 |         return (g->val ? g->val[VAR(a)] : 0) ^ (int)NEG(a);
+      |                                 ^
+/home/andrew/Code/ucas/src/sat.c:29:24: note: expanded from macro 'VAR'
+   29 | #define VAR(l) ((l) >> 1)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/sat.c:657:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |                         v |= 1ULL << i;
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/sat.c:670:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  670 |                 r->b[i] = (i < 64 && (v >> i & 1)) ? L_TRUE : L_FALSE;
+      |                                         ~~ ^
+/home/andrew/Code/ucas/src/sat.c:670:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  670 |                 r->b[i] = (i < 64 && (v >> i & 1)) ? L_TRUE : L_FALSE;
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/sat.c:736:11: warning: 3rd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+  736 |                 lit x = aig_xor(g, a->b[i], b->b[i]);
+      |                         ^
+/home/andrew/Code/ucas/src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:1000:3: note: Calling 'w_sub'
+ 1000 |                 w_sub(g, &r[1], &a, &b), want[1] = (x - y) & m;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:759:2: note: Calling 'w_not'
+  759 |         w_not(g, &nb, b);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:690:14: note: Assuming 'i' is >= field 'w'
+  690 |         for (i = 0; i < a->w; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:690:2: note: Loop condition is false. Execution continues on line 759
+  690 |         for (i = 0; i < a->w; i++)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:759:2: note: Returning from 'w_not'
+  759 |         w_not(g, &nb, b);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:760:2: note: Calling 'addc'
+  760 |         addc(g, r, a, &nb, L_TRUE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:735:7: note: The value 0 is assigned to 'i'
+  735 |         for (i = 0; i < a->w; i++) {
+      |              ^~~~~
+/home/andrew/Code/ucas/src/sat.c:735:2: note: Loop condition is true.  Entering loop body
+  735 |         for (i = 0; i < a->w; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:736:11: note: 3rd function call argument is an uninitialized value
+  736 |                 lit x = aig_xor(g, a->b[i], b->b[i]);
+      |                         ^                   ~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:814:23: warning: Out of bound access to memory around 'y.b' [clang-analyzer-security.ArrayBound]
+  814 |         y.b[y.w - 1] = L_NOT(y.b[y.w - 1]);
+      |                              ^
+/home/andrew/Code/ucas/src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:1003:13: note: 'y' is 5
+ 1003 |                 want[3] = y ? x / y : 0, want[4] = y ? x % y : 0;
+      |                           ^
+/home/andrew/Code/ucas/src/sat.c:1003:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/sat.c:1003:38: note: 'y' is 5
+ 1003 |                 want[3] = y ? x / y : 0, want[4] = y ? x % y : 0;
+      |                                                    ^
+/home/andrew/Code/ucas/src/sat.c:1003:38: note: '?' condition is true
+/home/andrew/Code/ucas/src/sat.c:1004:38: note: '?' condition is false
+ 1004 |                 w_shl(g, &r[5], &a, &b), want[5] = (y & 63) >= 32 ? 0 :
+      |                                                    ^
+/home/andrew/Code/ucas/src/sat.c:1006:39: note: '?' condition is false
+ 1006 |                 w_lshr(g, &r[6], &a, &b), want[6] = (y & 63) >= 32 ? 0 :
+      |                                                     ^
+/home/andrew/Code/ucas/src/sat.c:1009:48: note: '?' condition is false
+ 1009 |                 want[7] = (uint64_t)((int64_t)(int32_t)x >> ((y & 63) >= 32 ? 31 :
+      |                                                              ^
+/home/andrew/Code/ucas/src/sat.c:1014:15: note: Calling 'w_slt'
+ 1014 |                 r[9].b[0] = w_slt(g, &a, &b);
+      |                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:814:23: note: Access of 'y.b' at a negative or overflowing index, while it holds only 65 'unsigned int' elements
+  814 |         y.b[y.w - 1] = L_NOT(y.b[y.w - 1]);
+      |                              ^
+/home/andrew/Code/ucas/src/sat.h:19:20: note: expanded from macro 'L_NOT'
+   19 | #define L_NOT(a) ((a) ^ 1u)
+      |                    ^
+/home/andrew/Code/ucas/src/sat.c:844:12: warning: 4th function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+  844 |                 x.b[i] = aig_mux(g, s, t->b[i], e->b[i]);
+      |                          ^
+/home/andrew/Code/ucas/src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:1002:3: note: Calling 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:18: note: Assuming 'i' is < 0
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:2: note: Loop condition is false. Execution continues on line 872
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:876:3: note: Calling 'w_mux'
+  876 |                 w_mux(g, q, bz, &z, &qq);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:843:7: note: The value 0 is assigned to 'i'
+  843 |         for (i = 0; i < t->w; i++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/sat.c:843:14: note: Assuming 'i' is < field 'w'
+  843 |         for (i = 0; i < t->w; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:843:2: note: Loop condition is true.  Entering loop body
+  843 |         for (i = 0; i < t->w; i++)
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:844:12: note: 4th function call argument is an uninitialized value
+  844 |                 x.b[i] = aig_mux(g, s, t->b[i], e->b[i]);
+      |                          ^                      ~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:864:12: warning: Out of bound access to memory after the end of 'a.b' [clang-analyzer-security.ArrayBound]
+  864 |                 r.b[0] = a->b[i];
+      |                          ^
+/home/andrew/Code/ucas/src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:1002:3: note: Calling 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:18: note: Assuming 'i' is >= 0
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:2: note: Loop condition is true.  Entering loop body
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:862:3: note: Loop condition is false. Execution continues on line 864
+  862 |                 for (j = w; j > 0; j--)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:864:12: note: Access of 'a.b' at index 2147483647, while it holds only 65 'unsigned int' elements
+  864 |                 r.b[0] = a->b[i];
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/sat.c:890:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  890 |                 int d = 1 << k;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/sat.c:922:23: warning: Out of bound access to memory preceding 'a.b' [clang-analyzer-security.ArrayBound]
+  922 |         shift(g, r, a, s, 1, a->b[a->w - 1]);
+      |                              ^
+/home/andrew/Code/ucas/src/sat.c:986:2: note: Loop condition is true.  Entering loop body
+  986 |         for (t = 0; t < 40; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:993:3: note: Taking true branch
+  993 |                 if (t % 4 == 0)
+      |                 ^
+/home/andrew/Code/ucas/src/sat.c:1002:3: note: Calling 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:18: note: Assuming 'i' is < 0
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/sat.c:860:2: note: Loop condition is false. Execution continues on line 872
+  860 |         for (i = w - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/sat.c:1002:3: note: Returning from 'w_udivrem'
+ 1002 |                 w_udivrem(g, &r[3], &r[4], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:1003:13: note: 'y' is 5
+ 1003 |                 want[3] = y ? x / y : 0, want[4] = y ? x % y : 0;
+      |                           ^
+/home/andrew/Code/ucas/src/sat.c:1003:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/sat.c:1003:38: note: 'y' is 5
+ 1003 |                 want[3] = y ? x / y : 0, want[4] = y ? x % y : 0;
+      |                                                    ^
+/home/andrew/Code/ucas/src/sat.c:1003:38: note: '?' condition is true
+/home/andrew/Code/ucas/src/sat.c:1004:38: note: '?' condition is false
+ 1004 |                 w_shl(g, &r[5], &a, &b), want[5] = (y & 63) >= 32 ? 0 :
+      |                                                    ^
+/home/andrew/Code/ucas/src/sat.c:1006:39: note: '?' condition is false
+ 1006 |                 w_lshr(g, &r[6], &a, &b), want[6] = (y & 63) >= 32 ? 0 :
+      |                                                     ^
+/home/andrew/Code/ucas/src/sat.c:1008:3: note: Calling 'w_ashr'
+ 1008 |                 w_ashr(g, &r[7], &a, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:922:23: note: Access of 'a.b' at a negative index
+  922 |         shift(g, r, a, s, 1, a->b[a->w - 1]);
+      |                              ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/sat.c:969:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  969 |         *s ^= *s << 13;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/sat.c:970:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  970 |         *s ^= *s >> 7;
+      |                  ~~ ^
+/home/andrew/Code/ucas/src/sat.c:971:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  971 |         *s ^= *s << 17;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/sat.c:994:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  994 |                         y &= 31;        /* shift amounts and small divisors */
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/sat.c:1004:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1004 |                 w_shl(g, &r[5], &a, &b), want[5] = (y & 63) >= 32 ? 0 :
+      |                                                       ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1005:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1005 |                     (x << (y & 63)) & m;
+      |                              ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1006:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1006 |                 w_lshr(g, &r[6], &a, &b), want[6] = (y & 63) >= 32 ? 0 :
+      |                                                        ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1007:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1007 |                     x >> (y & 63);
+      |                             ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1009:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1009 |                 want[7] = (uint64_t)((int64_t)(int32_t)x >> ((y & 63) >= 32 ? 31 :
+      |                                      ^~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/sat.c:1009:25: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+ 1009 |                 want[7] = (uint64_t)((int64_t)(int32_t)x >> ((y & 63) >= 32 ? 31 :
+      |                                       ^
+/home/andrew/Code/ucas/src/sat.c:1009:34: warning: no header providing "int32_t" is directly included [misc-include-cleaner]
+ 1009 |                 want[7] = (uint64_t)((int64_t)(int32_t)x >> ((y & 63) >= 32 ? 31 :
+      |                                                ^
+/home/andrew/Code/ucas/src/sat.c:1009:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1009 |                 want[7] = (uint64_t)((int64_t)(int32_t)x >> ((y & 63) >= 32 ? 31 :
+      |                                                                 ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1010:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1010 |                     (y & 63))) & m;
+      |                        ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1053:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1053 |                                 cs[k] = xs(&seed) & 0xff;
+      |                                                   ~ ^~~~
+/home/andrew/Code/ucas/src/sat.c:1072:7: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1072 |                                                 switch (op) {
+      |                                                 ^
+/home/andrew/Code/ucas/src/sat.c:1072:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/sat.c:1103:9: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1103 |                                                                 switch (op) {
+      |                                                                 ^
+/home/andrew/Code/ucas/src/sat.c:1103:9: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/sat.c:1108:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1108 |                                                                 case 5: acc = (c & 63) >= 8 ? 0 :
+      |                                                                                  ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1109:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1109 |                                                                     acc << (c & 63); break;
+      |                                                                               ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1110:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1110 |                                                                 case 6: acc = (c & 63) >= 8 ? 0 :
+      |                                                                                  ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1111:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1111 |                                                                     acc >> (c & 63); break;
+      |                                                                               ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1112:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1112 |                                                                 case 7: acc = (uint64_t)((int)(int8_t)acc >>
+      |                                                                                          ^~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/sat.c:1112:40: warning: no header providing "int8_t" is directly included [misc-include-cleaner]
+ 1112 |                                                                 case 7: acc = (uint64_t)((int)(int8_t)acc >>
+      |                                                                                                ^
+/home/andrew/Code/ucas/src/sat.c:1113:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1113 |                                                                     ((c & 63) >= 8 ? 7 : (c & 63))); break;
+      |                                                                         ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1113:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1113 |                                                                     ((c & 63) >= 8 ? 7 : (c & 63))); break;
+      |                                                                                             ~ ^~
+/home/andrew/Code/ucas/src/sat.c:1116:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1116 |                                                                 acc &= 0xff;
+      |                                                                     ~~ ^~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

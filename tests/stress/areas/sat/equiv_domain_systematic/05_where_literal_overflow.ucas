@@ -1,0 +1,7 @@
+# LIMIT/NLP: a where bound that does not fit the declared type silently wraps
+# (256 -> 0), turning "x < 256" (all u8) into the empty domain "x < 0".
+# equiv then proves equality vacuously.
+f(x: u8) = x
+g(x: u8) = x where x < 256
+domain g
+equiv f ~ g

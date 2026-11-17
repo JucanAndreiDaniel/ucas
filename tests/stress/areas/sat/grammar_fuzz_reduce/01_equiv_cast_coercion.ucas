@@ -1,0 +1,10 @@
+# WRONG: equiv coerces the second function's result to the first function's
+# result type before comparing, so a narrowing cast looks like an identity.
+# f(-128) = 128 (u8), g(-128) = -128 (i32), yet equiv says "equal ... exhaustive".
+f(x: i8) = u8(x)
+g(x: i8) = i32(x)
+show f(-128)
+show g(-128)
+show f(-1)
+show g(-1)
+equiv f g

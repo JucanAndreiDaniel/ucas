@@ -1,0 +1,64 @@
+> diff exp(x: real)
+d/dx exp(x) = exp(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-15)
+> diff log(x: real)
+d/dx log(x) = 1/x
+  holds for x > 0
+  check: matches central differences at 100 points (max relative difference 2e-13)
+> diff sqrt(x: real)
+d/dx sqrt(x) = 1/(2sqrt(x))
+  holds for x > 0
+    at x = 0 (an end of the domain) sqrt(x) has an infinite one-sided slope
+    (points looked for in [-10, 10])
+  check: matches central differences at 100 points (max relative difference 6e-14)
+> diff abs(x: real)
+d/dx abs(x) = sign(x)
+  holds for x != 0
+    at x = 0 abs(x) has a corner (slope -1 from the left, 1 from the right)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 1e-15)
+> diff floor(x: real)
+d/dx floor(x) = 0
+  holds for x not an integer
+    where x is an integer it jumps (no derivative there)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 0)
+> diff ceil(x: real)
+d/dx ceil(x) = 0
+  holds for x not an integer
+    where x is an integer it jumps (no derivative there)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 0)
+> diff roundeven(x: real)
+d/dx roundeven(x) = 0
+  holds for x - 0.5 not an integer
+    where x - 0.5 is an integer it jumps (no derivative there)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 0)
+> diff sign(x: real)
+d/dx sign(x) = 0
+  holds for x != 0
+    at x = 0 sign(x) jumps (not continuous)
+    (points looked for in [-10, 10])
+  check: matches central differences at 201 points (max relative difference 0)
+> diff asinh(x: real)
+d/dx asinh(x) = 1/sqrt(x^2 + 1)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> diff acosh(x: real)
+d/dx acosh(x) = 1/sqrt(x^2 - 1)
+  holds for x > 1
+    at x = 1 (an end of the domain) acosh(x) has an infinite one-sided slope
+    (points looked for in [-10, 10])
+  check: matches central differences at 90 points (max relative difference 1e-13)
+> diff atanh(x: real)
+d/dx atanh(x) = 1/(1 - x^2)
+  holds for 1 - x^2 > 0
+  check: matches central differences at 20 points (max relative difference 2e-12)
+> diff W(x: real)
+d/dx W(x) = 1/(exp(W(x))*(W(x) + 1))
+  holds for x > -1/e
+    at x = -1/e (an end of the domain) W(x) has an infinite one-sided slope
+    (points looked for in [-10, 10])
+  check: matches central differences at 104 points (max relative difference 1e-12)

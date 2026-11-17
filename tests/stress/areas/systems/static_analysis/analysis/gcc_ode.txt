@@ -1,0 +1,55 @@
+src/ode.c: In function ‘cmd_pde’:
+src/ode.c:1716:12: warning: dereference of NULL ‘E’ [CWE-476] [-Wanalyzer-null-dereference]
+ 1716 |         pd = E->pd;
+      |         ~~~^~~~~~~
+  ‘cmd_pde’: events 1-2
+    │
+    │ 1704 | cmd_pde(uint32_t name, nid tend, int rows)
+    │      | ^~~~~~~
+    │      | |
+    │      | (1) entry to ‘cmd_pde’
+    │ 1705 | {
+    │ 1706 |         struct pdeent *E = pde_find(name);
+    │      |                            ~~~~~~~~~~~~~~
+    │      |                            |
+    │      |                            (2) calling ‘pde_find’ from ‘cmd_pde’
+    │
+    └──> ‘pde_find’: event 3
+           │
+           │ 1347 | pde_find(uint32_t name)
+           │      | ^~~~~~~~
+           │      | |
+           │      | (3) entry to ‘pde_find’
+           │
+         ‘pde_find’: event 4
+           │
+           │ 1354 |         return NULL;
+           │      |                ^~~~
+           │      |                |
+           │      |                (4) using NULL here
+           │
+    <──────┘
+    │
+  ‘cmd_pde’: events 5-8
+    │
+    │ 1706 |         struct pdeent *E = pde_find(name);
+    │      |                            ^~~~~~~~~~~~~~
+    │      |                            |
+    │      |                            (5) return of NULL to ‘cmd_pde’ from ‘pde_find’
+    │......
+    │ 1714 |         if (!E)
+    │      |            ~                
+    │      |            |
+    │      |            (6) following ‘true’ branch (when ‘E’ is NULL)... ─>─┐
+    │      |                                                                 │
+    │      |                                                                 │
+    │      |┌────────────────────────────────────────────────────────────────┘
+    │ 1715 |│                fail("no pde %s", sym_str(name));
+    │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |│                |
+    │      |└───────────────>(7) ...to here
+    │ 1716 |         pd = E->pd;
+    │      |         ~~~~~~~~~~          
+    │      |            |
+    │      |            (8) ⚠️  dereference of NULL ‘E’
+    │

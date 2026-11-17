@@ -1,0 +1,204 @@
+src/ecq.c: In function ‘ecq_egg_empty’:
+src/ecq.c:2406:21: warning: use of uninitialized value ‘sel[k]’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 2406 |                 if (z_sign(sel[k]) < 0) {
+      |                     ^~~~~~~~~~~~~~
+  ‘ecq_egg_empty’: events 1-5
+    │
+    │ 2366 | ecq_egg_empty(const struct ec *E, char *why, size_t n)
+    │      | ^~~~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘ecq_egg_empty’
+    │ 2367 | {
+    │ 2368 |         zint roots[3], a, b, sel[64];
+    │      |                              ~~~
+    │      |                              |
+    │      |                              (2) region created on stack here
+    │......
+    │ 2373 |         if (z_sign(ZA(E, disc)) <= 0) {
+    │      |            ~
+    │      |            |
+    │      |            (3) following ‘false’ branch... ─>─┐
+    │      |                                               │
+    │......
+    │      |                                               │
+    │      |┌──────────────────────────────────────────────┘
+    │ 2377 |│        nr = zx_cubic_int_roots(ZA(E, b2), z_mul(I(8), ZA(E, b4)),
+    │      |│             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |│             |
+    │      |└────────────>(4) ...to here
+    │ 2378 |             z_mul(I(16), ZA(E, b6)), roots);
+    │      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │......
+    │ 2403 |         descent_side(a, b, 1, sel, found, &nsel, &nimg, &pts, &W);
+    │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (5) calling ‘descent_side’ from ‘ecq_egg_empty’
+    │
+    └──> ‘descent_side’: events 6-11
+           │
+           │ 1633 | descent_side(zint a, zint b, int64_t B, zint *sel, int *found, int *nsel,
+           │      | ^~~~~~~~~~~~
+           │      | |
+           │      | (6) entry to ‘descent_side’
+           │......
+           │ 1641 |         for (i = 0; i < nc; i++) {
+           │      |                     ~~~~~~
+           │      |                       |
+           │      |                       (7) following ‘false’ branch (when ‘i >= nc’)... ─>─┐
+           │      |                                                                           │
+           │......
+           │      |                                                                           │
+           │      |┌──────────────────────────────────────────────────────────────────────────┘
+           │ 1657 |│        ng[nfound++] = sqfree(b);
+           │      |│           ~~~~~~~~
+           │      |│                 |
+           │      |└────────────────>(8) ...to here
+           │ 1658 |         for (i = 0; i < ns; i++) {
+           │      |                     ~~~~~~
+           │      |                       |
+           │      |                       (9) following ‘false’ branch (when ‘i >= ns’)... ─>─┐
+           │      |                                                                           │
+           │......
+           │      |                                                                           │
+           │      |┌──────────────────────────────────────────────────────────────────────────┘
+           │ 1684 |│                int n = sq_span(ng, nfound, img, 64), k;
+           │      |│                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│                        |
+           │      |└───────────────────────>(10) ...to here
+           │      |                         (11) calling ‘sq_span’ from ‘descent_side’
+           │
+           └──> ‘sq_span’: events 12-17
+                  │
+                  │ 1531 | sq_span(const zint *g, int ng, zint *out, int max)
+                  │      | ^~~~~~~
+                  │      | |
+                  │      | (12) entry to ‘sq_span’
+                  │......
+                  │ 1536 |         for (i = 0; i < ng; i++) {
+                  │      |                     ~~~~~~
+                  │      |                       |
+                  │      |                       (13) following ‘true’ branch (when ‘i < ng’)... ─>─┐
+                  │      |                                                                          │
+                  │      |                                                                          │
+                  │      |┌─────────────────────────────────────────────────────────────────────────┘
+                  │ 1537 |│                int have = 0;
+                  │      |│                    ~~~~
+                  │      |│                    |
+                  │      |└───────────────────>(14) ...to here
+                  │ 1538 |                 for (j = 0; j < n; j++)
+                  │      |                             ~~~~~
+                  │      |                               |
+                  │      |                               (15) following ‘true’ branch (when ‘j < n’)... ─>─┐
+                  │      |                                                                                 │
+                  │      |                                                                                 │
+                  │      |┌────────────────────────────────────────────────────────────────────────────────┘
+                  │ 1539 |│                        if (z_eq(out[j], g[i]))
+                  │      |│                                          ~
+                  │      |│                                          |
+                  │      |└─────────────────────────────────────────>(16) ...to here
+                  │ 1540 |                                 have = 1;
+                  │ 1541 |                 if (have)
+                  │      |                    ~
+                  │      |                    |
+                  │      |                    (17) following ‘true’ branch (when ‘have != 0’)... ─>─┐
+                  │      |                                                                          │
+                  │
+                ‘sq_span’: event 18
+                  │
+                  │      |                                                                          │
+                  │      |┌─────────────────────────────────────────────────────────────────────────┘
+                  │ 1541 |│                if (have)
+                  │      |│                   ^
+                  │      |│                   |
+                  │      |└──────────────────>(18) ...to here
+                  │
+           <──────┘
+           │
+         ‘descent_side’: events 19-22
+           │
+           │ 1684 |                 int n = sq_span(ng, nfound, img, 64), k;
+           │      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |                         |
+           │      |                         (19) returning to ‘descent_side’ from ‘sq_span’
+           │ 1685 |                 for (i = 0; i < ns; i++)
+           │      |                             ~~~~~~
+           │      |                               |
+           │      |                               (20) following ‘false’ branch (when ‘i >= ns’)... ─>─┐
+           │      |                                                                                    │
+           │......
+           │      |                                                                                    │
+           │      |┌───────────────────────────────────────────────────────────────────────────────────┘
+           │ 1689 |│                *nimg = ilog2i(n);
+           │      |│                        ~~~~~~~~~
+           │      |│                        |
+           │      |└───────────────────────>(21) ...to here
+           │ 1690 |         }
+           │ 1691 |         *nsel = ilog2i(ns);
+           │      |                 ~~~~~~~~~~
+           │      |                 |
+           │      |                 (22) calling ‘ilog2i’ from ‘descent_side’
+           │
+           └──> ‘ilog2i’: events 23-25
+                  │
+                  │ 1551 | ilog2i(int n)
+                  │      | ^~~~~~
+                  │      | |
+                  │      | (23) entry to ‘ilog2i’
+                  │......
+                  │ 1555 |         while ((1 << k) < n)
+                  │      |                ~~~~~~~~~~~~
+                  │      |                         |
+                  │      |                         (24) following ‘false’ branch... ─>─┐
+                  │      |                                                             │
+                  │      |                                                             │
+                  │      |┌────────────────────────────────────────────────────────────┘
+                  │ 1556 |│                k++;
+                  │ 1557 |│        return k;
+                  │      |│               ~
+                  │      |│               |
+                  │      |└──────────────>(25) ...to here
+                  │
+           <──────┘
+           │
+         ‘descent_side’: events 26-28
+           │
+           │ 1691 |         *nsel = ilog2i(ns);
+           │      |                 ^~~~~~~~~~
+           │      |                 |
+           │      |                 (26) returning to ‘descent_side’ from ‘ilog2i’
+           │ 1692 |         if ((1 << *nsel) != ns)
+           │      |            ~     
+           │      |            |
+           │      |            (27) following ‘true’ branch... ─>─┐
+           │      |                                               │
+           │      |                                               │
+           │      |┌──────────────────────────────────────────────┘
+           │ 1693 |│                fail("internal: the Selmer set has %d elements (not a power of "
+           │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│                |
+           │      |└───────────────>(28) ...to here
+           │ 1694 |                     "2)", ns);
+           │      |                     ~~~~~~~~~
+           │
+    <──────┘
+    │
+  ‘ecq_egg_empty’: events 29-32
+    │
+    │ 2403 |         descent_side(a, b, 1, sel, found, &nsel, &nimg, &pts, &W);
+    │      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (29) returning to ‘ecq_egg_empty’ from ‘descent_side’
+    │ 2404 |         ecpts_free(&pts);
+    │ 2405 |         for (k = 0; k < (1 << nsel); k++)
+    │      |                     ~~~~~~~~~~~~~~~
+    │      |                       |
+    │      |                       (30) following ‘true’ branch... ─>─┐
+    │      |                                                          │
+    │      |                                                          │
+    │      |┌─────────────────────────────────────────────────────────┘
+    │ 2406 |│                if (z_sign(sel[k]) < 0) {
+    │      |│                    ~~~~~~~~~~~~~~
+    │      |│                    |
+    │      |└───────────────────>(31) ...to here
+    │      |                     (32) ⚠️  use of uninitialized value ‘sel[k]’ here
+    │

@@ -1,0 +1,118 @@
+> add37(x: i8) = x + 37
+> wrap add37
+wrap analysis of add37:
+  x + 37   (i8)
+      nuw fails: unsigned wrap at 37 points, e.g. x=-37
+      nsw fails: signed wrap at 37 points, e.g. x=91  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 37 points, e.g. x=91
+      exact for: -128..90
+  over all 256 points of the domain
+> sub71(x: i8) = x - 71
+> wrap sub71
+wrap analysis of sub71:
+  x - 71   (i8)
+      nuw fails: unsigned wrap at 71 points, e.g. x=0
+      nsw fails: signed wrap at 71 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 71 points, e.g. x=-128
+      exact for: -57..127
+  over all 256 points of the domain
+> rsub100(x: i8) = 100 - x
+> wrap rsub100
+wrap analysis of rsub100:
+  100 - x   (i8)
+      nuw fails: unsigned wrap at 155 points, e.g. x=-128
+      nsw fails: signed wrap at 101 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 101 points, e.g. x=-128
+      exact for: -27..127
+  over all 256 points of the domain
+> mul3(x: i8) = x * 3
+> wrap mul3
+wrap analysis of mul3:
+  3x   (i8)
+      nuw fails: unsigned wrap at 170 points, e.g. x=-128
+      nsw fails: signed wrap at 171 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 171 points, e.g. x=-128
+      exact for: -42..42
+  over all 256 points of the domain
+> mul13(x: i8) = x * 13
+> wrap mul13
+wrap analysis of mul13:
+  13x   (i8)
+      nuw fails: unsigned wrap at 236 points, e.g. x=-128
+      nsw fails: signed wrap at 237 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 237 points, e.g. x=-128
+      exact for: -9..9
+  over all 256 points of the domain
+> neg(x: i8) = -x
+> wrap neg
+wrap analysis of neg:
+  -x   (i8)
+      nuw fails: unsigned wrap at 255 points, e.g. x=-128
+      nsw fails: signed wrap at 1 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-128
+      exact for: -127..127
+  over all 256 points of the domain
+> neg128(x: i8 in -128..-127) = -x
+> wrap neg128
+wrap analysis of neg128:
+  -x   (i8)
+      nuw fails: unsigned wrap at 2 points, e.g. x=-128
+      nsw fails: signed wrap at 1 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-128
+      exact for: -127
+  over all 2 points of the domain
+> divmin(x: i8 in -128..-1) = x / -1
+> wrap divmin
+wrap analysis of divmin:
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 1 points, e.g. x=-128
+      exact for: -127..-1
+  over all 128 points of the domain
+> domain divmin
+domain of divmin:
+  x: i8, -128..-1
+  defined at 128 of 128 points
+  no conditions: total on its parameter types
+  C undefined behaviour at 1 points, e.g. x=-128
+  over all 128 points of the domain
+> dblhalve(x: i8) = (x*2)/2
+> wrap dblhalve
+wrap analysis of dblhalve:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain
+> range dblhalve
+range of dblhalve -> i8:
+  -64..63   (128 distinct values)
+  fits in i7
+  over all 256 points of the domain
+> disjoint(x: i8) = (x-123)*(x-100)
+> wrap disjoint
+wrap analysis of disjoint:
+  x - 123   (i8)
+      nuw fails: unsigned wrap at 123 points, e.g. x=0
+      nsw fails: signed wrap at 123 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  x - 100   (i8)
+      nuw fails: unsigned wrap at 100 points, e.g. x=0
+      nsw fails: signed wrap at 100 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  (x - 123)*(x - 100)   (i8)
+      nuw fails: unsigned wrap at 245 points, e.g. x=-124
+      nsw fails: signed wrap at 228 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 228 points, e.g. x=-128
+      exact for: 96..109, 114..127
+  over all 256 points of the domain
+> absplus(x: i8) = (x < 0 ? -x : x) + 100
+> wrap absplus
+wrap analysis of absplus:
+  -x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 1 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  (x < 0 ? -x : x) + 100   (i8)
+      nuw holds
+      nsw fails: signed wrap at 200 points, e.g. x=-127  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 201 points, e.g. x=-128
+      exact for: -27..27
+  over all 256 points of the domain

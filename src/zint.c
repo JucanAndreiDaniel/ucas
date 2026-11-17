@@ -1029,7 +1029,7 @@ rho(zint n, int64_t c)
 {
 	zint x = mk_small(2), y = x, q = Z_ONE, g = Z_ONE, ys = x, cc;
 	long r = 1, k, i, it = 0;
-	const long lim = 1L << 21;
+	const long lim = 1L << 18;
 
 	cc = mk_small(c);
 	while (z_is_one(g) && it < lim) {

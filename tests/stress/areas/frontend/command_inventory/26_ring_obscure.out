@@ -1,0 +1,47 @@
+> matinv [[1,2],[3,4]] mod 5
+the 2x2 matrix over GF(5)
+  [1 2]
+  [3 4]
+  det = 3
+  inverse:
+    [3 1]
+    [4 2]
+  check: M * M^-1 = I
+> matinv [[1,2,3],[0,1,4],[0,0,1]] mod 7
+the 3x3 matrix over GF(7)
+  [1 2 3]
+  [0 1 4]
+  [0 0 1]
+  det = 1
+  inverse:
+    [1 5 5]
+    [0 1 3]
+    [0 0 1]
+  check: M * M^-1 = I
+> matsolve [[1,2],[3,4]] [1,2] mod 5
+x = (0, 3), the only solution
+  how: Gaussian elimination on [M | b]
+  check: M x = b holds
+> matsolve [[1,1],[2,2]] [1,2] mod 5
+x = (1, 0) + any combination of the 1 nullspace vector:
+    [4 1]
+  how: Gaussian elimination on [M | b]
+  check: M x = b holds
+> irreducible x^8 + x^4 + x^3 + x + 1 over GF(2)
+x^8 + x^4 + x^3 + x + 1 is irreducible over GF(2)
+  how: Rabin's test (degree 8: x^(q^8) = x mod f, and gcd(x^(q^(8/r)) - x, f) = 1 for each prime r | 8; q = 2)
+  check: Ben-Or's test agrees; Berlekamp: 1 distinct irreducible factor; trial division by every monic polynomial of degree <= 4: none divides
+> primitive x^8 + x^4 + x^3 + x + 1 over GF(2)
+x^8 + x^4 + x^3 + x + 1 is irreducible over GF(2)
+  how: Rabin's test (degree 8: x^(q^8) = x mod f, and gcd(x^(q^(8/r)) - x, f) = 1 for each prime r | 8; q = 2)
+  check: Ben-Or's test agrees; Berlekamp: 1 distinct irreducible factor; trial division by every monic polynomial of degree <= 4: none divides
+not primitive: x has order 51 < q^8 - 1 = 255
+  how: x^((q^n - 1)/r) != 1 mod f for each prime r | q^n - 1 = 3 * 5 * 17
+  so an LFSR with this feedback polynomial has period 51
+  check: stepping x, x^2, ... mod f: x^k = 1 first at k = 51
+> zerodivisors sedenion
+zero divisors in the sedenions:
+  (e1 - e10)(e4 + e15) = 0, although |e1 - e10| = |e4 + e15| = sqrt(2)
+  so |ab| = |a||b| fails and the sedenions are not a division algebra (from dimension 16 on, every Cayley-Dickson algebra has them)
+> ring z/8 zerodivisors
+  zero divisors: 3 nonzero (every nonzero non-unit of a finite ring): 2, 4, 6

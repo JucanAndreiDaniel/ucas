@@ -1,0 +1,22 @@
+> approx sin(x) in -pi/2..pi/2 degree 5..9 keep endpoints norational nosplit noreduce
+approx sin(x) on [-1.57079637, 1.57079637] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1.57079637]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  exact at: x = -1.57079637 -> -1, x = 1.57079637 -> 1
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax      no exact pts
+    5    0.000348     -            0.000131     0.000108
+    7    3.02e-06     -            1.09e-06     9.39e-07
+    9    1.71e-08     -            5.98e-09     5.31e-09
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131102 f32 in [-1.57079637, 1.57079637]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  2.19e+03 ulp             0.000135      0.000129      4    at x=-1.16394172e-10  exact pts yes  keep +21%
+      x*P(x^2): x*fma(fma(0.00755796302, s, -0.165867969), s, 0.999869227) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 3.07, probable no better (under 16 operations), expected 0.926; `error ap1 ~ F` says what each means
+  2   minimax   7     horner+fma  18.9 ulp (20)            2.11e-06      1.12e-06      5    at x=-1.48613846  exact pts yes  keep +16%
+      x*P(x^2): x*fma(fma(fma(-0.000184409757, s, 0.0083103599), s, -0.166654333), s, 0.999998927) where s = x*x
+  3   minimax   9     horner+fma  1.53 ulp (1.81)          9.1e-08       9.09e-08      6    at x=-1.5408833  exact pts yes  keep +12%
+      x*P(x^2): fma(x*s, fma(fma(fma(2.59965395e-06, s, -0.000198068723), s, 0.00833303016), s, -0.166666582), x) where s = x*x
+  2 more: 'approx more [n]' (dominated or worse)

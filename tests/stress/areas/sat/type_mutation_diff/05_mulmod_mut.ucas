@@ -1,0 +1,59 @@
+# OpFuzz type-aware operator mutation: 05_mulmod_mut
+# 8 seeds, each mutated by one same-signature operator swap.
+# u8 -> exhaustive ground truth; u32 -> sat/algebra proof on wide type.
+# --- mulmod_basic [mulmod] identity=False: x * y  <->  x % (y + 1) ---
+s_mulmod_basic_u8(x: u8, y: u8) = x * y
+m_mulmod_basic_u8(x: u8, y: u8) = x % (y + 1)
+equiv s_mulmod_basic_u8 m_mulmod_basic_u8
+s_mulmod_basic_u32(x: u32, y: u32) = x * y
+m_mulmod_basic_u32(x: u32, y: u32) = x % (y + 1)
+equiv s_mulmod_basic_u32 m_mulmod_basic_u32
+# --- mul_one [mulmod] identity=False: x * 1  <->  x % 1 ---
+s_mul_one_u8(x: u8) = x * 1
+m_mul_one_u8(x: u8) = x % 1
+equiv s_mul_one_u8 m_mul_one_u8
+s_mul_one_u32(x: u32) = x * 1
+m_mul_one_u32(x: u32) = x % 1
+equiv s_mul_one_u32 m_mul_one_u32
+# --- mul_zero [mulmod] identity=False: x * 0  <->  x % 1 ---
+s_mul_zero_u8(x: u8) = x * 0
+m_mul_zero_u8(x: u8) = x % 1
+equiv s_mul_zero_u8 m_mul_zero_u8
+s_mul_zero_u32(x: u32) = x * 0
+m_mul_zero_u32(x: u32) = x % 1
+equiv s_mul_zero_u32 m_mul_zero_u32
+# --- mul_distribute [mulmod] identity=True: x*(y + z)  <->  x*y + x*z ---
+s_mul_distribute_u8(x: u8, y: u8, z: u8) = x*(y + z)
+m_mul_distribute_u8(x: u8, y: u8, z: u8) = x*y + x*z
+equiv s_mul_distribute_u8 m_mul_distribute_u8
+s_mul_distribute_u32(x: u32, y: u32, z: u32) = x*(y + z)
+m_mul_distribute_u32(x: u32, y: u32, z: u32) = x*y + x*z
+equiv s_mul_distribute_u32 m_mul_distribute_u32
+# --- mul_comm [mulmod] identity=True: x * y  <->  y * x ---
+s_mul_comm_u8(x: u8, y: u8) = x * y
+m_mul_comm_u8(x: u8, y: u8) = y * x
+equiv s_mul_comm_u8 m_mul_comm_u8
+s_mul_comm_u32(x: u32, y: u32) = x * y
+m_mul_comm_u32(x: u32, y: u32) = y * x
+equiv s_mul_comm_u32 m_mul_comm_u32
+# --- mul_assoc [mulmod] identity=True: (x*y)*z  <->  x*(y*z) ---
+s_mul_assoc_u8(x: u8, y: u8, z: u8) = (x*y)*z
+m_mul_assoc_u8(x: u8, y: u8, z: u8) = x*(y*z)
+equiv s_mul_assoc_u8 m_mul_assoc_u8
+s_mul_assoc_u32(x: u32, y: u32, z: u32) = (x*y)*z
+m_mul_assoc_u32(x: u32, y: u32, z: u32) = x*(y*z)
+equiv s_mul_assoc_u32 m_mul_assoc_u32
+# --- mul_pow2 [mulmod] identity=True: x * 4  <->  x << 2 ---
+s_mul_pow2_u8(x: u8) = x * 4
+m_mul_pow2_u8(x: u8) = x << 2
+equiv s_mul_pow2_u8 m_mul_pow2_u8
+s_mul_pow2_u32(x: u32) = x * 4
+m_mul_pow2_u32(x: u32) = x << 2
+equiv s_mul_pow2_u32 m_mul_pow2_u32
+# --- mod_self [mulmod] identity=True: x % (x + 1)  <->  x ---
+s_mod_self_u8(x: u8) = x % (x + 1)
+m_mod_self_u8(x: u8) = x
+equiv s_mod_self_u8 m_mod_self_u8
+s_mod_self_u32(x: u32) = x % (x + 1)
+m_mod_self_u32(x: u32) = x
+equiv s_mod_self_u32 m_mod_self_u32

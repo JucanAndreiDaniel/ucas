@@ -1,0 +1,85 @@
+/home/andrew/Code/ucas/src/gif.c:21:2: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+   14 | 
+   15 | #include <stdlib.h>
+   16 | #include <string.h>
+   17 | 
+   18 | static void
+   19 | put8(struct gif *g, int v)
+   20 | {
+   21 |         sb_putc(&g->out, v & 0xff);
+      |         ^
+/home/andrew/Code/ucas/src/gif.c:21:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   21 |         sb_putc(&g->out, v & 0xff);
+      |                          ^ ~
+/home/andrew/Code/ucas/src/gif.c:28:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   28 |         put8(g, v >> 8);
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/gif.c:40:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   40 |         while ((1 << bits) < ncolors)
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/gif.c:43:12: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+   43 |         g->prev = xcalloc((size_t)w * h, 1);
+      |                   ^
+/home/andrew/Code/ucas/src/gif.c:44:2: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+   44 |         sb_puts(&g->out, "GIF89a");
+      |         ^
+/home/andrew/Code/ucas/src/gif.c:47:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |         put8(g, 0x80 | ((bits - 1) << 4) | (bits - 1));  /* global table */
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gif.c:47:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |         put8(g, 0x80 | ((bits - 1) << 4) | (bits - 1));  /* global table */
+      |                         ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/gif.c:50:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   50 |         for (i = 0; i < (1 << bits); i++) {
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/gif.c:92:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |         b->acc |= (unsigned long)code << b->n;
+      |                                       ~~ ^~~~
+/home/andrew/Code/ucas/src/gif.c:95:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   95 |                 b->blk[b->nb++] = (unsigned char)(b->acc & 0xff);
+      |                                                          ~ ^~~~
+/home/andrew/Code/ucas/src/gif.c:98:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   98 |                 b->acc >>= 8;
+      |                        ~~~ ^
+/home/andrew/Code/ucas/src/gif.c:114:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  114 |         int min = g->bits, clear = 1 << min, eoi = clear + 1;
+      |                                    ^ ~~
+/home/andrew/Code/ucas/src/gif.c:116:14: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  116 |         int *hkey = xmalloc(HSIZE * sizeof *hkey);
+      |                     ^
+/home/andrew/Code/ucas/src/gif.c:135:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  135 |                         key = (prefix << 8) | k;
+      |                               ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gif.c:135:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  135 |                         key = (prefix << 8) | k;
+      |                                ^~~~~~ ~~
+/home/andrew/Code/ucas/src/gif.c:136:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  136 |                         slot = (key * 2654435761u) >> 19 & (HSIZE - 1);
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/gif.c:136:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  136 |                         slot = (key * 2654435761u) >> 19 & (HSIZE - 1);
+      |                                                          ~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/gif.c:138:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  138 |                                 slot = (slot + 1) & (HSIZE - 1);
+      |                                        ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gif.c:147:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  147 |                                 if (next == (1 << width) && width < 12)
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/gif.c:195:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |                         int v = d[0] | d[1] << 8;
+      |                                      ~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/gif.c:195:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |                         int v = d[0] | d[1] << 8;
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/gif.c:197:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |                         d[0] = (unsigned char)(v & 0xff);
+      |                                                ^ ~
+/home/andrew/Code/ucas/src/gif.c:198:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         d[1] = (unsigned char)(v >> 8);
+      |                                                ^ ~~
+/home/andrew/Code/ucas/src/gif.c:206:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |         put8(g, 1 << 2 | (g->transp && g->nframes > 0));
+      |                 ^~~~~~ ~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

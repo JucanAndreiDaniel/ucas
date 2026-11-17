@@ -1,0 +1,378 @@
+> models
+model gt1030 (active) { iadd: 1, logic: 1, shift: 2, imul: 3, idiv: 28.5, idivk: 8.75, cmp: 2.375, select: 1.625, minmax: 1, bitcnt: 3, conv: 3, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 32.375, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 1, dot4x8sat: 6.5, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  folds f32 -> f16 -> f32
+model sm75 { iadd: 1, logic: 1, shift: 1, imul: 1, idiv: 28.5, idivk: 8.75, cmp: 1.375, select: 1.625, minmax: 1, bitcnt: 4, conv: 4, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 32, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 1, dot4x8sat: 6.5, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+model sm86 { iadd: 2, logic: 2, shift: 2, imul: 2, idiv: 28.5, idivk: 8.75, cmp: 2.75, select: 1.625, minmax: 2, bitcnt: 8, conv: 8, bitcast: 0, fadd: 1, fmul: 1, fdiv: 6, fsqrt: 8, ftrans: 8, fpow: 8, f64: 64, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 2, dot4x8sat: 13, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+model rdna2 { iadd: 1, logic: 1, shift: 1, imul: 4, idiv: 28.5, idivk: 8.75, cmp: 1.375, select: 1.625, minmax: 1, bitcnt: 1, conv: 1, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3, fsqrt: 4, ftrans: 4, fpow: 8, f64: 16, load: 6.875, branch: 6.25, diverge: 14.375, barrier: 9.125, atomic_shared: 6.625, atomic_global: 50, store: 15, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, udot4x8: 1, sdot4x8: 1, udot8x4: 1, sdot8x4: 1, udot4x8sat: 1, sdot4x8sat: 1, udot8x4sat: 1, sdot8x4sat: 1, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25, sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  fuse dpp_xor(v: any, lane: lane, k: const u4) = sg_shuffle(v, lane xor k) : 0 in iadd fadd fmul
+  fuse dpp_quad(v: any, lane: lane, i: const u2) = sg_shuffle(v, lane & 0xfffffffc | i) : 0 in iadd fadd fmul
+model gfx902 { iadd: 0.72, logic: 0.28, shift: 1, imul: 4, idiv: 29.63, idivk: 6.3, cmp: 1.03, select: 0.8, minmax: 1.28, bitcnt: 0.28, conv: 1.02, bitcast: 0, fadd: 1, fmul: 1, fdiv: 5.16, fsqrt: 4.09, ftrans: 4, fpow: 4.68, f64: 7.33, load: 8.44, branch: 1, diverge: 1.15, barrier: 11.02, atomic_shared: 9.95, atomic_global: 20.34, store: 9.44, sdiv: 29.63, sdivk: 6.3, irem: 29.63, iremk: 6.3, srem: 29.63, sremk: 6.3, load_shared: 2.66, load_ubo: 0.8, load_ubo_div: 59.37, load_stream: 60.86, store_stream: 58.72, bank_conflict: 55.75, atomic_shared_same: 32.74, atomic_shared_f: 185.05, atomic_global_64: 259.83, atomic_global_cas: 130.29, atomic_global_stream: 129.76, tex_fetch: 15.03, tex_sample: 17.38, tex_sample_f32: 31.89, image_load: 15.27, warp: 64, sg_ballot: 1.6, sg_add: 7.76, sg_shuffle: 9.24, sg_scan: 7.82 }
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+model gfx90c { iadd: 0.7, logic: 0.3, shift: 1, imul: 3.99, idiv: 31.08, idivk: 6.21, cmp: 0.99, select: 0.82, minmax: 1.29, bitcnt: 0.29, conv: 1, bitcast: 0, fadd: 1, fmul: 1, fdiv: 5.02, fsqrt: 3.99, ftrans: 4, fpow: 4.56, f64: 8.17, load: 8.37, branch: 1, diverge: 1.41, barrier: 9.53, atomic_shared: 9.98, atomic_global: 21.19, store: 9.52, sdiv: 31.08, sdivk: 6.21, irem: 31.08, iremk: 6.21, srem: 31.08, sremk: 6.21, load_shared: 2.66, load_ubo: 0.84, load_ubo_div: 58.43, load_stream: 89.18, store_stream: 90.87, bank_conflict: 56.24, atomic_shared_same: 32.96, atomic_shared_f: 172.08, atomic_global_64: 385.11, atomic_global_cas: 193.34, atomic_global_stream: 193.31, tex_fetch: 31.7, tex_sample: 18.19, tex_sample_f32: 31.34, image_load: 34.18, warp: 64, sg_ballot: 1.67, sg_add: 7.79, sg_shuffle: 9.14, sg_scan: 7.75, sg_deriv: 1 }
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+model gp107 { iadd: 1.01, logic: 1.01, shift: 2.01, imul: 3.01, idiv: 28.46, idivk: 8.92, cmp: 2.38, select: 1.63, minmax: 1.08, bitcnt: 2.99, conv: 2.98, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3.01, fsqrt: 3.97, ftrans: 3.99, fpow: 7.95, f64: 32.03, load: 7.27, branch: 6.83, diverge: 14.61, barrier: 9.24, atomic_shared: 6.79, atomic_global: 60.34, store: 17.1, sdiv: 28.46, sdivk: 8.92, irem: 28.46, iremk: 8.92, srem: 28.46, sremk: 8.92, load_shared: 3.14, store_shared: 3.05, load_ubo: 4.16, load_ubo_div: 162.69, load_stream: 66.9, store_stream: 87.57, bank_conflict: 126.63, atomic_shared_same: 65.62, atomic_shared_f: 24.82, atomic_global_64: 271.35, atomic_global_cas: 166.52, atomic_global_stream: 141.96, tex_fetch: 57.19, tex_sample: 21.82, tex_sample_f32: 33.46, image_load: 36.29, warp: 32, sg_add: 32.87, sg_shuffle: 4.02, sg_scan: 61.54, sg_deriv: 3.23 }
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+model ga104 { iadd: 1.13, logic: 2.7, shift: 1.93, imul: 1.7, idiv: 19.26, idivk: 4.12, cmp: 1.3, select: 2.27, minmax: 2.48, bitcnt: 5.75, conv: 2.48, bitcast: 0, fadd: 1, fmul: 0.99, fdiv: 5.85, fsqrt: 6.79, ftrans: 6.79, fpow: 13.75, f64: 61.68, load: 8.94, branch: 6.25, diverge: 10.26, barrier: 2.94, atomic_shared: 7.72, atomic_global: 48.24, store: 34.48, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, dot4x8: 2, dot4x8sat: 13, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+model vangogh { iadd: 0.93, logic: 1, shift: 1, imul: 3.94, idiv: 33.37, idivk: 6.92, cmp: 1.05, select: 0.95, minmax: 1.08, bitcnt: 1, conv: 1.01, bitcast: 0, fadd: 1, fmul: 1, fdiv: 3.68, fsqrt: 3.94, ftrans: 3.96, fpow: 4.06, f64: 15.96, load: 4.44, branch: 6.25, diverge: 1.29, barrier: 6.58, atomic_shared: 8.7, atomic_global: 17.61, store: 18.71, sdiv: 36, sdivk: 21, irem: 32.25, iremk: 13.5, srem: 39.75, sremk: 25.75, udot4x8: 1, sdot4x8: 1, udot8x4: 1, sdot8x4: 1, udot4x8sat: 1, sdot4x8sat: 1, udot8x4sat: 1, sdot8x4sat: 1, load_shared: 3, store_shared: 3, load_ubo: 4.125, load_ubo_div: 148.125, load_stream: 80.625, store_stream: 111, bank_conflict: 4, atomic_shared_same: 63.75, atomic_shared_f: 24.25, atomic_global_f: 138.75, atomic_global_64: 264.625, atomic_global_cas: 143.5, atomic_global_stream: 137.5, tex_fetch: 43.125, tex_sample: 21.625, tex_sample_f32: 54.75, image_load: 31.875, banks: 32, bank_bytes: 4, warp: 32, subtexel: 8, sg_ballot: 0, sg_vote: 0, sg_add: 32.625, sg_shuffle: 4, sg_scan: 60.25, sg_deriv: 3.25, sg_shuffle_xor: 1, sg_quad: 1, fdot2: 1 }
+  fuse lop3 = lut 3 : logic
+  fuse imad(a: int, b: int, c: int) = a*b + c : imul
+  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift
+  fuse shr_add(a: int, k: const, b: int) = (a >> k) + b : shift
+  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract
+  fuse ffms(a: float, b: float, c: float) = a*b - c : fmul contract
+  fuse ffmr(a: float, b: float, c: float) = c - a*b : fmul contract
+  fuse fneg(a: float) = -a : 0 in fadd fmul
+  fuse fabs(a: float) = abs(a) : 0 in fadd fmul
+  fuse dpp_xor(v: any, lane: lane, k: const u4) = sg_shuffle(v, lane xor k) : 0 in iadd fadd fmul
+  fuse dpp_quad(v: any, lane: lane, i: const u2) = sg_shuffle(v, lane & 0xfffffffc | i) : 0 in iadd fadd fmul
+model mali_g715 { iadd: 1.87, logic: 1.83, shift: 1.87, imul: 7.57, idiv: 36.82, idivk: 18.23, cmp: 0.87, select: 1.62, minmax: 1.83, bitcnt: 5.59, conv: 1.28, bitcast: 0, fadd: 1, fmul: 1.01, fdiv: 6.17, fsqrt: 14.44, ftrans: 7.3, fpow: 14.88, f64: 1, load: 16.25, branch: 23.17, diverge: 14.45, barrier: 20.04, atomic_shared: 118.07, atomic_global: 146.52, store: 26.94, sdiv: 36.82, sdivk: 18.23, irem: 36.82, iremk: 18.23, srem: 36.82, sremk: 18.23 }
+model skl { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model skx { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8, barrier: 33, atomic_shared: 18, atomic_global: 18, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model glc { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 15, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 2, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 18, fpow: 54, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 15, sdivk: 5, irem: 15, iremk: 5, srem: 15, sremk: 5, sudot4x8: 11, sdot2x16: 11, sudot4x8sat: 11, sdot2x16sat: 11 }
+model rpl { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 15, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 2, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 18, fpow: 54, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 15, sdivk: 5, irem: 15, iremk: 5, srem: 15, sremk: 5, sudot4x8: 11, sdot2x16: 11, sudot4x8sat: 11, sdot2x16sat: 11 }
+model zen2 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 41, idivk: 4, cmp: 1, select: 1, minmax: 2, bitcnt: 1, conv: 5, bitcast: 3, fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1, load: 4, branch: 1, diverge: 6.5, barrier: 33, atomic_shared: 8, atomic_global: 8, store: 1, sdiv: 41, sdivk: 4, irem: 41, iremk: 4, srem: 41, sremk: 4 }
+model zen1 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 11, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 1, conv: 4, bitcast: 3, fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1, load: 4, branch: 1, diverge: 8, barrier: 33, atomic_shared: 8, atomic_global: 8, store: 1, sdiv: 11, sdivk: 5, irem: 11, iremk: 5, srem: 11, sremk: 5 }
+model zen3 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 6, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 1, conv: 3, bitcast: 3, fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1, load: 4, branch: 1, diverge: 6.5, barrier: 33, atomic_shared: 8, atomic_global: 8, store: 1, sdiv: 6, sdivk: 5, irem: 6, iremk: 5, srem: 6, sremk: 5 }
+model zen4 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 14, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 1, conv: 4, bitcast: 3, fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1, load: 4, branch: 1, diverge: 6.5, barrier: 33, atomic_shared: 8, atomic_global: 8, store: 1, sdiv: 14, sdivk: 5, irem: 14, iremk: 5, srem: 14, sremk: 5, sudot4x8: 10, sdot2x16: 10, sudot4x8sat: 10, sdot2x16sat: 10 }
+model x86v2 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model x86v3 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+model x86v4 { iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1, select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3, fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1, load: 5, branch: 1, diverge: 8.5, barrier: 33, atomic_shared: 20, atomic_global: 20, store: 1, sdiv: 36, sdivk: 5, irem: 36, iremk: 5, srem: 36, sremk: 5 }
+> x86 models
+  skl    skylake        Intel Skylake/Kaby/Coffee Lake client core (this host's i5-9400 is one): AVX2, no AVX-512
+  skx    skylake-x      Intel Skylake-SP/X server core: AVX-512 F/CD/BW/DQ/VL, two 512-bit FMA units (ports 0+1 fused, 5)
+  glc    goldencove     Intel Golden Cove P-core as in Sapphire Rapids: AVX-512 with VBMI, VPOPCNTDQ, BITALG, GFNI
+  rpl    raptorlake     Intel Raptor Lake / Alder Lake P-core (Golden Cove/Raptor Cove): Golden Cove costs, AVX-512 fused off; GFNI, VAES and VPCLMULQDQ on xmm/ymm
+  zen2   znver2         AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom APU 0932): AVX2, no AVX-512; latencies measured on both machines with x86bench, other columns estimated from Zen 4
+  zen1   znver1         AMD Zen+ (Ryzen 5 3550H, Picasso): AVX2, no AVX-512; latencies measured with x86bench on this host, other columns estimated from Zen 4
+  zen3   znver3         AMD Zen 3 (Ryzen 7 5825U, Cezanne): AVX2, no AVX-512; latencies measured with x86bench on the NAS, other columns estimated from Zen 4
+  zen4   znver4         AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, GFNI) on 256-bit pipes, 512-bit ops double-pumped
+  x86v2  x86-64-v2      generic x86-64-v2 (SSE4.2, POPCNT): the worst of Skylake, Golden Cove and Zen 4 per class
+  x86v3  x86-64-v3      generic x86-64-v3 (AVX2, FMA, BMI1/2, LZCNT, MOVBE): the worst of Skylake, Golden Cove and Zen 4
+  x86v4  x86-64-v4      generic x86-64-v4 (AVX-512 F/BW/CD/DQ/VL): the worst of Skylake-X, Golden Cove and Zen 4
+> model gt1030
+09_models.ucas:5:1: error: expected '{', found 'model'
+    model sm75
+    ^
+> model skl
+model skl (skylake): Intel Skylake/Kaby/Coffee Lake client core (this host's i5-9400 is one): AVX2, no AVX-512
+  features: sse2 sse3 ssse3 sse4.1 sse4.2 popcnt lzcnt bmi bmi2 avx avx2 fma f16c pclmul aes adx movbe
+  dispatch 4 uops/cycle, ROB 224, scheduler 97, branch mispredict 16 cycles
+  ports: p0 p1 p2 p3 p4 p5 p6 p7
+  class        xmm/scalar: lat rtp uops ports ymm                      
+  add             1  0.25  1 p0156     [M]
+  lea             3     1  1 p1        [U]
+  shl             1   0.5  1 p06       [U]
+  shlx            1   0.5  1 p06       [U]
+  shl cl          2   1.5  3 p06       [U]
+  imul            3     1  1 p1        [M]
+  mulx            4     1  2 p15       [U]
+  div r32        26     6 10 p0156     [U]
+  div r64        36    21 36 p0156     [M]
+  popcnt          3     1  1 p1        [M]
+  andn            1   0.5  1 p15       [U]
+  pext            3     1  1 p1        [M]
+  cmov            1   0.5  1 p06       [U]
+  setcc           1   0.5  1 p06       [U]
+  adc             1   0.5  1 p06       [U]
+  jcc             1   0.5  1 p06       [U]
+  load            5   0.5  1 p23       [U]
+  store           1     1  1 p4        [U]
+  crc32           3     1  1 p1        [U]
+  lock add       18    18  9 p0156     [A]
+  call libm      20    15 20 p0156     [E]
+  cvtsi2ss        5     1  2 p015      [U]
+  cvttss2si       6     1  2 p015      [U]
+  movd r,x        2     1  1 p0        [U]
+  movd x,r        2     1  1 p5        [U]
+  vpaddd          1  0.33  1 p015        1  0.33  1 p015      [M]
+  vpminsd         1   0.5  1 p01         1   0.5  1 p01       [U]
+  vpslld          1   0.5  1 p01         1   0.5  1 p01       [U]
+  vpsllw x        2     1  2 p015        4     1  2 p015      [U]
+  vpshufb         1     1  1 p5          1     1  1 p5        [M]
+  vpermd          3     1  1 p5          3     1  1 p5        [U]
+  vpblendd        1  0.33  1 p015        1  0.33  1 p015      [U]
+  vpblendvb       2     1  2 p015        2     1  2 p015      [U]
+  vpmullw         5   0.5  1 p01         5   0.5  1 p01       [U]
+  vpmulld        10     1  2 p01        10     1  2 p01       [U]
+  vpsadbw         3     1  1 p5          3     1  1 p5        [U]
+  vpcmpgtq        3     1  1 p5          3     1  1 p5        [U]
+  vpmovmskb       3     1  1 p0          3     1  1 p0        [U]
+  vptest          3     1  2 p05         3     1  2 p05       [U]
+  vpextrd         3     1  2 p05         3     1  2 p05       [U]
+  vpinsrd         3     2  2 p5          3     2  2 p5        [U]
+  vpmovzx         1     1  1 p5          3     1  1 p5        [U]
+  vphaddd         3     2  3 p015        3     2  3 p015      [U]
+  vaddps          4   0.5  1 p01         4   0.5  1 p01       [M]
+  vmulps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vfmadd          4   0.5  1 p01         4   0.5  1 p01       [M]
+  vdivps         11     3  1 p0         11     5  1 p0        [U]
+  vdivpd         14     4  1 p0         14     8  1 p0        [U]
+  vsqrtps        12     3  1 p0         12     6  1 p0        [U]
+  vsqrtpd        16     6  1 p0         16    12  1 p0        [U]
+  vrcpps          4     1  1 p0          4     1  1 p0        [U]
+  vroundps        8     1  2 p01         8     1  2 p01       [U]
+  vminps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcmpps          4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcvtdq2ps       4   0.5  1 p01         4   0.5  1 p01       [U]
+  vcvtps2pd       5     1  2 p015        7     1  2 p015      [U]
+  vpgatherdd     20     4  4 p0235      22     5  4 p0235     [U]
+  vpgatherqq     20     3  4 p0235      22     4  4 p0235     [U]
+  pclmulqdq       7     1  1 p5          7     1  1 p5        [U]
+  aesenc          4     1  1 p0          4     1  1 p0        [U]
+  mpsadbw         4     2  2 p5          4     2  2 p5        [U]
+  vmovdqu ld      6   0.5  1 p23         7   0.5  1 p23       [U]
+  vmovdqu st      1     1  1 p4          1     1  1 p4        [U]
+  vpmaskmovd ld    8   0.5  2 p01235      8   0.5  2 p01235    [U]
+  vpmaskmovd st    1     1  3 p0457       1     1  3 p0457     [U]
+  vpbroadcastd r    3     1  2 p5          3     1  2 p5        [U]
+  sources: U uops.info, A Agner Fog, I Intel manual, D AMD Zen 4 SOG, M measured here, E estimate, V derived from ymm, G worst of the level's cores
+  as a ucas cost model (scalar latencies; see `models`):
+    model skl {
+      iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1,
+      select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 2,
+      fadd: 4, fmul: 4, fdiv: 11, fsqrt: 12, ftrans: 20, fpow: 60, f64: 1,
+      load: 5, branch: 1, diverge: 8, barrier: 33,
+      atomic_shared: 18, atomic_global: 18, store: 1
+    }
+> model zen4
+model zen4 (znver4): AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, GFNI) on 256-bit pipes, 512-bit ops double-pumped
+  features: sse2 sse3 ssse3 sse4.1 sse4.2 popcnt lzcnt bmi bmi2 avx avx2 fma f16c pclmul aes adx movbe gfni avx512f avx512bw avx512dq avx512vl avx512cd avx512vbmi avx512vpopcntdq avx512bitalg vpclmulqdq vaes
+  dispatch 6 uops/cycle, ROB 320, scheduler 96, branch mispredict 13 cycles
+  ports: ALU0 ALU1 ALU2 ALU3 AGU0 AGU1 AGU2 FP0 FP1 FP2 FP3 FP45
+  class        xmm/scalar: lat rtp uops ports ymm                       zmm
+  add             1  0.25  1 ALU0 ALU1 ALU2 ALU3   [D]
+  lea             2   0.5  1 ALU0 ALU1 ALU2 ALU3   [D]
+  shl             1   0.5  1 ALU1 ALU2   [D]
+  shlx            1   0.5  1 ALU1 ALU2   [D]
+  shl cl          1   0.5  1 ALU1 ALU2   [D]
+  imul            3     1  1 ALU1      [D]
+  mulx            4     1  2 ALU1 ALU2   [D]
+  div r32        12     6  2 ALU1      [D]
+  div r64        14     9  2 ALU1      [D]
+  popcnt          1  0.25  1 ALU0 ALU1 ALU2 ALU3   [D]
+  andn            1  0.25  1 ALU0 ALU1 ALU2 ALU3   [D]
+  pext            3     1  1 ALU1      [D]
+  cmov            1   0.5  1 ALU0 ALU3   [D]
+  setcc           1   0.5  1 ALU0 ALU3   [D]
+  adc             1   0.5  1 ALU0 ALU3   [D]
+  jcc             1   0.5  1 ALU0 ALU3   [D]
+  load            4  0.33  1 AGU0 AGU1 AGU2   [D]
+  store           1   0.5  1 AGU1 AGU2   [D]
+  crc32           3     1  1 ALU1      [D]
+  lock add        8     8  9 ALU0 ALU1 ALU2 ALU3   [A]
+  call libm      18    12 20 ALU0 ALU1 ALU2 ALU3   [E]
+  cvtsi2ss        4     1  2 FP2 FP3 FP45   [D]
+  cvttss2si       5     1  2 FP2 FP3 FP45   [D]
+  movd r,x        3     1  1 FP45      [D]
+  movd x,r        3     1  1 FP45      [D]
+  vpaddd          1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3     1   0.5  1 FP0 FP1 FP2 FP3   [D]
+  vpminsd         1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3     1   0.5  1 FP0 FP1 FP2 FP3   [D]
+  vpslld          1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2     1     1  1 FP1 FP2   [D]
+  vpsllw x        1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2     1     1  1 FP1 FP2   [D]
+  vpshufb         1   0.5  1 FP1 FP2     1   0.5  1 FP1 FP2     1     1  1 FP1 FP2   [D]
+  vpermd          3     1  1 FP1 FP2     4     1  1 FP1 FP2     6     2  1 FP1 FP2   [D]
+  vpblendd        1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3     1   0.5  1 FP0 FP1 FP2 FP3   [D]
+  vpblendvb       1   0.5  1 FP0 FP1     1   0.5  1 FP0 FP1     1     1  1 FP0 FP1   [D]
+  vpmullw         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3     3     1  1 FP0 FP3   [D]
+  vpmulld         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3     3     1  1 FP0 FP3   [D]
+  vpmullq         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3     3     1  1 FP0 FP3   [D]
+  vpsadbw         3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3     3     1  1 FP0 FP3   [D]
+  vpcmpgtq        1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3     1   0.5  1 FP0 FP1 FP2 FP3   [D]
+  vpmovmskb       5     1  1 FP45        5     1  1 FP45        5     2  1 FP45      [U]
+  vptest          4     1  2 FP0 FP45     4     1  2 FP0 FP45     4     2  2 FP0 FP45   [D]
+  vpextrd         4     1  2 FP1 FP45     4     1  2 FP1 FP45     4     2  2 FP1 FP45   [D]
+  vpinsrd         4     1  2 FP1 FP45     4     1  2 FP1 FP45     4     2  2 FP1 FP45   [D]
+  vpmovzx         1   0.5  1 FP1 FP2     4     1  1 FP1 FP2     4     2  1 FP1 FP2   [D]
+  vpmovdb         4     2  2 FP1 FP2     4     2  2 FP1 FP2     4     4  2 FP1 FP2   [D]
+  vphaddd         2     1  3 FP0 FP1 FP2 FP3     2     1  3 FP0 FP1 FP2 FP3     2     2  3 FP0 FP1 FP2 FP3   [D]
+  vpcmpd k        3   0.5  1 FP0 FP3     3   0.5  1 FP0 FP3     3     1  1 FP0 FP3   [D]
+  vaddps          3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3     3     1  1 FP2 FP3   [D]
+  vmulps          3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1     3     1  1 FP0 FP1   [D]
+  vfmadd          4   0.5  1 FP0 FP1     4   0.5  1 FP0 FP1     4     1  1 FP0 FP1   [D]
+  vdivps         10     3  1 FP1        10     5  1 FP1        11    10  1 FP1       [D]
+  vdivpd         13     5  1 FP1        13     8  1 FP1        13    16  1 FP1       [D]
+  vsqrtps        15     5  1 FP1        15     8  1 FP1        15    16  1 FP1       [D]
+  vsqrtpd        21     9  1 FP1        21    13  1 FP1        21    26  1 FP1       [D]
+  vrcpps          3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1     3     1  1 FP0 FP1   [D]
+  vroundps        3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3     3     1  1 FP2 FP3   [D]
+  vminps          2   0.5  1 FP0 FP1     2   0.5  1 FP0 FP1     2     1  1 FP0 FP1   [D]
+  vcmpps          1   0.5  1 FP0 FP1     1   0.5  1 FP0 FP1     1     1  1 FP0 FP1   [D]
+  vcvtdq2ps       3   0.5  1 FP2 FP3     3   0.5  1 FP2 FP3     3     1  1 FP2 FP3   [D]
+  vcvtps2pd       4     1  2 FP1 FP2 FP3     4     1  2 FP1 FP2 FP3     4     2  2 FP1 FP2 FP3   [D]
+  vpgatherdd     20     4  9 AGU0 AGU1 AGU2    22     8 17 AGU0 AGU1 AGU2    25    16 33 AGU0 AGU1 AGU2   [U]
+  vpgatherqq     20     3  6 AGU0 AGU1 AGU2    22     5 10 AGU0 AGU1 AGU2    25     8 18 AGU0 AGU1 AGU2   [U]
+  vpternlogd      1  0.25  1 FP0 FP1 FP2 FP3     1  0.25  1 FP0 FP1 FP2 FP3     1   0.5  1 FP0 FP1 FP2 FP3   [D]
+  vpopcntd        2   0.5  1 FP0 FP1     2   0.5  1 FP0 FP1     2     1  1 FP0 FP1   [D]
+  vplzcntd        2   0.5  1 FP0 FP1     2   0.5  1 FP0 FP1     2     1  1 FP0 FP1   [D]
+  gf2p8affineqb    3   0.5  1 FP0 FP1     3   0.5  1 FP0 FP1     3     1  1 FP0 FP1   [D]
+  pclmulqdq       4     1  1 FP0 FP1     4     1  1 FP0 FP1     4     2  1 FP0 FP1   [D]
+  aesenc          4   0.5  1 FP0 FP1     4   0.5  1 FP0 FP1     4     1  1 FP0 FP1   [D]
+  vpcompressd     4     2  2 FP1 FP2     4     2  2 FP1 FP2     4     4  2 FP1 FP2   [D]
+  kandw           1   0.5  1 FP0 FP1     1   0.5  1 FP0 FP1     1     1  1 FP0 FP1   [D]
+  kmovw           3     1  1 FP45        3     1  1 FP45        3     2  1 FP45      [D]
+  mpsadbw         4     2  3 FP0 FP1 FP2 FP3     4     2  3 FP0 FP1 FP2 FP3     4     4  3 FP0 FP1 FP2 FP3   [D]
+  vmovdqu ld      7   0.5  1 AGU0 AGU1 AGU2     7   0.5  1 AGU0 AGU1 AGU2     8     1  1 AGU0 AGU1 AGU2   [D]
+  vmovdqu st      1   0.5  1 AGU1 AGU2     1     1  1 AGU1 AGU2     1     2  1 AGU1 AGU2   [D]
+  vpmaskmovd ld    8   0.5  1 AGU0 AGU1 AGU2     8   0.5  1 AGU0 AGU1 AGU2     8     1  1 AGU0 AGU1 AGU2   [D]
+  vpmaskmovd st    1     6  4 AGU1 AGU2     1     6  4 AGU1 AGU2     1    12  4 AGU1 AGU2   [U]
+  vpbroadcastd r    4     1  2 FP1 FP45     4     1  2 FP1 FP45     4     2  2 FP1 FP45   [D]
+  sources: U uops.info, A Agner Fog, I Intel manual, D AMD Zen 4 SOG, M measured here, E estimate, V derived from ymm, G worst of the level's cores
+  as a ucas cost model (scalar latencies; see `models`):
+    model zen4 {
+      iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 14, idivk: 5, cmp: 1,
+      select: 1, minmax: 2, bitcnt: 1, conv: 4, bitcast: 3,
+      fadd: 3, fmul: 3, fdiv: 10, fsqrt: 15, ftrans: 18, fpow: 54, f64: 1,
+      load: 4, branch: 1, diverge: 6.5, barrier: 33,
+      atomic_shared: 8, atomic_global: 8, store: 1,
+      sudot4x8: 10, sudot4x8sat: 10, sdot2x16: 10, sdot2x16sat: 10
+    }
+> model x86v4
+model x86v4 (x86-64-v4): generic x86-64-v4 (AVX-512 F/BW/CD/DQ/VL): the worst of Skylake-X, Golden Cove and Zen 4
+  features: sse2 sse3 ssse3 sse4.1 sse4.2 popcnt lzcnt bmi bmi2 avx avx2 fma f16c movbe avx512f avx512bw avx512dq avx512vl avx512cd
+  dispatch 4 uops/cycle, ROB 224, scheduler 97, branch mispredict 17 cycles
+  ports: p0 p1 p2 p3 p4 p5 p6 p7
+  class        xmm/scalar: lat rtp uops ports ymm                       zmm
+  add             1  0.25  1 p0156     [G]
+  lea             3     1  1 p1        [G]
+  shl             1   0.5  1 p06       [G]
+  shlx            1   0.5  1 p06       [G]
+  shl cl          2   1.5  3 p06       [G]
+  imul            3     1  1 p1        [G]
+  mulx            4     1  2 p15       [G]
+  div r32        26     6 10 p0156     [G]
+  div r64        36    21 36 p0156     [G]
+  popcnt          3     1  1 p1        [G]
+  andn            1   0.5  1 p15       [G]
+  pext            3     1  1 p1        [G]
+  cmov            1   0.5  1 p06       [G]
+  setcc           1   0.5  1 p06       [G]
+  adc             1   0.5  1 p06       [G]
+  jcc             1   0.5  1 p06       [G]
+  load            5   0.5  1 p23       [G]
+  store           1     1  1 p4        [G]
+  crc32           3     1  1 p1        [G]
+  lock add       20    20  9 p0156     [G]
+  call libm      20    15 20 p0156     [G]
+  cvtsi2ss        5     1  2 p015      [G]
+  cvttss2si       6     1  2 p015      [G]
+  movd r,x        3     1  1 p0        [G]
+  movd x,r        3     1  1 p5        [G]
+  vpaddd          1  0.33  1 p015        1  0.33  1 p015        1   0.5  1 p05       [G]
+  vpminsd         1   0.5  1 p01         1   0.5  1 p01         1     1  1 p0        [G]
+  vpslld          1   0.5  1 p01         1   0.5  1 p01         1     1  1 p0        [G]
+  vpsllw x        2     1  2 p015        4     1  2 p015        4   1.5  2 p05       [G]
+  vpshufb         1     1  1 p5          1     1  1 p5          1     1  1 p5        [G]
+  vpermd          3     1  1 p5          4     1  1 p5          6     2  1 p5        [G]
+  vpblendd        1  0.33  1 p015        1  0.33  1 p015        1   0.5  1 p05       [G]
+  vpblendvb       3     1  2 p015        3     1  2 p015        3   1.5  2 p05       [G]
+  vpmullw         5   0.5  1 p01         5   0.5  1 p01         5     1  1 p0        [G]
+  vpmulld        10     1  2 p01        10     1  2 p01        10     2  2 p0        [G]
+  vpmullq        15   1.5  3 p01        15   1.5  3 p01        15   1.5  3 p0        [G]
+  vpsadbw         3     1  1 p5          3     1  1 p5          3     1  1 p5        [G]
+  vpcmpgtq        3     1  1 p5          3     1  1 p5          3     1  1 p5        [G]
+  vpmovmskb       5     1  1 p0          5     1  1 p0          5     2  1 p0        [G]
+  vptest          4     1  2 p05         4     1  2 p05         4     2  2 p05       [G]
+  vpextrd         4     1  2 p05         4     1  2 p05         4     2  2 p05       [G]
+  vpinsrd         4     2  2 p5          4     2  2 p5          4     2  2 p5        [G]
+  vpmovzx         1     1  1 p5          4     1  1 p5          4     2  1 p5        [G]
+  vpmovdb         4     2  2 p5          4     2  2 p5          4     4  2 p5        [G]
+  vphaddd         3     2  3 p015        3     2  3 p015        3     3  3 p05       [G]
+  vpcmpd k        3     1  1 p5          3     1  1 p5          3     1  1 p5        [G]
+  vaddps          4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vmulps          4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vfmadd          4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vdivps         11     3  1 p0         11     5  1 p0         18    10  3 p05       [G]
+  vdivpd         14     5  1 p0         14     8  1 p0         23    16  3 p05       [G]
+  vsqrtps        15     5  1 p0         15     8  1 p0         19    16  3 p05       [G]
+  vsqrtpd        21     9  1 p0         21    13  1 p0         25    26  3 p05       [G]
+  vrcpps          4     1  1 p0          4     1  1 p0          4     2  3 p05       [G]
+  vroundps        8     1  2 p01         8     1  2 p01         8     2  2 p0        [G]
+  vminps          4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vcmpps          4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vcvtdq2ps       4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  vcvtps2pd       5     1  2 p015        7     1  2 p015        7     2  2 p05       [G]
+  vpgatherdd     20     4  4 p0235      22     8  4 p0235      25    16  4 p0235     [G]
+  vpgatherqq     20     3  4 p0235      22     5  4 p0235      25     8  4 p0235     [G]
+  vpternlogd      1  0.33  1 p015        1  0.33  1 p015        1   0.5  1 p05       [G]
+  vplzcntd        4   0.5  1 p01         4   0.5  1 p01         4     1  1 p0        [G]
+  pclmulqdq       7     1  1 p5          7     1  1 p5          7     2  1 p5        [G]
+  aesenc          4     1  1 p0          4     1  1 p0          4     1  1 p0        [G]
+  vpcompressd     4     2  2 p5          4     2  2 p5          4     4  2 p5        [G]
+  kandw           1     1  1 p0          1     1  1 p0          1     1  1 p0        [G]
+  kmovw           3     1  1 p0          3     1  1 p0          3     2  1 p0        [G]
+  mpsadbw         4     2  2 p5          4     2  2 p5          4     4  2 p5        [G]
+  vmovdqu ld      7   0.5  1 p23         7   0.5  1 p23         8     1  1 p23       [G]
+  vmovdqu st      1     1  1 p4          1     1  1 p4          1     2  1 p4        [G]
+  vpmaskmovd ld    8   0.5  2 p01235      8   0.5  2 p01235      8     1  2 p0235     [G]
+  vpmaskmovd st    1     6  3 p0457       1     6  3 p0457       1    12  3 p0457     [G]
+  vpbroadcastd r    4     1  1 p5          4     1  1 p5          4     2  1 p5        [G]
+  sources: U uops.info, A Agner Fog, I Intel manual, D AMD Zen 4 SOG, M measured here, E estimate, V derived from ymm, G worst of the level's cores
+  as a ucas cost model (scalar latencies; see `models`):
+    model x86v4 {
+      iadd: 1, logic: 1, shift: 1, imul: 3, idiv: 36, idivk: 5, cmp: 1,
+      select: 1, minmax: 2, bitcnt: 3, conv: 5, bitcast: 3,
+      fadd: 4, fmul: 4, fdiv: 11, fsqrt: 15, ftrans: 20, fpow: 60, f64: 1,
+      load: 5, branch: 1, diverge: 8.5, barrier: 33,
+      atomic_shared: 20, atomic_global: 20, store: 1
+    }
+> model nosuch
+09_models.ucas:10:1: error: expected '{', found 'model'
+    model zz : skl { iadd: 0 }
+    ^
+> one(x: u32) = x + 1
+> cost one model zz
+09_models.ucas:12:16: error: unknown model
+    cost one model zz
+                   ^
+> use x86v4
+cost model: x86v4
+> use gt1030
+cost model: gt1030

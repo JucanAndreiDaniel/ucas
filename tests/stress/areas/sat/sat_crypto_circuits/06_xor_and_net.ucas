@@ -1,0 +1,11 @@
+# XOR / AND reduction networks and their folded forms.
+par8(x: u8) = popcount(x) & 1
+parbits(x: u8) = (x&1) xor ((x>>1)&1) xor ((x>>2)&1) xor ((x>>3)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>6)&1) xor ((x>>7)&1)
+equiv par8 parbits
+and8(x: u8) = x == 255 ? 1 : 0
+andbits(x: u8) = (x&1) & ((x>>2)&1) & ((x>>4)&1) & ((x>>6)&1) & (x==0xff ? 1 : 0)
+equiv and8 andbits
+xorchain(x: u32) = x xor (x << 1) xor (x << 2) xor (x << 3) xor (x << 4)
+xorchainb(x: u32) = (x xor (x << 4)) xor ((x << 1) xor (x << 3)) xor (x << 2)
+equiv xorchain xorchainb
+range par8

@@ -1,0 +1,42 @@
+> lperm lane xor 3 model rdna2
+lperm: the lane map lane xor 3 over 32 lanes
+  map: 3 2 1 0 7 6 5 4 11 10 9 8 15 14 13 12 19 18 17 16 23 22 21 20 27 26 25 24 31 30 29 28
+  affine: lane -> A lane xor 3, A's columns (lane bit j goes to) 1 2 4 8 16; rank(I xor A) = 0
+  stages: 1 stage: lane xor 3 in every lane (sg_shuffle_xor), cost 1
+  one shuffle by the index: cost 1
+  chosen under rdna2: 1 stage: lane xor 3 in every lane (sg_shuffle_xor), cost 1
+  proved: the stages composed lane by lane give the map on every one of the 32 lanes (lane l ends with the value of lane g_1(...g_n(l)), by the shuffle's and the select's definitions)
+> lperm lane xor (lane & 1) << 1 model rdna2
+lperm: the lane map lane xor (lane & 1) << 1 over 32 lanes
+  map: 0 3 2 1 4 7 6 5 8 11 10 9 12 15 14 13 16 19 18 17 20 23 22 21 24 27 26 25 28 31 30 29
+  affine: lane -> A lane xor 0, A's columns (lane bit j goes to) 3 2 4 8 16; rank(I xor A) = 1
+  stages: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor), cost 5
+  one shuffle by the index: cost 7
+  chosen under rdna2: 1 stage: lane xor 2 where lane & 1 is not 0 (sg_shuffle_xor), cost 5
+  proved: the stages composed lane by lane give the map on every one of the 32 lanes (lane l ends with the value of lane g_1(...g_n(l)), by the shuffle's and the select's definitions)
+> lperm lane & 28 model rdna2
+lperm: the lane map lane & 0x1c over 32 lanes
+  map: 0 0 0 0 4 4 4 4 8 8 8 8 12 12 12 12 16 16 16 16 20 20 20 20 24 24 24 24 28 28 28 28
+  affine: lane -> A lane xor 0, A's columns (lane bit j goes to) 0 0 4 8 16; rank(I xor A) = 2
+  stages: 2 stages: lane xor 1 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 where lane & 2 is not 0 (sg_shuffle_xor), cost 10 (not the cheapest)
+  one shuffle by the index: cost 5
+  chosen under rdna2: the quad's broadcast of its lane 0 (sg_quad), cost 1
+> lperm (lane & 28) | 2 model rdna2
+lperm: the lane map lane & 0x1c | 2 over 32 lanes
+  map: 2 2 2 2 6 6 6 6 10 10 10 10 14 14 14 14 18 18 18 18 22 22 22 22 26 26 26 26 30 30 30 30
+  affine: lane -> A lane xor 2, A's columns (lane bit j goes to) 0 0 4 8 16; rank(I xor A) = 2
+  stages: 2 stages: lane xor 1 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 where lane & 2 is 0 (sg_shuffle_xor), cost 10 (not the cheapest)
+  one shuffle by the index: cost 5
+  chosen under rdna2: the quad's broadcast of its lane 2 (sg_quad), cost 1
+> lperm (lane + 1) % 32 model rdna2
+lperm: the lane map (lane + 1) % 32 over 32 lanes
+  map: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 0
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 5 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x10001 (sg_shuffle_xor); lane xor 8 in the lanes of 0x1010101 (sg_shuffle_xor); lane xor 4 in the lanes of 0x11111111 (sg_shuffle_xor); lane xor 2 where lane & 1 is 0 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor), cost 24 (not the cheapest)
+  one shuffle by the index: cost 10
+  chosen under rdna2: one shuffle by an index (sg_shuffle), cost 10
+> lperm lane xor (lane & 1) << 1 lanes 16 model mali_g715
+lperm: the lane map lane xor (lane & 1) << 1 over 16 lanes
+  map: 0 3 2 1 4 7 6 5 8 11 10 9 12 15 14 13
+  affine: lane -> A lane xor 0, A's columns (lane bit j goes to) 3 2 4 8; rank(I xor A) = 1
+  chosen under mali_g715: no realisation under the model, cost inf

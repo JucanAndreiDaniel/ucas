@@ -1,0 +1,77 @@
+> f(x: u8 in 0..15) = x*x
+> h(x: u3) = x
+> k(x: u8 in 7..7) = x*3
+> find f 2 snippets
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  snippet database: none in this session for 1 input of 8 bits under gt1030, and no snippets/gt1030_1x8.snip (`make snippets` grows those snippets/grow.ucas lists)
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  [searched every term up to cost 3: 16682 distinct columns; 'more' continues]
+> find f 2 snippets nosuch
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+05_find_flags.ucas:6:25: error: snippets: no file nosuch.snip
+    find f 2 snippets nosuch
+                            ^
+> find f 2 saturate
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  equality saturation: 2 classes, 2 nodes, saturated after 1 round, 26 rules (0 kept for find); the cheapest member of the body's class costs 3, as written 3
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  [searched every term up to cost 3: 16682 distinct columns; 'more' continues]
+> find f 2 stoke
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  [searched every term up to cost 3: 16682 distinct columns; 'more' continues]
+stoke f under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 200000 proposals, seed 1; f as written costs 3
+  800000 proposals, 690266 accepted, 689439 at distance 0 on the 16 tests (0 counterexamples joined them), 3 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> find h 2
+find h: 8 points, computing in u3, costs from gt1030
+  cost 0   x                                        exact
+  cost 1   x & (x | 1)                              exact
+  [searched every term up to cost 2: 263 distinct columns; 'more' continues]
+> find k 2
+find k: 1 point, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, 3))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * 3
+           x in 7..7 (proved range)
+           udot4x8's sum is in 21..21: it does not wrap
+           exhaustive
+  cost 0   21                                       constant
+  cost 8   [21][x - 7]                              lookup table (baseline)
+  [searched every term up to cost 8: 8 distinct columns; 'more' continues]
+> more 0
+more for k:
+  nothing new up to cost 9
+  [searched every term up to cost 9: 8 distinct columns; 'more' continues]
+> more 2
+more for k:
+  nothing new up to cost 17
+  [searched every term up to cost 17: 8 distinct columns; 'more' continues]

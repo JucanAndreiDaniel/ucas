@@ -1,0 +1,26 @@
+> f(x: u8) = x
+> gw(x: u8) = x where x < 5
+> gr(x: u8 in 0..7) = x
+> gm(x: u4) = match x { 0=>0, 1=>1 }
+  note: match has no default arm: other values are outside the domain
+> error gw ~ f
+error of gw against f:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 256 points
+> error gr ~ f
+error of gr against f:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 256 points
+> error gm ~ f
+error of gm against f:
+  max abs error 240 at x=240
+  max rel error 1 (100%) at x=16
+  mean rel error 0.931203 over 32 points
+  approximation is NaN/inf/undefined at 224 points where the target is finite, e.g. x=2
+> error f ~ gw
+error of f against gw:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 5 points

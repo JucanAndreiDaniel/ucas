@@ -1,0 +1,69 @@
+> the principal value of log(-1)
+  ucas: arg log(-1)
+arg(log(-1)) = pi/2
+  the principal argument, -pi < arg <= pi
+  check: equal numerically (1.570796327, complex arithmetic)
+> the principal value of sqrt(-1)
+  ucas: arg sqrt(-1)
+arg(sqrt(-1)) = pi/2
+  the principal argument, -pi < arg <= pi
+  check: equal numerically (1.570796327, complex arithmetic)
+> the principal value of (-1)^(1/2)
+  ucas: arg (-1)^(1/2)
+arg((-1)^(1/2)) = atan2(0, (-1)^(1/2))
+  the principal argument, -pi < arg <= pi; undefined where (-1)^(1/2) = 0 = 0
+  check: FAILED at 1 of 1 sample points,  vs 1.570796327 (rewrite nan)
+> the value of log(-1)
+  ucas: log(-1)
+  note: log(-1) is undefined in the reals; its complex principal value follows
+  note: on the branch cut of log: the principal value, log z = log|z| + i arg z with -pi < arg z <= pi
+pi*i
+> the principal argument of -1
+  ucas: arg -1
+arg(-1) = pi
+  the principal argument, -pi < arg <= pi
+  check: equal numerically (3.141592654, complex arithmetic)
+> the principal square root of -1
+  note: I don't know the word "principal": read as a variable, not a mistake (stop here) (rephrase it, or name variables with one or two letters)
+  sorry: I didn't follow "square root of -1"
+> principal branch of log(-1)
+  sorry: I didn't follow "branch of log(-1)"
+> evaluate log(-1) in the complex plane
+  sorry: I didn't follow "in the complex plane"
+> the square roots of -1
+  ucas: nthroots 2 -1
+the 2 square roots of -1 (w^2 = -1)
+  w0 = i                      = e^(i*pi/2)  (principal)
+  w1 = -i                     = e^(-i*pi/2)
+  check: each w^2, parsed back as printed, equals -1 numerically
+> the argument of -1
+  ucas: arg -1
+arg(-1) = pi
+  the principal argument, -pi < arg <= pi
+  check: equal numerically (3.141592654, complex arithmetic)
+> the complex conjugate of 2 + 3i
+  ucas: conj 2 + 3i
+conj(2 + 3i) = 2 - 3i
+  check: equal numerically (2 - 3i, complex arithmetic)
+> the residue of 1/z at 0
+  ucas: residue 1/z at 0
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+residue of 1/z at z = 0:
+  = 1
+  a pole of order 1 (|f| grows like |z - a|^-1)
+  computed as (1/(2 pi i)) times the integral of 1/z on |z - a| = 0.01 and 0.005 (512 points each): they agree
+> the poles of 1/(z^2+1)
+  ucas: poles 1/(z^2+1)
+  note: z is taken as complex (no x or y here; say z: real for a real variable)
+poles of 1/(z^2 + 1):
+    z = -i  order 1, residue i/2
+    z = i  order 1, residue -i/2
+  numerically: zeros of 1/f by Newton's method from a grid in |Re z|, |Im z| <= 7; orders from the growth of |f| on circles of radius 1e-2..1e-4, residues by circle integrals
+> write -1 in polar form
+  ucas: polar -1
+-1 = e^(i*pi)
+  = cos(pi) + i*sin(pi)
+  r = |z| = 1,  theta = arg z = pi
+  theta is the principal argument, -pi < theta <= pi
+  check: equal numerically (-1, complex arithmetic)
+  check: equal numerically (-1, complex arithmetic)

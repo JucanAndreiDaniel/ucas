@@ -1,0 +1,38 @@
+In file included from src/nlp.c:6570:
+src/nlp_hyper.inc: In function ‘hy_sentence’:
+src/nlp_hyper.inc:410:35: warning: initialization discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+  410 |                         char *p = strstr(Q.raw[0], " and ");
+      |                                   ^~~~~~
+src/nlp.c: In function ‘translate_asking’:
+src/nlp.c:8024:24: warning: dereference of possibly-NULL ‘cur’ [CWE-690] [-Wanalyzer-possible-null-dereference]
+ 8024 |                 while (*cur == ' ')
+      |                        ^~~~
+  ‘nlp_translate’: events 1-2
+    │
+    │ 8096 | nlp_translate(const char *req, struct sbuf *dst)
+    │      | ^~~~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘nlp_translate’
+    │......
+    │ 8101 |         ok = translate_asking(req);
+    │      |              ~~~~~~~~~~~~~~~~~~~~~
+    │      |              |
+    │      |              (2) calling ‘translate_asking’ from ‘nlp_translate’
+    │
+    └──> ‘translate_asking’: events 3-5
+           │
+           │ 8012 | translate_asking(const char *sent)
+           │      | ^~~~~~~~~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘translate_asking’
+           │ 8013 | {
+           │ 8014 |         char *cur = strdup(sent), reply[512], *p;
+           │      |                     ~~~~~~~~~~~~
+           │      |                     |
+           │      |                     (4) this call could return NULL
+           │......
+           │ 8024 |                 while (*cur == ' ')
+           │      |                        ~~~~
+           │      |                        |
+           │      |                        (5) ⚠️  ‘cur’ could be NULL: unchecked value from (4)
+           │

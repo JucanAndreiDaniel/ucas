@@ -1,0 +1,36 @@
+> associator e1, e2, e4
+[a, b, c] = (ab)c - a(bc) = e7 - (-e7) = 2 e7
+  not associative: the grouping changes the product (in the octonions)
+> associator i, j, k
+[a, b, c] = (ab)c - a(bc) = -1 - (-1) = 0
+  the product of these three is associative (in the quaternions)
+> commutator i, j
+[a, b] = ab - ba = k - (-k) = 2k
+  they do not commute
+> commutator e1, e2
+[a, b] = ab - ba = e3 - (-e3) = 2 e3
+  they do not commute
+> axisangle (0, 0, 1), 90 degrees
+the rotation by pi/2 about (0, 0, 1):
+  q = cos(theta/2) + sin(theta/2) u = sqrt(2)/2 + k*sqrt(2)/2
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+> axisangle 1 + i
+  note: q is not a unit quaternion (|q| = sqrt(2)): normalised
+sqrt(2)/2 + i*sqrt(2)/2 = cos(theta/2) + sin(theta/2) u:
+  theta = pi/2 (90 degrees), axis u = (1, 0, 0)
+> rotmatrix 1 + i + j + k
+  note: q is not a unit quaternion (|q| = 2): normalised
+the rotation matrix of 1/2 + i/2 + j/2 + k/2 (v -> q v q^-1):
+  [0, 0, 1]
+  [1, 0, 0]
+  [0, 1, 0]
+> frommatrix 0, -1, 0, 1, 0, 0, 0, 0, 1
+the unit quaternion of the rotation matrix: q = sqrt(2)/2 + k*sqrt(2)/2 (or -q)
+  check: q's matrix equals the given one (max difference 2e-16)
+> slerp 1, k, 1/2
+slerp(1, k, 1/2) = sqrt(2)/2 + k*sqrt(2)/2
+  the arc between them on the unit sphere: a = pi/2 (a rotation by pi); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = sqrt(2)/2 + k*sqrt(2)/2: the same

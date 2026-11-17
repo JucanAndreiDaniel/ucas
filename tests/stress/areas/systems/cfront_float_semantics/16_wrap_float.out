@@ -1,0 +1,39 @@
+> wadd(a: f32, b: f32) = a + b
+> wrap wadd
+wrap analysis of wadd:
+  a + b   (f32)
+      nnan not proved: no NaN in the sampled points only
+      ninf fails: inf at 3 points, e.g. a=-3.40282347e+38, b=-3.40282347e+38
+  end to end vs the real-number result: max abs error 1.01e+31, max rel error 5.96e-08, max 0 ulp (correctly rounded)
+      worst relative error at a=-2.25246382e+23, b=-7.72518837e+22
+      the float result is infinite where the real one is finite at 3 points (overflow)
+  sampled 65536 points (domain has 18302910352054026241 points); not exhaustive
+> wmul(a: f32, b: f32) = a * b
+> wrap wmul
+wrap analysis of wmul:
+  a*b   (f32)
+      nnan not proved: no NaN in the sampled points only
+      ninf fails: inf at 8201 points, e.g. a=-3.40282347e+38, b=-3.40282347e+38
+  end to end vs the real-number result: max abs error 1.01e+31, max rel error 1, max 0 ulp (correctly rounded)
+      worst relative error at a=2.23430968e-33, b=-4.63918297e-31
+      the float result is infinite where the real one is finite at 8201 points (overflow)
+  sampled 65536 points (domain has 18302910352054026241 points); not exhaustive
+> wdiv(a: f32, b: f32) = a / b
+> wrap wdiv
+wrap analysis of wdiv:
+  a/b   (f32)
+      nnan not proved: no NaN in the sampled points only; a zero divisor gives inf (0/0 gives NaN)
+      ninf fails: inf at 8113 points, e.g. a=-6.01408293e+33, b=-1.93719168e-23
+  end to end vs the real-number result: max abs error 1.01e+31, max rel error 1, max 0 ulp (correctly rounded)
+      worst relative error at a=-9.12061585e-33, b=-9.43017387e+25
+      the float result is infinite where the real one is finite at 8113 points (overflow)
+  sampled 65536 points (domain has 18302910352054026241 points); not exhaustive
+> wsqrt(a: f32) = sqrt(a)
+> wrap wsqrt
+wrap analysis of wsqrt:
+  sqrt(a)   (f32)
+      nnan fails: NaN at 32786 points, e.g. a=-3.40282347e+38
+      ninf not proved: no inf in the sampled points only; sqrt of a negative value gives NaN
+  end to end vs the real-number result: max abs error 5.5e+11, max rel error 5.91e-08, max 0 ulp (correctly rounded)
+      worst relative error at a=7.38381344e+19
+  sampled 65536 points (domain has 4278190079 points); not exhaustive

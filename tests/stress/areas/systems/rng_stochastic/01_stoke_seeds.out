@@ -1,0 +1,25 @@
+> f(x: u8) = x*x + 1
+> stoke f steps 300 seed 1
+stoke f under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 300 proposals, seed 1; f as written costs 3
+  1200 proposals, 1040 accepted, 239 at distance 0 on the 40 tests (0 counterexamples joined them), 1 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> stoke f steps 300 seed 42
+stoke f under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 300 proposals, seed 42; f as written costs 3
+  1200 proposals, 1001 accepted, 215 at distance 0 on the 40 tests (0 counterexamples joined them), 1 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> g(x: i16) = x*x + 2*x + 1
+> stoke g steps 300 seed 7
+stoke g under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 300 proposals, seed 7; g as written costs 6
+  1200 proposals, 954 accepted, 158 at distance 0 on the 40 tests (0 counterexamples joined them), 1 verified
+  -> nothing cheaper than 6 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> h(x: u8) = x*2
+> stoke h steps 500 seed 7
+stoke h under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  4 chains of 500 proposals, seed 7; h as written costs 2
+  2000 proposals, 1666 accepted, 1294 at distance 0 on the 40 tests (0 counterexamples joined them), 3 verified
+  cost 1      x + x
+      every input enumerated
+  -> 1 against 2 (-50.0%)

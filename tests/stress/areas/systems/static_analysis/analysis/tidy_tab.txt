@@ -1,0 +1,383 @@
+/home/andrew/Code/ucas/src/tab.c:46:24: warning: no header providing "func" is directly included [misc-include-cleaner]
+   24 | tab_split(const struct func *f)
+      |                        ^
+/home/andrew/Code/ucas/src/tab.c:48:15: warning: no header providing "model" is directly included [misc-include-cleaner]
+   48 |         const struct model *m = model_active();
+      |                      ^
+/home/andrew/Code/ucas/src/tab.c:48:26: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+   48 |         const struct model *m = model_active();
+      |                                 ^
+/home/andrew/Code/ucas/src/tab.c:49:19: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+   49 |         const char *mn = sym_str(m->name);
+      |                          ^
+/home/andrew/Code/ucas/src/tab.c:50:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   50 |         nid body = f->body, x, idxv, cond;
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:51:2: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   51 |         ty_t t = N.ty[body];
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:51:11: warning: no header providing "N" is directly included [misc-include-cleaner]
+   51 |         ty_t t = N.ty[body];
+      |                  ^
+/home/andrew/Code/ucas/src/tab.c:52:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   26 |         uint64_t slots;
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:53:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   53 |         int64_t lo, hi, total, n, bestn = 0, in_i[MAXP * CH], undef = 0;
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:53:44: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+   53 |         int64_t lo, hi, total, n, bestn = 0, in_i[MAXP * CH], undef = 0;
+      |                                                   ^
+/home/andrew/Code/ucas/src/tab.c:53:51: warning: no header providing "CH" is directly included [misc-include-cleaner]
+   53 |         int64_t lo, hi, total, n, bestn = 0, in_i[MAXP * CH], undef = 0;
+      |                                                          ^
+/home/andrew/Code/ucas/src/tab.c:56:33: warning: no header providing "MP_WARP" is directly included [misc-include-cleaner]
+   56 |         int j = -1, k, W = (int)m->par[MP_WARP], uni, bexact = 0;
+      |                                        ^
+/home/andrew/Code/ucas/src/tab.c:57:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+   57 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/tab.c:60:8: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |               ^
+/home/andrew/Code/ucas/src/tab.c:60:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:60:18: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                         ^
+/home/andrew/Code/ucas/src/tab.c:60:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:60:38: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                             ^
+/home/andrew/Code/ucas/src/tab.c:60:63: warning: no header providing "NF_SG" is directly included [misc-include-cleaner]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                                                      ^
+/home/andrew/Code/ucas/src/tab.c:60:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   60 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:273:15: note: expanded from macro 'NF_SG'
+  273 | #define NF_SG 4      /* has an operation that sg_lower spells out: a
+      |               ^
+/home/andrew/Code/ucas/src/tab.c:61:7: warning: no header providing "cclass_available" is directly included [misc-include-cleaner]
+   61 |             !cclass_available(m, C_LOAD) || f->where ||
+      |              ^
+/home/andrew/Code/ucas/src/tab.c:61:27: warning: no header providing "C_LOAD" is directly included [misc-include-cleaner]
+   61 |             !cclass_available(m, C_LOAD) || f->where ||
+      |                                  ^
+/home/andrew/Code/ucas/src/tab.c:62:20: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+   62 |             N.op[body] == O_INDEX || is_const(body))
+      |                           ^
+/home/andrew/Code/ucas/src/tab.c:62:31: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+   62 |             N.op[body] == O_INDEX || is_const(body))
+      |                                      ^
+/home/andrew/Code/ucas/src/tab.c:65:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   65 |         if (!slots || (slots & (slots - 1)) || (slots >> MAXP))
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:22:14: note: expanded from macro 'MAXP'
+   22 | #define MAXP 8           /* parameters per function */
+      |              ^
+/home/andrew/Code/ucas/src/tab.c:67:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   67 |         while (!((slots >> ++j) & 1))
+      |                         ~~ ^~~
+/home/andrew/Code/ucas/src/tab.c:67:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   67 |         while (!((slots >> ++j) & 1))
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/tab.c:69:21: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+   69 |         if (j >= f->np || !TY_ISINT(f->p[j].ty))
+      |                            ^
+/home/andrew/Code/ucas/src/tab.c:69:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:71:2: warning: no header providing "param_bounds" is directly included [misc-include-cleaner]
+   71 |         param_bounds(&f->p[j], &lo, &hi);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:73:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   73 |             (1ULL << 32))
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/tab.c:78:6: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+   78 |         x = mk_var((uint32_t)j, f->p[j].name, f->p[j].ty);
+      |             ^
+/home/andrew/Code/ucas/src/tab.c:78:14: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   78 |         x = mk_var((uint32_t)j, f->p[j].name, f->p[j].ty);
+      |                     ^
+/home/andrew/Code/ucas/src/tab.c:79:14: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+   79 |         idxv = lo ? mk_bin(O_SUB, x, mk_const_i(f->p[j].ty, lo)) : x;
+      |                     ^
+/home/andrew/Code/ucas/src/tab.c:79:21: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+   79 |         idxv = lo ? mk_bin(O_SUB, x, mk_const_i(f->p[j].ty, lo)) : x;
+      |                            ^
+/home/andrew/Code/ucas/src/tab.c:79:31: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+   79 |         idxv = lo ? mk_bin(O_SUB, x, mk_const_i(f->p[j].ty, lo)) : x;
+      |                                      ^
+/home/andrew/Code/ucas/src/tab.c:81:36: warning: no header providing "C_IADD" is directly included [misc-include-cleaner]
+   81 |         lcost = m->c[C_LOAD] + (lo ? m->c[C_IADD] : 0);
+      |                                           ^
+/home/andrew/Code/ucas/src/tab.c:87:17: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+   87 |                 cond = mk_bin(O_LT, x, mk_const_i(f->p[j].ty, lo + n));
+      |                               ^
+/home/andrew/Code/ucas/src/tab.c:88:14: warning: no header providing "C_CMP" is directly included [misc-include-cleaner]
+   88 |                 sel = m->c[C_CMP] + m->c[C_SELECT] + lcost + fcost;
+      |                            ^
+/home/andrew/Code/ucas/src/tab.c:88:28: warning: no header providing "C_SELECT" is directly included [misc-include-cleaner]
+   88 |                 sel = m->c[C_CMP] + m->c[C_SELECT] + lcost + fcost;
+      |                                          ^
+/home/andrew/Code/ucas/src/tab.c:91:30: warning: no header providing "C_BRANCH" is directly included [misc-include-cleaner]
+   91 |                         cost = m->c[C_CMP] + m->c[C_BRANCH] + p * lcost + (1 - p) *
+      |                                                   ^
+/home/andrew/Code/ucas/src/tab.c:102:13: warning: no header providing "C_DIVERGE" is directly included [misc-include-cleaner]
+  102 |                             m->c[C_DIVERGE]);
+      |                                  ^
+/home/andrew/Code/ucas/src/tab.c:119:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  119 |         plan_build(&p, roots, 1, 0);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:126:3: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  126 |                 plan_run(&p, np, in_i, in_r);
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:128:14: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  128 |                         undef += (COLF(&p, p.root[0])[i] & F_UNDEF) != 0;
+      |                                   ^
+/home/andrew/Code/ucas/src/tab.c:128:39: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  128 |                         undef += (COLF(&p, p.root[0])[i] & F_UNDEF) != 0;
+      |                                                            ^
+/home/andrew/Code/ucas/src/tab.c:128:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  128 |                         undef += (COLF(&p, p.root[0])[i] & F_UNDEF) != 0;
+      |                                                          ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:130:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  130 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:131:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   26 |         printf("  a table for part of the domain under %s (the function past it; "
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:135:6: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+  135 |             (long long)(lo + bestn), node_str(idxv), shared_str(body, 80),
+      |             ^
+/home/andrew/Code/ucas/src/tab.c:135:31: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  135 |             (long long)(lo + bestn), node_str(idxv), shared_str(body, 80),
+      |                                      ^
+/home/andrew/Code/ucas/src/tab.c:135:47: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  135 |             (long long)(lo + bestn), node_str(idxv), shared_str(body, 80),
+      |                                                      ^
+/home/andrew/Code/ucas/src/tab.c:157:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+   22 |         rep_obj("table_part");
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:158:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  158 |         rep_str("model", mn);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:159:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  159 |         rep_num("cost_before", before);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:161:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  161 |         rep_int("entries", bestn);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:164:2: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  164 |         rep_bool("uniform", uni || W < 2);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:165:2: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  165 |         rep_end();
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:176:41: warning: no header providing "tabfn" is directly included [misc-include-cleaner]
+  176 | tab_domain(const struct func *f, struct tabfn *tf)
+      |                                         ^
+/home/andrew/Code/ucas/src/tab.c:186:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  186 |         if (slots >> MAXP)
+      |                   ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:22:14: note: expanded from macro 'MAXP'
+   22 | #define MAXP 8           /* parameters per function */
+      |              ^
+/home/andrew/Code/ucas/src/tab.c:189:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  189 |                 if (!((slots >> j) & 1))
+      |                              ~~ ^
+/home/andrew/Code/ucas/src/tab.c:189:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  189 |                 if (!((slots >> j) & 1))
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/tab.c:191:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  191 |                 if (!TY_ISINT(f->p[j].ty) || (TYK(f->p[j].ty) == K_UINT &&
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:191:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  191 |                 if (!TY_ISINT(f->p[j].ty) || (TYK(f->p[j].ty) == K_UINT &&
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:192:7: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  192 |                     TYW(f->p[j].ty) == 64 && !f->p[j].ranged))
+      |                     ^
+/home/andrew/Code/ucas/src/tab.c:192:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/tab.c:196:2: warning: no header providing "where_bounds" is directly included [misc-include-cleaner]
+  196 |         where_bounds(f, tf->blo, tf->bhi, NULL);
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:198:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                 if (!((slots >> j) & 1))
+      |                              ~~ ^
+/home/andrew/Code/ucas/src/tab.c:198:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                 if (!((slots >> j) & 1))
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/tab.c:217:15: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  217 |                         x = mk_bin(O_ADD, x, mk_const_i(N.ty[x], -tf->blo[s]));
+      |                                    ^
+/home/andrew/Code/ucas/src/tab.c:218:7: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  218 |                 x = mk_cast(TY(K_UINT, 32), x);
+      |                     ^
+/home/andrew/Code/ucas/src/tab.c:218:15: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  218 |                 x = mk_cast(TY(K_UINT, 32), x);
+      |                             ^
+/home/andrew/Code/ucas/src/tab.c:218:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tab.c:220:23: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  220 |                         part = sh ? mk_bin(O_SHL, x, mk_const_i(TY(K_UINT, 32),
+      |                                            ^
+/home/andrew/Code/ucas/src/tab.c:220:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  220 |                         part = sh ? mk_bin(O_SHL, x, mk_const_i(TY(K_UINT, 32),
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tab.c:223:31: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  223 |                         part = stride > 1 ? mk_bin(O_MUL, x, mk_const_i(
+      |                                                    ^
+/home/andrew/Code/ucas/src/tab.c:224:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  224 |                             TY(K_UINT, 32), (int64_t)stride)) : x;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tab.c:225:41: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  225 |                 idx = !idx ? part : tf->pow2 ? mk_bin(O_OR, idx, part) :
+      |                                                       ^
+/home/andrew/Code/ucas/src/tab.c:227:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  227 |                 sb_printf(&tf->dom, "%s%s in %lld..%lld", j ? ", " : "",
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:231:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 while (tf->pow2 && (1ULL << sh) < stride)
+      |                                          ~~ ^~
+/home/andrew/Code/ucas/src/tab.c:258:6: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  258 |         e = xmalloc((size_t)total * sizeof *e);
+      |             ^
+/home/andrew/Code/ucas/src/tab.c:261:3: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  261 |                 uint8_t ok[CH];
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:273:3: warning: no header providing "valid_mask" is directly included [misc-include-cleaner]
+  273 |                 valid_mask(&p, where ? p.root[1] : NOTOK, np, ok);
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:273:38: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  273 |                 valid_mask(&p, where ? p.root[1] : NOTOK, np, ok);
+      |                                                    ^
+/home/andrew/Code/ucas/src/tab.c:275:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                         int bad = !ok[i] || (COLF(&p, p.root[0])[i] & F_UNDEF);
+      |                                                                     ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/tab.c:277:8: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  277 |                         if (TY_FP(t)) {
+      |                             ^
+/home/andrew/Code/ucas/src/tab.c:277:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:278:26: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  278 |                                 double v = bad ? 0 : COLR(&p, p.root[0])[i];
+      |                                                      ^
+/home/andrew/Code/ucas/src/tab.c:283:27: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  283 |                                 e[k + i] = mk_cast(t, mk_const_r(v));
+      |                                                       ^
+/home/andrew/Code/ucas/src/tab.c:285:40: warning: no header providing "COLI" is directly included [misc-include-cleaner]
+  285 |                                 e[k + i] = mk_const_i(t, bad ? 0 : COLI(&p,
+      |                                                                    ^
+/home/andrew/Code/ucas/src/tab.c:290:12: warning: no header providing "mk_table" is directly included [misc-include-cleaner]
+  290 |         tf->tab = mk_table(e, (uint32_t)total);
+      |                   ^
+/home/andrew/Code/ucas/src/tab.c:304:9: warning: no header providing "eqproof" is directly included [misc-include-cleaner]
+  304 |         struct eqproof pr;
+      |                ^
+/home/andrew/Code/ucas/src/tab.c:305:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  305 |         struct sbuf w = {0}, dom = {0}, ix = {0};
+      |                ^
+/home/andrew/Code/ucas/src/tab.c:311:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:311:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tab.c:311:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |         if (!(TYK(t) == K_UINT || TYK(t) == K_SINT) || (N.fl[body] & NF_SG) ||
+      |                                                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:273:15: note: expanded from macro 'NF_SG'
+  273 | #define NF_SG 4      /* has an operation that sg_lower spells out: a
+      |               ^
+/home/andrew/Code/ucas/src/tab.c:315:45: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  315 |         if (N.op[body] == O_INDEX || N.op[body] == O_VAR || is_const(body) ||
+      |                                                    ^
+/home/andrew/Code/ucas/src/tab.c:316:21: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  316 |             (N.op[body] == O_CAST && N.op[N.a[body]] == O_INDEX))
+      |                            ^
+/home/andrew/Code/ucas/src/tab.c:344:20: warning: no header providing "mk_index" is directly included [misc-include-cleaner]
+  344 |         cand = mk_cast(t, mk_index(tabn, idx));
+      |                           ^
+/home/andrew/Code/ucas/src/tab.c:348:6: warning: no header providing "equiv_decide" is directly included [misc-include-cleaner]
+  348 |         if (equiv_decide(f, body, cand, &w, &pr)) {
+      |             ^
+/home/andrew/Code/ucas/src/tab.c:350:21: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  350 |                     (double)cost, sb_str(&w));
+      |                                   ^
+/home/andrew/Code/ucas/src/tab.c:353:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  353 |         bytes = (TYW(t) + 7) / 8;
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/tab.c:354:2: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  354 |         sb_puts(&ix, node_str(idx));
+      |         ^
+/home/andrew/Code/ucas/src/tab.c:361:6: warning: no header providing "ty_str" is directly included [misc-include-cleaner]
+  361 |             ty_str(t), (unsigned long long)total * (unsigned)bytes, sb_str(&dom),
+      |             ^
+/home/andrew/Code/ucas/src/tab.c:367:38: warning: no header providing "EQ_EXHAUSTIVE" is directly included [misc-include-cleaner]
+  367 |         printf("           %s\n", pr.how == EQ_EXHAUSTIVE ?
+      |                                             ^
+/home/andrew/Code/ucas/src/tab.c:368:57: warning: no header providing "EQ_SAT" is directly included [misc-include-cleaner]
+  368 |             "checked on every point of the domain" : pr.how == EQ_SAT ?
+      |                                                                ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

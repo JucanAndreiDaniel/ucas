@@ -1,0 +1,18 @@
+# c optimize records the engines that proved each rewrite into a fixed char[16].
+c optimize nofile
+```c
+int a(int x){ return x<0?-x:x; }
+```
+c optimize nofile target zen4
+```c
+int b(int x){ int y=x&255; return y/16; }
+```
+c optimize nofile target sm75
+```c
+int c(int x){ return (x*3+1)/2; }
+```
+c optimize nofile target rdna2
+```c
+int d(int x){ return x>=0?x:-x; }
+```
+show 1+1

@@ -1,0 +1,71 @@
+> p1(x: i64) = f32(x)
+> wrap p1
+wrap analysis of p1:
+  f32(x)   (f32)
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
+  end to end vs the real-number result: max abs error 2.75e+11, max rel error 5.95e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=2307937166482698868
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> range p1
+range of p1 -> f32:
+  [-9.22337204e+18, 9.22337204e+18]  (sampled min/max; not a sound bound)
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> p2(x: u64) = f64(x)
+> wrap p2
+wrap analysis of p2:
+  f64(x)   (f64)
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> p3(x: i32) = f32(x)
+> wrap p3
+wrap analysis of p3:
+  f32(x)   (f32)
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
+  end to end vs the real-number result: max abs error 64, max rel error 5.96e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=-134284152
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> p4(x: u8) = f32(x)
+> wrap p4
+wrap analysis of p4:
+  f32(x)   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  over all 256 points of the domain
+> p5(x: i64) = f64(x)
+> wrap p5
+wrap analysis of p5:
+  f64(x)   (f64)
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> p6(x: u64) = f32(x)
+> wrap p6
+wrap analysis of p6:
+  f32(x)   (f32)
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
+  end to end vs the real-number result: max abs error 5.5e+11, max rel error 5.95e-08, max 0 ulp (correctly rounded)
+      worst relative error at x=2307937166482698868
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> p7(x: i8) = f16(x)
+> wrap p7
+wrap analysis of p7:
+  f16(x)   (f16)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  over all 256 points of the domain
+> p8(x: i32 in 0..1000) = f32(x)
+> wrap p8
+wrap analysis of p8:
+  f32(x)   (f32)
+      nnan holds (no NaN from non-NaN inputs)
+      ninf holds
+  end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
+  over all 1001 points of the domain

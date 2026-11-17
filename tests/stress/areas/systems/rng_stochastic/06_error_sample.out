@@ -1,0 +1,12 @@
+> f(x: f32) = x*x + 0.5
+> g(x: f32) = x*x
+> error g ~ f
+error of g against f:
+  max abs error 1 at x=3394.11768
+  max rel error 1 (100%) at x=-1.93719168e-23
+  mean rel error 0.659216 over 49080 points
+  max 1056964608 ulp
+  rounding, first order in u = 2^-24: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]

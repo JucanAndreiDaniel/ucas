@@ -1,0 +1,48 @@
+> f01(x: u8, y: u8) = ~(x & y)
+> g01(x: u8, y: u8) = ~x & ~y
+> equiv f01 g01
+f01 and g01 differ at 65280 points, e.g. x=1, y=0: 255 vs 254
+> f02(x: u8) = ~x
+> g02(x: u8) = -x
+> equiv f02 g02
+f02 and g02 differ at 256 points, e.g. x=0: 255 vs 0
+> f03(x: u8) = x << 1 >> 1
+> g03(x: u8) = x
+> equiv f03 g03
+f03 and g03 differ at 128 points, e.g. x=128: 0 vs 128
+> f04(x: u8, y: u8) = (x*y)/y
+> g04(x: u8, y: u8) = x
+> equiv f04 g04
+f04 and g04 differ at 63568 points, e.g. x=128, y=2: 0 vs 128
+> f05(x: u8) = x/2*2
+> g05(x: u8) = x
+> equiv f05 g05
+f05 and g05 differ at 128 points, e.g. x=1: 0 vs 1
+> f06(x: u8, y: u8) = (x+y)>>1
+> g06(x: u8, y: u8) = (x>>1)+(y>>1)
+> equiv f06 g06
+f06 and g06 differ at 40768 points, e.g. x=1, y=1: 1 vs 0
+> f07(x: u8, y: u8) = x xor y
+> g07(x: u8, y: u8) = x + y
+> equiv f07 g07
+f07 and g07 differ at 56788 points, e.g. x=1, y=1: 0 vs 2
+> f08(x: u8, y: u8) = x | y
+> g08(x: u8, y: u8) = x + y
+> equiv f08 g08
+f08 and g08 differ at 58975 points, e.g. x=1, y=1: 1 vs 2
+> f09(x: u8, y: u8) = (x&y)+(x|y)
+> g09(x: u8, y: u8) = x xor y
+> equiv f09 g09
+f09 and g09 differ at 56788 points, e.g. x=1, y=1: 2 vs 0
+> f10(x: u8) = x xor ~x
+> g10(x: u8) = 0
+> equiv f10 g10
+f10 and g10 differ at 256 points, e.g. x=0: 255 vs 0
+> f11(x: u8) = (x+x)>>1
+> g11(x: u8) = x
+> equiv f11 g11
+f11 and g11 differ at 128 points, e.g. x=128: 0 vs 128
+> f12(x: i8) = x << 1 >> 1
+> g12(x: i8) = x & 127
+> equiv f12 g12
+f12 and g12 differ at 128 points, e.g. x=-64: -64 vs 64

@@ -1,0 +1,24 @@
+> f(p0: u8, p1: u8, p2: u8, p3: u8, p4: u8, p5: u8, p6: u8, p7: u8, p8: u8, p9: u8, p10: u8, p11: u8, p12: u8, p13: u8, p14: u8, p15: u8, p16: u8, p17: u8, p18: u8, p19: u8, p20: u8, p21: u8, p22: u8, p23: u8) = p0+p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16+p17+p18+p19+p20+p21+p22+p23
+13_params_where.ucas:1:67: error: at most 8 parameters
+    f(p0: u8, p1: u8, p2: u8, p3: u8, p4: u8, p5: u8, p6: u8, p7: u8, p8: u8, p9: u8, p10: u8, p11: u8, p12: u8, p13: u8, p14: u8, p15: u8, p16: u8, p17: u8, p18: u8, p19: u8, p20: u8, p21: u8, p22: u8, p23: u8) = p0+p1+p2+p3+p4+p5+p6+p7+p8+p9+p10+p11+p12+p13+p14+p15+p16+p17+p18+p19+p20+p21+p22+p23
+                                                                      ^
+> show f
+_(f: real) = f
+  -> real
+> g(v: u32, n: u32 in 20..22) = v >> n where v < 1 << n
+> range g
+range of g -> u32:
+  0..0  (sampled min/max; not a sound bound)
+  fits in u1
+  sampled 38192 points (domain has 12582912 points); not exhaustive
+  sound bound (intervals): 0..4095
+  proved bound (monotonicity, exact algebra): 0..3
+  the sample reaches the lower end: the minimum is exactly 0 (proved)
+    max: g is nondecreasing in v; where v < 1 << n, so take v = (1 << n) - 1:
+      (1 << n) - 1 >> n
+      in 0..3 by intervals
+    min: g is nondecreasing in v, so take v = 0:
+      0 >> n
+    then it is nonincreasing in n, so take n = 22:
+      0
+    (a bound the sample does not reach may still be loose)

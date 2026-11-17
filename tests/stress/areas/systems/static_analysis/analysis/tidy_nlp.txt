@@ -1,0 +1,1921 @@
+/home/andrew/Code/ucas/src/nlp.c:92:41: warning: no header providing "rep_on" is directly included [misc-include-cleaner]
+   32 |         return !dry && !quiet && (nlp_defer || rep_on || interactive());
+      |                                                ^
+/home/andrew/Code/ucas/src/nlp.c:125:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  125 |                 v = atoi(p) - 1;
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:143:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  143 | static char arena[1 << 18];
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/nlp.c:153:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   54 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:154:6: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+   54 |         n = vsnprintf(r, sizeof arena - arn, fmt, ap);
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:155:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+  155 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:168:3: warning: no header providing "fputs" is directly included [misc-include-cleaner]
+  168 |                 fputs("  sorry: ", stdout);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:170:3: warning: no header providing "vprintf" is directly included [misc-include-cleaner]
+  170 |                 vprintf(fmt, ap);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:172:3: warning: no header providing "putchar" is directly included [misc-include-cleaner]
+  172 |                 putchar('\n');
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:208:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  208 |                 snprintf(prefs[nprefs].key, sizeof prefs[0].key, "%s", k);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:264:16: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  264 |         if (key && (v = pref_get(key)) >= 0)
+      |                     ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:264:16: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:264:16: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:273:16: warning: no header providing "rep_answer" is directly included [misc-include-cleaner]
+  273 |                 a = rep_on ? rep_answer(key, what, opt, nopt, dflt) : NULL;
+      |                              ^
+/home/andrew/Code/ucas/src/nlp.c:275:11: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  275 |                         return atoi(a) - 1;
+      |                                ^
+/home/andrew/Code/ucas/src/nlp.c:276:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  276 |                 if ((a = next_answer()) == NULL) {
+      |                      ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:276:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:276:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:278:5: warning: no header providing "rep_ask" is directly included [misc-include-cleaner]
+  278 |                                 rep_ask(key, what, opt, nopt, dflt, hint);
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:280:5: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  280 |                                 printf("\x1e" "ask choice %d\n? %s:\n", nopt, what);
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:288:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  288 |                 if ((v = pick_option(a, opt, nopt, dflt)) < 0) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:288:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:288:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:322:3: warning: no header providing "fflush" is directly included [misc-include-cleaner]
+  322 |                 fflush(stdout);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:323:7: warning: no header providing "fgets" is directly included [misc-include-cleaner]
+  323 |                 if (fgets(line, sizeof line, stdin) == NULL) {
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:328:18: warning: Potential out of bound access to the region with tainted index [clang-analyzer-security.ArrayBound]
+  328 |                 for (p = line; isspace((unsigned char)*p); p++)
+      |                                ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^
+/home/andrew/Code/ucas/src/nlp.c:7809:14: note: Assuming 'i' is < 'nw'
+ 7809 |         for (i = 0; i < nw; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7809:2: note: Loop condition is true.  Entering loop body
+ 7809 |         for (i = 0; i < nw; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7810:3: note: Taking false branch
+ 7810 |                 if (protected_word(i))
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:7812:7: note: Assuming the condition is false
+ 7812 |                 if (i + 1 < nw && W[i + 1].sp && !protected_word(i + 1) &&
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7812:18: note: Left side of '&&' is false
+ 7812 |                 if (i + 1 < nw && W[i + 1].sp && !protected_word(i + 1) &&
+      |                                ^
+/home/andrew/Code/ucas/src/nlp.c:7820:7: note: Assuming the condition is true
+ 7820 |                 if ((n = closest(W[i].s, best, 4)) > 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7820:3: note: Taking true branch
+ 7820 |                 if ((n = closest(W[i].s, best, 4)) > 0)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:7821:4: note: Calling 'fix_word'
+ 7821 |                         fix_word(i, 1, best, n);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7783:6: note: Assuming 'n' is > 1
+ 7783 |         if (n > 1) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:7783:2: note: Taking true branch
+ 7783 |         if (n > 1) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7784:15: note: 'k' is < 'n'
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                             ^
+/home/andrew/Code/ucas/src/nlp.c:7784:15: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:7784:3: note: Loop condition is true.  Entering loop body
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:7784:15: note: 'k' is < 'n'
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                             ^
+/home/andrew/Code/ucas/src/nlp.c:7784:15: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:7784:3: note: Loop condition is true.  Entering loop body
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:7784:15: note: Assuming 'k' is >= 'n'
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                             ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:7784:21: note: Left side of '&&' is false
+ 7784 |                 for (k = 0; k < n && k < 4; k++)
+      |                                   ^
+/home/andrew/Code/ucas/src/nlp.c:7787:7: note: Calling 'clarify'
+ 7787 |                 c = clarify(NULL, S("\"%s\" is not a word I know", was), opt, k + 1,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 7788 |                     0, NULL);
+      |                     ~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:264:6: note: 'key' is null
+  264 |         if (key && (v = pref_get(key)) >= 0)
+      |             ^~~
+/home/andrew/Code/ucas/src/nlp.c:264:10: note: Left side of '&&' is false
+  264 |         if (key && (v = pref_get(key)) >= 0)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:266:6: note: Assuming 'dry' is 0
+  266 |         if (dry || quiet)
+      |             ^~~
+/home/andrew/Code/ucas/src/nlp.c:266:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:266:13: note: Assuming 'quiet' is 0
+  266 |         if (dry || quiet)
+      |                    ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:266:2: note: Taking false branch
+  266 |         if (dry || quiet)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:268:6: note: Assuming 'nlp_defer' is 0
+  268 |         if (nlp_defer || rep_on) {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:268:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:268:19: note: Assuming 'rep_on' is 0
+  268 |         if (nlp_defer || rep_on) {
+      |                          ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:268:2: note: Taking false branch
+  268 |         if (nlp_defer || rep_on) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:300:6: note: Assuming the condition is false
+  300 |         if (!interactive()) {
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:300:2: note: Taking false branch
+  300 |         if (!interactive()) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:318:2: note: Loop condition is true.  Entering loop body
+  318 |         for (k = 0; k < nopt; k++)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:318:2: note: Loop condition is true.  Entering loop body
+/home/andrew/Code/ucas/src/nlp.c:318:2: note: Loop condition is true.  Entering loop body
+/home/andrew/Code/ucas/src/nlp.c:318:2: note: Loop condition is false. Execution continues on line 320
+/home/andrew/Code/ucas/src/nlp.c:320:2: note: Loop condition is true.  Entering loop body
+  320 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:323:7: note: Taint originated here
+  323 |                 if (fgets(line, sizeof line, stdin) == NULL) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:323:7: note: Taint propagated to the 1st argument
+  323 |                 if (fgets(line, sizeof line, stdin) == NULL) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:323:3: note: Taking false branch
+  323 |                 if (fgets(line, sizeof line, stdin) == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:328:18: note: Access of the region with a tainted index that may be too large
+  328 |                 for (p = line; isspace((unsigned char)*p); p++)
+      |                                ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:334:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  334 |                 v = atoi(p) - 1;
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:360:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   54 |         uint8_t k;
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:537:54: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  537 |                                 if (isalnum((unsigned char)s[j]) || s[j] == '_') {
+      |                                                                                  ^
+/home/andrew/Code/ucas/src/nlp.c:539:6: note: end of the original
+  539 |                                 } else if (s[j] == '\'' && isalpha((unsigned char)s[j + 1]) &&
+      |                                  ^
+/home/andrew/Code/ucas/src/nlp.c:540:43: note: clone 1 starts here
+  540 |                                     isalpha((unsigned char)s[j - 1])) {
+      |                                                                       ^
+/home/andrew/Code/ucas/src/nlp.c:545:43: note: clone 2 starts here
+  545 |                                     isalpha((unsigned char)s[j + 2])) {
+      |                                                                       ^
+/home/andrew/Code/ucas/src/nlp.c:578:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  578 |                         int cp = (((unsigned char)s[i] & 0x1f) << 6) |
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:578:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  578 |                         int cp = (((unsigned char)s[i] & 0x1f) << 6) |
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:578:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  578 |                         int cp = (((unsigned char)s[i] & 0x1f) << 6) |
+      |                                                        ~ ^~~~
+/home/andrew/Code/ucas/src/nlp.c:579:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  579 |                             ((unsigned char)s[i + 1] & 0x3f);
+      |                                                      ~ ^~~~
+/home/andrew/Code/ucas/src/nlp.c:830:28: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  830 | type_limits(const char *t, int64_t *lo, int64_t *hi)
+      |                            ^
+/home/andrew/Code/ucas/src/nlp.c:841:9: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  841 |         bits = atoi(t + 1);
+      |                ^
+/home/andrew/Code/ucas/src/nlp.c:846:22: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+  846 |                 *hi = bits == 64 ? INT64_MAX : (int64_t)((1ULL << bits) - 1);
+      |                                    ^
+/home/andrew/Code/ucas/src/nlp.c:846:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  846 |                 *hi = bits == 64 ? INT64_MAX : (int64_t)((1ULL << bits) - 1);
+      |                                                                ~~ ^~~~
+/home/andrew/Code/ucas/src/nlp.c:848:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  848 |                 *hi = bits == 64 ? INT64_MAX : (int64_t)((1ULL << (bits - 1)) - 1);
+      |                                                                ~~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1091:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1091 |                 if ((a = lookup(tensw, t)) >= 0 && (b = lookup(ones, h + 1)) >= 1 &&
+      |                      ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1091:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1091:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1091:41: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1091 |                 if ((a = lookup(tensw, t)) >= 0 && (b = lookup(ones, h + 1)) >= 1 &&
+      |                                                     ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1091:41: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1091:41: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1098:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1098 |         if ((a = lookup(ones, w)) >= 0) {
+      |              ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1098:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1098:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1102:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1102 |         if ((a = lookup(tensw, w)) >= 0) {
+      |              ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1102:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1102:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1103:8: warning: performing an implicit widening conversion to type 'int64_t' (aka 'long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1103 |                 *v = (a + 2) * 10;
+      |                      ^
+/home/andrew/Code/ucas/src/nlp.c:1103:8: note: make conversion explicit to silence this warning
+   54 |                 *v = (a + 2) * 10;
+      |                      ^~~~~~~~~~~~
+      |                      (int64_t)(  )
+/home/andrew/Code/ucas/src/nlp.c:1103:8: note: perform multiplication in a wider type
+ 1103 |                 *v = (a + 2) * 10;
+      |                      ^~~~~~
+      |                       (int64_t)
+/home/andrew/Code/ucas/src/nlp.c:1188:29: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1188 |         if (W[i].k != W_WORD || (k = lookup(fr, W[i].s)) < 0)
+      |                                  ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1188:29: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1188:29: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1239:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1239 |         if ((den = fraction_word(wi)) == 0) {
+      |              ~~~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1239:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1239:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1269:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1269 |         if (W[wi].k == W_WORD && (k = lookup(ordw, W[wi].s)) >= 2) {
+      |                                   ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1269:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1269:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1375:10: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 1375 |                 bits = atoi(W[wi].s);
+      |                        ^
+/home/andrew/Code/ucas/src/nlp.c:1377:37: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1377 |         } else if (W[wi].k == W_WORD && (w = strstr(W[wi].s, "-bit")) != NULL &&
+      |                                          ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1377:37: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1377:37: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1525:6: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1525 |             strcmp(w, "uint") && strcmp(w, "sint")) {
+      |             ^
+      |                               != 0
+/home/andrew/Code/ucas/src/nlp.c:1525:27: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1525 |             strcmp(w, "uint") && strcmp(w, "sint")) {
+      |                                  ^                
+      |                                                    != 0
+/home/andrew/Code/ucas/src/nlp.c:1679:6: warning: 'npl' is confusable with 'np1' [misc-confusable-identifiers]
+ 1679 |         int npl, pmode;
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:790:21: note: other declaration found here
+  790 | static int nv, nsv, np1, norder, cur_mask = 1;
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:1895:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1895 |         v->uses |= cur_mask;
+      |         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:1952:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1952 |                 if ((v = var_find(cand[k])) == NULL || !v->order ||
+      |                      ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:1952:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:1952:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:1980:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1980 |                                 if (TY_FP(f->p[k].ty)) {
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nlp.c:1993:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1993 |                 v->uses |= cur_mask;
+      |                 ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:2057:8: warning: Excessive padding in 'struct uop' (8 padding bytes, where 0 is optimal). Optimal fields order: pat, fn, kind, k, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+ 2057 | struct uop {
+      | ~~~~~~~^~~~~
+ 2058 |         const char *pat;
+      |         ~~~~~~~~~~~~~~~~
+ 2059 |         int kind;
+      |         ~~~~~~~~~
+ 2060 |         const char *fn;
+      |         ~~~~~~~~~~~~~~~
+ 2061 |         int k;
+      |         ~~~~~~
+ 2062 | };
+      | ~
+/home/andrew/Code/ucas/src/nlp.c:2057:8: note: Excessive padding in 'struct uop' (8 padding bytes, where 0 is optimal). Optimal fields order: pat, fn, kind, k, consider reordering the fields or adding explicit padding members
+ 2057 | struct uop {
+      | ~~~~~~~^~~~~
+ 2058 |         const char *pat;
+      |         ~~~~~~~~~~~~~~~~
+ 2059 |         int kind;
+      |         ~~~~~~~~~
+ 2060 |         const char *fn;
+      |         ~~~~~~~~~~~~~~~
+ 2061 |         int k;
+      |         ~~~~~~
+ 2062 | };
+      | ~
+/home/andrew/Code/ucas/src/nlp.c:2182:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2182 |         switch (u->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:2369:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2369 |                 if (strcmp(subst_ident(S("%s %s", lo.s, hi.s), b->name, ""),
+      |                     ^
+ 2370 |                     S("%s %s", lo.s, hi.s))) {
+      |                                            
+      |                                             != 0
+/home/andrew/Code/ucas/src/nlp.c:2561:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2561 |                 v->bc |= 3;
+      |                 ^~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:2576:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2576 |         switch (g->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:2617:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2617 |         switch (W[wi].k) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:2673:19: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2673 |                 } else if ((den = fraction_word(wi)) != 0) {
+      |                             ~~~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2673:19: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:2673:19: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:2740:23: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 2740 |                                 if (k >= f->np || strcmp(a.s, sym_str(f->p[k].name)))
+      |                                                   ^                                 
+      |                                                                                      != 0
+/home/andrew/Code/ucas/src/nlp.c:2786:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2786 |         if (W[wi].k == W_WORD && (f = user_fn(W[wi].o)) != NULL &&
+      |                                   ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2786:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:2786:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:2822:24: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2822 |         if (mat("?the") && (k = ordinal(&a)) != 0) {
+      |                             ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2822:24: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:2822:24: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:2886:5: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 2886 |                                 strcpy(vv->lo, d.lo);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2886:5: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 2886 |                                 strcpy(vv->lo, d.lo);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2887:5: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 2887 |                                 strcpy(vv->hi, d.hi);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2887:5: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 2887 |                                 strcpy(vv->hi, d.hi);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2969:27: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2969 |                 if (mat("to the") && (k = ordinal(&x)) != 0) {
+      |                                       ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:2969:27: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:2969:27: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:3299:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3299 |                 d->bc |= hi ? 2 : 1;
+      |                 ^~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3364:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3364 |                 d->adj |= A_NONZERO;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3375:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3375 |                 d->adj |= A_POS;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3377:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3377 |                 d->adj |= A_NEG;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3379:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3379 |                 d->adj |= A_NONNEG;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3381:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3381 |                 d->adj |= A_NONZERO;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3383:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3383 |                 d->adj |= A_EVEN;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3385:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3385 |                 d->adj |= A_ODD;
+      |                 ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3437:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3437 |                 v->bc = (v->bc & ~1) | (d->bc & 1);
+      |                         ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3437:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3437 |                 v->bc = (v->bc & ~1) | (d->bc & 1);
+      |                          ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3437:21: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 3437 |                 v->bc = (v->bc & ~1) | (d->bc & 1);
+      |                                  ~^
+/home/andrew/Code/ucas/src/nlp.c:3437:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3437 |                 v->bc = (v->bc & ~1) | (d->bc & 1);
+      |                                         ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3441:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3441 |                 v->bc = (v->bc & ~2) | (d->bc & 2);
+      |                         ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3441:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3441 |                 v->bc = (v->bc & ~2) | (d->bc & 2);
+      |                          ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3441:21: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 3441 |                 v->bc = (v->bc & ~2) | (d->bc & 2);
+      |                                  ~^
+/home/andrew/Code/ucas/src/nlp.c:3441:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3441 |                 v->bc = (v->bc & ~2) | (d->bc & 2);
+      |                                         ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:3446:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3446 |         v->adj |= d->adj;
+      |         ^~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:3625:8: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3625 |                 *n = atoi(W[wi].s);
+      |                      ^
+/home/andrew/Code/ucas/src/nlp.c:3742:12: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 3742 |                 int d1 = atoi(W[wi].s), d2;
+      |                          ^
+/home/andrew/Code/ucas/src/nlp.c:3825:3: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 3825 |                 strcpy(Q.aty, !strcmp(w, "f64") || !strncmp(w, "double", 6) ? "f64" :
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:3825:3: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 3825 |                 strcpy(Q.aty, !strcmp(w, "f64") || !strncmp(w, "double", 6) ? "f64" :
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:3982:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3982 |                 if (TY_FP(p->ty))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nlp.c:4171:15: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4171 |                 else if ((v = plot_var()) != NULL)
+      |                           ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4171:15: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4171:15: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4183:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4183 |                 if (mat("as|while|when") && (v = plot_var()) != NULL &&
+      |                                              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4183:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4183:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4198:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 4198 |                 n = atoi(W[wi].s);
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:4244:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4244 |                 if ((c = plot_const()) == NULL)
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4244:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4244:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4295:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4295 |                 if ((c = plot_const()) != NULL)
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4295:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4295:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4314:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4314 |                         if ((a = plot_const()) != NULL && acc_sym(",") &&
+      |                              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4314:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4314:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4315:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4315 |                             (b = plot_const()) != NULL && acc_sym(")")) {
+      |                              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4315:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4315:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4321:17: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4321 |                 } else if ((c = plot_const()) != NULL && !isw(wi, "fps") &&
+      |                             ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4321:17: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4321:17: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4549:14: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 4549 |                         int dim = atoi(W[wi].s);
+      |                                   ^
+/home/andrew/Code/ucas/src/nlp.c:4709:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 4709 |                                     strcmp(annotate(body, V[j].name, V[j].ty), body)) {
+      |                                     ^                                               
+      |                                                                                      != 0
+/home/andrew/Code/ucas/src/nlp.c:4733:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4733 |                 int best = 1 << 30;
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/nlp.c:4862:23: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4862 |             "oblique") && (c = props_noun()) != NULL)
+      |                            ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4862:23: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4862:23: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:4903:14: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4903 |         if ((Q.pcmd = props_noun()) != NULL)
+      |              ~~~~~~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:4903:14: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:4903:14: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5046:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5046 |         if ((f = user_fn(t->fn)) == NULL)
+      |              ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5046:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5046:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5049:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5049 |                 if (TY_FP(f->p[k].ty))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nlp.c:5051:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5051 |         return TY_FP(f->p[0].ty);
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nlp.c:5126:14: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5126 |         if ((Q.pcmd = props_adj()) != NULL) {
+      |              ~~~~~~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5126:14: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5126:14: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5138:31: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5138 |                 if (W[wi].k == W_WORD && (k = lookup(pw, W[wi].s)) >= 0) {
+      |                                           ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5138:31: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5138:31: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5327:14: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5327 |         if ((Q.pcmd = props_where()) != NULL) {
+      |              ~~~~~~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5327:14: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5327:14: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5355:2: warning: no header providing "puts" is directly included [misc-include-cleaner]
+ 5355 |         puts(
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5435:4: warning: potentially unintended semicolon [bugprone-suspicious-semicolon]
+ 5435 |                         ;
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:5600:24: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                                    ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:24: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5600:24: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5604:19: warning: Access to field 'np' results in a dereference of a null pointer (loaded from variable 'f') [clang-analyzer-core.NullDereference]
+ 5604 |                 for (n = 0; n < f->np; n++)
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5494:7: note: Assuming the condition is true
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5494:50: note: Left side of '||' is true
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |                                                         ^
+/home/andrew/Code/ucas/src/nlp.c:5495:47: note: Assuming field 'k' is not equal to W_END
+ 5495 |             "?this|you|ucas") || mat("examples")) && W[wi].k == W_END) {
+      |                                                      ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5494:2: note: Taking false branch
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Assuming the condition is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5502:31: note: Assuming the condition is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5503:6: note: Assuming the condition is false
+ 5503 |             mat("by default") || mat("let us assume|say")) {
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5503:27: note: Assuming the condition is false
+ 5503 |             mat("by default") || mat("let us assume|say")) {
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:2: note: Taking false branch
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5507:6: note: Assuming the condition is false
+ 5507 |         if (mat("forget|reset|clear")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5507:2: note: Taking false branch
+ 5507 |         if (mat("forget|reset|clear")) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5557:6: note: Assuming the condition is false
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5557:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5557:32: note: Assuming the condition is false
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |                                       ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5557:2: note: Taking false branch
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Assuming the condition is false
+ 5565 |         if ((mat("list|show ?all|the|my functions|definitions") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5566:6: note: Assuming the condition is false
+ 5566 |             mat("what are ?all ?the|my functions|definitions") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Left side of '||' is false
+ 5565 |         if ((mat("list|show ?all|the|my functions|definitions") ||
+      |              ^
+/home/andrew/Code/ucas/src/nlp.c:5567:6: note: Assuming the condition is false
+ 5567 |             mat("what functions are|have ?been ?defined")) && W[wi].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5567:53: note: Left side of '&&' is false
+ 5567 |             mat("what functions are|have ?been ?defined")) && W[wi].k == W_END) {
+      |                                                            ^
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Assuming the condition is false
+ 5573 |         if ((mat("list|show ?all|the ?cost models") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5574:6: note: Assuming the condition is false
+ 5574 |             mat("what are ?all ?the ?cost models") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Left side of '||' is false
+ 5573 |         if ((mat("list|show ?all|the ?cost models") ||
+      |              ^
+/home/andrew/Code/ucas/src/nlp.c:5575:6: note: Assuming the condition is false
+ 5575 |             mat("which cost models ?are ?there")) && W[wi].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5575:44: note: Left side of '&&' is false
+ 5575 |             mat("which cost models ?are ?there")) && W[wi].k == W_END) {
+      |                                                   ^
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Assuming the condition is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5581:41: note: Assuming the condition is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |                                                ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Left side of '||' is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5582:6: note: Assuming the condition is false
+ 5582 |             mat("continue")) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:2: note: Taking false branch
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5594:7: note: Assuming the condition is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:42: note: Left side of '||' is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |                                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5595:52: note: Assuming field 'k' is equal to W_WORD
+ 5595 |             mat("?and call|name the result|function")) && W[wi].k == W_WORD &&
+      |                                                           ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:6: note: Left side of '&&' is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5596:6: note: Assuming field 'k' is equal to W_END
+ 5596 |             W[wi + 1].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:2: note: Taking true branch
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5600:7: note: Assuming 'ln' is not equal to NULL
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5600:22: note: Value assigned to 'f'
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                                    ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:21: note: Assuming pointer value is null
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:3: note: Taking true branch
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:5604:19: note: Access to field 'np' results in a dereference of a null pointer (loaded from variable 'f')
+ 5604 |                 for (n = 0; n < f->np; n++)
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5604:19: warning: Access to field 'np' results in a dereference of an undefined pointer value (loaded from variable 'f') [clang-analyzer-core.NullDereference]
+ 5604 |                 for (n = 0; n < f->np; n++)
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5494:7: note: Assuming the condition is true
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5494:50: note: Left side of '||' is true
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |                                                         ^
+/home/andrew/Code/ucas/src/nlp.c:5495:47: note: Assuming field 'k' is not equal to W_END
+ 5495 |             "?this|you|ucas") || mat("examples")) && W[wi].k == W_END) {
+      |                                                      ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5494:2: note: Taking false branch
+ 5494 |         if ((mat("help ?me|english|nlp ?with ?english") || mat("what can you do") || mat("how do i use "
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Assuming the condition is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5502:31: note: Assuming the condition is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5503:6: note: Assuming the condition is false
+ 5503 |             mat("by default") || mat("let us assume|say")) {
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:6: note: Left side of '||' is false
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5503:27: note: Assuming the condition is false
+ 5503 |             mat("by default") || mat("let us assume|say")) {
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5502:2: note: Taking false branch
+ 5502 |         if (mat("assume|suppose") || mat("from now on ?assume") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5507:6: note: Assuming the condition is false
+ 5507 |         if (mat("forget|reset|clear")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5507:2: note: Taking false branch
+ 5507 |         if (mat("forget|reset|clear")) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5557:6: note: Assuming the condition is false
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5557:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5557:32: note: Assuming the condition is false
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |                                       ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5557:2: note: Taking false branch
+ 5557 |         if (mat("use|select ?the") || mat("switch to ?the")) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Assuming the condition is false
+ 5565 |         if ((mat("list|show ?all|the|my functions|definitions") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5566:6: note: Assuming the condition is false
+ 5566 |             mat("what are ?all ?the|my functions|definitions") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5565:7: note: Left side of '||' is false
+ 5565 |         if ((mat("list|show ?all|the|my functions|definitions") ||
+      |              ^
+/home/andrew/Code/ucas/src/nlp.c:5567:6: note: Assuming the condition is false
+ 5567 |             mat("what functions are|have ?been ?defined")) && W[wi].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5567:53: note: Left side of '&&' is false
+ 5567 |             mat("what functions are|have ?been ?defined")) && W[wi].k == W_END) {
+      |                                                            ^
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Assuming the condition is false
+ 5573 |         if ((mat("list|show ?all|the ?cost models") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5574:6: note: Assuming the condition is false
+ 5574 |             mat("what are ?all ?the ?cost models") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5573:7: note: Left side of '||' is false
+ 5573 |         if ((mat("list|show ?all|the ?cost models") ||
+      |              ^
+/home/andrew/Code/ucas/src/nlp.c:5575:6: note: Assuming the condition is false
+ 5575 |             mat("which cost models ?are ?there")) && W[wi].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5575:44: note: Left side of '&&' is false
+ 5575 |             mat("which cost models ?are ?there")) && W[wi].k == W_END) {
+      |                                                   ^
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Assuming the condition is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:5581:41: note: Assuming the condition is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |                                                ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:6: note: Left side of '||' is false
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5582:6: note: Assuming the condition is false
+ 5582 |             mat("continue")) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5581:2: note: Taking false branch
+ 5581 |         if (mat("?show|give ?me more|next") || mat("keep going") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5594:7: note: Assuming the condition is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:42: note: Left side of '||' is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |                                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5595:52: note: Assuming field 'k' is equal to W_WORD
+ 5595 |             mat("?and call|name the result|function")) && W[wi].k == W_WORD &&
+      |                                                           ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:6: note: Left side of '&&' is true
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |             ^
+/home/andrew/Code/ucas/src/nlp.c:5596:6: note: Assuming field 'k' is equal to W_END
+ 5596 |             W[wi + 1].k == W_END) {
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5594:2: note: Taking true branch
+ 5594 |         if ((mat("?and call|name it|this|that") ||
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:5598:3: note: 'f' declared without an initial value
+ 5598 |                 struct func *f;
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:7: note: Assuming 'ln' is equal to NULL
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:5600:18: note: Left side of '||' is true
+ 5600 |                 if (ln == NULL || (f = user_fn(ln)) == NULL)
+      |                                ^
+/home/andrew/Code/ucas/src/nlp.c:5604:19: note: Access to field 'np' results in a dereference of an undefined pointer value (loaded from variable 'f')
+ 5604 |                 for (n = 0; n < f->np; n++)
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:5900:35: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 5900 |                 if (mat(form_phr[k].pat) || (wi = s, mat("the|a|an|its") &&
+      |                                              ~~~^~~
+/home/andrew/Code/ucas/src/nlp.c:5900:35: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:5900:35: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:5920:8: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 5920 |                 *n = atoi(W[wi].s);
+      |                      ^
+/home/andrew/Code/ucas/src/nlp.c:6040:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 6040 |                 n = atoi(W[wi + 2].s);
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:6167:6: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6167 |         if (strcmp(cmd, "trig"))
+      |             ^                  
+      |                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:6281:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6281 |                 if ((c = plot_const()) != NULL)
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6281:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6281:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6312:41: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6312 |                 if (!kind && W[wi - 1].k == W_WORD && strcmp(W[wi - 1].s,
+      |                                                       ^
+ 6313 |                     "endpoint") && strcmp(W[wi - 1].s, "endpoints") &&
+      |                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:6313:22: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6313 |                     "endpoint") && strcmp(W[wi - 1].s, "endpoints") &&
+      |                                    ^
+      |                                                                     != 0
+/home/andrew/Code/ucas/src/nlp.c:6314:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6314 |                     strcmp(W[wi - 1].s, "point") && strcmp(W[wi - 1].s, "hand"))
+      |                     ^
+      |                                                  != 0
+/home/andrew/Code/ucas/src/nlp.c:6314:39: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6314 |                     strcmp(W[wi - 1].s, "point") && strcmp(W[wi - 1].s, "hand"))
+      |                                                     ^                          
+      |                                                                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:6322:71: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 6322 |         } else if (verb == 1 && mat("?definite integral|integrals ?of|for")) {
+      |                                                                              ^
+/home/andrew/Code/ucas/src/nlp.c:6324:3: note: end of the original
+ 6324 |         } else if (mat("area|region|areas under|beneath|below|of")) {
+      |          ^
+/home/andrew/Code/ucas/src/nlp.c:6324:62: note: clone 1 starts here
+ 6324 |         } else if (mat("area|region|areas under|beneath|below|of")) {
+      |                                                                     ^
+/home/andrew/Code/ucas/src/nlp.c:6327:46: note: clone 2 starts here
+ 6327 |             "contained|trapped|caught between|by")) {
+      |                                                     ^
+/home/andrew/Code/ucas/src/nlp.c:6348:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6348 |             (cmd = SURF))) {
+      |              ~~~~^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6348:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6348:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6348:11: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+ 6348 |             (cmd = SURF))) {
+      |              ~~~~^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6348:11: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/nlp.c:6348:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6405:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6405 |                 if ((c = viz_axis()) != NULL) {
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6405:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6405:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6414:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6414 |                                 btw |= isw(wi - 1, "between");
+      |                                 ^~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:6433:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6433 |                         riemann |= isw(wi - 1, "riemann");
+      |                         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:6568:1: warning: included header calc2.h is not used directly [misc-include-cleaner]
+ 6568 | #include "calc2.h"
+      | ^~~~~~~~~~~~~~~~~~
+ 6569 | #include "nlp_calc2.inc"   /* derivatives, limits, series ... (calc2) */
+/home/andrew/Code/ucas/src/nlp.c:6608:4: warning: potentially unintended semicolon [bugprone-suspicious-semicolon]
+ 6608 |                         ;
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:6737:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6737 |                 if ((c = noun_cmd()) != 0) {
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6737:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6737:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6840:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6840 |                 if ((c = noun_cmd()) != 0) {
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6840:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6840:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6850:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6850 |                 if ((c = noun_cmd()) != 0) {
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6850:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6850:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6857:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 6857 |         if ((c = noun_cmd()) != 0 && (c != C_TABLE || verb || peek("of|for"))) {
+      |              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:6857:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:6857:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:6943:7: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 6943 |                 if (strncmp(p, name, n) || (p > s && (is_ident(p[-1]) ||
+      |                     ^
+      |                                         != 0
+/home/andrew/Code/ucas/src/nlp.c:6971:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6971 |         if (v->adj & A_POS) {
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:6977:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6977 |         if (v->adj & A_NEG) {
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:6983:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6983 |         if (v->adj & A_NONNEG) {
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:6989:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6989 |         if (v->adj & A_NONZERO)
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:6991:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6991 |         if (v->adj & A_EVEN)
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:6993:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6993 |         if (v->adj & A_ODD)
+      |             ^~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7000:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7000 |         if (v->lo[0] && (!v->hi[0] || !(is_number(v->lo) || (v->bc & 1)) ||
+      |                                                              ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7001:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7001 |             !(is_number(v->hi) || (v->bc & 2)))) {
+      |                                    ^~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7036:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7036 |                                 if (v->order != o || v->val[0] || !(v->uses & want))
+      |                                                                     ^~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7038:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7038 |                                 if (pass == 1 && (v->uses & mask_first))
+      |                                                   ^~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7055:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7055 |                 if ((v = var_find(sym_str(f->p[k].name))) != NULL && (v->decl ||
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7055:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7055:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7068:61: warning: parameter 'inline_ok' is unused [misc-unused-parameters]
+ 7068 | target_fn(struct tgt *t, int mask, const char *defname, int inline_ok,
+      |                                                         ~~~~^~~~~~~~~~
+ 7069 |     int mask_first, int mask_all)
+/home/andrew/Code/ucas/src/nlp.c:7085:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7085 |                         v->uses |= mask;
+      |                         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:7096:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7096 |                 if (V[k].val[0] && (V[k].uses & mask))
+      |                                     ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7158:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7158 |                 if (V[k].order && !V[k].val[0] && (V[k].uses & 1)) {
+      |                                                    ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7228:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7228 |         if ((f = user_fn(F)) != NULL && fn_used == Q.a.fn) {
+      |              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7228:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7228:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7243:4: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 7243 |         x = pn[0];
+      |           ^
+/home/andrew/Code/ucas/src/nlp.c:7419:6: note: Assuming field 'why' is null
+ 7419 |         if (Q.why && !dry)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:7419:12: note: Left side of '&&' is false
+ 7419 |         if (Q.why && !dry)
+      |                   ^
+/home/andrew/Code/ucas/src/nlp.c:7421:6: note: Assuming the condition is false
+ 7421 |         if (c2_finish())
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7421:2: note: Taking false branch
+ 7421 |         if (c2_finish())
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7424:6: note: Assuming 'dry' is not equal to 0
+ 7424 |         if (!dry)
+      |             ^~~~
+/home/andrew/Code/ucas/src/nlp.c:7424:2: note: Taking false branch
+ 7424 |         if (!dry)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7430:6: note: Assuming field 'cmd' is not equal to C_PLOT
+ 7430 |         if (Q.cmd == C_PLOT) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7430:2: note: Taking false branch
+ 7430 |         if (Q.cmd == C_PLOT) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7434:6: note: Assuming field 'cmd' is not equal to C_DSOLVE
+ 7434 |         if (Q.cmd == C_DSOLVE) {
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7434:2: note: Taking false branch
+ 7434 |         if (Q.cmd == C_DSOLVE) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7446:6: note: Assuming field 'cmd' is not equal to C_INTEG
+ 7446 |         if (Q.cmd == C_INTEG) {
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7446:2: note: Taking false branch
+ 7446 |         if (Q.cmd == C_INTEG) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7468:6: note: Assuming field 'cmd' is not equal to C_RAW
+ 7468 |         if (Q.cmd != C_RAW && Q.cmd != C_NONE)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7468:6: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:7468:24: note: Assuming field 'cmd' is not equal to C_NONE
+ 7468 |         if (Q.cmd != C_RAW && Q.cmd != C_NONE)
+      |                               ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7468:2: note: Taking true branch
+ 7468 |         if (Q.cmd != C_RAW && Q.cmd != C_NONE)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7470:6: note: Assuming the condition is false
+ 7470 |         if (Q.method[0] && (Q.cmd == C_EVAL || Q.cmd == C_RANGE ||
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7470:18: note: Left side of '&&' is false
+ 7470 |         if (Q.method[0] && (Q.cmd == C_EVAL || Q.cmd == C_RANGE ||
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:7473:11: note: Assuming field 'cmd' is not equal to C_EVAL
+ 7473 |         else if (Q.cmd == C_EVAL && (Q.interval || Q.nocrit))
+      |                  ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7473:27: note: Left side of '&&' is false
+ 7473 |         else if (Q.cmd == C_EVAL && (Q.interval || Q.nocrit))
+      |                                  ^
+/home/andrew/Code/ucas/src/nlp.c:7475:6: note: Assuming field 'cmd' is not equal to C_FIND
+ 7475 |         if (Q.cmd == C_FIND && !Q.count)
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7475:22: note: Left side of '&&' is false
+ 7475 |         if (Q.cmd == C_FIND && !Q.count)
+      |                             ^
+/home/andrew/Code/ucas/src/nlp.c:7477:2: note: Control jumps to 'case C_PROP:'  at line 7486
+ 7477 |         switch (Q.cmd) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7487:3: note: Calling 'emit_prop'
+ 7487 |                 emit_prop();
+      |                 ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7228:6: note: Assuming the condition is false
+ 7228 |         if ((f = user_fn(F)) != NULL && fn_used == Q.a.fn) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7228:31: note: Left side of '&&' is false
+ 7228 |         if ((f = user_fn(F)) != NULL && fn_used == Q.a.fn) {
+      |                                      ^
+/home/andrew/Code/ucas/src/nlp.c:7236:15: note: Assuming 'k' is >= 'np'
+ 7236 |                 for (k = 0; k < np; k++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7236:3: note: Loop condition is false. Execution continues on line 7241
+ 7236 |                 for (k = 0; k < np; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:7241:6: note: Assuming 'np' is not equal to 0
+ 7241 |         if (np == 0)
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7241:2: note: Taking false branch
+ 7241 |         if (np == 0)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7243:4: note: Assigned value is uninitialized
+ 7243 |         x = pn[0];
+      |           ^ ~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7346:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7346 |         if ((f = user_fn(F)) != NULL && fn_used == Q.a.fn) {
+      |              ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7346:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7346:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7450:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7450 |                         if (V[k].order && (V[k].uses & 1) && V[k].lo[0] &&
+      |                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7513:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7513 |                         v->uses |= 1;
+      |                         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/nlp.c:7570:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7570 |                         if (!V[k].ty[0] && V[k].lo[0] && (V[k].uses & 1))
+      |                                                           ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7579:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 7579 |         switch (Q.cmd) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:7583:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 7583 |                         if (V[k].order && !V[k].val[0] && (V[k].uses & 1))
+      |                                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp.c:7586:4: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 7586 |                         emit(S("show %s", a));
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:7586:25: note: end of the original
+ 7586 |                         emit(S("show %s", a));
+      |                                              ^
+/home/andrew/Code/ucas/src/nlp.c:7590:4: note: clone 1 starts here
+ 7590 |                         emit(S("show %s", a));
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:7739:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7739 |                         if ((d = osa(w, lists[l][k], lim)) > lim || d > bd)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7739:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7739:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7815:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7815 |                         if ((n = closest(cat, best, 4)) > 0) {
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7815:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7815:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7820:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7820 |                 if ((n = closest(W[i].s, best, 4)) > 0)
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7820:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7820:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7852:5: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 7852 |                                 strcpy(buf + i, sent + i + k);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7852:5: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 7852 |                                 strcpy(buf + i, sent + i + k);
+      |                                 ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7875:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7875 |                 if ((r = xn_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7875:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7875:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7890:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7890 |                 if ((r = dword_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7890:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7890:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7905:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7905 |                 if ((r = memk_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7905:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7905:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7911:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7911 |                 if ((r = mma_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7911:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7911:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7917:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7917 |                 if ((r = lperm_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7917:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7917:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7923:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7923 |                 if ((r = tcdot_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7923:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7923:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7929:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7929 |                 if ((r = winograd_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7929:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7929:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:7935:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 7935 |                 if ((r = ozaki_nlp_raw(sent)) != NULL) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:7935:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:7935:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:8030:5: warning: no header providing "sprintf" is directly included [misc-include-cleaner]
+ 8030 |                                 sprintf(t, "what is %s", cur + n);
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:8051:5: warning: no header providing "rep_ask_text" is directly included [misc-include-cleaner]
+ 8051 |                                 rep_ask_text(need_more);
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:8069:3: warning: Potential out of bound access to 'reply' with tainted index [clang-analyzer-security.ArrayBound]
+ 8069 |                 reply[strcspn(reply, "\r\n")] = 0;
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:9727:9: note: Assuming 'nans' is <= 0
+ 9727 |         while (nans > 0)
+      |                ^~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9727:2: note: Loop condition is false. Execution continues on line 9729
+ 9727 |         while (nans > 0)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:9730:2: note: Loop condition is true.  Entering loop body
+ 9730 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:9734:8: note: Assuming 'code_block' is null
+ 9734 |                 cl = code_block ? code_lang(code_block, code_block_lang, &unclear) :
+      |                      ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9734:8: note: '?' condition is false
+/home/andrew/Code/ucas/src/nlp.c:9736:7: note: 'cl' is not equal to CL_C
+ 9736 |                 if (cl == CL_C && !cfront_claims(piece.p, "") &&
+      |                     ^~
+/home/andrew/Code/ucas/src/nlp.c:9736:18: note: Left side of '&&' is false
+ 9736 |                 if (cl == CL_C && !cfront_claims(piece.p, "") &&
+      |                                ^
+/home/andrew/Code/ucas/src/nlp.c:9745:14: note: 'code_block' is null
+ 9745 |                 } else if (code_block && cfront_claims(piece.p, cl == CL_C ? "c" :
+      |                            ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9745:25: note: Left side of '&&' is false
+ 9745 |                 } else if (code_block && cfront_claims(piece.p, cl == CL_C ? "c" :
+      |                                       ^
+/home/andrew/Code/ucas/src/nlp.c:9756:14: note: 'cl' is not equal to CL_GLSL
+ 9756 |                 } else if (cl == CL_GLSL) {
+      |                            ^~
+/home/andrew/Code/ucas/src/nlp.c:9756:10: note: Taking false branch
+ 9756 |                 } else if (cl == CL_GLSL) {
+      |                        ^
+/home/andrew/Code/ucas/src/nlp.c:9782:7: note: 'code_block' is null
+ 9782 |                 if (code_block && spv_like(code_block)) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9782:18: note: Left side of '&&' is false
+ 9782 |                 if (code_block && spv_like(code_block)) {
+      |                                ^
+/home/andrew/Code/ucas/src/nlp.c:9791:4: note: Loop condition is false. Execution continues on line 9794
+ 9791 |                         for (i = 0; i < lines; i++)
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:9794:17: note: Assuming field 'p' is null
+ 9794 |                 sb_puts(&pad, piece.p ? piece.p : "");
+      |                               ^~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9794:17: note: '?' condition is false
+/home/andrew/Code/ucas/src/nlp.c:9795:3: note: Calling 'run_text_plain'
+ 9795 |                 run_text_plain(pad.p, file, echo);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9823:2: note: Loop condition is true.  Entering loop body
+ 9823 |         while (*p) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:9825:7: note: Assuming 'e' is not equal to NULL
+ 9825 |                 if (e == NULL)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9825:3: note: Taking false branch
+ 9825 |                 if (e == NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:9829:7: note: Assuming 'len' is > 0
+ 9829 |                 if (len > 0 && p[0] == '\x1e') {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9829:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:9829:18: note: Assuming the condition is false
+ 9829 |                 if (len > 0 && p[0] == '\x1e') {
+      |                                ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9829:3: note: Taking false branch
+ 9829 |                 if (len > 0 && p[0] == '\x1e') {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:9844:7: note: 'depth' is <= 0
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:9844:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:9844:21: note: 'len' is > 0
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                                   ^~~
+/home/andrew/Code/ucas/src/nlp.c:9844:7: note: Left side of '&&' is true
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:9844:32: note: Assuming the condition is true
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9844:7: note: Left side of '&&' is true
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:9845:7: note: Assuming the condition is true
+ 9845 |                     nlp_is_english(p, len)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9844:3: note: Taking true branch
+ 9844 |                 if (depth <= 0 && len > 0 && !isspace((unsigned char)p[0]) &&
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:9846:8: note: 'have' is 0
+ 9846 |                         if (have) {
+      |                             ^~~~
+/home/andrew/Code/ucas/src/nlp.c:9846:4: note: Taking false branch
+ 9846 |                         if (have) {
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:9850:4: note: Calling 'nlp_run'
+ 9850 |                         nlp_run(p, len, file, echo);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8116:18: note: 'i' is < 'n'
+ 8116 |         for (i = j = 0; i < n; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:8116:2: note: Loop condition is true.  Entering loop body
+ 8116 |         for (i = j = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8117:38: note: Left side of '&&' is false
+ 8117 |                 if ((unsigned char)line[i] == 0xe2 && i + 2 < n &&
+      |                                                    ^
+/home/andrew/Code/ucas/src/nlp.c:8123:45: note: Left side of '&&' is false
+ 8123 |                 } else if ((unsigned char)line[i] == 0xe2 && i + 2 < n &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/nlp.c:8132:45: note: Left side of '&&' is false
+ 8132 |                 } else if ((unsigned char)line[i] == 0xe2 && i + 2 < n &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/nlp.c:8116:18: note: Assuming 'i' is >= 'n'
+ 8116 |         for (i = j = 0; i < n; i++) {
+      |                         ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:8116:2: note: Loop condition is false. Execution continues on line 8141
+ 8116 |         for (i = j = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8142:2: note: Loop condition is false. Execution continues on line 8144
+ 8142 |         for (p = buf; isspace((unsigned char)*p); p++)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8144:6: note: Assuming the condition is false
+ 8144 |         if (*p == '?')
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8144:2: note: Taking false branch
+ 8144 |         if (*p == '?')
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8147:9: note: Assuming 'q' is <= 'p'
+ 8147 |         while (q > p && isspace((unsigned char)q[-1]))
+      |                ^~~~~
+/home/andrew/Code/ucas/src/nlp.c:8147:15: note: Left side of '&&' is false
+ 8147 |         while (q > p && isspace((unsigned char)q[-1]))
+      |                      ^
+/home/andrew/Code/ucas/src/nlp.c:8149:6: note: Assuming 'echo' is 0
+ 8149 |         if (echo)
+      |             ^~~~
+/home/andrew/Code/ucas/src/nlp.c:8149:2: note: Taking false branch
+ 8149 |         if (echo)
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8154:2: note: Loop condition is true.  Entering loop body
+ 8154 |         for (q = p;; q++) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8155:13: note: Left side of '||' is false
+ 8155 |                 int end = *q == 0 || *q == ';';
+      |                           ^
+/home/andrew/Code/ucas/src/nlp.c:8155:24: note: Assuming the condition is false
+ 8155 |                 int end = *q == 0 || *q == ';';
+      |                                      ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8156:8: note: Assuming the condition is false
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                      ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8156:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:8156:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:8156:35: note: Assuming the condition is true
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                                                 ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8156:35: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:8156:50: note: 'q' is <= 'p'
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                                                                ^
+/home/andrew/Code/ucas/src/nlp.c:8156:56: note: Left side of '&&' is false
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                                                                      ^
+/home/andrew/Code/ucas/src/nlp.c:8156:7: note: Left side of '&&' is true
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:8156:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:8158:9: note: 'q' is <= 'p'
+ 8158 |                     !(q > p && isdigit((unsigned char)q[-1]) &&
+      |                       ^
+/home/andrew/Code/ucas/src/nlp.c:8158:15: note: Left side of '&&' is false
+ 8158 |                     !(q > p && isdigit((unsigned char)q[-1]) &&
+      |                             ^
+/home/andrew/Code/ucas/src/nlp.c:8156:7: note: Left side of '&&' is true
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                     ^
+/home/andrew/Code/ucas/src/nlp.c:8156:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:8160:9: note: 'q' is <= 'p'
+ 8160 |                     !(q > p && q[-1] == '.')) {
+      |                       ^
+/home/andrew/Code/ucas/src/nlp.c:8160:15: note: Left side of '&&' is false
+ 8160 |                     !(q > p && q[-1] == '.')) {
+      |                             ^
+/home/andrew/Code/ucas/src/nlp.c:8156:3: note: Taking true branch
+ 8156 |                 if ((*q == '.' || *q == '?' || (*q == '!' && !(q > p &&
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8162:4: note: Loop condition is false. Execution continues on line 8164
+ 8162 |                         while (isspace((unsigned char)*r))
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:8164:16: note: Left side of '||' is true
+ 8164 |                         if (*r == 0 || isupper((unsigned char)*r) || *q == '?')
+      |                                     ^
+/home/andrew/Code/ucas/src/nlp.c:8167:7: note: 'end' is 1
+ 8167 |                 if (end) {
+      |                     ^~~
+/home/andrew/Code/ucas/src/nlp.c:8167:3: note: Taking true branch
+ 8167 |                 if (end) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8170:4: note: Loop condition is false. Execution continues on line 8172
+ 8170 |                         while (*start == '"')
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:8172:8: note: Assuming the condition is true
+ 8172 |                         if (strspn(start, " \t\"") < strlen(start) &&
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8172:8: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nlp.c:8173:8: note: Calling 'translate_asking'
+ 8173 |                             translate_asking(start) && out.n) {
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8024:3: note: Loop condition is false. Execution continues on line 8026
+ 8024 |                 while (*cur == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8026:3: note: Loop condition is true.  Entering loop body
+ 8026 |                 for (k = 0; open[k]; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8028:8: note: Assuming the condition is true
+ 8028 |                         if (!strncasecmp(cur, open[k], n)) {
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8028:4: note: Taking true branch
+ 8028 |                         if (!strncasecmp(cur, open[k], n)) {
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:8033:5: note:  Execution continues on line 8038
+ 8033 |                                 break;
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:8038:2: note: Loop condition is true.  Entering loop body
+ 8038 |         for (tries = 0;; tries++) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:8042:7: note: Assuming 'nlp_asked' is 0
+ 8042 |                 if (nlp_asked) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8042:3: note: Taking false branch
+ 8042 |                 if (nlp_asked) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8046:7: note: 'ok' is 0
+ 8046 |                 if (ok || need_more == NULL)
+      |                     ^~
+/home/andrew/Code/ucas/src/nlp.c:8046:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:8046:13: note: Assuming 'need_more' is not equal to NULL
+ 8046 |                 if (ok || need_more == NULL)
+      |                           ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8046:3: note: Taking false branch
+ 8046 |                 if (ok || need_more == NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8048:7: note: Assuming 'nlp_defer' is 0
+ 8048 |                 if (nlp_defer || rep_on) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8048:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nlp.c:8048:20: note: Assuming 'rep_on' is 0
+ 8048 |                 if (nlp_defer || rep_on) {
+      |                                  ^~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8048:3: note: Taking false branch
+ 8048 |                 if (nlp_defer || rep_on) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:8066:8: note: Taint originated here
+ 8066 |                         if (fgets(reply, sizeof reply, stdin) == NULL)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8066:8: note: Taint propagated to the 1st argument
+ 8066 |                         if (fgets(reply, sizeof reply, stdin) == NULL)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8066:4: note: Taking false branch
+ 8066 |                         if (fgets(reply, sizeof reply, stdin) == NULL)
+      |                         ^
+/home/andrew/Code/ucas/src/nlp.c:8069:9: note: Taint propagated to the return value
+ 8069 |                 reply[strcspn(reply, "\r\n")] = 0;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8069:3: note: Access of 'reply' with a tainted index that may be too large
+ 8069 |                 reply[strcspn(reply, "\r\n")] = 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:8485:8: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 8485 |                             strncmp(line, "mma", 3) && strncmp(line, "hmma", 4))
+      |                             ^
+      |                                                     != 0
+/home/andrew/Code/ucas/src/nlp.c:8485:35: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 8485 |                             strncmp(line, "mma", 3) && strncmp(line, "hmma", 4))
+      |                                                        ^                       
+      |                                                                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:8657:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 8657 |                             (strcmp(w1, "partial") || strstr(s, "fraction")))
+      |                              ^
+      |                                                    != 0
+/home/andrew/Code/ucas/src/nlp.c:8768:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 8768 |                     "over %u MiB)\n", name, IMG_MAXGAL, IMG_MAXFILE >> 20);
+      |                                                         ^
+/home/andrew/Code/ucas/src/img.h:17:29: note: expanded from macro 'IMG_MAXFILE'
+   17 | #define IMG_MAXFILE (12u << 20)         /* encoded bytes */
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/nlp.c:8768:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 8768 |                     "over %u MiB)\n", name, IMG_MAXGAL, IMG_MAXFILE >> 20);
+      |                                                                     ~~ ^~
+/home/andrew/Code/ucas/src/nlp.c:8785:19: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 8785 |         if (e - p < 8 || strncmp(p, "```image", 8) || (p[8] != ' ' &&
+      |                          ^
+      |                                                    != 0
+/home/andrew/Code/ucas/src/nlp.c:9143:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 9143 |                         if ((n = ident_len(w)) != 0 && n < nout) {
+      |                              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9143:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:9143:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:9264:24: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9264 |                                 if ((after_sink && strcmp(lw, "int") && strcmp(lw,
+      |                                                    ^
+      |                                                                      != 0
+/home/andrew/Code/ucas/src/nlp.c:9264:45: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9264 |                                 if ((after_sink && strcmp(lw, "int") && strcmp(lw,
+      |                                                                         ^
+ 9265 |                                     "integer")) || (spirv_sink_known(w) && (said ||
+      |                                               
+      |                                                != 0
+/home/andrew/Code/ucas/src/nlp.c:9302:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+ 9302 |         uint32_t here_models[8];
+      |         ^
+/home/andrew/Code/ucas/src/nlp.c:9446:15: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9446 |                         } else if (strcmp(lw, "of") && strcmp(lw, "is"))
+      |                                    ^
+      |                                                     != 0
+/home/andrew/Code/ucas/src/nlp.c:9450:13: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9450 |                         else if (strcmp(lw, "of") && strcmp(lw, "is"))
+      |                                  ^
+      |                                                   != 0
+/home/andrew/Code/ucas/src/nlp.c:9469:45: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9469 |                         if (!strcmp(lw, "functions") && !f_fn && strcmp(lastw, "the") &&
+      |                                                                  ^
+      |                                                                                       != 0
+/home/andrew/Code/ucas/src/nlp.c:9470:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9470 |                             strcmp(lastw, "these") && strcmp(lastw, "those") &&
+      |                             ^
+      |                                                    != 0
+/home/andrew/Code/ucas/src/nlp.c:9470:34: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9470 |                             strcmp(lastw, "these") && strcmp(lastw, "those") &&
+      |                                                       ^
+      |                                                                              != 0
+/home/andrew/Code/ucas/src/nlp.c:9471:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9471 |                             strcmp(lastw, "my") && strcmp(lastw, "its") &&
+      |                             ^
+      |                                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:9471:31: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9471 |                             strcmp(lastw, "my") && strcmp(lastw, "its") &&
+      |                                                    ^
+      |                                                                         != 0
+/home/andrew/Code/ucas/src/nlp.c:9472:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9472 |                             strcmp(lastw, "all") && strcmp(lastw, "some") &&
+      |                             ^
+      |                                                  != 0
+/home/andrew/Code/ucas/src/nlp.c:9472:32: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9472 |                             strcmp(lastw, "all") && strcmp(lastw, "some") &&
+      |                                                     ^
+      |                                                                           != 0
+/home/andrew/Code/ucas/src/nlp.c:9473:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9473 |                             strcmp(lastw, "no") && strcmp(lastw, "without"))
+      |                             ^
+      |                                                 != 0
+/home/andrew/Code/ucas/src/nlp.c:9473:31: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9473 |                             strcmp(lastw, "no") && strcmp(lastw, "without"))
+      |                                                    ^                       
+      |                                                                             != 0
+/home/andrew/Code/ucas/src/nlp.c:9479:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9479 |                                 if (strcmp(lw, "the"))
+      |                                     ^                
+      |                                                       != 0
+/home/andrew/Code/ucas/src/nlp.c:9488:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 9488 |                         if (strcmp(lw, "ulp") && strcmp(lw, "ulps"))
+      |                             ^
+      |                                               != 0
+/home/andrew/Code/ucas/src/nlp.c:9529:10: warning: 'sscanf' used to convert a string to an unsigned integer value, but function will not report conversion errors; consider using 'strtoul' instead [bugprone-unchecked-string-to-number-conversion]
+ 9529 |                                             sscanf(ts, "set %u binding %u", &a, &b) == 2)
+      |                                             ^
+/home/andrew/Code/ucas/src/nlp.c:9529:10: warning: no header providing "sscanf" is directly included [misc-include-cleaner]
+/home/andrew/Code/ucas/src/nlp.c:9561:3: warning: 'sscanf' used to convert a string to an unsigned integer value, but function will not report conversion errors; consider using 'strtoul' instead [bugprone-unchecked-string-to-number-conversion]
+ 9561 |                 sscanf(texbind, "%u %u", &a, &b);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp.c:9579:39: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 9579 |                             !strncmp(s, "model ", 6) && (n = ident_len(s + 6)) != 0 &&
+      |                                                          ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp.c:9579:39: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp.c:9579:39: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp.c:9657:15: warning: Value stored to 'q' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 9657 |                 const char *q = p, *e, *at = NULL, *o = piece->p, *oe;
+      |                             ^   ~
+/home/andrew/Code/ucas/src/nlp.c:9657:15: note: Value stored to 'q' during its initialization is never read
+ 9657 |                 const char *q = p, *e, *at = NULL, *o = piece->p, *oe;
+      |                             ^   ~
+/home/andrew/Code/ucas/src/nlp.c:9680:5: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 9680 |                                 sb_putc(&out, '\n');
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp.c:9680:24: note: end of the original
+ 9680 |                                 sb_putc(&out, '\n');
+      |                                                    ^
+/home/andrew/Code/ucas/src/nlp.c:9701:5: note: clone 1 starts here
+ 9701 |                                 sb_putc(&out, '\n');
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp_alg.inc:73:5: warning: potentially unintended semicolon [bugprone-suspicious-semicolon]
+   73 |                                 ;
+      |                                 ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:95:32: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   95 |             isw(wi + 1, "oo")) && (wi += 2)))
+      |                                    ~~~^~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:95:32: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:95:32: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:114:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  114 |         if (W[wi].k == W_WORD && (k = lookup(ordw, W[wi].s)) >= 1) {
+      |                                   ~~^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:114:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:114:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:120:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  120 |                 k = atoi(W[wi].s);
+      |                     ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:289:3: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  289 |                 ord = atoi(W[wi++].s);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:289:24: note: end of the original
+  289 |                 ord = atoi(W[wi++].s);
+      |                                      ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:295:3: note: clone 1 starts here
+  295 |                 ord = atoi(W[wi++].s);
+      |                 ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:289:9: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  289 |                 ord = atoi(W[wi++].s);
+      |                       ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:295:9: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  295 |                 ord = atoi(W[wi++].s);
+      |                       ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:338:9: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  338 |                 ord = atoi(W[wi++].s);
+      |                       ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:368:9: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  368 |                                 e = atoi(W[wi++].s);
+      |                                     ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:411:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  411 |                 if ((f = user_fn(base)) == NULL || f->np < 1)
+      |                      ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:411:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:411:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:452:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  452 |             (wi += 2)) || acc_sym("\xe2\x86\x92") || mat("to"))) {
+      |              ~~~^~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:452:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:452:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:754:18: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  754 |                         } else if ((n = c2_ordinal()) > 0 && mat("order|degree")) {
+      |                                     ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:754:18: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:754:18: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:760:26: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  760 |                 if (mac && C2.pt[0] && strcmp(C2.pt, "0"))
+      |                                        ^                 
+      |                                                           != 0
+/home/andrew/Code/ucas/src/nlp_calc2.inc:880:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  880 |                 if ((ord = c2_ordinal()) != 0)
+      |                      ~~~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:880:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:880:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:888:49: warning: incrementing and referencing a variable in a complex condition can cause unintended side-effects due to C++'s order of evaluation, consider moving the modification outside of the condition to avoid misunderstandings [bugprone-inc-dec-in-conditions]
+  888 |                     (isw(wi, "slope") && isw(wi + 1, "of") && ++wi)) {
+      |                                                               ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:888:12: note: variable is referenced here
+  888 |                     (isw(wi, "slope") && isw(wi + 1, "of") && ++wi)) {
+      |                          ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1003:21: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1003 |         if (t->named && (f = user_fn(t->fn)) != NULL)
+      |                          ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1003:21: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1003:21: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1027:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1027 |                         if (V[k].order && (V[k].uses & 1) && V[k].lo[0] && V[k].hi[0] &&
+      |                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1096:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1096 |         switch (C2.kind) {
+      |         ^
+/home/andrew/Code/ucas/src/nlp_calc2.inc:1175:19: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1175 |                 if (C2.pt[0] && strcmp(C2.pt, "0"))
+      |                                 ^                 
+      |                                                    != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:85:9: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   85 |         return strncmp(s + k, "of ", 3) && strncmp(s + k, "the ", 4) &&
+      |                ^
+      |                                         != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:86:6: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   86 |             strncmp(s + k, "me ", 3) && strncmp(s + k, "between ", 8) &&
+      |             ^
+      |                                      != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:86:34: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   86 |             strncmp(s + k, "me ", 3) && strncmp(s + k, "between ", 8) &&
+      |                                         ^
+      |                                                                       != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:87:6: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   87 |             strncmp(s + k, "from ", 5) && strncmp(s + k, "a ", 2) &&
+      |             ^
+      |                                        != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:87:36: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   87 |             strncmp(s + k, "from ", 5) && strncmp(s + k, "a ", 2) &&
+      |                                           ^
+      |                                                                   != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:88:6: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   88 |             strncmp(s + k, "an ", 3);
+      |             ^                       
+      |                                      != 0
+/home/andrew/Code/ucas/src/nlp_hyper.inc:272:7: warning: Value stored to 'a' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+  272 |                 int a = wi;
+      |                     ^   ~~
+/home/andrew/Code/ucas/src/nlp_hyper.inc:272:7: note: Value stored to 'a' during its initialization is never read
+  272 |                 int a = wi;
+      |                     ^   ~~
+/home/andrew/Code/ucas/src/nlp_img.inc:59:48: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+   59 |             || strstr(w, "rd") || strstr(w, "th")) && atoi(w) > 0 &&
+      |                                                       ^
+/home/andrew/Code/ucas/src/nlp_img.inc:60:6: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+   60 |             atoi(w) <= IMG_MAXIN)
+      |             ^
+/home/andrew/Code/ucas/src/nlp_img.inc:61:10: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+   61 |                 return atoi(w);
+      |                        ^
+/home/andrew/Code/ucas/src/nlp_img.inc:79:33: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+   79 |             w[strlen(w) - 1] != 'i' && strncmp(w, "srgb", 4)))
+      |                                        ^                    
+      |                                                              != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:110:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  110 |                 verb |= si_is(t[i].w, verbs);
+      |                 ^~~~ ~~
+/home/andrew/Code/ucas/src/nlp_img.inc:111:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  111 |                 eng |= si_is(t[i].w, english) || si_ordinal(t[i].w) > 0;
+      |                 ^~~ ~~
+/home/andrew/Code/ucas/src/nlp_img.inc:136:23: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  136 |                     strlen(w) && (k = atoi(w)) >= 1 && k <= IMG_MAXIN &&
+      |                                   ~~^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:136:23: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:136:23: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:136:25: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  136 |                     strlen(w) && (k = atoi(w)) >= 1 && k <= IMG_MAXIN &&
+      |                                       ^
+/home/andrew/Code/ucas/src/nlp_img.inc:137:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  137 |                     strcmp(t[i].w, "image") && strcmp(t[i].w, "picture")) {
+      |                     ^
+      |                                             != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:137:34: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  137 |                     strcmp(t[i].w, "image") && strcmp(t[i].w, "picture")) {
+      |                                                ^                        
+      |                                                                          != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:142:23: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  142 |                     strlen(w) && (k = atoi(w)) >= 1 && k <= IMG_MAXIN &&
+      |                                   ~~^~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:142:23: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:142:23: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:142:25: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  142 |                     strlen(w) && (k = atoi(w)) >= 1 && k <= IMG_MAXIN &&
+      |                                       ^
+/home/andrew/Code/ucas/src/nlp_img.inc:143:18: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  143 |                     (i == 0 || strcmp(t[i - 1].w, "this"))) {
+      |                                ^                         
+      |                                                           != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:148:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  148 |         if ((k = si_ordinal(t[i].w)) > 0 && i + 1 < n && (si_is(t[i + 1].w,
+      |              ~~^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:148:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:148:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:180:14: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  180 |         else if ((f = si_format(w)) >= 0)
+      |                   ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:180:14: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:180:14: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:182:11: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  182 |         else if (strcmp(w, "tan") && strcmp(w, "mint") && strcmp(w, "plum") &&
+      |                  ^
+      |                                   != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:182:52: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  182 |         else if (strcmp(w, "tan") && strcmp(w, "mint") && strcmp(w, "plum") &&
+      |                                                           ^
+      |                                                                             != 0
+/home/andrew/Code/ucas/src/nlp_img.inc:266:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  266 |                         if ((d = osa(w, si_words[k], lim)) < bd) {
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:266:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:266:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:329:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  329 |                         if ((r = si_ref(t, j, &at)) >= 0) {
+      |                              ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_img.inc:329:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_img.inc:329:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_img.inc:356:9: warning: 'sscanf' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  356 |                                 if (sscanf(w, "%d%c%d", &a, &x, &b) == 3 && (x == 'x' ||
+      |                                     ^
+/home/andrew/Code/ucas/src/nlp_img.inc:365:37: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  365 |                                         sb_printf(&opt, " size %dx%d", atoi(w), atoi(t[k + 2].w));
+      |                                                                        ^
+/home/andrew/Code/ucas/src/nlp_img.inc:365:46: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  365 |                                         sb_printf(&opt, " size %dx%d", atoi(w), atoi(t[k + 2].w));
+      |                                                                                 ^
+/home/andrew/Code/ucas/src/nlp_img.inc:446:15: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  446 |                     units)) {
+      |                             ^
+/home/andrew/Code/ucas/src/nlp_img.inc:449:4: note: end of the original
+  449 |                 } else if ((si_is(w, units) || !strcmp(w, "seed") ||
+      |                  ^
+/home/andrew/Code/ucas/src/nlp_img.inc:451:46: note: clone 1 starts here
+  451 |                     isdigit((unsigned char)t[i + 1].w[0])) {
+      |                                                            ^
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  143 |                 if ((l = xn_at(s, i, " squared")) || (s[i] == ' ' &&
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+  143 |                 if ((l = xn_at(s, i, " squared")) || (s[i] == ' ' &&
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  144 |                     (l = xn_at(s, i + 1, "squared")) && ++l)) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+  144 |                     (l = xn_at(s, i + 1, "squared")) && ++l)) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:144:43: warning: incrementing and referencing a variable in a complex condition can cause unintended side-effects due to C++'s order of evaluation, consider moving the modification outside of the condition to avoid misunderstandings [bugprone-inc-dec-in-conditions]
+  144 |                     (l = xn_at(s, i + 1, "squared")) && ++l)) {
+      |                                                         ^
+/home/andrew/Code/ucas/src/nlp_xform.inc:143:8: note: variable is referenced here
+  143 |                 if ((l = xn_at(s, i, " squared")) || (s[i] == ' ' &&
+      |                      ^
+/home/andrew/Code/ucas/src/nlp_xform.inc:149:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  149 |                 if ((l = xn_at(s, i, "cubed")) != 0) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:149:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:149:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:156:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  156 |                 if ((l = xn_at(s, i, "infinity")) != 0) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:156:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:156:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  313 |         if ((l = xn_at(s, 0, "solve")) != 0 || (l = xn_at(s, 0,
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:44: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  313 |         if ((l = xn_at(s, 0, "solve")) != 0 || (l = xn_at(s, 0,
+      |                                                 ~~^~~~~~~~~~~~~
+  314 |             "use laplace to solve")) != 0 || (l = xn_at(s, 0,
+      |             ~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:44: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:313:44: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:314:42: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  314 |             "use laplace to solve")) != 0 || (l = xn_at(s, 0,
+      |                                               ~~^~~~~~~~~~~~~
+  315 |             "using laplace solve")) != 0 || (l = xn_at(s, 0,
+      |             ~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:314:42: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:314:42: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:315:41: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  315 |             "using laplace solve")) != 0 || (l = xn_at(s, 0,
+      |                                              ~~^~~~~~~~~~~~~
+  316 |             "use the laplace transform to solve")) != 0) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:315:41: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:315:41: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:328:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  328 |                         if ((at = xn_find(body, lap[k], 0)) >= 0) {
+      |                              ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:328:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:328:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:334:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  334 |                         if ((at = xn_find(body, zt[k], 0)) >= 0) {
+      |                              ~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:334:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:334:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  354 |         if ((l = xn_at(s, 0, "does")) != 0 || (l = xn_at(s, 0, "is")) != 0 ||
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:43: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  354 |         if ((l = xn_at(s, 0, "does")) != 0 || (l = xn_at(s, 0, "is")) != 0 ||
+      |                                                ~~^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:43: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:354:43: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  355 |             (l = xn_at(s, 0, "test")) != 0 || (l = xn_at(s, 0, "check")) != 0) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:43: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  355 |             (l = xn_at(s, 0, "test")) != 0 || (l = xn_at(s, 0, "check")) != 0) {
+      |                                                ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:43: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:355:43: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:437:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  437 |                         if ((l = xn_at(s, 0, K[k].ph)) != 0)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:437:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:437:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:444:42: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  444 |                     "of") && !xn_at(body, 0, "for") && strcmp(K[k].cmd, "laplace"))
+      |                                                        ^                          
+      |                                                                                    != 0
+/home/andrew/Code/ucas/src/nlp_xform.inc:449:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  449 |                 switch (K[k].kind) {
+      |                 ^
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  481 |                         if ((o = xn_find(body, "on", 0)) > 0 || (o = xn_find(body,
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:47: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  481 |                         if ((o = xn_find(body, "on", 0)) > 0 || (o = xn_find(body,
+      |                                                                  ~~^~~~~~~~~~~~~~~
+  482 |                             "over", 0)) > 0 || (o = xn_find(body, "from", 0)) > 0) {
+      |                             ~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:47: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:481:47: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:482:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  482 |                             "over", 0)) > 0 || (o = xn_find(body, "from", 0)) > 0) {
+      |                                                 ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nlp_xform.inc:482:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/nlp_xform.inc:482:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/nlp_xform.inc:487:6: warning: the result from calling 'memcpy' is not null-terminated [bugprone-not-null-terminated-result]
+  487 |                                         memcpy(opt, " on   ", 6);
+      |                                         ^~~~~~              ~~~
+      |                                         strcpy
+/home/andrew/Code/ucas/src/nlp_xform.inc:506:9: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  506 |                                     strcmp(tail[t2], " numbers"))
+      |                                     ^                           
+      |                                                                  != 0
+/home/andrew/Code/ucas/src/nlp_xform.inc:559:7: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  559 |                 if (strcmp(K[k].cmd, "tf"))
+      |                     ^                     
+      |                                            != 0
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

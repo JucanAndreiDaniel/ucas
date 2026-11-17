@@ -1,0 +1,73 @@
+# Transient run outputs
+*.got
+*.diff
+*.err
+*.log
+*.out.new
+
+# Per-area scratch/harness directories (goldens live at the area top level)
+_scratch/
+.work/
+harness/
+cases/
+seeds/
+shdir/
+subdir/
+!areas/frontend/tool_abuse_files/subdir/
+!areas/frontend/tool_abuse_files/subdir/.keep
+_tmp_cases/
+*.diffs/
+results/
+results_gcc/
+results_*/
+runs/
+gen/
+det/
+shipped_check/
+selftest/
+# Harness .out files without a matching input are not goldens; ignore any
+# .out whose parent is a known artifact dir (covered above) — goldens always
+# sit at the area top level next to their .ucas/.jsonl input.
+
+# Build artifacts from instrumented/fuzzing builds (regenerate with the
+# build_*.sh / build.sh scripts kept alongside them).
+*.o
+*.d
+*.a
+*.profraw
+*.profdata
+obj/
+obj_*/
+bin_ucas_*
+fuzz_ucas*
+ucas_cov
+ucas_san
+myucas
+
+# Large generated reports / corpora (regenerate with the harness scripts).
+corpus_export.json
+smoke_export.json
+*.profdata
+*.profraw
+corpus/
+corpus_fast/
+run/
+crashes/
+leaks/
+work/
+
+# SDK symlink farm (machine-specific, regenerate if needed)
+node_modules/
+
+# Generated evidence/logs with build-time absolute paths (not goldens)
+driver_results.json
+harness_log.json
+harness_log.txt
+pairs_*.txt
+ops_analysis.json
+srclist.txt
+snxlist.txt
+
+# Python bytecode
+__pycache__/
+*.pyc

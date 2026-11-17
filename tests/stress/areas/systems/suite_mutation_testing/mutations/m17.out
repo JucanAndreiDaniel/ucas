@@ -1,0 +1,51 @@
+> odd(r: u64 in 1..65535) = r & 1
+> range odd
+range of odd -> u64:
+  0..1
+  fits in u1
+  over all 65535 points of the domain
+> odd32(r: u32 in 1..65534) = r & 1
+> range odd32
+range of odd32 -> u32:
+  0..1
+  fits in u1
+  over all 65534 points of the domain
+> q(a: u64 in 1..16, b: u64 in 1..64, c: u64 in 0..5, d: u64 in 0..5, e: u64 in 1..16) = (a * b * e) / (c + d + 1)
+> q2(a: u64 in 1..16, b: u64 in 1..64, c: u64 in 0..5, d: u64 in 0..5, e: u64 in 1..16) = (e * b * a) / (d + c + 1)
+> equiv q q2
+q and q2 are equal on the domain of q (exhaustive)
+> pr(a: u64 in 1..16, b: u64 in 1..64, c: u64 in 0..5, d: u64 in 0..5, e: u64 in 1..16) = a * b * (c + 1) * (d + 1) * e
+> range pr
+range of pr -> u64:
+  1..589824
+  fits in u20
+  over all 589824 points of the domain
+> big(x: u64) = x & 1
+> range big
+range of big -> u64:
+  0..1
+  fits in u1
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): 0..1
+> id(x: u64) = x
+> range id
+range of id -> u64:
+  0..18446744073709551615
+  fits in u64
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> top(x: u64) = x >> 63
+> range top
+range of top -> u64:
+  0..1
+  fits in u1
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> zero(x: u64) = 0
+> equiv top zero
+top and zero differ at 32755 points of the sample, e.g. x=18446744073709551615: 1 vs 0
+> low(x: u64) = (x >> 32) & 0xFFFF
+> range low
+range of low -> u64:
+  0..65535
+  fits in u16
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): 0..65535

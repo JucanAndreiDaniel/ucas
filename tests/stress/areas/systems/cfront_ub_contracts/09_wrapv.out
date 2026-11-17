@@ -1,0 +1,23 @@
+> c lower nofile
+  add(x: i32, y: i32) = x + y
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + i64(y)
+  mul(x: i32, y: i32) = x*y
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x)*i64(y)
+  neg(x: i32) = -x
+    defined where (no C UB): -i64(x) >= -2147483648 && -i64(x) <= 2147483647
+  divm1(x: i32) = x/-1
+    defined where (no C UB): x != -2147483648
+  incr(x: i32) = x + 1
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
+  f2i(d: f64) = i32(d)
+    defined where (no C UB): d > -2147483649 && d < 2147483648
+  uadd(x: u32, y: u32) = x + y
+> c lower nofile wrapv
+  addv(x: i32, y: i32) = x + y
+  mulv(x: i32, y: i32) = x*y
+  negv(x: i32) = -x
+  divm1v(x: i32) = x/-1
+  incrv(x: i32) = x + 1
+  f2iv(d: f64) = i32(d)
+    defined where (no C UB): d > -2147483649 && d < 2147483648
+  uaddv(x: u32, y: u32) = x + y

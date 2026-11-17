@@ -218,7 +218,7 @@ cost of lg under gt1030: 149.625 (worst case; 0 operations outside loops and 1 l
 > t64(t: int in 0..260100, dd: int in 1..260100) = (t*64 + dd/2)/dd where t <= dd
 > range t64
 range of t64 -> int:
-  0..64
+  0..64  (sampled min/max; not a sound bound)
   fits in u7
   sampled 32803 points (domain has 67652270100 points); not exhaustive
   sound bound (intervals): 0..16776450
@@ -231,7 +231,7 @@ range of t64 -> int:
 > a4(t: u32 in 0..65535, d: u32 in 1..65535) = (t * 255 + d / 2) / d where t <= d
 > range a4
 range of a4 -> u32:
-  0..255
+  0..255  (sampled min/max; not a sound bound)
   fits in u8
   sampled 32708 points (domain has 4294901760 points); not exhaustive
   sound bound (intervals): 0..16744192
@@ -244,7 +244,7 @@ range of a4 -> u32:
 > sq(x: int in 0..100000, y: int in 0..100000) = x*x - y where y <= x
 > range sq
 range of sq -> int:
-  0..10000000000
+  0..10000000000  (sampled min/max; not a sound bound)
   fits in u34
   sampled 32844 points (domain has 10000200001 points); not exhaustive
   sound bound (intervals): -100000..10000000000
@@ -333,7 +333,7 @@ find qb: 1024 points, computing in i32, costs from gt1030
   cost 75  t4*t4 < t2*t2 && t4*t4 <= t3*t3 ? q + 1 : t3*t3 < t2*t2 ? dn : q where q = (v*((1 << b) - 1) + 127)/255, dn = q > 0 ? q - 1 : q, t1 = 2b - 8, t2 = (q << 8 - b | q >> t1) - v, t3 = (dn << 8 - b | dn >> t1) - v, t4 = (q + 1 << 8 - b | q + 1 >> t1) - v drops the ?: on (v*m + 127)/255 < m where m = (1 << ... (it always takes the first arm) (exhaustive)
   ... 9 more single drops hold (not listed)
   rewrites the model prices lower (each derived, with what it holds under):
-  cost 67  t4*t4 < t5*t5 && t4*t4 <= t7*t7 ? t3 : t7*t7 < t5*t5 ? t6 : t2 where m = (1 << b) - 1, t1 = 2b - 8, t2 = i32(u32(v*m + 127)/255), t3 = t2 < m ? t2 + 1 : t2, t4 = (t3 << 8 - b | t3 >> t1) - v, t5 = (t2 << 8 - b | t2 >> t1) - v, t6 = t2 > 0 ? t2 - 1 : t2, t7 = (t6 << 8 - b | t6 >> t1) - v the signed division (v*((1 << b) - 1) + 127)/255 as u32 (its operands are never negative) (derived; checked on every point)
+  cost 67  t7*t7 < t4*t4 && t7*t7 <= t5*t5 ? t6 : t5*t5 < t4*t4 ? t3 : t2 where m = (1 << b) - 1, t1 = 2b - 8, t2 = i32(u32(v*m + 127)/255), t3 = t2 > 0 ? t2 - 1 : t2, t4 = (t2 << 8 - b | t2 >> t1) - v, t5 = (t3 << 8 - b | t3 >> t1) - v, t6 = t2 < m ? t2 + 1 : t2, t7 = (t6 << 8 - b | t6 >> t1) - v the signed division (v*((1 << b) - 1) + 127)/255 as u32 (its operands are never negative) (derived; checked on every point)
       holds where v*((1 << b) - 1) + 127 >= 0 (v*((1 << b) - 1) + 127 in [127, 32512]: interval arithmetic over the parameters' ranges) and 255 >= 1 (255 in [255, 255]: a constant)
       v*((1 << b) - 1) + 127 / 255 on i32 truncates toward zero; with the dividend >= 0 and the divisor >= 1 the quotient is >= 0, so trunc(a/b) = floor(a/b)
       0 <= a, b < 2^31: as u32 they are the same numbers, and the unsigned quotient floor(a/b) (at most a < 2^31) converts back to i32 unchanged
@@ -355,7 +355,7 @@ find qb: 1024 points, computing in i32, costs from gt1030
   cost 17  v*(b == 4 ? 241 : b == 5 ? 498 : b == 6 ? 1012 : 2047) + 2048 >> 12
            K = b == 4 ? 241 : b == 5 ? 498 : b == 6 ? 1012 : 2047 (one constant per case) depends only on b: compute it once where b is set; 5 per use once K is known (exhaustive)
   dot products under gt1030 (sums of products laid into lanes; cost 79.375 as written):
-  cost 78.375 t4*t4 < t5*t5 && t4*t4 <= t7*t7 ? t3 : t7*t7 < t5*t5 ? t6 : t2 where m = (1 << b) - 1, t1 = 2b - 8, t2 = (i32(udot4x8(v, m)) + 127)/255, t3 = t2 < m ? t2 + 1 : t2, t4 = (t3 << 8 - b | t3 >> t1) - v, t5 = (t2 << 8 - b | t2 >> t1) - v, t6 = t2 > 0 ? t2 - 1 : t2, t7 = (t6 << 8 - b | t6 >> t1) - v
+  cost 78.375 t7*t7 < t4*t4 && t7*t7 <= t5*t5 ? t6 : t5*t5 < t4*t4 ? t3 : t2 where m = (1 << b) - 1, t1 = 2b - 8, t2 = (i32(udot4x8(v, m)) + 127)/255, t3 = t2 > 0 ? t2 - 1 : t2, t4 = (t2 << 8 - b | t2 >> t1) - v, t5 = (t3 << 8 - b | t3 >> t1) - v, t6 = t2 < m ? t2 + 1 : t2, t7 = (t6 << 8 - b | t6 >> t1) - v
            udot4x8 (4 x 8-bit lanes, unsigned): lane 0: v * ((1 << b) - 1)
            v in 0..255 (proved range)
            (1 << b) - 1 in 15..127 (proved range)

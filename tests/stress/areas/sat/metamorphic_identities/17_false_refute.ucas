@@ -1,0 +1,50 @@
+# Identities that are FALSE and must be refuted
+# All identities hold on their declared domain unless noted.
+# case 1: expect DIFFER
+f01(x: u8, y: u8) = ~(x & y)
+g01(x: u8, y: u8) = ~x & ~y
+equiv f01 g01
+# case 2: expect DIFFER
+f02(x: u8) = ~x
+g02(x: u8) = -x
+equiv f02 g02
+# case 3: expect DIFFER
+f03(x: u8) = x << 1 >> 1
+g03(x: u8) = x
+equiv f03 g03
+# case 4: expect DIFFER
+f04(x: u8, y: u8) = (x*y)/y
+g04(x: u8, y: u8) = x
+equiv f04 g04
+# case 5: expect DIFFER
+f05(x: u8) = x/2*2
+g05(x: u8) = x
+equiv f05 g05
+# case 6: expect DIFFER
+f06(x: u8, y: u8) = (x+y)>>1
+g06(x: u8, y: u8) = (x>>1)+(y>>1)
+equiv f06 g06
+# case 7: expect DIFFER
+f07(x: u8, y: u8) = x xor y
+g07(x: u8, y: u8) = x + y
+equiv f07 g07
+# case 8: expect DIFFER
+f08(x: u8, y: u8) = x | y
+g08(x: u8, y: u8) = x + y
+equiv f08 g08
+# case 9: expect DIFFER
+f09(x: u8, y: u8) = (x&y)+(x|y)
+g09(x: u8, y: u8) = x xor y
+equiv f09 g09
+# case 10: expect DIFFER
+f10(x: u8) = x xor ~x
+g10(x: u8) = 0
+equiv f10 g10
+# case 11: expect DIFFER
+f11(x: u8) = (x+x)>>1
+g11(x: u8) = x
+equiv f11 g11
+# case 12: expect DIFFER
+f12(x: i8) = x << 1 >> 1
+g12(x: i8) = x & 127
+equiv f12 g12

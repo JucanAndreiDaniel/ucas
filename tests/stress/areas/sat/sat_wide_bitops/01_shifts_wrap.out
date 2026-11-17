@@ -1,0 +1,69 @@
+> s1(x: u16, n: u16 in 0..15) = x << n
+> wrap s1
+wrap analysis of s1:
+  x << n   (u16)
+      nuw fails: unsigned wrap at 884739 points, e.g. x=32768, n=1
+      nsw fails: signed wrap at 917506 points, e.g. x=16384, n=1
+  end to end: differs from the mathematical result at 917506 points, e.g. x=32768, n=1
+  over all 1048576 points of the domain
+> range s1
+range of s1 -> u16:
+  0..65535   (65536 distinct values)
+  fits in u16
+  over all 1048576 points of the domain
+> s2(x: u16, n: u16 in 0..15) = x >> n
+> wrap s2
+wrap analysis of s2:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 1048576 points of the domain
+> range s2
+range of s2 -> u16:
+  0..65535   (65536 distinct values)
+  fits in u16
+  over all 1048576 points of the domain
+> s3(x: u32, n: u32 in 0..31) = x << n
+> wrap s3
+wrap analysis of s3:
+  x << n   (u32)
+      nuw fails: unsigned wrap at 60446 points, e.g. x=200494509, n=22
+      nsw fails: signed wrap at 61484 points, e.g. x=200494509, n=22
+  end to end: differs from the mathematical result at 61480 points, e.g. x=200494509, n=22
+  sampled 65536 points (domain has 137438953472 points); not exhaustive
+> range s3
+range of s3 -> u32:
+  0..4294967295  (sampled min/max; not a sound bound)
+  fits in u32
+  sampled 65536 points (domain has 137438953472 points); not exhaustive
+  sound bound (intervals): 0..4294967295
+> s4(x: u32, n: u32 in 0..31) = x >> n
+> wrap s4
+wrap analysis of s4:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 137438953472 points); not exhaustive
+> s5(x: u16, n: u16) = x << n
+> domain s5
+domain of s5:
+  x: u16, 0..65535
+  n: u16, 0..65535
+  requires 0 <= n < 16  (shift amount; C UB otherwise)
+  defined at 23 of 65536 points
+  undefined e.g. at x=0, n=65534; x=0, n=65535; x=19885, n=24694; x=24886, n=52340
+  C undefined behaviour at 65513 points, e.g. x=0, n=65534
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> wrap s5
+wrap analysis of s5:
+  x << n   (u16)
+      nuw fails: unsigned wrap at 16 points, e.g. x=16311, n=8
+      nsw fails: signed wrap at 17 points, e.g. x=16311, n=8
+  end to end: differs from the mathematical result at 60 points, e.g. x=39696, n=38
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> range s5
+range of s5 -> u16:
+  0..65535   (21 distinct values)  (sampled min/max; not a sound bound)
+  values: 0..2, 4, 8192, 9216, 10240, 16320, 18308, 19482, 20992, 21760, 26768, 29696, 35456, 37152, 41984, 46848, 49152, 65534..65535
+  fits in u16
+  undefined at 65513 points
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..65535

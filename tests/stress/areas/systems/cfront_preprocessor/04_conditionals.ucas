@@ -1,0 +1,43 @@
+c lower nofile
+```c
+
+#define F1
+#define F2 1
+int d1(int x){
+#ifdef F1
+ return x+1;
+#else
+ return x-1;
+#endif
+}
+int d2(int x){
+#ifndef F2
+ return x+2;
+#else
+ return x-2;
+#endif
+}
+int d3(int x){
+#if F2 == 1
+ return x+3;
+#elif F2 == 2
+ return x+4;
+#else
+ return x+5;
+#endif
+}
+int d4(int x){
+#ifdef NOT_DEFINED
+ return x+6;
+#else
+ return x+7;
+#endif
+}
+int d5(int x){
+#ifndef NOT_DEFINED
+ return x+8;
+#else
+ return x+9;
+#endif
+}
+```

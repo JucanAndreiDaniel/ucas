@@ -1,0 +1,337 @@
+src/dword.c:1549:10: warning: Potential memory leak [unix.Malloc]
+ 1549 |         c->mode = mode;
+      |                 ^
+src/dword.c:2977:2: note: Taking false branch
+ 2977 |         if (!has_f64(f->body))
+      |         ^
+src/dword.c:2979:14: note: Calling 'dword_lower'
+ 2979 |         if ((said = dword_lower(f, m, &rq, &r, NULL)) != 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2634:19: note: Assuming field 'anon' is not equal to 0
+ 2634 |         const char *fn = f->anon ? shared_str(f->body, 120) : sym_str(f->name);
+      |                          ^~~~~~~
+src/dword.c:2634:19: note: '?' condition is true
+src/dword.c:2637:18: note: Left side of '&&' is false
+ 2637 |         if (cmp_root(f) && has_f64(f->body))
+      |                         ^
+src/dword.c:2639:6: note: Assuming 'root' is not equal to 0
+ 2639 |         if (root == 0 || !has_f64(f->body)) {
+      |             ^~~~~~~~~
+src/dword.c:2639:6: note: Left side of '||' is false
+src/dword.c:2639:19: note: Assuming the condition is false
+ 2639 |         if (root == 0 || !has_f64(f->body)) {
+      |                          ^~~~~~~~~~~~~~~~~
+src/dword.c:2639:2: note: Taking false branch
+ 2639 |         if (root == 0 || !has_f64(f->body)) {
+      |         ^
+src/dword.c:2645:2: note: Calling 'run_cand'
+ 2645 |         run_cand(f, m, rq, 0, lim, &c[0]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:1550:2: note: Loop condition is true.  Entering loop body
+ 1550 |         for (guard = 0; guard < 64; guard++) {
+      |         ^
+src/dword.c:1553:8: note: 'sink32' is 0
+ 1553 |                 if (!sink32 && c->r.lo && !((c->r.e.rel == 0 || c->r.e.abs_ == 0) &&
+      |                      ^~~~~~
+src/dword.c:1553:7: note: Left side of '&&' is true
+ 1553 |                 if (!sink32 && c->r.lo && !((c->r.e.rel == 0 || c->r.e.abs_ == 0) &&
+      |                     ^
+src/dword.c:1553:18: note: Assuming field 'lo' is 0
+ 1553 |                 if (!sink32 && c->r.lo && !((c->r.e.rel == 0 || c->r.e.abs_ == 0) &&
+      |                                ^~~~~~~
+src/dword.c:1553:26: note: Left side of '&&' is false
+ 1553 |                 if (!sink32 && c->r.lo && !((c->r.e.rel == 0 || c->r.e.abs_ == 0) &&
+      |                                        ^
+src/dword.c:1558:7: note: Assuming field 'meets' is 0
+ 1558 |                 if (c->meets || !L.nsloppy || !L.worst || L.worstk <= 1.001L)
+      |                     ^~~~~~~~
+src/dword.c:1558:7: note: Left side of '||' is false
+src/dword.c:1558:19: note: Assuming field 'nsloppy' is 0
+ 1558 |                 if (c->meets || !L.nsloppy || !L.worst || L.worstk <= 1.001L)
+      |                                 ^~~~~~~~~~
+src/dword.c:1558:30: note: Left side of '||' is true
+ 1558 |                 if (c->meets || !L.nsloppy || !L.worst || L.worstk <= 1.001L)
+      |                                            ^
+src/dword.c:1559:4: note:  Execution continues on line 1562
+ 1559 |                         break;
+      |                         ^
+src/dword.c:1562:6: note: 'sink32' is 0
+ 1562 |         if (sink32)
+      |             ^~~~~~
+src/dword.c:1562:2: note: Taking false branch
+ 1562 |         if (sink32)
+      |         ^
+src/dword.c:1564:16: note: Field 'lo' is 0
+ 1564 |         else if (c->r.lo)
+      |                       ^
+src/dword.c:1564:7: note: Taking false branch
+ 1564 |         else if (c->r.lo)
+      |              ^
+src/dword.c:1570:6: note: Assuming field 'mag_unknown' is not equal to 0
+ 1570 |         if (!L.mag_unknown && L.maxmag >= 0x1p126L) {
+      |             ^~~~~~~~~~~~~~
+src/dword.c:1570:21: note: Left side of '&&' is false
+ 1570 |         if (!L.mag_unknown && L.maxmag >= 0x1p126L) {
+      |                            ^
+src/dword.c:1587:13: note: Assuming field 'p' is null
+ 1587 |         c->table = L.table.p ? strdup(L.table.p) : strdup("");
+      |                    ^~~~~~~~~
+src/dword.c:1587:13: note: '?' condition is false
+src/dword.c:1587:45: note: Memory is allocated
+ 1587 |         c->table = L.table.p ? strdup(L.table.p) : strdup("");
+      |                                                    ^~~~~~~~~~
+src/dword.c:1590:6: note: Assuming field 'eft' is null
+ 1590 |         if (L.eft)
+      |             ^~~~~
+src/dword.c:1590:2: note: Taking false branch
+ 1590 |         if (L.eft)
+      |         ^
+src/dword.c:2645:2: note: Returned allocated memory
+ 2645 |         run_cand(f, m, rq, 0, lim, &c[0]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2646:2: note: Calling 'run_cand'
+ 2646 |         run_cand(f, m, rq, 1, lim, &c[1]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:1549:10: note: Potential memory leak
+ 1549 |         c->mode = mode;
+      |                 ^
+src/dword.c:2427:2: warning: Potential memory leak [unix.Malloc]
+ 2427 |         lower_reset(f, mode, lim, acc);
+      |         ^
+src/dword.c:2977:2: note: Taking false branch
+ 2977 |         if (!has_f64(f->body))
+      |         ^
+src/dword.c:2979:14: note: Calling 'dword_lower'
+ 2979 |         if ((said = dword_lower(f, m, &rq, &r, NULL)) != 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2634:19: note: Assuming field 'anon' is 0
+ 2634 |         const char *fn = f->anon ? shared_str(f->body, 120) : sym_str(f->name);
+      |                          ^~~~~~~
+src/dword.c:2634:19: note: '?' condition is false
+src/dword.c:2637:6: note: Assuming the condition is true
+ 2637 |         if (cmp_root(f) && has_f64(f->body))
+      |             ^~~~~~~~~~~
+src/dword.c:2637:6: note: Left side of '&&' is true
+src/dword.c:2637:2: note: Taking true branch
+ 2637 |         if (cmp_root(f) && has_f64(f->body))
+      |         ^
+src/dword.c:2638:10: note: Calling 'cmp_lower'
+ 2638 |                 return cmp_lower(f, m, rq, out, o);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2526:22: note: Field 'anon' is 0
+ 2526 |         const char *fn = f->anon ? shared_str(f->body, 120) : sym_str(f->name);
+      |                             ^
+src/dword.c:2526:19: note: '?' condition is false
+ 2526 |         const char *fn = f->anon ? shared_str(f->body, 120) : sym_str(f->name);
+      |                          ^
+src/dword.c:2529:2: note: Calling 'cmp_cand'
+ 2529 |         cmp_cand(f, m, 0, lim, &r[0]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2434:13: note: Assuming field 'abs_' is not equal to 0
+ 2434 |         r->exact = r->a.e.abs_ == 0 && r->b.e.abs_ == 0 && r->bits[0] >= 0 &&
+      |                    ^~~~~~~~~~~~~~~~
+src/dword.c:2434:30: note: Left side of '&&' is false
+ 2434 |         r->exact = r->a.e.abs_ == 0 && r->b.e.abs_ == 0 && r->bits[0] >= 0 &&
+      |                                     ^
+src/dword.c:2436:9: note: Field 'konst' is 0
+ 2436 |         if (r->konst)
+      |                ^
+src/dword.c:2436:2: note: Taking false branch
+ 2436 |         if (r->konst)
+      |         ^
+src/dword.c:2453:15: note: Assuming field 'p' is null
+ 2453 |         r->c.table = L.table.p ? strdup(L.table.p) : strdup("");
+      |                      ^~~~~~~~~
+src/dword.c:2453:15: note: '?' condition is false
+src/dword.c:2453:47: note: Memory is allocated
+ 2453 |         r->c.table = L.table.p ? strdup(L.table.p) : strdup("");
+      |                                                      ^~~~~~~~~~
+src/dword.c:2456:6: note: Assuming field 'eft' is null
+ 2456 |         if (L.eft)
+      |             ^~~~~
+src/dword.c:2456:2: note: Taking false branch
+ 2456 |         if (L.eft)
+      |         ^
+src/dword.c:2529:2: note: Returned allocated memory
+ 2529 |         cmp_cand(f, m, 0, lim, &r[0]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2530:2: note: Calling 'cmp_cand'
+ 2530 |         cmp_cand(f, m, 1, lim, &r[1]);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2427:2: note: Potential memory leak
+ 2427 |         lower_reset(f, mode, lim, acc);
+      |         ^
+src/dword.c:2796:27: warning: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'm') [core.NullDereference]
+ 2796 |         rep_str("model", sym_str(m->name));
+      |                                  ^
+src/dword.c:2922:6: note: Assuming the condition is false
+ 2922 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2922:2: note: Taking false branch
+ 2922 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+src/dword.c:2924:6: note: Assuming the condition is false
+ 2924 |         if (strcmp(w, "dword") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2924:6: note: Left side of '||' is false
+src/dword.c:2924:33: note: Assuming the condition is false
+ 2924 |         if (strcmp(w, "dword") != 0 || func_find(sym_cstr(w))) {
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2924:2: note: Taking false branch
+ 2924 |         if (strcmp(w, "dword") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+src/dword.c:2928:6: note: Assuming the condition is false
+ 2928 |         if (!func_find(sym_cstr("cases")) && cmdp_kw(p, "cases")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2928:36: note: Left side of '&&' is false
+ 2928 |         if (!func_find(sym_cstr("cases")) && cmdp_kw(p, "cases")) {
+      |                                           ^
+src/dword.c:2942:9: note: Assuming the condition is true
+ 2942 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+src/dword.c:2942:2: note: Loop condition is true.  Entering loop body
+ 2942 |         while (!cmdp_eos(p)) {
+      |         ^
+src/dword.c:2943:7: note: Assuming the condition is false
+ 2943 |                 if (cmdp_kw(p, "tol")) {
+      |                     ^~~~~~~~~~~~~~~~~
+src/dword.c:2943:3: note: Taking false branch
+ 2943 |                 if (cmdp_kw(p, "tol")) {
+      |                 ^
+src/dword.c:2946:14: note: Assuming the condition is false
+ 2946 |                 } else if (cmdp_kw(p, "atol")) {
+      |                            ^~~~~~~~~~~~~~~~~~
+src/dword.c:2946:10: note: Taking false branch
+ 2946 |                 } else if (cmdp_kw(p, "atol")) {
+      |                        ^
+src/dword.c:2949:14: note: Assuming the condition is false
+ 2949 |                 } else if (cmdp_kw(p, "ulp")) {
+      |                            ^~~~~~~~~~~~~~~~~
+src/dword.c:2949:10: note: Taking false branch
+ 2949 |                 } else if (cmdp_kw(p, "ulp")) {
+      |                        ^
+src/dword.c:2952:14: note: Assuming the condition is true
+ 2952 |                 } else if (cmdp_kw(p, "model")) {
+      |                            ^~~~~~~~~~~~~~~~~~~
+src/dword.c:2952:10: note: Taking true branch
+ 2952 |                 } else if (cmdp_kw(p, "model")) {
+      |                        ^
+src/dword.c:2953:8: note: Assuming the condition is false
+ 2953 |                         if (!cmdp_word(p, w, sizeof w) ||
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2953:8: note: Left side of '||' is false
+src/dword.c:2954:9: note: Value assigned to 'm'
+ 2954 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2954:8: note: Assuming pointer value is null
+ 2954 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:2953:4: note: Taking true branch
+ 2953 |                         if (!cmdp_word(p, w, sizeof w) ||
+      |                         ^
+src/dword.c:2942:9: note: Assuming the condition is false
+ 2942 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+src/dword.c:2942:2: note: Loop condition is false. Execution continues on line 2961
+ 2942 |         while (!cmdp_eos(p)) {
+      |         ^
+src/dword.c:2961:9: note: Field 'kind' is equal to DW_DEFAULT
+ 2961 |         if (rq.kind != DW_DEFAULT && !(rq.v > 0))
+      |                ^
+src/dword.c:2961:28: note: Left side of '&&' is false
+ 2961 |         if (rq.kind != DW_DEFAULT && !(rq.v > 0))
+      |                                   ^
+src/dword.c:2964:15: note: Passing null pointer value via 2nd parameter 'm'
+ 2964 |         cmd_dword(f, m, &rq);
+      |                      ^
+src/dword.c:2964:2: note: Calling 'cmd_dword'
+ 2964 |         cmd_dword(f, m, &rq);
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/dword.c:2796:27: note: Access to field 'name' results in a dereference of a null pointer (loaded from variable 'm')
+ 2796 |         rep_str("model", sym_str(m->name));
+      |                                  ^
+src/dword.c:3246:12: warning: Potential memory leak [unix.Malloc]
+ 3246 |         A->c.mode = mode;
+      |                   ^
+src/dword.c:3538:6: note: Assuming the condition is false
+ 3538 |         if (N.ty[root] != TY_F64 || (N.op[root] != O_ADD && N.op[root] !=
+      |             ^~~~~~~~~~~~~~~~~~~~
+src/dword.c:3538:6: note: Left side of '||' is false
+src/dword.c:3538:31: note: Assuming the condition is false
+ 3538 |         if (N.ty[root] != TY_F64 || (N.op[root] != O_ADD && N.op[root] !=
+      |                                      ^~~~~~~~~~~~~~~~~~~
+src/dword.c:3538:51: note: Left side of '&&' is false
+ 3538 |         if (N.ty[root] != TY_F64 || (N.op[root] != O_ADD && N.op[root] !=
+      |                                                          ^
+src/dword.c:3539:16: note: Assuming the condition is false
+ 3539 |             O_SUB) || N.op[N.a[root]] != O_VAR || (int)N.ki[N.a[root]] !=
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:3538:6: note: Left side of '||' is false
+ 3538 |         if (N.ty[root] != TY_F64 || (N.op[root] != O_ADD && N.op[root] !=
+      |             ^
+src/dword.c:3539:44: note: Assuming the condition is false
+ 3539 |             O_SUB) || N.op[N.a[root]] != O_VAR || (int)N.ki[N.a[root]] !=
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~
+ 3540 |             a->ps) {
+      |             ~~~~~
+src/dword.c:3538:2: note: Taking false branch
+ 3538 |         if (N.ty[root] != TY_F64 || (N.op[root] != O_ADD && N.op[root] !=
+      |         ^
+src/dword.c:3547:6: note: Assuming field 'nonce' is <= 0
+ 3547 |         if (a->nonce > 0) {
+      |             ^~~~~~~~~~~~
+src/dword.c:3547:2: note: Taking false branch
+ 3547 |         if (a->nonce > 0) {
+      |         ^
+src/dword.c:3553:2: note: Loop condition is true.  Entering loop body
+ 3553 |         for (i = 0; i < 2; i++)
+      |         ^
+src/dword.c:3554:3: note: Calling 'run_acc'
+ 3554 |                 run_acc(f, a, m, rq, i, lim, &c[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:3249:2: note: Loop condition is true.  Entering loop body
+ 3249 |         for (it = 0; it < 4; it++) {
+      |         ^
+src/dword.c:3250:3: note: Loop condition is true.  Entering loop body
+ 3250 |                 for (guard = 0; guard < 64; guard++) {
+      |                 ^
+src/dword.c:3253:10: note: Assuming 'ok' is 0
+ 3253 |                         if (!(ok = acc_ranges(A, a, tv.iv)))
+      |                               ^~
+src/dword.c:3253:4: note: Taking true branch
+ 3253 |                         if (!(ok = acc_ranges(A, a, tv.iv)))
+      |                         ^
+src/dword.c:3254:5: note:  Execution continues on line 3296
+ 3254 |                                 break;
+      |                                 ^
+src/dword.c:3296:8: note: 'ok' is 0
+ 3296 |                 if (!ok || A->inside || isinf(A->tot.abs_))
+      |                      ^~
+src/dword.c:3296:11: note: Left side of '||' is true
+ 3296 |                 if (!ok || A->inside || isinf(A->tot.abs_))
+      |                         ^
+src/dword.c:3297:4: note:  Execution continues on line 3301
+ 3297 |                         break;
+      |                         ^
+src/dword.c:3301:7: note: 'ok' is 0
+ 3301 |         if (!ok) {
+      |              ^~
+src/dword.c:3301:2: note: Taking true branch
+ 3301 |         if (!ok) {
+      |         ^
+src/dword.c:3306:16: note: Memory is allocated
+ 3306 |                 A->c.table = strdup("");
+      |                              ^~~~~~~~~~
+src/dword.c:3554:3: note: Returned allocated memory
+ 3554 |                 run_acc(f, a, m, rq, i, lim, &c[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:3553:2: note: Loop condition is true.  Entering loop body
+ 3553 |         for (i = 0; i < 2; i++)
+      |         ^
+src/dword.c:3554:3: note: Calling 'run_acc'
+ 3554 |                 run_acc(f, a, m, rq, i, lim, &c[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/dword.c:3246:12: note: Potential memory leak
+ 3246 |         A->c.mode = mode;
+      |                   ^
+4 warnings generated.

@@ -1,0 +1,72 @@
+> s_andor_basic_u8(x: u8, y: u8) = x & y
+> m_andor_basic_u8(x: u8, y: u8) = x | y
+> equiv s_andor_basic_u8 m_andor_basic_u8
+s_andor_basic_u8 and m_andor_basic_u8 differ at 65280 points, e.g. x=1, y=0: 0 vs 1
+> s_andor_basic_u32(x: u32, y: u32) = x & y
+> m_andor_basic_u32(x: u32, y: u32) = x | y
+> equiv s_andor_basic_u32 m_andor_basic_u32
+s_andor_basic_u32 and m_andor_basic_u32 differ at 65535 points of the sample, e.g. x=0, y=4294967294: 0 vs 4294967294
+> s_and_self_u8(x: u8) = x & x
+> m_and_self_u8(x: u8) = x | x
+> equiv s_and_self_u8 m_and_self_u8
+s_and_self_u8 and m_and_self_u8 are equal on the domain of s_and_self_u8 (exhaustive)
+> s_and_self_u32(x: u32) = x & x
+> m_and_self_u32(x: u32) = x | x
+> equiv s_and_self_u32 m_and_self_u32
+s_and_self_u32 and m_and_self_u32 are equal on the domain of s_and_self_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_demorgan_u8(x: u8, y: u8) = ~(x & y)
+> m_demorgan_u8(x: u8, y: u8) = ~x | ~y
+> equiv s_demorgan_u8 m_demorgan_u8
+s_demorgan_u8 and m_demorgan_u8 are equal on the domain of s_demorgan_u8 (exhaustive)
+> s_demorgan_u32(x: u32, y: u32) = ~(x & y)
+> m_demorgan_u32(x: u32, y: u32) = ~x | ~y
+> equiv s_demorgan_u32 m_demorgan_u32
+s_demorgan_u32 and m_demorgan_u32 are equal on the domain of s_demorgan_u32 (proved by SAT: 97 AIG nodes, 0 conflicts)
+> s_demorgan_bad_u8(x: u8, y: u8) = ~(x & y)
+> m_demorgan_bad_u8(x: u8, y: u8) = ~x & ~y
+> equiv s_demorgan_bad_u8 m_demorgan_bad_u8
+s_demorgan_bad_u8 and m_demorgan_bad_u8 differ at 65280 points, e.g. x=1, y=0: 255 vs 254
+> s_demorgan_bad_u32(x: u32, y: u32) = ~(x & y)
+> m_demorgan_bad_u32(x: u32, y: u32) = ~x & ~y
+> equiv s_demorgan_bad_u32 m_demorgan_bad_u32
+s_demorgan_bad_u32 and m_demorgan_bad_u32 differ at 65535 points of the sample, e.g. x=0, y=4294967294: 4294967295 vs 1
+> s_absorb1_u8(x: u8, y: u8) = x & (x | y)
+> m_absorb1_u8(x: u8, y: u8) = x
+> equiv s_absorb1_u8 m_absorb1_u8
+s_absorb1_u8 and m_absorb1_u8 are equal on the domain of s_absorb1_u8 (exhaustive)
+> s_absorb1_u32(x: u32, y: u32) = x & (x | y)
+> m_absorb1_u32(x: u32, y: u32) = x
+> equiv s_absorb1_u32 m_absorb1_u32
+s_absorb1_u32 and m_absorb1_u32 are equal on the domain of s_absorb1_u32 (proved by SAT: 256 AIG nodes, 67 conflicts)
+> s_absorb2_u8(x: u8, y: u8) = x | (x & y)
+> m_absorb2_u8(x: u8, y: u8) = x
+> equiv s_absorb2_u8 m_absorb2_u8
+s_absorb2_u8 and m_absorb2_u8 are equal on the domain of s_absorb2_u8 (exhaustive)
+> s_absorb2_u32(x: u32, y: u32) = x | (x & y)
+> m_absorb2_u32(x: u32, y: u32) = x
+> equiv s_absorb2_u32 m_absorb2_u32
+s_absorb2_u32 and m_absorb2_u32 are equal on the domain of s_absorb2_u32 (proved by SAT: 256 AIG nodes, 65 conflicts)
+> s_distributive_u8(x: u8, y: u8, z: u8) = (x | y) & (x | z)
+> m_distributive_u8(x: u8, y: u8, z: u8) = x | (y & z)
+> equiv s_distributive_u8 m_distributive_u8
+s_distributive_u8 and m_distributive_u8 are equal on the domain of s_distributive_u8 (proved by SAT: 96 AIG nodes, 34 conflicts)
+> s_distributive_u32(x: u32, y: u32, z: u32) = (x | y) & (x | z)
+> m_distributive_u32(x: u32, y: u32, z: u32) = x | (y & z)
+> equiv s_distributive_u32 m_distributive_u32
+s_distributive_u32 and m_distributive_u32 are equal on the domain of s_distributive_u32 (proved by SAT: 384 AIG nodes, 129 conflicts)
+> s_and_zero_u8(x: u8, y: u8) = x & 0
+> m_and_zero_u8(x: u8, y: u8) = x | 0
+> equiv s_and_zero_u8 m_and_zero_u8
+s_and_zero_u8 and m_and_zero_u8 differ at 65280 points, e.g. x=1, y=0: 0 vs 1
+> s_and_zero_u32(x: u32, y: u32) = x & 0
+> m_and_zero_u32(x: u32, y: u32) = x | 0
+> equiv s_and_zero_u32 m_and_zero_u32
+s_and_zero_u32 and m_and_zero_u32 differ at 65533 points of the sample, e.g. x=4294967295, y=0: 0 vs 4294967295
+> s_mask_then_u8(x: u8, y: u8) = (x & y) | (x & ~y)
+> m_mask_then_u8(x: u8, y: u8) = x
+> equiv s_mask_then_u8 m_mask_then_u8
+s_mask_then_u8 and m_mask_then_u8 are equal on the domain of s_mask_then_u8 (exhaustive)
+> s_mask_then_u32(x: u32, y: u32) = (x & y) | (x & ~y)
+> m_mask_then_u32(x: u32, y: u32) = x
+> equiv s_mask_then_u32 m_mask_then_u32
+s_mask_then_u32 and m_mask_then_u32 are equal on the domain of s_mask_then_u32 (proved by SAT: 288 AIG nodes, 93 conflicts)

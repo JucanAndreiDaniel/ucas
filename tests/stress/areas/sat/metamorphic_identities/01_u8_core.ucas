@@ -1,0 +1,50 @@
+# Core bit identities on u8 (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: u8) = x + x
+g01(x: u8) = x << 1
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: u8) = x - x
+g02(x: u8) = x * 0
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u8) = x xor x
+g03(x: u8) = x * 0
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u8, y: u8) = (x & y) + (x xor y)
+g04(x: u8, y: u8) = x | y
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u8, y: u8) = x xor y
+g05(x: u8, y: u8) = (x | y) - (x & y)
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: u8) = ~x
+g06(x: u8) = -x - 1
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u8, y: u8) = ~(x & y)
+g07(x: u8, y: u8) = ~x | ~y
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: u8, y: u8) = ~(x | y)
+g08(x: u8, y: u8) = ~x & ~y
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: u8, y: u8) = x & (x | y)
+g09(x: u8, y: u8) = x
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: u8, y: u8) = x | (x & y)
+g10(x: u8, y: u8) = x
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: u8) = (x xor 0xA5) xor 0xA5
+g11(x: u8) = x
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u8) = x + x + x
+g12(x: u8) = x * 3
+equiv f12 g12

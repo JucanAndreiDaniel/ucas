@@ -1,0 +1,11 @@
+c lower nofile
+```c
+
+#define FIRST(a,...) (a)
+#define SECOND(a,b,...) (b)
+#define VA_FIRST(...) FIRST(__VA_ARGS__)
+int g1(int x){ return FIRST(x, 99, 88); }
+int g2(int x,int y){ return SECOND(x, y, 7, 6); }
+int g3(int x){ return FIRST(x); }
+int g4(int x,int y){ return VA_FIRST(x, y); }
+```

@@ -1,0 +1,203 @@
+/home/andrew/Code/ucas/src/json.c:25:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   10 | #include <stdlib.h>
+   11 | #include <string.h>
+   12 | 
+   13 | struct jp {
+   14 |         const char *s, *p;
+   15 |         char *err;
+   16 |         size_t errn;
+   17 |         int depth;
+   18 |         int bad;
+   19 | };
+   20 | 
+   21 | static void
+   22 | jerr(struct jp *j, const char *msg)
+   23 | {
+   24 |         if (!j->bad) {
+   25 |                 snprintf(j->err, j->errn, "%s", msg);
+      |                 ^
+/home/andrew/Code/ucas/src/json.c:84:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+   84 |         strcpy(v->s, buf);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/json.c:84:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+   84 |         strcpy(v->s, buf);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/json.c:100:9: warning: multilevel pointer conversion from 'void *' to 'struct jv **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  100 |         a->v = xrealloc(a->v, (size_t)a->cap * sizeof *a->v);
+      |                ^
+/home/andrew/Code/ucas/src/json.c:100:18: warning: multilevel pointer conversion from 'struct jv **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  100 |         a->v = xrealloc(a->v, (size_t)a->cap * sizeof *a->v);
+      |                         ^
+/home/andrew/Code/ucas/src/json.c:102:10: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  102 |                 a->k = xrealloc(a->k, (size_t)a->cap * sizeof *a->k);
+      |                        ^
+/home/andrew/Code/ucas/src/json.c:102:19: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  102 |                 a->k = xrealloc(a->k, (size_t)a->cap * sizeof *a->k);
+      |                                 ^
+/home/andrew/Code/ucas/src/json.c:125:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+  125 |         strcpy(o->k[o->n], key);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/json.c:125:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+  125 |         strcpy(o->k[o->n], key);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/json.c:162:7: warning: multilevel pointer conversion from 'struct jv **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  162 |         free(v->v);
+      |              ^
+/home/andrew/Code/ucas/src/json.c:163:7: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  163 |         free(v->k);
+      |              ^
+/home/andrew/Code/ucas/src/json.c:179:11: warning: 'signed char' to 'int' conversion; consider casting to 'unsigned char' first. [bugprone-signed-char-misuse]
+  179 |                 int c = p[i], d;
+      |                         ^
+/home/andrew/Code/ucas/src/json.c:199:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  199 |                 sb_putc(b, (int)(0xc0 | u >> 6));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:199:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  199 |                 sb_putc(b, (int)(0xc0 | u >> 6));
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/json.c:200:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  200 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:200:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  200 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                            ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:202:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  202 |                 sb_putc(b, (int)(0xe0 | u >> 12));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:202:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  202 |                 sb_putc(b, (int)(0xe0 | u >> 12));
+      |                                           ~~ ^~
+/home/andrew/Code/ucas/src/json.c:203:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  203 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:203:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  203 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/json.c:203:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  203 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                                 ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:204:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  204 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:204:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  204 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                            ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:206:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                 sb_putc(b, (int)(0xf0 | u >> 18));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:206:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                 sb_putc(b, (int)(0xf0 | u >> 18));
+      |                                           ~~ ^~
+/home/andrew/Code/ucas/src/json.c:207:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                 sb_putc(b, (int)(0x80 | (u >> 12 & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:207:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                 sb_putc(b, (int)(0x80 | (u >> 12 & 0x3f)));
+      |                                            ~~ ^~
+/home/andrew/Code/ucas/src/json.c:207:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                 sb_putc(b, (int)(0x80 | (u >> 12 & 0x3f)));
+      |                                                  ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:208:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:208:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/json.c:208:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |                 sb_putc(b, (int)(0x80 | (u >> 6 & 0x3f)));
+      |                                                 ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:209:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  209 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                  ^~~~ ~
+/home/andrew/Code/ucas/src/json.c:209:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  209 |                 sb_putc(b, (int)(0x80 | (u & 0x3f)));
+      |                                            ~ ^~~~
+/home/andrew/Code/ucas/src/json.c:264:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  264 |                                 u = 0x10000 + ((u - 0xd800) << 10) + (u2 - 0xdc00);
+      |                                                             ~~ ^~
+/home/andrew/Code/ucas/src/json.c:357:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  357 |                         if ((k = string(j)) == NULL)
+      |                              ~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/json.c:357:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/json.c:357:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/json.c:371:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  371 |                         if ((e = value(j)) == NULL) {
+      |                              ~~^~~~~~~~~~
+/home/andrew/Code/ucas/src/json.c:371:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/json.c:371:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/json.c:399:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  399 |                         if ((e = value(j)) == NULL)
+      |                              ~~^~~~~~~~~~
+/home/andrew/Code/ucas/src/json.c:399:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/json.c:399:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/json.c:416:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  416 |                 if ((k = string(j)) == NULL)
+      |                      ~~^~~~~~~~~~~
+/home/andrew/Code/ucas/src/json.c:416:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/json.c:416:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/json.c:422:7: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  422 |                 if (strncmp(j->p, "true", 4)) {
+      |                     ^                       
+      |                                              != 0
+/home/andrew/Code/ucas/src/json.c:430:7: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  430 |                 if (strncmp(j->p, "false", 5)) {
+      |                     ^                        
+      |                                               != 0
+/home/andrew/Code/ucas/src/json.c:438:7: warning: function 'strncmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  438 |                 if (strncmp(j->p, "null", 4)) {
+      |                     ^                       
+      |                                              != 0
+/home/andrew/Code/ucas/src/json.c:543:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  543 |         switch (v->t) {
+      |         ^
+/home/andrew/Code/ucas/src/json.c:585:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |                 sb_putc(b, t[p[i] >> 2]);
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/json.c:586:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |                 sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                              ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/json.c:586:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |                 sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/json.c:586:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |                 sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                                                         ~~ ^
+/home/andrew/Code/ucas/src/json.c:587:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                 sb_putc(b, t[(p[i + 1] & 15) << 2 | p[i + 2] >> 6]);
+      |                              ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/json.c:587:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                 sb_putc(b, t[(p[i + 1] & 15) << 2 | p[i + 2] >> 6]);
+      |                                        ~ ^~
+/home/andrew/Code/ucas/src/json.c:587:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                 sb_putc(b, t[(p[i + 1] & 15) << 2 | p[i + 2] >> 6]);
+      |                                                              ~~ ^
+/home/andrew/Code/ucas/src/json.c:588:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                 sb_putc(b, t[p[i + 2] & 63]);
+      |                                       ~ ^~
+/home/andrew/Code/ucas/src/json.c:591:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  591 |                 sb_putc(b, t[p[i] >> 2]);
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/json.c:593:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  593 |                         sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                                      ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/json.c:593:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  593 |                         sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/json.c:593:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  593 |                         sb_putc(b, t[(p[i] & 3) << 4 | p[i + 1] >> 4]);
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/json.c:594:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  594 |                         sb_putc(b, t[(p[i + 1] & 15) << 2]);
+      |                                      ^~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/json.c:594:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  594 |                         sb_putc(b, t[(p[i + 1] & 15) << 2]);
+      |                                                ~ ^~
+/home/andrew/Code/ucas/src/json.c:596:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |                         sb_putc(b, t[(p[i] & 3) << 4]);
+      |                                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/json.c:596:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |                         sb_putc(b, t[(p[i] & 3) << 4]);
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

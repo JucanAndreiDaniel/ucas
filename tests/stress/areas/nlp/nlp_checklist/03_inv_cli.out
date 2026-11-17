@@ -1,0 +1,149 @@
+> what is the range of x squared for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> what is the range of x times x for x an unsigned byte?
+  ucas: it(x: u8) = x*x
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> how big can x squared get for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> please what is the range of x squared for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> What is the range of x squared for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> what is the range of x^2 for x an unsigned byte?
+  ucas: it(x: u8) = x^2
+  ucas: range it
+range of it -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> is x times x the same as x squared for an unsigned byte x?
+  ucas: it(x: u8) = x*x
+  ucas: that(x: u8) = x^2
+  ucas: equiv it that
+it and that are equal on the domain of it (exhaustive)
+> is x multiplied by x equal to x squared for an unsigned byte x?
+  ucas: it(x: u8) = x*x
+  ucas: that(x: u8) = x^2
+  ucas: equiv it that
+it and that are equal on the domain of it (exhaustive)
+> are x times x and x^2 equivalent for an unsigned byte x?
+  ucas: it(x: u8) = x*x
+  ucas: that(x: u8) = x^2
+  ucas: equiv it that
+it and that are equal on the domain of it (exhaustive)
+> are x times x and x^2 unequal for an unsigned byte x?
+  sorry: I can't negate an equality check: ask "is A equal to B" and invert the yes/no answer
+> is x times x different from x squared for an unsigned byte x?
+  sorry: I didn't follow "different from x squared for an unsigned byte x"
+> is x plus 1 equal to x for an unsigned byte x?
+  ucas: it(x: u8) = x + 1
+  ucas: that(x: u8) = x
+  ucas: equiv it that
+it and that differ at 256 points, e.g. x=0: 1 vs 0
+> are x plus 1 and x unequal for an unsigned byte x?
+  sorry: I can't negate an equality check: ask "is A equal to B" and invert the yes/no answer
+> where is 1/x defined for x an unsigned byte?
+  ucas: it(x: u8) = 1/x
+  ucas: domain it
+domain of it:
+  x: u8, 0..255
+  requires x != 0  (in 1/x)
+  defined at 255 of 256 points
+  defined for: 1..255
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 256 points of the domain
+> where is 1/x defined where x is between 1 and 10?
+  ucas: it(x in 1..10) = 1/x
+  ucas: domain it
+domain of it:
+  x: int, 1..10
+  requires x != 0  (in 1/x)
+  defined at 10 of 10 points
+  over all 10 points of the domain
+> does x times 2 overflow for a signed byte x?
+  ucas: it(x: i8) = x*2
+  ucas: wrap it
+wrap analysis of it:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain
+> does x times 2 wrap around for a signed byte x?
+  ucas: it(x: i8) = x*2
+  ucas: wrap it
+wrap analysis of it:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain
+> the derivative of x squared with respect to x?
+  ucas: it(x) = x^2
+  ucas: diff it x
+d/dx it = 2x
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> the closed form of the sum of i squared for i from 1 to n?
+  ucas: it(n: int in 0..100) = sum(i, 1, n, i^2)
+  ucas: closed it
+sum(i, 1, n, i^2)
+  = n*(n + 1)*(2n + 1)/6
+  method: Faulhaber (polynomial in the index)
+  check: equals direct iteration at all 101 points of the domain
+> range of the integer square root of a 4-bit unsigned x?
+  ucas: it(x: u4) = isqrt(x)
+  ucas: range it
+range of it -> u4:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 16 points of the domain
+> range of isqrt of a 4-bit unsigned x?
+  ucas: it(x: u4) = isqrt(x)
+  ucas: range it
+range of it -> u4:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 16 points of the domain
+> what is the range of x squared for x between 0 and 15?
+  ucas: it(x in 0..15) = x^2
+  ucas: range it
+range of it -> int:
+  0..225
+  fits in u8
+  over all 16 points of the domain

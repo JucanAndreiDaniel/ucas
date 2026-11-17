@@ -1,0 +1,25 @@
+> asymptotic sum(k, 1, n, 1/k)
+sum(k, 1, n, 1/k) ~ log(n) + gamma + 1/(2n) - 1/(12n^2) + 1/(120n^4) + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = 0.577215664901532 = gamma
+  check: n = 10: sum 2.92896825397, expansion off by 3.9e-09; n = 100: sum 5.18737751764, expansion off by 2.7e-15; n = 1000: sum 7.48547086055, expansion off by 0
+> asymptotic sum(k, 1, n, k)
+sum(k, 1, n, k) ~ n^2/2 + n/2 + -0.0833333330228925 + 1/12 + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = -0.0833333330228925 (not recognised)
+  check: n = 10: sum 55, expansion off by 3.1e-10; n = 100: sum 5050, expansion off by 3.1e-10; n = 1000: sum 500500, expansion off by 2.9e-10
+> asymptotic sum(k, 1, n, k^2)
+sum(k, 1, n, k^2) ~ n^3/3 + n^2/2 + 0 + n/6 + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = 0 = 0
+  check: n = 10: sum 385, expansion off by 0; n = 100: sum 338350, expansion off by 0; n = 1000: sum 333833500, expansion off by 0
+> asymptotic sum(k, 1, n, sqrt(k))
+sum(k, 1, n, sqrt(k)) ~ 2sqrt(n)^3/3 + sqrt(n)/2 + -0.20788622496184 + 1/(24sqrt(n)) - ((0*sqrt(n) + 0/(2sqrt(n)) - (0*sqrt(n) + 0/(2sqrt(n)) + 0/(2sqrt(n)) + 2(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2))*(2sqrt(n))^2 - 4(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))*sqrt(n)*(0*sqrt(n) + 1/sqrt(n)))/(720((2sqrt(n))^2)^2) + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = -0.20788622496184 (not recognised)
+  check: n = 10: sum 22.4682781862, expansion off by 3.4e-09; n = 100: sum 671.462947103, expansion off by 1.5e-11; n = 1000: sum 21097.4558875, expansion off by 1.5e-11
+> asymptotic sum(k, 1, n, 1/sqrt(k))
+sum(k, 1, n, 1/sqrt(k)) ~ 2sqrt(n) + -1.46035450880959 + 1/(2sqrt(n)) + (0*sqrt(n) - 1/(2sqrt(n)))/(12sqrt(n)^2) - (((0*sqrt(n) + 0/(2sqrt(n)) + 0/(2sqrt(n)) + 0*(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2 - ((0*sqrt(n) + 0/(2sqrt(n)) - (0*sqrt(n) + 0/(2sqrt(n)) + 0/(2sqrt(n)) + 2(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2))*(2sqrt(n))^2 - 4(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))*sqrt(n)*(0*sqrt(n) + 1/sqrt(n)))/((2sqrt(n))^2)^2)*sqrt(n)^2 + (0*sqrt(n) + 0/(2sqrt(n)) - (0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2)*sqrt(n)/sqrt(n) - ((0*sqrt(n) + 0/(2sqrt(n)) - (0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2)*sqrt(n)/sqrt(n) + (0*sqrt(n) - 1/(2sqrt(n)))*((0*sqrt(n) + 1/sqrt(n))/(2sqrt(n)) + 2sqrt(n)*(0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2)))*(sqrt(n)^2)^2 - 2((0*sqrt(n) + 0/(2sqrt(n)) - (0*sqrt(n) - (0*sqrt(n) + 1/sqrt(n)))/(2sqrt(n))^2)*sqrt(n)^2 - (0*sqrt(n) - 1/(2sqrt(n)))*sqrt(n)/sqrt(n))*sqrt(n)^2*sqrt(n)/sqrt(n))/(2((sqrt(n)^2)^2)^2) + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = -1.46035450880959 (not recognised)
+  check: n = 10: sum 5.02099789929, expansion off by 3.1e-09; n = 100: sum 18.5896038248, expansion off by 1.4e-14; n = 1000: sum 61.8010087652, expansion off by 5e-14

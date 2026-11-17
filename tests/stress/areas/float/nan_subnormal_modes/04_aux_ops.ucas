@@ -1,0 +1,23 @@
+# wrap / domain / range on the same functions, after mode-flipped equivs.
+# These ops take no mode flag; their answers must not depend on prior equiv.
+
+add0f(x: u32) = asfloat(x) + f32(0)
+add0g(x: u32) = asfloat(x)
+nanf(x: u32) = asfloat(x | 0x7fc12345)
+nang(x: u32) = asfloat(u32(0x7fc00000))
+
+equiv add0f add0g noftz
+range add0f
+domain add0f
+wrap add0f
+equiv add0f add0g ftz
+range add0f
+domain add0f
+wrap add0f
+
+equiv nanf nang
+range nanf
+domain nanf
+equiv nanf nang nanbits
+range nanf
+domain nanf

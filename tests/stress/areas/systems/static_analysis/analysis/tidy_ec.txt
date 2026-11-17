@@ -1,0 +1,621 @@
+/home/andrew/Code/ucas/src/ec.c:21:1: warning: no header providing "zint" is directly included [misc-include-cleaner]
+    9 | #include "ecq.h"
+   10 | #include "ucas.h"
+   11 | 
+   12 | #include <ctype.h>
+   13 | #include <math.h>
+   14 | #include <stdlib.h>
+   15 | #include <string.h>
+   16 | 
+   17 | /* ================================================================== */
+   18 | /* integer helpers                                                     */
+   19 | /* ================================================================== */
+   20 | 
+   21 | zint
+      | ^
+/home/andrew/Code/ucas/src/ec.c:24:2: warning: no header providing "zmark" is directly included [misc-include-cleaner]
+   24 |         zmark m;
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:28:6: warning: no header providing "z_sign" is directly included [misc-include-cleaner]
+   28 |         if (z_sign(a) < 0)
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:30:6: warning: no header providing "z_is_zero" is directly included [misc-include-cleaner]
+   30 |         if (z_is_zero(a))
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:32:6: warning: no header providing "z_fits_i64" is directly included [misc-include-cleaner]
+   32 |         if (z_fits_i64(a)) {
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:33:3: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   14 |                 int64_t v = z_to_i64(a);
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:33:15: warning: no header providing "z_to_i64" is directly included [misc-include-cleaner]
+   33 |                 int64_t v = z_to_i64(a);
+      |                             ^
+/home/andrew/Code/ucas/src/ec.c:35:20: warning: no header providing "i128" is directly included [misc-include-cleaner]
+   10 |                 while (r > 0 && (i128)r * r > v)
+      |                                  ^
+/home/andrew/Code/ucas/src/ec.c:39:10: warning: no header providing "z_from_i64" is directly included [misc-include-cleaner]
+   39 |                 return z_from_i64(r);
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:41:6: warning: no header providing "z_mark" is directly included [misc-include-cleaner]
+   41 |         m = z_mark();
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:42:6: warning: no header providing "z_bits" is directly included [misc-include-cleaner]
+   42 |         b = z_bits(a);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:43:6: warning: no header providing "z_pow" is directly included [misc-include-cleaner]
+   43 |         x = z_pow(z_from_i64(2), (uint64_t)((b + 1) / 2 + 1));
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:43:28: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   43 |         x = z_pow(z_from_i64(2), (uint64_t)((b + 1) / 2 + 1));
+      |                                   ^
+/home/andrew/Code/ucas/src/ec.c:45:7: warning: no header providing "z_div_floor" is directly included [misc-include-cleaner]
+   45 |                 y = z_div_floor(z_add(x, z_div_floor(a, x)), z_from_i64(2));
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:45:19: warning: no header providing "z_add" is directly included [misc-include-cleaner]
+   45 |                 y = z_div_floor(z_add(x, z_div_floor(a, x)), z_from_i64(2));
+      |                                 ^
+/home/andrew/Code/ucas/src/ec.c:46:7: warning: no header providing "z_cmp" is directly included [misc-include-cleaner]
+   46 |                 if (z_cmp(y, x) >= 0)
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:50:2: warning: no header providing "z_release_keep" is directly included [misc-include-cleaner]
+   50 |         z_release_keep(m, &x, 1);
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:66:13: warning: no header providing "z_mod_u64" is directly included [misc-include-cleaner]
+   66 |                 if (!sq64[z_mod_u64(a, 64)])
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:70:7: warning: no header providing "z_eq" is directly included [misc-include-cleaner]
+   70 |         if (!z_eq(z_mul(r, r), a))
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:70:12: warning: no header providing "z_mul" is directly included [misc-include-cleaner]
+   70 |         if (!z_eq(z_mul(r, r), a))
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:88:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   88 |                 if (!(k & 1))
+      |                       ^ ~
+/home/andrew/Code/ucas/src/ec.c:91:7: warning: no header providing "z_neg" is directly included [misc-include-cleaner]
+   91 |                 a = z_neg(a);
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:93:32: warning: no header providing "z_is_one" is directly included [misc-include-cleaner]
+   93 |         if (k == 1 || z_is_zero(a) || z_is_one(a)) {
+      |                                       ^
+/home/andrew/Code/ucas/src/ec.c:116:17: warning: no header providing "Z_ONE" is directly included [misc-include-cleaner]
+  116 |                         x = z_add(x, Z_ONE);
+      |                                      ^
+/home/andrew/Code/ucas/src/ec.c:124:21: warning: no header providing "zq" is directly included [misc-include-cleaner]
+  124 | zq_is_square(struct zq a, struct zq *root)
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:133:11: warning: no header providing "zq_make" is directly included [misc-include-cleaner]
+  133 |                 *root = zq_make(rn, rd);
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:145:6: warning: no header providing "z_factor" is directly included [misc-include-cleaner]
+  145 |         k = z_factor(a, p, e, 64, &complete);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:147:53: warning: no header providing "z_str" is directly included [misc-include-cleaner]
+  147 |                 fail("squarefree part: %s could not be factored", z_str(a));
+      |                                                                   ^
+/home/andrew/Code/ucas/src/ec.c:151:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  151 |                 if (e[i] & 1)
+      |                     ^~~~ ~
+/home/andrew/Code/ucas/src/ec.c:187:15: warning: no header providing "z_sub" is directly included [misc-include-cleaner]
+  187 |         while (z_cmp(z_sub(hi, lo), Z_ONE) > 0) {
+      |                      ^
+/home/andrew/Code/ucas/src/ec.c:209:10: warning: no header providing "z_abs" is directly included [misc-include-cleaner]
+  209 |         bound = z_abs(a);
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:210:6: warning: no header providing "z_cmpabs" is directly included [misc-include-cleaner]
+  210 |         if (z_cmpabs(b, bound) > 0)
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:264:6: warning: no header providing "zq_is_zero" is directly included [misc-include-cleaner]
+  264 |         if (zq_is_zero(a))
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:266:6: warning: no header providing "zq_div" is directly included [misc-include-cleaner]
+  266 |         B = zq_div(b, a);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:269:6: warning: no header providing "z_lcm" is directly included [misc-include-cleaner]
+  269 |         L = z_lcm(B.d, z_lcm(C.d, D.d));
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:270:7: warning: no header providing "z_divexact" is directly included [misc-include-cleaner]
+  270 |         ib = z_divexact(z_mul(B.n, L), B.d);
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:334:10: warning: no header providing "fe" is directly included [misc-include-cleaner]
+    9 | fe_clear(fe *r)
+      |          ^
+/home/andrew/Code/ucas/src/ec.c:346:6: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+  346 |         q.n = ZW(a, 0);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:3010:6: note: Assuming field 'singular' is 0
+ 3010 |         if (E->singular)
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3010:2: note: Taking false branch
+ 3010 |         if (E->singular)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3012:6: note: Assuming 'kind' is not equal to ECM_WEIERSTRASS
+ 3012 |         if (kind == ECM_WEIERSTRASS) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3012:2: note: Taking false branch
+ 3012 |         if (kind == ECM_WEIERSTRASS) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3017:6: note: Assuming 'kind' is not equal to ECM_SHORT
+ 3017 |         if (kind == ECM_SHORT) {
+      |             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3017:2: note: Taking false branch
+ 3017 |         if (kind == ECM_SHORT) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3028:6: note: Assuming 'kind' is not equal to ECM_HESSIAN
+ 3028 |         if (kind == ECM_HESSIAN)
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3028:2: note: Taking false branch
+ 3028 |         if (kind == ECM_HESSIAN)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3031:6: note: Assuming the condition is false
+ 3031 |         if (fe_is_zero(F, &two))
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3031:2: note: Taking false branch
+ 3031 |         if (fe_is_zero(F, &two))
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3042:7: note: 'n' is 1
+ 3042 |         if (!n)
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:3042:2: note: Taking false branch
+ 3042 |         if (!n)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3044:2: note: Loop condition is true.  Entering loop body
+ 3044 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:3056:7: note: Assuming 'kind' is not equal to ECM_LEGENDRE
+ 3056 |                 if (kind == ECM_LEGENDRE) {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3056:3: note: Taking false branch
+ 3056 |                 if (kind == ECM_LEGENDRE) {
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:3078:7: note: Assuming the condition is false
+ 3078 |                 if (!fe_sqrt(F, &s, &b) || fe_is_zero(F, &s))
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3078:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ec.c:3078:30: note: Assuming the condition is false
+ 3078 |                 if (!fe_sqrt(F, &s, &b) || fe_is_zero(F, &s))
+      |                                            ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3078:3: note: Taking false branch
+ 3078 |                 if (!fe_sqrt(F, &s, &b) || fe_is_zero(F, &s))
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:3085:8: note: Assuming 'kind' is not equal to ECM_MONTGOMERY
+ 3085 |                         if (kind == ECM_MONTGOMERY) {
+      |                             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3085:4: note: Taking false branch
+ 3085 |                         if (kind == ECM_MONTGOMERY) {
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:3096:9: note: Assuming the condition is false
+ 3096 |                                 if (fe_is_zero(F, &ea) || fe_is_zero(F, &ed) ||
+      |                                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3096:9: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ec.c:3096:31: note: Assuming the condition is false
+ 3096 |                                 if (fe_is_zero(F, &ea) || fe_is_zero(F, &ed) ||
+      |                                                           ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3096:9: note: Left side of '||' is false
+ 3096 |                                 if (fe_is_zero(F, &ea) || fe_is_zero(F, &ed) ||
+      |                                     ^
+/home/andrew/Code/ucas/src/ec.c:3097:9: note: Assuming the condition is false
+ 3097 |                                     fe_eq(F, &ea, &ed))
+      |                                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3096:5: note: Taking false branch
+ 3096 |                                 if (fe_is_zero(F, &ea) || fe_is_zero(F, &ed) ||
+      |                                 ^
+/home/andrew/Code/ucas/src/ec.c:3099:9: note: Assuming 'kind' is not equal to ECM_EDWARDS
+ 3099 |                                 if (kind == ECM_EDWARDS) {
+      |                                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3099:5: note: Taking false branch
+ 3099 |                                 if (kind == ECM_EDWARDS) {
+      |                                 ^
+/home/andrew/Code/ucas/src/ec.c:3110:7: note: Assuming the condition is false
+ 3110 |                 if (!ecm_to_weierstrass(M, &Wm))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:3110:3: note: Taking false branch
+ 3110 |                 if (!ecm_to_weierstrass(M, &Wm))
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:3112:7: note: Calling 'eciso_find'
+ 3112 |                 if (eciso_find(E, &Wm, iso))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2130:6: note: Assuming field 'singular' is 0
+ 2130 |         if (E1->singular || E2->singular)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2130:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ec.c:2130:22: note: Assuming field 'singular' is 0
+ 2130 |         if (E1->singular || E2->singular)
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2130:2: note: Taking false branch
+ 2130 |         if (E1->singular || E2->singular)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2133:6: note: Assuming the condition is false
+ 2133 |         if (fe_is_zero(F, &six))
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2133:2: note: Taking false branch
+ 2133 |         if (fe_is_zero(F, &six))
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2135:6: note: Assuming the condition is false
+ 2135 |         if (!fe_eq(F, &E1->j, &E2->j))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2135:2: note: Taking false branch
+ 2135 |         if (!fe_eq(F, &E1->j, &E2->j))
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2140:6: note: Assuming the condition is true
+ 2140 |         if (fe_is_zero(F, &S1.a4)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2140:2: note: Taking true branch
+ 2140 |         if (fe_is_zero(F, &S1.a4)) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2142:3: note: Calling 'fe_div'
+ 2142 |                 fe_div(F, &w, &S1.a6, &S2.a6);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1016:6: note: Assuming the condition is true
+ 1016 |         if (!F->op->inv(F, &t, b))
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1016:2: note: Taking true branch
+ 1016 |         if (!F->op->inv(F, &t, b))
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2142:3: note: Returning from 'fe_div'
+ 2142 |                 fe_div(F, &w, &S1.a6, &S2.a6);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2143:8: note: Calling 'fe_root'
+ 2143 |                 if (!fe_root(F, &u, &w, 6))
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2072:6: note: 'k' is not equal to 2
+ 2072 |         if (k == 2)
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:2072:2: note: Taking false branch
+ 2072 |         if (k == 2)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2074:6: note: Assuming field 'kind' is equal to ECF_Q
+ 2074 |         if (F->kind == ECF_Q) {
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:2074:2: note: Taking true branch
+ 2074 |         if (F->kind == ECF_Q) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2075:17: note: Calling 'fe_q'
+ 2075 |                 struct zq q = fe_q(a);
+      |                               ^~~~~~~
+/home/andrew/Code/ucas/src/ec.c:346:6: note: Assigned value is uninitialized
+  346 |         q.n = ZW(a, 0);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:363:25: warning: no header providing "ecf" is directly included [misc-include-cleaner]
+  363 | q_from_i64(const struct ecf *F, fe *r, int64_t v)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:363:30: warning: parameter 'F' is unused [misc-unused-parameters]
+  363 | q_from_i64(const struct ecf *F, fe *r, int64_t v)
+      |                              ^
+/home/andrew/Code/ucas/src/ec.c:365:17: warning: no header providing "zq_int" is directly included [misc-include-cleaner]
+  365 |         *r = fe_from_q(zq_int(z_from_i64(v)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:369:29: warning: parameter 'F' is unused [misc-unused-parameters]
+  369 | q_from_zq(const struct ecf *F, fe *r, struct zq a)
+      |                             ^
+/home/andrew/Code/ucas/src/ec.c:376:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  376 | q_add(const struct ecf *F, fe *r, const fe *a, const fe *b)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:378:17: warning: no header providing "zq_add" is directly included [misc-include-cleaner]
+  378 |         *r = fe_from_q(zq_add(fe_q(a), fe_q(b)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:382:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  382 | q_sub(const struct ecf *F, fe *r, const fe *a, const fe *b)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:384:17: warning: no header providing "zq_sub" is directly included [misc-include-cleaner]
+  384 |         *r = fe_from_q(zq_sub(fe_q(a), fe_q(b)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:388:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  388 | q_neg(const struct ecf *F, fe *r, const fe *a)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:390:17: warning: no header providing "zq_neg" is directly included [misc-include-cleaner]
+  390 |         *r = fe_from_q(zq_neg(fe_q(a)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:394:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  394 | q_mul(const struct ecf *F, fe *r, const fe *a, const fe *b)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:396:17: warning: no header providing "zq_mul" is directly included [misc-include-cleaner]
+  396 |         *r = fe_from_q(zq_mul(fe_q(a), fe_q(b)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:400:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  400 | q_inv(const struct ecf *F, fe *r, const fe *a)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:404:17: warning: no header providing "zq_inv" is directly included [misc-include-cleaner]
+  404 |         *r = fe_from_q(zq_inv(fe_q(a)));
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:409:29: warning: parameter 'F' is unused [misc-unused-parameters]
+  409 | q_is_zero(const struct ecf *F, const fe *a)
+      |                             ^
+/home/andrew/Code/ucas/src/ec.c:415:24: warning: parameter 'F' is unused [misc-unused-parameters]
+  415 | q_eq(const struct ecf *F, const fe *a, const fe *b)
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:417:9: warning: no header providing "zq_eq" is directly included [misc-include-cleaner]
+  417 |         return zq_eq(fe_q(a), fe_q(b));
+      |                ^
+/home/andrew/Code/ucas/src/ec.c:421:26: warning: parameter 'F' is unused [misc-unused-parameters]
+  421 | q_sqrt(const struct ecf *F, fe *r, const fe *a)
+      |                          ^
+/home/andrew/Code/ucas/src/ec.c:432:27: warning: parameter 'F' is unused [misc-unused-parameters]
+  432 | q_to_zq(const struct ecf *F, struct zq *r, const fe *a)
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:439:27: warning: parameter 'F' is unused [misc-unused-parameters]
+  439 | q_print(const struct ecf *F, struct sbuf *b, const fe *a)
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:441:2: warning: no header providing "zq_print" is directly included [misc-include-cleaner]
+  441 |         zq_print(b, fe_q(a));
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:445:27: warning: parameter 'F' is unused [misc-unused-parameters]
+  445 | q_parse(const struct ecf *F, fe *r, const char *s, const char **end)
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:451:7: warning: no header providing "zq_parse" is directly included [misc-include-cleaner]
+  451 |         if (!zq_parse(s, &q, end))
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:480:26: warning: parameter 'F' is unused [misc-unused-parameters]
+  480 | q_keep(const struct ecf *F, zmark m, fe *a, size_t n)
+      |                          ^
+/home/andrew/Code/ucas/src/ec.c:485:21: warning: no header providing "ecf_ops" is directly included [misc-include-cleaner]
+  485 | static const struct ecf_ops q_ops = {
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:494:12: warning: no header providing "ECF_Q" is directly included [misc-include-cleaner]
+  494 |         F->kind = ECF_Q;
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:511:12: warning: no header providing "z_mod" is directly included [misc-include-cleaner]
+  511 |         zp_set(r, z_mod(z_from_i64(v), F->p));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:567:6: warning: no header providing "z_xgcd" is directly included [misc-include-cleaner]
+  567 |         g = z_xgcd(ZW(a, 0), F->p, &s, &t);
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:569:18: warning: no header providing "ECF_ZN" is directly included [misc-include-cleaner]
+  569 |                 if (F->kind == ECF_ZN && !z_eq(g, F->p))
+      |                                ^
+/home/andrew/Code/ucas/src/ec.c:578:30: warning: parameter 'F' is unused [misc-unused-parameters]
+  578 | zp_is_zero(const struct ecf *F, const fe *a)
+      |                              ^
+/home/andrew/Code/ucas/src/ec.c:584:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  584 | zp_eq(const struct ecf *F, const fe *a, const fe *b)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:597:17: warning: no header providing "ECF_FP" is directly included [misc-include-cleaner]
+  597 |         if (F->kind != ECF_FP)
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:609:16: warning: no header providing "z_powmod" is directly included [misc-include-cleaner]
+  609 |         if (!z_is_one(z_powmod(x, e1, p))) {
+      |                       ^
+/home/andrew/Code/ucas/src/ec.c:610:3: warning: no header providing "z_release" is directly included [misc-include-cleaner]
+  610 |                 z_release(m);
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:657:28: warning: parameter 'F' is unused [misc-unused-parameters]
+  657 | zp_to_zq(const struct ecf *F, struct zq *r, const fe *a)
+      |                            ^
+/home/andrew/Code/ucas/src/ec.c:664:28: warning: parameter 'F' is unused [misc-unused-parameters]
+  664 | zp_print(const struct ecf *F, struct sbuf *b, const fe *a)
+      |                            ^
+/home/andrew/Code/ucas/src/ec.c:666:2: warning: no header providing "z_print" is directly included [misc-include-cleaner]
+  666 |         z_print(b, ZW(a, 0));
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:684:27: warning: parameter 'F' is unused [misc-unused-parameters]
+  684 | zp_keep(const struct ecf *F, zmark m, fe *a, size_t n)
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:697:38: warning: no header providing "z_isprime" is directly included [misc-include-cleaner]
+  697 |         if (z_cmp(p, z_from_i64(2)) < 0 || !z_isprime(p))
+      |                                             ^
+/home/andrew/Code/ucas/src/ec.c:721:15: warning: no header providing "u64" is directly included [misc-include-cleaner]
+  721 | fq_set(fe *r, u64 v)
+      |               ^
+/home/andrew/Code/ucas/src/ec.c:735:12: warning: no header providing "r_const" is directly included [misc-include-cleaner]
+  735 |         fq_set(r, r_const(F->R, (u64)m));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:743:7: warning: no header providing "r_inv" is directly included [misc-include-cleaner]
+  743 |         if (!r_inv(F->R, r_const(F->R, den), &di))
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:745:12: warning: no header providing "r_mul" is directly included [misc-include-cleaner]
+  745 |         fq_set(r, r_mul(F->R, r_const(F->R, num), di));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:752:12: warning: no header providing "r_add" is directly included [misc-include-cleaner]
+  752 |         fq_set(r, r_add(F->R, a->w[0], b->w[0]));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:758:12: warning: no header providing "r_sub" is directly included [misc-include-cleaner]
+  758 |         fq_set(r, r_sub(F->R, a->w[0], b->w[0]));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:764:12: warning: no header providing "r_neg" is directly included [misc-include-cleaner]
+  764 |         fq_set(r, r_neg(F->R, a->w[0]));
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:785:30: warning: parameter 'F' is unused [misc-unused-parameters]
+  785 | fq_is_zero(const struct ecf *F, const fe *a)
+      |                              ^
+/home/andrew/Code/ucas/src/ec.c:791:25: warning: parameter 'F' is unused [misc-unused-parameters]
+  791 | fq_eq(const struct ecf *F, const fe *a, const fe *b)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:809:13: warning: no header providing "r_pow" is directly included [misc-include-cleaner]
+  809 |                 fq_set(r, r_pow(R, x, q1 / 2 + 1));
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:816:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  816 |         while (!(Q & 1)) {
+      |                    ~ ^
+/home/andrew/Code/ucas/src/ec.c:817:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  817 |                 Q >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/ec.c:850:14: warning: no header providing "z_from_u64" is directly included [misc-include-cleaner]
+  850 |         *r = zq_int(z_from_u64(a->w[0]));
+      |                     ^
+/home/andrew/Code/ucas/src/ec.c:900:12: warning: no header providing "ECF_FQ" is directly included [misc-include-cleaner]
+  900 |         F->kind = ECF_FQ;
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:912:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  912 |         char *b = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ec.c:914:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  914 |         switch (F->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:918:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   14 |                 snprintf(b, 96, "F_%s", z_str(F->p));
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:1029:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1029 |                 if (e & 1)
+      |                       ~ ^
+/home/andrew/Code/ucas/src/ec.c:1031:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1031 |                 e >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/ec.c:1082:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1082 |         struct sbuf *s = &b[k++ & 7];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/ec.c:1107:22: warning: no header providing "ec" is directly included [misc-include-cleaner]
+ 1107 | ec_invariants(struct ec *E)
+      |                      ^
+/home/andrew/Code/ucas/src/ec.c:1354:13: warning: no header providing "ecpt" is directly included [misc-include-cleaner]
+ 1354 | ec_O(struct ecpt *P)
+      |             ^
+/home/andrew/Code/ucas/src/ec.c:1361:24: warning: parameter 'E' is unused [misc-unused-parameters]
+ 1361 | ec_pt(const struct ec *E, struct ecpt *P, const fe *x, const fe *y)
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:1529:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1529 |                 zint q = kk, r, b30 = z_from_i64((int64_t)1 << 30);
+      |                                                  ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ec.c:1534:4: warning: no header providing "z_divmod_floor" is directly included [misc-include-cleaner]
+ 1534 |                         z_divmod_floor(q, b30, &q, &r);
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:1537:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1537 |                                 bits[at++] = (unsigned char)((v >> j) & 1);
+      |                                                              ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/ec.c:1537:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1537 |                                 bits[at++] = (unsigned char)((v >> j) & 1);
+      |                                                               ^ ~~
+/home/andrew/Code/ucas/src/ec.c:1616:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1616 |                 if (F->kind == ECF_FQ && F->R->qm1 < (1u << 20)) {
+      |                                                          ~~ ^~
+/home/andrew/Code/ucas/src/ec.c:1681:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1681 |         struct sbuf *s = &b[k++ & 7];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/ec.c:1780:19: warning: no header providing "ecpts" is directly included [misc-include-cleaner]
+ 1780 | ecpts_init(struct ecpts *T)
+      |                   ^
+/home/andrew/Code/ucas/src/ec.c:1794:1: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+ 1794 | uint32_t
+      | ^
+/home/andrew/Code/ucas/src/ec.c:1805:18: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 1805 |         T->inf[T->n] = (uint8_t)P->inf;
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:1836:9: warning: no header providing "UINT32_MAX" is directly included [misc-include-cleaner]
+ 1836 |         return UINT32_MAX;
+      |                ^
+/home/andrew/Code/ucas/src/ec.c:1853:3: warning: result of multiplication in type 'uint32_t' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1853 |                 tmp[2 * i] = T->x[i];
+      |                 ^
+/home/andrew/Code/ucas/src/ec.c:1853:7: note: make conversion explicit to silence this warning
+   14 |                 tmp[2 * i] = T->x[i];
+      |                     ^~~~~
+      |                     (size_t)( )
+/home/andrew/Code/ucas/src/ec.c:1853:7: note: perform multiplication in a wider type
+ 1853 |                 tmp[2 * i] = T->x[i];
+      |                     ^
+      |                     (size_t)
+/home/andrew/Code/ucas/src/ec.c:1853:14: warning: Array access (from variable 'tmp') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+ 1853 |                 tmp[2 * i] = T->x[i];
+      |                 ~~~        ^
+/home/andrew/Code/ucas/src/ec.c:1842:2: note: 'tmp' initialized to a null pointer value
+ 1842 |         static fe *tmp;
+      |         ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1846:6: note: Assuming field 'keep' is non-null
+ 1846 |         if (!E->F->op->keep)
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1846:17: note: Field 'keep' is non-null
+ 1846 |         if (!E->F->op->keep)
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:1846:2: note: Taking false branch
+ 1846 |         if (!E->F->op->keep)
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:1848:6: note: Assuming the condition is false
+ 1848 |         if (2 * (size_t)T->n > cap) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1848:2: note: Taking false branch
+ 1848 |         if (2 * (size_t)T->n > cap) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:1852:14: note: Assuming 'i' is < field 'n'
+ 1852 |         for (i = 0; i < T->n; i++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/ec.c:1852:2: note: Loop condition is true.  Entering loop body
+ 1852 |         for (i = 0; i < T->n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:1853:14: note: Array access (from variable 'tmp') results in a null pointer dereference
+ 1853 |                 tmp[2 * i] = T->x[i];
+      |                 ~~~        ^
+/home/andrew/Code/ucas/src/ec.c:1858:13: warning: result of multiplication in type 'uint32_t' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1858 |                 T->x[i] = tmp[2 * i];
+      |                           ^
+/home/andrew/Code/ucas/src/ec.c:1858:17: note: make conversion explicit to silence this warning
+ 1858 |                 T->x[i] = tmp[2 * i];
+      |                               ^~~~~
+      |                               (size_t)( )
+/home/andrew/Code/ucas/src/ec.c:1858:17: note: perform multiplication in a wider type
+ 1858 |                 T->x[i] = tmp[2 * i];
+      |                               ^
+      |                               (size_t)
+/home/andrew/Code/ucas/src/ec.c:1868:44: warning: no header providing "eciso" is directly included [misc-include-cleaner]
+ 1868 | eciso_identity(const struct ecf *F, struct eciso *m)
+      |                                            ^
+/home/andrew/Code/ucas/src/ec.c:2090:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2090 |                 if (F->kind == ECF_FQ && F->R->qm1 < (1u << 20)) {
+      |                                                          ~~ ^~
+/home/andrew/Code/ucas/src/ec.c:2106:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2106 |         if (k == 3 && F->kind == ECF_FQ && F->R->qm1 < (1u << 20)) {
+      |                                                            ~~ ^~
+/home/andrew/Code/ucas/src/ec.c:2328:25: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2328 |                 fe_mul(F, &t, &m[j], &inv[j * 3]);
+      |                                       ^
+/home/andrew/Code/ucas/src/ec.c:2328:29: note: make conversion explicit to silence this warning
+ 2328 |                 fe_mul(F, &t, &m[j], &inv[j * 3]);
+      |                                           ^~~~~
+      |                                           (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ec.c:2328:29: note: perform multiplication in a wider type
+ 2328 |                 fe_mul(F, &t, &m[j], &inv[j * 3]);
+      |                                           ^
+      |                                           (ptrdiff_t)
+/home/andrew/Code/ucas/src/ec.c:2514:17: warning: no header providing "ECM_WEIERSTRASS" is directly included [misc-include-cleaner]
+ 2514 |         return kind >= ECM_WEIERSTRASS && kind <= ECM_HESSIAN ? mkind[kind] :
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:2514:44: warning: no header providing "ECM_HESSIAN" is directly included [misc-include-cleaner]
+ 2514 |         return kind >= ECM_WEIERSTRASS && kind <= ECM_HESSIAN ? mkind[kind] :
+      |                                                   ^
+/home/andrew/Code/ucas/src/ec.c:2527:10: warning: no header providing "ECM_TWISTED_EDWARDS" is directly included [misc-include-cleaner]
+ 2527 |                 return ECM_TWISTED_EDWARDS;
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:2533:25: warning: no header providing "ecmodel" is directly included [misc-include-cleaner]
+ 2533 | ted_params(const struct ecmodel *M, fe *a, fe *d)
+      |                         ^
+/home/andrew/Code/ucas/src/ec.c:2535:17: warning: no header providing "ECM_EDWARDS" is directly included [misc-include-cleaner]
+ 2535 |         if (M->kind == ECM_EDWARDS) {
+      |                        ^
+/home/andrew/Code/ucas/src/ec.c:2550:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2550 |         switch (M->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2555:7: warning: no header providing "ECM_SHORT" is directly included [misc-include-cleaner]
+ 2555 |         case ECM_SHORT:
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:2560:7: warning: no header providing "ECM_MONTGOMERY" is directly included [misc-include-cleaner]
+ 2560 |         case ECM_MONTGOMERY:
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:2577:7: warning: no header providing "ECM_LEGENDRE" is directly included [misc-include-cleaner]
+ 2577 |         case ECM_LEGENDRE:
+      |              ^
+/home/andrew/Code/ucas/src/ec.c:2589:46: warning: no header providing "ecmpt" is directly included [misc-include-cleaner]
+ 2589 | ecm_on(const struct ecmodel *M, const struct ecmpt *P)
+      |                                              ^
+/home/andrew/Code/ucas/src/ec.c:2594:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2594 |         switch (M->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2774:55: warning: parameter 'E' is unused [misc-unused-parameters]
+ 2774 | ecm_pt_to_w(const struct ecmodel *M, const struct ec *E,
+      |                                                       ^
+/home/andrew/Code/ucas/src/ec.c:2780:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2780 |         switch (M->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2854:57: warning: parameter 'E' is unused [misc-unused-parameters]
+ 2854 | ecm_pt_from_w(const struct ecmodel *M, const struct ec *E,
+      |                                                         ^
+/home/andrew/Code/ucas/src/ec.c:2861:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 2861 |         switch (M->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/ec.c:2973:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2973 |                 else if (z_fits_i64(F->p) && z_to_i64(F->p) < (1 << 20))
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/ec.c:2977:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2977 |                 if (q > (1u << 20))
+      |                             ~~ ^~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

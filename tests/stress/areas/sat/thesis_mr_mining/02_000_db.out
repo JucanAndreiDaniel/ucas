@@ -1,0 +1,23 @@
+> f(x: u16) = (x*21845)>>16
+> domain f
+domain of f:
+  x: u16, 0..65535
+  defined at 0 of 65536 points
+  empty domain: undefined at every point of the parameter types
+  undefined e.g. at x=0; x=1; x=2; x=3
+  C undefined behaviour at 65536 points, e.g. x=0
+  over all 65536 points of the domain
+> range f
+range of f -> u16:
+  empty (undefined everywhere)
+  undefined at 65536 points
+  over all 65536 points of the domain
+> wrap f
+wrap analysis of f:
+  21845x   (u16)
+      nuw fails: unsigned wrap at 65532 points, e.g. x=4
+      nsw fails: signed wrap at 65533 points, e.g. x=2
+  end to end: differs from the mathematical result at 65536 points, e.g. x=0
+  over all 65536 points of the domain
+> equiv f f
+f and f: vacuously equal: the domain has no points to compare

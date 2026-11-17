@@ -1,0 +1,15 @@
+c lower nofile
+```c
+int pun_float_bits(float f){return *(int*)&f;}
+float pun_int_bits(int i){return *(float*)&i;}
+unsigned pun_float_u(float f){return *(unsigned*)&f;}
+int pun_via_void(float f){void*p=&f;return *(int*)p;}
+int pun_double_hi(double d){return *(int*)&d;}
+int alias_fi(float*p,int*q){*p=1.0f;*q=2;return *(int*)p;}
+typedef union { float f; int i; unsigned u; } U;
+int union_pun(float f){U u;u.f=f;return u.i;}
+float union_ipun(int i){U u;u.i=i;return u.f;}
+typedef union { double d; long long ll; } D;
+long long union_dpun(double d){D u;u.d=d;return u.ll;}
+char pun_char(float f){return *(char*)&f;}
+```

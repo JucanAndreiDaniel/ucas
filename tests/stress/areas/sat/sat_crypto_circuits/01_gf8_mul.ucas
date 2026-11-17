@@ -1,0 +1,16 @@
+# GF(2^8) arithmetic with the AES polynomial x^8+x^4+x^3+x+1 (0x11b).
+xt(x: u8) = ((x << 1) & 0xff) xor ((x & 0x80) != 0 ? 0x1b : 0)
+gm(a: u8, b: u8) = ((b&1)!=0?a:0) xor ((b&2)!=0?xt(a):0) xor ((b&4)!=0?xt(xt(a)):0) xor ((b&8)!=0?xt(xt(xt(a))):0) xor ((b&16)!=0?xt(xt(xt(xt(a)))):0) xor ((b&32)!=0?xt(xt(xt(xt(xt(a))))):0) xor ((b&64)!=0?xt(xt(xt(xt(xt(xt(a)))))):0) xor ((b&128)!=0?xt(xt(xt(xt(xt(xt(xt(a))))))):0)
+gmr(a: u8, b: u8) = gm(b, a)
+equiv gm gmr
+range xt
+range gm
+id8(x: u8) = x
+mul_one(x: u8) = gm(x, 1)
+equiv mul_one id8
+mul_zero(x: u8) = gm(x, 0)
+zz(x: u8) = 0
+equiv mul_zero zz
+assoc1(a: u8, b: u8, c: u8) = gm(gm(a,b),c)
+assoc2(a: u8, b: u8, c: u8) = gm(a,gm(b,c))
+equiv assoc1 assoc2

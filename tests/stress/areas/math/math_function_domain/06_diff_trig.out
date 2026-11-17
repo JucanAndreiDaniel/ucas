@@ -1,0 +1,54 @@
+> diff sin(x: real)
+d/dx sin(x) = cos(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-15)
+> diff cos(x: real)
+d/dx cos(x) = -sin(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> diff tan(x: real)
+d/dx tan(x) = 1/cos(x)^2
+  holds for cos(x) != 0
+  check: matches central differences at 201 points (max relative difference 4e-07)
+> diff sec(x: real)
+d/dx sec(x) = tan(x)*sec(x)
+  holds for cos(x) != 0
+  check: matches central differences at 201 points (max relative difference 4e-07)
+> diff csc(x: real)
+d/dx csc(x) = -csc(x)*cot(x)
+  holds for sin(x) != 0
+  check: matches central differences at 200 points (max relative difference 3e-06)
+> diff cot(x: real)
+d/dx cot(x) = -1/sin(x)^2
+  holds for sin(x) != 0
+  check: matches central differences at 200 points (max relative difference 3e-06)
+> diff asin(x: real)
+d/dx asin(x) = 1/sqrt(1 - x^2)
+  holds for 1 - x^2 >= 0 and x != -1 and x != 1
+    at x = -1 (an end of the domain) asin(x) has an infinite one-sided slope
+    at x = 1 (an end of the domain) asin(x) has an infinite one-sided slope
+    (points looked for in [-10, 10])
+  check: matches central differences at 20 points (max relative difference 6e-13)
+> diff acos(x: real)
+d/dx acos(x) = -1/sqrt(1 - x^2)
+  holds for 1 - x^2 >= 0 and x != -1 and x != 1
+    at x = -1 (an end of the domain) acos(x) has an infinite one-sided slope
+    at x = 1 (an end of the domain) acos(x) has an infinite one-sided slope
+    (points looked for in [-10, 10])
+  check: matches central differences at 20 points (max relative difference 6e-13)
+> diff atan(x: real)
+d/dx atan(x) = 1/(x^2 + 1)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 8e-16)
+> diff sinh(x: real)
+d/dx sinh(x) = cosh(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-15)
+> diff cosh(x: real)
+d/dx cosh(x) = sinh(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 3e-15)
+> diff tanh(x: real)
+d/dx tanh(x) = 1/cosh(x)^2
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 1e-15)

@@ -1,0 +1,11 @@
+# MR mined from tests/etc1index:c0,c1
+# meaning-preserving rewrite: plusz
+f(v: i8, m: i8) = min(max(v + m, 0), 255)
+g(v: i8, m: i8) = v + m
+f2(v: i8, m: i8) = 0 + (min(max(v + m, 0), 255))
+g2(v: i8, m: i8) = 0 + (v + m)
+f1(v: i8, m: i8) = 0 + (min(max(v + m, 0), 255))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

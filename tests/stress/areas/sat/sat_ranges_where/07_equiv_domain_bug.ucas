@@ -1,0 +1,17 @@
+# WRONG (documented in FINDINGS.md): equiv ignores G's where clause / range
+# when deciding whether G is defined on F's domain.  These .out captures the
+# current (buggy) answers and should change when the bug is fixed.
+fw(x: u8) = x where x < 10
+gw(x: u8) = x where x < 5
+equiv fw ~ gw
+domain gw
+aw(x: u8 in 0..255) = x
+bw(x: u8 in 0..255) = x where x in {0,1,2,3}
+equiv aw ~ bw
+fa(x: u32 in 0..10000000) = x where x < 1000000
+ga(x: u32 in 0..10000000) = x where x < 500000
+equiv fa ~ ga
+# Contrast: partial-match undefinedness IS detected (also a where-style restriction).
+cw(x: u4 in 0..15) = x
+dw(x: u4 in 0..15) = match x { 0 => 0, 1 => 1 }
+equiv cw ~ dw

@@ -1,0 +1,30 @@
+> c optimize nofile target zen4 assume n 0 31
+c optimize: 3 functions, 2 rewrites proved (0 exhaustive, 2 by SAT) for zen4
+  estimated cost of the rewritten values on zen4: 9.5 -> 2.0 cycles
+  shl_guard (line 2): a ?: that always takes its first arm
+    proof: sat (proved by SAT: 754 AIG nodes, 70 conflicts); cost 4.8 -> 1.0
+    over: n in [0, 31] (assumed)
+    before: {return n<32?x<<n:0;}
+  shr_guard (line 3): a ?: that always takes its first arm
+    proof: sat (proved by SAT: 754 AIG nodes, 64 conflicts); cost 4.8 -> 1.0
+    over: n in [0, 31] (assumed)
+    before: {return n<32?x>>n:0;}
+  shl_assume (line 1): no cheaper form: lowered: 2 inputs, cost 1.0
+optimised C:
+  /* optimised by ucas cfront for zen4 (znver4); every rewrite proved, see the report */
+  #include <stdint.h>
+  unsigned shl_assume(unsigned x,unsigned n){return x<<n;}
+  unsigned shl_guard(unsigned x,unsigned n){
+  	return (unsigned int)((uint32_t)((uint32_t)((x)) << ((n))));
+  }
+  unsigned shr_guard(unsigned x,unsigned n){
+  	return (unsigned int)((uint32_t)((uint32_t)((x)) >> ((n))));
+  }
+> c optimize nofile assume a 1 1000
+c optimize: 2 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  divb (line 1): no cheaper form: lowered: 1 inputs, cost 26.0
+  mulb (line 2): no cheaper form: lowered: 1 inputs, cost 3.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int divb(int a){return 100/a;}
+  int mulb(int a){return a*100;}

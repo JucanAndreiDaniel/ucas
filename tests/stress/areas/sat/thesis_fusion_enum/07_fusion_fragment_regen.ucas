@@ -1,0 +1,22 @@
+# STORM seed fragmentation: split a seed tree, regenerate a fused body.
+# Each piece is re-emitted through the same provably-equal transform.
+sf_0(x: u8, y: u8) = (x + y)
+sg_0(x: u8, y: u8) = (y + x)
+equiv sf_0 sg_0
+error sg_0 ~ sf_0
+sf_1(x: u8, y: u8) = (x * y)
+sg_1(x: u8, y: u8) = (y * x)
+equiv sf_1 sg_1
+error sg_1 ~ sf_1
+sf_2(x: u8, y: u8, z: u8) = ((x + y) + z)
+sg_2(x: u8, y: u8, z: u8) = (x + (y + z))
+equiv sf_2 sg_2
+error sg_2 ~ sf_2
+sf_3(x: u8, y: u8, z: u8) = (x * (y + z))
+sg_3(x: u8, y: u8, z: u8) = ((x * y) + (x * z))
+equiv sf_3 sg_3
+error sg_3 ~ sf_3
+sf_4(x: u8, y: u8) = (x * y)
+sg_4(x: u8, y: u8) = ((x * y) * 1)
+equiv sf_4 sg_4
+error sg_4 ~ sf_4

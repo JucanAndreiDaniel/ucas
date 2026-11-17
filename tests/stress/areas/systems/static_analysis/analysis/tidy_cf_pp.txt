@@ -1,0 +1,807 @@
+/home/andrew/Code/ucas/src/cf_pp.c:33:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   26 | #include <stdio.h>
+   27 | #include <stdlib.h>
+   28 | #include <string.h>
+   29 | 
+   30 | #include "cfront.h"
+   31 | 
+   32 | struct ptok {
+   33 |         uint8_t kind, fl;
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:34:2: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+   34 |         uint16_t file;
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:35:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   35 |         uint32_t off, len, line, col, sym;
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:48:12: warning: no header providing "newcap" is directly included [misc-include-cleaner]
+   31 |                 b->cap = newcap(b->cap, b->n + 1);
+      |                          ^
+/home/andrew/Code/ucas/src/cf_pp.c:49:10: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+   49 |                 b->t = xrealloc(b->t, b->cap * sizeof *b->t);
+      |                        ^
+/home/andrew/Code/ucas/src/cf_pp.c:70:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+   70 |         struct sbuf syntext;
+      |                ^
+/home/andrew/Code/ucas/src/cf_pp.c:88:13: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+   88 |         s_define = sym_cstr("define");
+      |                    ^
+/home/andrew/Code/ucas/src/cf_pp.c:134:13: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  134 |         u->ftext = xrealloc(u->ftext, (size_t)(u->nfiles + 1) * sizeof *u->ftext);
+      |                    ^
+/home/andrew/Code/ucas/src/cf_pp.c:134:22: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  134 |         u->ftext = xrealloc(u->ftext, (size_t)(u->nfiles + 1) * sizeof *u->ftext);
+      |                             ^
+/home/andrew/Code/ucas/src/cf_pp.c:135:13: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  135 |         u->fname = xrealloc(u->fname, (size_t)(u->nfiles + 1) * sizeof *u->fname);
+      |                    ^
+/home/andrew/Code/ucas/src/cf_pp.c:135:22: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  135 |         u->fname = xrealloc(u->fname, (size_t)(u->nfiles + 1) * sizeof *u->fname);
+      |                             ^
+/home/andrew/Code/ucas/src/cf_pp.c:212:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  212 |                 t.fl = (uint8_t)((bol ? CTF_BOL : 0) | (space ? CTF_SPACE : 0));
+      |                                  ^~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_pp.c:229:6: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  229 |                                         p++;
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:229:9: note: end of the original
+  229 |                                         p++;
+      |                                            ^
+/home/andrew/Code/ucas/src/cf_pp.c:232:6: note: clone 1 starts here
+  232 |                                         p++;
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:264:11: warning: no header providing "sym_intern" is directly included [misc-include-cleaner]
+  264 |                 t.sym = sym_intern(st, t.len);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:309:11: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  309 |                 PP.ht = xcalloc(cap, sizeof *PP.ht);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:349:2: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  349 |         sb_printf(&PP.syntext, "%.*s", (int)n, s);
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:350:2: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  350 |         sb_putc(&PP.syntext, 0);
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:468:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  468 |                 if (i && (t[i].fl & CTF_SPACE))
+      |                                   ~ ^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:509:3: warning: Value stored to 't' is never read [clang-analyzer-deadcode.DeadStores]
+  509 |                 t = rd_peek(r);
+      |                 ^   ~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:509:3: note: Value stored to 't' is never read
+  509 |                 t = rd_peek(r);
+      |                 ^   ~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:515:9: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  515 |                                     sym_str(m->name));
+      |                                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:553:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  553 |                 t.fl = (uint8_t)((t.fl & CTF_SPACE) | CTF_MACRO);
+      |                                  ^~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_pp.c:553:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  553 |                 t.fl = (uint8_t)((t.fl & CTF_SPACE) | CTF_MACRO);
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:585:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |                                 body.t[j].fl |= CTF_MACRO;
+      |                                              ~~ ^
+/home/andrew/Code/ucas/src/cfront.h:264:19: note: expanded from macro 'CTF_MACRO'
+  264 | #define CTF_MACRO 1     /* came out of a macro expansion */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:587:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                                 body.t[j0].fl = (uint8_t)((body.t[j0].fl & ~CTF_SPACE) |
+      |                                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_pp.c:587:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                                 body.t[j0].fl = (uint8_t)((body.t[j0].fl & ~CTF_SPACE) |
+      |                                                                          ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:587:49: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  587 |                                 body.t[j0].fl = (uint8_t)((body.t[j0].fl & ~CTF_SPACE) |
+      |                                                                            ~^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:588:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                                     (t.fl & CTF_SPACE));
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:629:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  629 |                 body.t[i].fl |= CTF_MACRO;
+      |                              ~~ ^
+/home/andrew/Code/ucas/src/cfront.h:264:19: note: expanded from macro 'CTF_MACRO'
+  264 | #define CTF_MACRO 1     /* came out of a macro expansion */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:634:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 body.t[0].fl = (uint8_t)((body.t[0].fl & ~CTF_SPACE) |
+      |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_pp.c:634:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |                 body.t[0].fl = (uint8_t)((body.t[0].fl & ~CTF_SPACE) |
+      |                                                        ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:634:45: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  634 |                 body.t[0].fl = (uint8_t)((body.t[0].fl & ~CTF_SPACE) |
+      |                                                          ~^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:635:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  635 |                     (nt.fl & CTF_SPACE));
+      |                            ~ ^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:644:59: warning: parameter 'grp' is unused [misc-unused-parameters]
+  442 | expand_into(struct ptbuf *in, struct ptbuf *out, uint32_t grp, uint32_t o0,
+      |                                                  ~~~~~~~~~^~~~
+/home/andrew/Code/ucas/src/cf_pp.c:644:73: warning: parameter 'o0' is unused [misc-unused-parameters]
+note: this fix will not be applied because it overlaps with another fix
+  644 | expand_into(struct ptbuf *in, struct ptbuf *out, uint32_t grp, uint32_t o0,
+      |                                                                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:645:14: warning: parameter 'o1' is unused [misc-unused-parameters]
+note: this fix will not be applied because it overlaps with another fix
+  645 |     uint32_t o1)
+      |              ^
+/home/andrew/Code/ucas/src/cf_pp.c:662:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  662 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                                          ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:662:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cf_pp.c:662:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_pp.c:691:8: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  691 | static int64_t cx_cond(struct cexp *c);
+      |        ^
+/home/andrew/Code/ucas/src/cf_pp.c:691:31: warning: no header providing "cexp" is directly included [misc-include-cleaner]
+   25 | static int64_t cx_cond(struct cexp *c);
+      |                               ^
+/home/andrew/Code/ucas/src/cf_pp.c:727:11: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  727 |                 return ~cx_prim(c);
+      |                        ~^~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:784:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  784 |                 else if (!strcmp(op, "|")) a |= b;
+      |                                            ^ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:785:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  785 |                 else if (!strcmp(op, "^")) a ^= b;
+      |                                            ^ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:786:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  786 |                 else if (!strcmp(op, "&")) a &= b;
+      |                                            ^ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:793:46: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  793 |                 else if (!strcmp(op, "<<")) a = (int64_t)((uint64_t)a << (b & 63));
+      |                                                            ^
+/home/andrew/Code/ucas/src/cf_pp.c:793:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  793 |                 else if (!strcmp(op, "<<")) a = (int64_t)((uint64_t)a << (b & 63));
+      |                                                                       ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:793:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  793 |                 else if (!strcmp(op, "<<")) a = (int64_t)((uint64_t)a << (b & 63));
+      |                                                                           ^ ~
+/home/andrew/Code/ucas/src/cf_pp.c:794:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  794 |                 else if (!strcmp(op, ">>")) a >>= (b & 63);
+      |                                             ^ ~~~
+/home/andrew/Code/ucas/src/cf_pp.c:794:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  794 |                 else if (!strcmp(op, ">>")) a >>= (b & 63);
+      |                                                    ^ ~
+/home/andrew/Code/ucas/src/cf_pp.c:994:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  994 |                         raw.t[i].fl |= CTF_BUILTIN;
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/cfront.h:267:21: note: expanded from macro 'CTF_BUILTIN'
+  267 | #define CTF_BUILTIN 8   /* from the built-in prelude (system headers) */
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: warning: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior [clang-analyzer-unix.Stream]
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is < field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is true.  Entering loop body
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:993:7: note: Assuming 'builtin' is 0
+  993 |                 if (builtin)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:993:3: note: Taking false branch
+  993 |                 if (builtin)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is >= field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is false. Execution continues on line 995
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:995:6: note: Assuming the condition is false
+  995 |         if (++PP.depth > 64) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:995:2: note: Taking false branch
+  995 |         if (++PP.depth > 64) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1003:2: note: Calling 'process'
+ 1003 |         process(&sub, out);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1129:2: note: Loop condition is true.  Entering loop body
+ 1129 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1132:7: note: Assuming field 'err' is null
+ 1132 |                 if (PP.err)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1132:3: note: Taking false branch
+ 1132 |                 if (PP.err)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1134:3: note: Loop condition is false. Execution continues on line 1136
+ 1134 |                 for (k = 0; k < nc; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1137:7: note: Assuming 't' is not equal to NULL
+ 1137 |                 if (t == NULL) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1137:3: note: Taking false branch
+ 1137 |                 if (t == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:23: note: Assuming 's_hash' is not equal to field 'sym'
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:40: note: Left side of '&&' is false
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                                      ^
+/home/andrew/Code/ucas/src/cf_pp.c:1222:8: note: 'on' is 1
+ 1222 |                 if (!on)
+      |                      ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1222:3: note: Taking false branch
+ 1222 |                 if (!on)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Assuming field 'kind' is equal to CK_ID
+ 1224 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1225:7: note: Assuming field 'active' is 0
+ 1225 |                     !m->active) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:3: note: Taking true branch
+ 1224 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1227:8: note: Assuming field 'fn' is 0
+ 1227 |                         if (m->fn) {
+      |                             ^~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1227:4: note: Taking false branch
+ 1227 |                         if (m->fn) {
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1235:4: note:  Execution continues on line 1129
+ 1235 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1129:2: note: Loop condition is true.  Entering loop body
+ 1129 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1132:7: note: Assuming field 'err' is null
+ 1132 |                 if (PP.err)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1132:3: note: Taking false branch
+ 1132 |                 if (PP.err)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1134:3: note: Loop condition is false. Execution continues on line 1136
+ 1134 |                 for (k = 0; k < nc; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1137:7: note: Assuming 't' is not equal to NULL
+ 1137 |                 if (t == NULL) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1137:3: note: Taking false branch
+ 1137 |                 if (t == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Assuming the condition is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1144:23: note: Assuming 's_hash' is equal to field 'sym'
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:44: note: Assuming the condition is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                                          ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:3: note: Taking true branch
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Assuming 'e' is < field 'n'
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1150:23: note: Assuming the condition is true
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:4: note: Loop condition is true.  Entering loop body
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Assuming 'e' is >= field 'n'
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:20: note: Left side of '&&' is false
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1153:8: note: Assuming 's0' is not equal to 'e'
+ 1153 |                         if (s0 == e)
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1153:4: note: Taking false branch
+ 1153 |                         if (s0 == e)
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Assuming 'd' is not equal to 's_if'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cf_pp.c:1156:21: note: Assuming 'd' is not equal to 's_ifdef'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                                          ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Left side of '||' is false
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                             ^
+/home/andrew/Code/ucas/src/cf_pp.c:1156:37: note: Assuming 'd' is not equal to 's_ifndef'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                                                          ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:4: note: Taking false branch
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1172:15: note: Assuming 'd' is not equal to 's_elif'
+ 1172 |                         } else if (d == s_elif) {
+      |                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1172:11: note: Taking false branch
+ 1172 |                         } else if (d == s_elif) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1189:15: note: Assuming 'd' is not equal to 's_else'
+ 1189 |                         } else if (d == s_else) {
+      |                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1189:11: note: Taking false branch
+ 1189 |                         } else if (d == s_else) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1196:15: note: Assuming 'd' is not equal to 's_endif'
+ 1196 |                         } else if (d == s_endif) {
+      |                                    ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1196:11: note: Taking false branch
+ 1196 |                         } else if (d == s_endif) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1202:16: note: 'on' is 1
+ 1202 |                         } else if (!on)
+      |                                     ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1202:11: note: Taking false branch
+ 1202 |                         } else if (!on)
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1204:13: note: Assuming 'd' is not equal to 's_define'
+ 1204 |                         else if (d == s_define)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1204:9: note: Taking false branch
+ 1204 |                         else if (d == s_define)
+      |                              ^
+/home/andrew/Code/ucas/src/cf_pp.c:1206:13: note: Assuming 'd' is not equal to 's_undef'
+ 1206 |                         else if (d == s_undef) {
+      |                                  ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1206:9: note: Taking false branch
+ 1206 |                         else if (d == s_undef) {
+      |                              ^
+/home/andrew/Code/ucas/src/cf_pp.c:1209:15: note: Assuming 'd' is equal to 's_include'
+ 1209 |                         } else if (d == s_include)
+      |                                    ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1209:11: note: Taking true branch
+ 1209 |                         } else if (d == s_include)
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1210:5: note: Calling 'do_include'
+ 1210 |                                 do_include(r, &f->t[s0 + 1], e - s0 - 1, &at, out);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1035:6: note: Assuming 'n' is not equal to 0
+ 1035 |         if (n == 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1035:2: note: Taking false branch
+ 1035 |         if (n == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1040:6: note: Assuming field 'kind' is equal to CK_STR
+ 1040 |         if (t[0].kind == CK_STR) {
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1040:2: note: Taking true branch
+ 1040 |         if (t[0].kind == CK_STR) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1056:6: note: 'sys' is 0
+ 1056 |         if (sys) {
+      |             ^~~
+/home/andrew/Code/ucas/src/cf_pp.c:1056:2: note: Taking false branch
+ 1056 |         if (sys) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1074:7: note: Assuming the condition is true
+ 1074 |                 if (name[0] == '/' || sl == NULL)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1074:22: note: Left side of '||' is true
+ 1074 |                 if (name[0] == '/' || sl == NULL)
+      |                                    ^
+/home/andrew/Code/ucas/src/cf_pp.c:1079:10: note: Calling 'read_file'
+ 1079 |                 text = read_file(path);
+      |                        ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1018:6: note: 'fp' is not equal to NULL
+ 1018 |         if (fp == NULL)
+      |             ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1018:2: note: Taking false branch
+ 1018 |         if (fp == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: note: Assuming this stream operation fails
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1020:9: note: Assuming the condition is true
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1020:2: note: Loop condition is true.  Entering loop body
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: note: File position of the stream might be 'indeterminate' after a failed operation. Can cause undefined behavior
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: warning: Read function called when stream is in EOF state. Function has no effect [clang-analyzer-unix.Stream]
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is < field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is true.  Entering loop body
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:993:7: note: Assuming 'builtin' is 0
+  993 |                 if (builtin)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:993:3: note: Taking false branch
+  993 |                 if (builtin)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is >= field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is false. Execution continues on line 995
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:995:6: note: Assuming the condition is false
+  995 |         if (++PP.depth > 64) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:995:2: note: Taking false branch
+  995 |         if (++PP.depth > 64) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1003:2: note: Calling 'process'
+ 1003 |         process(&sub, out);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1129:2: note: Loop condition is true.  Entering loop body
+ 1129 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1132:7: note: Assuming field 'err' is null
+ 1132 |                 if (PP.err)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1132:3: note: Taking false branch
+ 1132 |                 if (PP.err)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1134:3: note: Loop condition is false. Execution continues on line 1136
+ 1134 |                 for (k = 0; k < nc; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1137:7: note: Assuming 't' is not equal to NULL
+ 1137 |                 if (t == NULL) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1137:3: note: Taking false branch
+ 1137 |                 if (t == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:23: note: Assuming 's_hash' is not equal to field 'sym'
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:40: note: Left side of '&&' is false
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                                      ^
+/home/andrew/Code/ucas/src/cf_pp.c:1222:8: note: 'on' is 1
+ 1222 |                 if (!on)
+      |                      ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1222:3: note: Taking false branch
+ 1222 |                 if (!on)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Assuming field 'kind' is equal to CK_ID
+ 1224 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1224:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1225:7: note: Assuming field 'active' is 0
+ 1225 |                     !m->active) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:3: note: Taking true branch
+ 1224 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1227:8: note: Assuming field 'fn' is 0
+ 1227 |                         if (m->fn) {
+      |                             ^~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1227:4: note: Taking false branch
+ 1227 |                         if (m->fn) {
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1235:4: note:  Execution continues on line 1129
+ 1235 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1129:2: note: Loop condition is true.  Entering loop body
+ 1129 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1132:7: note: Assuming field 'err' is null
+ 1132 |                 if (PP.err)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1132:3: note: Taking false branch
+ 1132 |                 if (PP.err)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1134:3: note: Loop condition is false. Execution continues on line 1136
+ 1134 |                 for (k = 0; k < nc; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1137:7: note: Assuming 't' is not equal to NULL
+ 1137 |                 if (t == NULL) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1137:3: note: Taking false branch
+ 1137 |                 if (t == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Assuming the condition is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1144:23: note: Assuming 's_hash' is equal to field 'sym'
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:7: note: Left side of '&&' is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:44: note: Assuming the condition is true
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                                          ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:3: note: Taking true branch
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Assuming 'e' is < field 'n'
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/cf_pp.c:1150:23: note: Assuming the condition is true
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:4: note: Loop condition is true.  Entering loop body
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1150:11: note: Assuming 'e' is >= field 'n'
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                ^~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1150:20: note: Left side of '&&' is false
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1153:8: note: Assuming 's0' is not equal to 'e'
+ 1153 |                         if (s0 == e)
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1153:4: note: Taking false branch
+ 1153 |                         if (s0 == e)
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Assuming 'd' is not equal to 's_if'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cf_pp.c:1156:21: note: Assuming 'd' is not equal to 's_ifdef'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                                          ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:8: note: Left side of '||' is false
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                             ^
+/home/andrew/Code/ucas/src/cf_pp.c:1156:37: note: Assuming 'd' is not equal to 's_ifndef'
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                                                          ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1156:4: note: Taking false branch
+ 1156 |                         if (d == s_if || d == s_ifdef || d == s_ifndef) {
+      |                         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1172:15: note: Assuming 'd' is not equal to 's_elif'
+ 1172 |                         } else if (d == s_elif) {
+      |                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1172:11: note: Taking false branch
+ 1172 |                         } else if (d == s_elif) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1189:15: note: Assuming 'd' is not equal to 's_else'
+ 1189 |                         } else if (d == s_else) {
+      |                                    ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1189:11: note: Taking false branch
+ 1189 |                         } else if (d == s_else) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1196:15: note: Assuming 'd' is not equal to 's_endif'
+ 1196 |                         } else if (d == s_endif) {
+      |                                    ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1196:11: note: Taking false branch
+ 1196 |                         } else if (d == s_endif) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1202:16: note: 'on' is 1
+ 1202 |                         } else if (!on)
+      |                                     ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1202:11: note: Taking false branch
+ 1202 |                         } else if (!on)
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1204:13: note: Assuming 'd' is not equal to 's_define'
+ 1204 |                         else if (d == s_define)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1204:9: note: Taking false branch
+ 1204 |                         else if (d == s_define)
+      |                              ^
+/home/andrew/Code/ucas/src/cf_pp.c:1206:13: note: Assuming 'd' is not equal to 's_undef'
+ 1206 |                         else if (d == s_undef) {
+      |                                  ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1206:9: note: Taking false branch
+ 1206 |                         else if (d == s_undef) {
+      |                              ^
+/home/andrew/Code/ucas/src/cf_pp.c:1209:15: note: Assuming 'd' is equal to 's_include'
+ 1209 |                         } else if (d == s_include)
+      |                                    ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1209:11: note: Taking true branch
+ 1209 |                         } else if (d == s_include)
+      |                                ^
+/home/andrew/Code/ucas/src/cf_pp.c:1210:5: note: Calling 'do_include'
+ 1210 |                                 do_include(r, &f->t[s0 + 1], e - s0 - 1, &at, out);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1035:6: note: Assuming 'n' is not equal to 0
+ 1035 |         if (n == 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1035:2: note: Taking false branch
+ 1035 |         if (n == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1040:6: note: Assuming field 'kind' is equal to CK_STR
+ 1040 |         if (t[0].kind == CK_STR) {
+      |             ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1040:2: note: Taking true branch
+ 1040 |         if (t[0].kind == CK_STR) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1056:6: note: 'sys' is 0
+ 1056 |         if (sys) {
+      |             ^~~
+/home/andrew/Code/ucas/src/cf_pp.c:1056:2: note: Taking false branch
+ 1056 |         if (sys) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1074:7: note: Assuming the condition is true
+ 1074 |                 if (name[0] == '/' || sl == NULL)
+      |                     ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1074:22: note: Left side of '||' is true
+ 1074 |                 if (name[0] == '/' || sl == NULL)
+      |                                    ^
+/home/andrew/Code/ucas/src/cf_pp.c:1079:10: note: Calling 'read_file'
+ 1079 |                 text = read_file(path);
+      |                        ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1018:6: note: 'fp' is not equal to NULL
+ 1018 |         if (fp == NULL)
+      |             ^~
+/home/andrew/Code/ucas/src/cf_pp.c:1018:2: note: Taking false branch
+ 1018 |         if (fp == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: note: Assuming stream reaches end-of-file here
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1020:9: note: Assuming the condition is true
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1020:2: note: Loop condition is true.  Entering loop body
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1020:14: note: Read function called when stream is in EOF state. Function has no effect
+ 1020 |         while ((n = fread(buf, 1, sizeof buf, fp)) > 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1023:2: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+ 1023 |         sb_puts(&b, "");
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1057:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1057 |                 if (at->file == 0 || !(at->fl & CTF_BUILTIN))
+      |                                               ~ ^
+/home/andrew/Code/ucas/src/cfront.h:267:21: note: expanded from macro 'CTF_BUILTIN'
+  267 | #define CTF_BUILTIN 8   /* from the built-in prelude (system headers) */
+      |                     ^
+/home/andrew/Code/ucas/src/cf_pp.c:1062:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1062 |                                 if (PP.known_hdr & (1 << k))
+      |                                     ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_pp.c:1062:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1062 |                                 if (PP.known_hdr & (1 << k))
+      |                                                     ^ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:1064:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1064 |                                 PP.known_hdr |= 1 << k;
+      |                                 ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:1064:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1064 |                                 PP.known_hdr |= 1 << k;
+      |                                                 ^ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:1100:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1100 |         if (n > 1 && t[1].sym == s_lp && !(t[1].fl & CTF_SPACE)) {
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/cfront.h:266:19: note: expanded from macro 'CTF_SPACE'
+  266 | #define CTF_SPACE 4     /* whitespace before */
+      |                   ^
+/home/andrew/Code/ucas/src/cf_pp.c:1135:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1135 |                         on &= live[k];
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:1144:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                                                ~ ^
+/home/andrew/Code/ucas/src/cfront.h:265:17: note: expanded from macro 'CTF_BOL'
+  265 | #define CTF_BOL 2       /* first on its line */
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1150:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1150 |                         while (e < f->n && !(f->t[e].fl & CTF_BOL))
+      |                                                         ~ ^
+/home/andrew/Code/ucas/src/cfront.h:265:17: note: expanded from macro 'CTF_BOL'
+  265 | #define CTF_BOL 2       /* first on its line */
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1180:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1180 |                                         on &= live[k];
+      |                                         ^~ ~~
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1207 |                                 if (e > s0 + 1 && (m = mac_find(f->t[s0 + 1].sym)))
+      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: warning: assignment within operand of a logical operator may indicate programmer error [bugprone-assignment-in-selection-statement]
+ 1207 |                                 if (e > s0 + 1 && (m = mac_find(f->t[s0 + 1].sym)))
+      |                                                    ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: note: if it should be an assignment, move it out of the condition
+/home/andrew/Code/ucas/src/cf_pp.c:1207:26: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_pp.c:1221:3: warning: Out of bound access to memory around 'sub.f' [clang-analyzer-security.ArrayBound]
+ 1221 |                 r->f[r->nf - 1].i++;
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is < field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is true.  Entering loop body
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:993:7: note: Assuming 'builtin' is not equal to 0
+  993 |                 if (builtin)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:993:3: note: Taking true branch
+  993 |                 if (builtin)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:992:14: note: Assuming 'i' is >= field 'n'
+  992 |         for (i = 0; i < raw.n; i++)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:992:2: note: Loop condition is false. Execution continues on line 995
+  992 |         for (i = 0; i < raw.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:995:6: note: Assuming the condition is false
+  995 |         if (++PP.depth > 64) {
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:995:2: note: Taking false branch
+  995 |         if (++PP.depth > 64) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1003:2: note: Calling 'process'
+ 1003 |         process(&sub, out);
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1129:2: note: Loop condition is true.  Entering loop body
+ 1129 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_pp.c:1132:7: note: Assuming field 'err' is null
+ 1132 |                 if (PP.err)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1132:3: note: Taking false branch
+ 1132 |                 if (PP.err)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1134:3: note: Loop condition is false. Execution continues on line 1136
+ 1134 |                 for (k = 0; k < nc; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1137:7: note: Assuming 't' is not equal to NULL
+ 1137 |                 if (t == NULL) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1137:3: note: Taking false branch
+ 1137 |                 if (t == NULL) {
+      |                 ^
+/home/andrew/Code/ucas/src/cf_pp.c:1144:20: note: Left side of '&&' is false
+ 1144 |                 if (rd_infile(r) && t->sym == s_hash && (t->fl & CTF_BOL)) {
+      |                                  ^
+/home/andrew/Code/ucas/src/cf_pp.c:1221:3: note: Access of 'sub.f' at a negative or overflowing index, while it holds only 256 'struct frame' elements
+ 1221 |                 r->f[r->nf - 1].i++;
+      |                 ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:30: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1224 |                 if (t->kind == CK_ID && (m = mac_find(t->sym)) != NULL &&
+      |                                          ~~^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_pp.c:1224:30: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cf_pp.c:1224:30: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_pp.c:1290:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1290 |                         if (tg->feat & CF_F(k))
+      |                                        ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cf_pp.c:1310:14: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+ 1310 |                 tk->kind = xmalloc(tk->cap);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

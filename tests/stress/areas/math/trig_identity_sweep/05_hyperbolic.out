@@ -1,0 +1,107 @@
+> simplify sinh(2*x) - 2*sinh(x)*cosh(x)
+  ucas: trig sinh(2*x) - 2*sinh(x)*cosh(x)
+  note: x is taken as real
+trig forms of sinh(2*x) - 2*sinh(x)*cosh(x)
+  product to sum: sinh a cosh b = (sinh(a + b) + sinh(a - b))/2, cosh a cosh b = (cosh(a + b) + cosh(a - b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(2x) - exp(-2x))/2 - (exp(x) - exp(-x))*(exp(x) + exp(-x))/2
+    check: equal at 64 of 64 sample points (max relative difference 3e-14)
+  simplest: 0  (product to sum)
+> simplify cosh(2*x) - (cosh(x)^2 + sinh(x)^2)
+  ucas: trig cosh(2*x) - (cosh(x)^2 + sinh(x)^2)
+  note: x is taken as real
+trig forms of cosh(2*x) - (cosh(x)^2 + sinh(x)^2)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = -sinh(x)^2 - cosh(x)^2 + cosh(2x)
+    check: equal at 64 of 64 sample points
+  power reduction: sinh^2 u = (cosh 2u - 1)/2, cosh^2 u = (cosh 2u + 1)/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 3e-14)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(2x) + exp(-2x))/2 - ((exp(x) + exp(-x))/2)^2 - ((exp(x) - exp(-x))/2)^2
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  simplest: 0  (power reduction)
+> simplify cosh(2*x) - (2*cosh(x)^2 - 1)
+  ucas: trig cosh(2*x) - (2*cosh(x)^2 - 1)
+  note: x is taken as real
+trig forms of cosh(2*x) - (2*cosh(x)^2 - 1)
+  power reduction: sinh^2 u = (cosh 2u - 1)/2, cosh^2 u = (cosh 2u + 1)/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 3e-14)
+  exponential (Euler): cosh u = (e^u + e^(-u))/2
+    = (exp(2x) + exp(-2x))/2 - 2*((exp(x) + exp(-x))/2)^2 + 1
+    check: equal at 64 of 64 sample points (max relative difference 3e-14)
+  simplest: 0  (power reduction)
+> simplify tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  ucas: trig tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  note: x is taken as real
+trig forms of tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)
+  in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
+    = sinh(2x)/cosh(2x) - 2sinh(x)/(cosh(x)*(sinh(x)^2/cosh(x)^2 + 1))
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  compound and multiple angles: sinh(a + b) = sinh a cosh b + cosh a sinh b, cosh(a + b) = cosh a cosh b + sinh a sinh b
+    = 0
+    for cosh(x) != 0
+    check: equal at 64 of 64 sample points where cosh(x) != 0 (max relative difference 1e-16)
+  exponential (Euler): tanh u = (e^u - e^(-u))/(e^u + e^(-u))
+    = (exp(2x) - exp(-2x))/(exp(2x) + exp(-2x)) - 2*(exp(x) - exp(-x))/((exp(x) + exp(-x))*(((exp(x) - exp(-x))/(exp(x) + exp(-x)))^2 + 1))
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  simplest: tanh(2*x) - 2*tanh(x)/(1+tanh(x)^2)  (as given)
+> simplify sinh(x+y) - (sinh(x)*cosh(y)+cosh(x)*sinh(y))
+  ucas: trig sinh(x+y) - (sinh(x)*cosh(y)+cosh(x)*sinh(y))
+  note: x, y are taken as real
+trig forms of sinh(x+y) - (sinh(x)*cosh(y)+cosh(x)*sinh(y))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = -sinh(x)*cosh(y) - cosh(x)*sinh(y) + sinh(x + y)
+    check: equal at 64 of 64 sample points
+  product to sum: sinh a cosh b = (sinh(a + b) + sinh(a - b))/2, cosh a cosh b = (cosh(a + b) + cosh(a - b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(x + y) - exp(-x - y))/2 - (exp(x) - exp(-x))*(exp(y) + exp(-y))/4 - (exp(x) + exp(-x))*(exp(y) - exp(-y))/4
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  simplest: 0  (product to sum)
+> simplify cosh(x+y) - (cosh(x)*cosh(y)+sinh(x)*sinh(y))
+  ucas: trig cosh(x+y) - (cosh(x)*cosh(y)+sinh(x)*sinh(y))
+  note: x, y are taken as real
+trig forms of cosh(x+y) - (cosh(x)*cosh(y)+sinh(x)*sinh(y))
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = -sinh(x)*sinh(y) - cosh(x)*cosh(y) + cosh(x + y)
+    check: equal at 64 of 64 sample points
+  product to sum: sinh a cosh b = (sinh(a + b) + sinh(a - b))/2, cosh a cosh b = (cosh(a + b) + cosh(a - b))/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = (exp(x + y) + exp(-x - y))/2 - (exp(x) + exp(-x))*(exp(y) + exp(-y))/4 - (exp(x) - exp(-x))*(exp(y) - exp(-y))/4
+    check: equal at 64 of 64 sample points (max relative difference 2e-14)
+  simplest: 0  (product to sum)
+> simplify sinh(x)^2 - (cosh(2*x)-1)/2
+  ucas: trig sinh(x)^2 - (cosh(2*x)-1)/2
+  note: x is taken as real
+trig forms of sinh(x)^2 - (cosh(2*x)-1)/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2sinh(x)^2 - cosh(2x) + 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 6e-17)
+  power reduction: sinh^2 u = (cosh 2u - 1)/2, cosh^2 u = (cosh 2u + 1)/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 7e-15)
+  exponential (Euler): sinh u = (e^u - e^(-u))/2, cosh u = (e^u + e^(-u))/2
+    = ((exp(x) - exp(-x))/2)^2 - ((exp(2x) + exp(-2x))/2 - 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  simplest: 0  (power reduction)
+> simplify cosh(x)^2 - (cosh(2*x)+1)/2
+  ucas: trig cosh(x)^2 - (cosh(2*x)+1)/2
+  note: x is taken as real
+trig forms of cosh(x)^2 - (cosh(2*x)+1)/2
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = (2cosh(x)^2 - cosh(2x) - 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+  power reduction: sinh^2 u = (cosh 2u - 1)/2, cosh^2 u = (cosh 2u + 1)/2
+    = 0
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  exponential (Euler): cosh u = (e^u + e^(-u))/2
+    = ((exp(x) + exp(-x))/2)^2 - ((exp(2x) + exp(-2x))/2 + 1)/2
+    check: equal at 64 of 64 sample points (max relative difference 1e-14)
+  simplest: 0  (power reduction)

@@ -1,0 +1,81 @@
+> assume a byte is unsigned
+  ok: a byte is unsigned
+> what is the range of x for a byte x?
+  ucas: it(x: u8) = x
+  ucas: range it
+range of it -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> assume bytes are signed
+  ok: bytes are signed
+> what is the range of x plus 1 for a byte x?
+  ucas: it(x: i8) = x + 1
+  ucas: range it
+range of it -> i8:
+  -128..127   (256 distinct values)
+  fits in i8
+  over all 256 points of the domain
+> does x times x overflow for a 16-bit unsigned x?
+  ucas: it(x: u16) = x*x
+  ucas: wrap it
+wrap analysis of it:
+  x*x   (u16)
+      nuw fails: unsigned wrap at 65280 points, e.g. x=256
+      nsw fails: signed wrap at 65173 points, e.g. x=182
+  end to end: differs from the mathematical result at 65280 points, e.g. x=256
+      exact for: 0..255
+  over all 65536 points of the domain
+> what is the range of x divided by 2 for a 32-bit signed x?
+  ucas: it(x: i32) = x/2
+  ucas: range it
+range of it -> i32:
+  -1073741824..1073741823  (sampled min/max; not a sound bound)
+  fits in i31
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): -2147483648..2147483647
+> what is the range of n for an integer n between 1 and 12?
+  note: "integer" without a width: read as an unbounded integer, int, not a C int, i32 (say "32-bit integer", or "assume integers are 32-bit")
+  ucas: it(n: int in 1..12) = n
+  ucas: range it
+range of it -> int:
+  1..12
+  fits in u4
+  over all 12 points of the domain
+> what is the range of 2 to the n for n between 0 and 10?
+  ucas: it(n in 0..10) = 2^n
+  ucas: range it
+range of it -> int:
+  1..1024
+  fits in u11
+  over all 11 points of the domain
+> forget everything
+  ok: forgot every assumption
+> what is the range of x for a byte x?
+  note: "byte" without signed or unsigned: read as unsigned, u8, not signed, i8 (say "unsigned byte", or "assume bytes are signed")
+  ucas: it(x: u8) = x
+  ucas: range it
+range of it -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> assume int means i32
+  ok: int means i32
+> does x plus 1 overflow for an int x?
+  ucas: it(x: i32) = x + 1
+  ucas: wrap it
+wrap analysis of it:
+  x + 1   (i32)
+      nuw fails: unsigned wrap at 1 points, e.g. x=-1
+      nsw fails: signed wrap at 1 points, e.g. x=2147483647  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=2147483647
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> assume int means unbounded
+  ok: int means unbounded
+> does x plus 1 overflow for an int x?
+  ucas: it(x: int) = x + 1
+  ucas: wrap it
+wrap analysis of it:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive

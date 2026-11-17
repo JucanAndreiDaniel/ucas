@@ -1,0 +1,13 @@
+> f(v: u8) = u8((u8(v) << 2) | (v >> 4))
+> g(v: u8) = u8(4 * u32(v) + (u32(v) >> 4))
+> f2(v: u8) = (u8((u8(v) << 2) | (v >> 4))) + 0
+> g2(v: u8) = (u8(4 * u32(v) + (u32(v) >> 4))) + 0
+> f1(v: u8) = (u8((u8(v) << 2) | (v >> 4))) + 0
+> equiv f g
+f and g differ at 112 points, e.g. v=65: 4 vs 8
+> equiv f2 g2
+f2 and g2 differ at 112 points, e.g. v=65: 4 vs 8
+> equiv f1 g
+f1 and g differ at 112 points, e.g. v=65: 4 vs 8
+> equiv f f2
+f and f2 are equal on the domain of f (exhaustive)

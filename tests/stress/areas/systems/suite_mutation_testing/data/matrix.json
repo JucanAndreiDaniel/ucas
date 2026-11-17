@@ -1,0 +1,269 @@
+{
+  "summary": {
+    "total_checks": 188,
+    "covered": 1,
+    "gaps": 31,
+    "classes": 32
+  },
+  "classes": {
+    "B01": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "Signature 'differ at ... V vs V' with identical printed values never occurs in any golden.",
+      "title": "real equiv falsely refuted; witness prints identical values",
+      "sev": "WRONG"
+    },
+    "B02": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "whereor.out covers where-tests but always with matching domains; no narrowed-G test.",
+      "title": "equiv ignores G's where/range narrowing",
+      "sev": "WRONG"
+    },
+    "B03": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden combines u8()/i32() casts under equiv.",
+      "title": "cast coercion u8(x)==i32(x) on i8 proven equal",
+      "sev": "WRONG"
+    },
+    "B04": {
+      "covered": true,
+      "covering": [
+        "texfetch",
+        "whereor"
+      ],
+      "checks": 12,
+      "note": "texfetch.out: 'total on its parameter types' + 'defined at 7 of 10 points' -> fix changes it.",
+      "title": "domain says 'total' while few points defined",
+      "sev": "WRONG"
+    },
+    "B05": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "u64range.out prints the CORRECT 0..2^64-1; buggy clip not present in any golden.",
+      "title": "u64 domain/range clipped to 2^63-1",
+      "sev": "WRONG"
+    },
+    "B06": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "All wrap goldens report a nonzero diff or 'equals everywhere'; no buggy 0-points golden.",
+      "title": "wrap end-to-end 'differs at 0 points' despite nsw fails",
+      "sev": "WRONG"
+    },
+    "B07": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden contains a SAT proof over an empty/undefined domain.",
+      "title": "vacuous 'equal proved by SAT' on empty domain",
+      "sev": "WRONG"
+    },
+    "B08": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "CLI goldens are single files; zero-param JSON/MCP session state cannot be covered.",
+      "title": "stale it/that auto-names in multi-request sessions -> self-compare false",
+      "sev": "WRONG"
+    },
+    "B09": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden ranges a point-spike function; fp_edge repro not in main suite.",
+      "title": "f32/f16 point-spike range excludes reachable value",
+      "sev": "WRONG"
+    },
+    "B10": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "No golden ever prints 'antisymmetric'.",
+      "title": "symmetry claims both symmetric and antisymmetric",
+      "sev": "WRONG"
+    },
+    "B11": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden composes f16/f32(exp(asfloat(...))) in the buggy double-round shape.",
+      "title": "systematic 1-ulp / double-rounding float errors",
+      "sev": "WRONG"
+    },
+    "B12": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden prints 'DISAGREES' (the self-check failure marker).",
+      "title": "complex (-1)^(p/q) self-contradictory Re/Im with vacuous check",
+      "sev": "WRONG"
+    },
+    "B13": {
+      "covered": false,
+      "covering": [],
+      "checks": 4,
+      "note": "Max taylor order in goldens is 7; the order-8 1/(1+x^2) repro (23x^8/7) is absent.",
+      "title": "taylor high-order coefficient wrong (order>=8)",
+      "sev": "WRONG"
+    },
+    "B14": {
+      "covered": false,
+      "covering": [],
+      "checks": 5,
+      "note": "No golden takes a limit of sec/csc/cot at a singularity.",
+      "title": "limit of sec/csc/cot at pole returns huge finite value",
+      "sev": "WRONG"
+    },
+    "B15": {
+      "covered": false,
+      "covering": [],
+      "checks": 4,
+      "note": "nlp_numbers.out only tests correct single-scale phrases; none repeat scale words.",
+      "title": "English scale words add instead of multiply",
+      "sev": "WRONG"
+    },
+    "B16": {
+      "covered": false,
+      "covering": [],
+      "checks": 0,
+      "note": "No golden contains the chained-comparison question.",
+      "title": "English 'is 1 < 2 < 3?' parsed as chained bool -> 0",
+      "sev": "WRONG"
+    },
+    "B17": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "algebra.out solve cases are genuine unsolvable equations; x=x absent.",
+      "title": "solve x = x for x -> 'x does not occur / no real solution'",
+      "sev": "WRONG"
+    },
+    "B18": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "xform.out powerseries shows correct x^m coefficients; buggy x^(m+1) absent.",
+      "title": "powerseries multiplies series by the variable",
+      "sev": "WRONG"
+    },
+    "B19": {
+      "covered": false,
+      "covering": [],
+      "checks": 2,
+      "note": "CLI laplace transforms are correct; the MCP laplace_solve IC bug has no golden.",
+      "title": "laplace_solve / zsolve drop ';'-separated initial conditions",
+      "sev": "WRONG"
+    },
+    "B20": {
+      "covered": false,
+      "covering": [],
+      "checks": 2,
+      "note": "xform.out Fourier series of x^2 is nonzero; buggy transform of x^n absent.",
+      "title": "fourier(x^n)=0 instead of derivative-of-delta",
+      "sev": "WRONG"
+    },
+    "B21": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "absalg.out groebner inputs have <=4 polynomials; 257-input repro absent.",
+      "title": "groebner silently drops 257th polynomial",
+      "sev": "WRONG"
+    },
+    "B22": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "absalg.out pmsnf inputs are small; 65-row repro absent.",
+      "title": "pmsnf drops rows past 64",
+      "sev": "WRONG"
+    },
+    "B23": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "rings.out 'primroot 2 mod 11' -> correct 'yes'; swapped-arg bug absent.",
+      "title": "primroot swaps candidate a and modulus n (MCP)",
+      "sev": "WRONG"
+    },
+    "B24": {
+      "covered": false,
+      "covering": [],
+      "checks": 1,
+      "note": "absalg.out runs 'abselftest 500' (fast); the hanging argument is absent.",
+      "title": "abselftest INT_MAX unbounded CPU loop (HANG)",
+      "sev": "HANG"
+    },
+    "B25": {
+      "covered": false,
+      "covering": [],
+      "checks": 0,
+      "note": "No golden contains a 1e400 literal.",
+      "title": "real literal 1e400 overflows silently to inf/0",
+      "sev": "WRONG"
+    },
+    "B26": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden mixes u8()/i8() operands in one expression.",
+      "title": "mixed signed/unsigned silently reinterprets/narrows",
+      "sev": "WRONG"
+    },
+    "B27": {
+      "covered": false,
+      "covering": [],
+      "checks": 0,
+      "note": "NLP goldens contain short sentences; 20x nested 'the sqrt of' absent.",
+      "title": "English nested compositional phrase ReDoS hang",
+      "sev": "HANG"
+    },
+    "B28": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "Goldens never contain >100 nested parens; crash repros deliberately excluded.",
+      "title": "deep nesting SIGSEGV (parser/evaluator stack overflow)",
+      "sev": "CRASH"
+    },
+    "B29": {
+      "covered": false,
+      "covering": [],
+      "checks": 0,
+      "note": "No top-level CLI golden uses timeout_s (an MCP/JSON-only flag).",
+      "title": "timeout_s forked child desyncs reply stream (MCP/JSON)",
+      "sev": "DETERMINISM"
+    },
+    "B30": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden pairs an error:0 claim with a differing verdict in the same test.",
+      "title": "error reports 'max abs error 0' for genuinely different functions",
+      "sev": "WRONG"
+    },
+    "B31": {
+      "covered": false,
+      "covering": [],
+      "checks": 3,
+      "note": "identify goldens use nonzero functions; bogus-constants repro absent.",
+      "title": "identify invents bogus period/zeros for zero function",
+      "sev": "WRONG"
+    },
+    "B32": {
+      "covered": false,
+      "covering": [],
+      "checks": 10,
+      "note": "No golden equivs an undefined identifier.",
+      "title": "equiv with undefined name accepted as free variable",
+      "sev": "WRONG"
+    }
+  }
+}

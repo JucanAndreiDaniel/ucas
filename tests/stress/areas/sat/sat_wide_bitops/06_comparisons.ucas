@@ -1,0 +1,11 @@
+# Comparison chains and (x & mask) == 0 predicates.
+chain(x: u8) = (x < 3) || (x >= 5 && x < 9)
+range chain
+never(x: u8) = (x < 10) && (10 < x)
+range never
+zmask(x: u8) = (x & 0xf0) == 0
+range zmask
+zdet(x: u16) = (x & 0xff00) == 0
+range zdet
+eqc(x: u8) = x == 17
+range eqc

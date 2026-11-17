@@ -1,0 +1,50 @@
+# Polynomial identities still hold under machine wrap (all true, fast)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(a: u8, b: u8) = (a+b)^2
+g01(a: u8, b: u8) = a^2 + 2*a*b + b^2
+equiv f01 g01
+# case 2: expect EQUAL
+f02(a: u8, b: u8) = a^2 - b^2
+g02(a: u8, b: u8) = (a-b)*(a+b)
+equiv f02 g02
+# case 3: expect EQUAL
+f03(a: u8, b: u8) = (a+b)^2 - (a-b)^2
+g03(a: u8, b: u8) = 4*a*b
+equiv f03 g03
+# case 4: expect EQUAL
+f04(a: i8, b: i8) = (a+b)^2
+g04(a: i8, b: i8) = a^2 + 2*a*b + b^2
+equiv f04 g04
+# case 5: expect EQUAL
+f05(a: i8, b: i8) = a^2 - b^2
+g05(a: i8, b: i8) = (a-b)*(a+b)
+equiv f05 g05
+# case 6: expect EQUAL
+f06(a: u8, b: u8) = (a-b)^2
+g06(a: u8, b: u8) = a^2 - 2*a*b + b^2
+equiv f06 g06
+# case 7: expect EQUAL
+f07(a: u16) = (a-1)^2
+g07(a: u16) = a^2 - 2*a + 1
+equiv f07 g07
+# case 8: expect EQUAL
+f08(a: u8, b: u8) = (a+b)*(a-b)
+g08(a: u8, b: u8) = a^2 - b^2
+equiv f08 g08
+# case 9: expect EQUAL
+f09(a: u8) = (a+1)^3
+g09(a: u8) = a^3 + 3*a^2 + 3*a + 1
+equiv f09 g09
+# case 10: expect EQUAL
+f10(a: u8, b: u8, z: u8) = (a*b)*z
+g10(a: u8, b: u8, z: u8) = a*(b*z)
+equiv f10 g10
+# case 11: expect EQUAL
+f11(a: int in -20..20, b: int in -20..20) = (a+b)^2
+g11(a: int in -20..20, b: int in -20..20) = a^2 + 2*a*b + b^2
+equiv f11 g11
+# case 12: expect EQUAL
+f12(a: u8) = a*(a+1)*(a+2)
+g12(a: u8) = a^3 + 3*a^2 + 2*a
+equiv f12 g12

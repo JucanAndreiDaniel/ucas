@@ -1,0 +1,17 @@
+> basis n1 { t(x, y) = lut cost -1 }
+07_negative_cost.ucas:2:31: error: gate cost must be a non-negative integer (0..255)
+    basis n1 { t(x, y) = lut cost -1 }
+                                  ^
+> basis n2 { t(x, y) = lut cost -2 }
+07_negative_cost.ucas:3:31: error: gate cost must be a non-negative integer (0..255)
+    basis n2 { t(x, y) = lut cost -2 }
+                                  ^
+> f(a: u1, b: u1) = a & b
+> gates f basis n1
+07_negative_cost.ucas:5:17: error: basis n1 has no gates
+    gates f basis n1
+                    ^
+> gates f basis n2
+07_negative_cost.ucas:6:17: error: basis n2 has no gates
+    gates f basis n2
+                    ^

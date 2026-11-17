@@ -1,0 +1,11 @@
+trunc(x: f32) = asfloat(asuint(x) & 0xffc00000)
+equiv trunc ~ floor(x: f32)
+flp(x: f32 in 0..1e30) = asfloat(asuint(x) & 0xffc00000)
+rfp(x: f32 in 0..1e30) = floor(x)
+equiv flp ~ rfp
+ceilbit(x: f32 in 0..1e30) = asfloat((asuint(x) + 0x007fffff) & 0xffc00000)
+rceilp(x: f32 in 0..1e30) = ceil(x)
+equiv ceilbit ~ rceilp
+idem(a: u32, b: u32) = (a & b) + (a ^ b)
+idem2(a: u32, b: u32) = a | b
+equiv idem ~ idem2

@@ -1,0 +1,49 @@
+> f(x) = x & 255
+  note: x has no type: inferred int from the integer operations in the body
+> show f
+f(x: int) = x & 0xff
+  -> int
+> ft(x: int) = x & 255
+> show ft
+ft(x: int) = x & 0xff
+  -> int
+> range f
+range of f -> int:
+  0..255  (sampled min/max; not a sound bound)
+  fits in u8
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): 0..255
+> range ft
+range of ft -> int:
+  0..255  (sampled min/max; not a sound bound)
+  fits in u8
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): 0..255
+> p1(x) = x < 5 ? x : 0
+> show p1
+p1(x: real) = x < 5 ? x : 0
+  -> real
+> p2(x) = x & 3
+  note: x has no type: inferred int from the integer operations in the body
+> show p2
+p2(x: int) = x & 3
+  -> int
+> p3(x) = x + 1
+> show p3
+p3(x: real) = x + 1
+  -> real
+> p4(x) = asuint(x)
+10_implicit_params.ucas:14:18: error: asuint needs an f16, f32 or f64 operand (real is the mathematical line and has no bits)
+    p4(x) = asuint(x)
+                     ^
+> show p4
+_(p4: real) = p4
+  -> real
+> p5(x) = real(x) + 1
+> show p5
+p5(x: real) = x + 1
+  -> real
+> p6(x) = u8(x) + 1
+> show p6
+p6(x: real) = u8(x) + 1
+  -> u8

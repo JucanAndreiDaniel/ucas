@@ -1,0 +1,9 @@
+mn(x: f32, y: f32) = asfloat(asuint(y) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) < asuint(y)))))
+mx(x: f32, y: f32) = asfloat(asuint(x) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) > asuint(y)))))
+rmin(x: f32, y: f32) = min(x, y)
+rmax(x: f32, y: f32) = max(x, y)
+equiv mn ~ rmin
+equiv mx ~ rmax
+mnp(x: f32 in 0..1e30, y: f32 in 0..1e30) = asfloat(asuint(y) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) < asuint(y)))))
+rminp(x: f32 in 0..1e30, y: f32 in 0..1e30) = min(x, y)
+equiv mnp ~ rminp

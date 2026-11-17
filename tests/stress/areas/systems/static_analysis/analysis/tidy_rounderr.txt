@@ -1,0 +1,751 @@
+/home/andrew/Code/ucas/src/rounderr.c:95:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   87 | 
+   88 | #include <math.h>
+   89 | #include <stdlib.h>
+   90 | #include <string.h>
+   91 | 
+   92 | typedef long double ld;
+   93 | 
+   94 | struct rnode {
+   95 |         nid id;
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:109:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   89 |         uint64_t keep;          /* a masked one: the bits it can have set */
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:136:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  136 |         uint32_t nix;
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:141:15: warning: no header providing "func" is directly included [misc-include-cleaner]
+  141 |         const struct func *g;   /* the input the values are at */
+      |                      ^
+/home/andrew/Code/ucas/src/rounderr.c:142:8: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  142 |         const int64_t *in_i;
+      |               ^
+/home/andrew/Code/ucas/src/rounderr.c:148:6: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  148 | unit(ty_t t)
+      |      ^
+/home/andrew/Code/ucas/src/rounderr.c:150:9: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  150 |         return TYW(t) == 16 ? 0x1p-11L : TYW(t) == 32 ? 0x1p-24L : 0x1p-53L;
+      |                ^
+/home/andrew/Code/ucas/src/rounderr.c:150:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:150:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  150 |         return TYW(t) == 16 ? 0x1p-11L : TYW(t) == 32 ? 0x1p-24L : 0x1p-53L;
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:161:11: warning: no header providing "N" is directly included [misc-include-cleaner]
+  161 |         ty_t t = N.ty[e];
+      |                  ^
+/home/andrew/Code/ucas/src/rounderr.c:166:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  166 |         case O_CONST: case O_VAR:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:166:21: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  166 |         case O_CONST: case O_VAR:
+      |                            ^
+/home/andrew/Code/ucas/src/rounderr.c:168:7: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  168 |         case O_ASFLOAT:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:170:24: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  170 |                 if ((N.op[N.a[e]] == O_ASUINT || N.op[N.a[e]] == O_ASINT) &&
+      |                                      ^
+/home/andrew/Code/ucas/src/rounderr.c:170:52: warning: no header providing "O_ASINT" is directly included [misc-include-cleaner]
+  170 |                 if ((N.op[N.a[e]] == O_ASUINT || N.op[N.a[e]] == O_ASINT) &&
+      |                                                                  ^
+/home/andrew/Code/ucas/src/rounderr.c:179:2: warning: switch has 2 consecutive identical branches [bugprone-branch-clone]
+  179 |         case O_ASUINT: case O_ASINT:
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:184:8: note: last of these clones ends here
+  184 |                 break;
+      |                      ^
+/home/andrew/Code/ucas/src/rounderr.c:182:7: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  182 |         case O_NOT:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:185:7: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  185 |         case O_AND: case O_OR: case O_XOR: case O_SHL: case O_SHR:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:185:19: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  185 |         case O_AND: case O_OR: case O_XOR: case O_SHL: case O_SHR:
+      |                          ^
+/home/andrew/Code/ucas/src/rounderr.c:185:30: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  185 |         case O_AND: case O_OR: case O_XOR: case O_SHL: case O_SHR:
+      |                                     ^
+/home/andrew/Code/ucas/src/rounderr.c:185:42: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  185 |         case O_AND: case O_OR: case O_XOR: case O_SHL: case O_SHR:
+      |                                                 ^
+/home/andrew/Code/ucas/src/rounderr.c:185:54: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  185 |         case O_AND: case O_OR: case O_XOR: case O_SHL: case O_SHR:
+      |                                                             ^
+/home/andrew/Code/ucas/src/rounderr.c:189:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  189 |         case O_CAST: case O_NEG: case O_ABS: case O_SQRT: case O_EXP:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:189:20: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  189 |         case O_CAST: case O_NEG: case O_ABS: case O_SQRT: case O_EXP:
+      |                           ^
+/home/andrew/Code/ucas/src/rounderr.c:189:32: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  189 |         case O_CAST: case O_NEG: case O_ABS: case O_SQRT: case O_EXP:
+      |                                       ^
+/home/andrew/Code/ucas/src/rounderr.c:189:44: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  189 |         case O_CAST: case O_NEG: case O_ABS: case O_SQRT: case O_EXP:
+      |                                                   ^
+/home/andrew/Code/ucas/src/rounderr.c:189:57: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+  189 |         case O_CAST: case O_NEG: case O_ABS: case O_SQRT: case O_EXP:
+      |                                                                ^
+/home/andrew/Code/ucas/src/rounderr.c:190:7: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+  190 |         case O_LOG: case O_SIN: case O_COS: case O_TAN: case O_FLOOR:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:190:19: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+  190 |         case O_LOG: case O_SIN: case O_COS: case O_TAN: case O_FLOOR:
+      |                          ^
+/home/andrew/Code/ucas/src/rounderr.c:190:31: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+  190 |         case O_LOG: case O_SIN: case O_COS: case O_TAN: case O_FLOOR:
+      |                                      ^
+/home/andrew/Code/ucas/src/rounderr.c:190:43: warning: no header providing "O_TAN" is directly included [misc-include-cleaner]
+  190 |         case O_LOG: case O_SIN: case O_COS: case O_TAN: case O_FLOOR:
+      |                                                  ^
+/home/andrew/Code/ucas/src/rounderr.c:190:55: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+  190 |         case O_LOG: case O_SIN: case O_COS: case O_TAN: case O_FLOOR:
+      |                                                              ^
+/home/andrew/Code/ucas/src/rounderr.c:191:7: warning: no header providing "O_CEIL" is directly included [misc-include-cleaner]
+  191 |         case O_CEIL: case O_ROUNDEVEN:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:191:20: warning: no header providing "O_ROUNDEVEN" is directly included [misc-include-cleaner]
+  191 |         case O_CEIL: case O_ROUNDEVEN:
+      |                           ^
+/home/andrew/Code/ucas/src/rounderr.c:194:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  194 |         case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:194:19: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  194 |         case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+      |                          ^
+/home/andrew/Code/ucas/src/rounderr.c:194:31: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  194 |         case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+      |                                      ^
+/home/andrew/Code/ucas/src/rounderr.c:194:43: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  194 |         case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+      |                                                  ^
+/home/andrew/Code/ucas/src/rounderr.c:194:55: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  194 |         case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+      |                                                              ^
+/home/andrew/Code/ucas/src/rounderr.c:195:7: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:195:18: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |                         ^
+/home/andrew/Code/ucas/src/rounderr.c:195:29: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |                                    ^
+/home/andrew/Code/ucas/src/rounderr.c:195:40: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |                                               ^
+/home/andrew/Code/ucas/src/rounderr.c:195:51: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |                                                          ^
+/home/andrew/Code/ucas/src/rounderr.c:195:62: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  195 |         case O_LT: case O_LE: case O_GT: case O_GE: case O_EQ: case O_NE:
+      |                                                                     ^
+/home/andrew/Code/ucas/src/rounderr.c:196:7: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  196 |         case O_MIN: case O_MAX: case O_COPYSIGN:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:196:19: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  196 |         case O_MIN: case O_MAX: case O_COPYSIGN:
+      |                          ^
+/home/andrew/Code/ucas/src/rounderr.c:196:31: warning: no header providing "O_COPYSIGN" is directly included [misc-include-cleaner]
+  196 |         case O_MIN: case O_MAX: case O_COPYSIGN:
+      |                                      ^
+/home/andrew/Code/ucas/src/rounderr.c:200:7: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  200 |         case O_FMA: case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/rounderr.c:200:19: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  200 |         case O_FMA: case O_SEL:
+      |                          ^
+/home/andrew/Code/ucas/src/rounderr.c:207:4: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   89 |                         snprintf(R.why, sizeof R.why, "%s", opinfo[N.op[e]].name);
+      |                         ^
+/home/andrew/Code/ucas/src/rounderr.c:207:40: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  207 |                         snprintf(R.why, sizeof R.why, "%s", opinfo[N.op[e]].name);
+      |                                                             ^
+/home/andrew/Code/ucas/src/rounderr.c:210:27: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  210 |         if (N.op[e] == O_POW && !is_const(N.b[e]) && !R.why[0])
+      |                                  ^
+/home/andrew/Code/ucas/src/rounderr.c:216:9: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+  216 |                 R.n = xrealloc(R.n, (size_t)R.cap * sizeof *R.n);
+      |                       ^
+/home/andrew/Code/ucas/src/rounderr.c:225:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  225 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:228:8: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  228 |                 if (!TY_FP(t) && TY_FP(N.ty[N.a[e]]))
+      |                      ^
+/home/andrew/Code/ucas/src/rounderr.c:228:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:228:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 if (!TY_FP(t) && TY_FP(N.ty[N.a[e]]))
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:235:6: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  235 |         if (TYK(t) == K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/rounderr.c:235:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:235:16: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  235 |         if (TYK(t) == K_FLOAT) {
+      |                       ^
+/home/andrew/Code/ucas/src/rounderr.c:237:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  237 |                 switch (N.op[e]) {
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:246:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  246 |                         x->rounds = TYK(ta) == K_REAL || (TYK(ta) == K_FLOAT &&
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:246:27: warning: no header providing "K_REAL" is directly included [misc-include-cleaner]
+  246 |                         x->rounds = TYK(ta) == K_REAL || (TYK(ta) == K_FLOAT &&
+      |                                                ^
+/home/andrew/Code/ucas/src/rounderr.c:246:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  246 |                         x->rounds = TYK(ta) == K_REAL || (TYK(ta) == K_FLOAT &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:247:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  247 |                             TYW(ta) > TYW(t)) || (TY_ISINT(ta) && (!TY_SIZED(ta) ||
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:247:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  247 |                             TYW(ta) > TYW(t)) || (TY_ISINT(ta) && (!TY_SIZED(ta) ||
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:247:30: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  247 |                             TYW(ta) > TYW(t)) || (TY_ISINT(ta) && (!TY_SIZED(ta) ||
+      |                                                   ^
+/home/andrew/Code/ucas/src/rounderr.c:247:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:247:48: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+  247 |                             TYW(ta) > TYW(t)) || (TY_ISINT(ta) && (!TY_SIZED(ta) ||
+      |                                                                     ^
+/home/andrew/Code/ucas/src/rounderr.c:247:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:248:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  248 |                             TYW(ta) > (TYW(t) == 16 ? 11 : TYW(t) == 32 ? 24 : 53)));
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:248:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  248 |                             TYW(ta) > (TYW(t) == 16 ? 11 : TYW(t) == 32 ? 24 : 53)));
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:248:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  248 |                             TYW(ta) > (TYW(t) == 16 ? 11 : TYW(t) == 32 ? 24 : 53)));
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:256:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  256 |         if (N.op[e] == O_ADD && TYK(t) == K_FLOAT && TYW(t) != 16) {
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:256:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  256 |         if (N.op[e] == O_ADD && TYK(t) == K_FLOAT && TYW(t) != 16) {
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:257:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                 ld M = TYW(t) == 32 ? 0x1.8p23L : 0x1.8p52L;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:261:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  261 |                         if (N.op[cst] == O_CONST && TY_FP(N.ty[cst]) &&
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:270:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  270 |         if ((N.op[e] == O_SUB || N.op[e] == O_ADD) && TYK(t) == K_FLOAT &&
+      |                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:271:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  271 |             TYW(t) != 16 && a >= 0 && b >= 0) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:272:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  272 |                 ld M = TYW(t) == 32 ? 0x1.8p23L : 0x1.8p52L;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:278:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  278 |                         if (R.n[o].magic && N.op[cst] == O_CONST && TY_FP(N.ty[cst]) &&
+      |                                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:310:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:310:22: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  310 |                         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                           ^
+/home/andrew/Code/ucas/src/rounderr.c:310:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:310:42: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  310 |                         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                               ^
+/home/andrew/Code/ucas/src/rounderr.c:310:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:312:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  312 |                             (w < 64 ? (1ULL << w) - 1 : ~0ULL) : 0;
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:320:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  320 |                                 while (tr < w && (m >> tr & 1))
+      |                                                     ~~ ^~
+/home/andrew/Code/ucas/src/rounderr.c:320:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  320 |                                 while (tr < w && (m >> tr & 1))
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/rounderr.c:325:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  325 |                                         while (!(m >> x->period & 1))
+      |                                                    ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/rounderr.c:325:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  325 |                                         while (!(m >> x->period & 1))
+      |                                                                 ~ ^
+/home/andrew/Code/ucas/src/rounderr.c:359:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  359 |                         if (!both && TY_ISINT(t)) {
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:483:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                         mine |= in[j] == i;
+      |                         ^~~~ ~~
+/home/andrew/Code/ucas/src/rounderr.c:647:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  647 |         int w = TYW(N.ty[R.n[e->s].id]);
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:649:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  649 |         switch (e->kind) {
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:669:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  669 |         return TY_FP(N.ty[e]) ? (ld)in_r[(size_t)s * CH + k] :
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:669:47: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  669 |         return TY_FP(N.ty[e]) ? (ld)in_r[(size_t)s * CH + k] :
+      |                                                      ^
+/home/andrew/Code/ucas/src/rounderr.c:679:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  679 |         if (!TY_SIZED(t) || TYW(t) >= 64)
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:679:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  679 |         if (!TY_SIZED(t) || TYW(t) >= 64)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:681:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  681 |         m = ldexpl(1, TYW(t));
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:685:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  685 |         if (TYK(t) == K_SINT && h >= m / 2)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:701:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  701 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:701:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  701 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:701:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  701 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:704:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  704 |                 v &= (1ULL << w) - 1;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:705:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  705 |         if (TYK(t) == K_UINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:707:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  707 |         if (w < 64 && (v >> (w - 1)))
+      |                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/rounderr.c:708:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  708 |                 v |= ~0ULL << w;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:718:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  718 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:718:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  718 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:718:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  718 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:730:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  730 |                 else if (TYK(t) == K_UINT)
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:731:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  731 |                         v = (w < 64 ? x & ((1ULL << w) - 1) : x) >> y;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:733:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  733 |                         v = (uint64_t)((int64_t)x >> y);
+      |                                        ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/rounderr.c:744:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  744 |         if (TYW(tf) == 16) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:745:11: warning: no header providing "fround" is directly included [misc-include-cleaner]
+  745 |                 if ((ld)fround(16, (double)a) != a)
+      |                         ^
+/home/andrew/Code/ucas/src/rounderr.c:747:21: warning: no header providing "fbits" is directly included [misc-include-cleaner]
+  747 |                 *r = bits_int(ti, fbits(16, (double)a));
+      |                                   ^
+/home/andrew/Code/ucas/src/rounderr.c:748:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  748 |         } else if (TYW(tf) == 32) {
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:772:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  772 |         if (TYW(tf) == 16)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:773:10: warning: no header providing "frombits" is directly included [misc-include-cleaner]
+  773 |                 return frombits(16, v & 0xffff);
+      |                        ^
+/home/andrew/Code/ucas/src/rounderr.c:773:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  773 |                 return frombits(16, v & 0xffff);
+      |                                       ~ ^~~~~~
+/home/andrew/Code/ucas/src/rounderr.c:774:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  774 |         if (TYW(tf) == 32) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:830:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  830 |                 switch (N.op[x->id]) {
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:833:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  833 |                         if (TY_FP(N.ty[x->id]) || !TY_FP(N.ty[N.a[x->id]]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:833:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  833 |                         if (TY_FP(N.ty[x->id]) || !TY_FP(N.ty[N.a[x->id]]))
+      |                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:914:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  914 |         if (TYW(tf) == 16) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:926:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  926 |         } else if (TYW(tf) == 32) {
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:959:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  959 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:959:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  959 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:959:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  959 |         int w = TYK(t) == K_UINT || TYK(t) == K_SINT ? TYW(t) : 64;
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:960:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  960 |         uint64_t all = w < 64 ? (1ULL << w) - 1 : ~0ULL, sign = 1ULL << (w - 1);
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:960:66: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  960 |         uint64_t all = w < 64 ? (1ULL << w) - 1 : ~0ULL, sign = 1ULL << (w - 1);
+      |                                                                      ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/rounderr.c:982:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  982 |         switch (N.op[x->id]) {
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:984:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  984 |                 x->v = TY_FP(t) ? (ld)N.kr[x->id] : (ld)N.ki[x->id];
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:988:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  988 |                 x->v = TY_FP(t) ? a : int_wrap(t, TY_FP(N.ty[N.a[x->id]]) ?
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:988:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  988 |                 x->v = TY_FP(t) ? a : int_wrap(t, TY_FP(N.ty[N.a[x->id]]) ?
+      |                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:1043:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1043 |                         x->mhold = fabsl(o) <= (TYW(t) == 32 ? 0x1p22L : 0x1p51L);
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:1089:23: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+ 1089 |         struct rnode *save = xmalloc((size_t)(R.nn - d) * sizeof *save);
+      |                              ^
+/home/andrew/Code/ucas/src/rounderr.c:1146:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1146 |         switch (x->choice) {
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1234:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1234 |                 if (p < 0 || q < 0 || !TY_FP(N.ty[R.n[p].id]))
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:1257:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+ 1257 |         struct sbuf b = {0}, at = {0}, why = {0};
+      |                ^
+/home/andrew/Code/ucas/src/rounderr.c:1258:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1258 |         int w = TYW(N.ty[R.n[e->s].id]);
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:1260:2: warning: no header providing "print_node" is directly included [misc-include-cleaner]
+ 1260 |         print_node(&b, R.n[e->s].id, NULL);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1261:2: warning: no header providing "fmt_point" is directly included [misc-include-cleaner]
+ 1261 |         fmt_point(&at, g, in_i, in_r, k);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1263:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+ 1263 |                 sb_puts(&why, "the operand taken first has the smaller exponent");
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:1265:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+ 1265 |                 sb_printf(&why, "the product is below 2^%d in magnitude, where its "
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:1269:25: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+ 1269 |             eft_name[e->kind], sb_str(&b), strlen(sb_str(&b)) > 40 ? "..." :
+      |                                ^
+/home/andrew/Code/ucas/src/rounderr.c:1279:9: warning: no header providing "diter" is directly included [misc-include-cleaner]
+ 1279 |         struct diter d;
+      |                ^
+/home/andrew/Code/ucas/src/rounderr.c:1282:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+ 1282 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/rounderr.c:1284:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 1284 |         uint8_t ok[CH];
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1291:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1291 |         if (TYK(N.ty[g->body]) != K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/rounderr.c:1293:7: warning: no header providing "ty_str" is directly included [misc-include-cleaner]
+ 1293 |                     ty_str(N.ty[g->body]));
+      |                     ^
+/home/andrew/Code/ucas/src/rounderr.c:1296:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1296 |         r->w = TYW(N.ty[g->body]);
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/rounderr.c:1299:9: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+ 1299 |         R.ix = xcalloc(R.nix, sizeof *R.ix);
+      |                ^
+/home/andrew/Code/ucas/src/rounderr.c:1326:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+ 1326 |         plan_build(&p, roots, 1, 0);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1327:20: warning: no header providing "plan_loc" is directly included [misc-include-cleaner]
+ 1327 |         wloc = g->where ? plan_loc(&p, g->where) : NOTOK;
+      |                           ^
+/home/andrew/Code/ucas/src/rounderr.c:1327:45: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+ 1327 |         wloc = g->where ? plan_loc(&p, g->where) : NOTOK;
+      |                                                    ^
+/home/andrew/Code/ucas/src/rounderr.c:1328:25: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+ 1328 |         in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                ^
+/home/andrew/Code/ucas/src/rounderr.c:1330:2: warning: no header providing "diter_init" is directly included [misc-include-cleaner]
+ 1330 |         diter_init(&d, g, RE_SAMPLE, 257, RE_SAMPLE);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1331:15: warning: no header providing "diter_next" is directly included [misc-include-cleaner]
+ 1331 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                      ^
+/home/andrew/Code/ucas/src/rounderr.c:1332:3: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+ 1332 |                 plan_run(&p, np, in_i, in_r);
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:1333:3: warning: no header providing "valid_mask" is directly included [misc-include-cleaner]
+ 1333 |                 valid_mask(&p, wloc, np, ok);
+      |                 ^
+/home/andrew/Code/ucas/src/rounderr.c:1383:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+ 1383 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1410:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+ 1410 |         printf("%s  error-free transformations:", ind);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1434:52: warning: parameter 'ind' is unused [misc-unused-parameters]
+ 1434 | choice_print(const struct rounderr *r, const char *ind)
+      |                                      ~~~~~~~~~~~~~~^~~
+/home/andrew/Code/ucas/src/rounderr.c:1511:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+   87 |         rep_obj("rounding");
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1512:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+ 1512 |         rep_int("operations", r->nops);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1514:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+ 1514 |         rep_num("worst_case", r->worst);
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1536:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+ 1536 |         rep_str("assumptions", r->eft[0] + r->eft[1] + r->eft[2] ? "first "
+      |         ^
+/home/andrew/Code/ucas/src/rounderr.c:1544:2: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+ 1544 |         rep_end();
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:336:6: warning: 'mode' is confusable with 'rnode' [misc-confusable-identifiers]
+  336 |         int mode;
+      |             ^
+/home/andrew/Code/ucas/src/rounderr.c:94:8: note: other declaration found here
+   94 | struct rnode {
+      |        ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

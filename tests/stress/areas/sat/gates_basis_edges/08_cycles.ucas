@@ -1,0 +1,12 @@
+# inheritance cycles and self-inheritance with regular and LUT gates
+basis a { inv(x) = ~x }
+basis b : a { andp(x, y) = x & y }
+basis a : b { orp(x, y) = x | y }
+basis self : self { t(x, y) = lut }
+basis l1 { t(x, y) = lut }
+basis l2 : l1 { u(x, y, z) = lut }
+basis l1 : l2 { v(x) = ~x }
+f(a: u1, b: u1) = a | b
+gates f basis a
+gates f basis self
+gates f basis l1

@@ -1,0 +1,450 @@
+src/cfx86.c:280:15: warning: Value stored to 's' during its initialization is never read [deadcode.DeadStores]
+  280 |                 const char *s = "";
+      |                             ^   ~~
+src/cfx86.c:280:15: note: Value stored to 's' during its initialization is never read
+  280 |                 const char *s = "";
+      |                             ^   ~~
+src/cfx86.c:283:8: warning: Array subscript is undefined [core.uninitialized.ArraySubscript]
+  283 |                         s = X.v[args[k]].nm;
+      |                             ^
+src/cfx86.c:1579:15: note: Assuming 'o' is null
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                      ^
+src/cfx86.c:1579:17: note: Left side of '&&' is false
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                        ^
+src/cfx86.c:1584:6: note: Assuming field 'W' is equal to 8
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^~~~~~~~
+src/cfx86.c:1584:6: note: Left side of '||' is false
+src/cfx86.c:1584:18: note: Assuming field 'flt' is 0
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                         ^~~~~
+src/cfx86.c:1584:6: note: Left side of '||' is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^
+src/cfx86.c:1584:27: note: Assuming the condition is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1584:2: note: Taking false branch
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |         ^
+src/cfx86.c:1587:14: note: Assuming 'k' is < field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+src/cfx86.c:1587:2: note: Loop condition is true.  Entering loop body
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+src/cfx86.c:1588:7: note: Assuming 's' is equal to field 'slot'
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1588:7: note: Left side of '&&' is true
+src/cfx86.c:1588:33: note: Assuming the condition is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                                               ^~~~~~~~~~~~
+src/cfx86.c:1588:7: note: Left side of '&&' is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^
+src/cfx86.c:1589:7: note: Assuming field 'esize' is equal to 1
+ 1589 |                     X.l->load[k].esize == 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1588:3: note: Taking true branch
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                 ^
+src/cfx86.c:1587:14: note: Assuming 'k' is >= field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+src/cfx86.c:1587:2: note: Loop condition is false. Execution continues on line 1591
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+src/cfx86.c:1591:6: note: 'ld' is >= 0
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |             ^~
+src/cfx86.c:1591:6: note: Left side of '||' is false
+src/cfx86.c:1591:16: note: Assuming the condition is false
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1591:2: note: Taking false branch
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |         ^
+src/cfx86.c:1593:6: note: Assuming the condition is false
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1594 |             &R))
+      |             ~~~
+src/cfx86.c:1593:2: note: Taking false branch
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |         ^
+src/cfx86.c:1597:14: note: Assuming 'k' is >= field 'n'
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |                     ^~~~~~~~~~~~
+src/cfx86.c:1597:2: note: Loop condition is false. Execution continues on line 1599
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |         ^
+src/cfx86.c:1599:12: note: Calling 'vload'
+ 1599 |         if ((ld = vload(ld)) < 0)
+      |                   ^~~~~~~~~
+src/cfx86.c:526:6: note: Assuming the condition is false
+  526 |         if (X.ldv[k] >= 0)
+      |             ^~~~~~~~~~~~~
+src/cfx86.c:526:2: note: Taking false branch
+  526 |         if (X.ldv[k] >= 0)
+      |         ^
+src/cfx86.c:528:6: note: Assuming the condition is false
+  528 |         if (X.gather[k])
+      |             ^~~~~~~~~~~
+src/cfx86.c:528:2: note: Taking false branch
+  528 |         if (X.gather[k])
+      |         ^
+src/cfx86.c:531:6: note: Assuming field 'flt' is 0
+  531 |         if (X.flt && (TYK(m->ety) != K_FLOAT || E != X.flt)) {
+      |             ^~~~~
+src/cfx86.c:531:12: note: Left side of '&&' is false
+  531 |         if (X.flt && (TYK(m->ety) != K_FLOAT || E != X.flt)) {
+      |                   ^
+src/cfx86.c:535:9: note: Field 'flt' is 0
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |                ^
+src/cfx86.c:535:6: note: Left side of '&&' is true
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |             ^
+src/cfx86.c:535:16: note: Assuming the condition is false
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/cfx86.c:535:2: note: Taking false branch
+  535 |         if (!X.flt && TYK(m->ety) == K_FLOAT) {
+      |         ^
+src/cfx86.c:540:6: note: Assuming 'nbytes' is >= 8
+  540 |         if (nbytes < 8) {
+      |             ^~~~~~~~~~
+src/cfx86.c:540:2: note: Taking false branch
+  540 |         if (nbytes < 8) {
+      |         ^
+src/cfx86.c:546:12: note: Assuming 'nbytes' is > 8
+  546 |                 int rb = nbytes <= 8 ? 128 : nbytes * 8;
+      |                          ^~~~~~~~~~~
+src/cfx86.c:546:12: note: '?' condition is false
+src/cfx86.c:549:21: note: Field 'flt' is 0
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                                   ^
+src/cfx86.c:549:19: note: '?' condition is false
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                                 ^
+src/cfx86.c:549:7: note: Assuming the condition is false
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:549:3: note: Taking false branch
+  549 |                 if ((r = new_vv(X.flt ? 'f' : 'i', E, nraw)) < 0)
+      |                 ^
+src/cfx86.c:551:15: note: Assuming 'j' is >= 'nraw'
+  551 |                 for (j = 0; j < nraw; j++) {
+      |                             ^~~~~~~~
+src/cfx86.c:551:3: note: Loop condition is false. Execution continues on line 562
+  551 |                 for (j = 0; j < nraw; j++) {
+      |                 ^
+src/cfx86.c:563:7: note: Assuming field 'flt' is not equal to 0
+  563 |                 if (X.flt)
+      |                     ^~~~~
+src/cfx86.c:563:3: note: Taking true branch
+  563 |                 if (X.flt)
+      |                 ^
+src/cfx86.c:564:9: note: Assuming field 'flt' is not equal to 32
+  564 |                         ld = X.flt == 32 ? (X.VB == 512 ? "_mm512_loadu_ps" : X.VB == 256 ?
+      |                              ^~~~~~~~~~~
+src/cfx86.c:564:9: note: '?' condition is false
+src/cfx86.c:565:47: note: Assuming field 'VB' is equal to 512
+  565 |                             "_mm256_loadu_ps" : "_mm_loadu_ps") : (X.VB == 512 ?
+      |                                                                    ^~~~~~~~~~~
+src/cfx86.c:565:47: note: '?' condition is true
+src/cfx86.c:574:8: note: Assuming 'id' is >= 0
+  574 |                         if (id < 0) {
+      |                             ^~~~~~
+src/cfx86.c:574:4: note: Taking false branch
+  574 |                         if (id < 0) {
+      |                         ^
+src/cfx86.c:582:7: note: Assuming field 'flt' is not equal to 0
+  582 |                     X.flt ? vtype('f', E) : rb == 128 ? "__m128i" : rb == 256 ?
+      |                     ^~~~~
+src/cfx86.c:582:7: note: '?' condition is true
+src/cfx86.c:585:6: note: Assuming 'f' is > 1
+  585 |         if (f > 1) {
+      |             ^~~~~
+src/cfx86.c:585:2: note: Taking true branch
+  585 |         if (f > 1) {
+      |         ^
+src/cfx86.c:588:7: note: Assuming the condition is true
+  588 |                     TYK(m->ety) == K_UINT ? 'u' : 'i', E, X.W);
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/cfx86.c:588:7: note: '?' condition is true
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/cfx86.c:592:8: note: Calling 'vop'
+  592 |                         r = vop(nm, 'i', args, NULL, NULL, 0);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:257:6: note: Assuming 'id' is >= 0
+  257 |         if (id < 0) {
+      |             ^~~~~~
+src/cfx86.c:257:2: note: Taking false branch
+  257 |         if (id < 0) {
+      |         ^
+src/cfx86.c:263:6: note: Assuming the condition is false
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:263:2: note: Taking false branch
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |         ^
+src/cfx86.c:268:14: note: Assuming 'k' is >= 'n'
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                     ^~~~~
+src/cfx86.c:268:20: note: Left side of '&&' is false
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                           ^
+src/cfx86.c:274:10: note: Assuming 'bits' is > 128
+  274 |                 X.VB = bits <= 128 ? 128 : bits <= 256 ? 256 : 512;
+      |                        ^~~~~~~~~~~
+src/cfx86.c:274:10: note: '?' condition is false
+src/cfx86.c:274:30: note: Assuming 'bits' is > 256
+  274 |                 X.VB = bits <= 128 ? 128 : bits <= 256 ? 256 : 512;
+      |                                            ^~~~~~~~~~~
+src/cfx86.c:274:30: note: '?' condition is false
+src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+src/cfx86.c:281:3: note: Control jumps to 'case 118:'  at line 282
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+src/cfx86.c:284:4: note:  Execution continues on line 288
+  284 |                         break;
+      |                         ^
+src/cfx86.c:288:30: note: 'k' is 0
+  288 |                 sb_printf(&X.body, "%s%s", k ? ", " : "", s);
+      |                                            ^
+src/cfx86.c:288:30: note: '?' condition is false
+src/cfx86.c:279:31: note: The value 1 is assigned to 'k'
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                                      ^~~
+src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+src/cfx86.c:281:3: note: Control jumps to 'case 118:'  at line 282
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+src/cfx86.c:283:8: note: Array subscript is undefined
+  283 |                         s = X.v[args[k]].nm;
+      |                             ^   ~~~~~~~
+src/cfx86.c:286:8: warning: Array access (from variable 'text') results in a null pointer dereference [core.NullDereference]
+  286 |                         s = text[k];
+      |                             ^
+src/cfx86.c:1579:15: note: Assuming 'o' is null
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                      ^
+src/cfx86.c:1579:17: note: Left side of '&&' is false
+ 1579 |         long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+      |                        ^
+src/cfx86.c:1584:6: note: Assuming field 'W' is equal to 8
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^~~~~~~~
+src/cfx86.c:1584:6: note: Left side of '||' is false
+src/cfx86.c:1584:18: note: Assuming field 'flt' is 0
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                         ^~~~~
+src/cfx86.c:1584:6: note: Left side of '||' is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |             ^
+src/cfx86.c:1584:27: note: Assuming the condition is false
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1584:2: note: Taking false branch
+ 1584 |         if (X.W != 8 || X.flt || __builtin_popcountll(sl) != 1)
+      |         ^
+src/cfx86.c:1587:14: note: Assuming 'k' is < field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+src/cfx86.c:1587:2: note: Loop condition is true.  Entering loop body
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+src/cfx86.c:1588:7: note: Assuming 's' is equal to field 'slot'
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1588:7: note: Left side of '&&' is true
+src/cfx86.c:1588:33: note: Assuming the condition is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                                               ^~~~~~~~~~~~
+src/cfx86.c:1588:7: note: Left side of '&&' is true
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                     ^
+src/cfx86.c:1589:7: note: Assuming field 'esize' is equal to 1
+ 1589 |                     X.l->load[k].esize == 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1588:3: note: Taking true branch
+ 1588 |                 if (X.l->load[k].slot == s && !X.gather[k] &&
+      |                 ^
+src/cfx86.c:1587:14: note: Assuming 'k' is >= field 'nload'
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |                     ^~~~~~~~~~~~~~
+src/cfx86.c:1587:2: note: Loop condition is false. Execution continues on line 1591
+ 1587 |         for (k = 0; k < X.l->nload; k++)
+      |         ^
+src/cfx86.c:1591:6: note: 'ld' is >= 0
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |             ^~
+src/cfx86.c:1591:6: note: Left side of '||' is false
+src/cfx86.c:1591:16: note: Assuming the condition is false
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1591:2: note: Taking false branch
+ 1591 |         if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
+      |         ^
+src/cfx86.c:1593:6: note: Assuming the condition is false
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1594 |             &R))
+      |             ~~~
+src/cfx86.c:1593:2: note: Taking false branch
+ 1593 |         if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
+      |         ^
+src/cfx86.c:1597:14: note: Assuming 'k' is >= field 'n'
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |                     ^~~~~~~~~~~~
+src/cfx86.c:1597:2: note: Loop condition is false. Execution continues on line 1599
+ 1597 |         for (k = 0; k < R.best.n; k++)
+      |         ^
+src/cfx86.c:1599:12: note: Calling 'vload'
+ 1599 |         if ((ld = vload(ld)) < 0)
+      |                   ^~~~~~~~~
+src/cfx86.c:526:6: note: Assuming the condition is false
+  526 |         if (X.ldv[k] >= 0)
+      |             ^~~~~~~~~~~~~
+src/cfx86.c:526:2: note: Taking false branch
+  526 |         if (X.ldv[k] >= 0)
+      |         ^
+src/cfx86.c:528:6: note: Assuming the condition is true
+  528 |         if (X.gather[k])
+      |             ^~~~~~~~~~~
+src/cfx86.c:528:2: note: Taking true branch
+  528 |         if (X.gather[k])
+      |         ^
+src/cfx86.c:529:21: note: Calling 'vgather'
+  529 |                 return X.ldv[k] = vgather(k);
+      |                                   ^~~~~~~~~~
+src/cfx86.c:483:6: note: Assuming field 'W' is equal to 32
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |             ^~~~~~~~~
+src/cfx86.c:483:6: note: Left side of '||' is false
+src/cfx86.c:483:19: note: Assuming field 'VB' is >= 256
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |                          ^~~~~~~~~~
+src/cfx86.c:483:6: note: Left side of '||' is false
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |             ^
+src/cfx86.c:483:33: note: Assuming field 'esize' is equal to 4
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |                                        ^~~~~~~~~~~~~
+src/cfx86.c:483:2: note: Taking false branch
+  483 |         if (X.W != 32 || X.VB < 256 || m->esize != 4) {
+      |         ^
+src/cfx86.c:488:12: note: Calling 'tr'
+  488 |         if ((vi = tr(m->index)) < 0)
+      |                   ^~~~~~~~~~~~
+src/cfx86.c:1199:2: note: Taking false branch
+ 1199 |         if ((r = memo_get(n)) >= 0)
+      |         ^
+src/cfx86.c:1201:6: note: Assuming the condition is true
+ 1201 |         if (N.op[n] == O_VAR) {
+      |             ^~~~~~~~~~~~~~~~
+src/cfx86.c:1201:2: note: Taking true branch
+ 1201 |         if (N.op[n] == O_VAR) {
+      |         ^
+src/cfx86.c:1203:7: note: Assuming 'slot' is equal to field 'islot'
+ 1203 |                 if (slot == X.l->islot) {
+      |                     ^~~~~~~~~~~~~~~~~~
+src/cfx86.c:1203:3: note: Taking true branch
+ 1203 |                 if (slot == X.l->islot) {
+      |                 ^
+src/cfx86.c:1207:8: note: Assuming field 'flt' is 0
+ 1207 |                         if (X.flt) {
+      |                             ^~~~~
+src/cfx86.c:1207:4: note: Taking false branch
+ 1207 |                         if (X.flt) {
+      |                         ^
+src/cfx86.c:1211:8: note: Assuming the condition is false
+ 1211 |                         if ((s = vset1(X.ivar, "cf_i")) < 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1211:4: note: Taking false branch
+ 1211 |                         if ((s = vset1(X.ivar, "cf_i")) < 0)
+      |                         ^
+src/cfx86.c:1213:8: note: Assuming the condition is false
+ 1213 |                         if ((io = new_vv('i', X.W, X.VL)) < 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:1213:4: note: Taking false branch
+ 1213 |                         if ((io = new_vv('i', X.W, X.VL)) < 0)
+      |                         ^
+src/cfx86.c:1215:16: note: Assuming 'j' is >= field 'VL'
+ 1215 |                         for (j = 0; j < X.VL; j++)
+      |                                     ^~~~~~~~
+src/cfx86.c:1215:4: note: Loop condition is false. Execution continues on line 1217
+ 1215 |                         for (j = 0; j < X.VL; j++)
+      |                         ^
+src/cfx86.c:1219:16: note: Assuming 'j' is >= field 'VL'
+ 1219 |                         for (j = 0; j < X.VL; j++)
+      |                                     ^~~~~~~~
+src/cfx86.c:1219:4: note: Loop condition is false. Execution continues on line 1221
+ 1219 |                         for (j = 0; j < X.VL; j++)
+      |                         ^
+src/cfx86.c:1228:42: note: Passing null pointer value via 4th parameter 'text'
+ 1228 |                         return memo_put(n, vop(nm, 'i', args, NULL, NULL, 0));
+      |                                                               ^~~~
+/usr/lib/clang/23/include/__stddef_null.h:26:14: note: expanded from macro 'NULL'
+   26 | #define NULL ((void*)0)
+      |              ^~~~~~~~~~
+src/cfx86.c:1228:23: note: Calling 'vop'
+ 1228 |                         return memo_put(n, vop(nm, 'i', args, NULL, NULL, 0));
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:257:6: note: Assuming 'id' is >= 0
+  257 |         if (id < 0) {
+      |             ^~~~~~
+src/cfx86.c:257:2: note: Taking false branch
+  257 |         if (id < 0) {
+      |         ^
+src/cfx86.c:263:6: note: Assuming the condition is false
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cfx86.c:263:2: note: Taking false branch
+  263 |         if ((r = new_vv(kind, TYW(rt), n)) < 0)
+      |         ^
+src/cfx86.c:268:14: note: Assuming 'k' is >= 'n'
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                     ^~~~~
+src/cfx86.c:268:20: note: Left side of '&&' is false
+  268 |         for (k = 0; k < n && k < MAXL; k++)
+      |                           ^
+src/cfx86.c:274:10: note: Assuming 'bits' is <= 128
+  274 |                 X.VB = bits <= 128 ? 128 : bits <= 256 ? 256 : 512;
+      |                        ^~~~~~~~~~~
+src/cfx86.c:274:10: note: '?' condition is true
+src/cfx86.c:279:14: note: Assuming the condition is true
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |                     ^~~~~~~~~~~~~~~
+src/cfx86.c:279:2: note: Loop condition is true.  Entering loop body
+  279 |         for (k = 0; k < xi_nops(id); k++) {
+      |         ^
+src/cfx86.c:281:3: note: Control jumps to the 'default' case at line 285
+  281 |                 switch (xi_okind(id, k)) {
+      |                 ^
+src/cfx86.c:286:8: note: Array access (from variable 'text') results in a null pointer dereference
+  286 |                         s = text[k];
+      |                             ^~~~
+3 warnings generated.

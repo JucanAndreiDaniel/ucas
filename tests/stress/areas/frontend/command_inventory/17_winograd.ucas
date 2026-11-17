@@ -1,0 +1,9 @@
+# winograd: inner product in half the multiplies (winograd.c) — NO stress area
+d4(a0: u32, a1: u32, a2: u32, a3: u32, b0: u32, b1: u32, b2: u32, b3: u32) = a0*b0 + a1*b1 + a2*b2 + a3*b3
+winograd d4
+scheme d4 more
+d3(a0: i32, a1: i32, a2: i32, b0: i32, b1: i32, b2: i32) = a0*b0 - a1*b1 + a2*b2
+winograd d3
+scheme d3 more
+df(a0: f32 in -1..1, a1: f32 in -1..1, b0: f32 in -1..1, b1: f32 in -1..1) = a0*b0 + a1*b1
+winograd df

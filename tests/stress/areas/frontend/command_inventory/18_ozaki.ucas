@@ -1,0 +1,10 @@
+# ozaki: float dot as integer dots (fdot.c) — NO stress area
+model ozdear : gt1030 { fadd: 8, fmul: 8, conv: 1 }
+use ozdear
+g(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1, d: f32 in -1..1) = a*b + c*d
+ozaki g tol 1e-3
+ozaki g tol 1e-5
+ozaki g slices 3 tol 1e-5
+ozaki g model gt1030
+h(a: f16 in -1..1, b: f16 in -1..1, c: f16 in -1..1, d: f16 in -1..1) = f32(a)*f32(b) + f32(c)*f32(d)
+ozaki h model ozdear slices 4

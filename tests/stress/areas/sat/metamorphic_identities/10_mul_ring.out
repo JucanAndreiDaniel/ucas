@@ -1,0 +1,48 @@
+> f01(x: u8, y: u8, z: u8) = (x*y)*z
+> g01(x: u8, y: u8, z: u8) = x*(y*z)
+> equiv f01 g01
+f01 and g01 are equal on the domain of f01 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> f02(x: u16, y: u16) = x*y
+> g02(x: u16, y: u16) = y*x
+> equiv f02 g02
+f02 and g02 are equal on the domain of f02 (proved by algebra: both sides expand to one polynomial in x, y mod 2^16)
+> f03(x: u32, y: u32, z: u32) = x*(y+z)
+> g03(x: u32, y: u32, z: u32) = x*y+x*z
+> equiv f03 g03
+f03 and g03 are equal on the domain of f03 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^32)
+> f04(x: u64, y: u64) = x*y
+> g04(x: u64, y: u64) = y*x
+> equiv f04 g04
+f04 and g04 are equal on the domain of f04 (proved by algebra: both sides expand to one polynomial in x, y mod 2^64)
+> f05(x: u8, y: u8, z: u8) = (x+y)*z
+> g05(x: u8, y: u8, z: u8) = x*z+y*z
+> equiv f05 g05
+f05 and g05 are equal on the domain of f05 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^8)
+> f06(x: i16, y: i16, z: i16) = x*(y+z)
+> g06(x: i16, y: i16, z: i16) = x*y+x*z
+> equiv f06 g06
+f06 and g06 are equal on the domain of f06 (proved by algebra: both sides expand to one polynomial in x, y, z mod 2^16)
+> f07(x: u8) = x * 1
+> g07(x: u8) = x
+> equiv f07 g07
+f07 and g07 are equal on the domain of f07 (exhaustive)
+> f08(x: u16) = x * 2
+> g08(x: u16) = x << 1
+> equiv f08 g08
+f08 and g08 are equal on the domain of f08 (exhaustive)
+> f09(x: u32) = x^2
+> g09(x: u32) = x*x
+> equiv f09 g09
+f09 and g09 are equal on the domain of f09 (proved by SAT: 4594 AIG nodes, 0 conflicts)
+> f10(x: i64) = x^2
+> g10(x: i64) = x*x
+> equiv f10 g10
+f10 and g10 are equal on the domain of f10 (proved by SAT: 18914 AIG nodes, 0 conflicts)
+> f11(x: u8, y: u8) = x*y
+> g11(x: u8, y: u8) = x*(y xor 0) xor 0
+> equiv f11 g11
+f11 and g11 are equal on the domain of f11 (exhaustive)
+> f12(x: u16, y: u16) = x*y + x*y
+> g12(x: u16, y: u16) = x*y*2
+> equiv f12 g12
+f12 and g12 are equal on the domain of f12 (proved by algebra: both sides expand to one polynomial in x, y mod 2^16)

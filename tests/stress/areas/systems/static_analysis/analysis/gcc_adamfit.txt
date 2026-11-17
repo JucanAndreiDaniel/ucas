@@ -1,0 +1,1136 @@
+src/adamfit.c: In function ‘native_build’:
+src/adamfit.c:1205:17: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1205 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘run’: events 1-4
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2605 |         if (F.kind != TK_UCAS)
+    │      |            ~
+    │      |            |
+    │      |            (2) following ‘true’ branch... ─>─┐
+    │      |                                              │
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2606 |│                native_build();
+    │      |│                ~~~~~~~~~~~~~~
+    │      |│                |
+    │      |└───────────────>(3) ...to here
+    │      |                 (4) calling ‘native_build’ from ‘run’
+    │
+    └──> ‘native_build’: events 5-12
+           │
+           │ 1158 | native_build(void)
+           │      | ^~~~~~~~~~~~
+           │      | |
+           │      | (5) entry to ‘native_build’
+           │......
+           │ 1198 |                 FILE *fp = fopen(src, "w");
+           │      |                            ~~~~~~~~~~~~~~~
+           │      |                            |
+           │      |                            (6) allocated here
+           │ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |                    ~
+           │      |                    |
+           │      |                    (7) assuming ‘fp’ is NULL
+           │      |                    (8) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+           │      |                                                                          │
+           │      |                                                                          │
+           │      |┌─────────────────────────────────────────────────────────────────────────┘
+           │ 1200 |│                        if (fp)
+           │      |│                           ~
+           │      |│                           |
+           │      |└──────────────────────────>(9) ...to here
+           │      |                            (10) following ‘false’ branch (when ‘fp’ is NULL)... ─>─┐
+           │      |                                                                                    │
+           │      |                                                                                    │
+           │      |┌───────────────────────────────────────────────────────────────────────────────────┘
+           │ 1201 |│                                fclose(fp);
+           │ 1202 |│                        free(b.p);
+           │      |│                             ~~~
+           │      |│                              |
+           │      |└─────────────────────────────>(11) ...to here
+           │......
+           │ 1205 |                 fclose(fp);
+           │      |                 ~~~~~~~~~~
+           │      |                 |
+           │      |                 (12) ⚠️  argument 1 (‘fp’) NULL where non-null expected
+           │
+In file included from src/ucas.h:20,
+                 from src/adamfit.c:51:
+/usr/include/stdio.h:191:12: note: argument 1 of ‘fclose’ must be non-null
+  191 | extern int fclose (FILE *__stream) __nonnull ((1));
+      |            ^~~~~~
+src/adamfit.c:1205:17: warning: double ‘fclose’ of FILE ‘fp’ [CWE-1341] [-Wanalyzer-double-fclose]
+ 1205 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘run’: events 1-4
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2605 |         if (F.kind != TK_UCAS)
+    │      |            ~
+    │      |            |
+    │      |            (2) following ‘true’ branch... ─>─┐
+    │      |                                              │
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2606 |│                native_build();
+    │      |│                ~~~~~~~~~~~~~~
+    │      |│                |
+    │      |└───────────────>(3) ...to here
+    │      |                 (4) calling ‘native_build’ from ‘run’
+    │
+    └──> ‘native_build’: events 5-8
+           │
+           │ 1158 | native_build(void)
+           │      | ^~~~~~~~~~~~
+           │      | |
+           │      | (5) entry to ‘native_build’
+           │......
+           │ 1198 |                 FILE *fp = fopen(src, "w");
+           │      |                            ~~~~~~~~~~~~~~~
+           │      |                            |
+           │      |                            (6) opened here
+           │ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |                    ~
+           │      |                    |
+           │      |                    (7) assuming ‘fp’ is non-NULL
+           │      |                    (8) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+           │      |                                                                               │
+           │
+         ‘native_build’: event 9
+           │
+           │      |                                                                               │
+           │      |┌──────────────────────────────────────────────────────────────────────────────┘
+           │ 1199 |│                if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |│                                        ~^~
+           │      |│                                         |
+           │      |└────────────────────────────────────────>(9) ...to here
+           │
+         ‘native_build’: events 10-15
+           │
+           │ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |                     ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+           │      |                                |
+           │      |                                (10) following ‘true’ branch... ─>─┐
+           │      |                                                                   │
+           │      |                                                                   │
+           │      |┌──────────────────────────────────────────────────────────────────┘
+           │ 1200 |│                        if (fp)
+           │      |│                           ~    
+           │      |│                           |
+           │      |└──────────────────────────>(11) ...to here
+           │      |                            (12) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+           │      |                                                                                       │
+           │      |                                                                                       │
+           │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+           │ 1201 |│                                fclose(fp);
+           │      |│                                ~~~~~~~~~~
+           │      |│                                |
+           │      |└───────────────────────────────>(13) ...to here
+           │      |                                 (14) first ‘fclose’ here
+           │......
+           │ 1205 |                 fclose(fp);
+           │      |                 ~~~~~~~~~~      
+           │      |                 |
+           │      |                 (15) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (14)
+           │
+src/adamfit.c:1205:17: warning: double-‘fclose’ of ‘fp’ [CWE-415] [-Wanalyzer-double-free]
+ 1205 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘run’: events 1-4
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2605 |         if (F.kind != TK_UCAS)
+    │      |            ~
+    │      |            |
+    │      |            (2) following ‘true’ branch... ─>─┐
+    │      |                                              │
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2606 |│                native_build();
+    │      |│                ~~~~~~~~~~~~~~
+    │      |│                |
+    │      |└───────────────>(3) ...to here
+    │      |                 (4) calling ‘native_build’ from ‘run’
+    │
+    └──> ‘native_build’: events 5-8
+           │
+           │ 1158 | native_build(void)
+           │      | ^~~~~~~~~~~~
+           │      | |
+           │      | (5) entry to ‘native_build’
+           │......
+           │ 1198 |                 FILE *fp = fopen(src, "w");
+           │      |                            ~~~~~~~~~~~~~~~
+           │      |                            |
+           │      |                            (6) allocated here
+           │ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |                    ~
+           │      |                    |
+           │      |                    (7) assuming ‘fp’ is non-NULL
+           │      |                    (8) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+           │      |                                                                               │
+           │
+         ‘native_build’: event 9
+           │
+           │      |                                                                               │
+           │      |┌──────────────────────────────────────────────────────────────────────────────┘
+           │ 1199 |│                if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |│                                        ~^~
+           │      |│                                         |
+           │      |└────────────────────────────────────────>(9) ...to here
+           │
+         ‘native_build’: events 10-15
+           │
+           │ 1199 |                 if (fp == NULL || fputs(b.p, fp) < 0) {
+           │      |                     ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~
+           │      |                                |
+           │      |                                (10) following ‘true’ branch... ─>─┐
+           │      |                                                                   │
+           │      |                                                                   │
+           │      |┌──────────────────────────────────────────────────────────────────┘
+           │ 1200 |│                        if (fp)
+           │      |│                           ~    
+           │      |│                           |
+           │      |└──────────────────────────>(11) ...to here
+           │      |                            (12) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+           │      |                                                                                       │
+           │      |                                                                                       │
+           │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+           │ 1201 |│                                fclose(fp);
+           │      |│                                ~~~~~~~~~~
+           │      |│                                |
+           │      |└───────────────────────────────>(13) ...to here
+           │      |                                 (14) first ‘fclose’ here
+           │......
+           │ 1205 |                 fclose(fp);
+           │      |                 ~~~~~~~~~~      
+           │      |                 |
+           │      |                 (15) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (14)
+           │
+src/adamfit.c: In function ‘native_batch’:
+src/adamfit.c:1238:9: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1238 |         fwrite(&nn, 8, 1, fp);
+      |         ^~~~~~~~~~~~~~~~~~~~~
+  ‘run’: events 1-2
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2607 |         measuring();
+    │      |         ~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘measuring’ from ‘run’
+    │
+    └──> ‘measuring’: events 3-4
+           │
+           │  865 | measuring(void)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘measuring’
+           │......
+           │  898 |         ref_batch(F.mx, F.nm, F.my);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘ref_batch’ from ‘measuring’
+           │
+           └──> ‘ref_batch’: events 5-8
+                  │
+                  │  942 | ref_batch(double *const *xs, long n, ld *ys)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘ref_batch’
+                  │......
+                  │  946 |         if (F.kind != TK_UCAS)
+                  │      |            ~
+                  │      |            |
+                  │      |            (6) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │  947 |│                native_batch(xs, n, ys);
+                  │      |│                ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(7) ...to here
+                  │      |                 (8) calling ‘native_batch’ from ‘ref_batch’
+                  │
+                  └──> ‘native_batch’: events 9-11
+                         │
+                         │ 1225 | native_batch(double *const *xs, long n, ld *ys)
+                         │      | ^~~~~~~~~~~~
+                         │      | |
+                         │      | (9) entry to ‘native_batch’
+                         │......
+                         │ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+                         │      |            ~      ~~~~~~~~~~~~~~~~
+                         │      |            |      |
+                         │      |            |      (10) allocated here
+                         │      |            (11) assuming ‘fp’ is NULL
+                         │
+                       ‘native_batch’: events 12-14
+                         │
+                         │ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+                         │      |            ^
+                         │      |            |
+                         │      |            (12) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+                         │      |                                                                   │
+                         │      |                                                                   │
+                         │      |┌──────────────────────────────────────────────────────────────────┘
+                         │ 1237 |│                fail("adamfit: cannot write %s", pin);
+                         │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |│                |
+                         │      |└───────────────>(13) ...to here
+                         │ 1238 |         fwrite(&nn, 8, 1, fp);
+                         │      |         ~~~~~~~~~~~~~~~~~~~~~
+                         │      |         |
+                         │      |         (14) ⚠️  argument 4 (‘fp’) NULL where non-null expected
+                         │
+/usr/include/stdio.h:739:15: note: argument 4 of ‘fwrite’ must be non-null
+  739 | extern size_t fwrite (const void *__restrict __ptr, size_t __size,
+      |               ^~~~~~
+src/adamfit.c:1267:21: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1267 |                 if (fread(&r, 8, 1, fp) != 1) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+  ‘run’: events 1-2
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2607 |         measuring();
+    │      |         ~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘measuring’ from ‘run’
+    │
+    └──> ‘measuring’: events 3-4
+           │
+           │  865 | measuring(void)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘measuring’
+           │......
+           │  898 |         ref_batch(F.mx, F.nm, F.my);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘ref_batch’ from ‘measuring’
+           │
+           └──> ‘ref_batch’: events 5-8
+                  │
+                  │  942 | ref_batch(double *const *xs, long n, ld *ys)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘ref_batch’
+                  │......
+                  │  946 |         if (F.kind != TK_UCAS)
+                  │      |            ~
+                  │      |            |
+                  │      |            (6) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │  947 |│                native_batch(xs, n, ys);
+                  │      |│                ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(7) ...to here
+                  │      |                 (8) calling ‘native_batch’ from ‘ref_batch’
+                  │
+                  └──> ‘native_batch’: events 9-11
+                         │
+                         │ 1225 | native_batch(double *const *xs, long n, ld *ys)
+                         │      | ^~~~~~~~~~~~
+                         │      | |
+                         │      | (9) entry to ‘native_batch’
+                         │......
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ~      ~~~~~~~~~~~~~~~~~
+                         │      |            |      |
+                         │      |            |      (10) allocated here
+                         │      |            (11) assuming ‘fp’ is NULL
+                         │
+                       ‘native_batch’: events 12-16
+                         │
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ^
+                         │      |            |
+                         │      |            (12) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+                         │      |                                                                   │
+                         │      |                                                                   │
+                         │      |┌──────────────────────────────────────────────────────────────────┘
+                         │ 1261 |│                fail("adamfit: no results from %s", F.cfn);
+                         │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |│                |
+                         │      |└───────────────>(13) ...to here
+                         │ 1262 |         for (i = 0; i < n; i++) {
+                         │      |                     ~~~~~
+                         │      |                       |
+                         │      |                       (14) following ‘true’ branch (when ‘i < n’)... ─>─┐
+                         │      |                                                                         │
+                         │......
+                         │      |                                                                         │
+                         │      |┌────────────────────────────────────────────────────────────────────────┘
+                         │ 1267 |│                if (fread(&r, 8, 1, fp) != 1) {
+                         │      |│                    ~~~~~~~~~~~~~~~~~~~
+                         │      |│                    |
+                         │      |└───────────────────>(15) ...to here
+                         │      |                     (16) ⚠️  argument 4 (‘fp’) NULL where non-null expected
+                         │
+/usr/include/stdio.h:732:15: note: argument 4 of ‘fread’ must be non-null
+  732 | extern size_t fread (void *__restrict __ptr, size_t __size,
+      |               ^~~~~
+src/adamfit.c:1276:9: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1276 |         fclose(fp);
+      |         ^~~~~~~~~~
+  ‘run’: events 1-2
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2607 |         measuring();
+    │      |         ~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘measuring’ from ‘run’
+    │
+    └──> ‘measuring’: events 3-4
+           │
+           │  865 | measuring(void)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘measuring’
+           │......
+           │  898 |         ref_batch(F.mx, F.nm, F.my);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘ref_batch’ from ‘measuring’
+           │
+           └──> ‘ref_batch’: events 5-8
+                  │
+                  │  942 | ref_batch(double *const *xs, long n, ld *ys)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘ref_batch’
+                  │......
+                  │  946 |         if (F.kind != TK_UCAS)
+                  │      |            ~
+                  │      |            |
+                  │      |            (6) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │  947 |│                native_batch(xs, n, ys);
+                  │      |│                ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(7) ...to here
+                  │      |                 (8) calling ‘native_batch’ from ‘ref_batch’
+                  │
+                  └──> ‘native_batch’: events 9-11
+                         │
+                         │ 1225 | native_batch(double *const *xs, long n, ld *ys)
+                         │      | ^~~~~~~~~~~~
+                         │      | |
+                         │      | (9) entry to ‘native_batch’
+                         │......
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ~      ~~~~~~~~~~~~~~~~~
+                         │      |            |      |
+                         │      |            |      (10) allocated here
+                         │      |            (11) assuming ‘fp’ is NULL
+                         │
+                       ‘native_batch’: events 12-16
+                         │
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ^
+                         │      |            |
+                         │      |            (12) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+                         │      |                                                                   │
+                         │      |                                                                   │
+                         │      |┌──────────────────────────────────────────────────────────────────┘
+                         │ 1261 |│                fail("adamfit: no results from %s", F.cfn);
+                         │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |│                |
+                         │      |└───────────────>(13) ...to here
+                         │ 1262 |         for (i = 0; i < n; i++) {
+                         │      |                     ~~~~~
+                         │      |                       |
+                         │      |                       (14) following ‘false’ branch (when ‘i >= n’)... ─>─┐
+                         │      |                                                                           │
+                         │......
+                         │      |                                                                           │
+                         │      |┌──────────────────────────────────────────────────────────────────────────┘
+                         │ 1276 |│        fclose(fp);
+                         │      |│        ~~~~~~~~~~
+                         │      |│        |
+                         │      |└───────>(15) ...to here
+                         │      |         (16) ⚠️  argument 1 (‘fp’) NULL where non-null expected
+                         │
+/usr/include/stdio.h:191:12: note: argument 1 of ‘fclose’ must be non-null
+  191 | extern int fclose (FILE *__stream) __nonnull ((1));
+      |            ^~~~~~
+src/adamfit.c:1276:9: warning: double ‘fclose’ of FILE ‘fp’ [CWE-1341] [-Wanalyzer-double-fclose]
+ 1276 |         fclose(fp);
+      |         ^~~~~~~~~~
+  ‘run’: events 1-2
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2607 |         measuring();
+    │      |         ~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘measuring’ from ‘run’
+    │
+    └──> ‘measuring’: events 3-4
+           │
+           │  865 | measuring(void)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘measuring’
+           │......
+           │  898 |         ref_batch(F.mx, F.nm, F.my);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘ref_batch’ from ‘measuring’
+           │
+           └──> ‘ref_batch’: events 5-8
+                  │
+                  │  942 | ref_batch(double *const *xs, long n, ld *ys)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘ref_batch’
+                  │......
+                  │  946 |         if (F.kind != TK_UCAS)
+                  │      |            ~
+                  │      |            |
+                  │      |            (6) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │  947 |│                native_batch(xs, n, ys);
+                  │      |│                ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(7) ...to here
+                  │      |                 (8) calling ‘native_batch’ from ‘ref_batch’
+                  │
+                  └──> ‘native_batch’: events 9-13
+                         │
+                         │ 1225 | native_batch(double *const *xs, long n, ld *ys)
+                         │      | ^~~~~~~~~~~~
+                         │      | |
+                         │      | (9) entry to ‘native_batch’
+                         │......
+                         │ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+                         │      |            ~
+                         │      |            |
+                         │      |            (10) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+                         │      |                                                                        │
+                         │      |                                                                        │
+                         │      |┌───────────────────────────────────────────────────────────────────────┘
+                         │ 1237 |│                fail("adamfit: cannot write %s", pin);
+                         │ 1238 |│        fwrite(&nn, 8, 1, fp);
+                         │      |│        ~~~~~~~~~~~~~~~~~~~~~
+                         │      |│        |
+                         │      |└───────>(11) ...to here
+                         │......
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ~      ~~~~~~~~~~~~~~~~~
+                         │      |            |      |
+                         │      |            |      (12) opened here
+                         │      |            (13) assuming ‘fp’ is non-NULL
+                         │
+                       ‘native_batch’: events 14-17
+                         │
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ^
+                         │      |            |
+                         │      |            (14) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+                         │      |                                                                        │
+                         │      |                                                                        │
+                         │      |┌───────────────────────────────────────────────────────────────────────┘
+                         │ 1261 |│                fail("adamfit: no results from %s", F.cfn);
+                         │ 1262 |│        for (i = 0; i < n; i++) {
+                         │      |│             ~~~~~  ~~~~~
+                         │      |│               |      |
+                         │      |│               |      (16) following ‘true’ branch (when ‘i < n’)... ─>─┐
+                         │      |└──────────────>(15) ...to here                                          │
+                         │      |                                                                         │
+                         │......
+                         │      |                                                                         │
+                         │      |┌────────────────────────────────────────────────────────────────────────┘
+                         │ 1267 |│                if (fread(&r, 8, 1, fp) != 1) {
+                         │      |│                    ~~~~~~~~~~~~~~~~~~~
+                         │      |│                    |
+                         │      |└───────────────────>(17) ...to here
+                         │
+                       ‘native_batch’: events 18-23
+                         │
+                         │ 1267 |                 if (fread(&r, 8, 1, fp) != 1) {
+                         │      |                    ^
+                         │      |                    |
+                         │      |                    (18) following ‘true’ branch... ─>─┐
+                         │      |                                                       │
+                         │      |                                                       │
+                         │      |┌──────────────────────────────────────────────────────┘
+                         │ 1268 |│                        fclose(fp);
+                         │      |│                        ~~~~~~~~~~
+                         │      |│                        |
+                         │      |└───────────────────────>(19) ...to here
+                         │      |                         (20) first ‘fclose’ here
+                         │......
+                         │ 1271 |                 if (F.oint)
+                         │      |                    ~
+                         │      |                    |
+                         │      |                    (21) following ‘true’ branch... ─>─┐
+                         │      |                                                       │
+                         │      |                                                       │
+                         │      |┌──────────────────────────────────────────────────────┘
+                         │ 1272 |│                        ys[i] = F.osigned || F.ow < 64 ? (ld)r.q : (ld)(uint64_t)r.q;
+                         │      |│                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |│                                 |                               |
+                         │      |└────────────────────────────────>(22) ...to here                 (23) following ‘true’ branch... ─>─┐
+                         │      |                                                                                                     │
+                         │
+                       ‘native_batch’: events 24-27
+                         │
+                         │      |                                                                                                     │
+                         │      |┌────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         │ 1262 |│        for (i = 0; i < n; i++) {
+                         │      |│                    ~~~~~                                      
+                         │      |│                      |
+                         │      |│                      (25) following ‘false’ branch (when ‘i >= n’)... ─>─┐
+                         │      |│                                                                          │
+                         │......
+                         │      |│                                                                          │
+                         │      |┌──────────────────────────────────────────────────────────────────────────┘
+                         │ 1272 |│                        ys[i] = F.osigned || F.ow < 64 ? (ld)r.q : (ld)(uint64_t)r.q;
+                         │      |│                                                             ~^~
+                         │      |│                                                              |
+                         │      |└─────────────────────────────────────────────────────────────>(24) ...to here
+                         │......
+                         │ 1276 |         fclose(fp);
+                         │      |         ~~~~~~~~~~                                             
+                         │      |         |
+                         │      |└───────>(26) ...to here
+                         │      |         (27) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (20)
+                         │
+src/adamfit.c:1276:9: warning: double-‘fclose’ of ‘fp’ [CWE-415] [-Wanalyzer-double-free]
+ 1276 |         fclose(fp);
+      |         ^~~~~~~~~~
+  ‘run’: events 1-2
+    │
+    │ 2595 | run(void)
+    │      | ^~~
+    │      | |
+    │      | (1) entry to ‘run’
+    │......
+    │ 2607 |         measuring();
+    │      |         ~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘measuring’ from ‘run’
+    │
+    └──> ‘measuring’: events 3-4
+           │
+           │  865 | measuring(void)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘measuring’
+           │......
+           │  898 |         ref_batch(F.mx, F.nm, F.my);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘ref_batch’ from ‘measuring’
+           │
+           └──> ‘ref_batch’: events 5-8
+                  │
+                  │  942 | ref_batch(double *const *xs, long n, ld *ys)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘ref_batch’
+                  │......
+                  │  946 |         if (F.kind != TK_UCAS)
+                  │      |            ~
+                  │      |            |
+                  │      |            (6) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │  947 |│                native_batch(xs, n, ys);
+                  │      |│                ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(7) ...to here
+                  │      |                 (8) calling ‘native_batch’ from ‘ref_batch’
+                  │
+                  └──> ‘native_batch’: events 9-13
+                         │
+                         │ 1225 | native_batch(double *const *xs, long n, ld *ys)
+                         │      | ^~~~~~~~~~~~
+                         │      | |
+                         │      | (9) entry to ‘native_batch’
+                         │......
+                         │ 1236 |         if ((fp = fopen(pin, "wb")) == NULL)
+                         │      |            ~
+                         │      |            |
+                         │      |            (10) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+                         │      |                                                                        │
+                         │      |                                                                        │
+                         │      |┌───────────────────────────────────────────────────────────────────────┘
+                         │ 1237 |│                fail("adamfit: cannot write %s", pin);
+                         │ 1238 |│        fwrite(&nn, 8, 1, fp);
+                         │      |│        ~~~~~~~~~~~~~~~~~~~~~
+                         │      |│        |
+                         │      |└───────>(11) ...to here
+                         │......
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ~      ~~~~~~~~~~~~~~~~~
+                         │      |            |      |
+                         │      |            |      (12) allocated here
+                         │      |            (13) assuming ‘fp’ is non-NULL
+                         │
+                       ‘native_batch’: events 14-17
+                         │
+                         │ 1260 |         if ((fp = fopen(pout, "rb")) == NULL)
+                         │      |            ^
+                         │      |            |
+                         │      |            (14) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+                         │      |                                                                        │
+                         │      |                                                                        │
+                         │      |┌───────────────────────────────────────────────────────────────────────┘
+                         │ 1261 |│                fail("adamfit: no results from %s", F.cfn);
+                         │ 1262 |│        for (i = 0; i < n; i++) {
+                         │      |│             ~~~~~  ~~~~~
+                         │      |│               |      |
+                         │      |│               |      (16) following ‘true’ branch (when ‘i < n’)... ─>─┐
+                         │      |└──────────────>(15) ...to here                                          │
+                         │      |                                                                         │
+                         │......
+                         │      |                                                                         │
+                         │      |┌────────────────────────────────────────────────────────────────────────┘
+                         │ 1267 |│                if (fread(&r, 8, 1, fp) != 1) {
+                         │      |│                    ~~~~~~~~~~~~~~~~~~~
+                         │      |│                    |
+                         │      |└───────────────────>(17) ...to here
+                         │
+                       ‘native_batch’: events 18-23
+                         │
+                         │ 1267 |                 if (fread(&r, 8, 1, fp) != 1) {
+                         │      |                    ^
+                         │      |                    |
+                         │      |                    (18) following ‘true’ branch... ─>─┐
+                         │      |                                                       │
+                         │      |                                                       │
+                         │      |┌──────────────────────────────────────────────────────┘
+                         │ 1268 |│                        fclose(fp);
+                         │      |│                        ~~~~~~~~~~
+                         │      |│                        |
+                         │      |└───────────────────────>(19) ...to here
+                         │      |                         (20) first ‘fclose’ here
+                         │......
+                         │ 1271 |                 if (F.oint)
+                         │      |                    ~
+                         │      |                    |
+                         │      |                    (21) following ‘true’ branch... ─>─┐
+                         │      |                                                       │
+                         │      |                                                       │
+                         │      |┌──────────────────────────────────────────────────────┘
+                         │ 1272 |│                        ys[i] = F.osigned || F.ow < 64 ? (ld)r.q : (ld)(uint64_t)r.q;
+                         │      |│                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |│                                 |                               |
+                         │      |└────────────────────────────────>(22) ...to here                 (23) following ‘true’ branch... ─>─┐
+                         │      |                                                                                                     │
+                         │
+                       ‘native_batch’: events 24-27
+                         │
+                         │      |                                                                                                     │
+                         │      |┌────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                         │ 1262 |│        for (i = 0; i < n; i++) {
+                         │      |│                    ~~~~~                                      
+                         │      |│                      |
+                         │      |│                      (25) following ‘false’ branch (when ‘i >= n’)... ─>─┐
+                         │      |│                                                                          │
+                         │......
+                         │      |│                                                                          │
+                         │      |┌──────────────────────────────────────────────────────────────────────────┘
+                         │ 1272 |│                        ys[i] = F.osigned || F.ow < 64 ? (ld)r.q : (ld)(uint64_t)r.q;
+                         │      |│                                                             ~^~
+                         │      |│                                                              |
+                         │      |└─────────────────────────────────────────────────────────────>(24) ...to here
+                         │......
+                         │ 1276 |         fclose(fp);
+                         │      |         ~~~~~~~~~~                                             
+                         │      |         |
+                         │      |└───────>(26) ...to here
+                         │      |         (27) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (20)
+                         │
+src/adamfit.c: In function ‘glsl_funcs’:
+src/adamfit.c:3120:25: warning: use of uninitialized value ‘*(unsigned char (*)[64])(&tok[1][0])’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘glsl_funcs’: events 1-4
+ 3084 |         char tok[3][64];
+      |              ^~~
+      |              |
+      |              (1) region created on stack here
+......
+ 3088 |         while (*p && n < max) {
+      |                ~~~~~~~~~~~~~
+      |                   |
+      |                   (2) following ‘true’ branch... ─>─┐
+      |                                                     │
+      |                                                     │
+      |┌────────────────────────────────────────────────────┘
+ 3089 |│                if (p[0] == '/' && p[1] == '/') {
+      |│                    ~~~~
+      |│                     |
+      |└────────────────────>(3) ...to here
+......
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                         |
+      |                         (4) ⚠️  use of uninitialized value ‘*(unsigned char (*)[64])(&tok[1][0])’ here
+src/adamfit.c:3120:25: warning: use of uninitialized value ‘*(unsigned char (*)[64])(&tok[1][0])’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘target_glsl’: events 1-2
+    │
+    │ 3184 | target_glsl(const char *src, const char *want)
+    │      | ^~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘target_glsl’
+    │......
+    │ 3187 |         int n = glsl_funcs(src, g, 64), k = -1, v;
+    │      |                 ~~~~~~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (2) calling ‘glsl_funcs’ from ‘target_glsl’
+    │
+    └──> ‘glsl_funcs’: events 3-7
+           │
+           │ 3082 | glsl_funcs(const char *s, struct gsig *out, int max)
+           │      | ^~~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘glsl_funcs’
+           │ 3083 | {
+           │ 3084 |         char tok[3][64];
+           │      |              ~~~
+           │      |              |
+           │      |              (4) region created on stack here
+           │......
+           │ 3088 |         while (*p && n < max) {
+           │      |                ~~~~~~~~~~~~~
+           │      |                   |
+           │      |                   (5) following ‘true’ branch... ─>─┐
+           │      |                                                     │
+           │      |                                                     │
+           │      |┌────────────────────────────────────────────────────┘
+           │ 3089 |│                if (p[0] == '/' && p[1] == '/') {
+           │      |│                    ~~~~
+           │      |│                     |
+           │      |└────────────────────>(6) ...to here
+           │......
+           │ 3120 |                         memmove(tok[0], tok[1], sizeof tok[0]);
+           │      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |                         |
+           │      |                         (7) ⚠️  use of uninitialized value ‘*(unsigned char (*)[64])(&tok[1][0])’ here
+           │
+src/adamfit.c: In function ‘target_glsl’:
+src/adamfit.c:3197:17: warning: stack-based buffer under-read [CWE-127] [-Wanalyzer-out-of-bounds]
+ 3197 |         if (g[k].np > AF_MAXV)
+      |             ~~~~^~~
+  ‘target_glsl’: events 1-8
+ 3186 |         struct gsig g[64];
+      |                     ^
+      |                     |
+      |                     (1) capacity: 19712 bytes
+......
+ 3189 |         if (n == 0)
+      |            ~         
+      |            |
+      |            (2) following ‘true’ branch (when ‘n == 0’)... ─>─┐
+      |                                                              │
+      |                                                              │
+      |┌─────────────────────────────────────────────────────────────┘
+ 3190 |│                fail("adamfit: no function in the GLSL block");
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(3) ...to here
+ 3191 |         for (v = 0; v < n; v++)
+      |                     ~~~~~
+      |                       |
+      |                       (4) following ‘false’ branch (when ‘v >= n’)... ─>─┐
+      |                                                                          │
+......
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 3194 |│        if (k < 0)
+      |│           ~         
+      |│           |
+      |└──────────>(5) ...to here
+      |            (6) following ‘true’ branch (when ‘k < 0’)... ─>─┐
+      |                                                             │
+      |                                                             │
+      |┌────────────────────────────────────────────────────────────┘
+ 3195 |│                fail("adamfit: no function %s in the GLSL block", want[0] ? want :
+      |│                                                                  ~~~~~~~
+      |│                                                                      |
+      |└─────────────────────────────────────────────────────────────────────>(7) ...to here
+ 3196 |                     "but main");
+ 3197 |         if (g[k].np > AF_MAXV)
+      |             ~~~~~~~  
+      |                 |
+      |                 (8) ⚠️  out-of-bounds read from byte -228 till byte -225 but ‘g’ starts at byte 0
+src/adamfit.c:3197:17: note: valid subscripts for ‘g’ are ‘[0]’ to ‘[63]’
+ 3197 |         if (g[k].np > AF_MAXV)
+      |             ~~~~^~~
+
+  ┌───────────────────────┐
+  │read of ‘int’ (4 bytes)│
+  └───────────────────────┘
+              ^
+              │
+              │
+  ┌───────────────────────┐    ┌────────┬────────────────────┬───────────┐
+  │                       │    │  [0]   │        ...         │   [63]    │
+  │  before valid range   │    ├────────┴────────────────────┴───────────┤
+  │                       │    │      ‘g’ (type: ‘struct gsig[64]’)      │
+  └───────────────────────┘    └─────────────────────────────────────────┘
+  ├───────────┬───────────┤├┬─┤├────────────────────┬────────────────────┤
+              │             │                       │
+              │        ╭────┴────╮         ╭────────┴────────╮
+              │        │224 bytes│         │size: 19712 bytes│
+              │        ╰─────────╯         ╰─────────────────╯
+  ╭───────────┴────────────╮
+  │⚠️  under-read of 4 bytes│
+  ╰────────────────────────╯
+
+src/adamfit.c:3198:61: warning: stack-based buffer under-read [CWE-127] [-Wanalyzer-out-of-bounds]
+ 3198 |                 fail("adamfit: %s takes %s", g[k].name, g[k].np == AF_MAXV + 1 ?
+      |                                                         ~~~~^~~
+  ‘target_glsl’: events 1-10
+ 3186 |         struct gsig g[64];
+      |                     ^
+      |                     |
+      |                     (1) capacity: 19712 bytes
+......
+ 3189 |         if (n == 0)
+      |            ~         
+      |            |
+      |            (2) following ‘true’ branch (when ‘n == 0’)... ─>─┐
+      |                                                              │
+      |                                                              │
+      |┌─────────────────────────────────────────────────────────────┘
+ 3190 |│                fail("adamfit: no function in the GLSL block");
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(3) ...to here
+ 3191 |         for (v = 0; v < n; v++)
+      |                     ~~~~~
+      |                       |
+      |                       (4) following ‘false’ branch (when ‘v >= n’)... ─>─┐
+      |                                                                          │
+......
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 3194 |│        if (k < 0)
+      |│           ~         
+      |│           |
+      |└──────────>(5) ...to here
+      |            (6) following ‘true’ branch (when ‘k < 0’)... ─>─┐
+      |                                                             │
+      |                                                             │
+      |┌────────────────────────────────────────────────────────────┘
+ 3195 |│                fail("adamfit: no function %s in the GLSL block", want[0] ? want :
+      |│                                                                  ~~~~~~~
+      |│                                                                      |
+      |└─────────────────────────────────────────────────────────────────────>(7) ...to here
+ 3196 |                     "but main");
+ 3197 |         if (g[k].np > AF_MAXV)
+      |            ~         
+      |            |
+      |            (8) following ‘true’ branch... ─>─┐
+      |                                              │
+      |                                              │
+      |┌─────────────────────────────────────────────┘
+ 3198 |│                fail("adamfit: %s takes %s", g[k].name, g[k].np == AF_MAXV + 1 ?
+      |│                                                        ~~~~~~~
+      |│                                                            |
+      |└───────────────────────────────────────────────────────────>(9) ...to here
+      |                                                             (10) ⚠️  out-of-bounds read from byte -228 till byte -225 but ‘g’ starts at byte 0
+src/adamfit.c:3198:61: note: valid subscripts for ‘g’ are ‘[0]’ to ‘[63]’
+ 3198 |                 fail("adamfit: %s takes %s", g[k].name, g[k].np == AF_MAXV + 1 ?
+      |                                                         ~~~~^~~
+
+  ┌───────────────────────┐
+  │read of ‘int’ (4 bytes)│
+  └───────────────────────┘
+              ^
+              │
+              │
+  ┌───────────────────────┐    ┌────────┬────────────────────┬───────────┐
+  │                       │    │  [0]   │        ...         │   [63]    │
+  │  before valid range   │    ├────────┴────────────────────┴───────────┤
+  │                       │    │      ‘g’ (type: ‘struct gsig[64]’)      │
+  └───────────────────────┘    └─────────────────────────────────────────┘
+  ├───────────┬───────────┤├┬─┤├────────────────────┬────────────────────┤
+              │             │                       │
+              │        ╭────┴────╮         ╭────────┴────────╮
+              │        │224 bytes│         │size: 19712 bytes│
+              │        ╰─────────╯         ╰─────────────────╯
+  ╭───────────┴────────────╮
+  │⚠️  under-read of 4 bytes│
+  ╰────────────────────────╯
+
+src/adamfit.c:3200:17: warning: stack-based buffer under-read [CWE-127] [-Wanalyzer-out-of-bounds]
+ 3200 |         if (g[k].np == 0)
+      |             ~~~~^~~
+  ‘target_glsl’: events 1-8
+ 3186 |         struct gsig g[64];
+      |                     ^
+      |                     |
+      |                     (1) capacity: 19712 bytes
+......
+ 3189 |         if (n == 0)
+      |            ~         
+      |            |
+      |            (2) following ‘true’ branch (when ‘n == 0’)... ─>─┐
+      |                                                              │
+      |                                                              │
+      |┌─────────────────────────────────────────────────────────────┘
+ 3190 |│                fail("adamfit: no function in the GLSL block");
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(3) ...to here
+ 3191 |         for (v = 0; v < n; v++)
+      |                     ~~~~~
+      |                       |
+      |                       (4) following ‘false’ branch (when ‘v >= n’)... ─>─┐
+      |                                                                          │
+......
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 3194 |│        if (k < 0)
+      |│           ~         
+      |│           |
+      |└──────────>(5) ...to here
+      |            (6) following ‘true’ branch (when ‘k < 0’)... ─>─┐
+      |                                                             │
+      |                                                             │
+      |┌────────────────────────────────────────────────────────────┘
+ 3195 |│                fail("adamfit: no function %s in the GLSL block", want[0] ? want :
+      |│                                                                  ~~~~~~~
+      |│                                                                      |
+      |└─────────────────────────────────────────────────────────────────────>(7) ...to here
+......
+ 3200 |         if (g[k].np == 0)
+      |             ~~~~~~~  
+      |                 |
+      |                 (8) ⚠️  out-of-bounds read from byte -228 till byte -225 but ‘g’ starts at byte 0
+src/adamfit.c:3200:17: note: valid subscripts for ‘g’ are ‘[0]’ to ‘[63]’
+ 3200 |         if (g[k].np == 0)
+      |             ~~~~^~~
+
+  ┌───────────────────────┐
+  │read of ‘int’ (4 bytes)│
+  └───────────────────────┘
+              ^
+              │
+              │
+  ┌───────────────────────┐    ┌────────┬────────────────────┬───────────┐
+  │                       │    │  [0]   │        ...         │   [63]    │
+  │  before valid range   │    ├────────┴────────────────────┴───────────┤
+  │                       │    │      ‘g’ (type: ‘struct gsig[64]’)      │
+  └───────────────────────┘    └─────────────────────────────────────────┘
+  ├───────────┬───────────┤├┬─┤├────────────────────┬────────────────────┤
+              │             │                       │
+              │        ╭────┴────╮         ╭────────┴────────╮
+              │        │224 bytes│         │size: 19712 bytes│
+              │        ╰─────────╯         ╰─────────────────╯
+  ╭───────────┴────────────╮
+  │⚠️  under-read of 4 bytes│
+  ╰────────────────────────╯
+
+src/adamfit.c:3205:29: warning: stack-based buffer under-read [CWE-127] [-Wanalyzer-out-of-bounds]
+ 3205 |         for (v = 0; v < g[k].np; v++) {
+      |                         ~~~~^~~
+  ‘target_glsl’: events 1-8
+ 3186 |         struct gsig g[64];
+      |                     ^
+      |                     |
+      |                     (1) capacity: 19712 bytes
+......
+ 3189 |         if (n == 0)
+      |            ~         
+      |            |
+      |            (2) following ‘true’ branch (when ‘n == 0’)... ─>─┐
+      |                                                              │
+      |                                                              │
+      |┌─────────────────────────────────────────────────────────────┘
+ 3190 |│                fail("adamfit: no function in the GLSL block");
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(3) ...to here
+ 3191 |         for (v = 0; v < n; v++)
+      |                     ~~~~~
+      |                       |
+      |                       (4) following ‘false’ branch (when ‘v >= n’)... ─>─┐
+      |                                                                          │
+......
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 3194 |│        if (k < 0)
+      |│           ~         
+      |│           |
+      |└──────────>(5) ...to here
+      |            (6) following ‘true’ branch (when ‘k < 0’)... ─>─┐
+      |                                                             │
+      |                                                             │
+      |┌────────────────────────────────────────────────────────────┘
+ 3195 |│                fail("adamfit: no function %s in the GLSL block", want[0] ? want :
+      |│                                                                  ~~~~~~~
+      |│                                                                      |
+      |└─────────────────────────────────────────────────────────────────────>(7) ...to here
+......
+ 3205 |         for (v = 0; v < g[k].np; v++) {
+      |                         ~~~~~~~
+      |                             |
+      |                             (8) ⚠️  out-of-bounds read from byte -228 till byte -225 but ‘g’ starts at byte 0
+src/adamfit.c:3205:29: note: valid subscripts for ‘g’ are ‘[0]’ to ‘[63]’
+ 3205 |         for (v = 0; v < g[k].np; v++) {
+      |                         ~~~~^~~
+
+  ┌───────────────────────┐
+  │read of ‘int’ (4 bytes)│
+  └───────────────────────┘
+              ^
+              │
+              │
+  ┌───────────────────────┐    ┌────────┬────────────────────┬───────────┐
+  │                       │    │  [0]   │        ...         │   [63]    │
+  │  before valid range   │    ├────────┴────────────────────┴───────────┤
+  │                       │    │      ‘g’ (type: ‘struct gsig[64]’)      │
+  └───────────────────────┘    └─────────────────────────────────────────┘
+  ├───────────┬───────────┤├┬─┤├────────────────────┬────────────────────┤
+              │             │                       │
+              │        ╭────┴────╮         ╭────────┴────────╮
+              │        │224 bytes│         │size: 19712 bytes│
+              │        ╰─────────╯         ╰─────────────────╯
+  ╭───────────┴────────────╮
+  │⚠️  under-read of 4 bytes│
+  ╰────────────────────────╯
+

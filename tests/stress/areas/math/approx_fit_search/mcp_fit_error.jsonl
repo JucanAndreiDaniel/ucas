@@ -1,0 +1,7 @@
+{"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "stress", "version": "1"}}}
+{"jsonrpc": "2.0", "method": "notifications/initialized"}
+{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)\nguess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))\nquake(x: f32) = y * (1.5f - 0.5f * x * y * y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))"}}}
+{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "error", "args": {"g": "quake", "f": "rsqrt"}}}}
+{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "fit", "args": {"g": "guess", "f": "rsqrt"}}}}
+{"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "fit", "args": {"g": "guess", "f": "rsqrt", "metric": "maxabs"}}}}
+{"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "fit", "args": {"g": "guess", "f": "rsqrt", "metric": "rms"}}}}

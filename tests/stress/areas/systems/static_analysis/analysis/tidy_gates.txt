@@ -1,0 +1,388 @@
+/home/andrew/Code/ucas/src/gates.c:32:12: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   24 | #include <stdlib.h>
+   25 | #include <string.h>
+   26 | 
+   27 | #define MAXBASIS 32
+   28 | static struct basis bases[MAXBASIS];
+   29 | static int nbases;
+   30 | 
+   31 | struct basis *
+   32 | basis_find(uint32_t name)
+      |            ^
+/home/andrew/Code/ucas/src/gates.c:68:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   68 |         int64_t in_i[MAXP * CH];
+      |         ^
+/home/andrew/Code/ucas/src/gates.c:76:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   76 |                         in_i[(size_t)i * CH + m] = (m >> i) & 1;
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/gates.c:81:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   81 |                 if (COLI(&p, p.root[0])[m] & 1)
+      |                     ^                      ~
+/home/andrew/Code/ucas/src/ucas.h:786:20: note: expanded from macro 'COLI'
+  786 | #define COLI(p, k) (&(p)->vi[(size_t)(k)*CH])
+      |                    ^
+/home/andrew/Code/ucas/src/gates.c:82:14: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   82 |                         g->tt |= (uint8_t)(1u << m);
+      |                                   ^
+/home/andrew/Code/ucas/src/gates.c:89:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   89 |                                 uint32_t bi = (m >> i) & 1, bj = (m >> j) & 1;
+      |                                                        ~ ^
+/home/andrew/Code/ucas/src/gates.c:89:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   89 |                                 uint32_t bi = (m >> i) & 1, bj = (m >> j) & 1;
+      |                                                                           ~ ^
+/home/andrew/Code/ucas/src/gates.c:92:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |                                 if (((g->tt >> m) & 1) != ((g->tt >> s) & 1))
+      |                                      ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:92:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |                                 if (((g->tt >> m) & 1) != ((g->tt >> s) & 1))
+      |                                                            ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:105:1: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  105 | uint64_t gates_budget = 1ULL << 27;   /* search nodes; "nodes N" sets it */
+      | ^
+/home/andrew/Code/ucas/src/gates.c:105:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  105 | uint64_t gates_budget = 1ULL << 27;   /* search nodes; "nodes N" sets it */
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:137:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  137 |                         if (!((tt >> m) & 1))
+      |                                         ~ ^
+/home/andrew/Code/ucas/src/gates.c:141:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  141 |                                 t &= ((m >> i) & 1) ? x[i] : ~x[i];
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/gates.c:146:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  146 |         switch (g->arity == 2 ? g->tt & 15 : 0x100) {
+      |         ^
+/home/andrew/Code/ucas/src/gates.c:146:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  146 |         switch (g->arity == 2 ? g->tt & 15 : 0x100) {
+      |                                       ~ ^~
+/home/andrew/Code/ucas/src/gates.c:153:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  153 |                 if (!((g->tt >> m) & 1))
+      |                       ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:157:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  157 |                         t &= ((m >> i) & 1) ? x[i] : ~x[i];
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/gates.c:166:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  166 |         return (g->symm >> (i * 3 + j)) & 1;
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:166:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  166 |         return (g->symm >> (i * 3 + j)) & 1;
+      |                         ~~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/gates.c:195:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |         key = (uint64_t)gi << 40 | (uint64_t)args[0] << 32 |
+      |                            ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:195:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |         key = (uint64_t)gi << 40 | (uint64_t)args[0] << 32 |
+      |                                                      ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:196:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  196 |             (uint64_t)(g->arity > 1 ? args[1] : 0) << 24 |
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:197:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |             (uint64_t)(g->arity > 2 ? args[2] : 0) << 16 |
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:262:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  262 |                 for (m = 0; m < (1 << n); m++)
+      |                                  ^ ~~
+/home/andrew/Code/ucas/src/gates.c:263:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                              ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:263:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                               ^~ ~~
+/home/andrew/Code/ucas/src/gates.c:263:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:263:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                                                  ^~ ~~
+/home/andrew/Code/ucas/src/gates.c:263:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                                                         ^ ~
+/home/andrew/Code/ucas/src/gates.c:263:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         if (((tt >> m) & 1) != ((tt >> (m ^ (1 << k))) & 1))
+      |                                                              ^ ~~
+/home/andrew/Code/ucas/src/gates.c:264:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  264 |                                 dep |= 1 << k;
+      |                                 ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:264:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  264 |                                 dep |= 1 << k;
+      |                                        ^ ~~
+/home/andrew/Code/ucas/src/gates.c:265:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  265 |         if (dep == (1 << n) - 1)
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/gates.c:268:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  268 |                 if ((dep >> k) & 1)
+      |                     ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:268:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  268 |                 if ((dep >> k) & 1)
+      |                      ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:274:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  274 |                 if ((dep >> k) & 1)
+      |                     ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:274:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  274 |                 if ((dep >> k) & 1)
+      |                      ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:279:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  279 |                         if (!((dep >> j) & 1) && args[j] == next)
+      |                               ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:279:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  279 |                         if (!((dep >> j) & 1) && args[j] == next)
+      |                                ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:318:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  318 |                                                 if (!((s->care >> m) & 1))
+      |                                                                ~~ ^
+/home/andrew/Code/ucas/src/gates.c:318:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  318 |                                                 if (!((s->care >> m) & 1))
+      |                                                                      ~ ^
+/home/andrew/Code/ucas/src/gates.c:321:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                                                         idx |= (int)((x[k] >> m) & 1) << k;
+      |                                                         ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:321:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                                                         idx |= (int)((x[k] >> m) & 1) << k;
+      |                                                                ^~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/gates.c:321:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                                                         idx |= (int)((x[k] >> m) & 1) << k;
+      |                                                                            ~~ ^
+/home/andrew/Code/ucas/src/gates.c:321:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                                                         idx |= (int)((x[k] >> m) & 1) << k;
+      |                                                                                  ~ ^
+/home/andrew/Code/ucas/src/gates.c:322:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  322 |                                                 k = (int)((s->tg[t] >> m) & 1);
+      |                                                                     ~~ ^
+/home/andrew/Code/ucas/src/gates.c:322:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  322 |                                                 k = (int)((s->tg[t] >> m) & 1);
+      |                                                                           ~ ^
+/home/andrew/Code/ucas/src/gates.c:329:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  329 |                                         for (tt = 0, m = 0; m < (1 << n); m++)
+      |                                                                  ^ ~~
+/home/andrew/Code/ucas/src/gates.c:331:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  331 |                                                         tt |= 1 << m;
+      |                                                         ^~ ~~
+/home/andrew/Code/ucas/src/gates.c:331:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  331 |                                                         tt |= 1 << m;
+      |                                                               ^ ~~
+/home/andrew/Code/ucas/src/gates.c:339:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  339 |                                 for (tt = 1; tt < (1 << (1 << n)) - 1; tt++) {
+      |                                                    ^ ~~
+/home/andrew/Code/ucas/src/gates.c:339:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  339 |                                 for (tt = 1; tt < (1 << (1 << n)) - 1; tt++) {
+      |                                                          ^ ~~
+/home/andrew/Code/ucas/src/gates.c:550:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  550 |         if ((r = combine(s, idx, s->nin, tgt, care, 1u << 18, 5)) >= 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/gates.c:550:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/gates.c:550:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/gates.c:550:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  550 |         if ((r = combine(s, idx, s->nin, tgt, care, 1u << 18, 5)) >= 0)
+      |                                                        ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:572:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  572 |         return combine(s, idx, n, tgt, care, 1u << 22, 8);
+      |                                                 ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:585:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |         for (m = 0; m < (1 << n); m++) {
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/gates.c:587:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         r |= ((m >> k) & 1) << (n - 1 - k);
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/gates.c:587:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         r |= ((m >> k) & 1) << (n - 1 - k);
+      |                              ^~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/gates.c:587:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         r |= ((m >> k) & 1) << (n - 1 - k);
+      |                               ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:587:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         r |= ((m >> k) & 1) << (n - 1 - k);
+      |                                ^ ~~
+/home/andrew/Code/ucas/src/gates.c:588:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                 imm |= ((tt >> m) & 1) << r;
+      |                 ^~~ ~~
+/home/andrew/Code/ucas/src/gates.c:588:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                 imm |= ((tt >> m) & 1) << r;
+      |                        ^~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/gates.c:588:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                 imm |= ((tt >> m) & 1) << r;
+      |                         ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:588:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  588 |                 imm |= ((tt >> m) & 1) << r;
+      |                          ^~ ~~
+/home/andrew/Code/ucas/src/gates.c:601:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  601 |         for (m = 0; m < (1 << n); m++) {
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/gates.c:602:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |                 if (!((tt >> m) & 1))
+      |                       ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:602:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |                 if (!((tt >> m) & 1))
+      |                        ^~ ~~
+/home/andrew/Code/ucas/src/gates.c:607:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  607 |                             ((m >> k) & 1) ? "" : "~", vn[k]);
+      |                              ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/gates.c:607:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  607 |                             ((m >> k) & 1) ? "" : "~", vn[k]);
+      |                               ^ ~~
+/home/andrew/Code/ucas/src/gates.c:631:17: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  631 |         char **names = xcalloc(MAXV, sizeof *names);
+      |                        ^
+/home/andrew/Code/ucas/src/gates.c:636:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  636 |                 int w = TYW(f->p[j].ty);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/gates.c:640:5: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   24 |                                 snprintf(buf, sizeof buf, "%s", sym_str(f->p[j].name));
+      |                                 ^
+/home/andrew/Code/ucas/src/gates.c:653:3: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+   22 |                 rep_list("program");
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:669:4: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  669 |                         printf("\tuint32_t t%d = %s;\n", i, sb_str(&b));
+      |                         ^
+/home/andrew/Code/ucas/src/gates.c:682:4: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  682 |                         rep_obj(NULL);
+      |                         ^
+/home/andrew/Code/ucas/src/gates.c:683:4: warning: no header providing "rep_strf" is directly included [misc-include-cleaner]
+  683 |                         rep_strf("dst", "t%d", i);
+      |                         ^
+/home/andrew/Code/ucas/src/gates.c:684:4: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  684 |                         rep_str("gate", sym_str(g->name));
+      |                         ^
+/home/andrew/Code/ucas/src/gates.c:688:4: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  688 |                         rep_end();
+      |                         ^
+/home/andrew/Code/ucas/src/gates.c:706:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  706 |                         } else if ((constbits[0] >> k) & 1)
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/gates.c:706:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  706 |                         } else if ((constbits[0] >> k) & 1)
+      |                                                        ~ ^
+/home/andrew/Code/ucas/src/gates.c:725:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  725 |                                 rep_strf(rn, "%d", (int)((constbits[0] >> k) & 1));
+      |                                                                        ~~ ^
+/home/andrew/Code/ucas/src/gates.c:725:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  725 |                                 rep_strf(rn, "%d", (int)((constbits[0] >> k) & 1));
+      |                                                                              ~ ^
+/home/andrew/Code/ucas/src/gates.c:737:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  737 |                                     (int)((constbits[0] >> k) & 1));
+      |                                                         ~~ ^
+/home/andrew/Code/ucas/src/gates.c:737:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  737 |                                     (int)((constbits[0] >> k) & 1));
+      |                                                               ~ ^
+/home/andrew/Code/ucas/src/gates.c:742:7: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  742 |         free(names);
+      |              ^
+/home/andrew/Code/ucas/src/gates.c:758:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  758 |         uint32_t m, npts = 1u << nin;
+      |                               ~~ ^~~
+/home/andrew/Code/ucas/src/gates.c:773:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  773 |                         if ((m >> i) & 1)
+      |                                ~~ ^
+/home/andrew/Code/ucas/src/gates.c:773:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  773 |                         if ((m >> i) & 1)
+      |                                      ~ ^
+/home/andrew/Code/ucas/src/gates.c:844:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  844 |                 if (!TY_SIZED(pt))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/gates.c:847:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  847 |                 nin += TYW(pt);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/gates.c:852:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  852 |         if (!TY_ISINT(rt))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/gates.c:856:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  856 |         npts = 1u << nin;
+      |                   ~~ ^~~
+/home/andrew/Code/ucas/src/gates.c:866:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  866 |                         int w = TYW(f->p[j].ty);
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/gates.c:867:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  867 |                         uint64_t bitsv = (m >> at) & ((1u << w) - 1);
+      |                                             ~~ ^~
+/home/andrew/Code/ucas/src/gates.c:867:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  867 |                         uint64_t bitsv = (m >> at) & ((1u << w) - 1);
+      |                                                           ~~ ^
+/home/andrew/Code/ucas/src/gates.c:884:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  884 |                 if (f->where && (COLF(&p, p.root[1])[m] & F_UNDEF ||
+      |                                                         ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:887:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  887 |                 if (COLF(&p, p.root[0])[m] & F_UNDEF)
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:901:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  901 |         if (TY_SIZED(rt))
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/gates.c:902:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  902 |                 width = TYW(rt);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/gates.c:906:47: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  906 |                 width = 1 + bits_for((uint64_t)(vmin < 0 ? ~vmin : vmin) >
+      |                                                            ~^~~~
+/home/andrew/Code/ucas/src/gates.c:907:35: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  907 |                     (uint64_t)vmax ? (uint64_t)~vmin : (uint64_t)vmax);
+      |                                                ~^~~~
+/home/andrew/Code/ucas/src/gates.c:911:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  911 |                 if ((care >> m) & 1) {
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/gates.c:914:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  914 |                                 if ((v >> k) & 1)
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/gates.c:924:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  924 |                         if ((m >> i) & 1)
+      |                                      ~ ^
+/home/andrew/Code/ucas/src/gates.c:958:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+  958 |         rep_begin("gates");
+      |         ^
+/home/andrew/Code/ucas/src/gates.c:960:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  960 |         rep_int("input_bits", nin);
+      |         ^
+/home/andrew/Code/ucas/src/gates.c:974:3: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  974 |                 rep_bool("minimal", 1);
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:978:3: warning: no header providing "rep_proof" is directly included [misc-include-cleaner]
+  978 |                 rep_proof("exhaustive", "iterative deepening on cost: no program "
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:1070:3: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+ 1070 |                 rep_check("truth_table", __builtin_popcountll(care), -1, 1,
+      |                 ^
+/home/andrew/Code/ucas/src/gates.c:1085:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1085 |                                 int w = TYW(f->p[j].ty);
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

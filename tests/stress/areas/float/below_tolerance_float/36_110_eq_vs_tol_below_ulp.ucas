@@ -1,0 +1,4 @@
+f_eq_vs_tol_below_ulp(x: f32 in 0..1) = x == f32(0.5) ? f32(1) : f32(0)
+g_eq_vs_tol_below_ulp(x: f32 in 0..1) = abs(x - f32(0.5)) <= f32(1e-8) ? f32(1) : f32(0)
+equiv f_eq_vs_tol_below_ulp g_eq_vs_tol_below_ulp
+error g_eq_vs_tol_below_ulp ~ f_eq_vs_tol_below_ulp

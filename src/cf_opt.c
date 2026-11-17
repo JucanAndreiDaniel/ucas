@@ -1014,7 +1014,7 @@ gen_table(const struct cf_value *v, nid e, struct cf_cands *cs)
 		hi = TYK(xt) == K_SINT ? 127 : (xt == TY_BOOL ? 1 : 255);
 	} else
 		return;
-	if (hi - lo > 255 || hi < lo)
+	if (hi < lo || (uint64_t)hi - (uint64_t)lo > 255)
 		return;
 	tab = xmalloc((size_t)(hi - lo + 1) * sizeof *tab);
 	eval_line(v, e, k, lo, hi, tab, &undef);

@@ -1,0 +1,22 @@
+# Fusion pairs (Semantic Fusion / YinYang): one generator tree,
+# two provably-equal emitters. equiv must prove equal; error ~0.
+f_assoc_add(x: u8, y: u8, z: u8) = ((x + y) + z)
+g_assoc_add(x: u8, y: u8, z: u8) = (x + (y + z))
+equiv f_assoc_add g_assoc_add
+error g_assoc_add ~ f_assoc_add
+f_assoc_mul(x: u8, y: u8, z: u8) = ((x * y) * z)
+g_assoc_mul(x: u8, y: u8, z: u8) = (x * (y * z))
+equiv f_assoc_mul g_assoc_mul
+error g_assoc_mul ~ f_assoc_mul
+f_assoc_xor(x: u8, y: u8, z: u8) = ((x xor y) xor z)
+g_assoc_xor(x: u8, y: u8, z: u8) = (x xor (y xor z))
+equiv f_assoc_xor g_assoc_xor
+error g_assoc_xor ~ f_assoc_xor
+f_assoc_and(x: u8, y: u8, z: u8) = ((x & y) & z)
+g_assoc_and(x: u8, y: u8, z: u8) = (x & (y & z))
+equiv f_assoc_and g_assoc_and
+error g_assoc_and ~ f_assoc_and
+f_assoc_or(x: u8, y: u8, z: u8) = ((x | y) | z)
+g_assoc_or(x: u8, y: u8, z: u8) = (x | (y | z))
+equiv f_assoc_or g_assoc_or
+error g_assoc_or ~ f_assoc_or

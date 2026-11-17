@@ -1,0 +1,20 @@
+> f(x: u8) = x*x + 2*x + 1
+> g(x: u8) = (x+1)*(x+1)
+> pit f g trials 16 seed 7
+pit f g: polynomial identity testing (Schwartz-Zippel), seed 7
+  f has total degree at most 2, g at most 2
+  polynomials of total degree at most 2, equal at 16 random points mod 2^61 - 1: two that differ agree at one with probability at most 2/(2^61 - 1) = 8.67e-19 (Schwartz-Zippel), at all 16 with at most 1.03e-289
+  -> equal as polynomials over the integers, except with probability at most 1.03e-289 (not a proof: a probabilistic answer)
+     in u8 they are then equal for every input: reduction mod 2^8 is a ring homomorphism
+> a(x: u8) = x*x + 1
+> b(x: u8) = x*x + 2
+> pit a b trials 8 seed 3
+pit a b: polynomial identity testing (Schwartz-Zippel), seed 3
+  a has total degree at most 2, b at most 2
+  they differ as polynomials over the integers: at x = 1887638262082972616 (mod 2^61 - 1) the values are 78950808408490439 and 78950808408490440 (certain)
+  -> and as u8 functions they differ too, e.g. x=0: 1 vs 2
+> pit a b trials 64 seed 99
+pit a b: polynomial identity testing (Schwartz-Zippel), seed 99
+  a has total degree at most 2, b at most 2
+  they differ as polynomials over the integers: at x = 1087592361969178778 (mod 2^61 - 1) the values are 789485733483081698 and 789485733483081699 (certain)
+  -> and as u8 functions they differ too, e.g. x=0: 1 vs 2

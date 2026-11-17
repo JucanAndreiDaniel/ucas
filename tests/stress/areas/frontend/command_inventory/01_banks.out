@@ -1,0 +1,38 @@
+> banks lane & 31
+banks under gt1030: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = lane & 0x1f
+    lane parameter lane; conflict degree 1: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 3
+  array size taken as 32 (the largest index 31, in whole rows of 32; `size N` to say)
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)
+> banks (lane * 3) & 31 size 32
+banks under gt1030: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = 3lane & 0x1f
+    lane parameter lane; conflict degree 1: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 3
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)
+> banks (lane >> 2) & 31 size 32 elem 4
+banks under gt1030: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = lane >> 2 & 0x1f
+    lane parameter lane; conflict degree 1: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 3
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)
+> banks lane xor (lane >> 4) model rdna2
+banks under rdna2: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = lane xor lane >> 4
+    lane parameter lane; conflict degree 1: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 3
+  array size taken as 32 (the largest index 0, in whole rows of 32; `size N` to say)
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)
+> banks (lane & 15) * 4 size 64 model sm75
+banks under sm75: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = 4(lane & 15)
+    lane parameter lane; conflict degree 2: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 7
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)
+> banks (lane & 7) * 4 size 64
+banks under gt1030: 32 banks of 4 bytes, a warp of 32 lanes, 4-byte elements; a shared load 3, each further address on a bank +4
+  index = 4(lane & 7)
+    lane parameter lane; conflict degree 1: sampled: 4096 of the cases, the degree is at least this (not a bound)
+    price 3
+  -> no swizzle searched: a degree above is not exact (give the parameters ranges small enough to enumerate)

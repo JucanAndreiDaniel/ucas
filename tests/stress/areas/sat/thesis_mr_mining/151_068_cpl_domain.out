@@ -1,0 +1,25 @@
+> f(x: u8) = 1 << x
+> domain f
+domain of f:
+  x: u8, 0..255
+  requires 0 <= x < 8  (shift amount; C UB otherwise)
+  defined at 8 of 256 points
+  defined for: 0..7
+  undefined e.g. at x=8; x=9; x=10; x=11
+  C undefined behaviour at 248 points, e.g. x=8
+  over all 256 points of the domain
+> range f
+range of f -> u8:
+  1..128   (8 distinct values)
+  values: 1..2, 4, 8, 16, 32, 64, 128
+  fits in u8
+  undefined at 248 points
+  over all 256 points of the domain
+> wrap f
+wrap analysis of f:
+  1 << x   (u8)
+      nuw holds
+      nsw fails: signed wrap at 1 points, e.g. x=7
+  end to end: differs from the mathematical result at 55 points, e.g. x=8
+      exact for: 0..7
+  over all 256 points of the domain

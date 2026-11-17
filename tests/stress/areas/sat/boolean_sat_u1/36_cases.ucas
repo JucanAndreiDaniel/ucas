@@ -1,0 +1,22 @@
+# Auto-generated boolean/u1 stress cases (oracle-verified)
+oddpar(x: bool, y: bool, z: bool) = (x xor y) xor z
+table oddpar
+mux3(x: bool, y: bool, z: bool) = x ? y : z
+table mux3
+a_implies_b_c(x: bool, y: bool, z: bool) = x ? (y | z) : z
+table a_implies_b_c
+demorgan1_A(a: bool, b: bool) = !(a & b)
+demorgan1_B(a: bool, b: bool) = !a | !b
+equiv demorgan1_A ~ demorgan1_B
+demorgan2_A(a: bool, b: bool) = !(a | b)
+demorgan2_B(a: bool, b: bool) = !a & !b
+equiv demorgan2_A ~ demorgan2_B
+demorgan3_A(a: bool, b: bool, c: bool) = !(a & b & c)
+demorgan3_B(a: bool, b: bool, c: bool) = !a | !b | !c
+equiv demorgan3_A ~ demorgan3_B
+demorgan4_A(a: bool, b: bool, c: bool) = !(a | b | c)
+demorgan4_B(a: bool, b: bool, c: bool) = !a & !b & !c
+equiv demorgan4_A ~ demorgan4_B
+absorb1_A(a: bool, b: bool) = a
+absorb1_B(a: bool, b: bool) = a & (a | b)
+equiv absorb1_A ~ absorb1_B

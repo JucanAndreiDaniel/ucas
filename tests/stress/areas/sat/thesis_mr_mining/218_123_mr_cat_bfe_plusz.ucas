@@ -1,0 +1,11 @@
+# MR mined from tests/catalogue:d1,d2
+# meaning-preserving rewrite: plusz
+f(x: u32) = bfe(x, 8, 8)
+g(x: u32) = (x >> 8) & 255
+f2(x: u32) = 0 + (bfe(x, 8, 8))
+g2(x: u32) = 0 + ((x >> 8) & 255)
+f1(x: u32) = 0 + (bfe(x, 8, 8))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

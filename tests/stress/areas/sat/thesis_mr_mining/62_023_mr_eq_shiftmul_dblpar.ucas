@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:sp,sq
+# meaning-preserving rewrite: dblpar
+f(x: u8, y: u8) = (x << 3)*y - x*y
+g(x: u8, y: u8) = 7*x*y
+f2(x: u8, y: u8) = (((x << 3)*y - x*y))
+g2(x: u8, y: u8) = ((7*x*y))
+f1(x: u8, y: u8) = (((x << 3)*y - x*y))
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

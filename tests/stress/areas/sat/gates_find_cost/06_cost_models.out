@@ -1,0 +1,55 @@
+> f(x: u32) = x*x + 1
+> div(a: u32, b: u32) = a / b
+> cost f
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> cost f model gt1030
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> cost f model sm75
+cost of f under sm75: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 1     = 1  (a*b + c; saves 1)
+> cost f model rdna2
+cost of f under rdna2: 4 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 4     = 4  (a*b + c; saves 1)
+> cost f model zen4
+cost of f under zen4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> cost f model skl
+cost of f under skl: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> cost f model x86v4
+cost of f under x86v4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> cost f model nosuch
+06_cost_models.ucas:11:14: error: unknown model
+    cost f model nosuch
+                 ^
+> cost div model gt1030
+cost of div under gt1030: 28.5 (1 operations, shared subterms counted once)
+  idiv             1 x 28.5  = 28.5
+> cost div model zen4
+cost of div under zen4: 14 (1 operations, shared subterms counted once)
+  idiv             1 x 14    = 14
+> model mine : gt1030 { imul: 1, idiv: 4 }
+> cost f model mine
+cost of f under mine: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 1     = 1  (a*b + c; saves 1)
+> use nosuch
+06_cost_models.ucas:16:5: error: unknown model 'nosuch' (the models: gt1030, sm75, sm86, rdna2, gfx902, gfx90c, gp107, ga104, vangogh, mali_g715, skl, skx, glc, rpl, zen2, zen1, zen3, zen4, x86v2, x86v3, x86v4, mine)
+    use nosuch
+        ^
+> use zen4
+cost model: zen4
+> cost f
+cost of f under zen4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3

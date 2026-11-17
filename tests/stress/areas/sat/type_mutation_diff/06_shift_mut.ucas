@@ -1,0 +1,52 @@
+# OpFuzz type-aware operator mutation: 06_shift_mut
+# 7 seeds, each mutated by one same-signature operator swap.
+# u8 -> exhaustive ground truth; u32 -> sat/algebra proof on wide type.
+# --- shift_basic [shift] identity=False: x >> 1  <->  x << 1 ---
+s_shift_basic_u8(x: u8, y: u8) = x >> 1
+m_shift_basic_u8(x: u8, y: u8) = x << 1
+equiv s_shift_basic_u8 m_shift_basic_u8
+s_shift_basic_u32(x: u32, y: u32) = x >> 1
+m_shift_basic_u32(x: u32, y: u32) = x << 1
+equiv s_shift_basic_u32 m_shift_basic_u32
+# --- shl_add [shift] identity=True: x << 1  <->  x + x ---
+s_shl_add_u8(x: u8) = x << 1
+m_shl_add_u8(x: u8) = x + x
+equiv s_shl_add_u8 m_shl_add_u8
+s_shl_add_u32(x: u32) = x << 1
+m_shl_add_u32(x: u32) = x + x
+equiv s_shl_add_u32 m_shl_add_u32
+# --- shr_div [shift] identity=True: x >> 1  <->  x / 2 ---
+s_shr_div_u8(x: u8) = x >> 1
+m_shr_div_u8(x: u8) = x / 2
+equiv s_shr_div_u8 m_shr_div_u8
+s_shr_div_u32(x: u32) = x >> 1
+m_shr_div_u32(x: u32) = x / 2
+equiv s_shr_div_u32 m_shr_div_u32
+# --- shl_roundtrip [shift] identity=True: (x << 2) >> 2  <->  x & (~3) ---
+s_shl_roundtrip_u8(x: u8) = (x << 2) >> 2
+m_shl_roundtrip_u8(x: u8) = x & (~3)
+equiv s_shl_roundtrip_u8 m_shl_roundtrip_u8
+s_shl_roundtrip_u32(x: u32) = (x << 2) >> 2
+m_shl_roundtrip_u32(x: u32) = x & (~3)
+equiv s_shl_roundtrip_u32 m_shl_roundtrip_u32
+# --- shift_bad_rt [shift] identity=False: (x << 2) >> 2  <->  x >> 2 ---
+s_shift_bad_rt_u8(x: u8) = (x << 2) >> 2
+m_shift_bad_rt_u8(x: u8) = x >> 2
+equiv s_shift_bad_rt_u8 m_shift_bad_rt_u8
+s_shift_bad_rt_u32(x: u32) = (x << 2) >> 2
+m_shift_bad_rt_u32(x: u32) = x >> 2
+equiv s_shift_bad_rt_u32 m_shift_bad_rt_u32
+# --- shift_amt [shift] identity=False: x << y  <->  x >> y ---
+s_shift_amt_u8(x: u8, y: u8) = x << y
+m_shift_amt_u8(x: u8, y: u8) = x >> y
+equiv s_shift_amt_u8 m_shift_amt_u8
+s_shift_amt_u32(x: u32, y: u32) = x << y
+m_shift_amt_u32(x: u32, y: u32) = x >> y
+equiv s_shift_amt_u32 m_shift_amt_u32
+# --- shr_sign [shift] identity=True: x >> 3  <->  x / 8 ---
+s_shr_sign_u8(x: u8) = x >> 3
+m_shr_sign_u8(x: u8) = x / 8
+equiv s_shr_sign_u8 m_shr_sign_u8
+s_shr_sign_u32(x: u32) = x >> 3
+m_shr_sign_u32(x: u32) = x / 8
+equiv s_shr_sign_u32 m_shr_sign_u32

@@ -1,0 +1,243 @@
+src/glslc.c: In function ‘guess_decl’:
+src/glslc.c:269:87: warning: undefined behavior when subtracting pointers [CWE-469] [-Wanalyzer-undefined-behavior-ptrdiff]
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                                                   ~~~~~~~~~~~~~~~~~~~~^
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                     ~~~~~~~                                            
+  ‘guess_decl’: event 1
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                     ^
+      |                     |
+      |                     (1) when ‘strstr’ returns non-NULL
+  ‘guess_decl’: events 2-3
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                                      ^
+      |                                      |
+      |                                      (2) following ‘true’ branch (when ‘p’ is non-NULL)... ─>─┐
+      |                                                                                               │
+      |                                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────────────────────┘
+  260 |│                const char *e = p + nl;
+      |│                            ~         
+      |│                            |
+      |└───────────────────────────>(3) ...to here
+  ‘guess_decl’: event 4
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                ^~~~~~
+      |                                |
+      |                                (4) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 5
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                                           ^
+      |                                                           |
+      |                                                           (5) following ‘true’ branch... ─>─┐
+      |                                                                                             │
+  ‘guess_decl’: event 6
+      |                                                                                             │
+      |┌────────────────────────────────────────────────────────────────────────────────────────────┘
+  268 |│                        while (strchr("xyzwrgbastpq", *s) && *s) {
+      |│                                                             ^~
+      |│                                                             |
+      |└────────────────────────────────────────────────────────────>(6) ...to here
+  ‘guess_decl’: event 7
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                         ^~~~~~
+      |                                         |
+      |                                         (7) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 8
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                             ^
+      |                                             |
+      |                                             (8) following ‘true’ branch... ─>─┐
+      |                                                                               │
+  ‘guess_decl’: event 9
+      |                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────┘
+  269 |│                                int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |│                                                                                  ^~
+      |│                                                                                  |
+      |└─────────────────────────────────────────────────────────────────────────────────>(9) ...to here
+  ‘guess_decl’: event 10
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                                                    ^~~~~~
+      |                                                                    |
+      |                                                                    (10) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 11
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                                                   ~~~~~~~~~~~~~~~~~~~~^
+      |                                                                                       |
+      |                                                                                       (11) ⚠️  subtraction of pointers has undefined behavior if they do not point into the same array object
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                     ~~~~~~~                                            
+src/glslc.c:271:41: warning: undefined behavior when subtracting pointers [CWE-469] [-Wanalyzer-undefined-behavior-ptrdiff]
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                                                         ~~~~~~~~~~~~~~~
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                     ~~~~^~~~~~~~~
+  ‘guess_decl’: event 1
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                     ^
+      |                     |
+      |                     (1) when ‘strstr’ returns non-NULL
+  ‘guess_decl’: events 2-3
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                                      ^
+      |                                      |
+      |                                      (2) following ‘true’ branch (when ‘p’ is non-NULL)... ─>─┐
+      |                                                                                               │
+      |                                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────────────────────┘
+  260 |│                const char *e = p + nl;
+      |│                            ~         
+      |│                            |
+      |└───────────────────────────>(3) ...to here
+  ‘guess_decl’: event 4
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                ^~~~~~
+      |                                |
+      |                                (4) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 5
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                                           ^
+      |                                                           |
+      |                                                           (5) following ‘true’ branch... ─>─┐
+      |                                                                                             │
+  ‘guess_decl’: event 6
+      |                                                                                             │
+      |┌────────────────────────────────────────────────────────────────────────────────────────────┘
+  268 |│                        while (strchr("xyzwrgbastpq", *s) && *s) {
+      |│                                                             ^~
+      |│                                                             |
+      |└────────────────────────────────────────────────────────────>(6) ...to here
+  ‘guess_decl’: event 7
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                         ^~~~~~
+      |                                         |
+      |                                         (7) when ‘strchr’ returns NULL
+  ‘guess_decl’: event 8
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                             ^
+      |                                             |
+      |                                             (8) following ‘false’ branch... ─>─┐
+      |                                                                                │
+  ‘guess_decl’: event 9
+      |                                                                                │
+      |┌───────────────────────────────────────────────────────────────────────────────┘
+  270 |│                                    "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |│                                                             ^~
+      |│                                                             |
+      |└────────────────────────────────────────────────────────────>(9) ...to here
+  ‘guess_decl’: event 10
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                               ^~~~~~
+      |                                               |
+      |                                               (10) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 11
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                                   ^
+      |                                                   |
+      |                                                   (11) following ‘true’ branch... ─>─┐
+      |                                                                                      │
+  ‘guess_decl’: event 12
+      |                                                                                      │
+      |┌─────────────────────────────────────────────────────────────────────────────────────┘
+  271 |│                                    *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |│                                    ^~
+      |│                                    |
+      |└───────────────────────────────────>(12) ...to here
+  ‘guess_decl’: event 13
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                                                          ^~~~~~
+      |                                                                          |
+      |                                                                          (13) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 14
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                                                         ~~~~~~~~~~~~~~~
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                     ~~~~^~~~~~~~~
+      |                                         |
+      |                                         (14) ⚠️  subtraction of pointers has undefined behavior if they do not point into the same array object
+src/glslc.c:271:78: warning: undefined behavior when subtracting pointers [CWE-469] [-Wanalyzer-undefined-behavior-ptrdiff]
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                                          ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+  ‘guess_decl’: event 1
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                     ^
+      |                     |
+      |                     (1) when ‘strstr’ returns non-NULL
+  ‘guess_decl’: events 2-3
+  259 |         while ((p = strstr(p, name)) != NULL) {
+      |                                      ^
+      |                                      |
+      |                                      (2) following ‘true’ branch (when ‘p’ is non-NULL)... ─>─┐
+      |                                                                                               │
+      |                                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────────────────────┘
+  260 |│                const char *e = p + nl;
+      |│                            ~         
+      |│                            |
+      |└───────────────────────────>(3) ...to here
+  ‘guess_decl’: event 4
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                ^~~~~~
+      |                                |
+      |                                (4) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 5
+  268 |                         while (strchr("xyzwrgbastpq", *s) && *s) {
+      |                                                           ^
+      |                                                           |
+      |                                                           (5) following ‘true’ branch... ─>─┐
+      |                                                                                             │
+  ‘guess_decl’: event 6
+      |                                                                                             │
+      |┌────────────────────────────────────────────────────────────────────────────────────────────┘
+  268 |│                        while (strchr("xyzwrgbastpq", *s) && *s) {
+      |│                                                             ^~
+      |│                                                             |
+      |└────────────────────────────────────────────────────────────>(6) ...to here
+  ‘guess_decl’: event 7
+  269 |                                 int c = strchr("xyzw", *s) ? (int)(strchr("xyzw", *s) -
+      |                                         ^~~~~~
+      |                                         |
+      |                                         (7) when ‘strchr’ returns NULL
+  ‘guess_decl’: event 8
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                             ^
+      |                                             |
+      |                                             (8) following ‘false’ branch... ─>─┐
+      |                                                                                │
+  ‘guess_decl’: event 9
+      |                                                                                │
+      |┌───────────────────────────────────────────────────────────────────────────────┘
+  270 |│                                    "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |│                                                             ^~
+      |│                                                             |
+      |└────────────────────────────────────────────────────────────>(9) ...to here
+  ‘guess_decl’: event 10
+  270 |                                     "xyzw") : strchr("rgba", *s) ? (int)(strchr("rgba",
+      |                                               ^~~~~~
+      |                                               |
+      |                                               (10) when ‘strchr’ returns NULL
+  ‘guess_decl’: event 11
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                                   ^
+      |                                                   |
+      |                                                   (11) following ‘false’ branch... ─>─┐
+      |                                                                                       │
+  ‘guess_decl’: event 12
+      |                                                                                       │
+      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+  271 |│                                    *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |│                                                                         ^~
+      |│                                                                         |
+      |└────────────────────────────────────────────────────────────────────────>(12) ...to here
+  ‘guess_decl’: event 13
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                                           ^~~~~~
+      |                                                           |
+      |                                                           (13) when ‘strchr’ returns non-NULL
+  ‘guess_decl’: event 14
+  271 |                                     *s) - "rgba") : (int)(strchr("stpq", *s) - "stpq");
+      |                                                          ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+      |                                                                              |
+      |                                                                              (14) ⚠️  subtraction of pointers has undefined behavior if they do not point into the same array object

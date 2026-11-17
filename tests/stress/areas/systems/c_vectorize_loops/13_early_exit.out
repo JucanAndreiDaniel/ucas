@@ -1,0 +1,9 @@
+> c optimize nofile vectorize
+c optimize: 2 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  brk (line 1): not lowered: line 1: a parameter that is not an integer or a float (a)
+  cont (line 2): not lowered: a loop that may run more than 66 times
+  cont (line 2): not vectorised: a reduction that is not acc op g (op + - ^ | & min max)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int brk(const int*a,int n){int s=0;for(int i=0;i<n;i++){if(a[i]<0)break;s+=a[i];}return s;}
+  int cont(int n){int s=0;for(int i=0;i<n;i++){if(i&1)continue;s+=i;}return s;}

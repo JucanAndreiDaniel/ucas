@@ -1,0 +1,183 @@
+> magic 7 i32
+x / 7 for signed x: i32
+  m = ceil(2^34 / 7) = 2454267027 (0x92492493, 32 bits), shift s = 3
+  q = floor(x * m / 2^34) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*7 = 2^34 + e with e = 5 <= 2^3.  Write x = q*7 + r, 0 <= r < 7.  Then x*m/2^34 = x/7 + x*e/(7*2^34), and x*e/2^34 <= 1 because |x| <= 2^31, so the extra term is at most 1/7: it cannot carry r/7 <= 6/7 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -1840700269 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -1840700269) + x; q = (t >> 2) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 7 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 9 i32
+x / 9 for signed x: i32
+  m = ceil(2^33 / 9) = 954437177 (0x38e38e39, 30 bits), shift s = 2
+  q = floor(x * m / 2^33) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*9 = 2^33 + e with e = 1 <= 2^2.  Write x = q*9 + r, 0 <= r < 9.  Then x*m/2^33 = x/9 + x*e/(9*2^33), and x*e/2^33 <= 1 because |x| <= 2^31, so the extra term is at most 1/9: it cannot carry r/9 <= 8/9 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 954437177:
+    C:    t = mulhs(x, 954437177); q = (t >> 1) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 9 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 11 i32
+x / 11 for signed x: i32
+  m = ceil(2^33 / 11) = 780903145 (0x2e8ba2e9, 30 bits), shift s = 2
+  q = floor(x * m / 2^33) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*11 = 2^33 + e with e = 3 <= 2^2.  Write x = q*11 + r, 0 <= r < 11.  Then x*m/2^33 = x/11 + x*e/(11*2^33), and x*e/2^33 <= 1 because |x| <= 2^31, so the extra term is at most 1/11: it cannot carry r/11 <= 10/11 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 780903145:
+    C:    t = mulhs(x, 780903145); q = (t >> 1) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 11 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 13 i32
+x / 13 for signed x: i32
+  m = ceil(2^34 / 13) = 1321528399 (0x4ec4ec4f, 31 bits), shift s = 3
+  q = floor(x * m / 2^34) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*13 = 2^34 + e with e = 3 <= 2^3.  Write x = q*13 + r, 0 <= r < 13.  Then x*m/2^34 = x/13 + x*e/(13*2^34), and x*e/2^34 <= 1 because |x| <= 2^31, so the extra term is at most 1/13: it cannot carry r/13 <= 12/13 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 1321528399:
+    C:    t = mulhs(x, 1321528399); q = (t >> 2) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 13 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 25 i32
+x / 25 for signed x: i32
+  m = ceil(2^35 / 25) = 1374389535 (0x51eb851f, 31 bits), shift s = 4
+  q = floor(x * m / 2^35) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*25 = 2^35 + e with e = 7 <= 2^4.  Write x = q*25 + r, 0 <= r < 25.  Then x*m/2^35 = x/25 + x*e/(25*2^35), and x*e/2^35 <= 1 because |x| <= 2^31, so the extra term is at most 1/25: it cannot carry r/25 <= 24/25 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 1374389535:
+    C:    t = mulhs(x, 1374389535); q = (t >> 3) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 25 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 33 i32
+x / 33 for signed x: i32
+  m = ceil(2^35 / 33) = 1041204193 (0x3e0f83e1, 30 bits), shift s = 4
+  q = floor(x * m / 2^35) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*33 = 2^35 + e with e = 1 <= 2^4.  Write x = q*33 + r, 0 <= r < 33.  Then x*m/2^35 = x/33 + x*e/(33*2^35), and x*e/2^35 <= 1 because |x| <= 2^31, so the extra term is at most 1/33: it cannot carry r/33 <= 32/33 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 1041204193:
+    C:    t = mulhs(x, 1041204193); q = (t >> 3) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 33 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 49 i32
+x / 49 for signed x: i32
+  m = ceil(2^36 / 49) = 1402438301 (0x5397829d, 31 bits), shift s = 5
+  q = floor(x * m / 2^36) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*49 = 2^36 + e with e = 13 <= 2^5.  Write x = q*49 + r, 0 <= r < 49.  Then x*m/2^36 = x/49 + x*e/(49*2^36), and x*e/2^36 <= 1 because |x| <= 2^31, so the extra term is at most 1/49: it cannot carry r/49 <= 48/49 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 1402438301:
+    C:    t = mulhs(x, 1402438301); q = (t >> 4) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 49 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 64 i32
+x / 64 for signed x: i32
+  q = (x + ((x >> 31) & 63)) >> 6 (arithmetic shifts): a shift rounds toward -inf, so negative x first get 64 - 1 added (C's / rounds toward 0)
+> magic 65 i32
+x / 65 for signed x: i32
+  m = ceil(2^37 / 65) = 2114445439 (0x7e07e07f, 31 bits), shift s = 6
+  q = floor(x * m / 2^37) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*65 = 2^37 + e with e = 63 <= 2^6.  Write x = q*65 + r, 0 <= r < 65.  Then x*m/2^37 = x/65 + x*e/(65*2^37), and x*e/2^37 <= 1 because |x| <= 2^31, so the extra term is at most 1/65: it cannot carry r/65 <= 64/65 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 2114445439:
+    C:    t = mulhs(x, 2114445439); q = (t >> 5) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 65 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 127 i32
+x / 127 for signed x: i32
+  m = ceil(2^38 / 127) = 2164392969 (0x81020409, 32 bits), shift s = 7
+  q = floor(x * m / 2^38) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*127 = 2^38 + e with e = 119 <= 2^7.  Write x = q*127 + r, 0 <= r < 127.  Then x*m/2^38 = x/127 + x*e/(127*2^38), and x*e/2^38 <= 1 because |x| <= 2^31, so the extra term is at most 1/127: it cannot carry r/127 <= 126/127 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -2130574327 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -2130574327) + x; q = (t >> 6) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 127 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 128 i32
+x / 128 for signed x: i32
+  q = (x + ((x >> 31) & 127)) >> 7 (arithmetic shifts): a shift rounds toward -inf, so negative x first get 128 - 1 added (C's / rounds toward 0)
+> magic 129 i32
+x / 129 for signed x: i32
+  m = ceil(2^35 / 129) = 266354561 (0xfe03f81, 28 bits), shift s = 4
+  q = floor(x * m / 2^35) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*129 = 2^35 + e with e = 1 <= 2^4.  Write x = q*129 + r, 0 <= r < 129.  Then x*m/2^35 = x/129 + x*e/(129*2^35), and x*e/2^35 <= 1 because |x| <= 2^31, so the extra term is at most 1/129: it cannot carry r/129 <= 128/129 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 266354561:
+    C:    t = mulhs(x, 266354561); q = (t >> 3) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 129 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 255 i32
+x / 255 for signed x: i32
+  m = ceil(2^39 / 255) = 2155905153 (0x80808081, 32 bits), shift s = 8
+  q = floor(x * m / 2^39) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*255 = 2^39 + e with e = 127 <= 2^8.  Write x = q*255 + r, 0 <= r < 255.  Then x*m/2^39 = x/255 + x*e/(255*2^39), and x*e/2^39 <= 1 because |x| <= 2^31, so the extra term is at most 1/255: it cannot carry r/255 <= 254/255 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -2139062143 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -2139062143) + x; q = (t >> 7) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 255 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 256 i32
+x / 256 for signed x: i32
+  q = (x + ((x >> 31) & 255)) >> 8 (arithmetic shifts): a shift rounds toward -inf, so negative x first get 256 - 1 added (C's / rounds toward 0)
+> magic 511 i32
+x / 511 for signed x: i32
+  m = ceil(2^40 / 511) = 2151686161 (0x80402011, 32 bits), shift s = 9
+  q = floor(x * m / 2^40) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*511 = 2^40 + e with e = 495 <= 2^9.  Write x = q*511 + r, 0 <= r < 511.  Then x*m/2^40 = x/511 + x*e/(511*2^40), and x*e/2^40 <= 1 because |x| <= 2^31, so the extra term is at most 1/511: it cannot carry r/511 <= 510/511 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -2143281135 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -2143281135) + x; q = (t >> 8) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 511 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 512 i32
+x / 512 for signed x: i32
+  q = (x + ((x >> 31) & 511)) >> 9 (arithmetic shifts): a shift rounds toward -inf, so negative x first get 512 - 1 added (C's / rounds toward 0)
+> magic 513 i32
+x / 513 for signed x: i32
+  m = ceil(2^40 / 513) = 2143297521 (0x7fc01ff1, 31 bits), shift s = 9
+  q = floor(x * m / 2^40) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*513 = 2^40 + e with e = 497 <= 2^9.  Write x = q*513 + r, 0 <= r < 513.  Then x*m/2^40 = x/513 + x*e/(513*2^40), and x*e/2^40 <= 1 because |x| <= 2^31, so the extra term is at most 1/513: it cannot carry r/513 <= 512/513 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 2143297521:
+    C:    t = mulhs(x, 2143297521); q = (t >> 8) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 513 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 641 i32
+x / 641 for signed x: i32
+  m = ceil(2^32 / 641) = 6700417 (0x663d81, 23 bits), shift s = 1
+  q = floor(x * m / 2^32) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*641 = 2^32 + e with e = 1 <= 2^1.  Write x = q*641 + r, 0 <= r < 641.  Then x*m/2^32 = x/641 + x*e/(641*2^32), and x*e/2^32 <= 1 because |x| <= 2^31, so the extra term is at most 1/641: it cannot carry r/641 <= 640/641 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 6700417:
+    C:    t = mulhs(x, 6700417); q = (t >> 0) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 641 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 642 i32
+x / 642 for signed x: i32
+  m = ceil(2^40 / 642) = 1712634935 (0x6614bc37, 31 bits), shift s = 9
+  q = floor(x * m / 2^40) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*642 = 2^40 + e with e = 494 <= 2^9.  Write x = q*642 + r, 0 <= r < 642.  Then x*m/2^40 = x/642 + x*e/(642*2^40), and x*e/2^40 <= 1 because |x| <= 2^31, so the extra term is at most 1/642: it cannot carry r/642 <= 641/642 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 1712634935:
+    C:    t = mulhs(x, 1712634935); q = (t >> 8) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 642 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 997 i32
+x / 997 for signed x: i32
+  m = ceil(2^41 / 997) = 2205640177 (0x837765f1, 32 bits), shift s = 10
+  q = floor(x * m / 2^41) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*997 = 2^41 + e with e = 917 <= 2^10.  Write x = q*997 + r, 0 <= r < 997.  Then x*m/2^41 = x/997 + x*e/(997*2^41), and x*e/2^41 <= 1 because |x| <= 2^31, so the extra term is at most 1/997: it cannot carry r/997 <= 996/997 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -2089327119 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -2089327119) + x; q = (t >> 9) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 997 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 998 i32
+x / 998 for signed x: i32
+  m = ceil(2^39 / 998) = 550857529 (0x20d56b39, 30 bits), shift s = 8
+  q = floor(x * m / 2^39) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*998 = 2^39 + e with e = 54 <= 2^8.  Write x = q*998 + r, 0 <= r < 998.  Then x*m/2^39 = x/998 + x*e/(998*2^39), and x*e/2^39 <= 1 because |x| <= 2^31, so the extra term is at most 1/998: it cannot carry r/998 <= 997/998 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 550857529:
+    C:    t = mulhs(x, 550857529); q = (t >> 7) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 998 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 999 i32
+x / 999 for signed x: i32
+  m = ceil(2^41 / 999) = 2201224481 (0x83340521, 32 bits), shift s = 10
+  q = floor(x * m / 2^41) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*999 = 2^41 + e with e = 967 <= 2^10.  Write x = q*999 + r, 0 <= r < 999.  Then x*m/2^41 = x/999 + x*e/(999*2^41), and x*e/2^41 <= 1 because |x| <= 2^31, so the extra term is at most 1/999: it cannot carry r/999 <= 998/999 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -2093742815 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -2093742815) + x; q = (t >> 9) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 999 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 1000 i32
+x / 1000 for signed x: i32
+  m = ceil(2^38 / 1000) = 274877907 (0x10624dd3, 29 bits), shift s = 7
+  q = floor(x * m / 2^38) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*1000 = 2^38 + e with e = 56 <= 2^7.  Write x = q*1000 + r, 0 <= r < 1000.  Then x*m/2^38 = x/1000 + x*e/(1000*2^38), and x*e/2^38 <= 1 because |x| <= 2^31, so the extra term is at most 1/1000: it cannot carry r/1000 <= 999/1000 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = 274877907:
+    C:    t = mulhs(x, 274877907); q = (t >> 6) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 1000 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)

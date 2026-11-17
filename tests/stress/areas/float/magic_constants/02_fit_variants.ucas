@@ -1,0 +1,10 @@
+g(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+fit g ~ 1/sqrt(real(x))
+g2(x: f64, K: u64) = asfloat(K - (asuint(x) >> 1))
+fit g2 ~ 1/sqrt(x: f64)
+gh(x: f16, K: u16) = asfloat(K - (asuint(x) >> 1))
+fit gh ~ 1/sqrt(x: f16)
+gm(x: f32, K: u32 in 0x5f370000..0x5f380000) = asfloat(K - (asuint(x) >> 1))
+fit gm ~ 1/sqrt(x) metric maxrel
+gn(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1)) - 1.5
+fit gn ~ 1/sqrt(x)

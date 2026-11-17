@@ -1,0 +1,42 @@
+> f(x: u8) = x mod 2
+> g(x: u8) = x & 1
+> equiv f g
+f and g are equal on the domain of f (exhaustive)
+> h(x: u8) = match x { 0 => 0, 1 => 1, _ => x mod 2 }
+> equiv f h
+f and h are equal on the domain of f (exhaustive)
+> m(x: u8) = 0 < x < 255
+  note: chained comparison read as a conjunction
+> n(x: u8) = x >= 1 && x <= 254
+> equiv m n
+m and n are equal on the domain of m (exhaustive)
+> range match(x: u8) { 0..3 => x, 4..7 => 7-x, _ => 0 }
+range of x >= 0 && x <= 3 ? x : x >= 4 && x <= 7 ? 7 - x : 0 -> u8:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 256 points of the domain
+> s(x: u8 in 0..3) = x*x
+> show s
+s(x: u8 in 0..3) = x*x
+  -> u8
+> range s
+range of s -> u8:
+  0..9   (4 distinct values)
+  values: 0..1, 4, 9
+  fits in u4
+  over all 4 points of the domain
+> find s
+find s: 4 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..3 (proved range)
+           udot4x8's sum is in 0..9: it does not wrap
+           exhaustive
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  cost 3   x + (x + x) & 0xfd                       mask
+  cost 3   (x | x + (x + x)) & 0xfd                 mask
+  cost 3   (x + x xor 2 - x) & 13                   mask
+  [searched every term up to cost 3: 5096 distinct columns; 'more' continues]

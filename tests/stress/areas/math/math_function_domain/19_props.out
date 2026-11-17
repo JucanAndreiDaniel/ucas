@@ -1,0 +1,60 @@
+> monotonic sin(x: real)
+monotonic sin(x):
+  not monotonic on [-10, 10]
+  maximal intervals of monotonicity:
+    x in [-10, -7.853981634 (~-5*pi/2)]: decreasing
+    x in [-7.853981634 (~-5*pi/2), -4.71238898 (~-3*pi/2)]: increasing
+    x in [-4.71238898 (~-3*pi/2), -1.570796327 (~-pi/2)]: decreasing
+    x in [-1.570796327 (~-pi/2), 1.570796327 (~pi/2)]: increasing
+    x in [1.570796327 (~pi/2), 4.71238898 (~3*pi/2)]: decreasing
+    x in [4.71238898 (~3*pi/2), 7.853981634 (~5*pi/2)]: increasing
+    x in [7.853981634 (~5*pi/2), 10]: decreasing
+  witness: x = -7.853981634 < x = -4.71238898 but f(-7.853981634) = -1 < f(-4.71238898) = 1 (not decreasing)
+  witness: x = -10 < x = -7.853981634 but f(-10) = 0.5440211109 > f(-7.853981634) = -1 (not increasing)
+  checked numerically on [-10, 10] (x has no range; give it one); turning points refined on f'
+  periodic (period 2*pi ≈ 6.283185307): not monotonic on any interval longer than one period
+> monotonic exp(x: real)
+monotonic exp(x):
+  strictly increasing on [-10, 10]
+  checked numerically on [-10, 10] (x has no range; give it one); turning points refined on f'
+> monotonic log(x: real)
+monotonic log(x):
+  strictly increasing on [-10, 10]
+  checked numerically on [-10, 10] (x has no range; give it one); turning points refined on f'
+> monotonic asin(x: real)
+monotonic asin(x):
+  strictly increasing on [-10, 10]
+  checked numerically on [-10, 10] (x has no range; give it one); turning points refined on f'
+> period sin(x: real)
+period of sin(x):
+  fundamental period 2*pi ≈ 6.283185307
+  proved symbolically: sin(x) has period 2*pi; x occurs only inside them, so f(x + p) = f(x).  Smallest: no p/k (2 <= k <= 64) is a period (checked at 997 points)
+> period cos(x: real)
+period of cos(x):
+  fundamental period 2*pi ≈ 6.283185307
+  proved symbolically: cos(x) has period 2*pi; x occurs only inside them, so f(x + p) = f(x).  Smallest: no p/k (2 <= k <= 64) is a period (checked at 997 points)
+> period tan(x: real)
+period of tan(x):
+  fundamental period pi ≈ 3.141592654
+  proved symbolically: tan(x) has period pi; x occurs only inside them, so f(x + p) = f(x).  Smallest: no p/k (2 <= k <= 64) is a period (checked at 997 points)
+> bounded tanh(x: real)
+bounded tanh(x):
+  bounded (on all real x)
+  above: proved by interval arithmetic: f <= 1; the largest value seen is 0.9999999959 at x = 10
+  below: proved by interval arithmetic: f >= -1; the smallest value seen is -0.9999999959 at x = -10
+> bounded sin(x: real)
+bounded sin(x):
+  bounded (on all real x)
+  above: proved by interval arithmetic: f <= 1; the largest value seen is 1 at x = -4.71238898 (~-3*pi/2)
+  below: proved by interval arithmetic: f >= -1; the smallest value seen is -1 at x = -7.853981634 (~-5*pi/2)
+> zeros sin(x: real)
+zeros of sin(x):
+  7 zeros on [-10, 10]:
+    x = -9.424777961 (~-3*pi)
+    x = -6.283185307 (~-2*pi)
+    x = -3.141592654 (~-pi)
+    x = 0
+    x = 3.141592654 (~pi)
+    x = 6.283185307 (~2*pi)
+    x = 9.424777961 (~3*pi)
+  checked numerically on [-10, 10] (x has no range; give it one): sign changes refined by bisection, touching zeros at critical points; zeros between grid points that do not change sign can be missed

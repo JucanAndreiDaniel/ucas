@@ -1,0 +1,59 @@
+# OpFuzz type-aware operator mutation: 07_minmax_mut
+# 8 seeds, each mutated by one same-signature operator swap.
+# u8 -> exhaustive ground truth; u32 -> sat/algebra proof on wide type.
+# --- minmax_basic [minmax] identity=False: min(x, y)  <->  max(x, y) ---
+s_minmax_basic_u8(x: u8, y: u8) = min(x, y)
+m_minmax_basic_u8(x: u8, y: u8) = max(x, y)
+equiv s_minmax_basic_u8 m_minmax_basic_u8
+s_minmax_basic_u32(x: u32, y: u32) = min(x, y)
+m_minmax_basic_u32(x: u32, y: u32) = max(x, y)
+equiv s_minmax_basic_u32 m_minmax_basic_u32
+# --- minmax_sum [minmax] identity=True: min(x, y) + max(x, y)  <->  x + y ---
+s_minmax_sum_u8(x: u8, y: u8) = min(x, y) + max(x, y)
+m_minmax_sum_u8(x: u8, y: u8) = x + y
+equiv s_minmax_sum_u8 m_minmax_sum_u8
+s_minmax_sum_u32(x: u32, y: u32) = min(x, y) + max(x, y)
+m_minmax_sum_u32(x: u32, y: u32) = x + y
+equiv s_minmax_sum_u32 m_minmax_sum_u32
+# --- min_self [minmax] identity=True: min(x, x)  <->  max(x, x) ---
+s_min_self_u8(x: u8) = min(x, x)
+m_min_self_u8(x: u8) = max(x, x)
+equiv s_min_self_u8 m_min_self_u8
+s_min_self_u32(x: u32) = min(x, x)
+m_min_self_u32(x: u32) = max(x, x)
+equiv s_min_self_u32 m_min_self_u32
+# --- min_le_max [minmax] identity=True: min(x, y) <= max(x, y)  <->  1 ---
+s_min_le_max_u8(x: u8, y: u8) = min(x, y) <= max(x, y)
+m_min_le_max_u8(x: u8, y: u8) = 1
+equiv s_min_le_max_u8 m_min_le_max_u8
+s_min_le_max_u32(x: u32, y: u32) = min(x, y) <= max(x, y)
+m_min_le_max_u32(x: u32, y: u32) = 1
+equiv s_min_le_max_u32 m_min_le_max_u32
+# --- max_of_min [minmax] identity=True: max(min(x,y),min(x,z))  <->  min(x, max(y,z)) ---
+s_max_of_min_u8(x: u8, y: u8, z: u8) = max(min(x,y),min(x,z))
+m_max_of_min_u8(x: u8, y: u8, z: u8) = min(x, max(y,z))
+equiv s_max_of_min_u8 m_max_of_min_u8
+s_max_of_min_u32(x: u32, y: u32, z: u32) = max(min(x,y),min(x,z))
+m_max_of_min_u32(x: u32, y: u32, z: u32) = min(x, max(y,z))
+equiv s_max_of_min_u32 m_max_of_min_u32
+# --- min_bad [minmax] identity=False: min(x, y)  <->  min(x, y) + 1 ---
+s_min_bad_u8(x: u8, y: u8) = min(x, y)
+m_min_bad_u8(x: u8, y: u8) = min(x, y) + 1
+equiv s_min_bad_u8 m_min_bad_u8
+s_min_bad_u32(x: u32, y: u32) = min(x, y)
+m_min_bad_u32(x: u32, y: u32) = min(x, y) + 1
+equiv s_min_bad_u32 m_min_bad_u32
+# --- max_zero [minmax] identity=False: max(x, 0)  <->  min(x, 0) ---
+s_max_zero_u8(x: u8, y: u8) = max(x, 0)
+m_max_zero_u8(x: u8, y: u8) = min(x, 0)
+equiv s_max_zero_u8 m_max_zero_u8
+s_max_zero_u32(x: u32, y: u32) = max(x, 0)
+m_max_zero_u32(x: u32, y: u32) = min(x, 0)
+equiv s_max_zero_u32 m_max_zero_u32
+# --- min_absorb [minmax] identity=True: min(x, max(x, y))  <->  x ---
+s_min_absorb_u8(x: u8, y: u8) = min(x, max(x, y))
+m_min_absorb_u8(x: u8, y: u8) = x
+equiv s_min_absorb_u8 m_min_absorb_u8
+s_min_absorb_u32(x: u32, y: u32) = min(x, max(x, y))
+m_min_absorb_u32(x: u32, y: u32) = x
+equiv s_min_absorb_u32 m_min_absorb_u32

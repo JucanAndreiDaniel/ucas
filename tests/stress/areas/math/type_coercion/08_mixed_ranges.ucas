@@ -1,0 +1,21 @@
+# Ranges with clipped/mixed-end types and arithmetic at the 2^63/2^64 boundaries.
+f1(x: u8 in -10..10) = x
+range f1
+f2(x: i8 in 0..255) = x
+range f2
+f3(x: u8 in 0..1000) = x
+range f3
+f4(x: i8 in 200..300) = x
+range f4
+r1(x: u8 in 250..255) = x + i8(10)
+range r1
+r2(x: i8 in 120..127) = x + u8(10)
+range r2
+r3(x: i8 in -128..-1) = x + u8(0)
+range r3
+u64big(x: u64 in 0..100) = x + 18446744073709551615
+range u64big
+i64big(x: i64 in 0..100) = x - 9223372036854775807
+range i64big
+range x: u1
+range x: i1

@@ -1,0 +1,32 @@
+> basis empty {}
+> basis zerocost { t(x, y) = lut cost 256 }
+14_find_snippets.ucas:3:41: error: gate cost must be an integer between 0 and 255 (it is stored as 8 bits)
+    basis zerocost { t(x, y) = lut cost 256 }
+                                            ^
+> f(x: u8 in 0..15) = x*x
+> find f 2 snippets
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  snippet database: none in this session for 1 input of 8 bits under gt1030, and no snippets/gt1030_1x8.snip (`make snippets` grows those snippets/grow.ucas lists)
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  [searched every term up to cost 3: 16682 distinct columns; 'more' continues]
+> find f 2 snippets nosuchfile
+find f: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+14_find_snippets.ucas:6:29: error: snippets: no file nosuchfile.snip
+    find f 2 snippets nosuchfile
+                                ^
+> cost f
+cost of f under gt1030: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3

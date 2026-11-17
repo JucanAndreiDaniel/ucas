@@ -1,0 +1,248 @@
+src/analyze.c:2621:42: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 2621 |                                 in_i[(size_t)(c->nin + j) * CH + np] = (int64_t)k[j];
+      |                                                                      ^
+src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+src/analyze.c:2734:9: note: Calling 'fit_obj'
+ 2734 |         best = fit_obj(&c, k, 1);
+      |                ^~~~~~~~~~~~~~~~~
+src/analyze.c:2613:17: note: Assuming 'base' is < field 'npts'
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |                        ^~~~~~~~~~~~~~
+src/analyze.c:2613:2: note: Loop condition is true.  Entering loop body
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |         ^
+src/analyze.c:2615:18: note: 'i' is < field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^
+src/analyze.c:2615:18: note: Left side of '&&' is true
+src/analyze.c:2615:3: note: Loop condition is true.  Entering loop body
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                 ^
+src/analyze.c:2616:16: note: Assuming 'j' is >= field 'nin'
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                                     ^~~~~~~~~~
+src/analyze.c:2616:4: note: Loop condition is false. Execution continues on line 2620
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                         ^
+src/analyze.c:2620:16: note: 'j' is >= field 'nk'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                                     ^
+src/analyze.c:2620:4: note: Loop condition is false. Execution continues on line 2615
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                         ^
+src/analyze.c:2615:18: note: Assuming 'i' is >= field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^~~~~~~~~~~
+src/analyze.c:2615:30: note: Left side of '&&' is false
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                            ^
+src/analyze.c:2626:3: note: Loop condition is true.  Entering loop body
+ 2626 |                 for (i = 0; i < np; i++) {
+      |                 ^
+src/analyze.c:2628:8: note: Assuming the condition is true
+ 2628 |                         if (isnan(t))
+      |                             ^~~~~~~~
+/usr/include/math.h:1148:20: note: expanded from macro 'isnan'
+ 1148 | #  define isnan(x) __builtin_isnan (x)
+      |                    ^~~~~~~~~~~~~~~~~~~
+src/analyze.c:2628:4: note: Taking true branch
+ 2628 |                         if (isnan(t))
+      |                         ^
+src/analyze.c:2629:5: note:  Execution continues on line 2626
+ 2629 |                                 continue;
+      |                                 ^
+src/analyze.c:2626:3: note: Loop condition is false. Execution continues on line 2613
+ 2626 |                 for (i = 0; i < np; i++) {
+      |                 ^
+src/analyze.c:2613:17: note: Assuming 'base' is < field 'npts'
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |                        ^~~~~~~~~~~~~~
+src/analyze.c:2613:2: note: Loop condition is true.  Entering loop body
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |         ^
+src/analyze.c:2615:18: note: 'i' is < field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^
+src/analyze.c:2615:18: note: Left side of '&&' is true
+src/analyze.c:2615:3: note: Loop condition is true.  Entering loop body
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                 ^
+src/analyze.c:2616:16: note: Assuming 'j' is >= field 'nin'
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                                     ^~~~~~~~~~
+src/analyze.c:2616:4: note: Loop condition is false. Execution continues on line 2620
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                         ^
+src/analyze.c:2620:9: note: The value 0 is assigned to 'j'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                              ^~~~~
+src/analyze.c:2620:16: note: Assuming 'j' is < field 'nk'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                                     ^~~~~~~~~
+src/analyze.c:2620:4: note: Loop condition is true.  Entering loop body
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                         ^
+src/analyze.c:2621:42: note: Assigned value is uninitialized
+ 2621 |                                 in_i[(size_t)(c->nin + j) * CH + np] = (int64_t)k[j];
+      |                                                                      ^ ~~~~~~~~~~~~~
+src/analyze.c:2733:10: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+ 2733 |                 k[j] = isint[j] ? floor((lo[j] + hi[j]) / 2) : (lo[j] + hi[j]) / 2;
+      |                        ^~~~~~~~
+src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+src/analyze.c:2732:7: note: The value 0 is assigned to 'j'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |              ^~~~~
+src/analyze.c:2732:14: note: Assuming 'j' is < field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+src/analyze.c:2732:2: note: Loop condition is true.  Entering loop body
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+src/analyze.c:2733:10: note: Branch condition evaluates to a garbage value
+ 2733 |                 k[j] = isint[j] ? floor((lo[j] + hi[j]) / 2) : (lo[j] + hi[j]) / 2;
+      |                        ^~~~~~~~
+src/analyze.c:2737:24: warning: The left operand of '-' is a garbage value [core.UndefinedBinaryOperatorResult]
+ 2737 |                         double span = hi[j] - lo[j], step, cand[8], cv[8], save;
+      |                                       ~~~~~ ^
+src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+src/analyze.c:2735:27: note: Assuming field 'nk' is > 1
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |                                  ^~~~~~~~
+src/analyze.c:2735:27: note: '?' condition is true
+src/analyze.c:2735:2: note: Loop condition is true.  Entering loop body
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |         ^
+src/analyze.c:2736:8: note: The value 0 is assigned to 'j'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                      ^~~~~
+src/analyze.c:2736:15: note: 'j' is < field 'nk'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                             ^
+src/analyze.c:2736:3: note: Loop condition is true.  Entering loop body
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                 ^
+src/analyze.c:2737:24: note: The left operand of '-' is a garbage value
+ 2737 |                         double span = hi[j] - lo[j], step, cand[8], cv[8], save;
+      |                                       ~~~~~ ^
+src/analyze.c:2739:9: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 2739 |                         save = k[j];
+      |                              ^ ~~~~
+src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+src/analyze.c:2693:14: note: Assuming 'j' is < field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+src/analyze.c:2693:2: note: Loop condition is true.  Entering loop body
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+src/analyze.c:2694:7: note: Assuming 'j' is >= field 'np'
+ 2694 |                 if (j < f->np)
+      |                     ^~~~~~~~~
+src/analyze.c:2694:3: note: Taking false branch
+ 2694 |                 if (j < f->np)
+      |                 ^
+src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+src/analyze.c:2735:27: note: Assuming field 'nk' is > 1
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |                                  ^~~~~~~~
+src/analyze.c:2735:27: note: '?' condition is true
+src/analyze.c:2735:2: note: Loop condition is true.  Entering loop body
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |         ^
+src/analyze.c:2736:8: note: The value 0 is assigned to 'j'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                      ^~~~~
+src/analyze.c:2736:15: note: 'j' is < field 'nk'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                             ^
+src/analyze.c:2736:3: note: Loop condition is true.  Entering loop body
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                 ^
+src/analyze.c:2739:9: note: Assigned value is uninitialized
+ 2739 |                         save = k[j];
+      |                              ^ ~~~~
+4 warnings generated.

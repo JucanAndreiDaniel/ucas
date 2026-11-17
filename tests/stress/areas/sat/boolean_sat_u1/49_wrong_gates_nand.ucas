@@ -1,0 +1,14 @@
+# WRONG (see FINDINGS.md): NAND is a complete basis, and NOT / AND have
+# 1- and 2-gate NAND implementations, but `gates basis nand` claims none exist.
+notb(a: bool) = !a
+andb(a: bool, b: bool) = a & b
+orb(a: bool, b: bool) = a | b
+nandb(a: bool, b: bool) = ~(a & b)
+notnand(a: bool) = ~(a & a)
+andnand(a: bool, b: bool) = ~(~(a & b) & ~(a & b))
+equiv notb ~ notnand
+equiv andb ~ andnand
+gates notb basis nand
+gates andb basis nand
+gates orb basis nand
+gates nandb basis nand

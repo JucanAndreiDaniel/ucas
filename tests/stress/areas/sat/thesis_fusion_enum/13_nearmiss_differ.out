@@ -1,0 +1,32 @@
+> nf_n1(x: u8, y: u8, z: u8) = (x - y)
+> ng_n1(x: u8, y: u8, z: u8) = (y - x)
+> equiv nf_n1 ng_n1
+nf_n1 and ng_n1 differ at 65056 points of the sample, e.g. x=0, y=254, z=0: 2 vs 254
+> nf_n2(x: u8, y: u8, z: u8) = ((x - y) - z)
+> ng_n2(x: u8, y: u8, z: u8) = (x - (y - z))
+> equiv nf_n2 ng_n2
+nf_n2 and ng_n2 differ at 64995 points of the sample, e.g. x=255, y=0, z=2: 253 vs 1
+> nf_n3(x: u8, y: u8, z: u8) = ((x + y) & z)
+> ng_n3(x: u8, y: u8, z: u8) = ((x & z) + (y & z))
+> equiv nf_n3 ng_n3
+nf_n3 and ng_n3 differ at 47438 points of the sample, e.g. x=173, y=118, z=54: 34 vs 90
+> nf_n4(x: u8, y: u8, z: u8) = (x + (y & z))
+> ng_n4(x: u8, y: u8, z: u8) = ((x + y) & (x + z))
+> equiv nf_n4 ng_n4
+nf_n4 and ng_n4 differ at 59127 points of the sample, e.g. x=255, y=0, z=2: 255 vs 1
+> nf_n5(x: u8, y: u8, z: u8) = ((x xor y) + z)
+> ng_n5(x: u8, y: u8, z: u8) = ((x + z) xor (y + z))
+> equiv nf_n5 ng_n5
+nf_n5 and ng_n5 differ at 65281 points of the sample, e.g. x=255, y=0, z=2: 1 vs 3
+> nf_n6(x: u8, y: u8, z: u8) = (~(x + y))
+> ng_n6(x: u8, y: u8, z: u8) = ((~x) + (~y))
+> equiv nf_n6 ng_n6
+nf_n6 and ng_n6 differ at 65536 points of the sample, e.g. x=0, y=254, z=0: 1 vs 0
+> nf_n7(x: u8, y: u8, z: u8) = (x * (y xor z))
+> ng_n7(x: u8, y: u8, z: u8) = ((x * y) xor (x * z))
+> equiv nf_n7 ng_n7
+nf_n7 and ng_n7 differ at 50073 points of the sample, e.g. x=173, y=118, z=54: 64 vs 192
+> nf_n8(x: u8, y: u8, z: u8) = ((x << y) | (x >> z))
+> ng_n8(x: u8, y: u8, z: u8) = ((x << z) | (x >> y))
+> equiv nf_n8 ng_n8
+nf_n8 and ng_n8 differ at 36 points of the sample, e.g. x=1, y=1, z=0: 3 vs 1

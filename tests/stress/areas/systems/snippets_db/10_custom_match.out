@@ -1,0 +1,27 @@
+> m1(a: u32, b: u32) = a + b
+> find m1 1 snippets fx_add
+find m1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 1   a + b                                    the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> m2(a: u32, b: u32) = 1
+> find m2 1 snippets fx_const1
+  note: the result is int: searching in u32
+find m2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 0   1                                        constant (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> m3(a: u32, b: u32) = a * b
+> find m3 1 snippets fx_model
+find m3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a*b                                      the snippet database's program with these values (cost 1 under sm75, where it was grown) (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> find m3 1 snippets
+find m3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a*b                                      the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> m4(a: u32, b: u32) = a ^ b
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
+> find m4 1 snippets fx_dupgood
+find m4: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 1 has its values (4 programs of 2 inputs, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

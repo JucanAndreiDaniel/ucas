@@ -1,0 +1,20 @@
+> c lower nofile
+  f(a: i32, b: i32) = a + b
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(a) + i64(b)
+  g(x: i32) = x << 64
+    defined where (no C UB): 0
+  h(c: u8) = i64(i32(c) << -1)
+    defined where (no C UB): 0
+  z(a: i32) = a/0
+    defined where (no C UB): 0
+  divneg(a: i32) = a/-1
+    defined where (no C UB): a != -2147483648
+  sh(x: u64, n: i32) = u32(x << n)
+    defined where (no C UB): n >= 0 && n < 64
+  sel(a: i32, b: i32, c: i32) = c != 0 ? a : b
+> c optimize nofile budget 2
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  k (line 1): no cheaper form: lowered: 1 inputs, cost 38.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int k(int a){ return (a*a*a + 2*a + 1) / (a+1); }

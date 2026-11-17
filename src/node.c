@@ -850,6 +850,10 @@ mk_bin(int op, nid a, nid b)
 	default:
 		if (op == O_DIV && is_const(a) && is_const(b) &&
 		    TYK(ta) == K_LIT && TYK(tb) == K_LIT && N.ki[b] != 0 &&
+		    /* INT_MIN % -1 traps; its quotient is not representable
+		     * anyway.  Leave the pair alone so the evaluator flags the
+		     * division as UB instead of promoting to real here. */
+		    !(N.ki[a] == INT64_MIN && N.ki[b] == -1) &&
 		    N.ki[a] % N.ki[b] != 0) {
 			ta = tb = TY_REAL;
 			a = conv(a, TY_REAL);
@@ -1365,6 +1369,11 @@ mk_index(nid tab, nid i)
 
 static nid *smemo;
 static uint32_t smemon;
+/* The depth of the subtree rewrite below.  Inlining a call can expand an
+ * expression exponentially (f(n) = f(n-1)(f(n-1)(x))), so rebuilt trees can
+ * be arbitrarily deep even though each parsed expression was shallow. */
+#define NODE_DEPTH_LIMIT 12000
+static int rebuild_depth;
 /* sg_lower: subgroup operations are spelled out over their lanes, and
  * what has none is left as it is */
 static int sg_lowering;
@@ -1383,6 +1392,8 @@ rebuild(nid n, const nid *map, int nmap)
 		return n;
 	if (smemo[n])
 		return smemo[n];
+	if (++rebuild_depth > NODE_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", NODE_DEPTH_LIMIT);
 	switch (N.op[n]) {
 	case O_CONST:
 	case O_UNDEF:
@@ -1478,6 +1489,7 @@ rebuild(nid n, const nid *map, int nmap)
 			r = mk_bin(N.op[n], rebuild(N.a[n], map, nmap),
 			    rebuild(N.b[n], map, nmap));
 	}
+	rebuild_depth--;
 	smemo[n] = r;
 	return r;
 }
@@ -1487,10 +1499,16 @@ subst(nid root, const nid *map, int nmap)
 {
 	nid *saved = smemo, r;
 	uint32_t savedn = smemon;
+	int savedd = rebuild_depth;
 
+	/* rebuild is only entered through subst (and recursively from it),
+	 * so a rewrite starts at depth zero; fail() longjmps past the restore
+	 * but the next subst resets it again. */
+	rebuild_depth = 0;
 	smemon = N.n;
 	smemo = xcalloc(smemon, sizeof *smemo);
 	r = rebuild(root, map, nmap);
+	rebuild_depth = savedd;
 	free(smemo);
 	smemo = saved;
 	smemon = savedn;
@@ -1941,6 +1959,77 @@ pr(struct sbuf *b, nid n, int minp, const struct pctx *pc, int hex)
 	}
 	if (p < minp)
 		sb_putc(b, ')');
+}
+
+/* Bit-blasting a node tree (nodesat.c: blast/blast1) recurses once per node
+ * with a large stack frame: a left-deep chain of ~786 operators overflows an
+ * 8 MB stack.  Expressions built that deep parse fine (the parser's
+ * EXPR_DEPTH_LIMIT only counts nesting, not a flat chain), so callers that
+ * are about to enter the AIG builder check the tree first and get a clean
+ * error instead of a SIGSEGV.  The walk below is bounded by the limit, so it
+ * cannot itself overflow, and memoises depths as node_slots() does so a
+ * shared DAG is visited only once. */
+#define AIG_DEPTH_LIMIT 512
+static uint16_t *ddep;
+static uint8_t *ddone;
+static uint32_t dcap;
+
+static uint16_t
+aig_depth(nid n, int limit)
+{
+	uint32_t j;
+	uint16_t d = 1, x;
+
+	if (n == 0 || n >= dcap)
+		return 0;
+	if (ddone[n])
+		return ddep[n];
+	switch (N.op[n]) {
+	case O_CONST:
+	case O_UNDEF:
+	case O_VAR:
+		break;
+	case O_TABLE:
+		for (j = 0; j < N.b[n]; j++) {
+			x = aig_depth(N.lst[N.a[n] + j], limit);
+			if (x + 1 > d)
+				d = x + 1;
+		}
+		break;
+	default:
+		x = aig_depth(N.a[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.b[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.c[n], limit);
+		if (x + 1 > d)
+			d = x + 1;
+		break;
+	}
+	if (d > limit)
+		fail("expression nesting too deep (limit %d)", limit);
+	ddep[n] = d;
+	ddone[n] = 1;
+	return d;
+}
+
+int
+node_aig_depth_check(nid root)
+{
+	uint32_t c;
+
+	if (root == 0 || root >= N.n)
+		return 0;
+	if (N.n > dcap) {
+		c = newcap(dcap, N.n + 1);
+		ddep = xrealloc(ddep, c * sizeof *ddep);
+		ddone = xrealloc(ddone, c);
+		memset(ddone + dcap, 0, c - dcap);
+		dcap = c;
+	}
+	return aig_depth(root, AIG_DEPTH_LIMIT);
 }
 
 /* does the expression use a bitwise operator?  (bounded walk) */

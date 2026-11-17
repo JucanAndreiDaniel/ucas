@@ -1,0 +1,16 @@
+# Static-analysis probe: cfront warning sites (cf_parse.c:1298, cf_synth.c:177/339,
+# cf_lower.c:851, cf_opt.c:2828, cf_bridge.c:200/221, cf_cmd.c:680)
+c lower nofile
+```c
+int f(int a, int b){ return a + b; }
+int g(int x){ return x << 64; }
+long h(unsigned char c){ return c << -1; }
+int z(int a){ return a / 0; }
+int divneg(int a){ return a / -1; }
+unsigned sh(unsigned long x, int n){ return (unsigned)(x << n); }
+int sel(int a,int b,int c){ return c ? a : b; }
+```
+c optimize nofile budget 2
+```c
+int k(int a){ return (a*a*a + 2*a + 1) / (a+1); }
+```

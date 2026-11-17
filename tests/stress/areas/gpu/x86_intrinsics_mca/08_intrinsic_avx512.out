@@ -1,0 +1,61 @@
+> intrinsic _mm512_mask_add_epi32
+__m512i _mm512_mask_add_epi32(__m512i a, __mmask16 b, __m512i c, __m512i d)
+  needs: avx512f
+  class: vpaddd (paddb/w/d/q psub pand pandn por pxor)
+  semantics: r = k[i] ? base : src (the first operand), base _mm512_add_epi32: a + b
+  lanes (operand lanes named a0, b3 ...):
+    r0 = b & 1 != 0 ? c0 + d0 : a0
+    r15 = b >> 15 & 1 != 0 ? c15 + d15 : a15
+  cost       lat   rtp uops  ports
+  skx          1 0.495    1  p05
+  glc          1 0.495    1  p05
+  zen4         1   0.5    1  FP0 FP1 FP2 FP3
+  x86v4        1   0.5    1  p05
+> intrinsic _mm_ternarylogic_epi32 on skx
+__m128i _mm_ternarylogic_epi32(__m128i a, __m128i b, __m128i c, const int d)
+  needs: avx512f avx512vl
+  class: vpternlogd (vpternlogd/q)
+  semantics (each lane i of 4): or(j, 0, 7, bit(imm, j) ? (bit(j, 2) ? a : ~a) & (bit(j, 1) ? b : ~b) & (bit(j, 0) ? c : ~c) : 0)
+  lanes with imm = 0x1b (operand lanes named a0, b3 ...):
+    r0 = t1 & ~c0 | t1 & c0 | ~a0 & b0 & c0 | a0 & ~b0 & ~c0 where t1 = ~a0 & ~b0
+    r3 = t1 & ~c3 | t1 & c3 | ~a3 & b3 & c3 | a3 & ~b3 & ~c3 where t1 = ~a3 & ~b3
+  cost       lat   rtp uops  ports
+  skx          1  0.33    1  p015
+> intrinsic _mm512_gf2p8mul_epi8
+__m512i _mm512_gf2p8mul_epi8(__m512i a, __m512i b)
+  needs: gfni avx512f
+  class: gf2p8affineqb (gf2p8affineqb gf2p8affineinvqb gf2p8mulb)
+  semantics (each lane i of 64): gfmul(a, b)
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a0 & -(b0 & 1) xor t1 & -(b0 >> 1 & 1) xor t2 & -(b0 >> 2 & 1) xor t3 & -(b0 >> 3 & 1) xor t4 & -(b0 >> 4 & 1) xor t5 & -(b0 >> 5 & 1) xor t6 & -(b0 >> 6 & 1) xor (t6 << 1 xor 27(t6 >> 7)) & -(b0 >> 7 & 1) where t1 = a0 << 1 xor 27(a0 >> 7), t2 = t1 << 1 xor 27(t1 >> 7), t3 = t2 << 1 xor 27(t2 >> 7), t4 = t3 << 1 xor 27(t3 >> 7), t5 = t4 << 1 xor 27(t4 >> 7), t6 = t5 << 1 xor 27(t5 >> 7)
+    r63 = a63 & -(b63 & 1) xor t1 & -(b63 >> 1 & 1) xor t2 & -(b63 >> 2 & 1) xor t3 & -(b63 >> 3 & 1) xor t4 & -(b63 >> 4 & 1) xor t5 & -(b63 >> 5 & 1) xor t6 & -(b63 >> 6 & 1) xor (t6 << 1 xor 27(t6 >> 7)) & -(b63 >> 7 & 1) where t1 = a63 << 1 xor 27(a63 >> 7), t2 = t1 << 1 xor 27(t1 >> 7), t3 = t2 << 1 xor 27(t2 >> 7), t4 = t3 << 1 xor 27(t3 >> 7), t5 = t4 << 1 xor 27(t4 >> 7), t6 = t5 << 1 xor 27(t5 >> 7)
+  cost       lat   rtp uops  ports
+  glc          5     1    1  p0
+  zen4         3     1    1  FP0 FP1
+> intrinsic _mm512_loadu_si512
+__m512i _mm512_loadu_si512(void * a)
+  needs: avx512f
+  class: vmovdqu ld (vmovdqu/vmovups load)
+  memory: a is the 64 bytes at the pointer, its lanes a[0] .. a[7] (i64)
+  semantics (each lane i of 8): a
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a[0]
+    r7 = a[7]
+  cost       lat   rtp uops  ports
+  skx          8   0.5    1  p23
+  glc          8   0.5    1  p23
+  zen4         8     1    1  AGU0 AGU1 AGU2
+  x86v4        8     1    1  p23
+> intrinsic _mm512_mask_compress_epi32
+__m512i _mm512_mask_compress_epi32(__m512i a, __mmask16 b, __m512i c)
+  needs: avx512f
+  class: vpcompressd (vpcompressd/q vpexpandd/q (register))
+  semantics (each lane i of 16): popcnt(b) <= i ? a : xor(j, 0, n-1, bit(b, j) && popcnt(b & ((u64(1) << j) - 1)) == i ? c[j] : 0)
+  lanes (operand lanes named a0, b3 ...):
+    r0 = popcount(b) <= 0 ? a0 : (b & 1 != 0 ? c0 : 0) xor (b >> 1 & 1 != 0 && popcount(u64(b) & 1) == 0 ? c1 : 0) xor (b >> 2 & 1 != 0 && popcount(u64(b) & 3) == 0 ? c2 : 0) xor (b >> 3 & 1 != 0 && popcount(u64(b) & 7) == 0 ? c3 : 0) xor (b >> 4 & 1 != 0 && popcount(u64(b) & 15) == 0 ? c4 : 0) xor (b >> 5 & 1 != 0 && popcount(u64(b) & 0x1f) == 0 ? c5 : 0) xor (b >> 6 & 1 != 0 && popcount(u64(b) & 0x3f) == 0 ? c6 : 0) xor (b >> 7 & 1 != 0 && popcount(u64(b) & 0x7f) == 0 ? c7 : 0) xor (b >> 8 & 1 != 0 && popcount(u64(b) & 0xff) == 0 ? c8 : 0) xor (b >> 9 & 1 != 0 && popcount(u64(b) & 0x1ff) == 0 ? c9 : … (401 more characters)
+    r15 = popcount(b) <= 15 ? a15 : (b >> 1 & 1 != 0 && popcount(u64(b) & 1) == 15 ? c1 : 0) xor (b >> 2 & 1 != 0 && popcount(u64(b) & 3) == 15 ? c2 : 0) xor (b >> 3 & 1 != 0 && popcount(u64(b) & 7) == 15 ? c3 : 0) xor (b >> 4 & 1 != 0 && popcount(u64(b) & 15) == 15 ? c4 : 0) xor (b >> 5 & 1 != 0 && popcount(u64(b) & 0x1f) == 15 ? c5 : 0) xor (b >> 6 & 1 != 0 && popcount(u64(b) & 0x3f) == 15 ? c6 : 0) xor (b >> 7 & 1 != 0 && popcount(u64(b) & 0x7f) == 15 ? c7 : 0) xor (b >> 8 & 1 != 0 && popcount(u64(b) & 0xff) == 15 ? c8 : 0) xor (b >> 9 & 1 != 0 && popcount(u64(b) & 0x1ff) == 15 ? c9 : 0) xor (b >> 10… (392 more characters)
+  cost       lat   rtp uops  ports
+  skx          3     2    2  p5
+  glc          3     2    2  p5
+  zen4         4     4    2  FP1 FP2
+  x86v4        4     4    2  p5

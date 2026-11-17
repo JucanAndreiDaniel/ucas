@@ -1,0 +1,17 @@
+base(x: u32) = asfloat(x)
+f1(x: u32) = asfloat(x) + f32(0)
+equiv base f1 nanbits
+f2(x: u32) = asfloat(x) * f32(1)
+equiv base f2 nanbits
+f3(x: u32) = -(-asfloat(x))
+equiv base f3 nanbits
+f4(x: u32) = asfloat(asuint(asfloat(x)))
+equiv base f4 nanbits
+f5(x: u32) = abs(asfloat(x))
+f6(x: u32) = asfloat(asuint(asfloat(x)) & 0x7fffffff)
+equiv f5 f6 nanbits
+f7(x: u32) = asfloat(x) / f32(1)
+equiv base f7 nanbits
+f8(x: u32) = copysign(f32(1), asfloat(x))
+f9(x: u32) = asfloat((x & 0x80000000) | 0x3f800000)
+equiv f8 f9 nanbits

@@ -1,0 +1,519 @@
+src/stoch.c:2282:27: warning: Division by zero [core.DivideZero]
+ 2282 |                 o->ix = (uint8_t)(rnd() % (uint64_t)at);
+      |                                         ^
+src/stoch.c:2319:6: note: 'i' initialized here
+ 2319 |         int i = (int)(rnd() % (uint64_t)ST.len), j, ar;
+      |             ^
+src/stoch.c:2323:6: note: Assuming the condition is false
+ 2323 |         if (r < 0.2) {                  /* the opcode, or the width alone */
+      |             ^~~~~~~
+src/stoch.c:2323:2: note: Taking false branch
+ 2323 |         if (r < 0.2) {                  /* the opcode, or the width alone */
+      |         ^
+src/stoch.c:2329:13: note: Assuming the condition is true
+ 2329 |         } else if (r < 0.5) {           /* an operand */
+      |                    ^~~~~~~
+src/stoch.c:2329:9: note: Taking true branch
+ 2329 |         } else if (r < 0.5) {           /* an operand */
+      |                ^
+src/stoch.c:2330:8: note: Assuming field 'op' is equal to SO_UNUSED
+ 2330 |                 ar = I->op == SO_UNUSED ? 2 : so_arity(I);
+      |                      ^~~~~~~~~~~~~~~~~~
+src/stoch.c:2330:8: note: '?' condition is true
+src/stoch.c:2331:13: note: 'ar' is not equal to 3
+ 2331 |                 rand_opnd(ar == 3 ? (j = (int)(rnd() % 3)) == 0 ? &I->a : j == 1 ?
+      |                           ^~
+src/stoch.c:2331:13: note: '?' condition is false
+src/stoch.c:2332:23: note: Assuming the condition is false
+ 2332 |                     &I->b : &I->c : rnd() & 1 ? &I->a : &I->b, i);
+      |                                     ^~~~~~~~~
+src/stoch.c:2332:23: note: '?' condition is false
+src/stoch.c:2332:50: note: Passing value via 2nd parameter 'at'
+ 2332 |                     &I->b : &I->c : rnd() & 1 ? &I->a : &I->b, i);
+      |                                                                ^
+src/stoch.c:2331:3: note: Calling 'rand_opnd'
+ 2331 |                 rand_opnd(ar == 3 ? (j = (int)(rnd() % 3)) == 0 ? &I->a : j == 1 ?
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2332 |                     &I->b : &I->c : rnd() & 1 ? &I->a : &I->b, i);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2277:6: note: Assuming the condition is false
+ 2277 |         if (r < 0.4 || (at == 0 && r < 0.75)) {
+      |             ^~~~~~~
+src/stoch.c:2277:6: note: Left side of '||' is false
+src/stoch.c:2277:18: note: Assuming 'at' is equal to 0
+ 2277 |         if (r < 0.4 || (at == 0 && r < 0.75)) {
+      |                         ^~~~~~~
+src/stoch.c:2277:18: note: Left side of '&&' is true
+src/stoch.c:2277:29: note: Assuming the condition is false
+ 2277 |         if (r < 0.4 || (at == 0 && r < 0.75)) {
+      |                                    ^~~~~~~~
+src/stoch.c:2277:2: note: Taking false branch
+ 2277 |         if (r < 0.4 || (at == 0 && r < 0.75)) {
+      |         ^
+src/stoch.c:2280:13: note: Assuming the condition is true
+ 2280 |         } else if (r < 0.75) {
+      |                    ^~~~~~~~
+src/stoch.c:2280:9: note: Taking true branch
+ 2280 |         } else if (r < 0.75) {
+      |                ^
+src/stoch.c:2282:27: note: Division by zero
+ 2282 |                 o->ix = (uint8_t)(rnd() % (uint64_t)at);
+      |                                   ~~~~~~^~~~~~~~~~~~~~
+src/stoch.c:2802:41: warning: The left operand of '&' is a garbage value [core.UndefinedBinaryOperatorResult]
+ 2802 |                         if (ST.tin[t][j] != ((uint64_t)in[j] & wmask64(ST.pw[j])))
+      |                                                              ^
+src/stoch.c:2903:7: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/stoch.c:2903:7: note: Left side of '||' is true
+src/ucas.h:105:39: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                                       ^
+src/stoch.c:2903:6: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2903:31: note: Left side of '||' is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |                                      ^
+src/stoch.c:2905:14: note: Assuming 'j' is >= field 'np'
+ 2905 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2905:2: note: Loop condition is false. Execution continues on line 2909
+ 2905 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2920:14: note: 'j' is >= field 'np'
+ 2920 |         for (j = 0; j < f->np; j++)
+      |                     ^
+src/stoch.c:2920:2: note: Loop condition is false. Execution continues on line 2922
+ 2920 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2922:2: note: Loop condition is true.  Entering loop body
+ 2922 |         for (i = 0; i < 4; i++) {
+      |         ^
+src/stoch.c:2923:15: note: 'j' is >= field 'np'
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/stoch.c:2923:3: note: Loop condition is false. Execution continues on line 2927
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/stoch.c:2927:3: note: Calling 'st_add_test'
+ 2927 |                 st_add_test(in);
+      |                 ^~~~~~~~~~~~~~~
+src/stoch.c:2780:6: note: 'in' is not equal to NULL
+ 2780 |         if (in == NULL) {               /* done: release */
+      |             ^~
+src/stoch.c:2780:2: note: Taking false branch
+ 2780 |         if (in == NULL) {               /* done: release */
+      |         ^
+src/stoch.c:2786:6: note: Assuming 'pf' is equal to field 'f'
+ 2786 |         if (pf != ST.f) {
+      |             ^~~~~~~~~~
+src/stoch.c:2786:2: note: Taking false branch
+ 2786 |         if (pf != ST.f) {
+      |         ^
+src/stoch.c:2798:6: note: Assuming field 'nt' is < ST_MAXT
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |             ^~~~~~~~~~~~~~~~
+src/stoch.c:2798:2: note: Taking false branch
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |         ^
+src/stoch.c:2800:14: note: Assuming 't' is < field 'nt'
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |                     ^~~~~~~~~
+src/stoch.c:2800:2: note: Loop condition is true.  Entering loop body
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |         ^
+src/stoch.c:2801:8: note: The value 0 is assigned to 'j'
+ 2801 |                 for (j = 0; j < ST.np; j++)
+      |                      ^~~~~
+src/stoch.c:2801:15: note: Assuming 'j' is < field 'np'
+ 2801 |                 for (j = 0; j < ST.np; j++)
+      |                             ^~~~~~~~~
+src/stoch.c:2801:3: note: Loop condition is true.  Entering loop body
+ 2801 |                 for (j = 0; j < ST.np; j++)
+      |                 ^
+src/stoch.c:2802:41: note: The left operand of '&' is a garbage value
+ 2802 |                         if (ST.tin[t][j] != ((uint64_t)in[j] & wmask64(ST.pw[j])))
+      |                                                        ~~~~~ ^
+src/stoch.c:2808:24: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 2808 |                 in_i[(size_t)j * CH] = in[j];
+      |                                      ^
+src/stoch.c:2903:7: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/stoch.c:2903:7: note: Left side of '||' is true
+src/ucas.h:105:39: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                                       ^
+src/stoch.c:2903:6: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2903:31: note: Left side of '||' is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |                                      ^
+src/stoch.c:2905:14: note: Assuming 'j' is >= field 'np'
+ 2905 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2905:2: note: Loop condition is false. Execution continues on line 2909
+ 2905 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2920:14: note: 'j' is >= field 'np'
+ 2920 |         for (j = 0; j < f->np; j++)
+      |                     ^
+src/stoch.c:2920:2: note: Loop condition is false. Execution continues on line 2922
+ 2920 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2922:2: note: Loop condition is true.  Entering loop body
+ 2922 |         for (i = 0; i < 4; i++) {
+      |         ^
+src/stoch.c:2923:15: note: 'j' is >= field 'np'
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/stoch.c:2923:3: note: Loop condition is false. Execution continues on line 2927
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/stoch.c:2927:3: note: Calling 'st_add_test'
+ 2927 |                 st_add_test(in);
+      |                 ^~~~~~~~~~~~~~~
+src/stoch.c:2780:6: note: 'in' is not equal to NULL
+ 2780 |         if (in == NULL) {               /* done: release */
+      |             ^~
+src/stoch.c:2780:2: note: Taking false branch
+ 2780 |         if (in == NULL) {               /* done: release */
+      |         ^
+src/stoch.c:2786:6: note: Assuming 'pf' is not equal to field 'f'
+ 2786 |         if (pf != ST.f) {
+      |             ^~~~~~~~~~
+src/stoch.c:2786:2: note: Taking true branch
+ 2786 |         if (pf != ST.f) {
+      |         ^
+src/stoch.c:2787:7: note: 'pf' is equal to NULL
+ 2787 |                 if (pf != NULL)
+      |                     ^~
+src/stoch.c:2787:3: note: Taking false branch
+ 2787 |                 if (pf != NULL)
+      |                 ^
+src/stoch.c:2793:7: note: 'in_i' is equal to NULL
+ 2793 |                 if (in_i == NULL) {
+      |                     ^~~~
+src/stoch.c:2793:3: note: Taking true branch
+ 2793 |                 if (in_i == NULL) {
+      |                 ^
+src/stoch.c:2798:6: note: Assuming field 'nt' is < ST_MAXT
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |             ^~~~~~~~~~~~~~~~
+src/stoch.c:2798:2: note: Taking false branch
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |         ^
+src/stoch.c:2800:14: note: Assuming 't' is >= field 'nt'
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |                     ^~~~~~~~~
+src/stoch.c:2800:2: note: Loop condition is false. Execution continues on line 2807
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |         ^
+src/stoch.c:2807:7: note: The value 0 is assigned to 'j'
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |              ^~~~~
+src/stoch.c:2807:14: note: Assuming 'j' is < field 'np'
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2807:2: note: Loop condition is true.  Entering loop body
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |         ^
+src/stoch.c:2808:24: note: Assigned value is uninitialized
+ 2808 |                 in_i[(size_t)j * CH] = in[j];
+      |                                      ^ ~~~~~
+src/stoch.c:2808:24: warning: Array access (from variable 'in_i') results in a null pointer dereference [core.NullDereference]
+ 2808 |                 in_i[(size_t)j * CH] = in[j];
+      |                                      ^
+src/stoch.c:2903:7: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/stoch.c:2903:7: note: Left side of '||' is true
+src/ucas.h:105:39: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                                       ^
+src/stoch.c:2903:6: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2903:31: note: Left side of '||' is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |                                      ^
+src/stoch.c:2905:14: note: Assuming 'j' is >= field 'np'
+ 2905 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2905:2: note: Loop condition is false. Execution continues on line 2909
+ 2905 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2920:14: note: 'j' is >= field 'np'
+ 2920 |         for (j = 0; j < f->np; j++)
+      |                     ^
+src/stoch.c:2920:2: note: Loop condition is false. Execution continues on line 2922
+ 2920 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2922:2: note: Loop condition is true.  Entering loop body
+ 2922 |         for (i = 0; i < 4; i++) {
+      |         ^
+src/stoch.c:2923:15: note: 'j' is >= field 'np'
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/stoch.c:2923:3: note: Loop condition is false. Execution continues on line 2927
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/stoch.c:2927:3: note: Calling 'st_add_test'
+ 2927 |                 st_add_test(in);
+      |                 ^~~~~~~~~~~~~~~
+src/stoch.c:2773:2: note: 'in_i' initialized to a null pointer value
+ 2773 |         static int64_t *in_i;
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2780:6: note: 'in' is not equal to NULL
+ 2780 |         if (in == NULL) {               /* done: release */
+      |             ^~
+src/stoch.c:2780:2: note: Taking false branch
+ 2780 |         if (in == NULL) {               /* done: release */
+      |         ^
+src/stoch.c:2786:6: note: Assuming 'pf' is equal to field 'f'
+ 2786 |         if (pf != ST.f) {
+      |             ^~~~~~~~~~
+src/stoch.c:2786:2: note: Taking false branch
+ 2786 |         if (pf != ST.f) {
+      |         ^
+src/stoch.c:2798:6: note: Assuming field 'nt' is < ST_MAXT
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |             ^~~~~~~~~~~~~~~~
+src/stoch.c:2798:2: note: Taking false branch
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |         ^
+src/stoch.c:2800:14: note: Assuming 't' is >= field 'nt'
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |                     ^~~~~~~~~
+src/stoch.c:2800:2: note: Loop condition is false. Execution continues on line 2807
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |         ^
+src/stoch.c:2807:14: note: Assuming 'j' is < field 'np'
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2807:2: note: Loop condition is true.  Entering loop body
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |         ^
+src/stoch.c:2808:24: note: Array access (from variable 'in_i') results in a null pointer dereference
+ 2808 |                 in_i[(size_t)j * CH] = in[j];
+      |                 ~~~~                 ^
+src/stoch.c:2809:21: warning: Access to field 'body' results in a dereference of a null pointer (loaded from field 'f') [core.NullDereference]
+ 2809 |         loc = plan_loc(&p, ST.f->body);
+      |                            ^
+src/stoch.c:2903:7: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/stoch.c:2903:7: note: Left side of '||' is true
+src/ucas.h:105:39: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                                       ^
+src/stoch.c:2903:6: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2903:31: note: Left side of '||' is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |                                      ^
+src/stoch.c:2905:14: note: Assuming 'j' is >= field 'np'
+ 2905 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2905:2: note: Loop condition is false. Execution continues on line 2909
+ 2905 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2917:2: note: Value assigned to 'ST.f'
+ 2917 |         sp_setup(f, m);
+      |         ^~~~~~~~~~~~~~
+src/stoch.c:2920:14: note: 'j' is >= field 'np'
+ 2920 |         for (j = 0; j < f->np; j++)
+      |                     ^
+src/stoch.c:2920:2: note: Loop condition is false. Execution continues on line 2922
+ 2920 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2922:2: note: Loop condition is true.  Entering loop body
+ 2922 |         for (i = 0; i < 4; i++) {
+      |         ^
+src/stoch.c:2923:15: note: 'j' is >= field 'np'
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/stoch.c:2923:3: note: Loop condition is false. Execution continues on line 2927
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/stoch.c:2927:3: note: Calling 'st_add_test'
+ 2927 |                 st_add_test(in);
+      |                 ^~~~~~~~~~~~~~~
+src/stoch.c:2780:6: note: 'in' is not equal to NULL
+ 2780 |         if (in == NULL) {               /* done: release */
+      |             ^~
+src/stoch.c:2780:2: note: Taking false branch
+ 2780 |         if (in == NULL) {               /* done: release */
+      |         ^
+src/stoch.c:2786:6: note: Assuming 'pf' is equal to field 'f'
+ 2786 |         if (pf != ST.f) {
+      |             ^~~~~~~~~~
+src/stoch.c:2786:2: note: Taking false branch
+ 2786 |         if (pf != ST.f) {
+      |         ^
+src/stoch.c:2798:6: note: Assuming field 'nt' is < ST_MAXT
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |             ^~~~~~~~~~~~~~~~
+src/stoch.c:2798:2: note: Taking false branch
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |         ^
+src/stoch.c:2800:14: note: Assuming 't' is >= field 'nt'
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |                     ^~~~~~~~~
+src/stoch.c:2800:2: note: Loop condition is false. Execution continues on line 2807
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |         ^
+src/stoch.c:2807:14: note: Assuming 'j' is >= field 'np'
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2807:2: note: Loop condition is false. Execution continues on line 2809
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |         ^
+src/stoch.c:2809:21: note: Access to field 'body' results in a dereference of a null pointer (loaded from field 'f')
+ 2809 |         loc = plan_loc(&p, ST.f->body);
+      |                            ^  ~
+src/stoch.c:2816:38: warning: The left operand of '&' is a garbage value [core.UndefinedBinaryOperatorResult]
+ 2816 |                 ST.tin[ST.nt][j] = (uint64_t)in[j] & wmask64(ST.pw[j]);
+      |                                                    ^
+src/stoch.c:2903:7: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/stoch.c:2903:7: note: Left side of '||' is true
+src/ucas.h:105:39: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                                       ^
+src/stoch.c:2903:6: note: Assuming the condition is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/stoch.c:2903:31: note: Left side of '||' is true
+ 2903 |         if (!TY_SIZED(N.ty[f->body]) || N.ty[f->body] == TY_BOOL || f->np < 1)
+      |                                      ^
+src/stoch.c:2905:14: note: Assuming 'j' is >= field 'np'
+ 2905 |         for (j = 0; j < f->np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2905:2: note: Loop condition is false. Execution continues on line 2909
+ 2905 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2920:14: note: 'j' is >= field 'np'
+ 2920 |         for (j = 0; j < f->np; j++)
+      |                     ^
+src/stoch.c:2920:2: note: Loop condition is false. Execution continues on line 2922
+ 2920 |         for (j = 0; j < f->np; j++)
+      |         ^
+src/stoch.c:2922:2: note: Loop condition is true.  Entering loop body
+ 2922 |         for (i = 0; i < 4; i++) {
+      |         ^
+src/stoch.c:2923:15: note: 'j' is >= field 'np'
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                             ^
+src/stoch.c:2923:3: note: Loop condition is false. Execution continues on line 2927
+ 2923 |                 for (j = 0; j < f->np; j++)
+      |                 ^
+src/stoch.c:2927:3: note: Calling 'st_add_test'
+ 2927 |                 st_add_test(in);
+      |                 ^~~~~~~~~~~~~~~
+src/stoch.c:2780:6: note: 'in' is not equal to NULL
+ 2780 |         if (in == NULL) {               /* done: release */
+      |             ^~
+src/stoch.c:2780:2: note: Taking false branch
+ 2780 |         if (in == NULL) {               /* done: release */
+      |         ^
+src/stoch.c:2786:6: note: Assuming 'pf' is not equal to field 'f'
+ 2786 |         if (pf != ST.f) {
+      |             ^~~~~~~~~~
+src/stoch.c:2786:2: note: Taking true branch
+ 2786 |         if (pf != ST.f) {
+      |         ^
+src/stoch.c:2787:7: note: 'pf' is equal to NULL
+ 2787 |                 if (pf != NULL)
+      |                     ^~
+src/stoch.c:2787:3: note: Taking false branch
+ 2787 |                 if (pf != NULL)
+      |                 ^
+src/stoch.c:2793:7: note: 'in_i' is equal to NULL
+ 2793 |                 if (in_i == NULL) {
+      |                     ^~~~
+src/stoch.c:2793:3: note: Taking true branch
+ 2793 |                 if (in_i == NULL) {
+      |                 ^
+src/stoch.c:2798:6: note: Assuming field 'nt' is < ST_MAXT
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |             ^~~~~~~~~~~~~~~~
+src/stoch.c:2798:2: note: Taking false branch
+ 2798 |         if (ST.nt >= ST_MAXT)
+      |         ^
+src/stoch.c:2800:14: note: Assuming 't' is >= field 'nt'
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |                     ^~~~~~~~~
+src/stoch.c:2800:2: note: Loop condition is false. Execution continues on line 2807
+ 2800 |         for (t = 0; t < ST.nt; t++) {
+      |         ^
+src/stoch.c:2807:14: note: Assuming 'j' is >= field 'np'
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2807:2: note: Loop condition is false. Execution continues on line 2809
+ 2807 |         for (j = 0; j < ST.np; j++)
+      |         ^
+src/stoch.c:2810:9: note: Assuming field 'where' is 0
+ 2810 |         wloc = ST.f->where ? plan_loc(&p, ST.f->where) : NOTOK;
+      |                ^~~~~~~~~~~
+src/stoch.c:2810:9: note: '?' condition is false
+src/stoch.c:2813:6: note: Assuming the condition is false
+ 2813 |         if (!ok[0] || (COLF(&p, loc)[0] & F_UNDEF))
+      |             ^~~~~~
+src/stoch.c:2813:6: note: Left side of '||' is false
+src/stoch.c:2813:17: note: Assuming the condition is false
+ 2813 |         if (!ok[0] || (COLF(&p, loc)[0] & F_UNDEF))
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:788:20: note: expanded from macro 'COLF'
+  788 | #define COLF(p, k) (&(p)->vf[(size_t)(k)*CH])
+      |                    ^
+src/stoch.c:2813:2: note: Taking false branch
+ 2813 |         if (!ok[0] || (COLF(&p, loc)[0] & F_UNDEF))
+      |         ^
+src/stoch.c:2815:7: note: The value 0 is assigned to 'j'
+ 2815 |         for (j = 0; j < ST.np; j++)
+      |              ^~~~~
+src/stoch.c:2815:14: note: Assuming 'j' is < field 'np'
+ 2815 |         for (j = 0; j < ST.np; j++)
+      |                     ^~~~~~~~~
+src/stoch.c:2815:2: note: Loop condition is true.  Entering loop body
+ 2815 |         for (j = 0; j < ST.np; j++)
+      |         ^
+src/stoch.c:2816:38: note: The left operand of '&' is a garbage value
+ 2816 |                 ST.tin[ST.nt][j] = (uint64_t)in[j] & wmask64(ST.pw[j]);
+      |                                              ~~~~~ ^
+6 warnings generated.

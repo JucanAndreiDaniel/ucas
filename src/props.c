@@ -4626,6 +4626,34 @@ factored(const struct rpoly *P, const char *x, struct sbuf *sb)
 	}
 }
 
+/*
+ * Is the expression e numerically zero at sampled points of f's parameters?
+ * npoly_of()/const_is() only fold syntactic zeros, so a leading coefficient
+ * such as (y*1+1*y)-2*y survives as a symbolic zero and inflates the degree.
+ * Likewise a body that is identically zero (e.g. sin^2+cos^2-1) would be
+ * dressed up by the raw-syntax classifier as a transcendental function with
+ * fabricated numeric period/monotonicity/zeros.  Detect both by evaluation.
+ */
+static int
+expr_is_zero(struct func *f, nid e)
+{
+	struct ev ev;
+	double v[MAXP], y;
+	int j, k;
+
+	if (!e)
+		return 0;
+	ev_open(&ev, f, e, 0, 0);
+	for (k = 0; k < 16; k++) {
+		for (j = 0; j < f->np; j++)
+			v[j] = urand(-3, 3);
+		if (!evm(&ev, v, &y) || !isfinite(y) || fabs(y) > 1e-8)
+			break;
+	}
+	ev_close(&ev);
+	return k == 16;
+}
+
 static void
 identify_func(struct func *f)
 {
@@ -4641,12 +4669,19 @@ identify_func(struct func *f)
 	if (f->np > 1) {
 		int j, poly = 1;
 		struct sbuf sb = {0};
+		if (expr_is_zero(f, f->body)) {
+			printf("  a function of %d variables: constant (identically "
+			    "zero)\n", f->np);
+			return;
+		}
 		for (j = 0; j < f->np; j++) {
 			struct npoly P;
-			if (npoly_of(f->body, j, &P, 12))
-				sb_printf(&sb, "%sdegree %d in %s", j ? ", " : "", P.deg,
-				    vname(f, j));
-			else
+			if (npoly_of(f->body, j, &P, 12)) {
+				while (P.deg > 0 && expr_is_zero(f, P.c[P.deg]))
+					P.deg--;
+				sb_printf(&sb, "%sdegree %d in %s", j ? ", " : "",
+				    P.deg, vname(f, j));
+			} else
 				poly = 0;
 		}
 		printf("  a function of %d variables%s%s%s\n", f->np, poly ?
@@ -4710,6 +4745,17 @@ identify_func(struct func *f)
 		struct asy A;
 		struct rngres R;
 		const char *xs = x;
+		/* sin^2+cos^2-1 and friends are identically zero: classifying by
+		 * raw syntax and then sampling FP noise yields fabricated periods,
+		 * monotonicity intervals and zeros.  Report them as the constants
+		 * they are, before any of that analysis runs. */
+		if (!ispoly && !israt && expr_is_zero(f, f->body)) {
+			printf("  constant (identically zero)\n");
+			printf("  periodic: constant [proved]\n");
+			printf("  monotonic: constant [proved]\n");
+			printf("  zeros: everywhere\n");
+			return;
+		}
 		if (ispoly) {
 			struct sbuf sb = {0};
 			printf("  polynomial of degree %d (%s), leading coefficient %s\n",

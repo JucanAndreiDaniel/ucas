@@ -127,6 +127,24 @@ const struct uarch uarchs[UA_N] = {
 	    160, 17, 12,
 	    {"p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9",
 	    "p10", "p11"}},
+	{"zen2", "znver2", "AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom "
+	    "APU 0932): AVX2, no AVX-512; latencies measured on both machines "
+	    "with x86bench, other columns estimated from Zen 4",
+	    V3F | CRYPTO, 4, 224, 60, 13, 12,
+	    {"ALU0", "ALU1", "ALU2", "ALU3", "AGU0", "AGU1", "AGU2", "FP0",
+	    "FP1", "FP2", "FP3", "FP45"}},
+	{"zen1", "znver1", "AMD Zen+ (Ryzen 5 3550H, Picasso): AVX2, "
+	    "no AVX-512; latencies measured with x86bench on this host, "
+	    "other columns estimated from Zen 4",
+	    V3F | CRYPTO, 4, 192, 96, 16, 8,
+	    {"ALU0", "ALU1", "ALU2", "ALU3", "AGU0", "AGU1", "AGU2", "FP0",
+	    "FP1", "FP2", "FP3", "FP45"}},
+	{"zen3", "znver3", "AMD Zen 3 (Ryzen 7 5825U, Cezanne): AVX2, "
+	    "no AVX-512; latencies measured with x86bench on the NAS, "
+	    "other columns estimated from Zen 4",
+	    V3F | CRYPTO, 6, 256, 96, 13, 12,
+	    {"ALU0", "ALU1", "ALU2", "ALU3", "AGU0", "AGU1", "AGU2", "FP0",
+	    "FP1", "FP2", "FP3", "FP45"}},
 	{"zen4", "znver4", "AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, "
 	    "GFNI) on 256-bit pipes, 512-bit ops double-pumped",
 	    V4F | CRYPTO | ICLX, 6, 320, 96, 13, 12,
@@ -622,6 +640,8 @@ xsrc_text(char src)
 	case 'E': return "estimate (closest documented form)";
 	case 'G': return "generic: worst of the level's cores";
 	case 'V': return "derived from the ymm form";
+	case 'Z': return "Zen 1+/2/3: latency measured with x86bench, "
+	    "other columns estimated from Zen 4";
 	}
 	return "?";
 }
@@ -716,6 +736,48 @@ x86_init(void)
 		x->src = r->src;
 		x->have = 1;
 	}
+	/*
+	/*
+	 * Zen 1+, Zen 2 and Zen 3 start as copies of Zen 4's tables.  The
+	 * latencies below were measured with tools/x86bench.c on a Ryzen 5
+	 * 3550H (host), a Ryzen 7 5825U (NAS), a Ryzen 5 3600 and the Steam
+	 * Deck's APU (each scaled by a 1-cycle add chain); the other columns
+	 * are estimates from Zen 4 until a full table exists and are marked
+	 * Z.  DIV64's 41 on Zen 2 is the full-width worst case: the common
+	 * RDX=0 path measures about 11 cycles on both machines.
+	 */
+	for (c = 1; c < XC_N; c++)
+		for (w = 0; w < 3; w++) {
+			X[UA_ZEN1][c][w] = X[UA_ZEN4][c][w];
+			X[UA_ZEN2][c][w] = X[UA_ZEN4][c][w];
+			X[UA_ZEN3][c][w] = X[UA_ZEN4][c][w];
+		}
+#define ZL(ua, c, l) do {							\
+		X[ua][XC_##c][VW_X].lat = (l);					\
+		X[ua][XC_##c][VW_X].src = 'Z';					\
+	} while (0)
+	/* Zen+ (Ryzen 5 3550H): x86bench 2026-11-16 */
+	ZL(UA_ZEN1, ALU, 1); ZL(UA_ZEN1, IMUL, 3); ZL(UA_ZEN1, BITCNT, 1);
+	ZL(UA_ZEN1, PDEP, 21); ZL(UA_ZEN1, DIV64, 11); ZL(UA_ZEN1, CVTI2F, 4);
+	ZL(UA_ZEN1, VFADD, 3); ZL(UA_ZEN1, VFMA, 5); ZL(UA_ZEN1, VMULLD, 4);
+	ZL(UA_ZEN1, LOAD, 4);
+	/* Zen 2 (Ryzen 5 3600, Steam Deck): x86bench */
+	ZL(UA_ZEN2, ALU, 1);
+	ZL(UA_ZEN2, BITCNT, 1);
+	ZL(UA_ZEN2, PDEP, 21);
+	ZL(UA_ZEN2, MULX, 3);
+	ZL(UA_ZEN2, DIV64, 41);
+	ZL(UA_ZEN2, CVTI2F, 5);
+	ZL(UA_ZEN2, VFADD, 3);
+	ZL(UA_ZEN2, VFMA, 5);
+	ZL(UA_ZEN2, VMULLD, 4);
+	ZL(UA_ZEN2, LOAD, 4);
+	/* Zen 3 (Ryzen 7 5825U): x86bench 2026-11-16, scaled by add 0.80 */
+	ZL(UA_ZEN3, ALU, 1); ZL(UA_ZEN3, IMUL, 3); ZL(UA_ZEN3, BITCNT, 1);
+	ZL(UA_ZEN3, PDEP, 3); ZL(UA_ZEN3, DIV64, 6); ZL(UA_ZEN3, CVTI2F, 3);
+	ZL(UA_ZEN3, VFADD, 3); ZL(UA_ZEN3, VFMA, 4); ZL(UA_ZEN3, VMULLD, 3);
+	ZL(UA_ZEN3, LOAD, 4);
+#undef ZL
 	for (ua = 0; ua < UA_V2; ua++) {
 		int avx512 = (uarchs[ua].feat & XB(XF_AVX512F)) != 0;
 		for (c = 1; c < XC_N; c++) {
@@ -746,9 +808,12 @@ x86_init(void)
 		for (w = 0; w < 3; w++)
 			if (w == VW_Z || k == XC_VMULLQ || k == XC_VCMPK ||
 			    k == XC_VTERNLOG || k == XC_VCOMPRESS || k == XC_KOP ||
-			    k == XC_KMOV || k == XC_VPMOVN || k == XC_VLZCNT)
+			    k == XC_KMOV || k == XC_VPMOVN || k == XC_VLZCNT) {
 				X[UA_RPL][k][w].have = 0;
+				X[UA_ZEN2][k][w].have = 0;
+			}
 	X[UA_RPL][XC_VPOPCNT][0].have = X[UA_RPL][XC_VPOPCNT][1].have = 0;
+	X[UA_ZEN2][XC_VPOPCNT][0].have = X[UA_ZEN2][XC_VPOPCNT][1].have = 0;
 	/* generic levels: the worst of the members, ports of the first */
 	for (ua = UA_V2; ua <= UA_V4; ua++) {
 		const int *mb = members[ua - UA_V2];

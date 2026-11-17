@@ -1,0 +1,21 @@
+c lower nofile
+```c
+#define GUARD
+#define GUARDV 1
+int n1(int x){
+#ifdef GUARD
+ if (x==0) return 0;
+#endif
+ return 100/x;
+}
+int n2(int x){
+ if (x==0) return 0;
+ return 100/x;
+}
+int n3(int x){
+#if defined(GUARDV) && GUARDV > 0
+ if (x == 0) return 0;
+#endif
+ return 1000/x;
+}
+```

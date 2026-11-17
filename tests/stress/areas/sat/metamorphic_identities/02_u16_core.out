@@ -1,0 +1,48 @@
+> f01(x: u16) = x + x
+> g01(x: u16) = x << 1
+> equiv f01 g01
+f01 and g01 are equal on the domain of f01 (exhaustive)
+> f02(x: u16) = x - x
+> g02(x: u16) = x * 0
+> equiv f02 g02
+f02 and g02 are equal on the domain of f02 (exhaustive)
+> f03(x: u16) = x xor x
+> g03(x: u16) = x * 0
+> equiv f03 g03
+f03 and g03 are equal on the domain of f03 (exhaustive)
+> f04(x: u16, y: u16) = (x & y) + (x xor y)
+> g04(x: u16, y: u16) = x | y
+> equiv f04 g04
+f04 and g04 are equal on the domain of f04 (proved by SAT: 315 AIG nodes, 127 conflicts)
+> f05(x: u16, y: u16) = x xor y
+> g05(x: u16, y: u16) = (x | y) - (x & y)
+> equiv f05 g05
+f05 and g05 are equal on the domain of f05 (proved by SAT: 316 AIG nodes, 141 conflicts)
+> f06(x: u16) = ~x
+> g06(x: u16) = -x - 1
+> equiv f06 g06
+f06 and g06 are equal on the domain of f06 (exhaustive)
+> f07(x: u16, y: u16) = ~(x & y)
+> g07(x: u16, y: u16) = ~x | ~y
+> equiv f07 g07
+f07 and g07 are equal on the domain of f07 (proved by SAT: 49 AIG nodes, 0 conflicts)
+> f08(x: u16, y: u16) = ~(x | y)
+> g08(x: u16, y: u16) = ~x & ~y
+> equiv f08 g08
+f08 and g08 are equal on the domain of f08 (proved by SAT: 49 AIG nodes, 0 conflicts)
+> f09(x: u16, y: u16) = x & (x | y)
+> g09(x: u16, y: u16) = x
+> equiv f09 g09
+f09 and g09 are equal on the domain of f09 (proved by SAT: 128 AIG nodes, 35 conflicts)
+> f10(x: u16, y: u16) = x | (x & y)
+> g10(x: u16, y: u16) = x
+> equiv f10 g10
+f10 and g10 are equal on the domain of f10 (proved by SAT: 128 AIG nodes, 32 conflicts)
+> f11(x: u16) = (x xor 0x5A3C) xor 0x5A3C
+> g11(x: u16) = x
+> equiv f11 g11
+f11 and g11 are equal on the domain of f11 (exhaustive)
+> f12(x: u16) = x + x + x
+> g12(x: u16) = x * 3
+> equiv f12 g12
+f12 and g12 are equal on the domain of f12 (exhaustive)

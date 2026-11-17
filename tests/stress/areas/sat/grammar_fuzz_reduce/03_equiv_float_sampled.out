@@ -1,0 +1,10 @@
+> f(x: f32, y: f32) = ((abs(((-1.0f == (y / (0.5f + 1.0f))) ? asfloat(u32(0)) : asfloat(asuint(x))))) - 1.5f)
+> g(x: f32, y: f32) = ((abs(((-1.0f == (y / 0.5f)) ? asfloat(u32(0)) : asfloat(asuint(x))))) - 1.5f)
+> equiv f g
+f and g are equal on the domain of f (sampled, not proved; no SAT proof: a float division (by other than a constant power of two))
+> show f(1.0, -0.5)
+_() = -0.5
+  -> f32
+> show g(1.0, -0.5)
+_() = -1.5
+  -> f32

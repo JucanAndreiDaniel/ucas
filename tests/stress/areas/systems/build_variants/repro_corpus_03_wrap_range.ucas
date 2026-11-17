@@ -1,0 +1,29 @@
+# Batch 03: range / wrap / domain / crit. Exact integer + FP interval arithmetic.
+i1(x: u8) = x + 200
+range i1
+wrap i1
+i2(x: i8 in -128..127) = x*3 + 7
+range i2
+wrap i2
+i3(x: u16) = x*x + 1
+range i3
+i4(x: u32 in 0..1000) = 65536*x + x
+range i4
+f1(x: f32 in -1..1) = x + 1e-8 - x
+range f1
+wrap f1
+f2(x: f32 in 0.01..100) = 1/sqrt(x)
+range f2
+f3(x: f32 in -1..1) = 1/x
+wrap f3
+f4(x: f64 in -3..3) = sin(x) + cos(x)
+range f4
+crit f4
+f5(x: f64 in 0.1..10) = x*log(x) - x
+range f5
+crit f5
+domain sqrt(x)
+domain log(x-1)
+domain 1/(x-2)
+f6(x: f32 in 1..2) = asfloat(asuint(x) + 1)
+wrap f6

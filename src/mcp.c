@@ -26,6 +26,8 @@
 #include <string.h>
 #include <unistd.h>
 
+void json_reset_all(void);	/* jsonmode.c: fresh session on re-initialize */
+
 static const char *const versions[] = {"2025-06-18", "2025-03-26",
 	"2024-11-05", NULL};
 static char proto[16] = "2025-06-18";
@@ -766,8 +768,12 @@ initialize(const struct jv *id, const struct jv *params)
 {
 	const char *want = jv_gets(params, "protocolVersion");
 	struct jv *r = jv_new(J_OBJ), *cap = jv_new(J_OBJ), *t, *info;
-	int k;
+	int again, k;
 
+	/* the flag survives reset's re-exec, so every handshake after the
+	 * first on a process starts a genuinely fresh session */
+	again = getenv("UCAS_MCP_SESSION") != NULL;
+	setenv("UCAS_MCP_SESSION", "1", 1);
 	snprintf(proto, sizeof proto, "%s", versions[0]);
 	for (k = 0; want && versions[k]; k++)
 		if (!strcmp(versions[k], want))
@@ -796,6 +802,10 @@ initialize(const struct jv *id, const struct jv *params)
 	    "args.assume.KEY.  structuredContent holds the typed result, "
 	    "checks and proof."));
 	rpc_result(id, r);
+	/* a second handshake must not inherit the previous client's session:
+	 * no definitions, assumptions, models or bases leak through it. */
+	if (again)
+		json_reset_all();
 }
 
 static void

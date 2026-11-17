@@ -1,0 +1,40 @@
+> loop(x: u8) = loop(x)
+01_selfref_typed.ucas:1:15: error: 'loop' is not defined
+    loop(x: u8) = loop(x)
+                  ^
+> show loop(3)
+  note: loop(...) read as multiplication: loop is not a function
+_(loop: real) = 3loop
+  -> real
+> funcs
+> loop2(x: i16) = loop2(x) + 1
+01_selfref_typed.ucas:4:17: error: 'loop2' is not defined
+    loop2(x: i16) = loop2(x) + 1
+                    ^
+> show loop2(2)
+  note: loop2(...) read as multiplication: loop2 is not a function
+_(loop2: real) = 2loop2
+  -> real
+> funcs
+> loop3(x: real) = sin(loop3(x))
+01_selfref_typed.ucas:7:22: error: 'loop3' is not defined
+    loop3(x: real) = sin(loop3(x))
+                         ^
+> show loop3(0.5)
+  note: loop3(...) read as multiplication: loop3 is not a function
+_(loop3: real) = 0.5loop3
+  -> real
+> funcs
+> loop4(x: u4) = loop4(x) * loop4(x)
+01_selfref_typed.ucas:10:16: error: 'loop4' is not defined
+    loop4(x: u4) = loop4(x) * loop4(x)
+                   ^
+> show loop4(3)
+  note: loop4(...) read as multiplication: loop4 is not a function
+_(loop4: real) = 3loop4
+  -> real
+> funcs
+> show loop4
+_(loop4: real) = loop4
+  -> real
+> funcs

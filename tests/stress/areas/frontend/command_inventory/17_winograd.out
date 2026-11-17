@@ -1,0 +1,44 @@
+> d4(a0: u32, a1: u32, a2: u32, a3: u32, b0: u32, b1: u32, b2: u32, b3: u32) = a0*b0 + a1*b1 + a2*b2 + a3*b3
+> winograd d4
+winograd d4: 4 products as 2 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (xi + eta)
+  xi = a0*a1 + a2*a3 (a row's), eta = b0*b1 + b2*b3 (a column's)
+  identity: (x_2j + y_2j+1)(x_2j+1 + y_2j) = x_2j x_2j+1 + x_2j y_2j + x_2j+1 y_2j+1 + y_2j y_2j+1, so the pairs less xi and eta leave sum x_k y_k: both sides expanded as polynomials agree modulo 2^W (exact, any operands)
+  per output 12 against 12 as written; xi 6, eta 6
+  a 1 x 1 block: 24 against 12 as written: not cheaper
+> scheme d4 more
+evaluation schemes for d4 under gt1030
+inner product of 4 pairs (Winograd's form from 2):
+  as written cost 15     depth 6      7 ops  a0*b0 + a1*b1 + a2*b2 + a3*b3
+  Winograd   cost 27     depth 7     15 ops  (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - (a0*a1 + a2*a3) - (b0*b1 + b2*b3)
+             equal at all 4096 points checked
+             an identity of the ring: equal for every x, through wrapping
+             A = a0*a1 + a2*a3, B = b0*b1 + b2*b3
+             with A and B given: (a0 + b1)*(a1 + b0) + (a2 + b3)*(a3 + b2) - A - B (cost 12 with gt1030's fusions: 2 multiplications of two values for 4)
+  (Winograd: A is a row's and B a column's, each computed once in a matrix product and shared by its dot products; alone it is dearer)
+  cheapest with gt1030's fusions counted: as written 12; Winograd 24, with A and B given 12
+> d3(a0: i32, a1: i32, a2: i32, b0: i32, b1: i32, b2: i32) = a0*b0 - a1*b1 + a2*b2
+> winograd d3
+17_winograd.ucas:6:12: error: winograd: a0*b0 - a1*b1 + a2*b2 is not a sum of an even number of products (x0*y0 + x1*y1 + ...)
+    winograd d3
+               ^
+> scheme d3 more
+evaluation schemes for d3 under gt1030
+inner product of 3 pairs (Winograd's form from 2):
+  as written cost 11     depth 5      5 ops  a0*b0 - a1*b1 + a2*b2
+  Winograd   cost 18     depth 7     10 ops  (a0 - b1)*(a1 + b0) - a0*a1 - b0*-b1 + a2*b2
+             equal at all 4096 points checked
+             an identity of the ring: equal for every x, through wrapping
+             A = a0*a1, B = b0*-b1
+             with A and B given: (a0 - b1)*(a1 + b0) - A - B + a2*b2 (cost 10 with gt1030's fusions: 2 multiplications of two values for 3)
+  (Winograd: A is a row's and B a column's, each computed once in a matrix product and shared by its dot products; alone it is dearer)
+  cheapest with gt1030's fusions counted: as written 10; Winograd 17, with A and B given 10
+> df(a0: f32 in -1..1, a1: f32 in -1..1, b0: f32 in -1..1, b1: f32 in -1..1) = a0*b0 + a1*b1
+> winograd df
+winograd df: 2 products as 1 pair products and two corrections, under gt1030
+  per output: (a0 + b1)*(a1 + b0) - (xi + eta)
+  xi = a0*a1 (a row's), eta = b0*b1 (a column's)
+  floats: the same algebra, not the same roundings; |computed - exact| <= gamma_4 (sum |x_2j + y_2j+1| |x_2j+1 + y_2j| + sum |x x| + sum |y y|) <= 1.43051e-06 over the parameters' ranges
+  not offered: floats need a tolerance (tol T)
+  per output 4 against 2 as written; xi 1, eta 1
+  a 1 x 1 block: 6 against 2 as written: not offered

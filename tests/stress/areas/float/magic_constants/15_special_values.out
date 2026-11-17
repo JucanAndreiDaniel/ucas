@@ -1,0 +1,40 @@
+> show asfloat(0x7f800000)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = inf
+  -> f32
+> show asfloat(0xff800000)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = -inf
+  -> f32
+> show asfloat(0x7f800001)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = nan
+  -> f32
+> show asfloat(0xff800001)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = -nan
+  -> f32
+> show asfloat(0x00000001)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = 1.40129846e-45
+  -> f32
+> show asfloat(0x80000001)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = -1.40129846e-45
+  -> f32
+> show asfloat(0x00000000)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = 0
+  -> f32
+> show asfloat(0x80000000)
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = -0
+  -> f32
+> show abs(asfloat(0xff800001))
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = nan
+  -> f32
+> show asfloat(asuint(asfloat(0x7fc00001)))
+  note: asfloat of an untyped integer: read as u32 -> f32
+_() = nan
+  -> f32

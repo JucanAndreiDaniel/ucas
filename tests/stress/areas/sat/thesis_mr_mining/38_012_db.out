@@ -1,0 +1,23 @@
+> f(x: u8) = isqrt(x-1)
+> domain f
+domain of f:
+  x: u8, 0..255
+  defined at 256 of 256 points
+  no conditions: total on its parameter types
+  over all 256 points of the domain
+> range f
+range of f -> u8:
+  0..15   (16 distinct values)
+  values: 0..15
+  fits in u4
+  over all 256 points of the domain
+> wrap f
+wrap analysis of f:
+  x - 1   (u8)
+      nuw fails: unsigned wrap at 1 points, e.g. x=0
+      nsw fails: signed wrap at 1 points, e.g. x=128
+  end to end: differs from the mathematical result at 1 points, e.g. x=0
+      exact for: 1..255
+  over all 256 points of the domain
+> equiv f f
+f and f are equal on the domain of f (exhaustive)

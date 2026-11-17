@@ -29,8 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int64_t d2i64(double v);
-
 struct biv {
 	double lo, hi;
 	int ok;
@@ -547,31 +545,31 @@ prove_side(const struct func *f, int up, double *val, struct sbuf *steps)
 	nid e = f->body;
 	int j, round, ok = 0;
 	uint8_t fixed[MAXP] = {0};
+	/* exact integer parameter bounds, before they are widened to double */
+	int64_t lo[MAXP], hi[MAXP];
 	const char *fn = f->anon ? "f" : sym_str(f->name);
 
 	memset(&c, 0, sizeof c);
 	c.f = f;
-	{
-		int64_t lo[MAXP], hi[MAXP];
-		for (j = 0; j < f->np; j++) {
-			if (TY_ISINT(f->p[j].ty))
-				param_bounds(&f->p[j], &lo[j], &hi[j]);
-			else if (f->p[j].ranged) {
-				c.lo[j] = f->p[j].rlo;
-				c.hi[j] = f->p[j].rhi;
-				continue;
-			} else
-				return 0;
-			if (TYK(f->p[j].ty) == K_UINT && TYW(f->p[j].ty) == 64)
-				return 0;
-		}
-		where_bounds(f, lo, hi, NULL);
-		for (j = 0; j < f->np; j++)
-			if (TY_ISINT(f->p[j].ty)) {
-				c.lo[j] = (double)lo[j];
-				c.hi[j] = (double)hi[j];
-			}
+	for (j = 0; j < f->np; j++) {
+		if (TY_ISINT(f->p[j].ty))
+			param_bounds(&f->p[j], &lo[j], &hi[j]);
+		else if (f->p[j].ranged) {
+			lo[j] = hi[j] = 0;
+			c.lo[j] = f->p[j].rlo;
+			c.hi[j] = f->p[j].rhi;
+			continue;
+		} else
+			return 0;
+		if (TYK(f->p[j].ty) == K_UINT && TYW(f->p[j].ty) == 64)
+			return 0;
 	}
+	where_bounds(f, lo, hi, NULL);
+	for (j = 0; j < f->np; j++)
+		if (TY_ISINT(f->p[j].ty)) {
+			c.lo[j] = (double)lo[j];
+			c.hi[j] = (double)hi[j];
+		}
 	bctx_reset(&c);
 	(void)iv(&c, e);
 	if (c.wraps || !iv(&c, e).ok)
@@ -592,11 +590,19 @@ prove_side(const struct func *f, int up, double *val, struct sbuf *steps)
 			to = relation(&c, f->where, j, (m == 1) == up, rel,
 			    sizeof rel);
 			bctx_reset(&c);
+			/*
+			 * An integer endpoint must be the exact int64 bound,
+			 * not the double it was widened to for the intervals:
+			 * for a wide signed type (i56..i63) hi[j] = 2^(w-1)-1
+			 * rounds up to 2^(w-1) as a double, and making a constant
+			 * of that value in f->p[j].ty wraps it to -2^(w-1),
+			 * which made the "proved" maximum equal the minimum.
+			 */
 			if (!to)
-				to = mk_const_i(f->p[j].ty, d2i64((m == 1) == up ?
-				    c.hi[j] : c.lo[j]));
-			if (!TY_ISINT(f->p[j].ty) && is_const(to))
-				to = mk_const_r((m == 1) == up ? c.hi[j] : c.lo[j]);
+				to = TY_ISINT(f->p[j].ty) ?
+				    mk_const_i(f->p[j].ty,
+					(m == 1) == up ? hi[j] : lo[j]) :
+				    mk_const_r((m == 1) == up ? c.hi[j] : c.lo[j]);
 			sb_printf(steps, "%s%s is %s in %s%s%s, so take %s = %s:",
 			    steps->n ? "\n    then " : "", steps->n ? "it" : fn,
 			    m == 1 ? "nondecreasing" : "nonincreasing",
@@ -646,22 +652,6 @@ out:
 	free(c.memo);
 	free(c.done);
 	return ok;
-}
-
-/*
- * An endpoint back to a machine integer.  The interval's ends are
- * doubles, and a full i64/i64 domain's upper end is 2^63 as a double:
- * casting that is undefined and used to come out as INT64_MIN, which made
- * "range of n for an integer n" prove the maximum at the lower end.
- */
-static int64_t
-d2i64(double v)
-{
-	if (!(v > -9223372036854775808.0))	/* also NaN */
-		return INT64_MIN;
-	if (v >= 9223372036854775808.0)
-		return INT64_MAX;
-	return (int64_t)v;
 }
 
 int

@@ -1,0 +1,37 @@
+# The 'file' lexer mode swallows the rest of the word as a path.
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/no_such_file_998877.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/.
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/..
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file /nonexistent/dir/f.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/./no_such.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/../no_such.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+animate exec %px = lane lanes 4 seed 1 nofile input 1 file img/a file with spaces.png
+```spv
+%l = OpLoad %uint %px
+%b = OpShiftLeftLogical %uint %l %uint_30
+```
+show 1+1

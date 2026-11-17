@@ -1,0 +1,25 @@
+> c1(x: u32) = (x << 3) | (x >> 5)
+> cost c1
+cost of c1 under gt1030: 5 (3 operations, shared subterms counted once)
+  logic            1 x 1     = 1
+  shift            2 x 2     = 4
+> c2(x: u32, n: u32 in 0..31) = (x << n) | (x >> (32 - n))
+> cost c2
+cost of c2 under gt1030: 6 (4 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  logic            1 x 1     = 1
+  shift            2 x 2     = 4
+> c3(x: u64) = popcount(x)
+> cost c3
+cost of c3 under gt1030: 3 (1 operations, shared subterms counted once)
+  bitcnt           1 x 3     = 3
+> c4(x: u32) = x / 7
+> cost c4
+cost of c4 under gt1030: 8.75 (1 operations, shared subterms counted once)
+  idivk            1 x 8.75  = 8.75
+> model cheap : gt1030 { shift: 0.25, logic: 0.5 }
+> cost c2 model cheap
+cost of c2 under cheap: 2 (4 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  logic            1 x 0.5   = 0.5
+  shift            2 x 0.25  = 0.5

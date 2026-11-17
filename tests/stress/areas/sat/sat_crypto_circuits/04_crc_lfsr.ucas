@@ -1,0 +1,13 @@
+# CRC-style feedback and Fibonacci/Galois LFSR steps.
+crc1(r: u16, b: u8) = (r >> 1) xor (((r & 1) xor (b & 1)) != 0 ? 0x8408 : 0)
+crc2(r: u16, b: u8) = (r >> 1) xor (((b & 1) xor (r & 1)) != 0 ? 0x8408 : 0)
+equiv crc1 crc2
+crc3(r: u16, b: u8) = (r >> 1) xor ((b xor (r & 1)) != 0 ? 0x8408 : 0)
+equiv crc1 crc3
+fb(s: u16) = (s xor (s >> 2) xor (s >> 4) xor (s >> 6)) & 1
+fb2(s: u16) = ((s & 1) xor ((s>>2)&1) xor ((s>>4)&1) xor ((s>>6)&1)) & 1
+equiv fb fb2
+lfsr1(s: u16) = (s >> 1) | (fb(s) << 15)
+lfsr2(s: u16) = (s >> 1) | (fb2(s) << 15)
+equiv lfsr1 lfsr2
+range fb

@@ -1,0 +1,24 @@
+# Assumptions narrow inputs; C code runs through the C frontend.
+# A clamp whose low bound can never be reached under the assumption.
+simplify x in [0, 100] nofile
+```spv
+%a = OpExtInst %uint %glsl UClamp %x %uint_200 %uint_255
+OpStore %out %a
+```
+# A compare that is constant under the assumption.
+simplify x in [0, 4] nofile
+```spv
+%c = OpULessThan %bool %x %uint_8
+%k = OpSelect %uint %c %x %uint_8
+OpStore %out %k
+```
+# C input: multiply/remainder by constants.
+SAT simplify nofile
+```c
+unsigned f(unsigned x){ return (x * 8u) / 4u + (x & 255u) % 256u; }
+```
+# C input with an assumption on a shift amount.
+SAT simplify n in [1, 31] nofile
+```c
+unsigned shr(unsigned x, unsigned n){ return (x << n) >> n; }
+```

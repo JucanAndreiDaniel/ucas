@@ -1,0 +1,18 @@
+> f(x: u8) = (x & 15) | (x << 4)
+> g(x: u8) = ((x & 15) | (x << 4)) + (x == 17 ? 1 : 0)
+> equiv f g
+f and g differ at 1 point, e.g. x=17: 17 vs 18
+> equiv g f
+g and f differ at 1 point, e.g. x=17: 18 vs 17
+> range f
+range of f -> u8:
+  0..255   (16 distinct values)
+  values: 0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255
+  fits in u8
+  over all 256 points of the domain
+> range g
+range of g -> u8:
+  0..255   (17 distinct values)
+  values: 0, 17..18, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255
+  fits in u8
+  over all 256 points of the domain

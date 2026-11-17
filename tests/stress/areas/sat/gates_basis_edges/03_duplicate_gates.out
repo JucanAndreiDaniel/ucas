@@ -1,0 +1,30 @@
+> basis d1 { g(x) = ~x; g(x) = ~x }
+> basis d2 { g(x, y) = x & y; g(x, y) = x | y }
+> basis d3 { g(x) = ~x; g(x, y) = x & y }
+> basis p  { g(x) = ~x }
+> basis d4 : p { g(x) = x }
+> n(a: u1) = ~a
+> and(a: u1, b: u1) = a & b
+> or(a: u1, b: u1) = a | b
+> gates n basis d1
+gates for n: 1 input bit -> 1 output bit, basis d1
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  t0 = g(a)                     = ~a
+  r0 = t0
+> gates or basis d2
+gates for or: 2 input bits -> 1 output bit, basis d2
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = g(a, b)                 = a | b
+  r0 = t0
+> gates and basis d3
+gates for and: 2 input bits -> 1 output bit, basis d3
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = g(a, b)                 = a & b
+  r0 = t0
+> gates n basis d4
+gates for n: 1 input bit -> 1 output bit, basis d4
+  exact search stopped (cost limit at cost 12); Shannon decomposition instead:
+  no program found for output 0 (basis not complete, or more than 244 steps)

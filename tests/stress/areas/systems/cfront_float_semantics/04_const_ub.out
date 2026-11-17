@@ -1,0 +1,15 @@
+> c lower nofile
+  a_const_huge() = i32(1e+30)
+    defined where (no C UB): 0
+  c_negone() = u32(-1)
+    defined where (no C UB): 0
+  d_var(a: f32) = i32(a)
+    defined where (no C UB): f64(a) > -2147483649 && f64(a) < 2147483648
+  f_nan() = i32(0/0)
+    defined where (no C UB): 0/0 > -2147483649 && 0/0 < 2147483648
+  g_inf() = i32(1/0)
+    defined where (no C UB): 1/0 > -2147483649 && 1/0 < 2147483648
+  mix1(c: i32) = i32(c != 0 ? 1e+30 : 1)
+    defined where (no C UB): t1 > -2147483649 && t1 < 2147483648 where t1 = c != 0 ? 1e+30 : 1
+  j_big() = u32(4294967296)
+    defined where (no C UB): 0

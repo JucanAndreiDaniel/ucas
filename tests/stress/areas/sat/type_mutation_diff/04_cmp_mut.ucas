@@ -1,0 +1,52 @@
+# OpFuzz type-aware operator mutation: 04_cmp_mut
+# 7 seeds, each mutated by one same-signature operator swap.
+# u8 -> exhaustive ground truth; u32 -> sat/algebra proof on wide type.
+# --- cmp_lt_le [cmp] identity=False: x < y  <->  x <= y ---
+s_cmp_lt_le_u8(x: u8, y: u8) = x < y
+m_cmp_lt_le_u8(x: u8, y: u8) = x <= y
+equiv s_cmp_lt_le_u8 m_cmp_lt_le_u8
+s_cmp_lt_le_u32(x: u32, y: u32) = x < y
+m_cmp_lt_le_u32(x: u32, y: u32) = x <= y
+equiv s_cmp_lt_le_u32 m_cmp_lt_le_u32
+# --- cmp_le_lt [cmp] identity=False: x <= y  <->  x < y ---
+s_cmp_le_lt_u8(x: u8, y: u8) = x <= y
+m_cmp_le_lt_u8(x: u8, y: u8) = x < y
+equiv s_cmp_le_lt_u8 m_cmp_le_lt_u8
+s_cmp_le_lt_u32(x: u32, y: u32) = x <= y
+m_cmp_le_lt_u32(x: u32, y: u32) = x < y
+equiv s_cmp_le_lt_u32 m_cmp_le_lt_u32
+# --- cmp_lt_succ [cmp] identity=False: x < (y + 1)  <->  x <= y ---
+s_cmp_lt_succ_u8(x: u8, y: u8) = x < (y + 1)
+m_cmp_lt_succ_u8(x: u8, y: u8) = x <= y
+equiv s_cmp_lt_succ_u8 m_cmp_lt_succ_u8
+s_cmp_lt_succ_u32(x: u32, y: u32) = x < (y + 1)
+m_cmp_lt_succ_u32(x: u32, y: u32) = x <= y
+equiv s_cmp_lt_succ_u32 m_cmp_lt_succ_u32
+# --- cmp_ge_gt [cmp] identity=False: x >= y  <->  x > y ---
+s_cmp_ge_gt_u8(x: u8, y: u8) = x >= y
+m_cmp_ge_gt_u8(x: u8, y: u8) = x > y
+equiv s_cmp_ge_gt_u8 m_cmp_ge_gt_u8
+s_cmp_ge_gt_u32(x: u32, y: u32) = x >= y
+m_cmp_ge_gt_u32(x: u32, y: u32) = x > y
+equiv s_cmp_ge_gt_u32 m_cmp_ge_gt_u32
+# --- cmp_eq_le [cmp] identity=False: x == y  <->  x <= y ---
+s_cmp_eq_le_u8(x: u8, y: u8) = x == y
+m_cmp_eq_le_u8(x: u8, y: u8) = x <= y
+equiv s_cmp_eq_le_u8 m_cmp_eq_le_u8
+s_cmp_eq_le_u32(x: u32, y: u32) = x == y
+m_cmp_eq_le_u32(x: u32, y: u32) = x <= y
+equiv s_cmp_eq_le_u32 m_cmp_eq_le_u32
+# --- cmp_not_lt [cmp] identity=True: !(x < y)  <->  x >= y ---
+s_cmp_not_lt_u8(x: u8, y: u8) = !(x < y)
+m_cmp_not_lt_u8(x: u8, y: u8) = x >= y
+equiv s_cmp_not_lt_u8 m_cmp_not_lt_u8
+s_cmp_not_lt_u32(x: u32, y: u32) = !(x < y)
+m_cmp_not_lt_u32(x: u32, y: u32) = x >= y
+equiv s_cmp_not_lt_u32 m_cmp_not_lt_u32
+# --- cmp_not_le [cmp] identity=True: !(x <= y)  <->  x > y ---
+s_cmp_not_le_u8(x: u8, y: u8) = !(x <= y)
+m_cmp_not_le_u8(x: u8, y: u8) = x > y
+equiv s_cmp_not_le_u8 m_cmp_not_le_u8
+s_cmp_not_le_u32(x: u32, y: u32) = !(x <= y)
+m_cmp_not_le_u32(x: u32, y: u32) = x > y
+equiv s_cmp_not_le_u32 m_cmp_not_le_u32

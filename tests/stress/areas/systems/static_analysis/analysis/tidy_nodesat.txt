@@ -1,0 +1,1499 @@
+/home/andrew/Code/ucas/src/nodesat.c:49:2: warning: no header providing "int32_t" is directly included [misc-include-cleaner]
+   40 | #include <stdlib.h>
+   41 | #include <string.h>
+   42 | 
+   43 | #define UNROLL 256          /* most iterations of one loop unrolled */
+   44 | #define MAXAIG (4 << 20)    /* AIG nodes before giving up */
+   45 | 
+   46 | struct bv {
+   47 |         struct word v;
+   48 |         lit d;
+   49 |         int32_t f;                /* a float's unpacked value in B.f, or -1 */
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:54:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   54 |         uint64_t bound;           /* slots bound in this context */
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:56:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   38 |         nid *hk;                  /* memo: node -> value index */
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:57:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   57 |         uint32_t *hv;
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:68:18: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+   68 |         struct word par[MAXP];    /* parameters, 64-bit */
+      |                         ^
+/home/andrew/Code/ucas/src/nodesat.c:70:15: warning: no header providing "func" is directly included [misc-include-cleaner]
+   70 |         const struct func *f;
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:73:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   73 |         uint8_t lwset[MAXP][SG_MAXW];
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:73:22: warning: no header providing "SG_MAXW" is directly included [misc-include-cleaner]
+   73 |         uint8_t lwset[MAXP][SG_MAXW];
+      |                             ^
+/home/andrew/Code/ucas/src/nodesat.c:77:1: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   77 | int64_t nsat_lanes[MAXP][SG_MAXW];
+      | ^
+/home/andrew/Code/ucas/src/nodesat.c:80:35: warning: no header providing "param" is directly included [misc-include-cleaner]
+   80 | static lit in_bounds(const struct param *p, const struct word *x);
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:89:10: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+   89 |         c->hk = xcalloc(c->hcap, sizeof *c->hk);
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:127:14: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  127 |                 c->hv[j] = NOTOK;
+      |                            ^
+/home/andrew/Code/ucas/src/nodesat.c:137:11: warning: no header providing "newcap" is directly included [misc-include-cleaner]
+  137 |                 B.cap = newcap(B.cap, B.n + 1);
+      |                         ^
+/home/andrew/Code/ucas/src/nodesat.c:138:9: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+  138 |                 B.v = xrealloc(B.v, B.cap * sizeof *B.v);
+      |                       ^
+/home/andrew/Code/ucas/src/nodesat.c:156:4: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  156 | bw(ty_t t)
+      |    ^
+/home/andrew/Code/ucas/src/nodesat.c:158:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  158 |         switch (TYK(t)) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:158:10: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  158 |         switch (TYK(t)) {
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:158:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:159:7: warning: no header providing "K_BOOL" is directly included [misc-include-cleaner]
+  159 |         case K_BOOL: return 1;
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:160:7: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  160 |         case K_UINT:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:161:7: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  161 |         case K_SINT:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:162:7: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  162 |         case K_FLOAT: return TYW(t);
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:162:23: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  162 |         case K_FLOAT: return TYW(t);
+      |                              ^
+/home/andrew/Code/ucas/src/nodesat.c:162:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:163:7: warning: no header providing "K_INT" is directly included [misc-include-cleaner]
+  163 |         case K_INT:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:164:7: warning: no header providing "K_LIT" is directly included [misc-include-cleaner]
+  164 |         case K_LIT: return 64;
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:172:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  172 |         return TYK(t) == K_SINT || TYK(t) == K_INT || TYK(t) == K_LIT;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:172:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  172 |         return TYK(t) == K_SINT || TYK(t) == K_INT || TYK(t) == K_LIT;
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:172:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  172 |         return TYK(t) == K_SINT || TYK(t) == K_INT || TYK(t) == K_LIT;
+      |                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:178:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  178 |         return TYK(t) == K_INT || TYK(t) == K_LIT;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:178:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  178 |         return TYK(t) == K_INT || TYK(t) == K_LIT;
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:249:15: warning: no header providing "dotform" is directly included [misc-include-cleaner]
+  249 |         const struct dotform *df = dot_form(op);
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:249:29: warning: no header providing "dot_form" is directly included [misc-include-cleaner]
+  249 |         const struct dotform *df = dot_form(op);
+      |                                    ^
+/home/andrew/Code/ucas/src/nodesat.c:258:14: warning: Array access (via field 'b') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  258 |                         la.b[i] = a->b[k * df->bits + i];
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:297:11: note: Assuming index is less than the number of 'uint8_t' elements in the region
+  297 |         int op = N.op[n], w = bw(N.ty[n]);
+      |                  ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:297:27: note: Assuming index is less than the number of 'ty_t' elements in the region
+  297 |         int op = N.op[n], w = bw(N.ty[n]);
+      |                                  ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:298:25: note: Assuming index is less than the number of 'nid' elements in the region
+  298 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:298:25: note: Assuming the condition is true
+  298 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:298:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:306:6: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:6: note: Left side of '||' is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:28: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:47: note: Left side of '&&' is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                                      ^
+/home/andrew/Code/ucas/src/nodesat.c:310:6: note: Assuming 'op' is not equal to O_TABLE
+  310 |         if (op != O_TABLE && w == 0) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:310:6: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nodesat.c:310:23: note: 'w' is equal to 0
+  310 |         if (op != O_TABLE && w == 0) {
+      |                              ^
+/home/andrew/Code/ucas/src/nodesat.c:310:2: note: Taking true branch
+  310 |         if (op != O_TABLE && w == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:314:14: note: 'w' is 1
+  314 |         w_const(&r, w ? w : 1, 0);
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:314:14: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:315:2: note: Control jumps to the 'default' case at line 413
+  315 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:414:7: note: Assuming index is less than the number of 'nid' elements in the region
+  414 |                 if (N.a[n])
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:414:7: note: Assuming the condition is true
+  414 |                 if (N.a[n])
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:414:3: note: Taking true branch
+  414 |                 if (N.a[n])
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:416:7: note: Assuming index is less than the number of 'nid' elements in the region
+  416 |                 if (N.b[n])
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:416:7: note: Assuming the condition is true
+  416 |                 if (N.b[n])
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:416:3: note: Taking true branch
+  416 |                 if (N.b[n])
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:418:7: note: Assuming field 'arity' is < 3
+  418 |                 if (opinfo[op].arity >= 3 && N.c[n] && !IS_DOT(op))
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:418:29: note: Left side of '&&' is false
+  418 |                 if (opinfo[op].arity >= 3 && N.c[n] && !IS_DOT(op))
+      |                                           ^
+/home/andrew/Code/ucas/src/nodesat.c:420:7: note: Assuming 'op' is >= O_UDOT4X8
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:243:21: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:420:7: note: Left side of '&&' is true
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:243:21: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:420:7: note: Assuming 'op' is <= O_SUDOT8X4S
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:243:44: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:420:7: note: Left side of '&&' is true
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:243:20: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                    ^
+/home/andrew/Code/ucas/src/nodesat.c:420:21: note: Assuming index is less than the number of 'nid' elements in the region
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                                   ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:420:21: note: Assuming the condition is true
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                                   ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:420:3: note: Taking true branch
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:422:8: note: Value assigned to 'B.v'
+  422 |                         d = aig_and(g, aig_and(g, D(a), D(b)), D(k));
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:423:22: note: Passing value via 3rd parameter 'a'
+  423 |                         blast_dot(op, &r, V(a), V(b), V(k));
+      |                                           ^
+/home/andrew/Code/ucas/src/nodesat.c:291:14: note: expanded from macro 'V'
+  291 | #define V(i) (&B.v[i].v)
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:423:4: note: Calling 'blast_dot'
+  423 |                         blast_dot(op, &r, V(a), V(b), V(k));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:251:10: note: Assuming 'acc' is null
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                 ^~~
+/home/andrew/Code/ucas/src/nodesat.c:251:10: note: '?' condition is false
+/home/andrew/Code/ucas/src/nodesat.c:251:52: note: Assuming field 'sa' is not equal to 0
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                                                           ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:251:59: note: Left side of '||' is true
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                                                                  ^
+/home/andrew/Code/ucas/src/nodesat.c:255:14: note: Assuming 'k' is < field 'lanes'
+  255 |         for (k = 0; k < df->lanes; k++) {
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:255:2: note: Loop condition is true.  Entering loop body
+  255 |         for (k = 0; k < df->lanes; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:257:15: note: Assuming 'i' is < field 'bits'
+  257 |                 for (i = 0; i < df->bits; i++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:257:3: note: Loop condition is true.  Entering loop body
+  257 |                 for (i = 0; i < df->bits; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:258:14: note: Array access (via field 'b') results in a null pointer dereference
+  258 |                         la.b[i] = a->b[k * df->bits + i];
+      |                                   ^  ~
+/home/andrew/Code/ucas/src/nodesat.c:297:11: warning: no header providing "N" is directly included [misc-include-cleaner]
+  297 |         int op = N.op[n], w = bw(N.ty[n]);
+      |                  ^
+/home/andrew/Code/ucas/src/nodesat.c:306:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:306:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:306:52: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                                           ^
+/home/andrew/Code/ucas/src/nodesat.c:307:6: warning: no header providing "OF_CMP" is directly included [misc-include-cleaner]
+  307 |             OF_CMP) || op == O_CAST || op == O_ASUINT || op == O_ASINT ||
+      |             ^
+/home/andrew/Code/ucas/src/nodesat.c:307:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                                                         ~
+  307 |             OF_CMP) || op == O_CAST || op == O_ASUINT || op == O_ASINT ||
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:307:23: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  307 |             OF_CMP) || op == O_CAST || op == O_ASUINT || op == O_ASINT ||
+      |                              ^
+/home/andrew/Code/ucas/src/nodesat.c:307:39: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  307 |             OF_CMP) || op == O_CAST || op == O_ASUINT || op == O_ASINT ||
+      |                                              ^
+/home/andrew/Code/ucas/src/nodesat.c:307:57: warning: no header providing "O_ASINT" is directly included [misc-include-cleaner]
+  307 |             OF_CMP) || op == O_CAST || op == O_ASUINT || op == O_ASINT ||
+      |                                                                ^
+/home/andrew/Code/ucas/src/nodesat.c:308:12: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+  308 |             op == O_LNOT || op == O_LAND || op == O_LOR)))
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:308:28: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  308 |             op == O_LNOT || op == O_LAND || op == O_LOR)))
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:308:44: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  308 |             op == O_LNOT || op == O_LAND || op == O_LOR)))
+      |                                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:310:12: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  310 |         if (op != O_TABLE && w == 0) {
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:316:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  316 |         case O_CONST:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:319:7: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+  319 |         case O_UNDEF:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:322:7: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  322 |         case O_VAR: {
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:325:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:325:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/nodesat.c:330:8: warning: Out of bound access to memory after the end of 'B.par' [clang-analyzer-security.ArrayBound]
+  330 |                         x = B.par[s];
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:298:25: note: Assuming the condition is true
+  298 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:298:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:306:6: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:6: note: Left side of '||' is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:28: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:306:47: note: Left side of '&&' is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                                      ^
+/home/andrew/Code/ucas/src/nodesat.c:310:6: note: Assuming 'op' is not equal to O_TABLE
+  310 |         if (op != O_TABLE && w == 0) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:310:6: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nodesat.c:310:23: note: 'w' is not equal to 0
+  310 |         if (op != O_TABLE && w == 0) {
+      |                              ^
+/home/andrew/Code/ucas/src/nodesat.c:310:2: note: Taking false branch
+  310 |         if (op != O_TABLE && w == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:314:14: note: 'w' is 64
+  314 |         w_const(&r, w ? w : 1, 0);
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:314:14: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:315:2: note: Control jumps to 'case O_VAR:'  at line 322
+  315 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:325:10: note: Assuming 'q' is non-null
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                        ^
+/home/andrew/Code/ucas/src/nodesat.c:325:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nodesat.c:325:16: note: Assuming 's' is >= 64
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                              ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:325:24: note: Left side of '||' is true
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                      ^
+/home/andrew/Code/ucas/src/nodesat.c:325:10: note: Assuming 'q' is null
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                        ^
+/home/andrew/Code/ucas/src/nodesat.c:325:12: note: Left side of '&&' is false
+  325 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                          ^
+/home/andrew/Code/ucas/src/nodesat.c:327:7: note: 'q' is null
+  327 |                 if (q)
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:327:3: note: Taking false branch
+  327 |                 if (q)
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:329:12: note: Assuming 's' is < field 'npar'
+  329 |                 else if (s < B.npar)
+      |                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:329:8: note: Taking true branch
+  329 |                 else if (s < B.npar)
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:330:8: note: Access of 'B.par' at an overflowing index, while it holds only 8 'struct word' elements
+  330 |                         x = B.par[s];
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:331:17: warning: no header providing "SG_FREE_SLOT" is directly included [misc-include-cleaner]
+  331 |                 else if (s >= SG_FREE_SLOT && s < SG_FREE_SLOT + MAXP * SG_MAXW &&
+      |                               ^
+/home/andrew/Code/ucas/src/nodesat.c:353:7: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+  353 |         case O_LOOP:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:358:7: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  358 |         case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:359:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  359 |                 if (TYK(ta) == K_FLOAT) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:387:7: warning: no header providing "O_FETCH_REPEAT" is directly included [misc-include-cleaner]
+  387 |         case O_FETCH_REPEAT: case O_FETCH_MIRROR: case O_FETCH_CLAMP:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:387:28: warning: no header providing "O_FETCH_MIRROR" is directly included [misc-include-cleaner]
+  387 |         case O_FETCH_REPEAT: case O_FETCH_MIRROR: case O_FETCH_CLAMP:
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:387:49: warning: no header providing "O_FETCH_CLAMP" is directly included [misc-include-cleaner]
+  387 |         case O_FETCH_REPEAT: case O_FETCH_MIRROR: case O_FETCH_CLAMP:
+      |                                                        ^
+/home/andrew/Code/ucas/src/nodesat.c:388:7: warning: no header providing "O_FETCH_MCLAMP" is directly included [misc-include-cleaner]
+  388 |         case O_FETCH_MCLAMP: case O_FETCH_BORDER: case O_FETCH_TEXEL:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:388:28: warning: no header providing "O_FETCH_BORDER" is directly included [misc-include-cleaner]
+  388 |         case O_FETCH_MCLAMP: case O_FETCH_BORDER: case O_FETCH_TEXEL:
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:388:49: warning: no header providing "O_FETCH_TEXEL" is directly included [misc-include-cleaner]
+  388 |         case O_FETCH_MCLAMP: case O_FETCH_BORDER: case O_FETCH_TEXEL:
+      |                                                        ^
+/home/andrew/Code/ucas/src/nodesat.c:389:7: warning: no header providing "O_FETCH_BUFFER" is directly included [misc-include-cleaner]
+  389 |         case O_FETCH_BUFFER:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:393:7: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+  393 |         case O_INDEX: {
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:418:43: warning: no header providing "IS_DOT" is directly included [misc-include-cleaner]
+  418 |                 if (opinfo[op].arity >= 3 && N.c[n] && !IS_DOT(op))
+      |                                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:437:8: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  437 |                 case O_ADD:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:438:8: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  438 |                 case O_SUB:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:451:8: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  451 |                 case O_NEG:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:454:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  454 |                                 w_const(&z, 64, 1ULL << 63);
+      |                                                      ~~ ^~
+/home/andrew/Code/ucas/src/nodesat.c:458:8: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  458 |                 case O_MUL:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:463:8: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  463 |                 case O_POW: {
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:465:21: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  465 |                         if (ideal(t) || !is_const(N.b[n]) || !TY_ISINT(N.ty[N.b[n]])) {
+      |                                          ^
+/home/andrew/Code/ucas/src/nodesat.c:465:42: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  465 |                         if (ideal(t) || !is_const(N.b[n]) || !TY_ISINT(N.ty[N.b[n]])) {
+      |                                                               ^
+/home/andrew/Code/ucas/src/nodesat.c:465:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:477:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  477 |                                 if (e & 1)
+      |                                     ^ ~
+/home/andrew/Code/ucas/src/nodesat.c:479:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  479 |                                 e >>= 1;
+      |                                 ^ ~~~
+/home/andrew/Code/ucas/src/nodesat.c:485:8: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  485 |                 case O_AND:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:488:8: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  488 |                 case O_OR:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:491:8: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  491 |                 case O_XOR:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:494:8: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  494 |                 case O_NOT:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:497:8: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  497 |                 case O_SHL:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:498:8: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  498 |                 case O_SHR:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:512:8: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  512 |                 case O_DIV:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:513:8: warning: no header providing "O_MOD" is directly included [misc-include-cleaner]
+  513 |                 case O_MOD:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:536:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  536 |                                         w_const(&x, 64, 1ULL << 63);
+      |                                                              ~~ ^~
+/home/andrew/Code/ucas/src/nodesat.c:544:8: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  544 |                 case O_MIN:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:545:8: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  545 |                 case O_MAX: {
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:552:8: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  552 |                 case O_ABS:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:560:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  560 |                                 w_const(&z, 64, 1ULL << 63);
+      |                                                      ~~ ^~
+/home/andrew/Code/ucas/src/nodesat.c:564:8: warning: no header providing "O_SIGN" is directly included [misc-include-cleaner]
+  564 |                 case O_SIGN: {
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:574:8: warning: no header providing "O_POPCNT" is directly included [misc-include-cleaner]
+  574 |                 case O_POPCNT:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:577:8: warning: no header providing "O_CLZ" is directly included [misc-include-cleaner]
+  577 |                 case O_CLZ:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:578:8: warning: no header providing "O_CTZ" is directly included [misc-include-cleaner]
+  578 |                 case O_CTZ: {
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:591:8: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:591:19: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                                 ^
+/home/andrew/Code/ucas/src/nodesat.c:591:30: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                                            ^
+/home/andrew/Code/ucas/src/nodesat.c:591:41: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                                                       ^
+/home/andrew/Code/ucas/src/nodesat.c:591:52: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                                                                  ^
+/home/andrew/Code/ucas/src/nodesat.c:591:63: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  591 |                 case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE: {
+      |                                                                             ^
+/home/andrew/Code/ucas/src/nodesat.c:620:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  620 |                         if (ideal(t) && TYK(ta) == K_UINT && TYW(ta) == 64)
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:620:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  620 |                         if (ideal(t) && TYK(ta) == K_UINT && TYW(ta) == 64)
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:624:3: warning: switch has 2 consecutive identical branches [bugprone-branch-clone]
+  624 |                 case O_BARRIER:
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:629:9: note: last of these clones ends here
+  629 |                         break;
+      |                              ^
+/home/andrew/Code/ucas/src/nodesat.c:624:8: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+  624 |                 case O_BARRIER:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:627:8: warning: no header providing "O_ATOMIC" is directly included [misc-include-cleaner]
+  627 |                 case O_ATOMIC:
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:657:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |         fp_pack(B.g, &B.v[r].v, x, fp_fmt(TYW(t)), 0);
+      |                                           ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:666:46: warning: The left operand of '-' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  666 |         return aig_mux(B.g, x->nan, x->nb.b[x->nb.w - 1], x->s);
+      |                                                     ^
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: '?' condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: '?' condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Left side of '&&' is false
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+/home/andrew/Code/ucas/src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nodesat.c:856:22: note: Assuming 'op' is not equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:856:37: note: Assuming 'op' is not equal to O_MUL
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:856:52: note: Assuming 'op' is not equal to O_MIN
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                                           ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:6: note: Assuming 'op' is not equal to O_MAX
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:21: note: Assuming 'op' is equal to O_COPYSIGN
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:857:38: note: Left side of '||' is true
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                             ^
+/home/andrew/Code/ucas/src/nodesat.c:858:7: note: Assuming the condition is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:858:7: note: Left side of '||' is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:859:6: note: Assuming the condition is false
+  859 |             TYW(ta) != TYW(t))) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:856:2: note: Taking false branch
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+/home/andrew/Code/ucas/src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:876:2: note: Control jumps to 'case O_COPYSIGN:'  at line 884
+  876 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:885:11: note: Calling 'fsign'
+  885 |                 lit s = fsign(&xb);
+      |                         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:666:46: note: The left operand of '-' is a garbage value
+  666 |         return aig_mux(B.g, x->nan, x->nb.b[x->nb.w - 1], x->s);
+      |                                             ~~~~~~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:697:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  697 |         if (x->elo >= 2 - (1 << (F->eb - 1)))
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/nodesat.c:719:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  719 |                 fp_pack(B.g, &w, r, fp_fmt(TYW(t)), 0);
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:720:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  720 |                 flush(r, &w, fp_fmt(TYW(t)));
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:730:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  730 |         int e, emax = (1 << (F->eb - 1)) - 1;
+      |                        ^ ~~
+/home/andrew/Code/ucas/src/nodesat.c:740:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  740 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:740:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/nodesat.c:745:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  745 |         case O_SQRT: return "a float square root";
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:762:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:762:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:763:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:763:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:773:8: warning: no header providing "O_NONE" is directly included [misc-include-cleaner]
+  773 |                 op = O_NONE;
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:774:13: warning: no header providing "IS_TEX" is directly included [misc-include-cleaner]
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/nodesat.c:774:28: warning: no header providing "IS_FETCH" is directly included [misc-include-cleaner]
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                                   ^
+/home/andrew/Code/ucas/src/nodesat.c:774:45: warning: no header providing "IS_TEXEL" is directly included [misc-include-cleaner]
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                                                    ^
+/home/andrew/Code/ucas/src/nodesat.c:775:12: warning: no header providing "O_FETCH_LAYER" is directly included [misc-include-cleaner]
+  775 |             op != O_FETCH_LAYER) {
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  780 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/nodesat.c:782:19: warning: no header providing "fbits" is directly included [misc-include-cleaner]
+  782 |                 fp_const(g, &r, fbits(TYW(t), N.kr[n]), F);
+      |                                 ^
+/home/andrew/Code/ucas/src/nodesat.c:782:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  782 |                 fp_const(g, &r, fbits(TYW(t), N.kr[n]), F);
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:787:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:787:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/nodesat.c:792:8: warning: Out of bound access to memory after the end of 'B.par' [clang-analyzer-security.ArrayBound]
+  792 |                         x = B.par[s];
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: '?' condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: '?' condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Left side of '&&' is false
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: note: Control jumps to 'case O_VAR:'  at line 784
+  780 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:787:10: note: Assuming 'q' is non-null
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                        ^
+/home/andrew/Code/ucas/src/nodesat.c:787:10: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/nodesat.c:787:16: note: Assuming 's' is >= 64
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                              ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:787:24: note: Left side of '||' is true
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                                      ^
+/home/andrew/Code/ucas/src/nodesat.c:787:10: note: Assuming 'q' is null
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                        ^
+/home/andrew/Code/ucas/src/nodesat.c:787:12: note: Left side of '&&' is false
+  787 |                 while (q && (s >= 64 || !((q->bound >> s) & 1)))
+      |                          ^
+/home/andrew/Code/ucas/src/nodesat.c:789:7: note: 'q' is null
+  789 |                 if (q)
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:789:3: note: Taking false branch
+  789 |                 if (q)
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:791:12: note: Assuming 's' is < field 'npar'
+  791 |                 else if (s < B.npar)
+      |                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:791:8: note: Taking true branch
+  791 |                 else if (s < B.npar)
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:792:8: note: Access of 'B.par' at an overflowing index, while it holds only 8 'struct word' elements
+  792 |                         x = B.par[s];
+      |                             ^~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:798:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  798 |                 w_resize(&w, &x, TYW(t), 0);
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:807:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  807 |                 if (TYK(ta) == K_FLOAT) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:857:27: warning: no header providing "O_COPYSIGN" is directly included [misc-include-cleaner]
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                  ^
+/home/andrew/Code/ucas/src/nodesat.c:857:47: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                      ^
+/home/andrew/Code/ucas/src/nodesat.c:858:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:858:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:859:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  859 |             TYW(ta) != TYW(t))) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:859:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  859 |             TYW(ta) != TYW(t))) {
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:870:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:874:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  874 |                         flush(&xb, &wb, fp_fmt(TYW(N.ty[N.b[n]])));
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:894:11: warning: The left operand of '^' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  894 |                         xb.s = L_NOT(xb.s);
+      |                                ^
+/home/andrew/Code/ucas/src/sat.h:19:23: note: expanded from macro 'L_NOT'
+   19 | #define L_NOT(a) ((a) ^ 1u)
+      |                    ~  ^
+/home/andrew/Code/ucas/src/nodesat.c:760:11: note: Assuming index is less than the number of 'uint8_t' elements in the region
+  760 |         int op = N.op[n];
+      |                  ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: '?' condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: '?' condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Left side of '&&' is false
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:847:10: note: Assuming index is non-negative
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+/home/andrew/Code/ucas/src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nodesat.c:856:22: note: Assuming 'op' is equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:34: note: Left side of '||' is true
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:858:7: note: Assuming the condition is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:858:7: note: Left side of '||' is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:859:6: note: Assuming the condition is false
+  859 |             TYW(ta) != TYW(t))) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:856:2: note: Taking false branch
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+/home/andrew/Code/ucas/src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:876:2: note: Control jumps to 'case O_SUB:'  at line 892
+  876 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:893:7: note: 'op' is equal to O_SUB
+  893 |                 if (op == O_SUB)
+      |                     ^~
+/home/andrew/Code/ucas/src/nodesat.c:893:3: note: Taking true branch
+  893 |                 if (op == O_SUB)
+      |                 ^
+/home/andrew/Code/ucas/src/nodesat.c:894:11: note: The left operand of '^' is a garbage value
+  894 |                         xb.s = L_NOT(xb.s);
+      |                                ^
+/home/andrew/Code/ucas/src/sat.h:19:23: note: expanded from macro 'L_NOT'
+   19 | #define L_NOT(a) ((a) ^ 1u)
+      |                    ~  ^
+/home/andrew/Code/ucas/src/nodesat.c:917:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  917 |                 fp_const(g, &rc, fbits(TYW(t), 1 / N.kr[cb]), F);
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:924:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  924 |                 if (TYW(N.ty[N.c[n]]) != TYW(t)) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:924:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  924 |                 if (TYW(N.ty[N.c[n]]) != TYW(t)) {
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:946:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  946 |                 fp_const(g, &one, fbits(TYW(t), 1.0), F);
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:947:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  947 |                 fp_const(g, &mone, fbits(TYW(t), -1.0), F);
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:949:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  949 |                 w_const(&z, TYW(t), 0);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:954:3: warning: 3rd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+  954 |                 fp_mux(g, &r, xa.nan, &xa, &r);
+      |                 ^             ~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:760:11: note: Assuming index is less than the number of 'uint8_t' elements in the region
+  760 |         int op = N.op[n];
+      |                  ^~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:761:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:762:26: note: '?' condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:763:27: note: '?' condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+/home/andrew/Code/ucas/src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:774:13: note: Left side of '&&' is false
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:847:10: note: Assuming index is non-negative
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+/home/andrew/Code/ucas/src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/nodesat.c:856:22: note: Assuming 'op' is not equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:856:37: note: Assuming 'op' is not equal to O_MUL
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:856:52: note: Assuming 'op' is not equal to O_MIN
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                                           ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:6: note: Assuming 'op' is not equal to O_MAX
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:21: note: Assuming 'op' is not equal to O_COPYSIGN
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:41: note: Assuming 'op' is not equal to O_FMA
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:857:56: note: Assuming 'op' is not equal to O_DIV
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                               ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:857:69: note: Left side of '&&' is false
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                                            ^
+/home/andrew/Code/ucas/src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+/home/andrew/Code/ucas/src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+/home/andrew/Code/ucas/src/nodesat.c:876:2: note: Control jumps to 'case O_SIGN:'  at line 941
+  876 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:954:3: note: 3rd function call argument is an uninitialized value
+  954 |                 fp_mux(g, &r, xa.nan, &xa, &r);
+      |                 ^             ~~~~~~
+/home/andrew/Code/ucas/src/nodesat.c:959:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  959 |                         if (TYW(ta) == TYW(t))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:959:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  959 |                         if (TYW(ta) == TYW(t))
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:976:7: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+  976 |         case O_FLOOR:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:977:7: warning: no header providing "O_CEIL" is directly included [misc-include-cleaner]
+  977 |         case O_CEIL:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:978:7: warning: no header providing "O_ROUNDEVEN" is directly included [misc-include-cleaner]
+  978 |         case O_ROUNDEVEN:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:982:7: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  982 |         case O_ASFLOAT:
+      |              ^
+/home/andrew/Code/ucas/src/nodesat.c:983:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  983 |                 w_resize(&w, V(a), TYW(t), 0);
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:984:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  984 |                 if (TYW(t) == 32)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1046:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1046 |         if (B.why || aig_nodes(B.g) > MAXAIG) {
+      |                                       ^
+/home/andrew/Code/ucas/src/nodesat.c:44:17: note: expanded from macro 'MAXAIG'
+   44 | #define MAXAIG (4 << 20)    /* AIG nodes before giving up */
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/nodesat.c:1048:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1048 |                 if (TYK(N.ty[n]) == K_FLOAT) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1050:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1050 |                         fp_const(B.g, &z, 0, fp_fmt(TYW(N.ty[n])));
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1069:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1069 |         if (TYK(t) == K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1070:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1070 |                 fp_pack(B.g, &w, FV(v), fp_fmt(TYW(t)), 1);
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1099:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1099 |                 if (loops.flags[e] & LF_NEGUNDEF)
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/calc.h:32:21: note: expanded from macro 'LF_NEGUNDEF'
+   32 | #define LF_NEGUNDEF 1        /* hi < lo - 1 is outside the domain */
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:1115:27: warning: no header providing "sg_lower" is directly included [misc-include-cleaner]
+ 1115 |                 uint32_t v = blast(&cc, sg_lower(loops.init[s + k]));
+      |                                         ^
+/home/andrew/Code/ucas/src/nodesat.c:1148:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1148 |         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1148:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1148 |         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64) {
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1156:2: warning: no header providing "param_bounds" is directly included [misc-include-cleaner]
+ 1156 |         param_bounds(p, &lo, &hi);
+      |         ^
+/home/andrew/Code/ucas/src/nodesat.c:1178:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1178 |         if (TYK(p->ty) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1180:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1180 |         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64 && (!p->ranged ||
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1180:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1180 |         if (TYK(p->ty) == K_UINT && TYW(p->ty) == 64 && (!p->ranged ||
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1185:7: warning: no header providing "bits_for" is directly included [misc-include-cleaner]
+ 1185 |                 k = bits_for((uint64_t)hi);
+      |                     ^
+/home/andrew/Code/ucas/src/nodesat.c:1191:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1191 |                 if (lo >= -((int64_t)1 << (k - 1)) && hi < ((int64_t)1 << (k - 1)))
+      |                             ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/nodesat.c:1191:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1191 |                 if (lo >= -((int64_t)1 << (k - 1)) && hi < ((int64_t)1 << (k - 1)))
+      |                                                             ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/nodesat.c:1205:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1205 |         int w = TYW(p->ty), i;
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1209:15: warning: no header providing "fkey" is directly included [misc-include-cleaner]
+ 1209 |         int64_t lo = fkey(w, rlo), hi = fkey(w, rhi);
+      |                      ^
+/home/andrew/Code/ucas/src/nodesat.c:1213:6: warning: no header providing "fromkey" is directly included [misc-include-cleaner]
+ 1213 |         if (fromkey(w, lo) < rlo)
+      |             ^
+/home/andrew/Code/ucas/src/nodesat.c:1242:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1242 |         if (TYK(N.ty[e]) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1275:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1275 |                 r |= TYK(f->p[j].ty) == K_FLOAT;
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/nodesat.c:1275:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1275 |                 r |= TYK(f->p[j].ty) == K_FLOAT;
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1294:12: warning: no header providing "nsat_res" is directly included [misc-include-cleaner]
+ 1294 |     struct nsat_res *out)
+      |            ^
+/home/andrew/Code/ucas/src/nodesat.c:1308:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1308 |             (!TY_ISINT(N.ty[a]) || nsat_has_float(f, 0)))) {
+      |               ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1326:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1326 |                 if (TYK(pt) == K_FLOAT) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1327:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1327 |                         if (TYW(pt) == 32)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/nodesat.c:1338:6: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+ 1338 |         b = mk_cast(N.ty[a], b);
+      |             ^
+/home/andrew/Code/ucas/src/nodesat.c:1358:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1358 |         if (TYK(N.ty[a]) == K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/nodesat.c:1359:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1359 |                 const struct fpfmt *F = fp_fmt(TYW(N.ty[a]));
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

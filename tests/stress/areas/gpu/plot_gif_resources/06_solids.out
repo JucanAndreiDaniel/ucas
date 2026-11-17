@@ -1,0 +1,95 @@
+> area x^2 from 0 to 1 nofile
+area under x^2
+  x in [0, 1]: given
+  ∫ x^2 dx from 0 to 1
+  antiderivative: x^3/3
+  exact: F(1) - F(0) = 0.333333333333333 = 1/3
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 0.333333333333333, estimated error 3.7e-15
+  the two agree to 0
+  above the axis everywhere: the area is 1/3 = 0.3333
+  image: 640x440, 8959 bytes
+  (nofile: GIF checksum c956faf9)
+> revolve x^2 from 0 to 1 nofile
+solid of revolution: the region between x^2 and the x-axis about the x-axis
+  note: about the x-axis (say about y, about y = 2, about x = -1 for another)
+  x in [0, 1]: given
+  method: disks, V = pi ∫ (x^2)^2 dx from 0 to 1
+    antiderivative of the integrand: x^5/5
+    exact: V = 0.628318530717959 = pi/5
+    numeric (Gauss-Kronrod): 0.628318530717959, estimated error 6.9e-15
+    the two agree to 8.7e-17
+  check: shells in the radius on a grid: V ≈ 0.628322 (relative difference 6e-06, the grid's resolution)
+  volume: pi/5 = 0.6283 (exact)
+  region: area 1/3 = 0.3333, centroid (3/4 = 0.75, 3/10 = 0.3) (exact)
+  Pappus: V = 2pi d A, d = 3/10 = 0.3 from the centroid to the axis: 0.6283 (agrees)
+  surface area (the curves swept around the x-axis, without the end disks):
+    x^2: S = 2pi ∫ |x^2| sqrt(1 + (2x)^2) dx
+      exact: 3.8097297048578
+      numeric: 3.8097297048578, estimated error 4.2e-14
+  the region sweeps from 0 to 2pi in 36 steps
+  animation: 600x500, 37 frames (5.2 s), 206464 bytes
+  (nofile: GIF checksum d870e43c)
+> arclength sin(x) from 0 to 3 nofile
+arc length of sin(x)
+  x in [0, 3]: given
+  L = ∫ sqrt(1 + (cos(x))^2) dx from 0 to 3
+  no antiderivative found: numeric only
+  numeric (adaptive Gauss-Kronrod 7-15, 45 evaluations): 3.62028924521251, estimated error 4e-14
+  (the chord from end to end: 3.003; the arc is never shorter)
+  arc length: 3.62
+> surfacearea x^2 from 0 to 1 nofile
+surface of revolution: x^2 about the x-axis
+  note: about the x-axis (say about y, about y = 2, about x = -1 for another)
+  x in [0, 1]: given
+  surface area (the curves swept around the x-axis, without the end disks):
+    x^2: S = 2pi ∫ |x^2| sqrt(1 + (2x)^2) dx
+      exact: 3.8097297048578
+      numeric: 3.8097297048578, estimated error 4.2e-14
+> volume x^2 from 0 to 1 nofile
+solid of revolution: the region between x^2 and the x-axis about the x-axis
+  note: about the x-axis (say about y, about y = 2, about x = -1 for another)
+  x in [0, 1]: given
+  method: disks, V = pi ∫ (x^2)^2 dx from 0 to 1
+    antiderivative of the integrand: x^5/5
+    exact: V = 0.628318530717959 = pi/5
+    numeric (Gauss-Kronrod): 0.628318530717959, estimated error 6.9e-15
+    the two agree to 8.7e-17
+  check: shells in the radius on a grid: V ≈ 0.628322 (relative difference 6e-06, the grid's resolution)
+  volume: pi/5 = 0.6283 (exact)
+  region: area 1/3 = 0.3333, centroid (3/4 = 0.75, 3/10 = 0.3) (exact)
+  Pappus: V = 2pi d A, d = 3/10 = 0.3 from the centroid to the axis: 0.6283 (agrees)
+> centroid x^2 from 0 to 1 nofile
+centroid of the region between x^2 and the x-axis
+  x in [0, 1]: given
+  region: area 1/3 = 0.3333, centroid (3/4 = 0.75, 3/10 = 0.3) (exact)
+  Pappus: turned about the x-axis it sweeps 2pi*|ybar|*A = 0.6283; about the y-axis 2pi*|xbar|*A = 1.571 (when the region stays on one side)
+> area sin x from 0 to pi nofile
+area under sin(x)
+  x in [0, 3.142 (pi)]: given
+  ∫ sin(x) dx from 0 to 3.142 (pi)
+  antiderivative: -cos(x)
+  exact: F(pi) - F(0) = 2
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 2, estimated error 2.2e-14
+  the two agree to 0
+  above the axis everywhere: the area is 2
+  image: 640x440, 9366 bytes
+  (nofile: GIF checksum 60a9517c)
+> revolve sin x from 0 to pi about y nofile
+solid of revolution: the region between sin(x) and the x-axis about the y-axis
+  note: the region between the curve and the x-axis (with two curves, the region between them)
+  x in [0, 3.142 (pi)]: given
+  method: shells, V = 2pi ∫ |x| |sin(x)| dx from 0 to pi
+    antiderivative of the integrand: sin(x) - x*cos(x)
+    exact: V = 19.7392088021787 = 2pi^2
+    numeric (Gauss-Kronrod): 19.7392088021787, estimated error 2.2e-13
+    the two agree to 5.6e-15
+  check: washers in y on a grid: V ≈ 19.7392 (relative difference 9e-07, the grid's resolution)
+  volume: 2pi^2 = 19.74 (exact)
+  region: area 2, centroid (pi/2 = 1.571, pi/8 = 0.3927) (exact)
+  Pappus: V = 2pi d A, d = pi/2 = 1.571 from the centroid to the axis: 19.74 (agrees)
+  surface area (the curves swept around the y-axis, without the end disks):
+    sin(x): S = 2pi ∫ |x| sqrt(1 + (cos(x))^2) dx
+      numeric: 37.7038409116197, estimated error 4.1e-13
+  the region sweeps from 0 to 2pi in 36 steps
+  animation: 600x500, 37 frames (5.2 s), 309241 bytes
+  (nofile: GIF checksum 06014f04)

@@ -1,0 +1,11 @@
+> f(x: u8) = (x*5+3) xor (x>>2)
+> find f
+find f: 256 points, computing in u8, costs from gt1030
+  cost 7   [3, 8, 13, 18, 22, 29, 32, 39, 41, 50, 55, 56, 60, 71, 74, 77, 87, 92, 89, 102, 98, 105, 116, 115, 125, 134, 131, 140, 136, 147, 158, 153, 171, 160, 165, 186, 190, 181, 200, 207, 193, 218, 223, 208, 212, 239, 226, 229, 255, 244, 241, 14, 10, 1, 28, 27, 21, 46, 43, 36, 32, 59, 54, 49, 83, 88, 93, 66,… (875 more characters) lookup table (baseline)
+  [searched every term up to cost 4: 65536 distinct columns, bank full; 'more' continues]
+> g(x: u8) = (x*7+1) mod 251
+> stoke g steps 2000 restarts 1 seed 42
+stoke g under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  1 chain of 2000 proposals, seed 42; g as written costs 16.5
+  2000 proposals, 1669 accepted, 0 at distance 0 on the 40 tests (0 counterexamples joined them), 0 verified
+  -> nothing cheaper than 16.5 was found and verified (the search is stochastic: more `steps`, another `seed`)

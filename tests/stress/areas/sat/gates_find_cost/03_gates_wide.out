@@ -1,0 +1,144 @@
+> f(x: u6) = { y = x; y = (y << 1 | y >> 5) xor 0x2a; y }
+> g(x: u6) = x + 1
+> sega(d: u4 in 0..9) = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1][d]
+> gates f
+gates for f: 6 input bits -> 6 output bits, basis c
+  minimal: cost 3, 3 steps (no program of cost <= 2 exists; 89 candidates searched)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = not(x0)                   = ~x0
+  t1 = not(x2)                   = ~x2
+  t2 = not(x4)                   = ~x4
+  r5 = t2
+  r4 = x3
+  r3 = t1
+  r2 = x1
+  r1 = t0
+  r0 = x5
+> gates f nodes 10
+gates for f: 6 input bits -> 6 output bits, basis c
+  exact search stopped (node budget at cost 3); Shannon decomposition instead:
+  cost 3, 3 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = not(x0)                   = ~x0
+  t1 = not(x2)                   = ~x2
+  t2 = not(x4)                   = ~x4
+  r5 = t2
+  r4 = x3
+  r3 = t1
+  r2 = x1
+  r1 = t0
+  r0 = x5
+> gates f nodes 0
+gates for f: 6 input bits -> 6 output bits, basis c
+  exact search stopped (node budget at cost 3); Shannon decomposition instead:
+  cost 3, 3 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = not(x0)                   = ~x0
+  t1 = not(x2)                   = ~x2
+  t2 = not(x4)                   = ~x4
+  r5 = t2
+  r4 = x3
+  r3 = t1
+  r2 = x1
+  r1 = t0
+  r0 = x5
+> gates f max 2
+gates for f: 6 input bits -> 6 output bits, basis c
+  exact search stopped (cost limit at cost 2); Shannon decomposition instead:
+  cost 3, 3 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = not(x0)                   = ~x0
+  t1 = not(x2)                   = ~x2
+  t2 = not(x4)                   = ~x4
+  r5 = t2
+  r4 = x3
+  r3 = t1
+  r2 = x1
+  r1 = t0
+  r0 = x5
+> gates f basis avx512 nodes 50
+gates for f: 6 input bits -> 6 output bits, basis avx512
+  exact search stopped (node budget at cost 3); Shannon decomposition instead:
+  cost 3, 3 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = ternlog(x0, x1, x2, 0x0f)       = (~x2 & ~x1 & ~x0) | (~x2 & x1 & ~x0) | (x2 & ~x1 & ~x0) | (x2 & x1 & ~x0)
+  t1 = ternlog(x0, x1, x2, 0x55)       = (~x2 & ~x1 & ~x0) | (~x2 & ~x1 & x0) | (~x2 & x1 & ~x0) | (~x2 & x1 & x0)
+  t2 = ternlog(x0, x1, x4, 0x55)       = (~x4 & ~x1 & ~x0) | (~x4 & ~x1 & x0) | (~x4 & x1 & ~x0) | (~x4 & x1 & x0)
+  r5 = t2
+  r4 = x3
+  r3 = t1
+  r2 = x1
+  r1 = t0
+  r0 = x5
+> gates g
+gates for g: 6 input bits -> 6 output bits, basis c
+  exact search stopped (node budget at cost 6); Shannon decomposition instead:
+  cost 12, 12 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 64 care inputs
+  t0 = not(x0)                   = ~x0
+  t1 = xor(x0, x1)               = x0 xor x1
+  t2 = and(x0, x1)               = x0 & x1
+  t3 = xor(x2, t2)               = x2 xor t2
+  t4 = and(x2, t2)               = x2 & t2
+  t5 = xor(x3, t4)               = x3 xor t4
+  t6 = and(x2, x3)               = x2 & x3
+  t7 = and(t2, t6)               = t2 & t6
+  t8 = xor(x4, t7)               = x4 xor t7
+  t9 = and(x4, t2)               = x4 & t2
+  t10 = and(t6, t9)               = t6 & t9
+  t11 = xor(x5, t10)               = x5 xor t10
+  r5 = t11
+  r4 = t8
+  r3 = t5
+  r2 = t3
+  r1 = t1
+  r0 = t0
+> gates sega
+gates for sega: 4 input bits -> 1 output bit, basis c
+  6 of 16 input combinations are don't-cares (outside the domain)
+  exact search stopped (node budget at cost 2); Shannon decomposition instead:
+  cost 4, 4 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 10 care inputs
+  t0 = or(d1, d3)                = d1 | d3
+  t1 = xor(d0, d2)               = d0 xor d2
+  t2 = not(t1)                   = ~t1
+  t3 = or(t0, t2)                = t0 | t2
+  r0 = t3
+> gates sega as c
+gates for sega: 4 input bits -> 1 output bit, basis c
+  6 of 16 input combinations are don't-cares (outside the domain)
+  exact search stopped (node budget at cost 2); Shannon decomposition instead:
+  cost 4, 4 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 10 care inputs
+  t0 = or(d1, d3)                = d1 | d3
+  t1 = xor(d0, d2)               = d0 xor d2
+  t2 = not(t1)                   = ~t1
+  t3 = or(t0, t2)                = t0 | t2
+  r0 = t3
+
+/* sega, basis c: bits are independent lanes, so the same code also
+   runs bit-sliced on whole words */
+static inline uint32_t
+sega_gates(uint32_t d)
+{
+	uint32_t d0 = d >> 0 & 1;
+	uint32_t d1 = d >> 1 & 1;
+	uint32_t d2 = d >> 2 & 1;
+	uint32_t d3 = d >> 3 & 1;
+	uint32_t t0 = d1 | d3;
+	uint32_t t1 = d0 ^ d2;
+	uint32_t t2 = ~t1;
+	uint32_t t3 = t0 | t2;
+	return (t3 & 1) << 0;
+}
+> gates 5
+gates for 5: 0 input bits -> 3 output bits (3 constant), basis c
+  minimal: cost 0, 0 steps (no program of cost <= -1 exists; 0 candidates searched)
+  checked: the program reproduces every output bit on all 1 care inputs
+  r2 = 1
+  r1 = 0
+  r0 = 1
+> gates (a: u1, b: u1, c: u1, d: u1, e: u1, f: u1, g: u1) = a & b
+03_gates_wide.ucas:14:13: error: expected ')', found ','
+    gates (a: u1, b: u1, c: u1, d: u1, e: u1, f: u1, g: u1) = a & b
+                ^

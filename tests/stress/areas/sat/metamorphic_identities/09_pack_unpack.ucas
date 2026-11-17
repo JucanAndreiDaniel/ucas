@@ -1,0 +1,50 @@
+# Pack/unpack and rotate identities (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: u8) = ((x >> 4) << 4) | (x & 0x0F)
+g01(x: u8) = x
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: u8) = (x & 0xF0) | (x & 0x0F)
+g02(x: u8) = x
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u16) = ((x >> 8) << 8) | (x & 0x00FF)
+g03(x: u16) = x
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u16) = (x & 0xFF00) + (x & 0x00FF)
+g04(x: u16) = x
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u16) = ((x >> 12) << 12) | (((x >> 8) & 0xF) << 8) | (((x >> 4) & 0xF) << 4) | (x & 0xF)
+g05(x: u16) = x
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: u32) = ((x >> 16) << 16) | (x & 0xFFFF)
+g06(x: u32) = x
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u32) = (x & 0xFFFF0000) | (x & 0x0000FFFF)
+g07(x: u32) = x
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: u8) = (x << 4) | (x >> 4)
+g08(x: u8) = ((x & 0x0F) << 4) | ((x >> 4) & 0x0F)
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: u8) = ((x << 1) & 0xFF) | (x >> 7)
+g09(x: u8) = ((x & 0x7F) << 1) | ((x >> 7) & 1)
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: u8) = ((x >> 3) << 3) | (x & 0x07)
+g10(x: u8) = x
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: u16) = ((x << 8) & 0xFFFF) | (x >> 8)
+g11(x: u16) = ((x & 0x00FF) << 8) | ((x >> 8) & 0x00FF)
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u32) = ((x << 16) & 0xFFFFFFFF) | (x >> 16)
+g12(x: u32) = ((x & 0xFFFF) << 16) | ((x >> 16) & 0xFFFF)
+equiv f12 g12

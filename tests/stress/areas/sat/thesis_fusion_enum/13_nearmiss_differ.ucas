@@ -1,0 +1,26 @@
+# Near-miss negative controls: these pairs are NOT equal.
+# equiv must report differ with a witness; a false 'equal' is unsound.
+nf_n1(x: u8, y: u8, z: u8) = (x - y)
+ng_n1(x: u8, y: u8, z: u8) = (y - x)
+equiv nf_n1 ng_n1
+nf_n2(x: u8, y: u8, z: u8) = ((x - y) - z)
+ng_n2(x: u8, y: u8, z: u8) = (x - (y - z))
+equiv nf_n2 ng_n2
+nf_n3(x: u8, y: u8, z: u8) = ((x + y) & z)
+ng_n3(x: u8, y: u8, z: u8) = ((x & z) + (y & z))
+equiv nf_n3 ng_n3
+nf_n4(x: u8, y: u8, z: u8) = (x + (y & z))
+ng_n4(x: u8, y: u8, z: u8) = ((x + y) & (x + z))
+equiv nf_n4 ng_n4
+nf_n5(x: u8, y: u8, z: u8) = ((x xor y) + z)
+ng_n5(x: u8, y: u8, z: u8) = ((x + z) xor (y + z))
+equiv nf_n5 ng_n5
+nf_n6(x: u8, y: u8, z: u8) = (~(x + y))
+ng_n6(x: u8, y: u8, z: u8) = ((~x) + (~y))
+equiv nf_n6 ng_n6
+nf_n7(x: u8, y: u8, z: u8) = (x * (y xor z))
+ng_n7(x: u8, y: u8, z: u8) = ((x * y) xor (x * z))
+equiv nf_n7 ng_n7
+nf_n8(x: u8, y: u8, z: u8) = ((x << y) | (x >> z))
+ng_n8(x: u8, y: u8, z: u8) = ((x << z) | (x >> y))
+equiv nf_n8 ng_n8

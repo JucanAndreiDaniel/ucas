@@ -1,0 +1,14 @@
+# Fusion pairs (Semantic Fusion / YinYang): one generator tree,
+# two provably-equal emitters. equiv must prove equal; error ~0.
+f_bool_demorgan_and(x: u8, y: u8) = (~(x & y))
+g_bool_demorgan_and(x: u8, y: u8) = ((~x) | (~y))
+equiv f_bool_demorgan_and g_bool_demorgan_and
+error g_bool_demorgan_and ~ f_bool_demorgan_and
+f_bool_demorgan_or(x: u8, y: u8) = (~(x | y))
+g_bool_demorgan_or(x: u8, y: u8) = ((~x) & (~y))
+equiv f_bool_demorgan_or g_bool_demorgan_or
+error g_bool_demorgan_or ~ f_bool_demorgan_or
+f_bool_absorb(x: u8, y: u8) = (x & (x | y))
+g_bool_absorb(x: u8, y: u8) = x
+equiv f_bool_absorb g_bool_absorb
+error g_bool_absorb ~ f_bool_absorb

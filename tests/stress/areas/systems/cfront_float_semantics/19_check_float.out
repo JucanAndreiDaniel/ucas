@@ -1,0 +1,22 @@
+> c optimize nofile check budget 3
+c optimize: 3 functions, 1 rewrite proved (0 exhaustive, 0 by SAT, 1 by algebra) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 11.0 -> 4.0 cycles
+  fdiv (line 2): x / 2 as x * 0.5
+    proof: algebra (derivation: x / 2^k and x * 2^-k round the same real number once (2^-k is exact), the same on 0, inf, NaN); cost 11.0 -> 4.0
+    before: {return a/2.0f;}
+  fadd (line 1): no cheaper form: lowered: 2 inputs, cost 4.0
+  dmad (line 3): no cheaper form: lowered: 3 inputs, cost 8.0
+  check: fadd not tested (a parameter or result the harness cannot make)
+  check: fdiv not tested (a parameter or result the harness cannot make)
+  check: dmad not tested (a parameter or result the harness cannot make)
+  check: the original does not compile:
+cc: error: unrecognized command-line option ‘-fsanitize-minimal-runtime’
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  #pragma STDC FP_CONTRACT OFF
+  float fadd(float a,float b){return a+b;}
+  float fdiv(float a){
+  	return (float)((float)(((float)0x1p-1f)) * (float)((a)));
+  }
+  double dmad(double a,double b,double c){return a*b+c;}

@@ -1,0 +1,837 @@
+/home/andrew/Code/ucas/src/fpfold.c:28:26: warning: no header providing "model" is directly included [misc-include-cleaner]
+   22 | 
+   23 | #include <math.h>
+   24 | #include <stdlib.h>
+   25 | #include <string.h>
+   26 | 
+   27 | int
+   28 | model_folds(const struct model *m, ty_t from, ty_t mid)
+      |                          ^
+/home/andrew/Code/ucas/src/fpfold.c:28:36: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   28 | model_folds(const struct model *m, ty_t from, ty_t mid)
+      |                                    ^
+/home/andrew/Code/ucas/src/fpfold.c:40:12: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   40 | round_trip(nid n, nid *x)
+      |            ^
+/home/andrew/Code/ucas/src/fpfold.c:44:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+   44 |         if (N.op[n] != O_CAST || TYK(N.ty[n]) != K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:44:17: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+   44 |         if (N.op[n] != O_CAST || TYK(N.ty[n]) != K_FLOAT)
+      |                        ^
+/home/andrew/Code/ucas/src/fpfold.c:44:27: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+   44 |         if (N.op[n] != O_CAST || TYK(N.ty[n]) != K_FLOAT)
+      |                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:44:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:44:43: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+   44 |         if (N.op[n] != O_CAST || TYK(N.ty[n]) != K_FLOAT)
+      |                                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:47:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |         if (N.op[c] != O_CAST || TYK(N.ty[c]) != K_FLOAT ||
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:48:33: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+   48 |             N.ty[N.a[c]] != N.ty[n] || TYW(N.ty[c]) >= TYW(N.ty[n]))
+      |                                        ^
+/home/andrew/Code/ucas/src/fpfold.c:48:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/fpfold.c:48:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   48 |             N.ty[N.a[c]] != N.ty[n] || TYW(N.ty[c]) >= TYW(N.ty[n]))
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/fpfold.c:57:21: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   24 | reach_set(nid root, uint8_t *in, uint32_t lim)
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:57:34: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   57 | reach_set(nid root, uint8_t *in, uint32_t lim)
+      |                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:59:12: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+   59 |         nid *st = xmalloc((size_t)lim * sizeof *st), n;
+      |                   ^
+/home/andrew/Code/ucas/src/fpfold.c:70:18: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+   70 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF)
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:70:40: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   70 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF)
+      |                                                      ^
+/home/andrew/Code/ucas/src/fpfold.c:70:60: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+   70 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF)
+      |                                                                          ^
+/home/andrew/Code/ucas/src/fpfold.c:72:18: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+   72 |                 if (N.op[n] == O_TABLE) {
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:99:6: warning: Access to field 'nfold' results in a dereference of a null pointer (loaded from variable 'm') [clang-analyzer-core.NullDereference]
+   99 |         if (m->nfold == 0)
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:934:6: note: Assuming the condition is false
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:934:2: note: Taking false branch
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:936:37: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:2: note: Taking false branch
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:941:9: note: Assuming the condition is true
+  941 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:941:2: note: Loop condition is true.  Entering loop body
+  941 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:942:7: note: Assuming the condition is true
+  942 |                 if (cmdp_kw(p, "model")) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:942:3: note: Taking true branch
+  942 |                 if (cmdp_kw(p, "model")) {
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:943:8: note: Assuming the condition is false
+  943 |                         if (!cmdp_word(p, w, sizeof w) ||
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:943:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:944:9: note: Value assigned to 'm'
+  944 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:944:8: note: Assuming pointer value is null
+  944 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:943:4: note: Taking true branch
+  943 |                         if (!cmdp_word(p, w, sizeof w) ||
+      |                         ^
+/home/andrew/Code/ucas/src/fpfold.c:941:9: note: Assuming the condition is false
+  941 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:941:2: note: Loop condition is false. Execution continues on line 951
+  941 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:952:19: note: Passing null pointer value via 2nd parameter 'm'
+  952 |         cmd_foldproof(f, m);
+      |                          ^
+/home/andrew/Code/ucas/src/fpfold.c:952:2: note: Calling 'cmd_foldproof'
+  952 |         cmd_foldproof(f, m);
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: Assuming field 'anon' is 0
+  846 |         const char *fn = f->anon ? shared_str(f->body, 100) : sym_str(f->name);
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: '?' condition is false
+/home/andrew/Code/ucas/src/fpfold.c:850:14: note: Assuming 'g' is >= 'lim'
+  850 |         for (g = 1; g < lim; g++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:850:2: note: Loop condition is false. Execution continues on line 853
+  850 |         for (g = 1; g < lim; g++)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:853:21: note: Passing null pointer value via 1st parameter 'm'
+  853 |         nfold = fold_marks(m, f->body, fo, lim);
+      |                            ^
+/home/andrew/Code/ucas/src/fpfold.c:853:10: note: Calling 'fold_marks'
+  853 |         nfold = fold_marks(m, f->body, fo, lim);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:99:6: note: Access to field 'nfold' results in a dereference of a null pointer (loaded from variable 'm')
+   99 |         if (m->nfold == 0)
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:101:7: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  101 |         in = xcalloc(lim, 1);
+      |              ^
+/home/andrew/Code/ucas/src/fpfold.c:154:47: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+  154 |         case O_CONST: case O_UNDEF: case O_VAR: case O_LOOP:
+      |                                                      ^
+/home/andrew/Code/ucas/src/fpfold.c:161:7: warning: no header providing "mk_table" is directly included [misc-include-cleaner]
+  161 |                 r = mk_table(e, N.b[n]);
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:170:18: warning: no header providing "O_ATOMIC" is directly included [misc-include-cleaner]
+  170 |                     N.op[n] == O_ATOMIC || N.op[n] == O_BARRIER ? n :
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:170:41: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+  170 |                     N.op[n] == O_ATOMIC || N.op[n] == O_BARRIER ? n :
+      |                                                       ^
+/home/andrew/Code/ucas/src/fpfold.c:171:27: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  171 |                     N.op[n] == O_CAST ? mk_cast(N.ty[n], a) :
+      |                                         ^
+/home/andrew/Code/ucas/src/fpfold.c:172:18: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+  172 |                     N.op[n] == O_INDEX ? mk_index(a, b) : mk_like(n, a, b, c);
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:172:28: warning: no header providing "mk_index" is directly included [misc-include-cleaner]
+  172 |                     N.op[n] == O_INDEX ? mk_index(a, b) : mk_like(n, a, b, c);
+      |                                          ^
+/home/andrew/Code/ucas/src/fpfold.c:172:45: warning: no header providing "mk_like" is directly included [misc-include-cleaner]
+  172 |                     N.op[n] == O_INDEX ? mk_index(a, b) : mk_like(n, a, b, c);
+      |                                                           ^
+/home/andrew/Code/ucas/src/fpfold.c:205:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  205 |         f.w = TYW(t);
+      |               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/fpfold.c:230:12: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  230 | ku(ty_t t, uint64_t v)
+      |            ^
+/home/andrew/Code/ucas/src/fpfold.c:232:9: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  232 |         return mk_const_i(t, (int64_t)v);
+      |                ^
+/home/andrew/Code/ucas/src/fpfold.c:232:24: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  232 |         return mk_const_i(t, (int64_t)v);
+      |                               ^
+/home/andrew/Code/ucas/src/fpfold.c:240:32: warning: Right operand is negative in left shift [clang-analyzer-core.BitwiseShift]
+  240 |         uint64_t half1 = ((uint64_t)1 << (D - 1)) - 1;
+      |                                       ^
+/home/andrew/Code/ucas/src/fpfold.c:934:6: note: Assuming the condition is false
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:934:2: note: Taking false branch
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:936:37: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:2: note: Taking false branch
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:941:9: note: Assuming the condition is false
+  941 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:941:2: note: Loop condition is false. Execution continues on line 951
+  941 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:952:2: note: Calling 'cmd_foldproof'
+  952 |         cmd_foldproof(f, m);
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: Assuming field 'anon' is 0
+  846 |         const char *fn = f->anon ? shared_str(f->body, 100) : sym_str(f->name);
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: '?' condition is false
+/home/andrew/Code/ucas/src/fpfold.c:850:14: note: Assuming 'g' is < 'lim'
+  850 |         for (g = 1; g < lim; g++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:850:2: note: Loop condition is true.  Entering loop body
+  850 |         for (g = 1; g < lim; g++)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:851:7: note: Assuming the condition is false
+  851 |                 if (in[g] && round_trip(g, NULL))
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:851:13: note: Left side of '&&' is false
+  851 |                 if (in[g] && round_trip(g, NULL))
+      |                           ^
+/home/andrew/Code/ucas/src/fpfold.c:850:14: note: Assuming 'g' is >= 'lim'
+  850 |         for (g = 1; g < lim; g++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:850:2: note: Loop condition is false. Execution continues on line 853
+  850 |         for (g = 1; g < lim; g++)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:858:6: note: 'nfold' is not equal to 0
+  858 |         if (nfold == 0) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:858:2: note: Taking false branch
+  858 |         if (nfold == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:874:46: note: 'nfold' is equal to 1
+  874 |             "folds\n", fn, sym_str(m->name), nfold, nfold == 1 ? "" : "s");
+      |                                                     ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:874:46: note: '?' condition is true
+/home/andrew/Code/ucas/src/fpfold.c:877:14: note: 'g' is < 'lim'
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:877:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fpfold.c:877:25: note: Assuming 'nrep' is < 16
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:877:2: note: Loop condition is true.  Entering loop body
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:882:7: note: Left side of '||' is false
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:882:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:882:39: note: Assuming the condition is false
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+  883 |                     N.ty[N.a[g]]))
+      |                     ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:882:3: note: Taking false branch
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:886:7: note: Assuming the condition is false
+  886 |                 if (dword_interval(f, x, &lo, &hi))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:886:3: note: Taking false branch
+  886 |                 if (dword_interval(f, x, &lo, &hi))
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:890:10: note: Calling 'fold_one'
+  890 |                 form = fold_one(f, g, m, &ident);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:721:2: note: Taking false branch
+  721 |         if (!round_trip(g, &x))
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:731:6: note: 'q' is not equal to Q_SAME_PROVED
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:731:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:731:28: note: 'q' is not equal to Q_SAME_ALL
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |                                   ^
+/home/andrew/Code/ucas/src/fpfold.c:731:2: note: Taking false branch
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:745:6: note: 'q' is not equal to Q_DIFFERS
+  745 |         if (q == Q_DIFFERS)
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:745:2: note: Taking false branch
+  745 |         if (q == Q_DIFFERS)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:753:11: note: Assuming 'known' is 0
+  753 |         full = !(known && normal_range(&M, lo, hi));
+      |                  ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:753:17: note: Left side of '&&' is false
+  753 |         full = !(known && normal_range(&M, lo, hi));
+      |                        ^
+/home/andrew/Code/ucas/src/fpfold.c:754:9: note: Calling 'form_of'
+  754 |         form = form_of(x, N.ty[g], N.ty[N.a[g]], full);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:315:7: note: 'full' is 1
+  315 |         if (!full)
+      |              ^~~~
+/home/andrew/Code/ucas/src/fpfold.c:315:2: note: Taking false branch
+  315 |         if (!full)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:319:6: note: Calling 'rne_mask'
+  319 |         r = rne_mask(m, D);
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:240:32: note: The result of left shift is undefined because the right operand is negative
+  240 |         uint64_t half1 = ((uint64_t)1 << (D - 1)) - 1;
+      |                           ~~~~~~~~~~~~^~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:240:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  240 |         uint64_t half1 = ((uint64_t)1 << (D - 1)) - 1;
+      |                                       ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:241:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  241 |         uint64_t mask = ~(((uint64_t)1 << D) - 1);
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:242:12: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  242 |         nid odd = mk_bin(O_AND, mk_bin(O_SHR, b, ku(t, (uint64_t)D)), ku(t, 1));
+      |                   ^
+/home/andrew/Code/ucas/src/fpfold.c:242:19: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  242 |         nid odd = mk_bin(O_AND, mk_bin(O_SHR, b, ku(t, (uint64_t)D)), ku(t, 1));
+      |                          ^
+/home/andrew/Code/ucas/src/fpfold.c:242:33: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  242 |         nid odd = mk_bin(O_AND, mk_bin(O_SHR, b, ku(t, (uint64_t)D)), ku(t, 1));
+      |                                        ^
+/home/andrew/Code/ucas/src/fpfold.c:243:17: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  243 |         nid s = mk_bin(O_ADD, mk_bin(O_ADD, b, ku(t, half1)), odd);
+      |                        ^
+/home/andrew/Code/ucas/src/fpfold.c:245:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  245 |         return mk_bin(O_AND, s, ku(t, mask & (TYW(t) == 64 ? ~(uint64_t)0 :
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/fpfold.c:246:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  246 |             (((uint64_t)1 << TYW(t)) - 1))));
+      |                           ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:256:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  256 |         nid rem = mk_bin(O_AND, b, ku(t, ((uint64_t)1 << D) - 1));
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:257:31: warning: Right operand is negative in left shift [clang-analyzer-core.BitwiseShift]
+  257 |         nid half = ku(t, (uint64_t)1 << (D - 1));
+      |                                      ^
+/home/andrew/Code/ucas/src/fpfold.c:934:6: note: Assuming the condition is false
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:934:2: note: Taking false branch
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:936:37: note: Assuming the condition is false
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:936:2: note: Taking false branch
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:941:9: note: Assuming the condition is false
+  941 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:941:2: note: Loop condition is false. Execution continues on line 951
+  941 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:952:2: note: Calling 'cmd_foldproof'
+  952 |         cmd_foldproof(f, m);
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: Assuming field 'anon' is 0
+  846 |         const char *fn = f->anon ? shared_str(f->body, 100) : sym_str(f->name);
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:846:19: note: '?' condition is false
+/home/andrew/Code/ucas/src/fpfold.c:850:14: note: Assuming 'g' is < 'lim'
+  850 |         for (g = 1; g < lim; g++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:850:2: note: Loop condition is true.  Entering loop body
+  850 |         for (g = 1; g < lim; g++)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:851:7: note: Assuming the condition is false
+  851 |                 if (in[g] && round_trip(g, NULL))
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:851:13: note: Left side of '&&' is false
+  851 |                 if (in[g] && round_trip(g, NULL))
+      |                           ^
+/home/andrew/Code/ucas/src/fpfold.c:850:14: note: Assuming 'g' is >= 'lim'
+  850 |         for (g = 1; g < lim; g++)
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:850:2: note: Loop condition is false. Execution continues on line 853
+  850 |         for (g = 1; g < lim; g++)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:858:6: note: 'nfold' is not equal to 0
+  858 |         if (nfold == 0) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:858:2: note: Taking false branch
+  858 |         if (nfold == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:874:46: note: 'nfold' is equal to 1
+  874 |             "folds\n", fn, sym_str(m->name), nfold, nfold == 1 ? "" : "s");
+      |                                                     ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:874:46: note: '?' condition is true
+/home/andrew/Code/ucas/src/fpfold.c:877:14: note: 'g' is < 'lim'
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:877:14: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fpfold.c:877:25: note: Assuming 'nrep' is < 16
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:877:2: note: Loop condition is true.  Entering loop body
+  877 |         for (g = 1; g < lim && nrep < 16; g++) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:882:7: note: Left side of '||' is false
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:882:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:882:39: note: Assuming the condition is false
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+  883 |                     N.ty[N.a[g]]))
+      |                     ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:882:3: note: Taking false branch
+  882 |                 if (!fo[g] || !round_trip(g, &x) || !model_folds(m, N.ty[g],
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:886:7: note: Assuming the condition is false
+  886 |                 if (dword_interval(f, x, &lo, &hi))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:886:3: note: Taking false branch
+  886 |                 if (dword_interval(f, x, &lo, &hi))
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:890:10: note: Calling 'fold_one'
+  890 |                 form = fold_one(f, g, m, &ident);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:721:2: note: Taking false branch
+  721 |         if (!round_trip(g, &x))
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:730:33: note: Assuming 'q' is equal to Q_DIFFERS
+  730 |         rep_bool("relies_on_rounding", q == Q_DIFFERS);
+      |                                        ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:731:6: note: 'q' is not equal to Q_SAME_PROVED
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:731:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/fpfold.c:731:28: note: 'q' is not equal to Q_SAME_ALL
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |                                   ^
+/home/andrew/Code/ucas/src/fpfold.c:731:2: note: Taking false branch
+  731 |         if (q == Q_SAME_PROVED || q == Q_SAME_ALL) {
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:745:6: note: 'q' is equal to Q_DIFFERS
+  745 |         if (q == Q_DIFFERS)
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:745:2: note: Taking true branch
+  745 |         if (q == Q_DIFFERS)
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:753:11: note: Assuming 'known' is not equal to 0
+  753 |         full = !(known && normal_range(&M, lo, hi));
+      |                  ^~~~~
+/home/andrew/Code/ucas/src/fpfold.c:753:11: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/fpfold.c:765:8: note: Calling 'prove_rne'
+  765 |         ok1 = prove_rne(TY(K_UINT, F.w), D, &how1);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:571:11: note: Calling 'rne_spec'
+  571 |         t.body = rne_spec(b, D);
+      |                  ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:257:31: note: The result of left shift is undefined because the right operand is negative
+  257 |         nid half = ku(t, (uint64_t)1 << (D - 1));
+      |                          ~~~~~~~~~~~~^~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:257:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         nid half = ku(t, (uint64_t)1 << (D - 1));
+      |                                      ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:258:18: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  258 |         nid up = mk_bin(O_LOR, mk_bin(O_GT, rem, half), mk_bin(O_LAND,
+      |                         ^
+/home/andrew/Code/ucas/src/fpfold.c:258:32: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  258 |         nid up = mk_bin(O_LOR, mk_bin(O_GT, rem, half), mk_bin(O_LAND,
+      |                                       ^
+/home/andrew/Code/ucas/src/fpfold.c:258:57: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  258 |         nid up = mk_bin(O_LOR, mk_bin(O_GT, rem, half), mk_bin(O_LAND,
+      |                                                                ^
+/home/andrew/Code/ucas/src/fpfold.c:259:13: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  259 |             mk_bin(O_EQ, rem, half), mk_bin(O_EQ, mk_bin(O_AND, q, ku(t, 1)),
+      |                    ^
+/home/andrew/Code/ucas/src/fpfold.c:262:16: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  262 |         return mk_bin(O_SHL, mk_bin(O_ADD, q, mk_cast(t, up)),
+      |                       ^
+/home/andrew/Code/ucas/src/fpfold.c:271:21: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  271 |         nid half1 = mk_bin(O_SUB, mk_bin(O_SHL, ku(t, 1), mk_bin(O_SUB, k,
+      |                            ^
+/home/andrew/Code/ucas/src/fpfold.c:307:11: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  307 |         ty_t u = TY(K_UINT, F.w);
+      |                  ^
+/home/andrew/Code/ucas/src/fpfold.c:307:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:307:14: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  307 |         ty_t u = TY(K_UINT, F.w);
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:309:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  309 |         uint64_t signbit = (uint64_t)1 << (F.w - 1);
+      |                                        ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:310:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |         uint64_t inf = (uint64_t)(2 * F.bias + 1) << F.mant;
+      |                                                   ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:311:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |         uint64_t ovf = (uint64_t)(F.bias + M.emax + 1) << F.mant;
+      |                                                        ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:312:16: warning: either cast from 'int' to 'uint64_t' (aka 'unsigned long') is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+  312 |         uint64_t en = (uint64_t)(F.bias + M.emin);      /* first normal M */
+      |                       ^
+/home/andrew/Code/ucas/src/fpfold.c:313:10: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  313 |         nid b = mk_un(O_ASUINT, x), m, e, r, k, sig, q, sub, mag;
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:313:16: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  313 |         nid b = mk_un(O_ASUINT, x), m, e, r, k, sig, q, sub, mag;
+      |                       ^
+/home/andrew/Code/ucas/src/fpfold.c:316:16: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  316 |                 return mk_un(O_ASFLOAT, rne_mask(b, D));
+      |                              ^
+/home/andrew/Code/ucas/src/fpfold.c:320:6: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+  320 |         r = mk_sel(mk_bin(O_GE, r, ku(u, ovf)), ku(u, inf), r);
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:320:20: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  320 |         r = mk_sel(mk_bin(O_GE, r, ku(u, ovf)), ku(u, inf), r);
+      |                           ^
+/home/andrew/Code/ucas/src/fpfold.c:323:13: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  323 |         k = mk_bin(O_MIN, mk_bin(O_SUB, ku(u, en + (uint64_t)D), e),
+      |                    ^
+/home/andrew/Code/ucas/src/fpfold.c:325:15: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  325 |         sig = mk_bin(O_OR, mk_bin(O_AND, m, ku(u, ((uint64_t)1 << F.mant) - 1)),
+      |                      ^
+/home/andrew/Code/ucas/src/fpfold.c:325:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  325 |         sig = mk_bin(O_OR, mk_bin(O_AND, m, ku(u, ((uint64_t)1 << F.mant) - 1)),
+      |                                                                ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:326:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  326 |             ku(u, (uint64_t)1 << F.mant));
+      |                               ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:328:31: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  328 |         sub = mk_un(O_ASUINT, mk_bin(O_MUL, mk_cast(T, q), mk_cast(T,
+      |                                      ^
+/home/andrew/Code/ucas/src/fpfold.c:329:6: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  329 |             mk_const_r(ldexp(1.0, M.emin - M.mant)))));
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:330:22: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  330 |         mag = mk_sel(mk_bin(O_LT, e, ku(u, en)), sub, r);
+      |                             ^
+/home/andrew/Code/ucas/src/fpfold.c:339:25: warning: no header providing "TY_F16" is directly included [misc-include-cleaner]
+  339 |         struct ffmt M = fmt_of(TY_F16);
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:339:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:342:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  342 |         return form_of(x, T, TY_F16, *full);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:355:24: warning: no header providing "func" is directly included [misc-include-cleaner]
+  355 | quantises(const struct func *f, nid n, nid x, struct sbuf *wit,
+      |                        ^
+/home/andrew/Code/ucas/src/fpfold.c:355:54: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  355 | quantises(const struct func *f, nid n, nid x, struct sbuf *wit,
+      |                                                      ^
+/home/andrew/Code/ucas/src/fpfold.c:359:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+  359 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/fpfold.c:360:9: warning: no header providing "diter" is directly included [misc-include-cleaner]
+  360 |         struct diter d;
+      |                ^
+/home/andrew/Code/ucas/src/fpfold.c:364:13: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  364 |         uint8_t ok[CH];
+      |                    ^
+/home/andrew/Code/ucas/src/fpfold.c:374:27: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  374 |         if (N.op[x] == O_CAST && TY_ISINT(N.ty[N.a[x]]) &&
+      |                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:374:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:384:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  384 |         plan_build(&p, roots, 3, 0);
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:385:20: warning: no header providing "plan_loc" is directly included [misc-include-cleaner]
+  385 |         wloc = f->where ? plan_loc(&p, f->where) : NOTOK;
+      |                           ^
+/home/andrew/Code/ucas/src/fpfold.c:385:45: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  385 |         wloc = f->where ? plan_loc(&p, f->where) : NOTOK;
+      |                                                    ^
+/home/andrew/Code/ucas/src/fpfold.c:388:25: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+  388 |         in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                ^
+/home/andrew/Code/ucas/src/fpfold.c:390:2: warning: no header providing "diter_init" is directly included [misc-include-cleaner]
+  390 |         diter_init(&d, f, 1 << 16, 257, 4096);
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:390:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  390 |         diter_init(&d, f, 1 << 16, 257, 4096);
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/fpfold.c:392:15: warning: no header providing "diter_next" is directly included [misc-include-cleaner]
+  392 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                      ^
+/home/andrew/Code/ucas/src/fpfold.c:393:3: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  393 |                 plan_run(&p, np, in_i, in_r);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:394:3: warning: no header providing "valid_mask" is directly included [misc-include-cleaner]
+  394 |                 valid_mask(&p, wloc, np, ok);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:396:15: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  396 |                         double a = COLR(&p, lx)[k], b = COLR(&p, ln)[k];
+      |                                    ^
+/home/andrew/Code/ucas/src/fpfold.c:402:5: warning: no header providing "fmt_point" is directly included [misc-include-cleaner]
+  402 |                                 fmt_point(wit, f, in_i, in_r, k);
+      |                                 ^
+/home/andrew/Code/ucas/src/fpfold.c:403:5: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  403 |                                 sb_printf(wit, ": the program expects %.9g, the "
+      |                                 ^
+/home/andrew/Code/ucas/src/fpfold.c:410:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  410 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:421:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   24 |         snprintf(b, sizeof b, "%s -> ", ty_str(N.ty[n]));
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:421:34: warning: no header providing "ty_str" is directly included [misc-include-cleaner]
+  421 |         snprintf(b, sizeof b, "%s -> ", ty_str(N.ty[n]));
+      |                                         ^
+/home/andrew/Code/ucas/src/fpfold.c:442:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+   22 |         rep_list("driver_folds");
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:454:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  454 |                 printf("  the driver folds %s (model %s): %s is priced 0 and "
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:455:45: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  455 |                     "computes %s itself\n", trip_name(g), sym_str(m->name),
+      |                                                           ^
+/home/andrew/Code/ucas/src/fpfold.c:456:7: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  456 |                     shared_str(g, 80), shared_str(x, 60));
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:458:3: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  458 |                 rep_obj(NULL);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:459:3: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  459 |                 rep_str("round_trip", trip_name(g));
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:460:3: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  460 |                 rep_expr("expression", g);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:461:3: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  461 |                 rep_bool("relies_on_rounding", q == Q_DIFFERS);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:481:8: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  481 |                             sb_str(&wit), f->anon ? "F" : sym_str(f->name));
+      |                             ^
+/home/andrew/Code/ucas/src/fpfold.c:484:3: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  484 |                 rep_end();
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:523:7: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  523 |         case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/fpfold.c:533:7: warning: no header providing "mk_barrier" is directly included [misc-include-cleaner]
+  533 |                 r = mk_barrier(replace(N.a[n]));
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:536:7: warning: no header providing "mk_atomic" is directly included [misc-include-cleaner]
+  536 |                 r = mk_atomic((int)(N.ki[n] & 0xff), replace(N.a[n]),
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:536:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  536 |                 r = mk_atomic((int)(N.ki[n] & 0xff), replace(N.a[n]),
+      |                                     ^~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:539:7: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  539 |         case O_FMA:
+      |              ^
+/home/andrew/Code/ucas/src/fpfold.c:540:7: warning: no header providing "mk_fma" is directly included [misc-include-cleaner]
+  540 |                 r = mk_fma(replace(N.a[n]), replace(N.b[n]), replace(N.c[n]));
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:543:7: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  543 |                 if (opinfo[N.op[n]].arity == 1)
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:545:12: warning: no header providing "IS_TEX" is directly included [misc-include-cleaner]
+  545 |                 else if (IS_TEX(N.op[n]))
+      |                          ^
+/home/andrew/Code/ucas/src/fpfold.c:560:9: warning: no header providing "eqproof" is directly included [misc-include-cleaner]
+  560 |         struct eqproof pr;
+      |                ^
+/home/andrew/Code/ucas/src/fpfold.c:565:11: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  565 |         t.name = sym_cstr("_rne");
+      |                  ^
+/home/andrew/Code/ucas/src/fpfold.c:570:6: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  570 |         b = mk_var(0, t.p[0].name, u);
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:572:8: warning: no header providing "equiv_decide" is directly included [misc-include-cleaner]
+  572 |         bad = equiv_decide(&t, t.body, rne_mask(b, D), &w, &pr);
+      |               ^
+/home/andrew/Code/ucas/src/fpfold.c:575:27: warning: no header providing "EQ_SAMPLED" is directly included [misc-include-cleaner]
+  575 |         return !bad && pr.how != EQ_SAMPLED;
+      |                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:595:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  595 |         t.p[0].hi = ((int64_t)1 << (mant + 1)) - 1;
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/fpfold.c:625:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  625 |         uint64_t rng = 0x9e3779b97f4a7c15ULL, mm = ((uint64_t)1 << F.mant) - 1;
+      |                                                                 ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:632:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  632 |                 uint64_t one = (uint64_t)1 << t;
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:636:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  636 |                 pat[npat++] = (one | (one << 1)) & mm;
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:637:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  637 |                 pat[npat++] = (((one << 1) - 1) | (one << 2)) & mm;
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:637:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  637 |                 pat[npat++] = (((one << 1) - 1) | (one << 2)) & mm;
+      |                                                        ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:640:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  640 |                 rng ^= rng << 13;
+      |                            ~~ ^~
+/home/andrew/Code/ucas/src/fpfold.c:641:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  641 |                 rng ^= rng >> 7;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:642:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  642 |                 rng ^= rng << 17;
+      |                            ~~ ^~
+/home/andrew/Code/ucas/src/fpfold.c:656:16: warning: no header providing "frombits" is directly included [misc-include-cleaner]
+  656 |                                 double v = frombits(F.w, ((uint64_t)s << (F.w - 1)) |
+      |                                            ^
+/home/andrew/Code/ucas/src/fpfold.c:656:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |                                 double v = frombits(F.w, ((uint64_t)s << (F.w - 1)) |
+      |                                                                       ~~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:657:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |                                     ((uint64_t)e << F.mant) | pat[i]);
+      |                                                  ~~ ^~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:668:33: warning: no header providing "fbits" is directly included [misc-include-cleaner]
+  668 |                                         if (isnan(a) ? !isnan(b) : fbits(F.w, a) !=
+      |                                                                    ^
+/home/andrew/Code/ucas/src/fpfold.c:696:16: warning: no header providing "EQ_SAT" is directly included [misc-include-cleaner]
+  696 |         return how == EQ_SAT ? "proved by SAT (both sides bit-blasted)" :
+      |                       ^
+/home/andrew/Code/ucas/src/fpfold.c:697:13: warning: no header providing "EQ_EXHAUSTIVE" is directly included [misc-include-cleaner]
+  697 |             how == EQ_EXHAUSTIVE ? "every case enumerated" :
+      |                    ^
+/home/andrew/Code/ucas/src/fpfold.c:765:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  765 |         ok1 = prove_rne(TY(K_UINT, F.w), D, &how1);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:778:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  778 |             (unsigned long long)(((uint64_t)1 << (D - 1)) - 1), D,
+      |                                               ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:779:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  779 |             (unsigned long long)(((uint64_t)1 << D) - 1), F.w, D, D, D - 1,
+      |                                               ~~ ^
+/home/andrew/Code/ucas/src/fpfold.c:796:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  796 |                 ok2 = prove_rneq(TY(K_UINT, F.w), F.mant, D + 1, F.mant + 2, &how2);
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/fpfold.c:826:3: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  826 |                 rep_int("check_patterns", nchk);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:831:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  831 |         rep_num("cost", cform);
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:854:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+  854 |         rep_begin("foldproof");
+      |         ^
+/home/andrew/Code/ucas/src/fpfold.c:911:7: warning: no header providing "func_new" is directly included [misc-include-cleaner]
+  911 |                 h = func_new(copy.name);
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:930:20: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+  930 |         struct model *m = model_active();
+      |                           ^
+/home/andrew/Code/ucas/src/fpfold.c:932:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+  932 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/fpfold.c:934:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+  934 |         if (!cmdp_word(p, w, sizeof w))
+      |              ^
+/home/andrew/Code/ucas/src/fpfold.c:936:37: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+  936 |         if (strcmp(w, "foldproof") != 0 || func_find(sym_cstr(w))) {
+      |                                            ^
+/home/andrew/Code/ucas/src/fpfold.c:937:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+  937 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:940:6: warning: no header providing "cmdp_func" is directly included [misc-include-cleaner]
+  940 |         f = cmdp_func(p, stop);
+      |             ^
+/home/andrew/Code/ucas/src/fpfold.c:941:10: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+  941 |         while (!cmdp_eos(p)) {
+      |                 ^
+/home/andrew/Code/ucas/src/fpfold.c:942:7: warning: no header providing "cmdp_kw" is directly included [misc-include-cleaner]
+  942 |                 if (cmdp_kw(p, "model")) {
+      |                     ^
+/home/andrew/Code/ucas/src/fpfold.c:944:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  944 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/fpfold.c:944:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/fpfold.c:944:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/fpfold.c:944:13: warning: no header providing "model_find" is directly included [misc-include-cleaner]
+  944 |                             (m = model_find(sym_cstr(w))) == NULL)
+      |                                  ^
+/home/andrew/Code/ucas/src/fpfold.c:945:5: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  945 |                                 fail("foldproof: unknown model (see 'models')");
+      |                                 ^
+/home/andrew/Code/ucas/src/fpfold.c:947:4: warning: no header providing "cmdp_fail_here" is directly included [misc-include-cleaner]
+  947 |                         cmdp_fail_here(p);
+      |                         ^
+/home/andrew/Code/ucas/src/fpfold.c:951:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+  951 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

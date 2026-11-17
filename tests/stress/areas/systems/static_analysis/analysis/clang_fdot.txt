@@ -1,0 +1,84 @@
+src/fdot.c:470:52: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  470 |                             "them ranges: x: f32 in -1..1)", shared_str(t[i].X ?
+      |                                                                         ^~~~~~
+src/fdot.c:459:7: note: Assuming the condition is true
+  459 |         if (!TY_FP(N.ty[f->body]))
+      |              ^~~~~~~~~~~~~~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/fdot.c:459:7: note: Left side of '||' is true
+src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+src/fdot.c:459:6: note: Assuming the condition is false
+  459 |         if (!TY_FP(N.ty[f->body]))
+      |             ^~~~~~~~~~~~~~~~~~~~~
+src/fdot.c:459:2: note: Taking false branch
+  459 |         if (!TY_FP(N.ty[f->body]))
+      |         ^
+src/fdot.c:462:6: note: Calling 'gather'
+  462 |         n = gather(f->body, 1, t, 0);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/fdot.c:58:6: note: 'n' is >= 0
+   58 |         if (n < 0 || n >= FD_MAXT)
+      |             ^
+src/fdot.c:58:6: note: Left side of '||' is false
+src/fdot.c:58:15: note: 'n' is < FD_MAXT
+   58 |         if (n < 0 || n >= FD_MAXT)
+      |                      ^
+src/fdot.c:58:2: note: Taking false branch
+   58 |         if (n < 0 || n >= FD_MAXT)
+      |         ^
+src/fdot.c:60:2: note: 'Default' branch taken. Execution continues on line 80
+   60 |         switch (N.op[e]) {
+      |         ^
+src/fdot.c:83:2: note: Returning without writing to 't->X'
+   83 |         return n + 1;
+      |         ^
+src/fdot.c:462:6: note: Returning from 'gather'
+  462 |         n = gather(f->body, 1, t, 0);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+src/fdot.c:463:6: note: 'n' is < 2
+  463 |         if (n < 2)
+      |             ^
+src/fdot.c:463:2: note: Taking true branch
+  463 |         if (n < 2)
+      |         ^
+src/fdot.c:465:2: note: Loop condition is true.  Entering loop body
+  465 |         for (i = 0; i < n; i++) {
+      |         ^
+src/fdot.c:466:13: note: Field 'y' is 0
+  466 |                 if (!t[i].y)
+      |                           ^
+src/fdot.c:466:3: note: Taking true branch
+  466 |                 if (!t[i].y)
+      |                 ^
+src/fdot.c:468:8: note: Calling 'fbound'
+  468 |                 if (!fbound(f, t[i].x, &t[i].X) || !fbound(f, t[i].y, &t[i].Y))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/fdot.c:344:2: note: 'Default' branch taken. Execution continues on line 372
+  344 |         switch (N.op[x]) {
+      |         ^
+src/fdot.c:372:2: note: Returning without writing to '*X'
+  372 |         return 0;
+      |         ^
+src/fdot.c:468:8: note: Returning from 'fbound'
+  468 |                 if (!fbound(f, t[i].x, &t[i].X) || !fbound(f, t[i].y, &t[i].Y))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/fdot.c:468:35: note: Left side of '||' is true
+  468 |                 if (!fbound(f, t[i].x, &t[i].X) || !fbound(f, t[i].y, &t[i].Y))
+      |                                                 ^
+src/fdot.c:470:52: note: Branch condition evaluates to a garbage value
+  470 |                             "them ranges: x: f32 in -1..1)", shared_str(t[i].X ?
+      |                                                                         ^~~~~~
+src/fdot.c:814:19: warning: Although the value stored to 'q' is used in the enclosing expression, the value is never actually read from 'q' [deadcode.DeadStores]
+  814 |         if (!name[0] && (q = strchr(buf, ' ')) == NULL)
+      |                          ^   ~~~~~~~~~~~~~~~~
+src/fdot.c:814:19: note: Although the value stored to 'q' is used in the enclosing expression, the value is never actually read from 'q'
+  814 |         if (!name[0] && (q = strchr(buf, ' ')) == NULL)
+      |                          ^   ~~~~~~~~~~~~~~~~
+2 warnings generated.

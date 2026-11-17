@@ -1,0 +1,33 @@
+> bigint 1/0
+02_divzero_garbage.ucas:3:8: error: division by zero
+    bigint 1/0
+           ^
+> bigint 18446744073709551616 / 0
+02_divzero_garbage.ucas:4:8: error: division by zero
+    bigint 18446744073709551616 / 0
+           ^
+> bigint 7 % 0
+02_divzero_garbage.ucas:5:8: error: division by zero
+    bigint 7 % 0
+           ^
+> z = 10 / 0
+> p(x: u8) = x / 0
+> range p
+range of p -> u8:
+  empty (undefined everywhere)
+  undefined at 256 points
+  over all 256 points of the domain
+> r ring zn 8
+  note: 'zn' read as z*n (single-letter variables)
+_(r: real, ring: real, z: real, n: real) = 8(r*ring*(z*n))
+  -> real
+> ring r 1/0
+02_divzero_garbage.ucas:10:6: error: ring: a ring such as Z/12, GF(2^8), GF(2^8, aes), GF(2)[x]/(x^4 + 1), Z[i], Z[sqrt(2)], Q[x]/(x^2 - 2)
+    ring r 1/0
+         ^
+> q(x: f64) = 1/x
+> range q
+range of q -> f64:
+  [-inf, inf]  (sampled min/max; not a sound bound)
+  IEEE: NaN at 0 points, ±inf at 15 points  (sampled counts; not bounds)
+  sampled 65536 points (domain has 18437736874454810623 points); not exhaustive

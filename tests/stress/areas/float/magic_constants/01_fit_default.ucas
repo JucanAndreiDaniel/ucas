@@ -1,0 +1,9 @@
+g(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+fit g ~ 1/sqrt(x)
+fit g ~ 1/sqrt(x) metric maxrel
+fit g ~ 1/sqrt(x) metric maxabs
+fit g ~ 1/sqrt(x) metric rms
+gA(x: f32, K: u32 in 0x5f375000..0x5f376000) = asfloat(K - (asuint(x) >> 1))
+fit gA ~ 1/sqrt(x)
+gB(x: f32, K: u32 in 0x5f376000..0x5f377000) = asfloat(K - (asuint(x) >> 1))
+fit gB ~ 1/sqrt(x)

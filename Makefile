@@ -255,6 +255,53 @@ mcp-accept: ${PROG}
 
 .PHONY: mcp-test mcp-accept
 
+# The adversarial stress suite in tests/stress/areas/. Each area runs from its
+# own folder, with the same environment as test, json-test and mcp-test.
+# A golden records current output (bugs included), so a FAIL means behaviour
+# changed. Set STRESS_AREA=NAME to run one area.
+STRESSDIR=	${.CURDIR}/tests/stress
+STRESSFIND=	find ${STRESSDIR}/areas -mindepth 3 -maxdepth 3 \( -name '*.ucas' -o -name '*.jsonl' \)
+STRESSENV=	UCAS_NO_TIMES=1 UCAS_SPIRV_CROSS=none
+STRESSLIST=	/tmp/ucas-stress-list.$$
+
+stress-test: ${PROG}
+	@${STRESSFIND} | sort > ${STRESSLIST}; \
+	fail=0; total=0; \
+	while read t; do \
+		case "$$t" in *"${STRESS_AREA}"*) ;; *) continue ;; esac; \
+		b=$${t%.*}; [ -f "$$b.out" ] || continue; \
+		d=$$(dirname "$$t"); n=$$(basename "$$t"); total=$$((total+1)); \
+		case "$$n" in \
+		  *.ucas) (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} "$$n") > "$$b.got" 2>&1 ;; \
+		  json_*) (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} --json --files none < "$$n") > "$$b.got" 2>&1 ;; \
+		  *)      fl=$$(cat "$$b.flags" 2>/dev/null || true); \
+		          (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} --mcp $$fl < "$$n") > "$$b.got" 2>&1 ;; \
+		esac; \
+		if diff -u "$$b.out" "$$b.got" > "$$b.diff" 2>&1; then \
+		  rm -f "$$b.got" "$$b.diff"; \
+		else echo "FAIL stress/$${t#${STRESSDIR}/}"; fail=1; fi; \
+	done < ${STRESSLIST}; \
+	rm -f ${STRESSLIST}; \
+	echo "stress: $$total goldens"; exit $$fail
+
+stress-accept: ${PROG}
+	@${STRESSFIND} | sort > ${STRESSLIST}; \
+	while read t; do \
+		case "$$t" in *"${STRESS_AREA}"*) ;; *) continue ;; esac; \
+		b=$${t%.*}; [ -f "$$b.out" ] || continue; \
+		d=$$(dirname "$$t"); n=$$(basename "$$t"); \
+		case "$$n" in \
+		  *.ucas) (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} "$$n") > "$$b.out" 2>&1 ;; \
+		  json_*) (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} --json --files none < "$$n") > "$$b.out" 2>&1 ;; \
+		  *)      fl=$$(cat "$$b.flags" 2>/dev/null || true); \
+		          (cd "$$d" && env ${STRESSENV} ${.OBJDIR}/${PROG} --mcp $$fl < "$$n") > "$$b.out" 2>&1 ;; \
+		esac; \
+		echo "wrote $${t#${STRESSDIR}/}.out"; \
+	done < ${STRESSLIST}; \
+	rm -f ${STRESSLIST}
+
+.PHONY: stress-test stress-accept
+
 # The snippet databases `find F snippets` reads (README, "The snippet
 # database"): ucas grows them itself into snippets/ from snippets/grow.ucas,
 # a second or so, at every build; the tests read them.

@@ -1,0 +1,11 @@
+> f_eq_vs_tol_tiny(x: f32 in 0..1) = x == f32(0.5) ? f32(1) : f32(0)
+> g_eq_vs_tol_tiny(x: f32 in 0..1) = abs(x - f32(0.5)) <= f32(1e-7) ? f32(1) : f32(0)
+> equiv f_eq_vs_tol_tiny g_eq_vs_tol_tiny
+f_eq_vs_tol_tiny and g_eq_vs_tol_tiny differ, e.g. x=0.49999997: 0 vs 1 (found by SAT, checked by evaluation)
+> error g_eq_vs_tol_tiny ~ f_eq_vs_tol_tiny
+error of g_eq_vs_tol_tiny against f_eq_vs_tol_tiny:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding: not analysed (no input of the sample gives a finite, non-zero value)

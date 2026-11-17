@@ -119,11 +119,20 @@ alg_out(const char *line)
 static int
 alg_end(void)
 {
-	int b = nw;
+	int b = nw, k;
 
 	while (b > wi && W[b - 1].k == W_SYM && (!strcmp(W[b - 1].s, "?") ||
 	    !strcmp(W[b - 1].s, ".")))
 		b--;
+	/* ", where/when/whilst ..." starts a clause: leaving it inside the
+	 * expression emits raw English ("solve x^2=4, whilst x is real")
+	 * as a ucas statement.  Let parse_tail read it as a condition. */
+	for (k = wi; k + 1 < b; k++)
+		if (W[k].k == W_SYM && !strcmp(W[k].s, ",") &&
+		    (isw(k + 1, "where") || isw(k + 1, "when") ||
+		    isw(k + 1, "whilst") || isw(k + 1, "given") ||
+		    isw(k + 1, "assuming")))
+			return k;
 	return b;
 }
 

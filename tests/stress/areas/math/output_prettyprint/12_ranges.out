@@ -1,0 +1,26 @@
+> f(x: u8) = x*x
+> range f
+range of f -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> domain f
+domain of f:
+  x: u8, 0..255
+  defined at 256 of 256 points
+  no conditions: total on its parameter types
+  over all 256 points of the domain
+> wrap f
+wrap analysis of f:
+  x*x   (u8)
+      nuw fails: unsigned wrap at 240 points, e.g. x=16
+      nsw fails: signed wrap at 233 points, e.g. x=12
+  end to end: differs from the mathematical result at 240 points, e.g. x=16
+      exact for: 0..15
+  over all 256 points of the domain
+> g(x: f32 in -1..1) = x^2
+> range g
+range of g -> f32:
+  [0, 1]  (sampled min/max; not a sound bound)
+  sampled 65536 points (domain has 2130706433 points); not exhaustive

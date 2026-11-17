@@ -43,8 +43,8 @@ i^i = exp(-pi/2)
   check: equal numerically (0.2078795764, complex arithmetic)
 > complex sin(x + i y)
   note: i is the imaginary unit; x, y are taken as real
-sin(x + i y) = sin(x)*cosh(y) + i*cos(x)*sinh(y)
-  Re = sin(x)*cosh(y),  Im = cos(x)*sinh(y)
+sin(x + i y) = cosh(y)*sin(x) + i*sinh(y)*cos(x)
+  Re = cosh(y)*sin(x),  Im = sinh(y)*cos(x)
   check: equal at 64 of 64 sample points
 > complex asin(2)
   note: asin(2) is on the branch cut; the value is that of -i log(iz + sqrt(1 - z^2))
@@ -130,8 +130,8 @@ x + i y = sqrt(x^2 + y^2)*e^(i*atan2(y, x))
   = sqrt(x^2 + y^2)*(cos(atan2(y, x)) + i*sin(atan2(y, x)))
   r = |z| = sqrt(x^2 + y^2),  theta = arg z = atan2(y, x)
   theta is the principal argument, -pi < theta <= pi; undefined where x = y = 0
-  check: equal at 64 of 64 sample points (max relative difference 4e-16)
-  check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
 > polar e^(i x)
   note: i is the imaginary unit; x is taken as real
 e^(i x) = e^(i*x)
@@ -192,6 +192,9 @@ trig forms of sin^2 x
 > trig sin(x) cos(x)
   note: x is taken as real
 trig forms of sin(x) cos(x)
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cos(x)*sin(x)
+    check: equal at 64 of 64 sample points
   product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
     = sin(2x)/2
     check: equal at 64 of 64 sample points (max relative difference 6e-17)
@@ -203,8 +206,8 @@ trig forms of sin(x) cos(x)
   note: x is taken as real
 trig forms of sin(3x)
   compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
-    = 3sin(x)*cos(x)^2 - sin(x)^3
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    = 3cos(x)^2*sin(x) - sin(x)^3
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
   compound angles, in sin: cos^2 u = 1 - sin^2 u
     = 3sin(x) - 4sin(x)^3
     check: equal at 64 of 64 sample points (max relative difference 7e-16)
@@ -234,7 +237,7 @@ trig forms of tan(a+b)
   note: x is taken as real
 trig forms of sin(x + pi/4)
   compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
-    = sqrt(2)*sin(x)/2 + sqrt(2)*cos(x)/2
+    = sqrt(2)*cos(x)/2 + sqrt(2)*sin(x)/2
     check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: sin(x + pi/4)  (as given)
 > trig sin^3 x reduce
@@ -255,7 +258,7 @@ trig forms of sin x cos y
   note: x, y are taken as real
 trig forms of sin x + sin y
   sum to product: sin a + sin b = 2 sin((a + b)/2) cos((a - b)/2), cos a + cos b = 2 cos((a + b)/2) cos((a - b)/2) ...
-    = 2sin((x + y)/2)*cos((x - y)/2)
+    = 2cos((x - y)/2)*sin((x + y)/2)
     check: equal at 64 of 64 sample points (max relative difference 3e-16)
   simplest: sin x + sin y  (as given)
 > trig cos(3x) - cos(x) sum
@@ -281,7 +284,7 @@ trig forms of a sin(x) + b cos(x)
   amplitude-phase: a sin u + b cos u = R sin(u + phi), R = sqrt(a^2 + b^2), phi = atan2(b, a)
     = sqrt(a^2 + b^2)*sin(x + atan2(b, a))
     for a != 0 || b != 0
-    check: equal at 64 of 64 sample points where a != 0 || b != 0 (max relative difference 9e-16)
+    check: equal at 64 of 64 sample points where a != 0 || b != 0 (max relative difference 6e-16)
   amplitude-phase: a sin u + b cos u = R cos(u - psi), psi = atan2(a, b)
     = sqrt(a^2 + b^2)*cos(x - atan2(a, b))
     for a != 0 || b != 0
@@ -307,7 +310,7 @@ trig forms of sin(x/2)
   tan half-angle: t = tan(u/2): sin u = 2t/(1 + t^2), cos u = (1 - t^2)/(1 + t^2), tan u = 2t/(1 - t^2)
     = 2tan(x/4)/(tan(x/4)^2 + 1)
     for cos(x/4) != 0
-    check: equal at 64 of 64 sample points where cos(x/4) != 0 (max relative difference 2e-16)
+    check: equal at 64 of 64 sample points where cos(x/4) != 0 (max relative difference 1e-16)
   half angle: sin(u/2) = sqrt((1 - cos u)/2) where sin(u/2) >= 0, cos(u/2) = sqrt((1 + cos u)/2) where cos(u/2) >= 0, tan(u/2) = sin u/(1 + cos u)
     = sqrt((1 - cos(x))/2)
     for sin(x/2) >= 0
@@ -320,14 +323,14 @@ trig forms of 1/(1 + cos(x))
   tan half-angle: t = tan(u/2): sin u = 2t/(1 + t^2), cos u = (1 - t^2)/(1 + t^2), tan u = 2t/(1 - t^2)
     = (tan(x/2)^2 + 1)/2
     for cos(x/2) != 0
-    check: equal at 64 of 64 sample points where cos(x/2) != 0 (max relative difference 5e-16)
+    check: equal at 64 of 64 sample points where cos(x/2) != 0 (max relative difference 6e-16)
   simplest: 1/(1 + cos(x))  (as given)
 > trig sinh(2x)
   note: x is taken as real
 trig forms of sinh(2x)
   compound and multiple angles: sinh(a + b) = sinh a cosh b + cosh a sinh b, cosh(a + b) = cosh a cosh b + sinh a sinh b
     = 2cosh(x)*sinh(x)
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
   exponential (Euler): sinh u = (e^u - e^(-u))/2
     = (exp(2x) - exp(-2x))/2
     check: equal at 64 of 64 sample points (max relative difference 2e-16)
@@ -337,7 +340,7 @@ trig forms of sinh(2x)
 trig forms of cosh(x)^2
   power reduction: sinh^2 u = (cosh 2u - 1)/2, cosh^2 u = (cosh 2u + 1)/2
     = (cosh(2x) + 1)/2
-    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: cosh(x)^2  (as given)
 > trig tanh(x) exp
   note: x is taken as real
@@ -351,7 +354,7 @@ trig forms of tanh(x)
 trig forms of cos(atan(x))
   simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
     = 1/sqrt(x^2 + 1)
-    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
   simplest: 1/sqrt(x^2 + 1)  (simplified)
 > trig sin(asin(x))
   note: x is taken as real
@@ -365,7 +368,7 @@ trig forms of sin(asin(x))
 trig forms of atan(x)
   atan via asin: atan(u) = asin(u/sqrt(1 + u^2))
     = asin(x/sqrt(x^2 + 1))
-    check: equal at 64 of 64 sample points (max relative difference 5e-16)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
   atan via acos: atan(u) = sign(u)*acos(1/sqrt(1 + u^2))
     = sign(x)*acos(1/sqrt(x^2 + 1))
     check: equal at 64 of 64 sample points (max relative difference 3e-15)
@@ -428,7 +431,7 @@ trig forms of atan2(y, x)
   atan2 via atan: atan2(y, x) = atan(y/x)
     = atan(y/x)
     for x > 0
-    check: equal at 39 of 64 sample points where x > 0 (max relative difference 2e-16)
+    check: equal at 39 of 64 sample points where x > 0 (max relative difference 1e-16)
       (outside: differs at 25 of 25 points, so the condition is needed)
   atan2 via atan: atan2(y, x) = atan(y/x) + pi
     = atan(y/x) + pi
@@ -438,7 +441,7 @@ trig forms of atan2(y, x)
   atan2 via atan: atan2(y, x) = atan(y/x) - pi
     = atan(y/x) - pi
     for x < 0 && y < 0
-    check: equal at 10 of 64 sample points where x < 0 && y < 0 (max relative difference 2e-16)
+    check: equal at 10 of 64 sample points where x < 0 && y < 0 (max relative difference 1e-16)
       (outside: differs at 54 of 54 points, so the condition is needed)
   atan2 via atan: atan2(y, x) = pi/2 - atan(x/y)
     = pi/2 - atan(x/y)
@@ -456,10 +459,10 @@ trig forms of atan2(y, x)
 trig forms of atan(x) + atan(y)
   atan via asin: atan(u) = asin(u/sqrt(1 + u^2))
     = asin(x/sqrt(x^2 + 1)) + atan(y)
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   atan via acos: atan(u) = sign(u)*acos(1/sqrt(1 + u^2))
     = sign(x)*acos(1/sqrt(x^2 + 1)) + atan(y)
-    check: equal at 64 of 64 sample points (max relative difference 3e-15)
+    check: equal at 64 of 64 sample points (max relative difference 7e-15)
   atan reflection: atan(u) = pi/2 - atan(1/u)
     = pi/2 - atan(1/x) + atan(y)
     for x > 0
@@ -478,14 +481,14 @@ trig forms of atan(x) + atan(y)
     check: equal at 64 of 64 sample points
   atan via asin: atan(u) = asin(u/sqrt(1 + u^2))
     = atan(x) + asin(y/sqrt(y^2 + 1))
-    check: equal at 64 of 64 sample points (max relative difference 7e-16)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
   atan via acos: atan(u) = sign(u)*acos(1/sqrt(1 + u^2))
     = atan(x) + sign(y)*acos(1/sqrt(y^2 + 1))
     check: equal at 64 of 64 sample points (max relative difference 9e-16)
   atan reflection: atan(u) = pi/2 - atan(1/u)
     = atan(x) + pi/2 - atan(1/y)
     for y > 0
-    check: equal at 39 of 64 sample points where y > 0 (max relative difference 2e-16)
+    check: equal at 39 of 64 sample points where y > 0 (max relative difference 3e-16)
       (outside: differs at 25 of 25 points, so the condition is needed)
   atan reflection: atan(u) = -pi/2 - atan(1/u)
     = atan(x) - pi/2 - atan(1/y)
@@ -494,7 +497,7 @@ trig forms of atan(x) + atan(y)
       (outside: differs at 39 of 39 points, so the condition is needed)
   atan half-angle: atan(u) = 2atan(u/(1 + sqrt(1 + u^2)))
     = atan(x) + 2atan(y/(sqrt(y^2 + 1) + 1))
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
   atan as atan2: atan(u) = atan2(u, 1)
     = atan(x) + atan2(y, 1)
     check: equal at 64 of 64 sample points
@@ -509,10 +512,10 @@ trig forms of atan(x) + atan(y)
 trig forms of asinh(x)
   asinh as a log: asinh(u) = log(u + sqrt(u^2 + 1))
     = log(x + sqrt(x^2 + 1))
-    check: equal at 64 of 64 sample points (max relative difference 5e-16)
+    check: equal at 64 of 64 sample points (max relative difference 6e-16)
   asinh via atanh: asinh(u) = atanh(u/sqrt(1 + u^2))
     = atanh(x/sqrt(x^2 + 1))
-    check: equal at 64 of 64 sample points (max relative difference 1e-15)
+    check: equal at 64 of 64 sample points (max relative difference 6e-16)
   simplest: asinh(x)  (as given)
 > trig atanh(x)
   note: x is taken as real
@@ -680,12 +683,15 @@ trig forms of sin^2 x
 trig forms of tan x
   in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
     = sin(x)/cos(x)
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: tan x  (as given)
 > simplify sin x cos x
   ucas: trig sin x cos x
   note: x is taken as real
 trig forms of sin x cos x
+  simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
+    = cos(x)*sin(x)
+    check: equal at 64 of 64 sample points
   product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
     = sin(2x)/2
     check: equal at 64 of 64 sample points (max relative difference 6e-17)
@@ -706,8 +712,8 @@ trig forms of sin(a+b)
   note: x is taken as real
 trig forms of sin 3x
   compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
-    = 3sin(x)*cos(x)^2 - sin(x)^3
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    = 3cos(x)^2*sin(x) - sin(x)^3
+    check: equal at 64 of 64 sample points (max relative difference 3e-16)
   compound angles, in sin: cos^2 u = 1 - sin^2 u
     = 3sin(x) - 4sin(x)^3
     check: equal at 64 of 64 sample points (max relative difference 7e-16)
@@ -725,7 +731,7 @@ trig forms of sin x cos y
   note: x, y are taken as real
 trig forms of sin x + sin y
   sum to product: sin a + sin b = 2 sin((a + b)/2) cos((a - b)/2), cos a + cos b = 2 cos((a + b)/2) cos((a - b)/2) ...
-    = 2sin((x + y)/2)*cos((x - y)/2)
+    = 2cos((x - y)/2)*sin((x + y)/2)
     check: equal at 64 of 64 sample points (max relative difference 3e-16)
   simplest: sin x + sin y  (as given)
 > write 3 sin x + 4 cos x in the form R sin(x + phi)
@@ -754,7 +760,7 @@ trig forms of sin x
 trig forms of atan x
   atan via asin: atan(u) = asin(u/sqrt(1 + u^2))
     = asin(x/sqrt(x^2 + 1))
-    check: equal at 64 of 64 sample points (max relative difference 5e-16)
+    check: equal at 64 of 64 sample points (max relative difference 4e-16)
   atan via acos: atan(u) = sign(u)*acos(1/sqrt(1 + u^2))
     = sign(x)*acos(1/sqrt(x^2 + 1))
     check: equal at 64 of 64 sample points (max relative difference 3e-15)
@@ -871,8 +877,8 @@ x + iy = sqrt(x^2 + y^2)*e^(i*atan2(y, x))
   = sqrt(x^2 + y^2)*(cos(atan2(y, x)) + i*sin(atan2(y, x)))
   r = |z| = sqrt(x^2 + y^2),  theta = arg z = atan2(y, x)
   theta is the principal argument, -pi < theta <= pi; undefined where x = y = 0
-  check: equal at 64 of 64 sample points (max relative difference 4e-16)
-  check: equal at 64 of 64 sample points (max relative difference 4e-16)
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
 > list the sixth roots of unity
   ucas: unity 6
 the 6 sixth roots of 1 (w^6 = 1)
@@ -915,7 +921,7 @@ trig forms of sin x cos y
   note: x is taken as real
 trig forms of sin(x + pi/4)
   compound and multiple angles: sin(a + b) = sin a cos b + cos a sin b, cos(a + b) = cos a cos b - sin a sin b
-    = sqrt(2)*sin(x)/2 + sqrt(2)*cos(x)/2
+    = sqrt(2)*cos(x)/2 + sqrt(2)*sin(x)/2
     check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: sin(x + pi/4)  (as given)
 > express sin x + cos x as a single sine
@@ -927,7 +933,7 @@ trig forms of sin x + cos x
     check: equal at 64 of 64 sample points (max relative difference 2e-16)
   amplitude-phase: a sin u + b cos u = R cos(u - psi), psi = atan2(a, b)
     = sqrt(2)*cos(x - pi/4)
-    check: equal at 64 of 64 sample points (max relative difference 3e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: sin x + cos x  (as given)
 > write tanh x in terms of exponentials
   ucas: trig tanh x exp
@@ -976,7 +982,7 @@ trig forms of acos x
 trig forms of cos(atan x)
   simplified: sin^2 + cos^2 = 1, cosh^2 - sinh^2 = 1, f(f^-1(u)) = u
     = 1/sqrt(x^2 + 1)
-    check: equal at 64 of 64 sample points (max relative difference 2e-16)
+    check: equal at 64 of 64 sample points (max relative difference 1e-16)
   simplest: 1/sqrt(x^2 + 1)  (simplified)
 > how do I write (2+i)/(1-i) in standard form
   ucas: complex (2+i)/(1-i)
@@ -1005,10 +1011,10 @@ trig forms of cos^4 x
 trig forms of tan x
   in sin and cos: tan = sin/cos, sec = 1/cos, csc = 1/sin, cot = cos/sin, tanh = sinh/cosh
     = sin(x)/cos(x)
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   exponential (Euler): tan u = (e^(iu) - e^(-iu))/(i(e^(iu) + e^(-iu)))
     = (exp(i*x) - exp(-i*x))/(i*(exp(i*x) + exp(-i*x)))
-    check: equal at 64 of 64 sample points (max relative difference 4e-16)
+    check: equal at 64 of 64 sample points (max relative difference 2e-16)
   simplest: tan x  (as given)
 > expand (1+i)^3
   ucas: complex (1+i)^3
@@ -1042,6 +1048,11 @@ commands (F is a function name or an expression like isqrt(x: u4))
     [relative|absolute] [odd|even|nosym] [keep endpoints|x1, x2..]
     [weight W] [at c] [fma|nofma] [norefine] [list n] [name p] [c]
   approx more [n]
+  adamfit F [in a..b | x in a..b, y in c..d] [as f32|f64|real] [ops + - * /
+    fma sqrt exp log ...] [count n] [size n] [steps n] [lr r] [restarts n]
+    [wcost w] [werr w] [cref c] [budget n] [error e|ulp u] [auto] [list n]
+    [seed k] [seconds s] [name p] [nocert]   (F: ucas, or NAME of a ```c or
+    ```glsl block; integer results: fixed-point forms)
   animate [hillis|blelloch|sequential] scan [n N] [fps F] [seconds S]
     [random [seed K] | values a, b, ...] [f32] [MODEL] [to NAME]
   plot F, G ... [x in a..b] [y in c..d] [deriv] [tangent a] [logx|logy]

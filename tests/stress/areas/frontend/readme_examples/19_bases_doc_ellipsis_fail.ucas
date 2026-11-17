@@ -1,0 +1,7 @@
+basis c      { and(x, y) = x & y; or(x, y) = x | y; xor(x, y) = x xor y; not(x) = ~x }
+basis spirv : c {}
+basis a64 : c    { bic(x, y) = x & ~y; orn(x, y) = x | ~y; eon(x, y) = x xor ~y }
+basis a64sha : a64 { bsl(s, x, y) = (s & x) | (~s & y); eor3(...); bcax(...) }
+basis x86bmi : c { andn(x, y) = ~x & y }
+basis avx512 : x86bmi { ternlog(x, y, z) = lut }
+basis nand   { nand(x, y) = ~(x & y) }

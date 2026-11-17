@@ -1,0 +1,115 @@
+src/zint.c:161:3: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+  161 |                 memcpy(tmp + tn, Z.limb + Z.off[i], Z.len[i] * sizeof *tmp);
+      |                 ^
+src/zint.c:1376:2: note: Taking false branch
+ 1376 |         if (!z_parse(s, &n, &e))
+      |         ^
+src/zint.c:1380:10: note: Assuming the condition is false
+ 1380 |                 while (*t == ' ')
+      |                        ^~~~~~~~~
+src/zint.c:1380:3: note: Loop condition is false. Execution continues on line 1382
+ 1380 |                 while (*t == ' ')
+      |                 ^
+src/zint.c:1382:7: note: Assuming the condition is true
+ 1382 |                 if (*t == '/') {
+      |                     ^~~~~~~~~
+src/zint.c:1382:3: note: Taking true branch
+ 1382 |                 if (*t == '/') {
+      |                 ^
+src/zint.c:1385:4: note: Taking true branch
+ 1385 |                         if (z_parse(t + 1, &dd, &e2)) {
+      |                         ^
+src/zint.c:1391:6: note: Assuming 'd' is not equal to 0
+ 1391 |         if (d == 0)
+      |             ^~~~~~
+src/zint.c:1391:2: note: Taking false branch
+ 1391 |         if (d == 0)
+      |         ^
+src/zint.c:1393:9: note: Calling 'zq_make'
+ 1393 |         *out = zq_make(n, d);
+      |                ^~~~~~~~~~~~~
+src/zint.c:1270:6: note: 'd' is not equal to 0
+ 1270 |         if (d == 0)
+      |             ^
+src/zint.c:1270:2: note: Taking false branch
+ 1270 |         if (d == 0)
+      |         ^
+src/zint.c:1272:6: note: Assuming the condition is false
+ 1272 |         if (z_sign(d) < 0) {
+      |             ^~~~~~~~~~~~~
+src/zint.c:1272:2: note: Taking false branch
+ 1272 |         if (z_sign(d) < 0) {
+      |         ^
+src/zint.c:1276:6: note: Assuming 'n' is not equal to 0
+ 1276 |         if (n == 0) {
+      |             ^~~~~~
+src/zint.c:1276:2: note: Taking false branch
+ 1276 |         if (n == 0) {
+      |         ^
+src/zint.c:1281:2: note: Taking false branch
+ 1281 |         if (z_is_one(d)) {
+      |         ^
+src/zint.c:1286:6: note: Calling 'z_gcd'
+ 1286 |         g = z_gcd(n, d);
+      |             ^~~~~~~~~~~
+src/zint.c:812:20: note: Left side of '&&' is false
+  812 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                           ^
+src/zint.c:825:9: note: 'b' is not equal to 0
+  825 |         while (b != 0) {
+      |                ^
+src/zint.c:825:2: note: Loop condition is true.  Entering loop body
+  825 |         while (b != 0) {
+      |         ^
+src/zint.c:826:21: note: Left side of '&&' is false
+  826 |                 if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                                   ^
+src/zint.c:825:9: note: Assuming 'b' is equal to 0
+  825 |         while (b != 0) {
+      |                ^~~~~~
+src/zint.c:825:2: note: Loop condition is false. Execution continues on line 834
+  825 |         while (b != 0) {
+      |         ^
+src/zint.c:834:2: note: Calling 'z_release_keep'
+  834 |         z_release_keep(m, &a, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+src/zint.c:140:2: note: 'tmp' initialized to a null pointer value
+  140 |         static uint32_t *tmp;
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/zint.c:147:6: note: 'n' is > 'tocap'
+  147 |         if (n > tocap) {
+      |             ^
+src/zint.c:147:2: note: Taking true branch
+  147 |         if (n > tocap) {
+      |         ^
+src/zint.c:151:2: note: Loop condition is true.  Entering loop body
+  151 |         for (k = 0; k < n; k++) {
+      |         ^
+src/zint.c:153:7: note: Left side of '||' is false
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                     ^
+src/absalg.h:72:23: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                       ^
+src/zint.c:153:30: note: Assuming the condition is false
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/zint.c:153:3: note: Taking false branch
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                 ^
+src/zint.c:155:7: note: Assuming the condition is false
+  155 |                 if (tn + Z.len[i] > tcap) {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+src/zint.c:155:3: note: Taking false branch
+  155 |                 if (tn + Z.len[i] > tcap) {
+      |                 ^
+src/zint.c:161:3: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  161 |                 memcpy(tmp + tn, Z.limb + Z.off[i], Z.len[i] * sizeof *tmp);
+      |                 ^      ~~~~~~~~
+src/zint.c:184:32: warning: Although the value stored to 'i' is used in the enclosing expression, the value is never actually read from 'i' [deadcode.DeadStores]
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ^   ~~~~~~~~~~~~~
+src/zint.c:184:32: note: Although the value stored to 'i' is used in the enclosing expression, the value is never actually read from 'i'
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ^   ~~~~~~~~~~~~~
+2 warnings generated.

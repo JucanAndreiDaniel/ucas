@@ -1,0 +1,26 @@
+> rl(x: u16, n: u16 in 1..15) = (x << n) | (x >> (16 - n))
+> rr(x: u16, n: u16 in 1..15) = (x >> n) | (x << (16 - n))
+> equiv rl rr
+rl and rr differ at 916896 points, e.g. x=1, n=1: 2 vs 32768
+> rl2(x: u16, n: u16 in 1..15) = (x >> (16 - n)) | (x << n)
+> equiv rl rl2
+rl and rl2 are equal on the domain of rl (exhaustive)
+> rng(x: u16, n: u16 in 1..15) = (x << n) & 0xffff
+> range rng
+range of rng -> u16:
+  0..65534   (32768 distinct values)
+  fits in u16
+  over all 983040 points of the domain
+> mask8(x: u8) = x & 0x0f
+> range mask8
+range of mask8 -> u8:
+  0..15   (16 distinct values)
+  values: 0..15
+  fits in u4
+  over all 256 points of the domain
+> domain mask8
+domain of mask8:
+  x: u8, 0..255
+  defined at 256 of 256 points
+  no conditions: total on its parameter types
+  over all 256 points of the domain

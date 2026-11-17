@@ -1,0 +1,19 @@
+> f(x: u8 in 5..1) = x
+13_bad_ranges.ucas:1:16: error: empty range 5..1: the low end is above the high end
+    f(x: u8 in 5..1) = x
+                   ^
+> f(x: u8 in -1..255) = x
+> f(x: u8 in 0..256) = x
+> f(x: i8 in -128..128) = x
+> f(x: real in 1..0) = x
+13_bad_ranges.ucas:5:18: error: empty range 1..0: the low end is above the high end
+    f(x: real in 1..0) = x
+                     ^
+> f(x: u8 in 0..255 in 1..2) = x
+13_bad_ranges.ucas:6:19: error: expected ')', found 'in'
+    f(x: u8 in 0..255 in 1..2) = x
+                      ^
+> bigint 2^10
+2^10 = 1024
+  bits: 11
+  how: exact arbitrary-precision integers (32-bit limbs; Knuth division)

@@ -1,0 +1,36 @@
+> bigint factor 0
+12_malformed.ucas:1:8: error: bigint factor: 0 has no factorization
+    bigint factor 0
+           ^
+> bigint factor 1/2
+12_malformed.ucas:2:8: error: bigint: 1 / 2 is not exact (div is floor division, % the remainder)
+    bigint factor 1/2
+           ^
+> bigint factor 3.5
+12_malformed.ucas:3:8: error: bigint: unexpected ".5"
+    bigint factor 3.5
+           ^
+> bigint factor 2^-1
+12_malformed.ucas:4:8: error: bigint: negative exponent
+    bigint factor 2^-1
+           ^
+> bigint factor
+12_malformed.ucas:5:8: error: bigint: factor is not a function (gcd, lcm, abs, isprime, binomial)
+    bigint factor
+           ^
+> bigint factor abc
+12_malformed.ucas:6:8: error: bigint: abc is not a function (gcd, lcm, abs, isprime, binomial)
+    bigint factor abc
+           ^
+> bigint factor 1e5
+12_malformed.ucas:7:8: error: bigint: unexpected "e5"
+    bigint factor 1e5
+           ^
+> bigint factor NaN
+12_malformed.ucas:8:8: error: bigint: NaN is not a function (gcd, lcm, abs, isprime, binomial)
+    bigint factor NaN
+           ^
+> bigint factor (-3)!
+12_malformed.ucas:9:8: error: bigint: factorial of -3
+    bigint factor (-3)!
+           ^

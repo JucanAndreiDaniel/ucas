@@ -1,0 +1,1295 @@
+/home/andrew/Code/ucas/src/plot.c:238:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  238 |                                 if (bits & (0x80 >> b))
+      |                                          ~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:238:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  238 |                                 if (bits & (0x80 >> b))
+      |                                             ^~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:294:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |                         while ((*s & 0xc0) == 0x80)
+      |                                 ^~ ~
+/home/andrew/Code/ucas/src/plot.c:310:3: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+  310 |                 strcat(dst, "...");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:310:3: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+  310 |                 strcat(dst, "...");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:500:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  500 |         char *b = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/plot.c:504:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   38 |         snprintf(b, 32, "%.4g", v);
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:519:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  519 |                 if ((e = strchr(b, 'e')) != NULL) {     /* 1e+06 -> 1e6 */
+      |                      ~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:519:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:519:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:668:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   38 |         uint32_t loc, wloc;
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:671:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  671 |         int64_t *ii;
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:673:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  673 |         uint8_t ok[CH];
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:716:16: warning: Array access (from variable 'in') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  716 |                                 double v = in[(size_t)(base + i) * np + j];
+      |                                            ^
+/home/andrew/Code/ucas/src/plot.c:5649:16: note: Assuming field 'np' is 0
+ 5649 |         ev_run(&e, n, f->np ? xs : NULL, ys, ok);
+      |                       ^~~~~
+/home/andrew/Code/ucas/src/plot.c:5649:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:5649:16: note: Passing null pointer value via 3rd parameter 'in'
+ 5649 |         ev_run(&e, n, f->np ? xs : NULL, ys, ok);
+      |                       ^
+/home/andrew/Code/ucas/src/plot.c:5649:2: note: Calling 'ev_run'
+ 5649 |         ev_run(&e, n, f->np ? xs : NULL, ys, ok);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:711:17: note: Assuming 'base' is < 'n'
+  711 |         for (base = 0; base < n; base += CH) {
+      |                        ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:711:2: note: Loop condition is true.  Entering loop body
+  711 |         for (base = 0; base < n; base += CH) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:712:7: note: Assuming the condition is false
+  712 |                 m = n - base < CH ? n - base : CH;
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:712:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:713:15: note: Assuming 'j' is < 'np'
+  713 |                 for (j = 0; j < np; j++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:713:3: note: Loop condition is true.  Entering loop body
+  713 |                 for (j = 0; j < np; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:715:4: note: Loop condition is true.  Entering loop body
+  715 |                         for (i = 0; i < m; i++) {
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:716:16: note: Array access (from variable 'in') results in a null pointer dereference
+  716 |                                 double v = in[(size_t)(base + i) * np + j];
+      |                                            ^~
+/home/andrew/Code/ucas/src/plot.c:717:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  717 |                                 if (TY_FP(t)) {
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:718:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  718 |                                         if (TYK(t) == K_FLOAT)
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:719:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  719 |                                                 v = fround(TYW(t), v);
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/plot.c:733:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  733 |                         if (TY_FP(e->ty))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:735:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  735 |                         else if (TYK(e->ty) == K_UINT)
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:736:18: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  736 |                                 v = (double)(uint64_t)COLI(&e->p, e->loc)[i];
+      |                                              ^
+/home/andrew/Code/ucas/src/plot.c:740:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         if (!e->ok[i] || (fl & F_UNDEF) || isnan(v))
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:884:24: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  884 |                     s[i + 1] == '=') {
+      |                                      ^
+/home/andrew/Code/ucas/src/plot.c:887:4: note: end of the original
+  887 |                 } else if (c == '-' && s[i + 1] == '>') {
+      |                  ^
+/home/andrew/Code/ucas/src/plot.c:887:43: note: clone 1 starts here
+  887 |                 } else if (c == '-' && s[i + 1] == '>') {
+      |                                                         ^
+/home/andrew/Code/ucas/src/plot.c:982:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  982 |         e = calc_parse_text(buf, &tmp, TY_REAL);
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/plot.c:985:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  985 |         return TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1122:25: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+ 1122 |                     !strcmp(w, "6d")) {
+      |                                       ^
+/home/andrew/Code/ucas/src/plot.c:1124:4: note: end of the original
+ 1124 |                 } else if (!strcmp(w, "rotate") || !strcmp(w, "rotating") ||
+      |                  ^
+/home/andrew/Code/ucas/src/plot.c:1213:46: note: clone 1 starts here
+ 1213 |                     !strcmp(w, "and") || !strcmp(w, "in")) {
+      |                                                            ^
+/home/andrew/Code/ucas/src/plot.c:1144:13: warning: The left operand of '!=' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 1144 |                         if (w[3] != 'y')
+      |                             ~~~~ ^
+/home/andrew/Code/ucas/src/plot.c:1079:9: note: Assuming 'i' is < 'nt'
+ 1079 |         while (i < nt) {
+      |                ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:1079:2: note: Loop condition is true.  Entering loop body
+ 1079 |         while (i < nt) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:1080:7: note: Assuming the condition is false
+ 1080 |                 if (T[i].k == ',' && T[i].d == 0) {
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1080:21: note: Left side of '&&' is false
+ 1080 |                 if (T[i].k == ',' && T[i].d == 0) {
+      |                                   ^
+/home/andrew/Code/ucas/src/plot.c:1084:7: note: Assuming the condition is false
+ 1084 |                 if (T[i].k == 'n' && T[i].d == 0 && tw(i + 1, "fps")) { /* 30 fps */
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1084:21: note: Left side of '&&' is false
+ 1084 |                 if (T[i].k == 'n' && T[i].d == 0 && tw(i + 1, "fps")) { /* 30 fps */
+      |                                   ^
+/home/andrew/Code/ucas/src/plot.c:1089:7: note: Assuming the condition is false
+ 1089 |                 if (!optstart(i))
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1089:3: note: Taking false branch
+ 1089 |                 if (!optstart(i))
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:1091:3: note: Calling 'tk_str'
+ 1091 |                 tk_str(i, i + 1, w, sizeof w);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:918:6: note: Assuming 'a' is >= 'b'
+  918 |         if (a >= b) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:918:2: note: Taking true branch
+  918 |         if (a >= b) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:1091:3: note: Returning from 'tk_str'
+ 1091 |                 tk_str(i, i + 1, w, sizeof w);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1092:7: note: Assuming 'leading' is 0
+ 1092 |                 if (leading && (tw(i + 1, "in") || tw(i + 1, "from")))
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1092:15: note: Left side of '&&' is false
+ 1092 |                 if (leading && (tw(i + 1, "in") || tw(i + 1, "from")))
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:1094:7: note: Assuming the condition is false
+ 1094 |                 if (!strcmp(w, "to")) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1094:3: note: Taking false branch
+ 1094 |                 if (!strcmp(w, "to")) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:1099:14: note: Assuming the condition is false
+ 1099 |                 } else if (!strcmp(w, "nofile")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1099:10: note: Taking false branch
+ 1099 |                 } else if (!strcmp(w, "nofile")) {
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1102:14: note: Assuming the condition is false
+ 1102 |                 } else if (!strcmp(w, "3d") || !strcmp(w, "surface") ||
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1102:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1102:34: note: Assuming the condition is false
+ 1102 |                 } else if (!strcmp(w, "3d") || !strcmp(w, "surface") ||
+      |                                                ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1102:14: note: Left side of '||' is false
+ 1102 |                 } else if (!strcmp(w, "3d") || !strcmp(w, "surface") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1103:7: note: Assuming the condition is false
+ 1103 |                     !strcmp(w, "surf")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1102:10: note: Taking false branch
+ 1102 |                 } else if (!strcmp(w, "3d") || !strcmp(w, "surface") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1106:14: note: Assuming the condition is false
+ 1106 |                 } else if (!strcmp(w, "contour") || !strcmp(w, "contours")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1106:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1106:39: note: Assuming the condition is false
+ 1106 |                 } else if (!strcmp(w, "contour") || !strcmp(w, "contours")) {
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1106:10: note: Taking false branch
+ 1106 |                 } else if (!strcmp(w, "contour") || !strcmp(w, "contours")) {
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1109:14: note: Assuming the condition is false
+ 1109 |                 } else if (!strcmp(w, "heatmap") || !strcmp(w, "heat") ||
+      |                            ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1109:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1109:39: note: Assuming the condition is false
+ 1109 |                 } else if (!strcmp(w, "heatmap") || !strcmp(w, "heat") ||
+      |                                                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1109:14: note: Left side of '||' is false
+ 1109 |                 } else if (!strcmp(w, "heatmap") || !strcmp(w, "heat") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1110:7: note: Assuming the condition is false
+ 1110 |                     !strcmp(w, "density")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1109:10: note: Taking false branch
+ 1109 |                 } else if (!strcmp(w, "heatmap") || !strcmp(w, "heat") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1113:14: note: Assuming the condition is false
+ 1113 |                 } else if (!strcmp(w, "wireframe") || !strcmp(w, "wire") ||
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1113:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1113:41: note: Assuming the condition is false
+ 1113 |                 } else if (!strcmp(w, "wireframe") || !strcmp(w, "wire") ||
+      |                                                       ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1113:14: note: Left side of '||' is false
+ 1113 |                 } else if (!strcmp(w, "wireframe") || !strcmp(w, "wire") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1114:7: note: Assuming the condition is false
+ 1114 |                     !strcmp(w, "mesh")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1113:10: note: Taking false branch
+ 1113 |                 } else if (!strcmp(w, "wireframe") || !strcmp(w, "wire") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1117:14: note: Assuming the condition is false
+ 1117 |                 } else if (!strcmp(w, "2d") || !strcmp(w, "flat")) {
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1117:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1117:34: note: Assuming the condition is false
+ 1117 |                 } else if (!strcmp(w, "2d") || !strcmp(w, "flat")) {
+      |                                                ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1117:10: note: Taking false branch
+ 1117 |                 } else if (!strcmp(w, "2d") || !strcmp(w, "flat")) {
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Assuming the condition is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1120:34: note: Assuming the condition is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                                                ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Left side of '||' is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1121:7: note: Assuming the condition is false
+ 1121 |                     !strcmp(w, "ND") || !strcmp(w, "4d") || !strcmp(w, "5d") ||
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Left side of '||' is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1121:27: note: Assuming the condition is false
+ 1121 |                     !strcmp(w, "ND") || !strcmp(w, "4d") || !strcmp(w, "5d") ||
+      |                                         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Left side of '||' is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1121:47: note: Assuming the condition is false
+ 1121 |                     !strcmp(w, "ND") || !strcmp(w, "4d") || !strcmp(w, "5d") ||
+      |                                                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:14: note: Left side of '||' is false
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1122:7: note: Assuming the condition is false
+ 1122 |                     !strcmp(w, "6d")) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1120:10: note: Taking false branch
+ 1120 |                 } else if (!strcmp(w, "nd") || !strcmp(w, "Nd") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1124:14: note: Assuming the condition is false
+ 1124 |                 } else if (!strcmp(w, "rotate") || !strcmp(w, "rotating") ||
+      |                            ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1124:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1124:38: note: Assuming the condition is false
+ 1124 |                 } else if (!strcmp(w, "rotate") || !strcmp(w, "rotating") ||
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1124:14: note: Left side of '||' is false
+ 1124 |                 } else if (!strcmp(w, "rotate") || !strcmp(w, "rotating") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1125:7: note: Assuming the condition is false
+ 1125 |                     !strcmp(w, "spin")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1124:10: note: Taking false branch
+ 1124 |                 } else if (!strcmp(w, "rotate") || !strcmp(w, "rotating") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1128:14: note: Assuming the condition is false
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                            ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1128:14: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:1128:35: note: Assuming the condition is false
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                                                 ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1128:14: note: Left side of '||' is false
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1129:7: note: Assuming the condition is false
+ 1129 |                     !strcmp(w, "seconds") || !strcmp(w, "points") ||
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1128:14: note: Left side of '||' is false
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1129:32: note: Assuming the condition is false
+ 1129 |                     !strcmp(w, "seconds") || !strcmp(w, "points") ||
+      |                                              ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1128:14: note: Left side of '||' is false
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                            ^
+/home/andrew/Code/ucas/src/plot.c:1130:7: note: Assuming the condition is false
+ 1130 |                     !strcmp(w, "samples")) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1128:10: note: Taking false branch
+ 1128 |                 } else if (!strcmp(w, "fps") || !strcmp(w, "frames") ||
+      |                        ^
+/home/andrew/Code/ucas/src/plot.c:1142:14: note: Assuming the condition is true
+ 1142 |                 } else if (!strcmp(w, "logx") || !strcmp(w, "logy") ||
+      |                            ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1142:33: note: Left side of '||' is true
+ 1142 |                 } else if (!strcmp(w, "logx") || !strcmp(w, "logy") ||
+      |                                               ^
+/home/andrew/Code/ucas/src/plot.c:1144:13: note: The left operand of '!=' is a garbage value
+ 1144 |                         if (w[3] != 'y')
+      |                             ~~~~ ^
+/home/andrew/Code/ucas/src/plot.c:1249:11: warning: Dereference of null pointer [clang-analyzer-core.NullDereference]
+ 1249 |         int np = e->f.np;
+      |                  ^
+/home/andrew/Code/ucas/src/plot.c:1786:27: note: Assuming 's' is >= 0
+ 1786 |         const struct param *pp = s >= 0 ? &e->f.p[s] : NULL;
+      |                                  ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:1786:27: note: 's' is >= 0
+ 1786 |         const struct param *pp = s >= 0 ? &e->f.p[s] : NULL;
+      |                                  ^
+/home/andrew/Code/ucas/src/plot.c:1786:27: note: '?' condition is true
+/home/andrew/Code/ucas/src/plot.c:1787:19: note: Assuming 'pp' is null
+ 1787 |         const char *vn = pp ? sym_str(pp->name) : "x";
+      |                          ^~
+/home/andrew/Code/ucas/src/plot.c:1787:19: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:1790:17: note: 'pp' is null
+ 1790 |         int k, isint = pp && !TY_FP(pp->ty), periodic = 0;
+      |                        ^~
+/home/andrew/Code/ucas/src/plot.c:1790:20: note: Left side of '&&' is false
+ 1790 |         int k, isint = pp && !TY_FP(pp->ty), periodic = 0;
+      |                           ^
+/home/andrew/Code/ucas/src/plot.c:1793:6: note: 'pp' is null
+ 1793 |         if (pp && pp->ranged && !at_set) {
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:1793:9: note: Left side of '&&' is false
+ 1793 |         if (pp && pp->ranged && !at_set) {
+      |                ^
+/home/andrew/Code/ucas/src/plot.c:1800:6: note: 'pp' is null
+ 1800 |         if (pp && TY_SIZED(pp->ty) && !at_set) {
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:1800:9: note: Left side of '&&' is false
+ 1800 |         if (pp && TY_SIZED(pp->ty) && !at_set) {
+      |                ^
+/home/andrew/Code/ucas/src/plot.c:1810:14: note: 'isint' is 0
+ 1810 |         periodic = !isint && guess_period(e, base, s, &P);
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/plot.c:1810:13: note: Left side of '&&' is true
+ 1810 |         periodic = !isint && guess_period(e, base, s, &P);
+      |                    ^
+/home/andrew/Code/ucas/src/plot.c:1811:6: note: Assuming 'periodic' is 0
+ 1811 |         if (periodic && !at_set) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1811:15: note: Left side of '&&' is false
+ 1811 |         if (periodic && !at_set) {
+      |                      ^
+/home/andrew/Code/ucas/src/plot.c:1824:6: note: Assuming 'at_set' is not equal to 0
+ 1824 |         if (at_set) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:1824:2: note: Taking true branch
+ 1824 |         if (at_set) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:1828:15: note: Assuming 'k' is >= field 'n'
+ 1828 |                 for (k = 0; k < F.n; k++) {
+      |                             ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1828:3: note: Loop condition is false. Execution continues on line 1840
+ 1828 |                 for (k = 0; k < F.n; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:1840:8: note: 'kl' is < 0
+ 1840 |                 kb = kl < 0 ? kr : kr < 0 ? kl : bl > br ? kl : kr;
+      |                      ^~
+/home/andrew/Code/ucas/src/plot.c:1840:8: note: '?' condition is true
+/home/andrew/Code/ucas/src/plot.c:1841:7: note: 'kb' is < 0
+ 1841 |                 if (kb >= 0) {
+      |                     ^~
+/home/andrew/Code/ucas/src/plot.c:1841:3: note: Taking false branch
+ 1841 |                 if (kb >= 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:1851:11: note: Passing null pointer value via 1st parameter 'e'
+ 1851 |                         if (f1(e, base, s, at, &v0) == 1 && f1(e, base, s, at - h, &vl) ==
+      |                                ^
+/home/andrew/Code/ucas/src/plot.c:1851:8: note: Calling 'f1'
+ 1851 |                         if (f1(e, base, s, at, &v0) == 1 && f1(e, base, s, at - h, &vl) ==
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1249:11: note: Dereference of null pointer
+ 1249 |         int np = e->f.np;
+      |                  ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1308:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1308 |         char *b = buf[k++ & 3], f[24];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/plot.c:1380:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1380 |         tol = (hi - lo) * (TYK(e->ty) == K_FLOAT || TYK(e->f.p[s].ty) ==
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1380:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1380 |         tol = (hi - lo) * (TYK(e->ty) == K_FLOAT || TYK(e->f.p[s].ty) ==
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1382:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1382 |         if (!TY_FP(e->f.p[s].ty))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1575:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   38 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:1580:6: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+ 1580 |         if (setjmp(fail_jmp) == 0) {
+      |             ^
+/home/andrew/Code/ucas/src/plot.c:1603:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1603 |         int i, isint = s >= 0 && !TY_FP(e->f.p[s].ty), allzero = 1;
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1716:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1716 |                                         good &= f1(e, base, s, r[k] + (j2 - 2) * d, &q[j2]) == 1;
+      |                                         ^~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:1772:4: warning: no header providing "printf" is directly included [misc-include-cleaner]
+ 1772 |                         printf("    %s: %s ≈ %s\n", ftname[k], vn, b.p);
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:1790:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1790 |         int k, isint = pp && !TY_FP(pp->ty), periodic = 0;
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1794:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1794 |                 *plo = TY_FP(pp->ty) ? pp->rlo : (double)pp->lo;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1795:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1795 |                 *phi = TY_FP(pp->ty) ? pp->rhi : (double)pp->hi;
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1800:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1800 |         if (pp && TY_SIZED(pp->ty) && !at_set) {
+      |                   ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:1965:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1965 |                 if (pp && TY_SIZED(pp->ty)) {
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:2102:59: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 2102 |                 text(a->R - textw(xn), a->B + (small ? 5 : 18) + (small ? 0 : 0),
+      |                                                                         ^
+/home/andrew/Code/ucas/src/plot.c:2102:63: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 2102 |                 text(a->R - textw(xn), a->B + (small ? 5 : 18) + (small ? 0 : 0),
+      |                                                                             ^
+/home/andrew/Code/ucas/src/plot.c:2259:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2259 |         return s->sx >= 0 && !TY_FP(s->f[0].p[s->sx].ty);
+      |                               ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:2502:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2502 |                         idx = (a > 0) | (b > 0) << 1 | (c > 0) << 2 | (d > 0) << 3;
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/plot.c:2502:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2502 |                         idx = (a > 0) | (b > 0) << 1 | (c > 0) << 2 | (d > 0) << 3;
+      |                                         ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:2502:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2502 |                         idx = (a > 0) | (b > 0) << 1 | (c > 0) << 2 | (d > 0) << 3;
+      |                                                        ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:2502:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2502 |                         idx = (a > 0) | (b > 0) << 1 | (c > 0) << 2 | (d > 0) << 3;
+      |                                                                       ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:3051:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3051 |                         proj(V, i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? V->h : -V->h, &sx,
+      |                                 ^ ~
+/home/andrew/Code/ucas/src/plot.c:3051:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3051 |                         proj(V, i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? V->h : -V->h, &sx,
+      |                                                 ^ ~
+/home/andrew/Code/ucas/src/plot.c:3051:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3051 |                         proj(V, i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? V->h : -V->h, &sx,
+      |                                                                 ^ ~
+/home/andrew/Code/ucas/src/plot.c:3226:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3226 |                         double X = c & 1 ? 1 : -1, Y = c & 2 ? 1 : -1;
+      |                                    ^ ~
+/home/andrew/Code/ucas/src/plot.c:3226:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3226 |                         double X = c & 1 ? 1 : -1, Y = c & 2 ? 1 : -1;
+      |                                                        ^ ~
+/home/andrew/Code/ucas/src/plot.c:3273:52: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3273 |                             B->lo[1] + (B->hi[1] - B->lo[1]) * j / G3, &in[i * np]);
+      |                                                                         ^
+/home/andrew/Code/ucas/src/plot.c:3273:55: note: make conversion explicit to silence this warning
+   38 |                             B->lo[1] + (B->hi[1] - B->lo[1]) * j / G3, &in[i * np]);
+      |                                                                            ^~~~~~
+      |                                                                            (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/plot.c:3273:55: note: perform multiplication in a wider type
+ 3273 |                             B->lo[1] + (B->hi[1] - B->lo[1]) * j / G3, &in[i * np]);
+      |                                                                            ^
+      |                                                                            (ptrdiff_t)
+/home/andrew/Code/ucas/src/plot.c:3447:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3447 |         e = calc_parse_text(t, &tmp, TY_REAL);
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/plot.c:3450:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3450 |         return TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3568:13: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 3568 |                         if ((ode = ode_rhs_text(nm, &ord)) != NULL && ord == 1 &&
+      |                              ~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:3568:13: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:3568:13: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:3595:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3595 |                         s->kind = TYK(N.ty[f->body]) == K_BOOL ? S_REGION : S_SURF;
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3631:48: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3631 |                 if (eq == a + 1 && slot_named(f, lhs) < 0 && strcmp(lhs, "x")) {
+      |                                                              ^               
+      |                                                                               != 0
+/home/andrew/Code/ucas/src/plot.c:3704:7: warning: no header providing "rep_on" is directly included [misc-include-cleaner]
+   30 |         if (!rep_on)
+      |              ^
+/home/andrew/Code/ucas/src/plot.c:3706:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+ 3706 |         rep_obj(NULL);
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:3707:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+ 3707 |         rep_str("var", vn);
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:3708:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+ 3708 |         rep_num("lo", lo);
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:3716:2: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+ 3716 |         rep_end();
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:3724:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+ 3724 |         rep_list("axes");
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:3739:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3739 |                 return TY_FP(p->ty) ? (p->rlo + p->rhi) / 2 :
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3741:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3741 |         if (TY_SIZED(p->ty)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3759:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3759 |                 base[k] = (rng_find(p->name) || p->ranged || TY_SIZED(p->ty)) ?
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3760:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3760 |                     slot_mid(f, k) : TY_FP(p->ty) ? generic + (generic ? 0.37 * k : 0) :
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3832:8: warning: Excessive padding in 'struct (unnamed at /home/andrew/Code/ucas/src/plot.c:3832:8)' (8 padding bytes, where 0 is optimal). Optimal fields order: lo, hi, si, c, k, why, consider reordering the fields or adding explicit padding members [clang-analyzer-optin.performance.Padding]
+ 3832 | static struct {
+      |        ^~~~~~~~
+ 3833 |         int si, c, k;
+      |         ~~~~~~~~~~~~~
+ 3834 |         double lo, hi;
+      |         ~~~~~~~~~~~~~~
+ 3835 |         char why[300];
+      |         ~~~~~~~~~~~~~~
+ 3836 | } RC[24];
+      | ~
+/home/andrew/Code/ucas/src/plot.c:3832:8: note: Excessive padding in 'struct (unnamed at /home/andrew/Code/ucas/src/plot.c:3832:8)' (8 padding bytes, where 0 is optimal). Optimal fields order: lo, hi, si, c, k, why, consider reordering the fields or adding explicit padding members
+ 3832 | static struct {
+      |        ^~~~~~~~
+ 3833 |         int si, c, k;
+      |         ~~~~~~~~~~~~~
+ 3834 |         double lo, hi;
+      |         ~~~~~~~~~~~~~~
+ 3835 |         char why[300];
+      |         ~~~~~~~~~~~~~~
+ 3836 | } RC[24];
+      | ~
+/home/andrew/Code/ucas/src/plot.c:3877:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3877 |                 a = -3 + 6 * ((s >> 8) & 0xffff) / 65536.0;
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3877:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3877 |                 a = -3 + 6 * ((s >> 8) & 0xffff) / 65536.0;
+      |                                        ~ ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:3879:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3879 |                 b = -3 + 6 * ((s >> 8) & 0xffff) / 65536.0;
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3879:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3879 |                 b = -3 + 6 * ((s >> 8) & 0xffff) / 65536.0;
+      |                                        ~ ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:3927:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3927 |             strstr(why.p, "feature") && TY_FP(f->p[k].ty) && !f->p[k].ranged) {
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:3934:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3934 |                         if (j == k || !TY_FP(f->p[j].ty) || f->p[j].ranged ||
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4038:26: warning: The left operand of '-' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 4038 |         return an->lo + (an->hi - an->lo) * f / (an->loop ? an->n : an->n - 1);
+      |                                 ^
+/home/andrew/Code/ucas/src/plot.c:4263:14: note: Assuming 'k' is >= field 'ns'
+ 4263 |         for (k = 0; k < O.ns; k++) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4263:2: note: Loop condition is false. Execution continues on line 4305
+ 4263 |         for (k = 0; k < O.ns; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4305:7: note: 'xn' is 0
+ 4305 |         if (!xn)
+      |              ^~
+/home/andrew/Code/ucas/src/plot.c:4305:2: note: Taking true branch
+ 4305 |         if (!xn)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4307:7: note: 'yn' is 0
+ 4307 |         if (!yn)
+      |              ^~
+/home/andrew/Code/ucas/src/plot.c:4307:2: note: Taking true branch
+ 4307 |         if (!yn)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4309:2: note: Calling 'anim_setup'
+ 4309 |         anim_setup(&an, av, 30, 12);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4005:12: note: Assuming field 'fps' is <= 0
+ 4005 |         an->fps = O.fps > 0 ? O.fps : dfps;
+      |                   ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4005:12: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:4006:10: note: Field 'fps' is <= 50
+ 4006 |         if (an->fps > 50)
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:4006:2: note: Taking false branch
+ 4006 |         if (an->fps > 50)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4008:6: note: Assuming 'var' is not equal to 0
+ 4008 |         if (!var)
+      |             ^~~~
+/home/andrew/Code/ucas/src/plot.c:4008:2: note: Taking false branch
+ 4008 |         if (!var)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4010:14: note: Assuming 'k' is >= field 'ns'
+ 4010 |         for (k = 0; k < O.ns; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4010:2: note: Loop condition is false. Execution continues on line 4017
+ 4010 |         for (k = 0; k < O.ns; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4019:6: note: 'per' is 0
+ 4019 |         if (per && an->lo == -an->hi) { /* one period loops seamlessly */
+      |             ^~~
+/home/andrew/Code/ucas/src/plot.c:4019:10: note: Left side of '&&' is false
+ 4019 |         if (per && an->lo == -an->hi) { /* one period loops seamlessly */
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:4025:10: note: Assuming field 'frames' is > 0
+ 4025 |         an->n = O.frames > 0 ? O.frames : O.seconds > 0 ?
+      |                 ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4025:10: note: '?' condition is true
+/home/andrew/Code/ucas/src/plot.c:4027:6: note: Assuming field 'n' is >= 2
+ 4027 |         if (an->n < 2)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4027:2: note: Taking false branch
+ 4027 |         if (an->n < 2)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4029:6: note: Assuming field 'n' is <= 240
+ 4029 |         if (an->n > 240)
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4029:2: note: Taking false branch
+ 4029 |         if (an->n > 240)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4031:1: note: Returning without writing to 'an->hi'
+ 4031 | }
+      | ^
+/home/andrew/Code/ucas/src/plot.c:4309:2: note: Returning from 'anim_setup'
+ 4309 |         anim_setup(&an, av, 30, 12);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4310:6: note: 'av' is not equal to 0
+ 4310 |         if (av)
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:4310:2: note: Taking true branch
+ 4310 |         if (av)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4311:15: note: Calling 'anim_val'
+ 4311 |                 set_fix(av, anim_val(&an, 0));
+      |                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4036:10: note: Field 'n' is > 1
+ 4036 |         if (an->n <= 1)
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:4036:2: note: Taking false branch
+ 4036 |         if (an->n <= 1)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4038:26: note: The left operand of '-' is a garbage value
+ 4038 |         return an->lo + (an->hi - an->lo) * f / (an->loop ? an->n : an->n - 1);
+      |                          ~~~~~~ ^
+/home/andrew/Code/ucas/src/plot.c:4070:22: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 4070 |         double *v = xmalloc(NG * NG * sizeof *v);
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:4070:22: note: make conversion explicit to silence this warning
+ 4070 |         double *v = xmalloc(NG * NG * sizeof *v);
+      |                             ^~~~~~~
+      |                             (__size_t)( )
+/home/andrew/Code/ucas/src/plot.c:4070:22: note: perform multiplication in a wider type
+ 4070 |         double *v = xmalloc(NG * NG * sizeof *v);
+      |                             ^~
+      |                             (long)
+/home/andrew/Code/ucas/src/plot.c:4071:24: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 4071 |         uint8_t *ok = xmalloc(NG * NG);
+      |                               ^
+/home/andrew/Code/ucas/src/plot.c:4071:24: note: make conversion explicit to silence this warning
+ 4071 |         uint8_t *ok = xmalloc(NG * NG);
+      |                               ^~~~~~~
+      |                               (size_t)( )
+/home/andrew/Code/ucas/src/plot.c:4071:24: note: perform multiplication in a wider type
+ 4071 |         uint8_t *ok = xmalloc(NG * NG);
+      |                               ^~
+      |                               (long)
+/home/andrew/Code/ucas/src/plot.c:4118:18: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 4118 |         s->cy = xmalloc(2 * n * sizeof *s->cy);
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:4118:18: note: make conversion explicit to silence this warning
+ 4118 |         s->cy = xmalloc(2 * n * sizeof *s->cy);
+      |                         ^~~~~
+      |                         (__size_t)( )
+/home/andrew/Code/ucas/src/plot.c:4118:18: note: perform multiplication in a wider type
+ 4118 |         s->cy = xmalloc(2 * n * sizeof *s->cy);
+      |                         ^
+      |                         (long)
+/home/andrew/Code/ucas/src/plot.c:4131:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4131 |                         good &= ok[c][i] == 1;
+      |                         ^~~~ ~~
+/home/andrew/Code/ucas/src/plot.c:4174:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4174 |                 if ((k = slot_named(&s->f[c], tn)) >= 0 && s->f[c].p[k].ranged) {
+      |                      ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4174:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:4174:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:4212:3: warning: no header providing "fputs" is directly included [misc-include-cleaner]
+ 4212 |                 fputs(SUM.p, stdout);
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:4219:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+ 4219 |         rep_int("width", W);
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:4270:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 4270 |                 switch (s->kind) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:4313:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4313 |         if ((r = rng_find(xn)) != NULL || (r = rng_find(sym_cstr("x"))) != NULL) {
+      |              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4313:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:4313:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:4313:39: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4313 |         if ((r = rng_find(xn)) != NULL || (r = rng_find(sym_cstr("x"))) != NULL) {
+      |                                            ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4313:39: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:4313:39: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:4369:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4369 |         if ((r = rng_find(yn)) != NULL || (!(has_fx && yn == sym_cstr("x")) &&
+      |              ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4369:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:4369:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:4370:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 4370 |             (r = rng_find(sym_cstr("y"))) != NULL)) {
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:4370:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/plot.c:4370:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/plot.c:4418:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4418 |                                 any |= impl_bbox(k, b1);
+      |                                 ^~~ ~~
+/home/andrew/Code/ucas/src/plot.c:4663:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4663 |                         ix &= is_intvar(&O.s[k]);
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/plot.c:4664:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4664 |                         iy &= !TY_FP(N.ty[O.s[k].f[0].body]);
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/plot.c:4664:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4664 |                         iy &= !TY_FP(N.ty[O.s[k].f[0].body]);
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4808:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4808 |         tick_int[0] = !TY_FP(s->f[0].p[s->sx].ty);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4809:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4809 |         tick_int[1] = !TY_FP(s->f[0].p[s->sy].ty);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4810:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4810 |         tick_int[2] = !TY_FP(N.ty[s->f[0].body]);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4887:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4887 |                         rng ^= rng << 13;
+      |                                    ~~ ^~
+/home/andrew/Code/ucas/src/plot.c:4888:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4888 |                         rng ^= rng >> 7;
+      |                                    ~~ ^
+/home/andrew/Code/ucas/src/plot.c:4889:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4889 |                         rng ^= rng << 17;
+      |                                    ~~ ^~
+/home/andrew/Code/ucas/src/plot.c:4890:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4890 |                         u = (double)(rng >> 11) / 9007199254740992.0;
+      |                                          ~~ ^~
+/home/andrew/Code/ucas/src/plot.c:4892:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4892 |                         if (!TY_FP(f->p[k].ty))
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:5020:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5020 |         tick_int[0] = !TY_FP(f->p[s->sx].ty);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:5021:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5021 |         tick_int[1] = !TY_FP(f->p[s->sy].ty);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:5022:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5022 |         tick_int[2] = !TY_FP(N.ty[f->body]);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/plot.c:5034:5: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 5034 |                                 vs[2 * nv] = ps;
+      |                                 ^
+/home/andrew/Code/ucas/src/plot.c:5034:8: note: make conversion explicit to silence this warning
+ 5034 |                                 vs[2 * nv] = ps;
+      |                                    ^~~~~~
+      |                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/plot.c:5034:8: note: perform multiplication in a wider type
+ 5034 |                                 vs[2 * nv] = ps;
+      |                                    ^
+      |                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/plot.c:5035:5: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 5035 |                                 vv[2 * nv] = plo + (phi - plo) * a / 8;
+      |                                 ^
+/home/andrew/Code/ucas/src/plot.c:5035:8: note: make conversion explicit to silence this warning
+ 5035 |                                 vv[2 * nv] = plo + (phi - plo) * a / 8;
+      |                                    ^~~~~~
+      |                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/plot.c:5035:8: note: perform multiplication in a wider type
+ 5035 |                                 vv[2 * nv] = plo + (phi - plo) * a / 8;
+      |                                    ^
+      |                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/plot.c:5246:8: warning: 1st function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 5246 |                             sym_str(g.p[0].name));
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: Assuming 'mode' is not equal to 0
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                   ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: 'mode' is not equal to 0
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                   ^~~~
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:5318:33: note: Assuming 'mode' is not equal to 1
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5318:33: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:5320:6: note: Assuming the condition is false
+ 5320 |         if (!cmdp_rest(p, O.text, sizeof O.text, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5320:2: note: Taking false branch
+ 5320 |         if (!cmdp_rest(p, O.text, sizeof O.text, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5326:16: note: Assuming 'fb' is >= 'nt'
+ 5326 |         for (fb = fa; fb < nt; fb++)
+      |                       ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5326:2: note: Loop condition is false. Execution continues on line 5330
+ 5326 |         for (fb = fa; fb < nt; fb++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5335:6: note: 'fb' is >= 'nt'
+ 5335 |         if (fb < nt && fb - 1 >= fa && T[fb - 1].k == 'w' && (tw(fb + 1, "in") ||
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:5335:14: note: Left side of '&&' is false
+ 5335 |         if (fb < nt && fb - 1 >= fa && T[fb - 1].k == 'w' && (tw(fb + 1, "in") ||
+      |                     ^
+/home/andrew/Code/ucas/src/plot.c:5350:6: note: Assuming 'i' is >= 'nt'
+ 5350 |         if (i < nt)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:5350:2: note: Taking false branch
+ 5350 |         if (i < nt)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5352:2: note: Loop condition is true.  Entering loop body
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5353:7: note: 'k' is equal to 'pe'
+ 5353 |                 if (k == pe || (T[k].d == 0 && T[k].k == ',')) {
+      |                     ^
+/home/andrew/Code/ucas/src/plot.c:5353:15: note: Left side of '||' is true
+ 5353 |                 if (k == pe || (T[k].d == 0 && T[k].k == ',')) {
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:5352:23: note: Assuming 'k' is > 'pe'
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |                              ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5352:2: note: Loop condition is false. Execution continues on line 5357
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5357:6: note: Assuming field 'ns' is not equal to 0
+ 5357 |         if (O.ns == 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5357:2: note: Taking false branch
+ 5357 |         if (O.ns == 0)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5359:6: note: Assuming field 'fps' is < 0
+ 5359 |         if (O.fps < 0 || O.frames < 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5359:16: note: Left side of '||' is true
+ 5359 |         if (O.fps < 0 || O.frames < 0)
+      |                       ^
+/home/andrew/Code/ucas/src/plot.c:5363:6: note: Assuming the condition is false
+ 5363 |         if (setjmp(fail_jmp)) {
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5363:2: note: Taking false branch
+ 5363 |         if (setjmp(fail_jmp)) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5368:2: note: Calling 'add_extras'
+ 5368 |         add_extras();
+      |         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5227:14: note: Assuming 'k' is < 'n0'
+ 5227 |         for (k = 0; k < n0; k++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:5227:2: note: Loop condition is true.  Entering loop body
+ 5227 |         for (k = 0; k < n0; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5230:7: note: Assuming field 'kind' is equal to S_FX
+ 5230 |                 if (s->kind != S_FX || s->f[0].np != 1)
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5230:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/plot.c:5230:26: note: Assuming field 'np' is equal to 1
+ 5230 |                 if (s->kind != S_FX || s->f[0].np != 1)
+      |                                        ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5230:3: note: Taking false branch
+ 5230 |                 if (s->kind != S_FX || s->f[0].np != 1)
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:5232:7: note: Assuming field 'deriv' is not equal to 0
+ 5232 |                 if (O.deriv) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5232:3: note: Taking true branch
+ 5232 |                 if (O.deriv) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:5233:9: note: Calling 'deriv_func'
+ 5233 |                         if (!deriv_func(&s->f[0], &g))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:1580:6: note: Assuming the condition is false
+ 1580 |         if (setjmp(fail_jmp) == 0) {
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:1580:2: note: Taking false branch
+ 1580 |         if (setjmp(fail_jmp) == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:1586:6: note: 'ok' is 0
+ 1586 |         if (ok) {
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:1586:2: note: Taking false branch
+ 1586 |         if (ok) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5233:9: note: Returning from 'deriv_func'
+ 5233 |                         if (!deriv_func(&s->f[0], &g))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5233:4: note: Taking true branch
+ 5233 |                         if (!deriv_func(&s->f[0], &g))
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:5235:8: note: Assuming field 'ns' is not equal to MAXSER
+ 5235 |                         if (O.ns == MAXSER)
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5235:4: note: Taking false branch
+ 5235 |                         if (O.ns == MAXSER)
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:5246:8: note: 1st function call argument is an uninitialized value
+ 5246 |                             sym_str(g.p[0].name));
+      |                             ^       ~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5275:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5275 |                                 ok &= ev1(&e, in, &r) == 1;
+      |                                 ^~ ~~
+/home/andrew/Code/ucas/src/plot.c:5318:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5319:2: warning: no header providing "rep_text_fields" is directly included [misc-include-cleaner]
+ 5319 |         rep_text_fields();
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5344:24: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 5344 |                 for (q = 0; un[q] && strcmp(un[q], w); q++)
+      |                                      ^               
+      |                                                       != 0
+/home/andrew/Code/ucas/src/plot.c:5366:3: warning: no header providing "longjmp" is directly included [misc-include-cleaner]
+ 5366 |                 longjmp(fail_jmp, 1);
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:5390:9: warning: Out of bound access to memory after the end of 'O.s[0].f.p' [clang-analyzer-security.ArrayBound]
+ 5390 |                         av = s->f[0].p[a].name;
+      |                              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: Assuming 'mode' is not equal to 0
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                   ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: 'mode' is not equal to 0
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                   ^~~~
+/home/andrew/Code/ucas/src/plot.c:5318:12: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:5318:33: note: Assuming 'mode' is not equal to 1
+ 5318 |         rep_begin(mode == 0 ? "plot" : mode == 1 ? "plot3d" : "neighbourhood");
+      |                                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5318:33: note: '?' condition is false
+/home/andrew/Code/ucas/src/plot.c:5320:6: note: Assuming the condition is false
+ 5320 |         if (!cmdp_rest(p, O.text, sizeof O.text, NULL))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5320:2: note: Taking false branch
+ 5320 |         if (!cmdp_rest(p, O.text, sizeof O.text, NULL))
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5326:16: note: Assuming 'fb' is >= 'nt'
+ 5326 |         for (fb = fa; fb < nt; fb++)
+      |                       ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5326:2: note: Loop condition is false. Execution continues on line 5330
+ 5326 |         for (fb = fa; fb < nt; fb++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5335:6: note: 'fb' is >= 'nt'
+ 5335 |         if (fb < nt && fb - 1 >= fa && T[fb - 1].k == 'w' && (tw(fb + 1, "in") ||
+      |             ^~
+/home/andrew/Code/ucas/src/plot.c:5335:14: note: Left side of '&&' is false
+ 5335 |         if (fb < nt && fb - 1 >= fa && T[fb - 1].k == 'w' && (tw(fb + 1, "in") ||
+      |                     ^
+/home/andrew/Code/ucas/src/plot.c:5350:6: note: Assuming 'i' is >= 'nt'
+ 5350 |         if (i < nt)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:5350:2: note: Taking false branch
+ 5350 |         if (i < nt)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5352:2: note: Loop condition is true.  Entering loop body
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5353:7: note: 'k' is equal to 'pe'
+ 5353 |                 if (k == pe || (T[k].d == 0 && T[k].k == ',')) {
+      |                     ^
+/home/andrew/Code/ucas/src/plot.c:5353:15: note: Left side of '||' is true
+ 5353 |                 if (k == pe || (T[k].d == 0 && T[k].k == ',')) {
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:5352:23: note: Assuming 'k' is > 'pe'
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |                              ^~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5352:2: note: Loop condition is false. Execution continues on line 5357
+ 5352 |         for (k = fa, i = fa; k <= pe; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5357:6: note: Assuming field 'ns' is not equal to 0
+ 5357 |         if (O.ns == 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5357:2: note: Taking false branch
+ 5357 |         if (O.ns == 0)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5359:6: note: Assuming field 'fps' is < 0
+ 5359 |         if (O.fps < 0 || O.frames < 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5359:16: note: Left side of '||' is true
+ 5359 |         if (O.fps < 0 || O.frames < 0)
+      |                       ^
+/home/andrew/Code/ucas/src/plot.c:5363:6: note: Assuming the condition is false
+ 5363 |         if (setjmp(fail_jmp)) {
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5363:2: note: Taking false branch
+ 5363 |         if (setjmp(fail_jmp)) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5369:14: note: Assuming 'k' is < field 'ns'
+ 5369 |         for (k = 0; k < O.ns; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5369:2: note: Loop condition is true.  Entering loop body
+ 5369 |         for (k = 0; k < O.ns; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5370:15: note: Assuming 'c' is >= field 'nf'
+ 5370 |                 for (c = 0; c < O.s[k].nf; c++) {
+      |                             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5370:3: note: Loop condition is false. Execution continues on line 5369
+ 5370 |                 for (c = 0; c < O.s[k].nf; c++) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:5369:14: note: Assuming 'k' is >= field 'ns'
+ 5369 |         for (k = 0; k < O.ns; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5369:2: note: Loop condition is false. Execution continues on line 5375
+ 5369 |         for (k = 0; k < O.ns; k++)
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5375:6: note: Assuming field 'anim' is not equal to 0
+ 5375 |         if (O.anim) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/plot.c:5375:2: note: Taking true branch
+ 5375 |         if (O.anim) {
+      |         ^
+/home/andrew/Code/ucas/src/plot.c:5376:3: note: Loop condition is true.  Entering loop body
+ 5376 |                 for (k = 0; k < O.ns; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/plot.c:5379:8: note: Assuming field 'kind' is equal to S_SURF
+ 5379 |                         if (s->kind != S_SURF && s->kind != S_FX)
+      |                             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5379:26: note: Left side of '&&' is false
+ 5379 |                         if (s->kind != S_SURF && s->kind != S_FX)
+      |                                               ^
+/home/andrew/Code/ucas/src/plot.c:5381:8: note: Assuming field 'animvar' is 0
+ 5381 |                         if (O.animvar)
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5381:4: note: Taking false branch
+ 5381 |                         if (O.animvar)
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:5383:8: note: 'a' is < 0
+ 5383 |                         if (a < 0 && s->f[0].np == 2) {
+      |                             ^
+/home/andrew/Code/ucas/src/plot.c:5383:8: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/plot.c:5383:17: note: Assuming field 'np' is equal to 2
+ 5383 |                         if (a < 0 && s->f[0].np == 2) {
+      |                                      ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5383:4: note: Taking true branch
+ 5383 |                         if (a < 0 && s->f[0].np == 2) {
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:5385:9: note: 'a' is < 0
+ 5385 |                                 if (a < 0)
+      |                                     ^
+/home/andrew/Code/ucas/src/plot.c:5385:5: note: Taking true branch
+ 5385 |                                 if (a < 0)
+      |                                 ^
+/home/andrew/Code/ucas/src/plot.c:5388:8: note: Assuming 'a' is >= 0
+ 5388 |                         if (a < 0)
+      |                             ^~~~~
+/home/andrew/Code/ucas/src/plot.c:5388:4: note: Taking false branch
+ 5388 |                         if (a < 0)
+      |                         ^
+/home/andrew/Code/ucas/src/plot.c:5390:9: note: Access of 'O.s[0].f.p' at index 2147483647, while it holds only 8 'struct param' elements
+ 5390 |                         av = s->f[0].p[a].name;
+      |                              ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/plot.c:5529:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5529 |         return P_SER + (s % NSER) * 4 + (tint & 3);
+      |                                          ^~~~ ~
+/home/andrew/Code/ucas/src/ucas.h:73:11: warning: 'fl' is confusable with 'f1' [misc-confusable-identifiers]
+   73 |         uint8_t *fl;
+      |                  ^
+/home/andrew/Code/ucas/src/plot.c:1246:1: note: other declaration found here
+ 1246 | f1(struct ev *e, const double *base, int s, double x, double *v)
+      | ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

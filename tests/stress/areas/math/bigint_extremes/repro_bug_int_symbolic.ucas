@@ -1,0 +1,6 @@
+# BUG/LIMIT reproducer (no golden .out): int function with argument >= 2^63
+# returns a symbolic expression instead of evaluating; literals > 2^64-1 are rejected.
+f(x: int) = x + 1
+f(2^62)
+f(2^63)
+f(9223372036854775808)

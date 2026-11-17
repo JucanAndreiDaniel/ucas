@@ -1,0 +1,22 @@
+> approx sin(x) in 0..0.7853981 degree 3 as f32 list 1 search anneal seed 5 budget 50
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 0.785398126] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 0.785398126]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    3    0.000427     0.000429     0.000408     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00097 (0.00717) 3/2 1.67e-06 (5.41e-05) 1/4 1.62e-05 (0.000463) 3/4 7.39e-09 (9.38e-07)
+    1/6 2.65e-07 (2.92e-05) 3/6 3.16e-11 (1.59e-08)
+  piecewise (2 pieces split at 0.392699063, max rel error): 1: 0.0129 2: 0.0032 3: 1.26e-05
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131065 f32 in [0, 0.785398126]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   3     horner+fma  6.84e+03 ulp             0.000432      0.000288      3    at x=4.81456858e-35
+      x*P(x^2): x*fma(-0.161535144, s, 0.999592423) where s = x*x
+      search: simulated annealing over the coefficients' ulp offsets from the walk's, seed 5, 50 evaluations on 3000 sample points: 6851 -> 6837 ulp there; on the table's measure 6852 -> 6838 ulp: kept, certified below
+      certified: at most 6889 ulp for every f32 x in [0, 0.785398126], 1095 pieces: the coefficients' error at most 6888 (6836 reached at a piece's middle), rounding the rest (each operation's result (1 + d), |d| <= u, carried through); Taylor of order 3 on intervals, libm's long double functions taken within 2^-58
+      rounding of ap1, first order, 3 operations, relative, in u = 2^-24: worst case 2.11, probable no better (under 16 operations), expected 0.819; `error ap1 ~ F` says what each means
+  7 more: 'approx more [n]'

@@ -1,0 +1,16 @@
+# CONTROLS (correct behaviour): undefinedness expressed in G's BODY (a partial
+# match, an out-of-range table index, division by zero, a shift >= width) IS
+# detected by equiv.  These verdicts must stay "differ" when the declaration-
+# restriction bug is fixed.
+f1(x: u4) = x
+g1(x: u4) = match x { 0=>0, 1=>1 }
+equiv f1 ~ g1
+f2(x: u4) = x
+g2(x: u4) = [0,1,2,3][x]
+equiv f2 ~ g2
+f3(x: u8) = x
+g3(x: u8) = (x == 0) ? (1/0) : x
+equiv f3 ~ g3
+f4(x: u8) = x
+g4(x: u8) = (x >= 8) ? (1 << x) : x
+equiv f4 ~ g4

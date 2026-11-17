@@ -1,0 +1,118 @@
+/home/andrew/Code/ucas/src/kernel.c:18:1: warning: included header stdlib.h is not used directly [misc-include-cleaner]
+   18 | #include <stdlib.h>
+      | ^~~~~~~~~~~~~~~~~~~
+   19 | #include <string.h>
+/home/andrew/Code/ucas/src/kernel.c:31:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   18 | #include <stdlib.h>
+   19 | #include <string.h>
+   20 | 
+   21 | const char *const kr_name[KR_NRULES] = {
+   22 |         "assume", "axiom", "imp_intro", "imp_elim", "and_intro", "and_elim1",
+   23 |         "and_elim2", "or_intro1", "or_intro2", "or_elim", "false_elim",
+   24 |         "not_intro", "not_elim", "raa", "iff_intro", "iff_elim1", "iff_elim2",
+   25 |         "all_intro", "all_elim", "ex_intro", "ex_elim", "refl", "subst",
+   26 |         "conv", "lin", "induct", "hom_decl"
+   27 | };
+   28 | 
+   29 | static struct {
+   30 |         kt *concl;
+   31 |         uint8_t *rule;
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:32:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   32 |         uint32_t *hoff, *hn, *poff, *pn, *aoff, *an, *aux;
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:58:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+   18 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:59:2: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+   18 |         vsnprintf(errbuf, sizeof errbuf, fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:60:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+   60 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:296:26: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  296 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_AND)
+      |                                 ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:296:26: note: if it should be an assignment, move it out of the 'if' condition
+  296 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_AND)
+      |                                 ^
+/home/andrew/Code/ucas/src/kernel.c:296:26: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:333:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  333 |             KOP(c = T.concl[or]) != KO_OR)
+      |                   ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:333:12: note: if it should be an assignment, move it out of the 'if' condition
+  333 |             KOP(c = T.concl[or]) != KO_OR)
+      |                   ^
+/home/andrew/Code/ucas/src/kernel.c:333:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:420:26: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  420 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_IFF)
+      |                                 ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:420:26: note: if it should be an assignment, move it out of the 'if' condition
+  420 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_IFF)
+      |                                 ^
+/home/andrew/Code/ucas/src/kernel.c:420:26: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:451:26: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  451 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_ALL)
+      |                                 ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:451:26: note: if it should be an assignment, move it out of the 'if' condition
+  451 |         if (!okthm(th) || KOP(c = T.concl[th]) != KO_ALL)
+      |                                 ^
+/home/andrew/Code/ucas/src/kernel.c:451:26: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:488:40: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  488 |         if (!okthm(ex) || !okthm(th) || KOP(c = T.concl[ex]) != KO_EX ||
+      |                                               ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:488:40: note: if it should be an assignment, move it out of the 'if' condition
+  488 |         if (!okthm(ex) || !okthm(th) || KOP(c = T.concl[ex]) != KO_EX ||
+      |                                               ^
+/home/andrew/Code/ucas/src/kernel.c:488:40: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:522:40: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  522 |         if (!okthm(eq) || !okthm(th) || KOP(c = T.concl[eq]) != KO_EQ)
+      |                                               ^
+/home/andrew/Code/ucas/src/prove.h:72:23: note: expanded from macro 'KOP'
+   72 | #define KOP(t) (KT.op[t])
+      |                       ^
+/home/andrew/Code/ucas/src/kernel.c:522:40: note: if it should be an assignment, move it out of the 'if' condition
+  522 |         if (!okthm(eq) || !okthm(th) || KOP(c = T.concl[eq]) != KO_EQ)
+      |                                               ^
+/home/andrew/Code/ucas/src/kernel.c:522:40: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:557:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  557 |         switch (KOP(c)) {
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:578:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  578 |         int64_t v;
+      |         ^
+/home/andrew/Code/ucas/src/kernel.c:586:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  586 |                 if ((t = reltm(c, &ge)) == KNONE)
+      |                      ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/kernel.c:586:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/kernel.c:586:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/kernel.c:692:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  692 |             s->arg[s->arity - 1] != KS_EL || (s->flags & KSF_HOM))
+      |                                                        ~ ^
+/home/andrew/Code/ucas/src/prove.h:79:17: note: expanded from macro 'KSF_HOM'
+   79 | #define KSF_HOM 1       /* additive in its last (el) argument */
+      |                 ^
+/home/andrew/Code/ucas/src/kernel.c:706:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  706 |                 s->flags |= KSF_HOM;
+      |                          ~~ ^
+/home/andrew/Code/ucas/src/prove.h:79:17: note: expanded from macro 'KSF_HOM'
+   79 | #define KSF_HOM 1       /* additive in its last (el) argument */
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

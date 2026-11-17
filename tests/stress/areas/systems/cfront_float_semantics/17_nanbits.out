@@ -1,0 +1,23 @@
+> e1(a: f32) = -(-a)
+> e2(a: f32) = a
+> equiv e1 e2 nanbits
+e1 and e2 are equal on the domain of e1 (proved by SAT: 1529 AIG nodes, 10 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> m1(a: f32) = a*1.0f
+> equiv m1 e2 nanbits
+m1 and e2 are equal on the domain of m1 (proved by SAT: 1529 AIG nodes, 10 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> z1(a: f32) = a+0.0f
+> equiv z1 e2 nanbits
+z1 and e2 are equal on the domain of z1 (proved by SAT: 5770 AIG nodes, 1371 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> s1(a: f32) = a+a
+> s2(a: f32) = 2.0f*a
+> equiv s1 s2 nanbits
+s1 and s2 are equal on the domain of s1 (proved by SAT: 6613 AIG nodes, 1431 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> fm1(a: f32,b: f32,c: f32) = fma(a,b,c)
+> fm2(a: f32,b: f32,c: f32) = a*b+c
+> equiv fm1 fm2 nanbits
+fm1 and fm2 differ at 1483 points of the sample, e.g. a=-5.78596361e-13, b=2.37029099e-08, c=6.24709053e-21: -7.46732694e-21 vs -7.46732613e-21
+  NaN results compared by their bits, sign and payload (nanbits)

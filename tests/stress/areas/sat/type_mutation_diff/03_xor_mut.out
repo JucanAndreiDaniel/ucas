@@ -1,0 +1,72 @@
+> s_xorplus_basic_u8(x: u8, y: u8) = x xor y
+> m_xorplus_basic_u8(x: u8, y: u8) = x + y
+> equiv s_xorplus_basic_u8 m_xorplus_basic_u8
+s_xorplus_basic_u8 and m_xorplus_basic_u8 differ at 56788 points, e.g. x=1, y=1: 0 vs 2
+> s_xorplus_basic_u32(x: u32, y: u32) = x xor y
+> m_xorplus_basic_u32(x: u32, y: u32) = x + y
+> equiv s_xorplus_basic_u32 m_xorplus_basic_u32
+s_xorplus_basic_u32 and m_xorplus_basic_u32 differ at 65527 points of the sample, e.g. x=1, y=1: 0 vs 2
+> s_xor_self_u8(x: u8) = x xor x
+> m_xor_self_u8(x: u8) = x + x
+> equiv s_xor_self_u8 m_xor_self_u8
+s_xor_self_u8 and m_xor_self_u8 differ at 254 points, e.g. x=1: 0 vs 2
+> s_xor_self_u32(x: u32) = x xor x
+> m_xor_self_u32(x: u32) = x + x
+> equiv s_xor_self_u32 m_xor_self_u32
+s_xor_self_u32 and m_xor_self_u32 differ at 65533 points of the sample, e.g. x=4294967295: 0 vs 4294967294
+> s_xor_zero_u8(x: u8) = x xor 0
+> m_xor_zero_u8(x: u8) = x + 0
+> equiv s_xor_zero_u8 m_xor_zero_u8
+s_xor_zero_u8 and m_xor_zero_u8 are equal on the domain of s_xor_zero_u8 (exhaustive)
+> s_xor_zero_u32(x: u32) = x xor 0
+> m_xor_zero_u32(x: u32) = x + 0
+> equiv s_xor_zero_u32 m_xor_zero_u32
+s_xor_zero_u32 and m_xor_zero_u32 are equal on the domain of s_xor_zero_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_xor_cancel_u8(x: u8) = (x xor 7) xor 7
+> m_xor_cancel_u8(x: u8) = x
+> equiv s_xor_cancel_u8 m_xor_cancel_u8
+s_xor_cancel_u8 and m_xor_cancel_u8 are equal on the domain of s_xor_cancel_u8 (exhaustive)
+> s_xor_cancel_u32(x: u32) = (x xor 7) xor 7
+> m_xor_cancel_u32(x: u32) = x
+> equiv s_xor_cancel_u32 m_xor_cancel_u32
+s_xor_cancel_u32 and m_xor_cancel_u32 are equal on the domain of s_xor_cancel_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> s_carry_save_u8(x: u8, y: u8) = (x & y) + (x xor y)
+> m_carry_save_u8(x: u8, y: u8) = x | y
+> equiv s_carry_save_u8 m_carry_save_u8
+s_carry_save_u8 and m_carry_save_u8 are equal on the domain of s_carry_save_u8 (exhaustive)
+> s_carry_save_u32(x: u32, y: u32) = (x & y) + (x xor y)
+> m_carry_save_u32(x: u32, y: u32) = x | y
+> equiv s_carry_save_u32 m_carry_save_u32
+s_carry_save_u32 and m_carry_save_u32 are equal on the domain of s_carry_save_u32 (proved by SAT: 635 AIG nodes, 197 conflicts)
+> s_carry_save_bad_u8(x: u8, y: u8) = (x & y) + (x xor y)
+> m_carry_save_bad_u8(x: u8, y: u8) = x xor y
+> equiv s_carry_save_bad_u8 m_carry_save_bad_u8
+s_carry_save_bad_u8 and m_carry_save_bad_u8 differ at 58975 points, e.g. x=1, y=1: 1 vs 0
+> s_carry_save_bad_u32(x: u32, y: u32) = (x & y) + (x xor y)
+> m_carry_save_bad_u32(x: u32, y: u32) = x xor y
+> equiv s_carry_save_bad_u32 m_carry_save_bad_u32
+s_carry_save_bad_u32 and m_carry_save_bad_u32 differ at 65527 points of the sample, e.g. x=1, y=1: 1 vs 0
+> s_xor_assoc_u8(x: u8, y: u8, z: u8) = (x xor y) xor z
+> m_xor_assoc_u8(x: u8, y: u8, z: u8) = x xor (y xor z)
+> equiv s_xor_assoc_u8 m_xor_assoc_u8
+s_xor_assoc_u8 and m_xor_assoc_u8 are equal on the domain of s_xor_assoc_u8 (proved by SAT: 152 AIG nodes, 72 conflicts)
+> s_xor_assoc_u32(x: u32, y: u32, z: u32) = (x xor y) xor z
+> m_xor_assoc_u32(x: u32, y: u32, z: u32) = x xor (y xor z)
+> equiv s_xor_assoc_u32 m_xor_assoc_u32
+s_xor_assoc_u32 and m_xor_assoc_u32 are equal on the domain of s_xor_assoc_u32 (proved by SAT: 608 AIG nodes, 292 conflicts)
+> s_xor_comm_u8(x: u8, y: u8) = x xor y
+> m_xor_comm_u8(x: u8, y: u8) = y xor x
+> equiv s_xor_comm_u8 m_xor_comm_u8
+s_xor_comm_u8 and m_xor_comm_u8 are equal on the domain of s_xor_comm_u8 (exhaustive)
+> s_xor_comm_u32(x: u32, y: u32) = x xor y
+> m_xor_comm_u32(x: u32, y: u32) = y xor x
+> equiv s_xor_comm_u32 m_xor_comm_u32
+s_xor_comm_u32 and m_xor_comm_u32 are equal on the domain of s_xor_comm_u32 (proved by SAT: 161 AIG nodes, 0 conflicts)
+> s_xor_of_self_u8(x: u8) = x xor x
+> m_xor_of_self_u8(x: u8) = 0
+> equiv s_xor_of_self_u8 m_xor_of_self_u8
+s_xor_of_self_u8 and m_xor_of_self_u8 are equal on the domain of s_xor_of_self_u8 (exhaustive)
+> s_xor_of_self_u32(x: u32) = x xor x
+> m_xor_of_self_u32(x: u32) = 0
+> equiv s_xor_of_self_u32 m_xor_of_self_u32
+s_xor_of_self_u32 and m_xor_of_self_u32 are equal on the domain of s_xor_of_self_u32 (proved by SAT: 33 AIG nodes, 0 conflicts)

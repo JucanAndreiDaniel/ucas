@@ -1,0 +1,27 @@
+# Batch 05: numeric FP: error / range / crit / integrate / dsolve (fast-math sensitive).
+r1(x: f32 in 0..1) = sqrt(x)
+r2(x: f32 in 0..1) = x*x
+error r1 ~ r2
+g(x: f32 in -1..1) = sin(x)
+h(x: f32 in -1..1) = x - x^3/6 + x^5/120
+error h ~ g
+range g
+crit g
+crit h
+f(x: f64 in 0..1) = exp(x)
+range f
+crit f
+integrate sin(x) from 0 to pi
+integrate exp(-x^2) from 0 to 3
+integrate 1/(1+x^4) from 0 to 1
+integrate sqrt(1-x^2) from -1 to 1
+y' = -2y + 1
+y(0) = 3
+dsolve y to 2 steps 8
+z' = z*(1-z)
+z(0) = 0.1
+dsolve z to 2 steps 8
+u'' = -u
+u(0) = 1
+u'(0) = 0
+dsolve u to 6.283185307 steps 8

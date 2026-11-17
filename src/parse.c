@@ -44,6 +44,7 @@
 #include "xform.h"
 #include "x86.h"
 #include "fuse.h"
+int node_aig_depth_check(nid root);	/* node.c: guard before bit-blasting */
 int homalg_command(struct P *p);	/* homalg.h */
 int ec_command(struct P *p);	/* ec.h (absalg.h names a parameter I) */
 
@@ -88,6 +89,10 @@ func_new(uint32_t name)
 /* ---- parser state ---- */
 
 #define MAXBIND 32
+/* Deeply nested expressions otherwise recurse until the C stack overflows
+ * (the parser in prefix/parse_expr and, for a built tree, the node.c tree
+ * walks).  One shared cap keeps the limit and the error text consistent. */
+#define EXPR_DEPTH_LIMIT 1600
 struct P {
 	struct toks *t;
 	uint32_t i;
@@ -95,6 +100,7 @@ struct P {
 	int autop;
 	ty_t autoty;
 	int abs_depth;
+	int expr_depth;   /* expression nesting, bounded to keep the stack safe */
 	int fnarg;
 	int top_jux;
 	int top_paren;    /* the last operand was parenthesized */
@@ -1467,10 +1473,37 @@ parse_piecewise(struct P *p)
 
 /* ---- expressions ---- */
 
+/* Table literals are the only prefix form with a large scratch array.  Keep
+ * it in a helper so its 4 KB does not sit in every recursive prefix() frame. */
+static nid
+parse_table(struct P *p)
+{
+	nid items[1024];
+	int n = 0, saved = p->abs_depth;
+
+	p->abs_depth = 0;
+	adv(p);
+	skip_nl(p);
+	if (pk(p) != T_RB) {
+		do {
+			skip_nl(p);
+			if (n == 1024)
+				fail("table too long");
+			items[n++] = parse_expr(p, 0);
+			skip_nl(p);
+		} while (accept(p, T_COMMA));
+	}
+	expect(p, T_RB);
+	p->abs_depth = saved;
+	if (n == 0)
+		fail("empty table");
+	return mk_table(items, (uint32_t)n);
+}
+
 static nid
 prefix(struct P *p)
 {
-	nid e, items[1024];
+	nid e;
 	int n, saved;
 
 	diag_tok = p->i;
@@ -1549,25 +1582,7 @@ prefix(struct P *p)
 		    "absolute values");
 		break;
 	case T_LB:
-		saved = p->abs_depth;
-		p->abs_depth = 0;
-		adv(p);
-		n = 0;
-		skip_nl(p);
-		if (pk(p) != T_RB) {
-			do {
-				skip_nl(p);
-				if (n == 1024)
-					fail("table too long");
-				items[n++] = parse_expr(p, 0);
-				skip_nl(p);
-			} while (accept(p, T_COMMA));
-		}
-		expect(p, T_RB);
-		p->abs_depth = saved;
-		if (n == 0)
-			fail("empty table");
-		return mk_table(items, (uint32_t)n);
+		return parse_table(p);
 	case T_LC:
 		if (cs_is_block(p))
 			return calc_block(p);
@@ -1654,10 +1669,16 @@ bitwise_context(struct P *p, uint32_t i)
 static nid
 parse_expr(struct P *p, int minbp)
 {
-	nid lhs = prefix(p), rhs, c, x;
-	int lastjux = p->top_jux, op, bp, chained = 0, prevcmp = 0;
-	int lparen = p->top_paren, rparen;
+	nid lhs, rhs, c, x;
+	int lastjux, op, bp, chained = 0, prevcmp = 0;
+	int lparen, rparen;
 	nid prevr = 0;
+
+	if (++p->expr_depth > EXPR_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", EXPR_DEPTH_LIMIT);
+	lhs = prefix(p);
+	lastjux = p->top_jux;
+	lparen = p->top_paren;
 
 	for (;;) {
 		diag_tok = p->i;
@@ -1823,6 +1844,7 @@ parse_expr(struct P *p, int minbp)
 	}
 	p->top_jux = lastjux;
 	p->top_paren = lparen;
+	p->expr_depth--;
 	return lhs;
 }
 
@@ -2491,6 +2513,252 @@ static const char prelude[] =
     "sg_shuffle(v, (lane & 4294967292) | i) : 0 in fadd fmul iadd\n"
     "  folds none\n"
     "}\n"
+/* GPU models: measured-only. Every priced class has a direct corpus
+ * measurement (tests/<arch>/results/2026-11-16.md). Unmeasured classes
+ * are 'none', never inherited from a different architecture.
+ * Fusions are the ones the corpus measured directly. */
+     "model gfx902 {\n"
+     "  warp: 64,\n"
+     "  atomic_global: 20.34,\n"
+     "  atomic_global_64: 259.83,\n"
+     "  atomic_global_cas: 130.29,\n"
+     "  atomic_global_stream: 129.76,\n"
+     "  atomic_shared: 9.95,\n"
+     "  atomic_shared_f: 185.05,\n"
+     "  atomic_shared_same: 32.74,\n"
+     "  bank_conflict: 55.75,\n"
+     "  barrier: 11.02,\n"
+     "  bitcast: 0.00,\n"
+     "  bitcnt: 0.28,\n"
+     "  cmp: 1.03,\n"
+     "  conv: 1.02,\n"
+     "  diverge: 1.15,\n"
+     "  f64: 7.33,\n"
+     "  fadd: 1.00,\n"
+     "  fdiv: 5.16,\n"
+     "  fmul: 1.00,\n"
+     "  fpow: 4.68,\n"
+     "  fsqrt: 4.09,\n"
+     "  ftrans: 4.00,\n"
+     "  iadd: 0.72,\n"
+     "  idiv: 29.63,\n"
+     "  idivk: 6.30,\n"
+     "  image_load: 15.27,\n"
+     "  imul: 4.00,\n"
+     "  load: 8.44,\n"
+     "  load_shared: 2.66,\n"
+     "  load_stream: 60.86,\n"
+     "  load_ubo: 0.80,\n"
+     "  load_ubo_div: 59.37,\n"
+     "  logic: 0.28,\n"
+     "  minmax: 1.28,\n"
+     "  select: 0.80,\n"
+     "  sg_add: 7.76,\n"
+     "  sg_ballot: 1.60,\n"
+     "  sg_scan: 7.82,\n"
+     "  sg_shuffle: 9.24,\n"
+     "  shift: 1.00,\n"
+     "  store: 9.44,\n"
+     "  store_stream: 58.72,\n"
+     "  tex_fetch: 15.03,\n"
+     "  tex_sample: 17.38,\n"
+     "  tex_sample_f32: 31.89,\n"
+     "  dot4x8: none,\n"
+     "  dot4x8sat: none,\n"
+     "  sdot4x8: none,\n"
+     "  sudot4x8: none,\n"
+     "  udot4x8: none,\n"
+     "  udot8x4: none,\n"
+     "  sdot8x4: none,\n"
+     "  sudot8x4: none,\n"
+     "  udot4x8sat: none,\n"
+     "  sdot4x8sat: none,\n"
+     "  sudot4x8sat: none,\n"
+     "  udot8x4sat: none,\n"
+     "  sdot8x4sat: none,\n"
+     "  sudot8x4sat: none,\n"
+     "  fdot2: none,\n"
+     "  subtexel: none,\n"
+     "  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract,\n"
+     "  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift\n"
+     "  folds none\n"
+     "}\n"
+     "model gfx90c {\n"
+     "  warp: 64,\n"
+     "  atomic_global: 21.19,\n"
+     "  atomic_global_64: 385.11,\n"
+     "  atomic_global_cas: 193.34,\n"
+     "  atomic_global_stream: 193.31,\n"
+     "  atomic_shared: 9.98,\n"
+     "  atomic_shared_f: 172.08,\n"
+     "  atomic_shared_same: 32.96,\n"
+     "  bank_conflict: 56.24,\n"
+     "  barrier: 9.53,\n"
+     "  bitcast: 0.00,\n"
+     "  bitcnt: 0.29,\n"
+     "  cmp: 0.99,\n"
+     "  conv: 1.00,\n"
+     "  diverge: 1.41,\n"
+     "  f64: 8.17,\n"
+     "  fadd: 1.00,\n"
+     "  fdiv: 5.02,\n"
+     "  fmul: 1.00,\n"
+     "  fpow: 4.56,\n"
+     "  fsqrt: 3.99,\n"
+     "  ftrans: 4.00,\n"
+     "  iadd: 0.70,\n"
+     "  idiv: 31.08,\n"
+     "  idivk: 6.21,\n"
+     "  image_load: 34.18,\n"
+     "  imul: 3.99,\n"
+     "  load: 8.37,\n"
+     "  load_shared: 2.66,\n"
+     "  load_stream: 89.18,\n"
+     "  load_ubo: 0.84,\n"
+     "  load_ubo_div: 58.43,\n"
+     "  logic: 0.30,\n"
+     "  minmax: 1.29,\n"
+     "  select: 0.82,\n"
+     "  sg_add: 7.79,\n"
+     "  sg_ballot: 1.67,\n"
+     "  sg_deriv: 1.00,\n"
+     "  sg_scan: 7.75,\n"
+     "  sg_shuffle: 9.14,\n"
+     "  shift: 1.00,\n"
+     "  store: 9.52,\n"
+     "  store_stream: 90.87,\n"
+     "  tex_fetch: 31.70,\n"
+     "  tex_sample: 18.19,\n"
+     "  tex_sample_f32: 31.34,\n"
+     "  dot4x8: none,\n"
+     "  dot4x8sat: none,\n"
+     "  sdot4x8: none,\n"
+     "  sudot4x8: none,\n"
+     "  udot4x8: none,\n"
+     "  udot8x4: none,\n"
+     "  sdot8x4: none,\n"
+     "  sudot8x4: none,\n"
+     "  udot4x8sat: none,\n"
+     "  sdot4x8sat: none,\n"
+     "  sudot4x8sat: none,\n"
+     "  udot8x4sat: none,\n"
+     "  sdot8x4sat: none,\n"
+     "  sudot8x4sat: none,\n"
+     "  fdot2: none,\n"
+     "  subtexel: none,\n"
+     "  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract,\n"
+     "  fuse shl_add(a: int, k: const, b: int) = (a << k) + b : shift\n"
+     "  folds none\n"
+     "}\n"
+     "model gp107 {\n"
+     "  warp: 32,\n"
+     "  atomic_global: 60.34,\n"
+     "  atomic_global_64: 271.35,\n"
+     "  atomic_global_cas: 166.52,\n"
+     "  atomic_global_stream: 141.96,\n"
+     "  atomic_shared: 6.79,\n"
+     "  atomic_shared_f: 24.82,\n"
+     "  atomic_shared_same: 65.62,\n"
+     "  bank_conflict: 126.63,\n"
+     "  barrier: 9.24,\n"
+     "  bitcast: 0.00,\n"
+     "  bitcnt: 2.99,\n"
+     "  branch: 6.83,\n"
+     "  cmp: 2.38,\n"
+     "  conv: 2.98,\n"
+     "  diverge: 14.61,\n"
+     "  f64: 32.03,\n"
+     "  fadd: 1.00,\n"
+     "  fdiv: 3.01,\n"
+     "  fmul: 1.00,\n"
+     "  fpow: 7.95,\n"
+     "  fsqrt: 3.97,\n"
+     "  ftrans: 3.99,\n"
+     "  iadd: 1.01,\n"
+     "  idiv: 28.46,\n"
+     "  idivk: 8.92,\n"
+     "  image_load: 36.29,\n"
+     "  imul: 3.01,\n"
+     "  load: 7.27,\n"
+     "  load_shared: 3.14,\n"
+     "  load_stream: 66.90,\n"
+     "  load_ubo: 4.16,\n"
+     "  load_ubo_div: 162.69,\n"
+     "  logic: 1.01,\n"
+     "  minmax: 1.08,\n"
+     "  select: 1.63,\n"
+     "  sg_add: 32.87,\n"
+     "  sg_deriv: 3.23,\n"
+     "  sg_scan: 61.54,\n"
+     "  sg_shuffle: 4.02,\n"
+     "  shift: 2.01,\n"
+     "  store: 17.10,\n"
+     "  store_shared: 3.05,\n"
+     "  store_stream: 87.57,\n"
+     "  tex_fetch: 57.19,\n"
+     "  tex_sample: 21.82,\n"
+     "  tex_sample_f32: 33.46,\n"
+     "  dot4x8: none,\n"
+     "  dot4x8sat: none,\n"
+     "  sdot4x8: none,\n"
+     "  sudot4x8: none,\n"
+     "  udot4x8: none,\n"
+     "  udot8x4: none,\n"
+     "  sdot8x4: none,\n"
+     "  sudot8x4: none,\n"
+     "  udot4x8sat: none,\n"
+     "  sdot4x8sat: none,\n"
+     "  sudot4x8sat: none,\n"
+     "  udot8x4sat: none,\n"
+     "  sdot8x4sat: none,\n"
+     "  sudot8x4sat: none,\n"
+     "  fdot2: none,\n"
+     "  subtexel: none,\n"
+     "  fuse ffma(a: float, b: float, c: float) = a*b + c : fmul contract,\n"
+     "  fuse imad(a: int, b: int, c: int) = a*b + c : imul\n"
+     "  folds none\n"
+     "}\n"
+
+    /*
+     * NVIDIA GA104 (GeForce RTX 3060 Ti, sm_86), measured through SPIR-V
+     * by tests/ga104 with snx-shaderperf (driver 620.70.06): issue cost
+     * per warp instruction relative to fadd, from throughput with the
+     * SMs full.  The parent sm86 supplies the fusions and the classes
+     * the corpus does not fit.  The fit differs from sm86's estimates:
+     * integer add is full rate (1.13, not 2), imul 1.70 not 2, integer
+     * division 19.26 not 28.5, fp64 61.68 not 64.  Branch fitted below
+     * zero and bitcast at zero: both keep sm86's prices, a branch's cost
+     * being absorbed by the other classes in the fit.  Latencies in SM
+     * clocks are in the test report.
+     */
+    "model ga104 : sm86 {\n"
+    "  iadd: 1.13, logic: 2.70, shift: 1.93, imul: 1.70, idiv: 19.26, idivk: 4.12,\n"
+    "  cmp: 1.30, select: 2.27, minmax: 2.48, bitcnt: 5.75, conv: 2.48,\n"
+    "  fadd: 1, fmul: 0.99, fdiv: 5.85, fsqrt: 6.79, ftrans: 6.79, fpow: 13.75,\n"
+    "  f64: 61.68, load: 8.94, diverge: 10.26, barrier: 2.94,\n"
+    "  atomic_shared: 7.72, atomic_global: 48.24, store: 34.48\n"
+    "}\n"
+    /*
+     * AMD VANGOUGH (Steam Deck, gfx10.3 / RDNA2), measured through
+     * SPIR-V by tests/vangogh with snx-shaderperf (Mesa 26.x, RADV):
+     * issue cost per wave instruction relative to fadd, from throughput
+     * with the CUs full.  The fit is the mean of two independent runs of
+     * the corpus's 145 compute/ALU/memory tests: the graphics stages
+     * time below zero on RADV and the corpus passes their shaders twice,
+     * and RADV's ACO refuses the float atomic and subgroup partition
+     * opcodes, so those tests are excluded.  The parent rdna2 supplies
+     * the fusions and unmeasured classes.  Logic and bitcnt fit near
+     * zero because the LOP3/BMI fusions absorb them; they keep rdna2's
+     * prices, as do branch and bitcast.  Latencies in SM clocks are in
+     * the test report.
+     */
+    "model vangogh : rdna2 {\n"
+    "  iadd: 0.93, shift: 1.00, imul: 3.94, idiv: 33.37, idivk: 6.92,\n"
+    "  cmp: 1.05, select: 0.95, minmax: 1.08, conv: 1.01,\n"
+    "  fadd: 1, fmul: 1.00, fdiv: 3.68, fsqrt: 3.94, ftrans: 3.96, fpow: 4.06,\n"
+    "  f64: 15.96, load: 4.44, diverge: 1.29, barrier: 6.58,\n"
+    "  atomic_shared: 8.70, atomic_global: 17.61, store: 18.71\n"
+    "}\n"
     /*
      * ARM Mali-G715 (Pixel 9, Tensor G4, Valhall) through SPIR-V,
      * measured on the phone by tests/mali-g715 over adb (driver
@@ -2517,7 +2785,7 @@ parse_basis(struct P *p)
 {
 	struct basis *b, *parent;
 	struct func tmp;
-	struct gate *g;
+	struct gate *g, ng;
 	uint32_t name;
 	int j;
 
@@ -2544,7 +2812,9 @@ parse_basis(struct P *p)
 			fail("expected a gate: name(x, y) = expr");
 		if (b->ng == MAXGATE)
 			fail("too many gates");
-		g = &b->g[b->ng];
+		/* Parse into a local gate: a failure part-way through this gate
+		 * must not leave a phantom (e.g. cost 0) in the basis. */
+		g = &ng;
 		memset(g, 0, sizeof *g);
 		memset(&tmp, 0, sizeof tmp);
 		g->name = tsym(p, p->i);
@@ -2576,22 +2846,35 @@ parse_basis(struct P *p)
 		}
 		g->cost = 1;
 		if (accept_kw(p, "cost")) {
-			nid c = number(p);
+			nid c;
+			if (pk(p) == T_MINUS)
+				fail("gate cost must be a non-negative integer "
+				    "(0..255)");
+			c = number(p);
+			if (!is_const(c) || N.ki[c] < 0 || N.ki[c] > 255)
+				fail("gate cost must be an integer between 0 and "
+				    "255 (it is stored as 8 bits)");
 			g->cost = (uint8_t)N.ki[c];
 		}
-		/* a gate of the same name replaces the inherited one */
-		for (j = 0; j < b->ng; j++)
-			if (b->g[j].name == g->name) {
-				b->g[j] = *g;
-				break;
-			}
-		if (g->lut)
-			b->ng += j == b->ng;
-		else if (j == b->ng) {
+		/* commit only once the whole gate parsed and validated */
+		if (g->lut) {
+			/* a gate of the same name replaces the inherited one */
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name) {
+					b->g[j] = *g;
+					break;
+				}
+			if (j == b->ng)
+				b->g[b->ng++] = *g;
+		} else {
 			basis_finish_gate(b, g);
-			b->ng++;
-		} else
-			basis_finish_gate(b, &b->g[j]);
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name)
+					break;
+			b->g[j] = *g;
+			if (j == b->ng)
+				b->ng++;
+		}
 	}
 	expect_eos(p);
 }
@@ -3348,6 +3631,31 @@ cmd_func_text(const char *src)
 	return f;
 }
 
+/* equiv_scan enumerates at most 1001 points before it samples and falls
+ * through to the SAT/AIG path.  A function whose whole parameter domain fits
+ * that budget is compared exhaustively and never bit-blasts, however deep
+ * its body: the AIG depth guard must not reject it. */
+static int
+equiv_exhaustive(const struct func *f)
+{
+	uint64_t pts = 1;
+	int i, w;
+	ty_t t;
+
+	for (i = 0; i < f->np; i++) {
+		t = f->p[i].ty;
+		if (!TY_SIZED(t))
+			return 0;
+		w = TYW(t);
+		if (w > 10)
+			return 0;
+		pts *= (uint64_t)1 << w;
+		if (pts > 1001)
+			return 0;
+	}
+	return 1;
+}
+
 /*
  * hyper.c: a statement with complex, quaternion or octonion numbers (i,
  * z, e1, q: quat ...) runs there, as text; 1 when it did.
@@ -3896,9 +4204,20 @@ statement(struct P *p)
 				}
 				expect_eos(p);
 				notes_flush();
-				if (!strcmp(cmd, "equiv"))
+				if (!strcmp(cmd, "equiv")) {
+					/* A flat chain (x*x*... with 800 factors) parses
+					 * fine but bit-blasts recursively in nodesat.c
+					 * and overflows the stack.  Reject it up front,
+					 * but only when the comparison actually reaches
+					 * the AIG builder: small integer domains are
+					 * checked exhaustively and never bit-blast. */
+					if (!equiv_exhaustive(f) ||
+					    !equiv_exhaustive(g)) {
+						node_aig_depth_check(f->body);
+						node_aig_depth_check(g->body);
+					}
 					cmd_equiv(f, g, ftz, nanbits);
-				else if (!strcmp(cmd, "fit"))
+				} else if (!strcmp(cmd, "fit"))
 					cmd_fit(f, g, metric);
 				else
 					cmd_error(f, g);
@@ -4227,6 +4546,7 @@ run_source1(const char *src, const char *file, int echo)
 			p->xstop = NULL;
 			p->force_ty = 0;
 			p->abs_depth = 0;
+			p->expr_depth = 0;
 			p->fnarg = 0;
 			p->nb = 0;
 			p->fusepat = 0;

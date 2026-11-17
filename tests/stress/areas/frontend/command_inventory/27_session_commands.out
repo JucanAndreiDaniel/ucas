@@ -1,0 +1,87 @@
+> help
+definitions
+  f(x: u8, y: i16 in -5..5) = expr [where y = expr, cond]
+  g = x^2 + 1               free variables become parameters
+  basis name [: parent] { gate(x, y) = expr [cost n]; ... }
+  model name [: parent] { class: cost, ..., fuse f(a: int, ...) = expr : cost }
+types: real (math), f16 f32 f64 (IEEE), int (math), uN iN (wrapping), bool
+commands (F is a function name or an expression like isqrt(x: u4))
+  show F | parse EXPR | table F [max n] | funcs | models | help
+  range F [nocrit] | domain F | wrap F | crit F | diff F [x]
+  equiv F G [ftz|noftz] [nanbits] | error G ~ F
+  fit G ~ F [metric maxrel|maxabs|rms]
+  gates F [basis b] [max k] [nodes n] [as c]
+  find F [n] [max cost] | more [n]
+  cost F [model m] [consecutive i] | use m
+  stoke F [steps n] [restarts r] [len l] [seed k] [model m]
+  pit F G [trials n] [seed k] | phash F [seed k] [model m]
+  dword F [tol r | atol t | ulp x] [model m] | foldproof F [model m]
+  banks F [, G ...] [size n] [elem b] [model m]
+  intatomic F [count n] [tol t] [global] [model m]
+  rop F [model m] | texalu F [tol e] [model m]
+  texenc T [, U] [astc BWxBH [srgb] | eac | etc2 [srgb] | bc7 [srgb] |
+    bc6h] [rows w] [tol e]
+  approx F [in a..b] [degree n|a..b] [error e] [ulp u] [as f32|f64|real]
+    [relative|absolute] [odd|even|nosym] [keep endpoints|x1, x2..]
+    [weight W] [at c] [fma|nofma] [norefine] [list n] [name p] [c]
+  approx more [n]
+  adamfit F [in a..b | x in a..b, y in c..d] [as f32|f64|real] [ops + - * /
+    fma sqrt exp log ...] [count n] [size n] [steps n] [lr r] [restarts n]
+    [wcost w] [werr w] [cref c] [budget n] [error e|ulp u] [auto] [list n]
+    [seed k] [seconds s] [name p] [nocert]   (F: ucas, or NAME of a ```c or
+    ```glsl block; integer results: fixed-point forms)
+  animate [hillis|blelloch|sequential] scan [n N] [fps F] [seconds S]
+    [random [seed K] | values a, b, ...] [f32] [MODEL] [to NAME]
+  plot F, G ... [x in a..b] [y in c..d] [deriv] [tangent a] [logx|logy]
+    [contour|heatmap|wireframe|3d] [rotate] [animate t] [slices|parallel]
+    [polar] [field] [fps F] [frames N] [to NAME]; plot3d F; neighbourhood F
+    [at a]
+loops and calculus
+  sum(i, lo, hi, e) | prod(...) | x[0] = c; x[k+1] = ... | { for/while/if }
+  closed F | scheme F [more] [model m] | continuous F
+  integrate F [wrt x] [from a to b] | antiderivative F [wrt x]
+  diff F [x y ...] [n] | grad|hessian|laplacian F [at a, b] | F'' | F'(a)
+  jacobian F, G [wrt x, y] [at ...] | ddir F along v [at p] [raw]
+  limit F x -> a[+|-] [from left|right] | lim x->a F | wronskian F, G, ...
+  taylor F [x] [at a] [order n] | implicit L = R [for y] [wrt x] [order 2]
+  y' = f(t, y); y(0) = c | pde name { ... } | dsolve y [from a to b] [steps n]
+complex numbers (i is the unit) and trig forms
+  complex F | re F | im F | conj F | modulus F | arg F | polar F
+  nthroots N F | unity N | trig F [expand|reduce|product|sum|sincos|exp|harmonic|half|inverse]
+algebra
+  expand|factor|simplify|together|cancel F | collect|apart F [in x]
+  gcd|lcm P, Q | resultant P, Q [in x] | discriminant P [in x]
+  quo|rem P, Q [in x] | divide P by Q | substitute x = a in F
+  solve L = R [, L2 = R2] [for x, y]
+properties
+  monotonic|period|periodic|parity|symmetry|bounded|injective|surjective|
+    bijective|continuity|discontinuities|convexity|asymptotes|zeros F
+    [x] [in a..b] | identify EXPR | identify L = R
+complex, quaternion, octonion (z, w complex; i j k; e1..e31)
+  holomorphic F | residue F at a | poles F | integrate F around |z| = r
+  table quaternion|octonion|sedenion | algebra NAME [property]
+  zerodivisors | associator a, b, c | commutator a, b
+  rotate V by Q | rotate V by ANGLE about AXIS | axisangle | rotmatrix |
+    frommatrix | slerp
+rings and finite fields (Z/n, mod n, GF(p^n [, aes|0x11b|f]))
+  ring R [EXPR|units|zerodivisors|ideals|field|table|minpoly A|log A]
+  inverse A mod N | order A mod N | phi N | carmichael N | factorint N
+  crt | solve ... mod m | legendre | jacobi | sqrtmod | primroot N |
+    dlog A base G mod N | magic D [uN|iN] | gf2matrix EXPR [uN]
+  factor|irreducible|primitive|roots F over GF(q) | det|rank|nullspace|
+    inverse M mod p
+integrals and solids
+  area F [and G] [from a to b] [riemann [N] [left|right|mid|trapezoid|
+    simpson]] [accumulate] | revolve F [and G] [from a to b]
+    [about x|y|y = c|x = c] [disk|washer|shell] [still] [rotate]
+  volume | surfacearea | arclength F from a to b | centroid F [and G]
+English works too: 'what is the range of x squared for a signed byte x?'
+  ('help english' for more)
+> funcs
+> use rdna2
+cost model: rdna2
+> basis myand { andg(x, y) = x & y; org(x, y) = x | y }
+> model mym : gt1030 { imul: 5 }
+> use mym
+cost model: mym
+> funcs

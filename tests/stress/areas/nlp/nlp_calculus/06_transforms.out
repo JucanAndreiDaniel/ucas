@@ -1,0 +1,95 @@
+> the laplace transform of t^2 e^-t
+  ucas: laplace t^2 e^-t
+L{t^2*e^(-t)}(s) = 2/(s + 1)^3
+  region of convergence: Re(s) > -1
+  one-sided: f(t) for t >= 0 (0 before)
+  rules: e^(at) f(t) -> F(s - a), t^n f(t) -> (-1)^n F^(n)(s)
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = -1/2, 1/2, 3: max relative difference 4.4e-16
+> inverse laplace of 1/(s^2+1)
+  ucas: ilaplace 1/(s^2+1)
+L^-1{1/(s^2 + 1)}(t) = sin(t)
+  poles: s = +-i
+  for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 0 (right of every pole)
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
+> the inverse laplace transform of 1/(s^2 + 2s + 5)
+  ucas: ilaplace 1/(s^2 + 2s + 5)
+L^-1{1/(s^2 + 2s + 5)}(t) = e^(-t)*sin(2t)/2
+  poles: s = -1 +- 2i
+  for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > -1 (right of every pole)
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
+> the z transform of a^n u[n]
+  ucas: ztrans a^n u[n]
+Z{a^n*u[n]}(z) = z/(z - a)
+  region of convergence: |z| > abs(a)
+  one-sided: x[n] for n >= 0
+  rules: a^n x[n] -> X(z/a)
+  check: matches sum_n x[n] z^-n (88 terms) at z = 17/10, 17/5, 71/10 with a = 7/10: max relative difference 2e-16
+> inverse z transform of z/(z - 0.5)
+  ucas: iztrans z/(z - 0.5)
+Z^-1{z/(z - 1/2)}[n] = (1/2)^n    for n >= 0
+  poles: z = 1/2
+  taken as causal (right-sided): region of convergence |z| > 1/2
+  long division in z^-1: 1, 1/2, 1/4, 1/8, 1/16, 1/32, 1/64, 1/128, ...
+  check: the closed form equals the long division for n = 0..31 (max difference 0)
+> transfer function of y[n] = 0.9 y[n-1] + x[n]
+  ucas: tf y[n] = 0.9 y[n-1] + x[n]
+transfer function of y[n] = 0.9 y[n-1] + x[n] (zero initial state)
+  input x, output y: H(z) = Y(z)/X(z)
+  H(z) = 10z/(10z - 9)
+       = 1/(1 - (9/10)z^-1)
+  poles: 9/10
+  zeros: 0
+  stable (BIBO): every pole inside the unit circle (max |p| = 9/10)
+  causal: yes (deg numerator <= deg denominator)
+  impulse response h[n] = (9/10)^n    for n >= 0
+  DC gain H(1) = 10
+  frequency response H(e^(iw)), w in radians per sample:
+    w          |H|          dB         phase (deg)
+    0          10           20         0
+    pi/8       2.60805      8.326      -63.93
+    pi/4       1.36436      2.699      -60.26
+    pi/2       0.743294     -2.577     -41.99
+    3pi/4      0.569545     -4.889     -21.25
+    pi         0.526316     -5.575     0
+  -3 dB (gain 10/sqrt(2)) at w = 0.105458 rad/sample
+    = 0.0167842 of the sample rate
+  as C (direct form I; x1 = x[n-1], y1 = y[n-1], ...):
+    float y = x + 0.9f*y1;
+    y1 = y;
+> fourier series of a square wave
+  ucas: fourier series sign(x)
+Fourier series of sign(x) on [-pi, pi] (period 2pi):
+  f(x) ~ a0/2 + sum_{n>=1} a_n cos(n*x) + b_n sin(n*x)
+  a_n = 1/pi int f(x) cos(n*x) dx over the period, b_n likewise with sin
+  a0 = 0
+  a_n = 0 (f is odd)
+  b_n = 2(1 - (-1)^n)/(pi*n)
+  check: the closed forms equal the numeric coefficients (Gauss-Legendre, 5120 nodes) for n = 1..48
+  f(x) ~ 4sin(x)/pi + 4sin(3x)/(3pi) + 4sin(5x)/(5pi) + 4sin(7x)/(7pi) + 4sin(9x)/(9pi) + ...
+  partial sums S_N: ||f - S_N||/||f|| = 0.259 (N = 5), 0.0919 (N = 48)
+  converges to f where f is continuous, and to the midpoint of the jump where it jumps:
+    at x = 0 it jumps by 2: S_N -> 0
+    at x = pi it jumps by -2: S_N -> the midpoint
+  Gibbs: near x = 0, S_48 overshoots by 0.1791 = 9.0% of the jump (at x = 0.06545); the overshoot tends to 8.95% of the jump and does not shrink as N grows
+> fourier transform of e^(-x^2)
+  ucas: fourier e^(-x^2)
+F{e^(-x^2)}(w) = sqrt(pi)*e^(-w^2/4)
+  convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
+  check: matches the integral computed numerically at w = 1/2, 13/10, 27/10: max relative difference 6.7e-16
+> the dft of [1, 2, 3, 4]
+  ucas: dft [1, 2, 3, 4]
+DFT of 4 values (X[k] = sum_n x[n] e^(-2 pi i k n/N); radix-2 FFT, N log2 N operations)
+  k    X[k]                         |.|            arg
+  0    10                           10             0
+  1    -2 + 2i                      2sqrt(2)       3pi/4
+  2    -2                           2              pi
+  3    -2 - 2i                      2sqrt(2)       -3pi/4
+  check: the inverse transform gives the input back (max difference 0); Parseval: sum |x|^2 = 30, sum |X|^2/N = 30
+  bin k is the frequency k/N cycles per sample; k > N/2 are the negative frequencies k - N
+> radius of convergence of the sum of x^n/n!
+  ucas: radius x^n/n!
+power series sum(n, 0, inf, x^n/n!) in x
+  center x = 0; coefficients a_n = 1/n! of x^(n)
+  radius of convergence R = inf (ratio test: |a_(n+1)/a_n| -> 0)
+  interval of convergence: every x (absolutely)
+  sum = e^x    for |x| < inf (e^u)

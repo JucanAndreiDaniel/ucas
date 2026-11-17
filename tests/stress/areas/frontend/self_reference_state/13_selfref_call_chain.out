@@ -1,0 +1,33 @@
+> p = q
+  note: p has free variables: defined as p(q)
+> q = r
+  note: q has free variables: defined as q(r)
+> r = p
+13_selfref_call_chain.ucas:3:6: error: expected an expression
+    r = p
+         ^
+> show p
+p(q: real) = q
+  -> real
+> show q
+q(r: real) = r
+  -> real
+> show r
+_(r: real) = r
+  -> real
+> funcs
+p(q: real) = q
+  -> real
+q(r: real) = r
+  -> real
+> reset
+_(reset: real) = reset
+  -> real
+> show p
+p(q: real) = q
+  -> real
+> funcs
+p(q: real) = q
+  -> real
+q(r: real) = r
+  -> real

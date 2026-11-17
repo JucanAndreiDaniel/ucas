@@ -1,0 +1,16 @@
+> f_magic_quake_clang(x: f32 in 0.01..100) = y*(1.5f-0.5f*x*y*y) where y = asfloat(0x5f3759df - (asuint(x)>>1))
+> g_magic_quake_clang(x: f32 in 0.01..100) = y*(1.5f-0.5f*x*y*y) where y = asfloat(0x5f375a86 - (asuint(x)>>1))
+> equiv f_magic_quake_clang g_magic_quake_clang
+f_magic_quake_clang and g_magic_quake_clang differ at 64722 points of the sample, e.g. x=0.0100000007: 9.98252106 vs 9.98250484
+> error g_magic_quake_clang ~ f_magic_quake_clang
+error of g_magic_quake_clang against f_magic_quake_clang:
+  max abs error 1.71661e-05 at x=0.0102555668
+  max rel error 2.07538e-06 (0.000208%) at x=0.233053431
+  mean rel error 9.67638e-07 over 65536 points
+  max 19 ulp
+  rounding, first order in u = 2^-24: 5 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  2.18e-07 (3.66 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 6.83 u here (it gains from about 16 operations of similar weight on)
+    expected    5.88e-08 (0.987 u): the root mean square if they are independent and uniform in [-u, u]
+    for 5 operations of equal weight: gamma_5 = 5 u / (1 - 5 u) = 2.98e-07, gamma~_5(4) = 4 sqrt(5) u = 5.33e-07

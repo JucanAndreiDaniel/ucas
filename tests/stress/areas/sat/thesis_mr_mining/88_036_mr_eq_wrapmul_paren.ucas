@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:h,k
+# meaning-preserving rewrite: paren
+f(x: u32) = x*x + x
+g(x: u32) = (x*x + x) + 2147483648*(x*x + x)
+f2(x: u32) = (x*x + x)
+g2(x: u32) = ((x*x + x) + 2147483648*(x*x + x))
+f1(x: u32) = (x*x + x)
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

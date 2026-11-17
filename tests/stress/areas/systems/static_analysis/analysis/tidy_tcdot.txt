@@ -1,0 +1,509 @@
+/home/andrew/Code/ucas/src/tcdot.c:53:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   53 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   54 | #include "report.h"
+/home/andrew/Code/ucas/src/tcdot.c:61:14: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   55 | #include "tcdot.h"
+   56 | 
+   57 | #include <math.h>
+   58 | #include <stdlib.h>
+   59 | #include <string.h>
+   60 | 
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |              ^
+/home/andrew/Code/ucas/src/tcdot.c:61:25: warning: no header providing "TY" is directly included [misc-include-cleaner]
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                         ^
+/home/andrew/Code/ucas/src/tcdot.c:61:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:61:28: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                            ^
+/home/andrew/Code/ucas/src/tcdot.c:61:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:61:50: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+      |                                                  ^
+/home/andrew/Code/ucas/src/tcdot.c:63:8: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   63 | static nid
+      |        ^
+/home/andrew/Code/ucas/src/tcdot.c:64:5: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   58 | #include <stdlib.h>
+   59 | #include <string.h>
+   60 | 
+   61 | static const ty_t U32 = TY(K_UINT, 32), I32 = TY(K_SINT, 32);
+   62 | 
+   63 | static nid
+   64 | k32(int64_t v)
+      |     ^
+/home/andrew/Code/ucas/src/tcdot.c:66:9: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+   66 |         return mk_const_i(U32, v);
+      |                ^
+/home/andrew/Code/ucas/src/tcdot.c:72:9: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+   72 |         return mk_sel(c, a, b);
+      |                ^
+/home/andrew/Code/ucas/src/tcdot.c:79:9: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+   79 |         return mk_bin(O_SHR, a, mk_bin(O_MIN, s, k32(31)));
+      |                ^
+/home/andrew/Code/ucas/src/tcdot.c:79:16: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+   79 |         return mk_bin(O_SHR, a, mk_bin(O_MIN, s, k32(31)));
+      |                       ^
+/home/andrew/Code/ucas/src/tcdot.c:79:33: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+   79 |         return mk_bin(O_SHR, a, mk_bin(O_MIN, s, k32(31)));
+      |                                        ^
+/home/andrew/Code/ucas/src/tcdot.c:86:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   86 |         uint32_t j;
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:88:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |             ^
+/home/andrew/Code/ucas/src/tcdot.c:88:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |                        ^
+/home/andrew/Code/ucas/src/tcdot.c:108:12: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  108 |                 nid ha = mk_cast(U32, mk_un(O_ASUINT, mk_cast(TY_F16, a[i])));
+      |                          ^
+/home/andrew/Code/ucas/src/tcdot.c:108:25: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  108 |                 nid ha = mk_cast(U32, mk_un(O_ASUINT, mk_cast(TY_F16, a[i])));
+      |                                       ^
+/home/andrew/Code/ucas/src/tcdot.c:108:31: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  108 |                 nid ha = mk_cast(U32, mk_un(O_ASUINT, mk_cast(TY_F16, a[i])));
+      |                                             ^
+/home/andrew/Code/ucas/src/tcdot.c:108:49: warning: no header providing "TY_F16" is directly included [misc-include-cleaner]
+  108 |                 nid ha = mk_cast(U32, mk_un(O_ASUINT, mk_cast(TY_F16, a[i])));
+      |                                                               ^
+/home/andrew/Code/ucas/src/tcdot.c:108:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:109:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  109 |                 nid hb = mk_cast(U32, mk_un(O_ASUINT, mk_cast(TY_F16, b[i])));
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:110:19: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  110 |                 nid Ea = mk_bin(O_AND, mk_bin(O_SHR, ha, k32(10)), k32(31));
+      |                                 ^
+/home/andrew/Code/ucas/src/tcdot.c:112:23: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  112 |                 nid sa = sel(mk_bin(O_EQ, Ea, k32(0)), mk_bin(O_AND, ha, k32(1023)),
+      |                                     ^
+/home/andrew/Code/ucas/src/tcdot.c:113:14: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  113 |                     mk_bin(O_OR, mk_bin(O_AND, ha, k32(1023)), k32(1024)));
+      |                            ^
+/home/andrew/Code/ucas/src/tcdot.c:118:19: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  118 |                 mag[i] = mk_bin(O_MUL, sa, sb);
+      |                                 ^
+/home/andrew/Code/ucas/src/tcdot.c:119:18: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  119 |                 ex[i] = mk_bin(O_ADD, mk_bin(O_ADD, mk_bin(O_MAX, Ea, k32(1)),
+      |                                ^
+/home/andrew/Code/ucas/src/tcdot.c:119:46: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  119 |                 ex[i] = mk_bin(O_ADD, mk_bin(O_ADD, mk_bin(O_MAX, Ea, k32(1)),
+      |                                                            ^
+/home/andrew/Code/ucas/src/tcdot.c:121:32: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  121 |                 sg[i] = mk_bin(O_AND, mk_bin(O_XOR, ha, hb), k32(0x8000));
+      |                                              ^
+/home/andrew/Code/ucas/src/tcdot.c:122:18: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  122 |                 nz[i] = mk_bin(O_NE, mag[i], k32(0));
+      |                                ^
+/home/andrew/Code/ucas/src/tcdot.c:125:36: warning: no header providing "TY_F32" is directly included [misc-include-cleaner]
+  125 |                 nid hc = mk_un(O_ASUINT, mk_cast(TY_F32, c));
+      |                                                  ^
+/home/andrew/Code/ucas/src/tcdot.c:125:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:129:3: warning: Out of bound access to memory preceding 'mag' [clang-analyzer-security.ArrayBound]
+  129 |                 mag[n] = sel(mk_bin(O_EQ, Ec, k32(0)), Mc, mk_bin(O_OR, Mc,
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:361:6: note: Assuming the condition is false
+  361 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:361:2: note: Taking false branch
+  361 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:363:6: note: Assuming the condition is false
+  363 |         if (strcmp(w, "tcdot") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:363:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/tcdot.c:363:33: note: Assuming the condition is false
+  363 |         if (strcmp(w, "tcdot") != 0 || func_find(sym_cstr(w))) {
+      |                                        ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:363:2: note: Taking false branch
+  363 |         if (strcmp(w, "tcdot") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:367:9: note: Assuming the condition is true
+  367 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:367:2: note: Loop condition is true.  Entering loop body
+  367 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:368:7: note: Assuming the condition is true
+  368 |                 if (cmdp_kw(p, "n")) {
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:368:3: note: Taking true branch
+  368 |                 if (cmdp_kw(p, "n")) {
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:369:8: note: Assuming the condition is false
+  369 |                         if (!cmdp_int(p, &v) || v < 1 || v > TC_MAXN)
+      |                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:369:8: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/tcdot.c:369:28: note: Assuming 'v' is < 1
+  369 |                         if (!cmdp_int(p, &v) || v < 1 || v > TC_MAXN)
+      |                                                 ^~~~~
+/home/andrew/Code/ucas/src/tcdot.c:369:34: note: Left side of '||' is true
+  369 |                         if (!cmdp_int(p, &v) || v < 1 || v > TC_MAXN)
+      |                                                       ^
+/home/andrew/Code/ucas/src/tcdot.c:367:9: note: Assuming the condition is false
+  367 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:367:2: note: Loop condition is false. Execution continues on line 387
+  367 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:388:2: note: Calling 'tcdot_report'
+  388 |         tcdot_report(n, samples, seed, cancel);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:265:7: note: 'rs' is 11400714819323198486
+  265 |         if (!rs)
+      |              ^~
+/home/andrew/Code/ucas/src/tcdot.c:265:2: note: Taking false branch
+  265 |         if (!rs)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:287:2: note: Loop condition is true.  Entering loop body
+  287 |         for (s = 0; s < samples; s++) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:290:15: note: 'i' is >= 'n'
+  290 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/tcdot.c:290:3: note: Loop condition is false. Execution continues on line 301
+  290 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:302:7: note: 'cancel' is 0
+  302 |                 if (cancel && n >= 2) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:302:14: note: Left side of '&&' is false
+  302 |                 if (cancel && n >= 2) {
+      |                            ^
+/home/andrew/Code/ucas/src/tcdot.c:307:15: note: 'i' is >= 'n'
+  307 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/tcdot.c:307:3: note: Loop condition is false. Execution continues on line 312
+  307 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:314:7: note: Assuming the condition is false
+  314 |                 if (fabs(c) > mx)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:314:3: note: Taking false branch
+  314 |                 if (fabs(c) > mx)
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:316:9: note: Calling 'block'
+  316 |                 got = block(pa, pb, n, c, 24, &E);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:220:14: note: 'i' is >= 'n'
+  220 |         for (i = 0; i < n; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/tcdot.c:220:2: note: Loop condition is false. Execution continues on line 232
+  220 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:232:6: note: Assuming 'c' is equal to 0
+  232 |         if (c != 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:232:2: note: Taking false branch
+  232 |         if (c != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:239:14: note: Assuming 'i' is > 'n'
+  239 |         for (i = 0; i <= n; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:239:2: note: Loop condition is false. Execution continues on line 245
+  239 |         for (i = 0; i <= n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:246:6: note: Assuming 's' is equal to 0
+  246 |         if (s == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:246:2: note: Taking true branch
+  246 |         if (s == 0)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:316:9: note: Returning from 'block'
+  316 |                 got = block(pa, pb, n, c, 24, &E);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:318:15: note: 'i' is >= 'n'
+  318 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/tcdot.c:318:3: note: Loop condition is false. Execution continues on line 322
+  318 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:322:7: note: Calling 'tc_dot_expr'
+  322 |                 e = tc_dot_expr(an, bn, n, mk_cast(TY_F32, mk_const_r(c)), 24, -132);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:107:14: note: 'i' is >= 'n'
+  107 |         for (i = 0; i < n; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/tcdot.c:107:2: note: Loop condition is false. Execution continues on line 125
+  107 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:129:3: note: Access of 'mag' at a negative index
+  129 |                 mag[n] = sel(mk_bin(O_EQ, Ec, k32(0)), Mc, mk_bin(O_OR, Mc,
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:142:26: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  142 |                 nid t = shr_sat(mk_bin(O_SHL, mag[i], k32(up)), mk_bin(O_SUB, E,
+      |                                        ^
+/home/andrew/Code/ucas/src/tcdot.c:142:58: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  142 |                 nid t = shr_sat(mk_bin(O_SHL, mag[i], k32(up)), mk_bin(O_SUB, E,
+      |                                                                        ^
+/home/andrew/Code/ucas/src/tcdot.c:145:63: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  145 |                 S = mk_bin(O_ADD, S, sel(mk_bin(O_NE, sg[i], k32(0)), mk_un(O_NEG,
+      |                                                                             ^
+/home/andrew/Code/ucas/src/tcdot.c:148:15: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  148 |         neg = mk_bin(O_LT, S, mk_const_i(I32, 0));
+      |                      ^
+/home/andrew/Code/ucas/src/tcdot.c:150:50: warning: no header providing "O_CLZ" is directly included [misc-include-cleaner]
+  150 |         msb = mk_bin(O_SUB, k32(31), mk_cast(U32, mk_un(O_CLZ, A)));
+      |                                                         ^
+/home/andrew/Code/ucas/src/tcdot.c:154:20: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  154 |         mant = sel(mk_bin(O_GE, msb, k32(23)), mk_bin(O_SHR, A, mk_bin(O_SUB,
+      |                           ^
+/home/andrew/Code/ucas/src/tcdot.c:168:15: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  168 |         return mk_un(O_ASFLOAT, bits);
+      |                      ^
+/home/andrew/Code/ucas/src/tcdot.c:179:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  179 |                 fail("tc_dot(A, B, c): A and B are tables of the same length, 1 "
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:182:7: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                     ^
+/home/andrew/Code/ucas/src/tcdot.c:182:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/tcdot.c:182:16: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:104:29: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:23: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:18: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                  ^
+/home/andrew/Code/ucas/src/tcdot.c:176:10: note: Calling 'entries'
+  176 |         int n = entries(ta, a, TC_MAXN), m = entries(tb, b, TC_MAXN), i;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:88:6: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:88:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/tcdot.c:88:28: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |                                   ^~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:88:6: note: Left side of '||' is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |             ^
+/home/andrew/Code/ucas/src/tcdot.c:88:42: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:88:2: note: Taking false branch
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:90:2: note: Loop condition is false. Execution continues on line 92
+   90 |         for (j = 0; j < N.b[t]; j++)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:92:2: note: Returning without writing to '*e'
+   92 |         return (int)N.b[t];
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:176:10: note: Returning from 'entries'
+  176 |         int n = entries(ta, a, TC_MAXN), m = entries(tb, b, TC_MAXN), i;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:178:6: note: Assuming 'n' is not equal to 0
+  178 |         if (!n || n != m)
+      |             ^~
+/home/andrew/Code/ucas/src/tcdot.c:178:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/tcdot.c:178:12: note: 'n' is not equal to 'm'
+  178 |         if (!n || n != m)
+      |                   ^
+/home/andrew/Code/ucas/src/tcdot.c:178:2: note: Taking true branch
+  178 |         if (!n || n != m)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:181:7: note: The value 0 is assigned to 'i'
+  181 |         for (i = 0; i < n; i++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/tcdot.c:181:14: note: Assuming 'i' is < 'n'
+  181 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/tcdot.c:181:2: note: Loop condition is true.  Entering loop body
+  181 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:182:16: note: Array subscript is undefined
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:104:29: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:23: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                       ^
+/home/andrew/Code/ucas/src/ucas.h:94:18: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                  ^
+/home/andrew/Code/ucas/src/tcdot.c:182:32: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                                              ^
+/home/andrew/Code/ucas/src/tcdot.c:184:8: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  184 |                             node_str(a[i]));
+      |                             ^
+/home/andrew/Code/ucas/src/tcdot.c:185:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  185 |         return tc_dot_expr(a, b, n, mk_cast(TY_F32, c), 24, -132);
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:190:8: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  190 | static uint64_t rs;
+      |        ^
+/home/andrew/Code/ucas/src/tcdot.c:195:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |         rs ^= rs << 13;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/tcdot.c:196:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  196 |         rs ^= rs >> 7;
+      |                  ~~ ^
+/home/andrew/Code/ucas/src/tcdot.c:197:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |         rs ^= rs << 17;
+      |                  ~~ ^~
+/home/andrew/Code/ucas/src/tcdot.c:198:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |         return (uint32_t)(rs >> 11);
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/tcdot.c:205:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  205 |         int e = (int)(h >> 10 & 31), m = (int)(h & 1023);
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/tcdot.c:205:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  205 |         int e = (int)(h >> 10 & 31), m = (int)(h & 1023);
+      |                               ~ ^~
+/home/andrew/Code/ucas/src/tcdot.c:205:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  205 |         int e = (int)(h >> 10 & 31), m = (int)(h & 1023);
+      |                                                  ~ ^~~~
+/home/andrew/Code/ucas/src/tcdot.c:208:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |         return h & 0x8000 ? -v : v;
+      |                  ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:267:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   58 |         printf("tc_dot: a block FMA of %d f16 products and an f32 c (Ampere's "
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:293:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  293 |                                 ha = rnd() & 0xffff;
+      |                                            ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:294:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |                         } while ((ha & 0x7c00) == 0x7c00 || (ha & 0x7c00) < 0x1400);
+      |                                      ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:294:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |                         } while ((ha & 0x7c00) == 0x7c00 || (ha & 0x7c00) < 0x1400);
+      |                                                                 ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:296:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  296 |                                 hb = rnd() & 0xffff;
+      |                                            ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:297:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  297 |                         } while ((hb & 0x7c00) == 0x7c00 || (hb & 0x7c00) < 0x1400);
+      |                                      ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:297:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  297 |                         } while ((hb & 0x7c00) == 0x7c00 || (hb & 0x7c00) < 0x1400);
+      |                                                                 ~ ^~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:301:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  301 |                 c = ldexp((double)(rnd() & 0xffffff), (int)(rnd() % 40) - 40);
+      |                                          ~ ^~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:319:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  319 |                         an[i] = mk_cast(TY_F16, mk_const_r(pa[i]));
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:319:28: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  319 |                         an[i] = mk_cast(TY_F16, mk_const_r(pa[i]));
+      |                                                 ^
+/home/andrew/Code/ucas/src/tcdot.c:320:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  320 |                         bn[i] = mk_cast(TY_F16, mk_const_r(pb[i]));
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:100:16: note: expanded from macro 'TY_F16'
+  100 | #define TY_F16 TY(K_FLOAT, 16)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:322:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  322 |                 e = tc_dot_expr(an, bn, n, mk_cast(TY_F32, mk_const_r(c)), 24, -132);
+      |                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:101:16: note: expanded from macro 'TY_F32'
+  101 | #define TY_F32 TY(K_FLOAT, 32)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/tcdot.c:356:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+  356 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/tcdot.c:361:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+  361 |         if (!cmdp_word(p, w, sizeof w))
+      |              ^
+/home/andrew/Code/ucas/src/tcdot.c:363:33: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+  363 |         if (strcmp(w, "tcdot") != 0 || func_find(sym_cstr(w))) {
+      |                                        ^
+/home/andrew/Code/ucas/src/tcdot.c:363:43: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  363 |         if (strcmp(w, "tcdot") != 0 || func_find(sym_cstr(w))) {
+      |                                                  ^
+/home/andrew/Code/ucas/src/tcdot.c:364:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+  364 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:367:10: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+  367 |         while (!cmdp_eos(p)) {
+      |                 ^
+/home/andrew/Code/ucas/src/tcdot.c:368:7: warning: no header providing "cmdp_kw" is directly included [misc-include-cleaner]
+  368 |                 if (cmdp_kw(p, "n")) {
+      |                     ^
+/home/andrew/Code/ucas/src/tcdot.c:369:9: warning: no header providing "cmdp_int" is directly included [misc-include-cleaner]
+  369 |                         if (!cmdp_int(p, &v) || v < 1 || v > TC_MAXN)
+      |                              ^
+/home/andrew/Code/ucas/src/tcdot.c:383:4: warning: no header providing "cmdp_fail_here" is directly included [misc-include-cleaner]
+  383 |                         cmdp_fail_here(p);
+      |                         ^
+/home/andrew/Code/ucas/src/tcdot.c:387:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+  387 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/tcdot.c:412:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  412 |         if ((q = strstr(buf, " of ")) != NULL && q[4] >= '1' && q[4] <= '9')
+      |              ~~^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/tcdot.c:412:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/tcdot.c:412:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/tcdot.c:413:7: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  413 |                 k = atoi(q + 4);
+      |                     ^
+/home/andrew/Code/ucas/src/tcdot.c:416:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  416 |         snprintf(out, sizeof out, "tcdot n %d%s", k, strstr(buf, "cancel") ?
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

@@ -1,0 +1,105 @@
+> s1(x: i8 in -8..7) = match x { -8 => 100, -7..-1 => 50, 0 => 0, 1..7 => 10 }
+  note: match has no default arm: other values are outside the domain
+> s1e(x: i8 in -8..7) = x < -7 ? 100 : (x < 0 ? 50 : (x == 0 ? 0 : 10))
+> equiv s1 ~ s1e
+s1 and s1e are equal on the domain of s1 (exhaustive)
+> range s1
+range of s1 -> int:
+  0..100
+  fits in u7
+  over all 16 points of the domain
+> domain s1
+domain of s1:
+  x: i8, -8..7
+  requires ((((!(x == -8) && !(x >= -7 && x <= -1)) && !(x == 0)) && !(x >= 1 && x <= 7))) => an arm of match/piecewise covers the input
+  defined at 16 of 16 points
+  over all 16 points of the domain
+> s2(x: i8 in -128..-1) = x*x
+> range s2
+range of s2 -> i8:
+  -127..121   (44 distinct values)
+  values: -127, -124, -119, -112..-111, -103, -95, -92, -87, -79, -71, -63, -60, -55, -47, -39, -31, -28, -23, -15, -7, 0..1, 4, 9, 16..17, ...
+  fits in i8
+  over all 128 points of the domain
+> domain s2
+domain of s2:
+  x: i8, -128..-1
+  C assumes x*x does not overflow i8  (signed overflow)
+  defined at 128 of 128 points
+  C undefined behaviour at 117 points, e.g. x=-128
+  over all 128 points of the domain
+> b0(x: u8 in 0..0) = x
+> range b0
+range of b0 -> u8:
+  0..0   (1 distinct values)
+  values: 0
+  fits in u1
+  over all 1 points of the domain
+> domain b0
+domain of b0:
+  x: u8, 0..0
+  defined at 1 of 1 points
+  no conditions: total on its parameter types
+  over all 1 points of the domain
+> b1(x: u8 in 255..255) = x
+> range b1
+range of b1 -> u8:
+  255..255   (1 distinct values)
+  values: 255
+  fits in u8
+  over all 1 points of the domain
+> b2(x: i8 in -128..-128) = x
+> range b2
+range of b2 -> i8:
+  -128..-128   (1 distinct values)
+  values: -128
+  fits in i8
+  over all 1 points of the domain
+> n1(x: i16 in -1000..-1) = -x
+> range n1
+range of n1 -> i16:
+  1..1000   (1000 distinct values)
+  fits in u10
+  over all 1000 points of the domain
+> domain n1
+domain of n1:
+  x: i16, -1000..-1
+  C assumes -x does not overflow i16  (signed overflow)
+  defined at 1000 of 1000 points
+  over all 1000 points of the domain
+> n2(x: i16 in -1000..1000) = x % 7
+> range n2
+range of n2 -> i16:
+  -6..6   (13 distinct values)
+  values: -6..6
+  fits in i4
+  over all 2001 points of the domain
+> cap0(x: u32 in 0..4194303) = x*x
+> range cap0
+range of cap0 -> u32:
+  0..4294966857
+  fits in u32
+  over all 4194304 points of the domain
+> equiv cap0 ~ x*x
+cap0 and x*x are equal on the domain of cap0 (exhaustive)
+> cap1(x: u32 in 0..4194304) = x*x
+> range cap1
+range of cap1 -> u32:
+  0..4294868313  (sampled min/max; not a sound bound)
+  fits in u32
+  sampled 65536 points (domain has 4194305 points); not exhaustive
+  sound bound (intervals): 0..4294967295
+> equiv cap1 ~ x*x
+cap1 and x*x are equal on the domain of cap1 (sampled, not proved; no SAT proof: a float or real value)
+> big63(x: i64 in -1000000..-1) = x + 1
+> range big63
+range of big63 -> i64:
+  -999999..0
+  fits in i21
+  over all 1000000 points of the domain
+> domain big63
+domain of big63:
+  x: i64, -1000000..-1
+  C assumes x + 1 does not overflow i64  (signed overflow)
+  defined at 1000000 of 1000000 points
+  over all 1000000 points of the domain

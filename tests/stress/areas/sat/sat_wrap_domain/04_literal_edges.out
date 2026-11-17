@@ -1,0 +1,67 @@
+> a = 9223372036854775808
+> show a
+a() = 9223372036854775808
+  -> u64
+> b = -9223372036854775808
+> show b
+b() = -9223372036854775808
+  -> int
+> c = -9223372036854775809
+  note: -9223372036854775809: 9223372036854775809 is past 2^63 - 1, so it is a u64 and its negation wraps to 9223372036854775807
+> show c
+c() = 9223372036854775807
+  -> u64
+> d = 0x8000000000000000
+> show d
+d() = 9223372036854775808
+  -> u64
+> e = 18446744073709551615
+> show e
+e() = 18446744073709551615
+  -> u64
+> f = 18446744073709551616
+04_literal_edges.ucas:12:5: error: the integer literal 18446744073709551616 is too large: the largest is 2^64 - 1 = 18446744073709551615 (a u64)
+    f = 18446744073709551616
+        ^
+> show f
+_(f: real) = f
+  -> real
+> coerce8(x: i8) = x + 200
+  note: literal 200 does not fit i8; it becomes -56
+> wrap coerce8
+wrap analysis of coerce8:
+  x - 56   (i8)
+      nuw fails: unsigned wrap at 200 points, e.g. x=-128
+      nsw fails: signed wrap at 56 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 56 points, e.g. x=-128
+      exact for: -72..127
+  over all 256 points of the domain
+> coerceu8(x: u8) = x - 300
+  note: literal 300 does not fit u8; it becomes 44
+> wrap coerceu8
+wrap analysis of coerceu8:
+  x - 44   (u8)
+      nuw fails: unsigned wrap at 44 points, e.g. x=0
+      nsw fails: signed wrap at 44 points, e.g. x=128
+  end to end: differs from the mathematical result at 44 points, e.g. x=0
+      exact for: 44..255
+  over all 256 points of the domain
+> bigu(x: u64) = 0xFFFFFFFFFFFFFFFF
+> range bigu
+range of bigu -> u64:
+  18446744073709551615..18446744073709551615  (sampled min/max; not a sound bound)
+  fits in u64
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> wrap bigu
+wrap analysis of bigu:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+> minlit(x: i64) = x + -9223372036854775808
+> wrap minlit
+wrap analysis of minlit:
+  x - -9223372036854775808   (i64)
+      nuw fails: unsigned wrap at 32755 points, e.g. x=-9223372036854775808
+      nsw fails: signed wrap at 32755 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32755 points, e.g. x=-9223372036854775808
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive

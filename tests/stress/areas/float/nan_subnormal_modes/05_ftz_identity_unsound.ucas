@@ -1,0 +1,20 @@
+# WRONG verdict reproducer: algebraic folding defeats ftz operand flushing.
+# README: "equiv F G ftz flushes subnormals: every float operation ... reads
+# a subnormal operand as the zero of its sign".  A non-folded multiply does
+# flush (mul3 == fl3 under ftz), but x*1 is folded to a bare bitcast, so its
+# subnormal operand is never flushed and mul1 still differs from fl under
+# ftz (wrong: it should be equal).  Consequently "mul1 == passthru under ftz"
+# is an unsound 'equal'.
+
+fl(x: u32) = asfloat(x) > f32(-2^(-126)) && asfloat(x) < f32(2^(-126)) ? f32(0) : asfloat(x)
+mul1(x: u32) = asfloat(x) * f32(1)
+passthru(x: u32) = asfloat(x)
+mul3(x: u32) = asfloat(x) * f32(3)
+fl3(x: u32) = fl(x) * f32(3)
+
+equiv mul1 passthru noftz
+equiv mul1 passthru ftz
+equiv mul1 fl noftz
+equiv mul1 fl ftz
+equiv mul3 fl3 noftz
+equiv mul3 fl3 ftz

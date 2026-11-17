@@ -1,0 +1,104 @@
+/home/andrew/Code/ucas/src/knorm.c:25:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   20 | #include <stdlib.h>
+   21 | #include <string.h>
+   22 | 
+   23 | struct mono {
+   24 |         kt m;
+   25 |         int64_t c;
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:41:8: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   41 | static uint32_t memocap;
+      |        ^
+/home/andrew/Code/ucas/src/knorm.c:55:10: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+   55 |         if (r > INT64_MAX || r < -INT64_MAX)
+      |                 ^
+/home/andrew/Code/ucas/src/knorm.c:102:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  102 |         qsort(p->t, (size_t)p->n, sizeof *p->t, mcmp);
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:628:6: note: Assuming the condition is false
+  628 |         if (KSORT(t) == KS_INT) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+/home/andrew/Code/ucas/src/knorm.c:628:2: note: Taking false branch
+  628 |         if (KSORT(t) == KS_INT) {
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:639:18: note: Calling 'nlin'
+  639 |                 struct lin l = nlin(t);
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:397:2: note: Control jumps to 'case KO_MUL:'  at line 415
+  397 |         switch (KOP(t)) {
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:418:3: note: Calling 'laddto'
+  418 |                 laddto(&r, &b, &s);
+      |                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:385:14: note: Assuming 'i' is < field 'n'
+  385 |         for (i = 0; i < b->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:385:2: note: Loop condition is true.  Entering loop body
+  385 |         for (i = 0; i < b->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:386:23: note: Calling 'pmul'
+  386 |                 lpush(r, b->t[i].a, pmul(&b->t[i].c, s));
+      |                                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:209:2: note: 'r.t' initialized to a null pointer value
+  209 |         struct poly r = {0};
+      |         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:212:14: note: Assuming 'i' is >= field 'n'
+  212 |         for (i = 0; i < a->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:212:2: note: Loop condition is false. Execution continues on line 216
+  212 |         for (i = 0; i < a->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:216:2: note: Calling 'pcanon'
+  216 |         pcanon(&r);
+      |         ^~~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:102:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  102 |         qsort(p->t, (size_t)p->n, sizeof *p->t, mcmp);
+      |         ^     ~~~~
+/home/andrew/Code/ucas/src/knorm.c:362:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  362 |         qsort(l->t, (size_t)l->n, sizeof *l->t, lcmp);
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:628:6: note: Assuming the condition is false
+  628 |         if (KSORT(t) == KS_INT) {
+      |             ^
+/home/andrew/Code/ucas/src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+/home/andrew/Code/ucas/src/knorm.c:628:2: note: Taking false branch
+  628 |         if (KSORT(t) == KS_INT) {
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:639:18: note: Calling 'nlin'
+  639 |                 struct lin l = nlin(t);
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:393:25: note: 'r.t' initialized to a null pointer value
+  393 |         struct lin a = {0}, b, r = {0};
+      |                                ^
+/home/andrew/Code/ucas/src/knorm.c:397:2: note: Control jumps to 'case KO_MUL:'  at line 415
+  397 |         switch (KOP(t)) {
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:418:3: note: Calling 'laddto'
+  418 |                 laddto(&r, &b, &s);
+      |                 ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:385:14: note: Assuming 'i' is >= field 'n'
+  385 |         for (i = 0; i < b->n; i++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:385:2: note: Loop condition is false. Execution continues on line 387
+  385 |         for (i = 0; i < b->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/knorm.c:387:2: note: Calling 'lcanon'
+  387 |         lcanon(r);
+      |         ^~~~~~~~~
+/home/andrew/Code/ucas/src/knorm.c:362:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  362 |         qsort(l->t, (size_t)l->n, sizeof *l->t, lcmp);
+      |         ^     ~~~~
+/home/andrew/Code/ucas/src/knorm.c:423:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  423 |                 if (ksyms[KT.aux[t]].flags & KSF_HOM) {
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/prove.h:79:17: note: expanded from macro 'KSF_HOM'
+   79 | #define KSF_HOM 1       /* additive in its last (el) argument */
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

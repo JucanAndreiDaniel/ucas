@@ -1,0 +1,17 @@
+> f(x: u32) = asfloat(x | 0x7f800001)
+> domain f
+domain of f:
+  x: u32, 0..4294967295
+  defined at 65536 of 65536 points
+  no conditions: total on its parameter types
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> range f
+range of f -> f32:
+  no numeric value: all 65536 defined points are NaN
+  IEEE: NaN at 65536 points, ±inf at 0 points  (sampled counts; not bounds)
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> q1(x: u32) = asfloat(x | 0x7f800001)
+> q2(x: u32) = asfloat(x | 0x7fc00000)
+> equiv q1 q2 nanbits
+q1 and q2 differ at 32815 points of the sample, e.g. x=0: NaN 0x7fc00001 vs NaN 0x7fc00000
+  NaN results compared by their bits, sign and payload (nanbits)

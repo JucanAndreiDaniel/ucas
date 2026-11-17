@@ -1,0 +1,13 @@
+# AES S-box core: inversion in GF(2^8) by x^254 (repeated squaring).
+xt(x: u8) = ((x << 1) & 0xff) xor ((x & 0x80) != 0 ? 0x1b : 0)
+gm(a: u8, b: u8) = ((b&1)!=0?a:0) xor ((b&2)!=0?xt(a):0) xor ((b&4)!=0?xt(xt(a)):0) xor ((b&8)!=0?xt(xt(xt(a))):0) xor ((b&16)!=0?xt(xt(xt(xt(a)))):0) xor ((b&32)!=0?xt(xt(xt(xt(xt(a))))):0) xor ((b&64)!=0?xt(xt(xt(xt(xt(xt(a)))))):0) xor ((b&128)!=0?xt(xt(xt(xt(xt(xt(xt(a))))))):0)
+invc(x: u8) = x!=0 ? gm(gm(gm(gm(gm(gm(gm(x,x),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))))),gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))))),gm(gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))))),gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))))))),gm(gm(gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))))),gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))))),gm(gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))))),gm(gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))),gm(gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x))),gm(gm(gm(x,x),gm(x,x)),gm(gm(x,x),gm(x,x)))))))) : 0
+prod(x: u8 in 1..255) = gm(x, invc(x))
+one(x: u8 in 1..255) = 1
+equiv prod one
+inv2(x: u8) = invc(invc(x))
+ident(x: u8) = x
+equiv inv2 ident
+range invc
+prodbad(x: u8 in 1..255) = gm(x, invc(x)) + 1
+equiv prodbad one

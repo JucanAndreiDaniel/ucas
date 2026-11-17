@@ -1,0 +1,27 @@
+> xt16(x: u16) = ((x << 1) & 0xffff) xor ((x & 0x8000) != 0 ? 0x2d : 0)
+> gm16(a: u16, b: u16) = ((((((((((((((((0 xor ((b & 1) != 0 ? a : 0)) xor ((b & 2) != 0 ? xt16(a) : 0)) xor ((b & 4) != 0 ? xt16(xt16(a)) : 0)) xor ((b & 8) != 0 ? xt16(xt16(xt16(a))) : 0)) xor ((b & 16) != 0 ? xt16(xt16(xt16(xt16(a)))) : 0)) xor ((b & 32) != 0 ? xt16(xt16(xt16(xt16(xt16(a))))) : 0)) xor ((b & 64) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(a)))))) : 0)) xor ((b & 128) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))) : 0)) xor ((b & 256) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))) : 0)) xor ((b & 512) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))) : 0)) xor ((b & 1024) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))) : 0)) xor ((b & 2048) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))) : 0)) xor ((b & 4096) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))))) : 0)) xor ((b & 8192) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))))) : 0)) xor ((b & 16384) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))))))) : 0)) xor ((b & 32768) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))))))) : 0))
+> gm16r(a: u16, b: u16) = gm16(b, a)
+> equiv gm16 gm16r
+gm16 and gm16r are equal on the domain of gm16 (sampled, not proved; SAT gave up on 2276 AIG nodes within its budget of 100000 conflicts or 100000000 steps)
+> range xt16
+range of xt16 -> u16:
+  0..65535   (65536 distinct values)
+  fits in u16
+  over all 65536 points of the domain
+> range gm16
+range of gm16 -> u16:
+  0..65534   (41254 distinct values)  (sampled min/max; not a sound bound)
+  fits in u16
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..65535
+> xt(x: u8) = ((x << 1) & 0xff) xor ((x & 0x80) != 0 ? 0x1b : 0)
+> gm(a: u8, b: u8) = ((b&1)!=0?a:0) xor ((b&2)!=0?xt(a):0) xor ((b&4)!=0?xt(xt(a)):0) xor ((b&8)!=0?xt(xt(xt(a))):0) xor ((b&16)!=0?xt(xt(xt(xt(a)))):0) xor ((b&32)!=0?xt(xt(xt(xt(xt(a))))):0) xor ((b&64)!=0?xt(xt(xt(xt(xt(xt(a)))))):0) xor ((b&128)!=0?xt(xt(xt(xt(xt(xt(xt(a))))))):0)
+> gm8r(a: u8, b: u8) = gm(b, a)
+> equiv gm gm8r
+gm and gm8r are equal on the domain of gm (exhaustive)
+> mx(x: u16) = gm16(1, x)
+> range mx
+range of mx -> u16:
+  0..65535   (65536 distinct values)
+  fits in u16
+  over all 65536 points of the domain

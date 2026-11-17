@@ -1,0 +1,72 @@
+src/tcdot.c:182:16: warning: Array subscript is undefined [core.uninitialized.ArraySubscript]
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                              ^    ~~~~
+src/ucas.h:104:29: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                             ^
+src/ucas.h:103:23: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                       ^
+src/ucas.h:94:18: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                  ^
+src/tcdot.c:176:10: note: Calling 'entries'
+  176 |         int n = entries(ta, a, TC_MAXN), m = entries(tb, b, TC_MAXN), i;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+src/tcdot.c:88:6: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |             ^~~~~~~~~~~~~~~~~~
+src/tcdot.c:88:6: note: Left side of '||' is false
+src/tcdot.c:88:28: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |                                   ^~~~~~~~~~
+src/tcdot.c:88:6: note: Left side of '||' is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |             ^
+src/tcdot.c:88:42: note: Assuming the condition is false
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~
+src/tcdot.c:88:2: note: Taking false branch
+   88 |         if (N.op[t] != O_TABLE || N.b[t] < 1 || N.b[t] > (uint32_t)max)
+      |         ^
+src/tcdot.c:90:2: note: Loop condition is false. Execution continues on line 92
+   90 |         for (j = 0; j < N.b[t]; j++)
+      |         ^
+src/tcdot.c:92:2: note: Returning without writing to '*e'
+   92 |         return (int)N.b[t];
+      |         ^
+src/tcdot.c:176:10: note: Returning from 'entries'
+  176 |         int n = entries(ta, a, TC_MAXN), m = entries(tb, b, TC_MAXN), i;
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+src/tcdot.c:178:6: note: Assuming 'n' is not equal to 0
+  178 |         if (!n || n != m)
+      |             ^~
+src/tcdot.c:178:6: note: Left side of '||' is false
+src/tcdot.c:178:12: note: 'n' is not equal to 'm'
+  178 |         if (!n || n != m)
+      |                   ^
+src/tcdot.c:178:2: note: Taking true branch
+  178 |         if (!n || n != m)
+      |         ^
+src/tcdot.c:181:7: note: The value 0 is assigned to 'i'
+  181 |         for (i = 0; i < n; i++)
+      |              ^~~~~
+src/tcdot.c:181:14: note: Assuming 'i' is < 'n'
+  181 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+src/tcdot.c:181:2: note: Loop condition is true.  Entering loop body
+  181 |         for (i = 0; i < n; i++)
+      |         ^
+src/tcdot.c:182:16: note: Array subscript is undefined
+  182 |                 if (TY_ISINT(N.ty[a[i]]) && !is_const(a[i]))
+      |                              ^    ~~~~
+src/ucas.h:104:29: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                             ^
+src/ucas.h:103:23: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                       ^
+src/ucas.h:94:18: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                  ^
+1 warning generated.

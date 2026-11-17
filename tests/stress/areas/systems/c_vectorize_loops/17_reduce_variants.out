@@ -1,0 +1,15 @@
+> c lower nofile
+  xr: not lowered: a loop that may run more than 66 times
+    loop (line 1): for i = 0 while i < n step 1 (index i32, slot 0)
+      reduction s = s xor i (leaf 2)
+      leaves: 0 i: i32, 1 n: i32, 2 s: i32
+  an: not lowered: a loop that may run more than 66 times
+    loop (line 2): for i = 0 while i < n step 1 (index i32, slot 0)
+      reduction s = s & i (leaf 2)
+      leaves: 0 i: i32, 1 n: i32, 2 s: i32
+  mn: not lowered: line 3: a parameter that is not an integer or a float (a)
+    loop (line 3): for i = 0 while i < n step 1 (index i32, slot 0)
+      array a: read only, no alias (restrict or a distinct array)
+      load  a[i64(i)] -> leaf 2 (i32, 4 bytes, after 0 stores)
+      reduction s = i32(a[i] < s) != 0 ? a[i] : s (leaf 3)
+      leaves: 0 i: i32, 1 n: i32, 2 a[i]: i32, 3 s: i32

@@ -1,0 +1,50 @@
+# isqrt inequalities true on int and narrow ranges (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: int in 0..1000) = isqrt(x)^2 <= x
+g01(x: int in 0..1000) = 1
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: int in 0..1000) = x < (isqrt(x)+1)^2
+g02(x: int in 0..1000) = 1
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u8 in 0..15) = isqrt(x)^2 <= x
+g03(x: u8 in 0..15) = 1
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u8 in 0..15) = x < (isqrt(x)+1)^2
+g04(x: u8 in 0..15) = 1
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u16 in 0..255) = isqrt(x)^2 <= x
+g05(x: u16 in 0..255) = 1
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: u16 in 0..255) = x < (isqrt(x)+1)^2
+g06(x: u16 in 0..255) = 1
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u8 in 0..15) = isqrt(x*x) == x
+g07(x: u8 in 0..15) = 1
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: int in 1..100) = isqrt(x) <= x
+g08(x: int in 1..100) = 1
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: int in 0..500) = isqrt(x) >= 0
+g09(x: int in 0..500) = 1
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: u8 in 16..255) = isqrt(x) < 16
+g10(x: u8 in 16..255) = 1
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: int in 0..10000) = isqrt(x)^2 <= x && x < (isqrt(x)+1)^2
+g11(x: int in 0..10000) = 1
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u16 in 0..10000) = isqrt(x)^2 <= x && x < (isqrt(x)+1)^2
+g12(x: u16 in 0..10000) = 1
+equiv f12 g12

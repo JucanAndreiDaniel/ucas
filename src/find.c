@@ -783,7 +783,10 @@ show_new(int want)
 		rep_num("cost", F.m[i].cost);
 		rep_expr("expr", F.m[i].e);
 		rep_str("why", F.m[i].why);
-		rep_bool("verified", 1);
+		/* "sampled" means the match held at the points tried, not that
+		 * it was proved for the (non-enumerable) domain: do not present
+		 * it as verified. */
+		rep_bool("verified", !sampled);
 		rep_bool("exhaustive", pr.how == EQ_EXHAUSTIVE);
 		rep_str("proof", pr.how == EQ_EXHAUSTIVE ? "exhaustive" :
 		    pr.how == EQ_SAT ? "sat" : "sampled");
@@ -1656,6 +1659,19 @@ nice_in(int64_t lo, int64_t hi)
 	return lo;
 }
 
+/* hi - lo < n without signed overflow: an unbounded int parameter has
+ * lo = INT64_MIN, hi = INT64_MAX, and the subtraction wraps to -1, which
+ * would otherwise make it look like a parameter with very few values. */
+static int
+span_lt(int64_t lo, int64_t hi, int64_t n)
+{
+	if (hi < lo)
+		return 1;
+	if (lo < 0 && hi > INT64_MAX + lo)
+		return 0;	/* the span overflows: far larger than n */
+	return hi - lo < n;
+}
+
 static void
 parametric(const struct func *f)
 {
@@ -1678,16 +1694,17 @@ parametric(const struct func *f)
 	}
 	where_bounds(f, lo, hi, NULL);
 	/* the case parameter: the one with few values */
-	if (hi[0] - lo[0] < PCASES && hi[0] >= lo[0] &&
-	    !(hi[1] - lo[1] < PCASES))
+	if (span_lt(lo[0], hi[0], PCASES) && hi[0] >= lo[0] &&
+	    !span_lt(lo[1], hi[1], PCASES))
 		s = 0;
-	else if (hi[1] - lo[1] < PCASES && hi[1] >= lo[1] &&
-	    !(hi[0] - lo[0] < PCASES))
+	else if (span_lt(lo[1], hi[1], PCASES) && hi[1] >= lo[1] &&
+	    !span_lt(lo[0], hi[0], PCASES))
 		s = 1;
 	else
 		return;
 	xs = 1 - s;
-	if (lo[xs] < 0 || hi[xs] - lo[xs] >= PXMAX || hi[s] - lo[s] < 1)
+	if (lo[xs] < 0 || !span_lt(lo[xs], hi[xs], PXMAX) ||
+	    span_lt(lo[s], hi[s], 1))
 		return;
 	ity_of(&it, F.W, 0);
 	roots[0] = f->body;

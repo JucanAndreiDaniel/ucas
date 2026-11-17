@@ -1,0 +1,110 @@
+src/acert.c:228:14: warning: The left operand of '<=' is a garbage value [core.UndefinedBinaryOperatorResult]
+  228 |         return a.lo <= 0 && a.hi >= 0;
+      |                     ^
+src/acert.c:2218:6: note: Assuming 'l' is not equal to 'r'
+ 2218 |         if (l == r)
+      |             ^~~~~~
+src/acert.c:2218:2: note: Taking false branch
+ 2218 |         if (l == r)
+      |         ^
+src/acert.c:2220:8: note: Assuming field 'k0' is <= 0
+ 2220 |         atz = A->k0 > 0 && l <= A->z && A->z <= r;
+      |               ^~~~~~~~~
+src/acert.c:2220:18: note: Left side of '&&' is false
+ 2220 |         atz = A->k0 > 0 && l <= A->z && A->z <= r;
+      |                         ^
+src/acert.c:2222:6: note: Assuming the condition is false
+ 2222 |         if (!prog_jets(&A->F, &A->jf, X, K + 1, 1)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2222:2: note: Taking false branch
+ 2222 |         if (!prog_jets(&A->F, &A->jf, X, K + 1, 1)) {
+      |         ^
+src/acert.c:2226:6: note: Assuming field 'w' is 0
+ 2226 |         if (A->w) {
+      |             ^~~~
+src/acert.c:2226:2: note: Taking false branch
+ 2226 |         if (A->w) {
+      |         ^
+src/acert.c:2232:13: note: Assuming the condition is false
+ 2232 |         } else if (!prog_jets(&A->C, &A->jc, X, 1, 1)) {
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2232:9: note: Taking false branch
+ 2232 |         } else if (!prog_jets(&A->C, &A->jc, X, 1, 1)) {
+      |                ^
+src/acert.c:2236:6: note: Assuming the condition is false
+ 2236 |         if (!prog_jets(&A->C, &A->jc, X, K + 1, 0)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2236:2: note: Taking false branch
+ 2236 |         if (!prog_jets(&A->C, &A->jc, X, K + 1, 0)) {
+      |         ^
+src/acert.c:2240:2: note: Taking false branch
+ 2240 |         if (!quot_jets(A, X, K + 1, !atz)) {
+      |         ^
+src/acert.c:2253:32: note: 'atz' is 0
+ 2253 |         if (!prog_jets(&A->F, &A->jf, atz ? ivp(A->z) : M, K, 0) ||
+      |                                       ^~~
+src/acert.c:2253:32: note: '?' condition is false
+src/acert.c:2253:6: note: Assuming the condition is false
+ 2253 |         if (!prog_jets(&A->F, &A->jf, atz ? ivp(A->z) : M, K, 0) ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2253:6: note: Left side of '||' is false
+src/acert.c:2254:32: note: 'atz' is 0
+ 2254 |             !prog_jets(&A->C, &A->jc, atz ? ivp(A->z) : M, K, 0)) {
+      |                                       ^~~
+src/acert.c:2254:32: note: '?' condition is false
+src/acert.c:2254:6: note: Assuming the condition is false
+ 2254 |             !prog_jets(&A->C, &A->jc, atz ? ivp(A->z) : M, K, 0)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2253:2: note: Taking false branch
+ 2253 |         if (!prog_jets(&A->F, &A->jf, atz ? ivp(A->z) : M, K, 0) ||
+      |         ^
+src/acert.c:2259:20: note: 'atz' is 0
+ 2259 |         if (!quot_jets(A, atz ? ivp(A->z) : M, K, !atz)) {
+      |                           ^~~
+src/acert.c:2259:20: note: '?' condition is false
+src/acert.c:2259:7: note: Calling 'quot_jets'
+ 2259 |         if (!quot_jets(A, atz ? ivp(A->z) : M, K, !atz)) {
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:2053:2: note: Loop condition is false. Execution continues on line 2057
+ 2053 |         for (i = 0; i < n; i++) {
+      |         ^
+src/acert.c:2057:7: note: 'div' is 1
+ 2057 |         if (!div || A->k0 == 0)
+      |              ^~~
+src/acert.c:2057:6: note: Left side of '||' is false
+ 2057 |         if (!div || A->k0 == 0)
+      |             ^
+src/acert.c:2057:14: note: Assuming field 'k0' is not equal to 0
+ 2057 |         if (!div || A->k0 == 0)
+      |                     ^~~~~~~~~~
+src/acert.c:2057:2: note: Taking false branch
+ 2057 |         if (!div || A->k0 == 0)
+      |         ^
+src/acert.c:2059:2: note: Loop condition is false. Execution continues on line 2061
+ 2059 |         for (i = 0; i < n; i++)
+      |         ^
+src/acert.c:2062:6: note: 'n' is <= 1
+ 2062 |         if (n > 1)
+      |             ^
+src/acert.c:2062:2: note: Taking false branch
+ 2062 |         if (n > 1)
+      |         ^
+src/acert.c:2065:14: note: Assuming 'j' is >= field 'k0'
+ 2065 |         for (j = 1; j < A->k0; j++) {
+      |                     ^~~~~~~~~
+src/acert.c:2065:2: note: Loop condition is false. Execution continues on line 2069
+ 2065 |         for (j = 1; j < A->k0; j++) {
+      |         ^
+src/acert.c:2069:7: note: Calling 'jdiv'
+ 2069 |         if (!jdiv(A->ej, t, A->q1, n) || !jdiv(A->fj, t, A->q2, n))
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~
+src/acert.c:740:6: note: Uninitialized value stored to 'a.lo'
+  740 |         if (has0(b[0]))
+      |             ^~~~~~~~~~
+src/acert.c:740:6: note: Calling 'has0'
+  740 |         if (has0(b[0]))
+      |             ^~~~~~~~~~
+src/acert.c:228:14: note: The left operand of '<=' is a garbage value
+  228 |         return a.lo <= 0 && a.hi >= 0;
+      |                ~~~~ ^
+1 warning generated.

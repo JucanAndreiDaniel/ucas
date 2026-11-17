@@ -1,0 +1,31 @@
+> show asfloat(u64(0x8000000000000000))
+_() = -0
+  -> f64
+> show -0.0
+_() = -0
+  -> real
+> show -0
+_() = 0
+  -> int
+> parse -0
+0
+> show asfloat(u32(0x80000000))
+_() = -0
+  -> f32
+> show asfloat(u16(0x8000))
+_() = -0
+  -> f16
+> show -inf
+_() = -inf
+  -> real
+> show -nan
+_(nan: real) = -nan
+  -> real
+> parse -nan
+(-nan)
+> show (-nan)
+_(nan: real) = -nan
+  -> real
+> show asfloat(u32(0xffc00000))
+_() = -nan
+  -> f32

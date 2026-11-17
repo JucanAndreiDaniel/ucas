@@ -1,0 +1,18 @@
+# cost under GPU and x86 models, plus custom models and errors.
+f(x: u32) = x*x + 1
+div(a: u32, b: u32) = a / b
+cost f
+cost f model gt1030
+cost f model sm75
+cost f model rdna2
+cost f model zen4
+cost f model skl
+cost f model x86v4
+cost f model nosuch
+cost div model gt1030
+cost div model zen4
+model mine : gt1030 { imul: 1, idiv: 4 }
+cost f model mine
+use nosuch
+use zen4
+cost f

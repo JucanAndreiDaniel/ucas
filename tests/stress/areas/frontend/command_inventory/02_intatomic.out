@@ -1,0 +1,30 @@
+> f(x: f32 in 0..1) = x * 0.5
+> intatomic f
+intatomic f under gt1030: a shared float atomic add of 0.5x, at most 1024 into one cell
+  the float add costs 24.25, an integer one 6.625
+  no exact fixed point: x is not on a binary grid (only integers, binary constants, + - * and powers of two keep one)
+  -> not rewritten: `tol T` allows a rounded scaling (T: absolute error on the sum)
+> g(x: u32 in 0..255) = f32(x) * 0.5
+> intatomic g count 100
+intatomic g under gt1030: a shared float atomic add of 0.5f32(x), at most 100 into one cell
+  the float add costs 24.25, an integer one 6.625
+  the addend is k 2^-1 with |k| <= 255, exactly: every leaf is an integer or a binary constant, the
+  operations keep the grid, and no f32 value on the way needs more than 24 bits, so none rounds
+  the sum of 100 of them is at most 25500 2^-1: it fits 32 bits (25500 < 2^31), so the integer sum is the exact sum
+  the float sum would be exact too (it stays within 24 bits): the two agree bit for bit, in every order
+  the integer addend: i32(x)
+  -> atomic_add_shared(cell, i32(x)): addend and atomic cost 6.625 against 28.25 (-76.5%)
+     the cell is an i32 holding the sum times 2^1; every other access of it changes too: a store of v
+     stores i32(v * 2^1), a read is f32(cell) * 2^-1 (a conversion and a multiply: 4 a read)
+  defined g_ia: the atomic's old value read back as a float
+> h(x: f32 in -1..1) = x + 1.0
+> intatomic h tol 1e-3
+intatomic h under gt1030: a shared float atomic add of x + 1, at most 1024 into one cell
+  the float add costs 24.25, an integer one 6.625
+  no exact fixed point: x is not on a binary grid (only integers, binary constants, + - * and powers of two keep one)
+  -> not rewritten: the addend's range is not known (give its parameters ranges)
+> intatomic h tol 1e-3 global
+intatomic h under gt1030: a global float atomic add of x + 1, at most 1024 into one cell
+  the float add costs 138.75, an integer one 50
+  no exact fixed point: x is not on a binary grid (only integers, binary constants, + - * and powers of two keep one)
+  -> not rewritten: the addend's range is not known (give its parameters ranges)

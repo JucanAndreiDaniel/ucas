@@ -1,0 +1,110 @@
+/home/andrew/Code/ucas/src/reduce.c:32:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   23 | #include <stdlib.h>
+   24 | #include <string.h>
+   25 | 
+   26 | #include "ucas.h"
+   27 | #include "homalg.h"
+   28 | 
+   29 | typedef __int128 i128_t;
+   30 | 
+   31 | struct sv {                     /* a sparse vector, indices increasing */
+   32 |         uint32_t *i;
+      |         ^
+/home/andrew/Code/ucas/src/reduce.c:33:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   33 |         int64_t *v;
+      |         ^
+/home/andrew/Code/ucas/src/reduce.c:86:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   86 |         if (x >= VLIM || x <= -VLIM)
+      |                  ^
+/home/andrew/Code/ucas/src/reduce.c:81:15: note: expanded from macro 'VLIM'
+   81 | #define VLIM ((int64_t)1 << 62)
+      |               ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/reduce.c:86:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   86 |         if (x >= VLIM || x <= -VLIM)
+      |                                ^
+/home/andrew/Code/ucas/src/reduce.c:81:15: note: expanded from macro 'VLIM'
+   81 | #define VLIM ((int64_t)1 << 62)
+      |               ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/reduce.c:157:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  157 |         uint8_t *alive;
+      |         ^
+/home/andrew/Code/ucas/src/reduce.c:235:1: warning: function 'hred_impl' can be made static to enforce internal linkage [misc-use-internal-linkage]
+  234 | struct hred_impl *
+      | static 
+  235 | hred_impl(hred r)
+      | ^
+/home/andrew/Code/ucas/src/reduce.c:291:36: warning: no header providing "UINT32_MAX" is directly included [misc-include-cleaner]
+  291 |                                 uint32_t j, best = HNONE, bo = UINT32_MAX;
+      |                                                                ^
+/home/andrew/Code/ucas/src/reduce.c:313:8: warning: multilevel pointer conversion from 'void *' to 'uint32_t **' (aka 'unsigned int **'), please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  313 |         idx = xcalloc((size_t)top + 1, sizeof *idx);
+      |               ^
+/home/andrew/Code/ucas/src/reduce.c:323:9: warning: multilevel pointer conversion from 'void *' to 'struct hred_impl **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  323 |                 H.r = xrealloc(H.r, H.cap * sizeof *H.r);
+      |                       ^
+/home/andrew/Code/ucas/src/reduce.c:323:18: warning: multilevel pointer conversion from 'struct hred_impl **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  323 |                 H.r = xrealloc(H.r, H.cap * sizeof *H.r);
+      |                                ^
+/home/andrew/Code/ucas/src/reduce.c:325:12: warning: multilevel pointer conversion from 'void *' to 'uint32_t **' (aka 'unsigned int **'), please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  325 |                 H.keep = xrealloc(H.keep, H.cap * sizeof *H.keep);
+      |                          ^
+/home/andrew/Code/ucas/src/reduce.c:325:21: warning: multilevel pointer conversion from 'uint32_t **' (aka 'unsigned int **') to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  325 |                 H.keep = xrealloc(H.keep, H.cap * sizeof *H.keep);
+      |                                   ^
+/home/andrew/Code/ucas/src/reduce.c:363:15: warning: no header providing "zmat" is directly included [misc-include-cleaner]
+   26 | red_bd(struct zmat *M, hred r, int k, int transpose)
+      |               ^
+/home/andrew/Code/ucas/src/reduce.c:370:3: warning: no header providing "zm_init" is directly included [misc-include-cleaner]
+  370 |                 zm_init(M, nc, nr);
+      |                 ^
+/home/andrew/Code/ucas/src/reduce.c:385:5: warning: no header providing "ZM" is directly included [misc-include-cleaner]
+  385 |                                 ZM(M, cc, rr) = z_from_i64(col->v[j]);
+      |                                 ^
+/home/andrew/Code/ucas/src/reduce.c:385:21: warning: no header providing "z_from_i64" is directly included [misc-include-cleaner]
+  385 |                                 ZM(M, cc, rr) = z_from_i64(col->v[j]);
+      |                                                 ^
+/home/andrew/Code/ucas/src/reduce.c:405:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   23 |         snprintf(name, sizeof name, "C^*(%s) reduced", hs_name(H.sp[r]));
+      |         ^
+/home/andrew/Code/ucas/src/reduce.c:408:3: warning: no header providing "zm_free" is directly included [misc-include-cleaner]
+  408 |                 zm_free(&d[n]);
+      |                 ^
+/home/andrew/Code/ucas/src/reduce.c:438:40: warning: no header providing "zint" is directly included [misc-include-cleaner]
+  438 | hred_cochain_back(hred r, int n, const zint *x, zint *y)
+      |                                        ^
+/home/andrew/Code/ucas/src/reduce.c:444:10: warning: no header providing "Z_ZERO" is directly included [misc-include-cleaner]
+  444 |                 y[c] = Z_ZERO;
+      |                        ^
+/home/andrew/Code/ucas/src/reduce.c:447:28: warning: no header providing "z_is_zero" is directly included [misc-include-cleaner]
+  447 |                 if (!R->w[n].alive[c] || z_is_zero(x[idx[n][c]]))
+      |                                          ^
+/home/andrew/Code/ucas/src/reduce.c:450:18: warning: no header providing "z_addmul" is directly included [misc-include-cleaner]
+  450 |                         y[fr->i[j]] = z_addmul(y[fr->i[j]], x[idx[n][c]],
+      |                                       ^
+/home/andrew/Code/ucas/src/reduce.c:505:18: warning: multilevel pointer conversion from 'void *' to 'uint32_t **' (aka 'unsigned int **'), please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  505 |         uint32_t **cs = xcalloc((size_t)top + 2, sizeof *cs);
+      |                         ^
+/home/andrew/Code/ucas/src/reduce.c:507:22: warning: multilevel pointer conversion from 'void *' to 'struct u32l **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  507 |         struct u32l **fin = xcalloc((size_t)top + 1, sizeof *fin);
+      |                             ^
+/home/andrew/Code/ucas/src/reduce.c:508:22: warning: multilevel pointer conversion from 'void *' to 'struct u32l **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  508 |         struct u32l **tin = xcalloc((size_t)top + 1, sizeof *tin);
+      |                             ^
+/home/andrew/Code/ucas/src/reduce.c:634:14: warning: 'n1' is confusable with 'nl' [misc-confusable-identifiers]
+  634 |                                 uint32_t n1 = R->w[k + 1].n;
+      |                                          ^
+/home/andrew/Code/ucas/src/reduce.c:569:14: note: other declaration found here
+  569 |                                 uint32_t nl = R->w[k - 1].n;
+      |                                          ^
+/home/andrew/Code/ucas/src/reduce.c:682:7: warning: multilevel pointer conversion from 'uint32_t **' (aka 'unsigned int **') to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  682 |         free(cs);
+      |              ^
+/home/andrew/Code/ucas/src/reduce.c:683:7: warning: multilevel pointer conversion from 'struct u32l **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  683 |         free(fin);
+      |              ^
+/home/andrew/Code/ucas/src/reduce.c:684:7: warning: multilevel pointer conversion from 'struct u32l **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  684 |         free(tin);
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

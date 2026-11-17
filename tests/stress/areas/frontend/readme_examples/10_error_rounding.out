@@ -1,0 +1,54 @@
+> qz(x: f32 in 0..100) = f32(i32(x * 0.1)) * 10
+> qzx(x: f32 in 0..100) = f32(i32(f64(x) * 0.1)) * 10
+> error qz ~ qzx
+error of qz against qzx:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding, first order in u = 2^-24: 3 rounded operations, each taken as correctly rounded; relative to the value, the largest over 121 inputs
+    choices: 1 conversion to an integer; at 1 of the 121 inputs one can go the other way, and the worst case adds what the other side brings there (the probable and expected lines do not); the first: the operand of a conversion to an integer, 10, is within its error 5.96e-07 of 10, at x=100
+    worst case  0.1 (1.68e+06 u): every error at its bound and aligned, u sum |c_i|
+    probable    3.37e-07 (5.66 u): with probability >= 0.99933 at one input, 4 u sqrt(sum c_i^2), if the errors are independent with mean 0 (a model; Hoeffding, Higham-Mary)
+    expected    4.87e-08 (0.816 u): the root mean square if they are independent and uniform in [-u, u]
+    for 3 operations of equal weight: gamma_3 = 3 u / (1 - 3 u) = 1.79e-07, gamma~_3(4) = 4 sqrt(3) u = 4.13e-07
+> dot2(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = (a*b + c*d) + (((a*b - ((a*b + c*d) - c*d)) + (c*d - ((a*b + c*d) - ((a*b + c*d) - c*d)))) + (fma(a, b, -(a*b)) + fma(c, d, -(c*d))))
+> dot(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = f32(f64(a) * f64(b) + f64(c) * f64(d))
+> naive(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = a*b + c*d
+> error dot2 ~ dot
+error of dot2 against dot:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding, first order in u = 2^-24: 6 rounded operations, each taken as correctly rounded, and 7 in error-free transformations; relative to the value, the largest over 4096 inputs
+    error-free transformations: 1 2Sum (s + t = a + b, Knuth), 2 2Prod (p + e = a b by an fma while |a b| >= 2^-102); taken as exact, so the errors of the sums and products they correct cancel to first order where the result adds the error terms back; what is left is of order u^2, not in these lines (`dword` derives it)
+    the preconditions hold at every input of the sample (checked, not proved)
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]
+    for 6 operations of equal weight: gamma_6 = 6 u / (1 - 6 u) = 3.58e-07, gamma~_6(4) = 4 sqrt(6) u = 5.84e-07
+> error naive ~ dot
+error of naive against dot:
+  max abs error 2.38419e-07 at a=1.782341, b=1.9809773, c=-1.17812204, d=1.2906363
+  max rel error 0.00175426 (0.175%) at a=1.24896502, b=1.7420696, c=-1.35794115, d=1.60231674
+  mean rel error 5.68959e-07 over 65536 points
+  max 16354 ulp
+  rounding, first order in u = 2^-24: 3 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  0.000862 (1.45e+04 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4.09e+04 u here (it gains from about 16 operations of similar weight on)
+    expected    0.000352 (5.91e+03 u): the root mean square if they are independent and uniform in [-u, u]
+    for 3 operations of equal weight: gamma_3 = 3 u / (1 - 3 u) = 1.79e-07, gamma~_3(4) = 4 sqrt(3) u = 4.13e-07
+> s20(x: f32 in 1..2) = x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x
+> e20(x: real in 1..2) = 11*x + 10*x*x
+> error s20 ~ e20
+error of s20 against e20:
+  max abs error 1.64954e-05 at x=1.892
+  max rel error 3.23201e-07 (3.23e-05%) at x=1.533
+  mean rel error 9.30717e-08 over 1001 points
+  max 5 ulp
+  rounding, first order in u = 2^-24: 21 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  6.92e-07 (11.6 u): every error at its bound and aligned, u sum |c_i|
+    probable    6.74e-07 (11.3 u): with probability >= 0.99933 at one input, 4 u sqrt(sum c_i^2), if the errors are independent with mean 0 (a model; Hoeffding, Higham-Mary)
+    expected    9.72e-08 (1.63 u): the root mean square if they are independent and uniform in [-u, u]
+    for 21 operations of equal weight: gamma_21 = 21 u / (1 - 21 u) = 1.25e-06, gamma~_21(4) = 4 sqrt(21) u = 1.09e-06

@@ -1,0 +1,25 @@
+{"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "stress", "version": "1"}}}
+{"jsonrpc": "2.0", "method": "notifications/initialized"}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "K = [10,20,30,40,50,60,70]"}}, "id": 1}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "R = [255,219,183,147,111,75,39,3,255,3,39,75,111,147,183,219]"}}, "id": 2}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "J5 = [1,2,3,4,5]"}}, "id": 3}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "model cal : gt1030 { tex_nearest: 5, tex_within: 2 }"}}, "id": 4}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "model warm : rdna2 { tex_nearest: 1, tex_within: 1 }"}}, "id": 5}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "nr(x: u8 in 0..6, y: u8 in 0..6) = K[((y)*7+((x+1)%7))%49] + K[(((y+1)%7)*7+x)%49]"}}, "id": 6}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "nb(x: u8 in 0..6) = (x==0 ? 99 : K[x-1]) + K[x] + (x==6 ? 99 : K[x+1])"}}, "id": 7}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "n5(i: u8 in 0..4) = J5[(i+4)%5] + J5[i] + J5[(i+1)%5]"}}, "id": 8}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "lf(x: f32 in -3..10) = tex_linear8([0,1,4,9], x)"}}, "id": 9}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "bf(x: f32 in -1..6, y: f32 in -1..6) = tex_bilinear8(R, 4, x, y)"}}, "id": 10}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nr", "model": "gt1030", "files": "none"}}, "id": 11}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nr", "model": "cal", "files": "none"}}, "id": 12}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nr", "model": "warm", "files": "none"}}, "id": 13}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nb", "model": "gt1030", "files": "none"}}, "id": 14}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nb", "model": "cal", "files": "none"}}, "id": 15}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "nb", "model": "warm", "files": "none"}}, "id": 16}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "n5", "model": "gt1030", "files": "none"}}, "id": 17}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "n5", "model": "cal", "files": "none"}}, "id": 18}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "n5", "model": "warm", "files": "none"}}, "id": 19}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "lf", "files": "none"}}, "id": 20}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "lf", "model": "warm", "tol": 0.01, "files": "none"}}, "id": 21}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "bf", "files": "none"}}, "id": 22}
+{"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "texalu", "arguments": {"f": "bf", "model": "warm", "tol": 0.01, "files": "none"}}, "id": 23}

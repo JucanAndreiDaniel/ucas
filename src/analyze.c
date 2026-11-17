@@ -13,6 +13,7 @@
 #include "bound.h"
 #include "numsearch.h"
 #include "stoch.h"
+#include "alg.h"
 
 #include <math.h>
 #include <stdlib.h>
@@ -723,7 +724,11 @@ cmd_range(struct func *f)
 	printf("range of %s -> %s:\n", fname(f), ty_str(t));
 	rep_begin("range");
 	rep_str("type", ty_str(t));
-	rep_bool("empty", !any);
+	/* A NaN result is still a defined point; it just has no position in
+	 * the numeric min/max.  Calling an all-NaN range "undefined
+	 * everywhere" contradicts `domain`, which counts those same points
+	 * as defined. */
+	rep_bool("empty", !any && !nnan);
 	rep_bool("exhaustive", r.d.exhaustive);
 	rep_int("points", (long long)seen);
 	rep_int("undefined_points", (long long)nund);
@@ -739,13 +744,19 @@ cmd_range(struct func *f)
 		rep_num("min", rmn);
 		rep_num("max", rmx);
 	}
-	if (!any)
-		printf(r.d.exhaustive ? "  empty (undefined everywhere)\n" :
-		    "  no value: none of the %llu points sampled is in the "
-		    "domain\n", (unsigned long long)r.d.pos);
-	else if (TY_FP(t))
-		printf("  [%.9g, %.9g]\n", rmn, rmx);
-	else {
+	if (!any && !nnan)
+		printf("  empty (undefined everywhere)\n");
+	else if (!any) {
+		printf("  no numeric value: all %llu defined points are NaN\n",
+		    (unsigned long long)nnan);
+		rep_strf("note", "no numeric min/max: all %llu defined points "
+		    "are NaN", (unsigned long long)nnan);
+	} else if (TY_FP(t)) {
+		printf("  [%.9g, %.9g]", rmn, rmx);
+		if (!r.d.exhaustive)
+			printf("  (sampled min/max; not a sound bound)");
+		printf("\n");
+	} else {
 		struct sbuf b = {0};
 		fmt_val(&b, t, mn, 0);
 		rep_exact("min", (double)mn, sb_str(&b));
@@ -762,6 +773,8 @@ cmd_range(struct func *f)
 		if (bm)
 			printf("   (%llu distinct values)",
 			    (unsigned long long)ndist);
+		if (!r.d.exhaustive)
+			printf("  (sampled min/max; not a sound bound)");
 		printf("\n");
 		if (bm && ndist <= 64) {
 			int64_t *vals = xmalloc(ndist * sizeof *vals);
@@ -790,8 +803,9 @@ cmd_range(struct func *f)
 	if (nund)
 		printf("  undefined at %llu points\n", (unsigned long long)nund);
 	if (nnan || ninf)
-		printf("  IEEE: NaN at %llu points, ±inf at %llu points\n",
-		    (unsigned long long)nnan, (unsigned long long)ninf);
+		printf("  IEEE: NaN at %llu points, ±inf at %llu points%s\n",
+		    (unsigned long long)nnan, (unsigned long long)ninf,
+		    r.d.exhaustive ? "" : "  (sampled counts; not bounds)");
 	domain_note(&r, seen);
 	if (!r.d.exhaustive && TY_ISINT(t)) {
 		struct ival *iv = xcalloc(r.p.n, sizeof *iv);
@@ -841,46 +855,98 @@ snap(double x, double span)
 static void
 list_conditions(const struct func *f, int *nc)
 {
+	struct citem { nid n; uint32_t go; } *st;
 	uint8_t *mark = xcalloc(N.n, 1);
-	nid *st = xmalloc(N.n * sizeof *st), n;
+	struct sbuf gp = {0};
 	uint32_t sp = 0, j;
 	char w[16];
+	const uint32_t NOG = 0xffffffffu;
+#define PUSHN(x, g) do { nid x_ = (x); \
+		if (x_ && !mark[x_]) { mark[x_] = 1; \
+			st[sp].n = x_; st[sp].go = (g); sp++; } } while (0)
+/* Format into a local buffer: growing gp before reading gp.p + b_
+ * would invalidate the argument. */
+#define NEWG(base, expr, neg) do { \
+		uint32_t b_ = (base); char gc_[1024]; \
+		if (b_ == NOG) { \
+			if (neg) snprintf(gc_, sizeof gc_, "!(%s)", (expr)); \
+			else snprintf(gc_, sizeof gc_, "%s", (expr)); \
+		} else if (neg) \
+			snprintf(gc_, sizeof gc_, "(%s && !(%s))", \
+			    gp.p + b_, (expr)); \
+		else \
+			snprintf(gc_, sizeof gc_, "(%s && %s)", \
+			    gp.p + b_, (expr)); \
+		ng_ = gp.n; \
+		sb_puts(&gp, gc_); \
+		sb_putc(&gp, 0); \
+	} while (0)
 
+	st = xmalloc(N.n * sizeof *st);
 	*nc = 0;
-	st[sp++] = f->body;
+	st[sp].n = f->body;
+	st[sp].go = NOG;
+	sp++;
 	mark[f->body] = 1;
 	while (sp) {
-		n = st[--sp];
+		nid n;
+		uint32_t go, ng_ = NOG;
+		const char *guard;
+		struct citem ci = st[--sp];
+
+		n = ci.n;
+		go = ci.go;
+		guard = go == NOG ? NULL : gp.p + go;
 		switch (N.op[n]) {
 		case O_CONST:
 		case O_VAR:
 			continue;
 		case O_TABLE:
 			for (j = 0; j < N.b[n]; j++)
-				if (!mark[N.lst[N.a[n] + j]]) {
-					mark[N.lst[N.a[n] + j]] = 1;
-					st[sp++] = N.lst[N.a[n] + j];
-				}
+				PUSHN(N.lst[N.a[n] + j], go);
 			continue;
 		}
-		if (N.a[n] && !mark[N.a[n]])
-			mark[N.a[n]] = 1, st[sp++] = N.a[n];
-		if (N.b[n] && !mark[N.b[n]])
-			mark[N.b[n]] = 1, st[sp++] = N.b[n];
-		/* a shuffle under sg_active: said below as the lane it reads */
-		if (N.c[n] && !mark[N.c[n]] && !(N.op[n] == O_SEL &&
-		    N.op[N.c[n]] == O_UNDEF && sg_active_of(N.a[n], NULL)))
-			mark[N.c[n]] = 1, st[sp++] = N.c[n];
+		/* ?: and short-circuit && / || evaluate only one side.  A
+		 * condition inside the side that is not taken is not a
+		 * requirement of the whole expression; printing a blind union
+		 * gave jointly-unsatisfiable requires (x >= 0 and -x > 0)
+		 * that contradicted the domain printed just below.  Qualify
+		 * each side's conditions by the guard that reaches it. */
+		if (N.op[n] == O_SEL || N.op[n] == O_LAND ||
+		    N.op[n] == O_LOR) {
+			const char *c = node_str(N.a[n]);
+
+			PUSHN(N.a[n], go);
+			NEWG(go, c, N.op[n] == O_LOR);
+			PUSHN(N.b[n], ng_);
+			if (N.op[n] == O_SEL) {
+				NEWG(go, c, 1);
+				/* a shuffle under sg_active: said below as the
+				 * lane it reads */
+				if (!(N.op[N.c[n]] == O_UNDEF &&
+				    sg_active_of(N.a[n], NULL)))
+					PUSHN(N.c[n], ng_);
+			}
+		} else {
+			PUSHN(N.a[n], go);
+			PUSHN(N.b[n], go);
+			PUSHN(N.c[n], go);
+		}
+		/* NEWG may have grown (and reallocated) gp, so refresh the
+		 * pointer into it before this node's own conditions print. */
+		guard = go == NOG ? NULL : gp.p + go;
 		if (TYK(N.ty[n]) == K_FLOAT)
 			continue;
-#define COND(...) do { char cb_[512]; snprintf(cb_, sizeof cb_, \
-		__VA_ARGS__); printf("  requires %s\n", cb_); (*nc)++; \
-		rep_obj(NULL); rep_str("kind", "requires"); \
-		rep_str("text", cb_); rep_end(); } while (0)
-#define UB(...) do { char cb_[512]; snprintf(cb_, sizeof cb_, \
-		__VA_ARGS__); printf("  C assumes %s\n", cb_); (*nc)++; \
-		rep_obj(NULL); rep_str("kind", "c_assumes"); \
-		rep_str("text", cb_); rep_end(); } while (0)
+#define EMIT(prefix_, kind_, guard_, ...) do { char cb_[512]; \
+		snprintf(cb_, sizeof cb_, __VA_ARGS__); \
+		if (guard_) printf("  %s (%s) => %s\n", prefix_, guard_, cb_); \
+		else printf("  %s %s\n", prefix_, cb_); \
+		(*nc)++; rep_obj(NULL); rep_str("kind", kind_); \
+		rep_str("text", cb_); \
+		if (guard_) rep_str("when", guard_); \
+		rep_end(); } while (0)
+#define COND(...) EMIT("requires", "requires", guard, __VA_ARGS__)
+#define UB(...) EMIT("C assumes", "c_assumes", guard, __VA_ARGS__)
 		if (N.op[n] == O_SEL && N.op[N.c[n]] == O_UNDEF &&
 		    sg_active_of(N.a[n], NULL)) {
 			nid ln = 0, am = sg_active_of(N.a[n], &ln);
@@ -1031,10 +1097,14 @@ list_conditions(const struct func *f, int *nc)
 		}
 #undef COND
 #undef UB
+#undef EMIT
+#undef PUSHN
+#undef NEWG
 	}
 	(void)w;
 	free(mark);
 	free(st);
+	free(gp.p);
 }
 
 static void
@@ -1172,9 +1242,11 @@ cmd_domain(struct func *f)
 	rep_list("conditions");
 	list_conditions(f, &nc);
 	rep_end();
-	if (nc == 0)
-		printf("  no conditions: total on its parameter types\n");
 	if (f->np == 1 && TYK(f->p[0].ty) == K_REAL) {
+		/* domain_real1 has no defined-count to check, so keep the
+		 * original "no conditions" note here. */
+		if (nc == 0)
+			printf("  no conditions: total on its parameter types\n");
 		domain_real1(f);
 		return;
 	}
@@ -1218,6 +1290,15 @@ cmd_domain(struct func *f)
 	}
 	printf("  defined at %llu of %llu points\n", (unsigned long long)ndef,
 	    (unsigned long long)seen);
+	/* "No conditions" only means the function can be total: UB or an
+	 * always-undefined body still leaves zero defined points.  Decide
+	 * after the run, never before, so an empty domain is not called
+	 * total. */
+	if (ndef == 0)
+		printf("  empty domain: undefined at every point of the "
+		    "parameter types\n");
+	else if (nc == 0)
+		printf("  no conditions: total on its parameter types\n");
 	rep_int("defined_points", (long long)ndef);
 	rep_int("points", (long long)seen);
 	rep_bool("exhaustive", r.d.exhaustive);
@@ -1298,8 +1379,19 @@ cmd_wrap(struct func *f)
 			}
 			/* end to end: machine result vs ideal result */
 			if ((COLF(&r.p, loc)[i] | COLF(&ir.p, iloc)[i]) & F_UNDEF) {
-				if ((COLF(&r.p, loc)[i] ^ COLF(&ir.p, iloc)[i]) & F_UNDEF)
+				/* One side defined and the other not is a difference
+				 * from the unbounded result as well (e.g. i64 -x at
+				 * INT64_MIN: the machine value wraps but the ideal
+				 * int overflows int64 and is undefined).  Give it a
+				 * witness and count it with the other mismatches, or
+				 * the "differs at N points" verdict contradicts its
+				 * own count (and `exact` says false). */
+				if ((COLF(&r.p, loc)[i] ^ COLF(&ir.p, iloc)[i]) &
+				    F_UNDEF) {
 					nmis_def++;
+					if (!wm.n)
+						fmt_point(&wm, f, r.in_i, r.in_r, i);
+				}
 				continue;
 			}
 			if (TY_FP(t)) {
@@ -1332,10 +1424,17 @@ cmd_wrap(struct func *f)
 				int64_t m = COLI(&r.p, loc)[i], id = COLI(&ir.p, iloc)[i];
 				int same;
 				ity_of(&it, t, 0);
-				same = int_unsigned(t) ? (id >= 0 &&
-				    (uint64_t)id == (uint64_t)m) : id == m;
+				/* Both runs keep an integer in an int64_t.  A u64
+				 * value with bit 63 set is therefore stored as a
+				 * negative int64 even when it is the exact
+				 * mathematical result; compare the bit patterns for
+				 * unsigned types, not a signed `id >= 0` test.  A
+				 * bare u64 identity has no wrap and must agree
+				 * everywhere. */
+				same = int_unsigned(t) ? (uint64_t)id == (uint64_t)m :
+				    id == m;
 				if (!same) {
-					if (!mism++)
+					if (!mism++ && !wm.n)
 						fmt_point(&wm, f, r.in_i, r.in_r, i);
 				}
 				if (f->np == 1 && r.d.exhaustive) {
@@ -1366,29 +1465,56 @@ cmd_wrap(struct func *f)
 		    op == O_MUL || op == O_DIV || op == O_SQRT || op == O_LOG ||
 		    op == O_POW || op == O_EXP || op == O_ASFLOAT ||
 		    op == O_CAST || op == O_TAN)) {
+			/* "no NaN"/"no inf" may only be claimed as fact when every
+			 * point was checked.  A finite sample that happens to miss
+			 * x=0 in x/x (0/0) says nothing about that point, so a
+			 * sampled run that saw none is "not proved", never a
+			 * no-NaN proof a fast-math rewrite could rely on. */
+			int nnan_ok = !s->nan && r.d.exhaustive;
+			int ninf_ok = !s->inf && r.d.exhaustive;
+			const char *risk = "";
+
+			if (op == O_DIV)
+				risk = "; a zero divisor gives inf (0/0 gives NaN)";
+			else if (op == O_SQRT)
+				risk = "; sqrt of a negative value gives NaN";
+			else if (op == O_LOG || op == O_POW || op == O_TAN)
+				risk = "; special operand values give NaN/inf";
 			printf("  %s   (%s)\n", node_str(g), ty_str(tk));
 			rep_obj(NULL);
 			rep_expr("op", g);
 			rep_str("type", ty_str(tk));
-			rep_bool("nnan", !s->nan);
+			rep_bool("nnan", nnan_ok);
 			rep_int("nan_points", (long long)s->nan);
 			if (s->nan)
 				rep_str("nan_example", sb_str(&s->wn));
-			rep_bool("ninf", !s->inf);
+			if (!s->nan && !nnan_ok)
+				rep_strf("nnan_note", "not proved: no NaN in the "
+				    "sampled points only%s", risk);
+			rep_bool("ninf", ninf_ok);
 			rep_int("inf_points", (long long)s->inf);
 			if (s->inf)
 				rep_str("inf_example", sb_str(&s->wi));
+			if (!s->inf && !ninf_ok)
+				rep_strf("ninf_note", "not proved: no inf in the "
+				    "sampled points only%s", risk);
 			rep_end();
 			if (s->nan)
 				printf("      nnan fails: NaN at %llu points, e.g. %s\n",
 				    (unsigned long long)s->nan, sb_str(&s->wn));
-			else
+			else if (nnan_ok)
 				printf("      nnan holds (no NaN from non-NaN inputs)\n");
+			else
+				printf("      nnan not proved: no NaN in the sampled "
+				    "points only%s\n", risk);
 			if (s->inf)
 				printf("      ninf fails: inf at %llu points, e.g. %s\n",
 				    (unsigned long long)s->inf, sb_str(&s->wi));
-			else
+			else if (ninf_ok)
 				printf("      ninf holds\n");
+			else
+				printf("      ninf not proved: no inf in the sampled "
+				    "points only%s\n", risk);
 			printed++;
 			continue;
 		}
@@ -1457,7 +1583,7 @@ cmd_wrap(struct func *f)
 		rep_int("overflow_points", (long long)novf);
 	} else {
 		rep_bool("exact", mism == 0 && !nmis_def);
-		rep_int("mismatch_points", (long long)mism);
+		rep_int("mismatch_points", (long long)(mism + nmis_def));
 		if (wm.n)
 			rep_str("mismatch_example", sb_str(&wm));
 		if (exact && nex && mism) {
@@ -1495,8 +1621,8 @@ cmd_wrap(struct func *f)
 		    "everywhere\n");
 	} else {
 		printf("  end to end: differs from the mathematical result at "
-		    "%llu points, e.g. %s\n", (unsigned long long)mism,
-		    sb_str(&wm));
+		    "%llu points, e.g. %s\n",
+		    (unsigned long long)(mism + nmis_def), sb_str(&wm));
 		if (exact && nex)
 			print_runs("      exact for: ", exact, nex, 12);
 	}
@@ -1984,24 +2110,53 @@ rebind(const struct func *f, const struct func *g)
  */
 int equiv_nanbits;
 
+/* a `real` is evaluated in double: equal mathematical expressions can end
+ * up a few ulps apart (catastrophic cancellation can mean many ulps at a
+ * small magnitude).  A relative tolerance below the gap of any real
+ * counterexample we print keeps sampling from refuting a true identity on
+ * the strength of its last rounding bit.  Machine floats keep exact
+ * IEEE comparison: their rounding is the value being compared. */
+#define REAL_EQ_TOL 1e-9
+
+/* Set when algebra has proved the two real expressions differ by a nonzero
+ * constant.  The tolerance would then hide a genuine difference whose size
+ * is below it: compare the double results exactly to find a witness. */
+static int equiv_real_exact;
+
 static int
 same_val(ty_t t, int64_t a, double ar, int64_t b, double br)
 {
 	if (TY_FP(t) && isnan(ar) && isnan(br) && equiv_nanbits &&
 	    TYK(t) == K_FLOAT)
 		return fbits(TYW(t), ar) == fbits(TYW(t), br);
-	if (TY_FP(t))
-		return (isnan(ar) && isnan(br)) || ar == br;
+	if (TY_FP(t)) {
+		if ((isnan(ar) && isnan(br)) || ar == br)
+			return 1;
+		/* A tolerance is only a sampling heuristic.  When there is an
+		 * algebraic certificate of a nonzero (possibly tiny) difference
+		 * it must not turn a refuted identity into an apparent equality. */
+		if (TYK(t) == K_REAL && !isnan(ar) && !isnan(br) &&
+		    !equiv_real_exact)
+			return fabs(ar - br) <= REAL_EQ_TOL *
+			    fmax(1.0, fmax(fabs(ar), fabs(br)));
+		return 0;
+	}
 	return a == b;
 }
 
-/* a result in a counterexample: a NaN with its bits under nanbits */
+/* a result in a counterexample: a NaN with its bits under nanbits.  Reals
+ * print with full double precision: %.6g collapses values a small absolute
+ * amount apart (e.g. 2560000 and 2560001) to the same string, which makes a
+ * reported "differs at ... e.g." counterexample un-reproducible and sounds
+ * like a fabricated witness. */
 static void
 fmt_res(struct sbuf *b, ty_t t, int64_t vi, double vr)
 {
 	if (equiv_nanbits && TYK(t) == K_FLOAT && isnan(vr))
 		sb_printf(b, "NaN 0x%0*llx", TYW(t) / 4,
 		    (unsigned long long)fbits(TYW(t), vr));
+	else if (TYK(t) == K_REAL)
+		sb_printf(b, "%.17g", vr);
 	else
 		fmt_val(b, t, vi, vr);
 }
@@ -2215,16 +2370,102 @@ equiv_lanes(const struct func *f, nid a, nid b, struct sbuf *wit,
  */
 int equiv_algebra;
 
+/* not in ucas.h: an empty domain compares no points, so an UNSAT circuit
+ * proves nothing.  Reported as vacuous, never as a SAT proof. */
+#define EQ_VACUOUS 5
+
+/* When the two results are integers of *different* types, compare in a
+ * wide signed domain that keeps the value each one denotes: casting b to
+ * a's type makes a narrowing cast (u8(x) vs i32(x)) or a reinterpretation
+ * (u8(x) vs i8(x)) look like an identity.  Other result types keep the
+ * refinement comparison in a's type: an inferred `~ expr` is read in f's
+ * result type, which is what those comparisons are for. */
+static ty_t
+equiv_cmp_ty(ty_t ta, ty_t tb)
+{
+	if (ta == tb || !TY_ISINT(ta) || !TY_ISINT(tb))
+		return ta;
+	return TY(K_SINT, 64);
+}
+
 int
 equiv_decide(const struct func *f, nid a, nid b, struct sbuf *wit,
     struct eqproof *pr)
 {
-	int sampled, m;
+	int sampled, m, real;
+	ty_t ct;
+	nid d = 0;
+	struct sbuf conds = {0};
 
 	memset(pr, 0, sizeof *pr);
+	ct = equiv_cmp_ty(N.ty[a], N.ty[b]);
+	a = mk_cast(ct, a);
+	b = mk_cast(ct, b);
 	if ((N.fl[a] | N.fl[b]) & NF_LANES)
 		return equiv_lanes(f, a, b, wit, pr);
+	real = TYK(ct) == K_REAL;
 	m = equiv_scan(f, a, b, wit, &sampled, 1, &pr->points);
+	/* a grid over a real parameter is a sample, not an exhaustive proof:
+	 * there are infinitely many points between its rungs */
+	if (!sampled && m == 0) {
+		int jj;
+		for (jj = 0; jj < f->np; jj++)
+			if (TYK(f->p[jj].ty) == K_REAL) {
+				sampled = 1;
+				break;
+			}
+	}
+	if (m == 0 && pr->points == 0) {
+		pr->how = EQ_VACUOUS;
+		return 0;
+	}
+	if (real && sampled && m == 0) {
+		/* `real` is a mathematical type, not a machine float.  Sampling
+		 * with a tolerance can refute a true identity on last-bit noise
+		 * and accept a false one whose difference is below the tolerance.
+		 * The normal form over Q settles both without trusting a sample.
+		 * An exhaustive check needs no algebra: keep its stronger verdict. */
+		d = alg_simplify(mk_bin(O_SUB, a, b), &conds);
+		if (const_is(d, 0.0)) {
+			pr->how = EQ_ALGEBRA;
+			snprintf(pr->alg, sizeof pr->alg,
+			    "proved by algebra: f - g simplifies to 0 over Q%s",
+			    conds.n ? " where the cancelled denominators are nonzero" : "");
+			free(conds.p);
+			return 0;
+		}
+		if (is_const(d)) {
+			/* A provably nonzero constant difference: re-scan with exact
+			 * comparison so a difference below the tolerance is a witness
+			 * and not mistaken for equality. */
+			struct sbuf ew = {0};
+			int em;
+			equiv_real_exact = 1;
+			em = equiv_scan(f, a, b, wit ? &ew : NULL, &sampled, 1, NULL);
+			equiv_real_exact = 0;
+			pr->how = EQ_ALGEBRA;
+			snprintf(pr->alg, sizeof pr->alg,
+			    "proved different by algebra: f - g = %s", node_str(d));
+			if (em) {
+				if (wit) {
+					sb_clear(wit);
+					sb_puts(wit, sb_str(&ew));
+				}
+				free(ew.p);
+				free(conds.p);
+				return em;
+			}
+			free(ew.p);
+			/* below double resolution at every sampled point: still
+			 * refuted, the algebraic certificate is the reason */
+			if (wit)
+				sb_printf(wit, "at every point: f - g = %s (nonzero)",
+				    node_str(d));
+			free(conds.p);
+			return 1;
+		}
+	}
+	free(conds.p);
 	pr->how = sampled ? EQ_SAMPLED : EQ_EXHAUSTIVE;
 	if (m || !sampled)
 		return m;
@@ -2283,6 +2524,10 @@ eqproof_text(struct sbuf *b, const struct eqproof *pr)
 	case EQ_ALGEBRA:
 		sb_puts(b, pr->alg);
 		break;
+	case EQ_VACUOUS:
+		sb_puts(b, "vacuously equal: the domain has no points to "
+		    "compare");
+		break;
 	default:
 		sb_puts(b, pr->how == EQ_UNDECIDED ? "not decided: the lanes' "
 		    "values are free words, with no points to enumerate or "
@@ -2335,8 +2580,10 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	equiv_nanbits = nsat_nanbits = rflt && nanbits > 0;
 	nsat_floats = 1;
 	equiv_algebra = 1;
+	equiv_real_exact = 0;
 	m = equiv_decide(f, f->body, gb, &w, &pr);
 	equiv_algebra = 0;
+	equiv_real_exact = 0;
 	float_ftz = nsat_ftz = nsat_floats = 0;
 	equiv_nanbits = nsat_nanbits = 0;
 	eqproof_text(&how, &pr);
@@ -2349,9 +2596,12 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 		rep_bool("nanbits", nanbits > 0);
 	rep_int("mismatch_points", m);
 	rep_str("method", pr.how == EQ_EXHAUSTIVE ? "exhaustive" :
-	    pr.how == EQ_SAT ? "sat" : pr.how == EQ_ALGEBRA ? "algebra" :
+	    pr.how == EQ_SAT ? "sat" : pr.how == EQ_VACUOUS ? "vacuous" :
+	    pr.how == EQ_ALGEBRA ? "algebra" :
 	    pr.sat_status == 1 ? "sat_counterexample" : pr.how ==
 	    EQ_UNDECIDED ? "undecided" : "sampled");
+	if (pr.how == EQ_VACUOUS)
+		rep_str("why", "the domain has no points to compare");
 	if (pr.sat_status != 0 || pr.how == EQ_SAT) {
 		rep_obj("sat");
 		rep_str("result", pr.how == EQ_SAT ? "proved" :
@@ -2367,12 +2617,14 @@ cmd_equiv(struct func *f, struct func *g, int ftz, int nanbits)
 	}
 	if (m)
 		rep_str("counterexample", sb_str(&w));
-	if (m == 0 && pr.how != EQ_UNDECIDED)
+	if (m == 0 && pr.how != EQ_UNDECIDED && pr.how != EQ_VACUOUS)
 		rep_proof(pr.how == EQ_SAMPLED ? "numeric" : pr.how == EQ_SAT ?
 		    "sat" : pr.how == EQ_ALGEBRA ? "derivation" : "exhaustive",
 		    pr.how == EQ_EXHAUSTIVE ?
 		    "every point of the domain" : sb_str(&how));
-	if (m == 0 && pr.how == EQ_UNDECIDED)
+	if (m == 0 && pr.how == EQ_VACUOUS)
+		printf("%s and %s: %s\n", fname(f), fname(g), sb_str(&how));
+	else if (m == 0 && pr.how == EQ_UNDECIDED)
 		printf("%s and %s: %s\n", fname(f), fname(g), sb_str(&how));
 	else if (m == 0)
 		printf("%s and %s are equal on the domain of %s (%s)\n",

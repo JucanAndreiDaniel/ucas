@@ -1,0 +1,27 @@
+# Custom `model NAME { ... }` overriding class costs: overrides take effect,
+# fusions re-price through the overridden class, and untouched classes are unchanged.
+f(x: u32) = x*7 + 11
+divk(x: u32) = x / 7
+divp(x: u32) = x / 8
+g(x: f32, y: f32, z: f32) = x*y + z
+model dear_imul : gt1030 { imul: 100 }
+cost f model dear_imul
+cost f model gt1030
+model cheap_imul : gt1030 { imul: 1 }
+cost f model cheap_imul
+model no_fuse : gt1030 { nofuse imad }
+cost f model no_fuse
+model div_dear : gt1030 { idivk: 500 }
+cost divk model div_dear
+cost divk model gt1030
+cost divp model div_dear
+cost divp model gt1030
+model fadd_dear : x86v3 { fadd: 100 }
+cost g model fadd_dear
+cost g model x86v3
+model zero_imul : skl { imul: 0 }
+cost f model zero_imul
+model huge_imul : skl { imul: 1e9 }
+cost f model huge_imul
+model dup : gt1030 { imul: 5, imul: 7 }
+cost f model dup

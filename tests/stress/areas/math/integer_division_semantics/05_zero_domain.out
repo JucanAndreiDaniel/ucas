@@ -1,0 +1,35 @@
+> f(x: u8 in 0..3) = x / 0
+> domain f
+domain of f:
+  x: u8, 0..3
+  requires 0 != 0  (in x/0)
+  defined at 0 of 4 points
+  empty domain: undefined at every point of the parameter types
+  undefined e.g. at x=0; x=1; x=2; x=3
+  C undefined behaviour at 4 points, e.g. x=0
+  over all 4 points of the domain
+> range f
+range of f -> u8:
+  empty (undefined everywhere)
+  undefined at 4 points
+  over all 4 points of the domain
+> g(x: u8, y: u8 in 0..3) = x / y
+> domain g
+domain of g:
+  x: u8, 0..255
+  y: u8, 0..3
+  requires y != 0  (in x/y)
+  defined at 768 of 1024 points
+  undefined e.g. at x=0, y=0; x=1, y=0; x=2, y=0; x=3, y=0
+  C undefined behaviour at 256 points, e.g. x=0, y=0
+  over all 1024 points of the domain
+> h(x: i8 in -3..3) = x % (x-x)
+> domain h
+domain of h:
+  x: i8, -3..3
+  requires 0 != 0  (in x % 0)
+  defined at 0 of 7 points
+  empty domain: undefined at every point of the parameter types
+  undefined e.g. at x=-3; x=-2; x=-1; x=0
+  C undefined behaviour at 7 points, e.g. x=-3
+  over all 7 points of the domain

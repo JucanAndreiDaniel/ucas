@@ -1,0 +1,105 @@
+> a16(x: i16) = x + 32767
+> wrap a16
+wrap analysis of a16:
+  x + 32767   (i16)
+      nuw fails: unsigned wrap at 32767 points, e.g. x=-32767
+      nsw fails: signed wrap at 32767 points, e.g. x=1  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32767 points, e.g. x=1
+      exact for: -32768..0
+  over all 65536 points of the domain
+> s16(x: i16) = x - 32768
+  note: literal 32768 does not fit i16; it becomes -32768
+> wrap s16
+wrap analysis of s16:
+  x - -32768   (i16)
+      nuw fails: unsigned wrap at 32768 points, e.g. x=0
+      nsw fails: signed wrap at 32768 points, e.g. x=0  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32768 points, e.g. x=0
+      exact for: -32768..-1
+  over all 65536 points of the domain
+> m16(x: i16) = x * 7
+> wrap m16
+wrap analysis of m16:
+  7x   (i16)
+      nuw fails: unsigned wrap at 56173 points, e.g. x=-32768
+      nsw fails: signed wrap at 56173 points, e.g. x=-32768  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 56173 points, e.g. x=-32768
+      exact for: -4681..4681
+  over all 65536 points of the domain
+> n16(x: i16) = -x
+> wrap n16
+wrap analysis of n16:
+  -x   (i16)
+      nuw fails: unsigned wrap at 65535 points, e.g. x=-32768
+      nsw fails: signed wrap at 1 points, e.g. x=-32768  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-32768
+      exact for: -32767..32767
+  over all 65536 points of the domain
+> h16(x: i16) = (x*2)/2
+> wrap h16
+wrap analysis of h16:
+  2x   (i16)
+      nuw fails: unsigned wrap at 32768 points, e.g. x=-32768
+      nsw fails: signed wrap at 32768 points, e.g. x=-32768  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32768 points, e.g. x=-32768
+      exact for: -16384..16383
+  over all 65536 points of the domain
+> range h16
+range of h16 -> i16:
+  -16384..16383   (32768 distinct values)
+  fits in i15
+  over all 65536 points of the domain
+> a32(x: i32) = x + 2147483647
+> wrap a32
+wrap analysis of a32:
+  x + 2147483647   (i32)
+      nuw fails: unsigned wrap at 32975 points, e.g. x=-2147483647
+      nsw fails: signed wrap at 32559 points, e.g. x=2147483647  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32559 points, e.g. x=2147483647
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> s32(x: i32) = x - 2147483647
+> wrap s32
+wrap analysis of s32:
+  x - 2147483647   (i32)
+      nuw fails: unsigned wrap at 32559 points, e.g. x=2147483646
+      nsw fails: signed wrap at 32975 points, e.g. x=-2147483648  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32975 points, e.g. x=-2147483648
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> m32(x: i32) = x * 3
+> wrap m32
+wrap analysis of m32:
+  3x   (i32)
+      nuw fails: unsigned wrap at 43900 points, e.g. x=-2147483648
+      nsw fails: signed wrap at 43773 points, e.g. x=-2147483648  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 43773 points, e.g. x=-2147483648
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> n32(x: i32) = -x
+> wrap n32
+wrap analysis of n32:
+  -x   (i32)
+      nuw fails: unsigned wrap at 65535 points, e.g. x=-2147483648
+      nsw fails: signed wrap at 1 points, e.g. x=-2147483648  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-2147483648
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> h32(x: i32) = (x*2)/2
+> wrap h32
+wrap analysis of h32:
+  2x   (i32)
+      nuw fails: unsigned wrap at 32976 points, e.g. x=-2147483648
+      nsw fails: signed wrap at 32964 points, e.g. x=-2147483648  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 32964 points, e.g. x=-2147483648
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> range h32
+range of h32 -> i32:
+  -1073737100..1073713492  (sampled min/max; not a sound bound)
+  fits in i31
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): -2147483648..2147483647
+> u32m(x: u32) = x * 4294967295
+> wrap u32m
+wrap analysis of u32m:
+  4294967295x   (u32)
+      nuw fails: unsigned wrap at 65531 points, e.g. x=4294967295
+      nsw holds
+  end to end: differs from the mathematical result at 65531 points, e.g. x=4294967295
+  sampled 65536 points (domain has 4294967296 points); not exhaustive

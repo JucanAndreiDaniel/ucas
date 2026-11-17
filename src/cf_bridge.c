@@ -2713,6 +2713,14 @@ eng_find(struct bx *B)
 
 	if (secs <= 0 || !TY_SIZED(N.ty[B->e]) || N.ty[B->e] == TY_BOOL)
 		return;
+	/* find.c's holes() fits y = a*t + b with (y[p]-y[0]) / (c[p]-c[0]).
+	 * In a signed 64-bit working width the sampled columns can hold
+	 * INT64_MIN and a step of -1, so that division is INT64_MIN / -1 and
+	 * raises SIGFPE (an overflow find.c does not guard).  Skip find for
+	 * signed 64-bit values: no rewrite from this engine is better than a
+	 * crash, and cfront's other engines still prove the rewrites. */
+	if (TYK(N.ty[B->e]) == K_SINT && TYW(N.ty[B->e]) == 64)
+		return;
 	for (k = 0; k < f.np; k++)
 		if (!TY_ISINT(f.p[k].ty))
 			return;

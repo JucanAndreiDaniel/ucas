@@ -1,0 +1,88 @@
+> q(x: u32) = (x * 3 + 7) / 13 + popcnt(x)
+> mca q on skl
+mca of q on skl (skylake)
+  straight-line code: 6 instructions, 7 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  lea       3x                      3     1    1  p1        
+     1  add       3x + 7                  1  0.25    1  p0156     0
+     2  mulx      (3x + 7)/13             4     1    2  p15       1
+     3  shl       (3x + 7)/13             1   0.5    1  p06       2
+     4  popcnt    popcount(x)             3     1    1  p1        
+     5  add       (3x + 7)/13 + popcount(x)    1  0.25    1  p0156     3 4
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.50 p1 2.00 p5 2.00 p6 1.50
+  bounds: critical path 10.00, ports 2.00 (p1), front end 1.75 (7 uops / 4)
+  simulated: 10.00 cycles, limited by the critical path
+> mca q on glc
+mca of q on glc (goldencove)
+  straight-line code: 6 instructions, 7 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  lea       3x                      2   0.5    1  p15       
+     1  add       3x + 7                  1   0.2    1  p0156 p10 0
+     2  mulx      (3x + 7)/13             4     1    2  p15       1
+     3  shl       (3x + 7)/13             1   0.5    1  p06       2
+     4  popcnt    popcount(x)             3     1    1  p1        
+     5  add       (3x + 7)/13 + popcount(x)    1   0.2    1  p0156 p10 3 4
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 2.00 p5 2.00 p6 1.00 p10 1.00
+  bounds: critical path 9.00, ports 2.00 (p1), front end 1.17 (7 uops / 6)
+  simulated: 9.00 cycles, limited by the critical path
+> mca q on zen4
+mca of q on zen4 (znver4)
+  straight-line code: 6 instructions, 7 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  lea       3x                      2   0.5    1  ALU0 ALU1 ALU2 ALU3 
+     1  add       3x + 7                  1  0.25    1  ALU0 ALU1 ALU2 ALU3 0
+     2  mulx      (3x + 7)/13             4     1    2  ALU1 ALU2 1
+     3  shl       (3x + 7)/13             1   0.5    1  ALU1 ALU2 2
+     4  popcnt    popcount(x)             1  0.25    1  ALU0 ALU1 ALU2 ALU3 
+     5  add       (3x + 7)/13 + popcount(x)    1  0.25    1  ALU0 ALU1 ALU2 ALU3 3 4
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU0 2.00 ALU1 2.00 ALU2 2.00 ALU3 2.00
+  bounds: critical path 9.00, ports 2.00 (ALU0), front end 1.17 (7 uops / 6)
+  simulated: 9.00 cycles, limited by the critical path
+> mca q on x86v4
+mca of q on x86v4 (x86-64-v4)
+  straight-line code: 6 instructions, 7 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  lea       3x                      3     1    1  p1        
+     1  add       3x + 7                  1  0.25    1  p0156     0
+     2  mulx      (3x + 7)/13             4     1    2  p15       1
+     3  shl       (3x + 7)/13             1   0.5    1  p06       2
+     4  popcnt    popcount(x)             3     1    1  p1        
+     5  add       (3x + 7)/13 + popcount(x)    1  0.25    1  p0156     3 4
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.50 p1 2.00 p5 2.00 p6 1.50
+  bounds: critical path 10.00, ports 2.00 (p1), front end 1.75 (7 uops / 4)
+  simulated: 10.00 cycles, limited by the critical path
+> d(x: u64, y: u64) = x / (y + 1) + x % 10
+> mca d on skl
+mca of d on skl (skylake)
+  straight-line code: 7 instructions, 43 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  add       y + 1                   1  0.25    1  p0156     
+     1  div r64   x/(y + 1)              36    21   36  p0156     0
+     2  mulx      x % 10                  4     1    2  p15       
+     3  shl       x % 10                  1   0.5    1  p06       2
+     4  imul      x % 10                  3     1    1  p1        3
+     5  add       x % 10                  1  0.25    1  p0156     4
+     6  add       x/(y + 1) + x % 10      1  0.25    1  p0156     1 5
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 22.00 p1 13.69 p5 13.69 p6 13.62
+  bounds: critical path 38.00, ports 22.00 (p0), front end 10.75 (43 uops / 4)
+  simulated: 49.00 cycles, limited by the critical path
+> mca d on zen4
+mca of d on zen4 (znver4)
+  straight-line code: 7 instructions, 9 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  add       y + 1                   1  0.25    1  ALU0 ALU1 ALU2 ALU3 
+     1  div r64   x/(y + 1)              14     9    2  ALU1      0
+     2  mulx      x % 10                  4     1    2  ALU1 ALU2 
+     3  shl       x % 10                  1   0.5    1  ALU1 ALU2 2
+     4  imul      x % 10                  3     1    1  ALU1      3
+     5  add       x % 10                  1  0.25    1  ALU0 ALU1 ALU2 ALU3 4
+     6  add       x/(y + 1) + x % 10      1  0.25    1  ALU0 ALU1 ALU2 ALU3 1 5
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU0 1.50 ALU1 11.00 ALU2 3.00 ALU3 1.50
+  bounds: critical path 16.00, ports 11.00 (ALU1), front end 1.50 (9 uops / 6)
+  simulated: 25.00 cycles, limited by the critical path

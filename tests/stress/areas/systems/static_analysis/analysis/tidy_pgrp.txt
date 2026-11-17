@@ -1,0 +1,127 @@
+/home/andrew/Code/ucas/src/pgrp.c:27:10: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   19 | #include <stdlib.h>
+   20 | #include <string.h>
+   21 | 
+   22 | #define TR_LIMIT ((uint64_t)1 << 27)   /* transversal entries (512 MB) */
+   23 | 
+   24 | /* ---- permutations ---- */
+   25 | 
+   26 | void
+   27 | perm_mul(uint32_t *r, const uint32_t *p, const uint32_t *q, int n)
+      |          ^
+/home/andrew/Code/ucas/src/pgrp.c:67:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   67 |         uint8_t *seen = xcalloc((size_t)n + 1, 1);
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:128:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  128 |         uint64_t trsize;
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:185:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  185 |         if (s->trsize > TR_LIMIT)
+      |                         ^
+/home/andrew/Code/ucas/src/pgrp.c:22:34: note: expanded from macro 'TR_LIMIT'
+   22 | #define TR_LIMIT ((uint64_t)1 << 27)   /* transversal entries (512 MB) */
+      |                               ~~ ^~
+/home/andrew/Code/ucas/src/pgrp.c:188:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  188 |                     (unsigned long long)TR_LIMIT, n);
+      |                                         ^
+/home/andrew/Code/ucas/src/pgrp.c:22:34: note: expanded from macro 'TR_LIMIT'
+   22 | #define TR_LIMIT ((uint64_t)1 << 27)   /* transversal entries (512 MB) */
+      |                               ~~ ^~
+/home/andrew/Code/ucas/src/pgrp.c:321:2: warning: Null pointer passed to 2nd parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  321 |         memcpy(G->base, s->base, (size_t)s->nb * sizeof *G->base);
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:1297:14: note: Assuming 'a' is >= 'n'
+ 1297 |         for (a = 0; a < n; a++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/pgrp.c:1297:2: note: Loop condition is false. Execution continues on line 1300
+ 1297 |         for (a = 0; a < n; a++)
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:1300:2: note: Calling 'pg_init'
+ 1300 |         pg_init(r, n, g, n);
+      |         ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:391:2: note: Calling 'pg_build'
+  391 |         pg_build(G, n, gens, ngens, NULL, 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:362:6: note: 'n' is <= 0
+  362 |         if (n <= 0)
+      |             ^
+/home/andrew/Code/ucas/src/pgrp.c:362:2: note: Taking true branch
+  362 |         if (n <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:364:14: note: 'k' is >= 'ngens'
+  364 |         for (k = 0; k < ngens; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/pgrp.c:364:2: note: Loop condition is false. Execution continues on line 375
+  364 |         for (k = 0; k < ngens; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:375:2: note: Null pointer value stored to 's.base'
+  375 |         memset(&s, 0, sizeof s);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:378:2: note: Calling 'ss_run'
+  378 |         ss_run(&s, gens, ngens, pre, npre);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:263:2: note: Loop condition is false. Execution continues on line 265
+  263 |         for (i = 0; i < npre; i++)
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:265:14: note: 'k' is >= 'ngens'
+  265 |         for (k = 0; k < ngens; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/pgrp.c:265:2: note: Loop condition is false. Execution continues on line 273
+  265 |         for (k = 0; k < ngens; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:273:2: note: Loop condition is false. Execution continues on line 275
+  273 |         for (l = 0; l < s->nb; l++)
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:276:2: note: Loop condition is false. Execution continues on line 308
+  276 |         while (l >= 0) {
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:310:1: note: Returning without writing to 's->base'
+  310 | }
+      | ^
+/home/andrew/Code/ucas/src/pgrp.c:378:2: note: Returning from 'ss_run'
+  378 |         ss_run(&s, gens, ngens, pre, npre);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:383:2: note: Calling 'ss_pack'
+  383 |         ss_pack(&T, &s);
+      |         ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:321:2: note: Null pointer passed to 2nd parameter expecting 'nonnull'
+  321 |         memcpy(G->base, s->base, (size_t)s->nb * sizeof *G->base);
+      |         ^               ~~~~~~~
+/home/andrew/Code/ucas/src/pgrp.c:674:7: warning: function 'memcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  674 |                 if (memcmp(t, p, (size_t)n * sizeof *t))
+      |                     ^                                  
+      |                                                         != 0
+/home/andrew/Code/ucas/src/pgrp.c:782:1: warning: no header providing "conj" is directly included [misc-include-cleaner]
+   19 | conj(uint32_t *r, const uint32_t *h, const uint32_t *g, int n)
+      | ^
+/home/andrew/Code/ucas/src/pgrp.c:784:12: warning: no header providing "gi" is directly included [misc-include-cleaner]
+  784 |         uint32_t *gi = xmalloc((size_t)n * sizeof *gi);
+      |                   ^
+/home/andrew/Code/ucas/src/pgrp.c:784:33: warning: no header providing "n" is directly included [misc-include-cleaner]
+  784 |         uint32_t *gi = xmalloc((size_t)n * sizeof *gi);
+      |                                        ^
+/home/andrew/Code/ucas/src/pgrp.c:785:12: warning: no header providing "t" is directly included [misc-include-cleaner]
+  785 |         uint32_t *t = xmalloc((size_t)n * sizeof *t);
+      |                   ^
+/home/andrew/Code/ucas/src/pgrp.c:787:15: warning: no header providing "g" is directly included [misc-include-cleaner]
+  787 |         perm_inv(gi, g, n);
+      |                      ^
+/home/andrew/Code/ucas/src/pgrp.c:788:18: warning: no header providing "h" is directly included [misc-include-cleaner]
+  788 |         perm_mul(t, gi, h, n);
+      |                         ^
+/home/andrew/Code/ucas/src/pgrp.c:789:11: warning: no header providing "r" is directly included [misc-include-cleaner]
+  789 |         perm_mul(r, t, g, n);
+      |                  ^
+/home/andrew/Code/ucas/src/pgrp.c:823:8: warning: function 'memcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  823 |                         if (memcmp(a, b, (size_t)n * sizeof *a))
+      |                             ^                                  
+      |                                                                 != 0
+/home/andrew/Code/ucas/src/pgrp.c:980:2: warning: no header providing "u64" is directly included [misc-include-cleaner]
+   17 |         u64 total;
+      |         ^
+/home/andrew/Code/ucas/src/pgrp.c:1248:3: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+ 1248 |                 int64_t v = z_fits_i64(m.a[i]) ? z_to_i64(m.a[i]) : -1;
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

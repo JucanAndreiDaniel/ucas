@@ -1,0 +1,31 @@
+# Batch 02: equiv / SAT identity proofs mod 2^w (exact; diff => UB/unsoundness).
+p1(x: u32, y: u32) = (x + y)*(x - y)
+q1(x: u32, y: u32) = x*x - y*y
+equiv p1 q1
+p2(x: i32, y: i32) = (x << 3)*y - x*y
+q2(x: i32, y: i32) = 7*x*y
+equiv p2 q2
+p3(x: u32) = x*x + x
+q3(x: u32) = (x*x + x) + 2147483648*(x*x + x)
+equiv p3 q3
+p4(x: u32, y: u32) = (x/8)*y + (x/8)*3
+q4(x: u32, y: u32) = (x/8)*(y + 3)
+equiv p4 q4
+p5(y: u8, t: u8, w: u8, x: u8) = y*t*w + x*t
+q5(y: u8, t: u8, w: u8, x: u8) = (y*w + x)*t
+equiv p5 q5
+p6(x: u16, y: u16) = x*y + 1
+q6(x: u16, y: u16) = y*x + 2
+equiv p6 q6
+p7(x: u8, y: u8, z: u8) = (x ^ y) ^ z
+q7(x: u8, y: u8, z: u8) = x ^ (y ^ z)
+equiv p7 q7
+p8(x: u8, y: u8) = (x & y) | (x ^ y)
+q8(x: u8, y: u8) = x | y
+equiv p8 q8
+p9(x: u32) = ((x >> 3) << 3)
+q9(x: u32) = x - (x & 7)
+equiv p9 q9
+p10(x: i16, y: i16) = x - y
+q10(x: i16, y: i16) = x + (-y)
+equiv p10 q10

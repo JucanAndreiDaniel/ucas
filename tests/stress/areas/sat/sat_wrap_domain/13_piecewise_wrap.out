@@ -1,0 +1,86 @@
+> m1(x: i8) = match x { 0 => 1, 1 | 2 => 5, 3..9 => 7, _ => 9 }
+> domain m1
+domain of m1:
+  x: i8, -128..127
+  defined at 256 of 256 points
+  no conditions: total on its parameter types
+  over all 256 points of the domain
+> range m1
+range of m1 -> int:
+  1..9
+  fits in u4
+  over all 256 points of the domain
+> wrap m1
+wrap analysis of m1:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> p1(x: u8) = { x if x < 3, 100 otherwise }
+> domain p1
+domain of p1:
+  x: u8, 0..255
+  defined at 256 of 256 points
+  no conditions: total on its parameter types
+  over all 256 points of the domain
+> range p1
+range of p1 -> u8:
+  0..100   (4 distinct values)
+  values: 0..2, 100
+  fits in u7
+  over all 256 points of the domain
+> wrap p1
+wrap analysis of p1:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> w1(x: i8, y: i8) = x + y where y > x
+> domain w1
+domain of w1:
+  x: i8, -128..127
+  y: i8, -128..127
+  where y > x
+  C assumes x + y does not overflow i8  (signed overflow)
+  defined at 32640 of 32640 points
+  C undefined behaviour at 8128 points, e.g. x=-128, y=-127
+  over all 32640 points of the domain
+> range w1
+range of w1 -> i8:
+  -128..127   (256 distinct values)
+  fits in i8
+  over all 32640 points of the domain
+> wrap w1
+wrap analysis of w1:
+  x + y   (i8)
+      nuw fails: unsigned wrap at 16256 points, e.g. x=-128, y=-127
+      nsw fails: signed wrap at 8128 points, e.g. x=-128, y=-127  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 8128 points, e.g. x=-128, y=-127
+  over all 32640 points of the domain
+> w2(x: u16 in 0..31, n: u16 in 0..5) = x << n where x < 1 << n
+> domain w2
+domain of w2:
+  x: u16, 0..31
+  n: u16, 0..5
+  where x < 1 << n
+  requires 0 <= n < 16  (shift amount; C UB otherwise)
+  defined at 63 of 63 points
+  over all 63 points of the domain
+> range w2
+range of w2 -> u16:
+  0..992   (47 distinct values)
+  values: 0, 2, 4, 8, 12, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 256, ...
+  fits in u10
+  over all 63 points of the domain
+> c1(x: i8) = x > 0 ? x - 1 : 0
+> wrap c1
+wrap analysis of c1:
+  x - 1   (i8)
+      nuw holds
+      nsw holds (C requires it: signed overflow is UB)
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 256 points of the domain
+> domain c1
+domain of c1:
+  x: i8, -128..127
+  C assumes (x > 0) => x - 1 does not overflow i8  (signed overflow)
+  defined at 256 of 256 points
+  over all 256 points of the domain

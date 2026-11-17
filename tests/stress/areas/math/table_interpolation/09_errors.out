@@ -1,0 +1,24 @@
+> show [][0]
+09_errors.ucas:2:8: error: empty table
+    show [][0]
+           ^
+> show [10,20,30][f32(1)]
+09_errors.ucas:3:24: error: table index must be an integer
+    show [10,20,30][f32(1)]
+                           ^
+> show [[1,2],[3,4]][2][0]
+09_errors.ucas:4:25: error: only a table [a, b, ...] can be indexed
+    show [[1,2],[3,4]][2][0]
+                            ^
+> show [[u8(1),u16(2)],[i8(3),i8(4)]][1][1]
+09_errors.ucas:5:42: error: only a table [a, b, ...] can be indexed
+    show [[u8(1),u16(2)],[i8(3),i8(4)]][1][1]
+                                             ^
+> g(x: u8 in 0..1) = [[10,20],[30,40]][x][0]
+09_errors.ucas:6:43: error: only a table [a, b, ...] can be indexed
+    g(x: u8 in 0..1) = [[10,20],[30,40]][x][0]
+                                              ^
+> onlytab = [1,2,3]
+> show onlytab[0]
+_() = 1
+  -> int

@@ -1,0 +1,12 @@
+> ou(x: f32 in 0..1e30, y: f32 in 0..1e30) = asuint(x) < asuint(y)
+> of(x: f32 in 0..1e30, y: f32 in 0..1e30) = x < y
+> equiv ou ~ of
+ou and of are equal on the domain of ou (proved by SAT: 3320 AIG nodes, 267 conflicts)
+> ou2(x: f32 in 0..1e30, y: f32 in 0..1e30) = asuint(x) <= asuint(y)
+> of2(x: f32 in 0..1e30, y: f32 in 0..1e30) = x <= y
+> equiv ou2 ~ of2
+ou2 and of2 are equal on the domain of ou2 (proved by SAT: 3356 AIG nodes, 251 conflicts)
+> negbit(x: f32) = asfloat(asuint(x) ^ 0x80000000)
+> negref(x: f32) = -x
+> equiv negbit ~ negref
+negbit and negref differ at 65536 points of the sample, e.g. x=-3.40282347e+38: 1.40129846e-45 vs 3.40282347e+38

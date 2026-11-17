@@ -1,0 +1,18 @@
+> c optimize nofile vectorize target x86-64-v3
+c optimize: 5 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  stride (line 1): not lowered: line 1: the function does not return an integer or a float
+  stride (line 1): not vectorised: a store at an index other than i + c
+  rev (line 2): not lowered: line 2: the function does not return an integer or a float
+  rev (line 2): not vectorised: a load at an index other than i + c (strided: not implemented)
+  dep (line 3): not lowered: line 3: the function does not return an integer or a float
+  dep (line 3): not vectorised: a store feeds a later iteration's load (a loop-carried dependence)
+  twod (line 4): not lowered: line 4: the function does not return an integer or a float
+  twod (line 4): not vectorised: a store at an index other than i + c
+  vola (line 5): not lowered: line 5: the function does not return an integer or a float
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  void stride(int*d,const int*s,int n){for(int i=0;i<n;i++)d[2*i]=s[2*i];}
+  void rev(int*d,const int*s,int n){for(int i=0;i<n;i++)d[i]=s[n-1-i];}
+  void dep(int*d,int n){for(int i=1;i<n;i++)d[i]=d[i-1]+1;}
+  void twod(int*d,int n){for(int i=0;i<n;i++)for(int j=0;j<n;j++)d[i*n+j]=i+j;}
+  void vola(volatile int*d,const int*s,int n){for(int i=0;i<n;i++)d[i]=s[i];}

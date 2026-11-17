@@ -1,0 +1,15 @@
+> f_racer_sqrt_sign(x: f32 in 0.01..100) = 1/sqrt(x + f32(1e-2))
+> g_racer_sqrt_sign(x: f32 in 0.01..100) = 1/sqrt(x - f32(1e-2))
+> equiv f_racer_sqrt_sign g_racer_sqrt_sign
+f_racer_sqrt_sign and g_racer_sqrt_sign differ at 65536 points of the sample, e.g. x=0.0100000007: 7.07106829 vs 32768
+> error g_racer_sqrt_sign ~ f_racer_sqrt_sign
+error of g_racer_sqrt_sign against f_racer_sqrt_sign:
+  max abs error 32760.9 at x=0.0100000007
+  max rel error 4633.09 (4.63e+05%) at x=0.0100000007
+  mean rel error 0.300389 over 65536 points
+  max 102611407 ulp
+  rounding, first order in u = 2^-24: 3 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  1.49e-07 (2.5 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 6 u here (it gains from about 16 operations of similar weight on)
+    expected    5.16e-08 (0.866 u): the root mean square if they are independent and uniform in [-u, u]
+    for 3 operations of equal weight: gamma_3 = 3 u / (1 - 3 u) = 1.79e-07, gamma~_3(4) = 4 sqrt(3) u = 4.13e-07

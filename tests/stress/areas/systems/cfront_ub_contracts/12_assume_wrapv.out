@@ -1,0 +1,27 @@
+> c optimize nofile budget 5 wrapv
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  avg (line 1): no cheaper form: lowered: 2 inputs, cost 4.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int avg(int a,int b){return (a+b)/2;}
+> c optimize nofile budget 5 wrapv assume x 0 100
+c optimize: 1 function, 1 rewrite proved (1 exhaustive, 0 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 4.8 -> 0.0 cycles
+  engines: bound 1
+  absv (line 1): a comparison decided by a proved bound
+    proof: exhaustive (exhaustive: 101 inputs); cost 4.8 -> 0.0
+    engine: bound; lemma: the value is in [0, 100] (bound.c: f is nondecreasing in x, so take x = 0:;      0)
+    over: x in [0, 100] (assumed)
+    before: {return x<0?-x:x;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int absv(int x){
+  	return (int)(x);
+  }
+> c optimize nofile budget 5 assume x 0 100
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  add (line 1): no cheaper form: lowered: 2 inputs, cost 1.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int add(int x,int y){return x+y;}

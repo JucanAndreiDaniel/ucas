@@ -1,0 +1,13 @@
+> c optimize nofile vectorize budget 3
+c optimize: 3 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  fsum (line 1): not lowered: line 1: a parameter that is not an integer or a float (s)
+  fsum (line 1): not vectorised: a float reduction (reassociating it changes the rounding)
+  dsum (line 2): not lowered: line 2: a parameter that is not an integer or a float (s)
+  dsum (line 2): not vectorised: a float reduction (reassociating it changes the rounding)
+  fdot (line 3): not lowered: line 3: a parameter that is not an integer or a float (a)
+  fdot (line 3): not vectorised: a float reduction (reassociating it changes the rounding)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  float fsum(const float*s,int n){float r=0;for(int i=0;i<n;i++)r+=s[i];return r;}
+  double dsum(const double*s,int n){double r=0;for(int i=0;i<n;i++)r+=s[i];return r;}
+  float fdot(const float*a,const float*b,int n){float r=0;for(int i=0;i<n;i++)r+=a[i]*b[i];return r;}

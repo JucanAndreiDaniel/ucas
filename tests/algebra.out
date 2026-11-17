@@ -9,51 +9,61 @@ expand (x + y + z)^3
   = x^3 + 3x^2*y + 3x^2*z + 3x*y^2 + 6x*y*z + 3x*z^2 + y^3 + 3y^2*z + 3y*z^2 + z^3
   check: exact (both sides have the same normal form)
 > factor x^4 - 1
+  ucas: factor x^4 - 1
 factor x^4 - 1
   = (x - 1)*(x + 1)*(x^2 + 1)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^6 - 1
+  ucas: factor x^6 - 1
 factor x^6 - 1
   = (x - 1)*(x + 1)*(x^2 + x + 1)*(x^2 - x + 1)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor 6x^2 - 5x - 6
+  ucas: factor 6x^2 - 5x - 6
 factor 6x^2 - 5x - 6
   = (2x - 3)*(3x + 2)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^5 + x + 1
+  ucas: factor x^5 + x + 1
 factor x^5 + x + 1
   = (x^2 + x + 1)*(x^3 - x^2 + 1)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^4 + 1
+  ucas: factor x^4 + 1
 factor x^4 + 1
   = x^4 + 1
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^30 - 1
+  ucas: factor x^30 - 1
 factor x^30 - 1
   = (x - 1)*(x + 1)*(x^2 + x + 1)*(x^2 - x + 1)*(x^4 + x^3 + x^2 + x + 1)*(x^4 - x^3 + x^2 - x + 1)*(x^8 - x^7 + x^5 - x^4 + x^3 - x + 1)*(x^8 + x^7 - x^5 - x^4 - x^3 + x + 1)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^3 + y^3
+  ucas: factor x^3 + y^3
 factor x^3 + y^3
   = (x + y)*(x^2 - x*y + y^2)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor 4x^2 - 9y^2
+  ucas: factor 4x^2 - 9y^2
 factor 4x^2 - 9y^2
   = (2x + 3y)*(2x - 3y)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor x^2 y + x y^2
+  ucas: factor x^2 y + x y^2
 factor x^2*y + x*y^2
   = x*y*(x + y)
   check: exact (both sides have the same normal form)
   (factors are irreducible over the rationals)
 > factor 2x^3 + 4x^2 + 2x
+  ucas: factor 2x^3 + 4x^2 + 2x
 factor 2x^3 + 4x^2 + 2x
   = 2x*(x + 1)^2
   check: exact (both sides have the same normal form)
@@ -113,7 +123,7 @@ simplify exp(log(x))
   ucas: simplify exp(x)*exp(2x)
 simplify exp(x)*exp(2x)
   = exp(3x)
-  check: equal at 64 sample points (max relative difference 1.9e-15)
+  check: equal at 64 sample points (max relative difference 1.8e-15)
 > simplify x^2/x^3
   ucas: simplify x^2/x^3
 simplify x^2/x^3
@@ -250,12 +260,12 @@ x^2 + y with x = 2, y = 3
 ∫ sin(x)^3*cos(x)^2 dx
   = cos(x)^5/5 - cos(x)^3/3 + C
   method: Bioche: t = cos(x)
-  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.1e-16)
+  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.2e-16)
 > integrate sin(x)^2*cos(x)^2
 ∫ sin(x)^2*cos(x)^2 dx
   = x/8 - sin(4x)/32 + C
   method: power reduction: sin^2 = (1 - cos 2u)/2, cos^2 = (1 + cos 2u)/2
-  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 1.4e-16)
+  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 8.3e-17)
 > integrate tan(x)^3
 ∫ tan(x)^3 dx
   = 1/(2cos(x)^2) + log(abs(cos(x))) + C
@@ -319,7 +329,7 @@ x^2 + y with x = 2, y = 3
 ∫ 1/(cos(x) + 2) dx
   = 2atan(tan(x/2)/sqrt(3))/sqrt(3) + C
   method: Weierstrass: t = tan(x/2); the antiderivative holds on each interval between the poles of the tangent
-  check: d/dx of it equals the integrand at 400 points of [0, 6.28319] (max difference 5.6e-16)
+  check: d/dx of it equals the integrand at 400 points of [0, 6.28319] (max difference 4.4e-16)
   from 0 to 6.28319: F(6.28319) - F(0) = -8.16431199431569e-17
   the antiderivative jumps by -3.62759872846843 at x = pi (the integrand is continuous there): the jump is taken out
   F(b) - F(a) minus the jumps = 3.62759872846843
@@ -411,7 +421,7 @@ solve sin(x)^2 - sin(x) = 0 for x
   ucas: solve exp(x) = 5
 solve exp(x) = 5 for x
   x = log(5)   (= 1.609437912)
-  check: each solution substituted (1 value): residual 0
+  check: each solution substituted (1 value): residual 8.9e-16
 > solve 2^x = 8
   ucas: solve 2^x = 8
 solve 2^x = 8 for x
@@ -425,9 +435,9 @@ solve log(x) = 2 for x
 > solve exp(x^2) = 3
   ucas: solve exp(x^2) = 3
 solve exp(x^2) = 3 for x
-  x = 1.0481470739682
-  x = -1.0481470739682
-  check: each solution substituted (2 values): residual 4.4e-16
+  x = 1.04814707396821
+  x = -1.04814707396821
+  check: each solution substituted (2 values): residual 8.9e-16
 > solve sin(x) = 2
   ucas: solve sin(x) = 2
 solve sin(x) = 2 for x
@@ -470,6 +480,7 @@ solve x^2 + y^2 = 1, y = x for x, y
   x = sqrt(2)/2, y = 0.7071067812
   check: 2 solutions substituted into both equations: residual 1.1e-16
 > factor x^4 - 1
+  ucas: factor x^4 - 1
 factor x^4 - 1
   = (x - 1)*(x + 1)*(x^2 + 1)
   check: exact (both sides have the same normal form)

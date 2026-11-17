@@ -1,0 +1,10 @@
+c lower nofile
+```c
+int vread(volatile int*p){return *p;}
+void vwrite(volatile int*p,int v){*p=v;}
+volatile int gv;
+int vglobal(void){return gv;}
+void restrict_copy(int*restrict a,int*restrict b,int n){for(int i=0;i<n;i++)a[i]=b[i];}
+int restrict_read(int*restrict a){return a[0];}
+int alias_read(int*p,int*q){*p=1;*q=2;return *p;}
+```

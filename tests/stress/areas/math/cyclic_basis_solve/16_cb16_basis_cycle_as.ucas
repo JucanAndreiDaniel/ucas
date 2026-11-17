@@ -1,0 +1,6 @@
+basis a { not(x) = ~x }
+basis b : a { andp(x, y) = x & y }
+basis a : b { orp(x, y) = x | y }
+f(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+gates f basis a as myprog
+show myprog

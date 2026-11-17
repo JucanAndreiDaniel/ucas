@@ -1,0 +1,42 @@
+> a = b
+  note: a has free variables: defined as a(b)
+> b = a
+03_mutual.ucas:2:6: error: expected an expression
+    b = a
+         ^
+> funcs
+a(b: real) = b
+  -> real
+> show a
+a(b: real) = b
+  -> real
+> show b
+_(b: real) = b
+  -> real
+> c = d
+  note: c has free variables: defined as c(d)
+> d = e
+> e = c
+03_mutual.ucas:8:6: error: expected an expression
+    e = c
+         ^
+> funcs
+a(b: real) = b
+  -> real
+c(d: real) = d
+  -> real
+d() = e
+  -> real
+> show c
+c(d: real) = d
+  -> real
+> reset
+_(reset: real) = reset
+  -> real
+> funcs
+a(b: real) = b
+  -> real
+c(d: real) = d
+  -> real
+d() = e
+  -> real

@@ -1,0 +1,13 @@
+# int64 overflow in kernel arithmetic is refused; huge literals in a theorem statement fail to parse
+theorem o01: forall x:int: (x + 2147483647)^2 = x^2 + 4294967294*x + 4611686014132420609
+prove o01
+theorem o02: forall x:int: (x + 1000000000)^2 = x^2 + 2000000000*x + 1000000000000000000
+prove o02
+# FALSE, but its expansion overflows int64: prove must refuse, not accept
+theorem o03: forall x:int: (x + 4294967296)^2 = x^2 + 8589934592*x + 0
+prove o03
+# literal 9223372036854775800 (> 2^63-8) fails to parse with an empty error message
+theorem o04: forall x:int: 9223372036854775800 > x
+prove o04
+theorem o05: forall x:int: 9000000000000000000 > x
+prove o05

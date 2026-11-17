@@ -1,0 +1,119 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/zmat.c:77:49: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   19 | zm_from_i64(struct zmat *m, int r, int c, const int64_t *v)
+      |                                                 ^
+/home/andrew/Code/ucas/src/zmat.c:144:3: warning: Null pointer passed to 2nd parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  144 |                 memcpy(m->a, row, (size_t)nrow * sizeof *row);
+      |                 ^            ~~~
+/home/andrew/Code/ucas/src/zmat.c:131:21: note: 'row' initialized to a null pointer value
+  131 |         zint *all = NULL, *row = NULL;
+      |                            ^~~
+/home/andrew/Code/ucas/src/zmat.c:136:6: note: Assuming the condition is false
+  136 |         if (*s != '[')
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:136:2: note: Taking false branch
+  136 |         if (*s != '[')
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:139:6: note: Assuming the condition is true
+  139 |         if (*e != '[') {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:139:2: note: Taking true branch
+  139 |         if (*e != '[') {
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:141:8: note: Calling 'parse_row'
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:99:6: note: Assuming the condition is false
+   99 |         if (*s != '[')
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:99:2: note: Taking false branch
+   99 |         if (*s != '[')
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:103:6: note: Assuming the condition is true
+  103 |         if (*s == ']') {
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:103:2: note: Taking true branch
+  103 |         if (*s == ']') {
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:105:3: note: Returning without writing to '*v'
+  105 |                 return 1;
+      |                 ^
+/home/andrew/Code/ucas/src/zmat.c:141:8: note: Returning from 'parse_row'
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:141:3: note: Taking false branch
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                 ^
+/home/andrew/Code/ucas/src/zmat.c:143:14: note: 'nrow' is 0
+  143 |                 zm_init(m, nrow ? 1 : 0, nrow);
+      |                            ^~~~
+/home/andrew/Code/ucas/src/zmat.c:143:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/zmat.c:144:3: note: Null pointer passed to 2nd parameter expecting 'nonnull'
+  144 |                 memcpy(m->a, row, (size_t)nrow * sizeof *row);
+      |                 ^            ~~~
+/home/andrew/Code/ucas/src/zmat.c:258:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  258 |         uint64_t mx = 0;
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:262:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  262 |                 if (!Z_IS_SMALL(m->a[i]))
+      |                      ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zmat.c:264:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  264 |                 v = m->a[i] >> 1;
+      |                     ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/zmat.c:283:3: warning: no header providing "i128" is directly included [misc-include-cleaner]
+   17 |                 i128 *acc = xcalloc((size_t)b->c + 1, sizeof *acc);
+      |                 ^
+/home/andrew/Code/ucas/src/zmat.c:287:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |                                 int64_t x = ZM(a, i, k) >> 1;
+      |                                             ^           ~~
+/home/andrew/Code/ucas/src/absalg.h:169:21: note: expanded from macro 'ZM'
+  169 | #define ZM(m, i, j) ((m)->a[(size_t)(i) * (size_t)(m)->c + (size_t)(j)])
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zmat.c:293:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  293 |                                                 acc[j] += (i128)x * (br[j] >> 1);
+      |                                                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/zmat.c:502:69: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  502 |         if (!force && now.limbs - m.limbs < 2 * kst.live + ((uint64_t)1 << 20))
+      |                                                                         ~~ ^~
+/home/andrew/Code/ucas/src/zmat.c:568:3: warning: Value stored to 'prev' is never read [clang-analyzer-deadcode.DeadStores]
+  568 |                 prev = ZM(&m, r, c);
+      |                 ^
+/home/andrew/Code/ucas/src/zmat.c:568:3: note: Value stored to 'prev' is never read
+/home/andrew/Code/ucas/src/zmat.c:982:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  982 |         uint8_t *nounit = xcalloc((size_t)a->c + 1, 1);
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:1841:37: warning: no header providing "u64" is directly included [misc-include-cleaner]
+ 1841 | zm_reduce_mod(const struct zmat *a, u64 m, struct rmat *out)
+      |                                     ^
+/home/andrew/Code/ucas/src/zmat.c:1841:51: warning: no header providing "rmat" is directly included [misc-include-cleaner]
+ 1841 | zm_reduce_mod(const struct zmat *a, u64 m, struct rmat *out)
+      |                                                   ^
+/home/andrew/Code/ucas/src/zmat.c:1845:2: warning: no header providing "rm_init" is directly included [misc-include-cleaner]
+ 1845 |         rm_init(out, a->r, a->c);
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:1853:9: warning: no header providing "ring" is directly included [misc-include-cleaner]
+ 1853 |         struct ring R;
+      |                ^
+/home/andrew/Code/ucas/src/zmat.c:1857:7: warning: no header providing "nt_isprime" is directly included [misc-include-cleaner]
+ 1857 |         if (!nt_isprime(p))
+      |              ^
+/home/andrew/Code/ucas/src/zmat.c:1860:2: warning: no header providing "ring_zn" is directly included [misc-include-cleaner]
+ 1860 |         ring_zn(&R, p);
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:1862:6: warning: no header providing "rm_rref" is directly included [misc-include-cleaner]
+ 1862 |         r = rm_rref(&R, &m, NULL);
+      |             ^
+/home/andrew/Code/ucas/src/zmat.c:1863:2: warning: no header providing "rm_free" is directly included [misc-include-cleaner]
+ 1863 |         rm_free(&m);
+      |         ^
+/home/andrew/Code/ucas/src/zmat.c:1879:8: warning: no header providing "rm_nullspace" is directly included [misc-include-cleaner]
+ 1879 |         dim = rm_nullspace(&R, &m, &rows);
+      |               ^
+/home/andrew/Code/ucas/src/zmat.c:1886:4: warning: no header providing "RM" is directly included [misc-include-cleaner]
+ 1886 |                         RM(ns, j, i) = RM(&rows, i, j);
+      |                         ^

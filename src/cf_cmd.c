@@ -133,6 +133,11 @@ cmd_lower(const char *src, const char *path, const struct cf_opts *o)
 	if (!load(&u, src, path, o->t))
 		return;
 	rep_begin("c_lower");
+	/* c lower produces the generic closed form; only c optimize uses the
+	 * assumed range to specialise.  Say so instead of silently ignoring it. */
+	if (o->nassume)
+		printf("  note: c lower ignores assume; use c optimize to "
+		    "specialise to the assumed range\n");
 	rep_list("functions");
 	for (k = 0; k < u.nfn; k++) {
 		uint32_t fn = u.fns[k];
@@ -150,7 +155,11 @@ cmd_lower(const char *src, const char *path, const struct cf_opts *o)
 				    ty_str(ct_to_ucas(v.leaf[j].cty)));
 			printf(") = %s\n", shared_str(v.e, 1500));
 			rep_expr("value", v.e);
-			if (v.where && !is_const(v.where)) {
+			/* A constant-false condition means the function is UB on
+			 * its whole domain (e.g. (int)1e30 or x/0).  It used to be
+			 * hidden by !is_const(), so report it explicitly - both in
+			 * the text and in the structured "where" field. */
+			if (v.where) {
 				printf("    defined where (no C UB): %s\n",
 				    shared_str(v.where, 600));
 				rep_expr("where", v.where);

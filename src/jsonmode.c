@@ -520,8 +520,9 @@ static const struct jcmd cmds[] = {
 	{"qr", "qr", 1, 0, "the quadratic residues mod n", {NUR("n", " %s",
 	    "n")}},
 	{"primroot", "primroot", 1, 0, "the smallest primitive root mod n, or "
-	    "whether a is one", {NUO("a", " %s", "a candidate (with modulus)"),
-	    NUO("n", " %s", "n (alone)"), RINGO(" in %s", "the ring"), RMOD}},
+	    "whether a is one", {NUO("n", " %s", "n (alone)"),
+	    NUO("a", " %s", "a candidate (with modulus)"),
+	    RINGO(" in %s", "the ring"), RMOD}},
 	{"dlog", "dlog", 1, 0, "the discrete logarithm", {TX("a", " %s",
 	    "the value"), TXO("base", " base %s", "the base (default a "
 	    "primitive root)"), RING(" in %s", "the ring"), RMOD}},
@@ -1190,6 +1191,8 @@ struct req {
 	char err[600];
 	const char *ecode;
 	int nfunc;		/* function objects defined so far (it, that) */
+	int exprfn;		/* commands needing two functions (equiv, fit,
+				 * error): define a bare expression string first */
 };
 
 static int
@@ -1464,17 +1467,64 @@ render_params(struct req *r, struct sbuf *b, const struct jv *ps)
 	return 1;
 }
 
+/* a string the ucas grammar reads directly as a function: a name, or a
+ * typed application such as u32(x) (whose casts carry types we must keep) */
+static int
+fn_ref_ok(const char *s)
+{
+	const char *p, *q;
+
+	if (is_ident(s))
+		return 1;
+	for (p = s; *p == ' ' || *p == '\t'; p++)
+		;
+	if (isalpha((unsigned char)*p) || *p == '_') {
+		for (q = p; isalnum((unsigned char)*q) || *q == '_'; q++)
+			;
+		while (*q == ' ' || *q == '\t')
+			q++;
+		if (*q == '(')
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ * equiv/fit/error take two functions, and a bare expression string is not
+ * something the ucas grammar reads as a function.  Define it first with its
+ * parameters inferred from its free variables ("ff = (x*y)^5"), as the parser
+ * does for an anonymous function.  Names and typed applications are passed
+ * through unchanged.
+ */
+static int
+render_expr_func(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s = v->s;
+	char nm[24];
+
+	if (!text_ok(r, what, s))
+		return 0;
+	if (fn_ref_ok(s))
+		return sb_puts(b, s), 1;
+	snprintf(nm, sizeof nm, "_eq%d", r->nfunc++ & 1);
+	sb_printf(&r->pre, "%s = %s\n", nm, s);
+	return sb_puts(b, nm), 1;
+}
+
 /* a function argument; an object is defined first (as it, that, ...) */
 static int
 render_func(struct req *r, struct sbuf *b, const struct jv *v,
     const char *what)
 {
 	static const char *const names[] = {"it", "that", "it3", "it4"};
-	const struct jv *body, *ps;
+	const struct jv *body, *ps, *w;
 	const char *nm;
+	int k;
 
 	if (v->t == J_STR)
-		return text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
+		return r->exprfn ? render_expr_func(r, b, v, what) :
+		    text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
 	if (v->t != J_OBJ || (body = jv_get(v, "body")) == NULL) {
 		if (v->t == J_OBJ && (jv_get(v, "op") || jv_get(v, "var") ||
 		    jv_get(v, "num") || jv_get(v, "expr")))
@@ -1493,8 +1543,43 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	sb_puts(&r->pre, " = ");
 	if (!render_expr(r, &r->pre, body, what, 1))
 		return 0;
+	if ((w = jv_get(v, "where")) != NULL) {
+		if (w->t != J_ARR)
+			return bad(r, "bad_request", "%s.where: an array of strings",
+			    what);
+		for (k = 0; k < w->n; k++) {
+			if (w->v[k]->t != J_STR || !text_ok(r, what, w->v[k]->s))
+				return bad(r, "bad_request", "%s.where[%d]: a string",
+				    what, k);
+			sb_printf(&r->pre, "%s%s", k ? ", " : " where ", w->v[k]->s);
+		}
+	}
 	sb_putc(&r->pre, '\n');
 	sb_puts(b, nm);
+	return 1;
+}
+
+/*
+ * P_EXPRS is a comma-separated list of expressions (the ODE and its initial
+ * values for laplace_solve/zsolve).  A caller may pass one string with ';'
+ * between them; ';' is the global statement separator in ucas, so everything
+ * after the first one would be a separate statement and silently dropped.
+ * Write the list's own separator instead, leaving quoted text alone.
+ */
+static int
+render_exprs_str(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s;
+	int quote = 0;
+
+	if (!text_ok(r, what, v->s))
+		return 0;
+	for (s = v->s; *s; s++) {
+		if (*s == '"' && (s == v->s || s[-1] != '\\'))
+			quote = !quote;
+		sb_putc(b, !quote && *s == ';' ? ',' : *s);
+	}
 	return 1;
 }
 
@@ -1507,7 +1592,8 @@ render_list(struct req *r, struct sbuf *b, const struct jv *v,
 
 	if (v->t != J_ARR) {
 		if (p->type == P_EXPRS)
-			return render_expr(r, b, v, p->name, 1);
+			return v->t == J_STR ? render_exprs_str(r, b, v, p->name) :
+			    render_expr(r, b, v, p->name, 1);
 		if (v->t == J_STR && is_ident(v->s))
 			return sb_puts(b, v->s), 1;
 		return bad(r, "bad_request", "%s: an array", p->name);
@@ -2315,7 +2401,8 @@ static const char schema_defs[] =
 "that) and then named\", \"oneOf\": [{\"type\": \"string\"}, {\"type\": "
 "\"object\", \"required\": [\"body\"], \"properties\": {\"body\": "
 "{\"$ref\": \"#/$defs/expression\"}, \"params\": {\"$ref\": "
-"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}}, "
+"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}, "
+"\"where\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, "
 "\"additionalProperties\": false}, {\"$ref\": \"#/$defs/expression\"}]}}";
 
 static const char schema_response[] =
@@ -2818,6 +2905,8 @@ handle(const struct jv *rq)
 		    "them)", cmd);
 		return error_response(id, cmd, "unknown_command", m);
 	}
+	r.exprfn = !strcmp(cmd, "equiv") || !strcmp(cmd, "fit") ||
+	    !strcmp(cmd, "error");
 	a = jv_get(rq, "args");
 	if (a && a->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "\"args\" is an "
@@ -2833,6 +2922,15 @@ handle(const struct jv *rq)
 		    !strcmp(v->s, "both") ? REP_FILES_WRITE | REP_FILES_BASE64 :
 		    !strcmp(v->s, "none") ? 0 : REP_FILES_WRITE;
 	defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+	if (r.exprfn) {
+		/* Defining a bare expression infers its free variables exactly
+		 * as the CLI does; in JSON mode that guess is an ambiguity, so
+		 * take the default for these calls unless the client set one. */
+		const struct jv *fv = jv_get(a, "f"), *gv = jv_get(a, "g");
+		if ((fv && fv->t == J_STR && !fn_ref_ok(fv->s)) ||
+		    (gv && gv->t == J_STR && !fn_ref_ok(gv->s)))
+			defaults = 1;
+	}
 	if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "args.assume is an "
 		    "object {key: reading}");
@@ -2971,6 +3069,15 @@ handle(const struct jv *rq)
 	text = cap_end();
 	text = rep_text_cap(text);
 	rep_text_fill(text);
+	/*
+	 * English "forget everything" drops nlp.c's preferences on its own,
+	 * but leaves definitions, JSON assumptions and the model/basis
+	 * registries behind.  Treat it as a full reset, answered first and
+	 * restarted afterwards just like cmd:reset.
+	 */
+	if (!strcmp(cmd, "english") && text &&
+	    strstr(text, "forgot every assumption"))
+		reset_wanted = 1;
 	pieces = rep_collect();
 	if (!strcmp(cmd, "schema"))
 		;
@@ -3145,6 +3252,21 @@ self_exec(void)
 	_exit(1);
 }
 
+/*
+ * Drop the whole session and rebuild a fresh one: user functions (including
+ * the auto-named it / that / _), both assumption stores, the active cost
+ * model and custom bases/models all live in registries with no in-process
+ * clear, so restarting with the same argv (the prelude rebuilds the
+ * defaults) is the only complete reset.  cmd:reset reaches this through
+ * reset_wanted in json_serve(); this entry point is for other frontends'
+ * reset paths, such as a fresh MCP initialize handshake.
+ */
+void
+json_reset_all(void)
+{
+	self_exec();
+}
+
 static int chained;
 
 /*
@@ -3181,17 +3303,50 @@ chain_start(void)
 	chained = 1;
 }
 
+/* Write all n bytes, or fail. */
+static int
+wr_all(int fd, const void *p, size_t n)
+{
+	const char *b = p;
+	while (n) {
+		ssize_t k = write(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
+/* Read exactly n bytes, or fail. */
+static int
+rd_all(int fd, void *p, size_t n)
+{
+	char *b = p;
+	while (n) {
+		ssize_t k = read(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
 /* 1: this process is the child that ran the request (the new server) */
 static int
 run_with_timeout(const struct jv *rq, double secs)
 {
-	int sp[2], st;
+	int sp[2], st = 0;
 	pid_t pid;
 	struct pollfd pf;
 	struct timespec t0, t1;
 	char c;
 	struct jv *resp;
 	double left;
+	uint64_t rlen;
 
 	chain_start();
 	if (pipe(sp) != 0)
@@ -3204,11 +3359,28 @@ run_with_timeout(const struct jv *rq, double secs)
 		return -1;
 	}
 	if (pid == 0) {
+		/* Capture the reply in memory: the child must never write to
+		 * the shared stdout, or a late/partial write can desynchronise
+		 * the reply stream when the parent hits the deadline. */
+		char *rbuf = NULL; size_t rn = 0;
+		FILE *mem = open_memstream(&rbuf, &rn);
+		FILE *saved = jout;
 		close(sp[0]);
+		if (mem)
+			jout = mem;
 		resp = handle(rq);
 		respond(resp);
 		jv_free(resp);
-		(void)!write(sp[1], "k", 1);
+		fflush(NULL);
+		if (mem) {
+			fclose(mem);
+			jout = saved;
+		}
+		rlen = mem ? (uint64_t)rn : 0;
+		if (wr_all(sp[1], &rlen, sizeof rlen) == 0 &&
+		    (!mem || wr_all(sp[1], rbuf, rn) == 0))
+			(void)!wr_all(sp[1], "k", 1);
+		free(rbuf);
 		close(sp[1]);
 		if (reset_wanted && !oneshot)
 			self_exec();
@@ -3239,17 +3411,51 @@ run_with_timeout(const struct jv *rq, double secs)
 		pf.events = POLLIN;
 		if (poll(&pf, 1, (int)(left * 1000) + 1) <= 0)
 			continue;
-		if (read(sp[0], &c, 1) == 1)
-			_exit(0);   /* the child is the server now */
-		/* closed without the byte: it died */
-		waitpid(pid, &st, 0);
-		close(sp[0]);
 		{
+			/* reply from the child: [u64 length][bytes] then 'k'.
+			 * Only the parent writes to stdout: no partial or late
+			 * child writes can desynchronise the reply stream. */
+			char *rbuf = NULL;
+			if (rd_all(sp[0], &rlen, sizeof rlen) != 0 ||
+			    rlen > (1ULL << 30) ||
+			    (rlen && (rbuf = malloc((size_t)rlen)) == NULL)) {
+				kill(pid, SIGKILL);
+				waitpid(pid, NULL, 0);
+				close(sp[0]);
+				resp = error_response(jv_get(rq, "id"),
+				    jv_gets(rq, "cmd"), "internal",
+				    "worker reply was corrupt");
+				respond(resp);
+				jv_free(resp);
+				return 0;
+			}
+			if (rlen) {
+				rd_all(sp[0], rbuf, (size_t)rlen);
+				fwrite(rbuf, 1, (size_t)rlen, jout);
+				fflush(jout);
+				free(rbuf);
+			}
+			(void)read(sp[0], &c, 1);   /* 'k' */
+			_exit(0);   /* the child is the server now */
+		}
+		/* closed without the byte: it died.  If waitpid fails there is
+		 * no status to decode: st is unwritten, so reporting a signal
+		 * number from it would be fabricated. */
+		{
+			pid_t w = waitpid(pid, &st, 0);
+			close(sp[0]);
 			char m[120];
-			snprintf(m, sizeof m, "the evaluation crashed (%s %d); the "
-			    "state is unchanged", WIFSIGNALED(st) ? "signal" :
-			    "status", WIFSIGNALED(st) ? WTERMSIG(st) :
-			    WEXITSTATUS(st));
+			if (w > 0 && WIFSIGNALED(st))
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(signal %d); the state is unchanged",
+				    WTERMSIG(st));
+			else if (w > 0)
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(status %d); the state is unchanged",
+				    WEXITSTATUS(st));
+			else
+				snprintf(m, sizeof m, "the evaluation crashed; "
+				    "the state is unchanged");
 			resp = error_response(jv_get(rq, "id"), jv_gets(rq, "cmd"),
 			    "internal", m);
 		}
@@ -3270,9 +3476,27 @@ json_serve(const struct jv *rq)
 
 	a = jv_get(rq, "args");
 	t = jv_get(a, "timeout_s");
-	if (t && t->t == J_NUM && t->num > 0) {
+	if (t) {
+		if (t->t != J_NUM || !(t->num > 0) || t->num > 86400) {
+			resp = error_response(jv_get(rq, "id"),
+			    jv_gets(rq, "cmd"), "bad_request",
+			    "timeout_s must be a number in (0, 86400]");
+			respond(resp);
+			jv_free(resp);
+			return;
+		}
 		if (run_with_timeout(rq, t->num) >= 0)
 			return;
+		/* A pipe/fork failure made it impossible to put a wall-clock
+		 * bound on this request.  Running it inline would silently
+		 * ignore caller's timeout_s, so say so instead. */
+		resp = error_response(jv_get(rq, "id"),
+		    jv_gets(rq, "cmd"), "internal",
+		    "cannot start a timeout worker (pipe or fork failed); "
+		    "the request was not run");
+		respond(resp);
+		jv_free(resp);
+		return;
 	}
 	resp = handle(rq);
 	respond(resp);

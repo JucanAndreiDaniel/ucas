@@ -1,0 +1,15 @@
+> f_sum_reorder3(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1) = (a+b)+c
+> g_sum_reorder3(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1) = (a+c)+b
+> equiv f_sum_reorder3 g_sum_reorder3
+f_sum_reorder3 and g_sum_reorder3 differ at 1503 points of the sample, e.g. a=3.63960803e-35, b=-1.42293967e-30, c=3.21491235e-30: 1.79200898e-30 vs 1.79200916e-30
+> error g_sum_reorder3 ~ f_sum_reorder3
+error of g_sum_reorder3 against f_sum_reorder3:
+  max abs error 1.19209e-07 at a=0.030335553, b=0.984381258, c=0.00245187618
+  max rel error 2.21514e-05 (0.00222%) at a=-2.34276012e-17, b=-3.82874279e-20, c=2.34412365e-17
+  mean rel error 2.56019e-09 over 65536 points
+  max 338 ulp
+  rounding, first order in u = 2^-24: 2 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  1.01e-05 (169 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 671 u here (it gains from about 16 operations of similar weight on)
+    expected    5.78e-06 (96.9 u): the root mean square if they are independent and uniform in [-u, u]
+    for 2 operations of equal weight: gamma_2 = 2 u / (1 - 2 u) = 1.19e-07, gamma~_2(4) = 4 sqrt(2) u = 3.37e-07

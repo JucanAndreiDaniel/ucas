@@ -1,0 +1,42 @@
+> f(x: f32 in 0..1) = x*x
+> error f ~ sin
+  note: sin alone read as sin(x)
+error of f against sin(x):
+  max abs error 100.544 at x=10
+  max rel error 18573.1 (1.86e+06%) at x=-9.42
+  mean rel error 206.874 over 1001 points
+  max 2180859541 ulp
+  rounding, first order in u = 2^-24: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4095 inputs
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]
+> g(x: f32 in 0..1) = x*x + 0.5
+> error g ~ f
+error of g against f:
+  max abs error 0.5 at x=0.980212271
+  max rel error 3.56812e+44 (3.57e+46%) at x=4.25523058e-23
+  mean rel error 3.29221e+42 over 65536 points
+  max 1056964608 ulp
+  rounding, first order in u = 2^-24: 2 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  9.93e-08 (1.67 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4.81 u here (it gains from about 16 operations of similar weight on)
+    expected    4.14e-08 (0.694 u): the root mean square if they are independent and uniform in [-u, u]
+    for 2 operations of equal weight: gamma_2 = 2 u / (1 - 2 u) = 1.19e-07, gamma~_2(4) = 4 sqrt(2) u = 3.37e-07
+> q(x: f32 in 0..1) = x*x
+> error q ~ q
+error of q against q:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding, first order in u = 2^-24: 1 rounded operation, each taken as correctly rounded; relative to the value, the largest over 4095 inputs
+    worst case  5.96e-08 (1 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 4 u here (it gains from about 16 operations of similar weight on)
+    expected    3.44e-08 (0.577 u): the root mean square if they are independent and uniform in [-u, u]
+> f32u(x: f32 in 0..1) = x*x
+> u8f(x: u8)=x*x
+> error u8f ~ f32u
+error of u8f against f32u:
+  max abs error 0.999984 at x=0.999991775
+  max rel error 1 (100%) at x=3.01312484e-05
+  mean rel error 0.586792 over 65536 points

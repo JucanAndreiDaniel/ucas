@@ -1,0 +1,15 @@
+> f_racer_recon(x: f32 in 0.01..100) = (1/(1/sqrt(x+f32(1e-9)))^2) - f32(1e-9)
+> g_racer_recon(x: f32 in 0.01..100) = (1/(1/sqrt(x+f32(1e-9)))^2) + f32(1e-9)
+> equiv f_racer_recon g_racer_recon
+f_racer_recon and g_racer_recon differ at 8356 points of the sample, e.g. x=0.0100000007: 0.0100000007 vs 0.0100000026
+> error g_racer_recon ~ f_racer_recon
+error of g_racer_recon against f_racer_recon:
+  max abs error 3.72529e-09 at x=0.0194394961
+  max rel error 2.38418e-07 (2.38e-05%) at x=0.0156250354
+  mean rel error 2.00886e-08 over 65536 points
+  max 2 ulp
+  rounding, first order in u = 2^-24: 6 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  4.77e-07 (8 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 13.9 u here (it gains from about 16 operations of similar weight on)
+    expected    1.19e-07 (2 u): the root mean square if they are independent and uniform in [-u, u]
+    for 6 operations of equal weight: gamma_6 = 6 u / (1 - 6 u) = 3.58e-07, gamma~_6(4) = 4 sqrt(6) u = 5.84e-07

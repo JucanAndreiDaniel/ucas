@@ -1,0 +1,23 @@
+# Model inheritance: multi-level chains, empty derived models, sibling models,
+# nofuse, duplicate definitions, and a built-in model overridden in place.
+f(x: u32) = x*7 + 11
+g(x: f32, y: f32, z: f32) = x*y + z
+model a : gt1030 { imul: 5 }
+model b : a { iadd: 7 }
+model c : b { fadd: 9 }
+cost f model c
+cost f model b
+cost g model c
+model empty : gt1030 { }
+cost f model empty
+model bare { iadd: 1 }
+cost f model bare
+model sib1 : gt1030 { imul: 2 }
+model sib2 : gt1030 { iadd: 3 }
+cost f model sib1
+cost f model sib2
+model nf : gt1030 { nofuse imad }
+cost f model nf
+model a2 : gt1030 { imul: 4 }
+model b2 : a2 { nofuse imad }
+cost f model b2

@@ -1,0 +1,11 @@
+# Cost of wide bit operations under the default and a custom model.
+c1(x: u32) = (x << 3) | (x >> 5)
+cost c1
+c2(x: u32, n: u32 in 0..31) = (x << n) | (x >> (32 - n))
+cost c2
+c3(x: u64) = popcount(x)
+cost c3
+c4(x: u32) = x / 7
+cost c4
+model cheap : gt1030 { shift: 0.25, logic: 0.5 }
+cost c2 model cheap

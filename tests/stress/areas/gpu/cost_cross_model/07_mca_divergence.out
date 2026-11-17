@@ -1,0 +1,77 @@
+> d(x: u32, y: u32) = x / y
+> r(x: u32, y: u32) = x % y
+> cost d model zen4
+cost of d under zen4: 14 (1 operations, shared subterms counted once)
+  idiv             1 x 14    = 14
+> mca d on zen4
+mca of d on zen4 (znver4)
+  straight-line code: 1 instruction, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    12     6    2  ALU1      
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU1 7.00
+  bounds: critical path 12.00, ports 7.00 (ALU1), front end 0.33 (2 uops / 6)
+  simulated: 18.00 cycles, limited by the critical path
+> mca r on zen4
+mca of r on zen4 (znver4)
+  straight-line code: 1 instruction, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x % y                  12     6    2  ALU1      
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU1 7.00
+  bounds: critical path 12.00, ports 7.00 (ALU1), front end 0.33 (2 uops / 6)
+  simulated: 18.00 cycles, limited by the critical path
+> mca d on zen2
+mca of d on zen2 (znver2)
+  straight-line code: 1 instruction, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    12     6    2  ALU1      
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU1 7.00
+  bounds: critical path 12.00, ports 7.00 (ALU1), front end 0.50 (2 uops / 4)
+  simulated: 18.00 cycles, limited by the critical path
+> mca d on skl
+mca of d on skl (skylake)
+  straight-line code: 1 instruction, 10 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    26     6   10  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 6.00 p1 3.00 p5 3.00 p6 3.00
+  bounds: critical path 26.00, ports 6.00 (p0), front end 2.50 (10 uops / 4)
+  simulated: 28.00 cycles, limited by the critical path
+> mca d on x86v4
+mca of d on x86v4 (x86-64-v4)
+  straight-line code: 1 instruction, 10 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    26     6   10  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 6.00 p1 3.00 p5 3.00 p6 3.00
+  bounds: critical path 26.00, ports 6.00 (p0), front end 2.50 (10 uops / 4)
+  simulated: 28.00 cycles, limited by the critical path
+> mca d on glc
+mca of d on glc (goldencove)
+  straight-line code: 1 instruction, 4 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    12     6    4  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 6.00 p1 1.00 p5 1.00 p6 1.00
+  bounds: critical path 12.00, ports 6.00 (p0), front end 0.67 (4 uops / 6)
+  simulated: 12.00 cycles, limited by the critical path
+> mca d on rpl
+mca of d on rpl (raptorlake)
+  straight-line code: 1 instruction, 4 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    12     6    4  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 6.00 p1 1.00 p5 1.00 p6 1.00
+  bounds: critical path 12.00, ports 6.00 (p0), front end 0.67 (4 uops / 6)
+  simulated: 12.00 cycles, limited by the critical path
+> mca d on x86v2
+mca of d on x86v2 (x86-64-v2)
+  straight-line code: 1 instruction, 10 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  div r32   x/y                    26     6   10  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 6.00 p1 3.00 p5 3.00 p6 3.00
+  bounds: critical path 26.00, ports 6.00 (p0), front end 2.50 (10 uops / 4)
+  simulated: 28.00 cycles, limited by the critical path

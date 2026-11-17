@@ -1,0 +1,56 @@
+> q(a: u32, b: u32) = a + b
+> find q 1 snippets fx_empty
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:2:27: error: snippets: fx_empty.snip does not start with a ucas snippets line
+    find q 1 snippets fx_empty
+                              ^
+> find q 1 snippets fx_hdronly
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:3:29: error: snippets: fx_hdronly.snip has no levels line
+    find q 1 snippets fx_hdronly
+                                ^
+> find q 1 snippets fx_nolvls
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:4:28: error: snippets: fx_nolvls.snip has no levels line
+    find q 1 snippets fx_nolvls
+                               ^
+> find q 1 snippets fx_badver
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:5:28: error: snippets: fx_badver.snip is version 2 with 32 points, 2 inputs of 32 bits; this ucas reads version 1 with 32 points, 1 to 3 inputs of 8, 16 or 32 bits
+    find q 1 snippets fx_badver
+                               ^
+> find q 1 snippets fx_badpts
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:6:28: error: snippets: fx_badpts.snip is version 1 with 31 points, 2 inputs of 32 bits; this ucas reads version 1 with 32 points, 1 to 3 inputs of 8, 16 or 32 bits
+    find q 1 snippets fx_badpts
+                               ^
+> find q 1 snippets fx_badnin4
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:7:29: error: snippets: fx_badnin4.snip is version 1 with 32 points, 4 inputs of 32 bits; this ucas reads version 1 with 32 points, 1 to 3 inputs of 8, 16 or 32 bits
+    find q 1 snippets fx_badnin4
+                                ^
+> find q 1 snippets fx_badnin0
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:8:29: error: snippets: fx_badnin0.snip is version 1 with 32 points, 0 inputs of 32 bits; this ucas reads version 1 with 32 points, 1 to 3 inputs of 8, 16 or 32 bits
+    find q 1 snippets fx_badnin0
+                                ^
+> find q 1 snippets fx_badw64
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:9:28: error: snippets: fx_badw64.snip is version 1 with 32 points, 2 inputs of 64 bits; this ucas reads version 1 with 32 points, 1 to 3 inputs of 8, 16 or 32 bits
+    find q 1 snippets fx_badw64
+                               ^
+> find q 1 snippets fx_badw16
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: not consulted: it holds programs of 16-bit inputs, a is u32
+  cost 1   a + b                                    exact (proved by SAT)
+  [searched every term up to cost 1: 106 distinct columns; 'more' continues]
+> find q 1 snippets fx_nohdr
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:11:27: error: snippets: fx_nohdr.snip does not start with a ucas snippets line
+    find q 1 snippets fx_nohdr
+                              ^
+> find q 1 snippets fx_garbage
+find q: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+07_malformed_header.ucas:12:29: error: snippets: fx_garbage.snip does not start with a ucas snippets line
+    find q 1 snippets fx_garbage
+                                ^

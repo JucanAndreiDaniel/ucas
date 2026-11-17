@@ -1,0 +1,11 @@
+# WRONG (related): `error` treats a where/range-restricted approximation as if
+# it were total: bad_points 0 and "max abs error 0" over the target's full
+# domain.  Body-level undefinedness (the match) IS counted.  Compare the two.
+f(x: u8) = x
+gw(x: u8) = x where x < 5
+gr(x: u8 in 0..7) = x
+gm(x: u4) = match x { 0=>0, 1=>1 }
+error gw ~ f
+error gr ~ f
+error gm ~ f
+error f ~ gw

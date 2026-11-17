@@ -1,0 +1,22 @@
+> complex (1+2i)/(3-i)
+(1+2i)/(3-i) = 1/10 + 7i/10
+  Re = 1/10,  Im = 7/10
+  check: equal numerically (0.1 + 0.7i, complex arithmetic)
+> polar x + i y
+  note: i is the imaginary unit; x, y are taken as real
+x + i y = sqrt(x^2 + y^2)*e^(i*atan2(y, x))
+  = sqrt(x^2 + y^2)*(cos(atan2(y, x)) + i*sin(atan2(y, x)))
+  r = |z| = sqrt(x^2 + y^2),  theta = arg z = atan2(y, x)
+  theta is the principal argument, -pi < theta <= pi; undefined where x = y = 0
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
+  check: equal at 64 of 64 sample points (max relative difference 3e-16)
+> trig sin(x) cos(x)
+  note: x is taken as real
+trig forms of sin(x) cos(x)
+  product to sum: sin a cos b = (sin(a + b) + sin(a - b))/2, cos a cos b = (cos(a - b) + cos(a + b))/2, sin a sin b = (cos(a - b) - cos(a + b))/2
+    = sin(2x)/2
+    check: equal at 64 of 64 sample points (max relative difference 6e-17)
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i), cos u = (e^(iu) + e^(-iu))/2
+    = (exp(i*x) - exp(-i*x))*(exp(i*x) + exp(-i*x))/(4*i)
+    check: equal at 64 of 64 sample points
+  simplest: sin(2x)/2  (product to sum)

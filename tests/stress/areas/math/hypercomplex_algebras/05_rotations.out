@@ -1,0 +1,197 @@
+> rotate (1, 0, 0) by 1
+rotate (1, 0, 0) by the quaternion 1:
+  q = 1: a rotation by 0 about (0, 0, 1)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = i
+  rotated: (1, 0, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [1, 0, 0]
+    [0, 1, 0]
+    [0, 0, 1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by i
+rotate (1, 0, 0) by the quaternion i:
+  q = i: a rotation by pi about (1, 0, 0)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = i
+  rotated: (1, 0, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [1, 0, 0]
+    [0, -1, 0]
+    [0, 0, -1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by (1+i)/sqrt(2)
+rotate (1, 0, 0) by the quaternion sqrt(2)/2 + i*sqrt(2)/2:
+  q = sqrt(2)/2 + i*sqrt(2)/2: a rotation by pi/2 about (1, 0, 0)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = i
+  rotated: (1, 0, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [1, 0, 0]
+    [0, 0, -1]
+    [0, 1, 0]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by (1+j)/sqrt(2)
+rotate (1, 0, 0) by the quaternion sqrt(2)/2 + j*sqrt(2)/2:
+  q = sqrt(2)/2 + j*sqrt(2)/2: a rotation by pi/2 about (0, 1, 0)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = -k
+  rotated: (0, 0, -1)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, 0, 1]
+    [0, 1, 0]
+    [-1, 0, 0]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by (1+k)/sqrt(2)
+rotate (1, 0, 0) by the quaternion sqrt(2)/2 + k*sqrt(2)/2:
+  q = sqrt(2)/2 + k*sqrt(2)/2: a rotation by pi/2 about (0, 0, 1)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = j
+  rotated: (0, 1, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (0, 1, 0) by (1+k)/sqrt(2)
+rotate (0, 1, 0) by the quaternion sqrt(2)/2 + k*sqrt(2)/2:
+  q = sqrt(2)/2 + k*sqrt(2)/2: a rotation by pi/2 about (0, 0, 1)
+  v = j (the vector as a pure quaternion)
+  q v q^-1 = -i
+  rotated: (-1, 0, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 2, 3) by 1+i+j+k
+rotate (1, 2, 3) by the quaternion 1 + i + j + k:
+  note: q is not a unit quaternion (|q| = 2): normalised
+  q = 1/2 + i/2 + j/2 + k/2: a rotation by 2pi/3 about (sqrt(3)/3, sqrt(3)/3, sqrt(3)/3)
+  v = i + 2j + 3k (the vector as a pure quaternion)
+  q v q^-1 = 3i + j + 2k
+  rotated: (3, 1, 2)
+  check: |v'| = |v| = sqrt(14), the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, 0, 1]
+    [1, 0, 0]
+    [0, 1, 0]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by 90 degrees about z
+rotate (1, 0, 0) by pi/2 about (0, 0, 1):
+  q = cos(theta/2) + sin(theta/2) u, u the unit axis
+  q = sqrt(2)/2 + k*sqrt(2)/2: a rotation by pi/2 about (0, 0, 1)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = j
+  rotated: (0, 1, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by pi/2 about (1, 1, 1)
+rotate (1, 0, 0) by pi/2 about (1, 1, 1):
+  q = cos(theta/2) + sin(theta/2) u, u the unit axis
+  q = sqrt(2)/2 + i*sqrt(6)/6 + j*sqrt(6)/6 + k*sqrt(6)/6: a rotation by pi/2 about (sqrt(3)/3, sqrt(3)/3, sqrt(3)/3)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = i/3 + j*(1 + sqrt(3))/3 + k*(1 - sqrt(3))/3
+  rotated: (1/3, (1 + sqrt(3))/3, (1 - sqrt(3))/3)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [1/3, (1 - sqrt(3))/3, (1 + sqrt(3))/3]
+    [(1 + sqrt(3))/3, 1/3, (1 - sqrt(3))/3]
+    [(1 - sqrt(3))/3, (1 + sqrt(3))/3, 1/3]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> rotate (1, 0, 0) by pi about x
+rotate (1, 0, 0) by pi about (1, 0, 0):
+  q = cos(theta/2) + sin(theta/2) u, u the unit axis
+  q = i: a rotation by pi about (1, 0, 0)
+  v = i (the vector as a pure quaternion)
+  q v q^-1 = i
+  rotated: (1, 0, 0)
+  check: |v'| = |v| = 1, the real part is 0, and the rotation matrix gives the same vector
+  rotation matrix:
+    [1, 0, 0]
+    [0, -1, 0]
+    [0, 0, -1]
+  (right-handed: counterclockwise looking down the axis towards the origin; -q gives the same rotation)
+> axisangle (0, 0, 1), 90 degrees
+the rotation by pi/2 about (0, 0, 1):
+  q = cos(theta/2) + sin(theta/2) u = sqrt(2)/2 + k*sqrt(2)/2
+  rotation matrix:
+    [0, -1, 0]
+    [1, 0, 0]
+    [0, 0, 1]
+> axisangle (1, 1, 1), pi/2
+the rotation by pi/2 about (1, 1, 1):
+  q = cos(theta/2) + sin(theta/2) u = sqrt(2)/2 + i*sqrt(6)/6 + j*sqrt(6)/6 + k*sqrt(6)/6
+  rotation matrix:
+    [1/3, (1 - sqrt(3))/3, (1 + sqrt(3))/3]
+    [(1 + sqrt(3))/3, 1/3, (1 - sqrt(3))/3]
+    [(1 - sqrt(3))/3, (1 + sqrt(3))/3, 1/3]
+> axisangle 1+i
+  note: q is not a unit quaternion (|q| = sqrt(2)): normalised
+sqrt(2)/2 + i*sqrt(2)/2 = cos(theta/2) + sin(theta/2) u:
+  theta = pi/2 (90 degrees), axis u = (1, 0, 0)
+> axisangle 1+i+j+k
+  note: q is not a unit quaternion (|q| = 2): normalised
+1/2 + i/2 + j/2 + k/2 = cos(theta/2) + sin(theta/2) u:
+  theta = 2pi/3 (120 degrees), axis u = (sqrt(3)/3, sqrt(3)/3, sqrt(3)/3)
+> rotmatrix 1+i+j+k
+  note: q is not a unit quaternion (|q| = 2): normalised
+the rotation matrix of 1/2 + i/2 + j/2 + k/2 (v -> q v q^-1):
+  [0, 0, 1]
+  [1, 0, 0]
+  [0, 1, 0]
+> rotmatrix (1+k)/sqrt(2)
+the rotation matrix of sqrt(2)/2 + k*sqrt(2)/2 (v -> q v q^-1):
+  [0, -1, 0]
+  [1, 0, 0]
+  [0, 0, 1]
+> rotmatrix 0
+05_rotations.ucas:17:1: error: the zero quaternion is not a rotation
+    rotmatrix 0
+    ^
+> frommatrix 0, -1, 0, 1, 0, 0, 0, 0, 1
+the unit quaternion of the rotation matrix: q = sqrt(2)/2 + k*sqrt(2)/2 (or -q)
+  check: q's matrix equals the given one (max difference 2e-16)
+> frommatrix -1/3, 2/3, 2/3, 2/3, -1/3, 2/3, 2/3, 2/3, -1/3
+the unit quaternion of the rotation matrix: q = i*sqrt(3)/3 + j*sqrt(3)/3 + k*sqrt(3)/3 (or -q)
+  check: q's matrix equals the given one (max difference 6e-17)
+> frommatrix 1, 2, 3, 4, 5, 6, 7, 8, 9
+05_rotations.ucas:20:1: error: frommatrix: not a rotation (M^T M = I and det M = 1 needed; det = 0)
+    frommatrix 1, 2, 3, 4, 5, 6, 7, 8, 9
+    ^
+> slerp 1, k, 1/2
+slerp(1, k, 1/2) = sqrt(2)/2 + k*sqrt(2)/2
+  the arc between them on the unit sphere: a = pi/2 (a rotation by pi); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = sqrt(2)/2 + k*sqrt(2)/2: the same
+> slerp 1, k, 0
+slerp(1, k, 0) = 1
+  the arc between them on the unit sphere: a = pi/2 (a rotation by pi); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = 1: the same
+> slerp 1, k, 1
+slerp(1, k, 1) = k
+  the arc between them on the unit sphere: a = pi/2 (a rotation by pi); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = k: the same
+> slerp 1, 1, 1/2
+slerp(1, 1, 1/2) = 1
+  the arc between them on the unit sphere: a = 0 (a rotation by 0); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = 1: the same
+> slerp 1, -1, 1/2
+  note: q1 . q2 < 0: q2 replaced by -q2 (the same rotation), so the path is the shorter arc
+slerp(1, 1, 1/2) = 1
+  the arc between them on the unit sphere: a = 0 (a rotation by 0); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = 1: the same
+> slerp 1+i, 1+j, 1/3
+  note: q is not a unit quaternion (|q| = sqrt(2)): normalised
+slerp(sqrt(2)/2 + i*sqrt(2)/2, sqrt(2)/2 + j*sqrt(2)/2, 1/3) = 0.8040921632 + 0.5248338856i + 0.2792582776j
+  the arc between them on the unit sphere: a = pi/3 (a rotation by 2pi/3); slerp = (sin((1-t)a) q1 + sin(ta) q2)/sin(a)
+  check: |slerp| = 1, and q1 (q1^-1 q2)^t = 0.8040921632 + 0.5248338856i + 0.2792582776j: the same

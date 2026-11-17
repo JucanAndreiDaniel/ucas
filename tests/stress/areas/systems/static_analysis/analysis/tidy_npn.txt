@@ -1,0 +1,336 @@
+/home/andrew/Code/ucas/src/npn.c:24:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   24 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   25 | #include "fuse.h"
+/home/andrew/Code/ucas/src/npn.c:35:2: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+   28 | #include <stdlib.h>
+   29 | #include <string.h>
+   30 | 
+   31 | #define NPN_MAXL 4              /* tables in a class's network (3 suffice) */
+   32 | #define NPN_CLASSES 222
+   33 | 
+   34 | struct ncls {
+   35 |         uint16_t rep;           /* the class's least truth table */
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:36:2: warning: no header providing "int8_t" is directly included [misc-include-cleaner]
+   36 |         int8_t n;               /* tables */
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:39:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   39 |         uint8_t a[NPN_MAXL][3]; /* each table's arguments, as out */
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:50:2: warning: no header providing "int16_t" is directly included [misc-include-cleaner]
+   50 |         int16_t ix[65536];      /* class + 1, by representative */
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:53:9: warning: no header providing "basis" is directly included [misc-include-cleaner]
+   27 |         struct basis lut3;
+      |                ^
+/home/andrew/Code/ucas/src/npn.c:87:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                                 if (((m >> i) & 1) ^ ((t % 16 >> i) & 1))
+      |                                     ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:87:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                                 if (((m >> i) & 1) ^ ((t % 16 >> i) & 1))
+      |                                      ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:87:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                                 if (((m >> i) & 1) ^ ((t % 16 >> i) & 1))
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/npn.c:87:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                                 if (((m >> i) & 1) ^ ((t % 16 >> i) & 1))
+      |                                                       ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:87:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   87 |                                 if (((m >> i) & 1) ^ ((t % 16 >> i) & 1))
+      |                                                        ^~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:88:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   88 |                                         z |= 1 << g_npn.perm[t / 16][i];
+      |                                         ^ ~~
+/home/andrew/Code/ucas/src/npn.c:88:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   88 |                                         z |= 1 << g_npn.perm[t / 16][i];
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/npn.c:91:20: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+   91 |         g_npn.lut3.name = sym_cstr("lut3");
+      |                           ^
+/home/andrew/Code/ucas/src/npn.c:97:25: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+   97 |         g_npn.lut3.g[0].body = mk_const_i(TY(K_UINT, 1), 0);
+      |                                ^
+/home/andrew/Code/ucas/src/npn.c:97:36: warning: no header providing "TY" is directly included [misc-include-cleaner]
+   97 |         g_npn.lut3.g[0].body = mk_const_i(TY(K_UINT, 1), 0);
+      |                                           ^
+/home/andrew/Code/ucas/src/npn.c:97:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:97:39: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   97 |         g_npn.lut3.g[0].body = mk_const_i(TY(K_UINT, 1), 0);
+      |                                              ^
+/home/andrew/Code/ucas/src/npn.c:98:2: warning: no header providing "basis_finish_gate" is directly included [misc-include-cleaner]
+   98 |         basis_finish_gate(&g_npn.lut3, &g_npn.lut3.g[0]);
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:114:19: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  114 |                                 k = (uint8_t)~l;
+      |                                              ~^
+/home/andrew/Code/ucas/src/npn.c:117:21: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  117 |                                         g_npn.xop[k] = O_NOT;
+      |                                                        ^
+/home/andrew/Code/ucas/src/npn.c:122:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                                         int s, o, v[3] = {l & r, l | r, l ^ r};
+      |                                                           ^ ~
+/home/andrew/Code/ucas/src/npn.c:122:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                                         int s, o, v[3] = {l & r, l | r, l ^ r};
+      |                                                                  ^ ~
+/home/andrew/Code/ucas/src/npn.c:122:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                                         int s, o, v[3] = {l & r, l | r, l ^ r};
+      |                                                                         ^ ~
+/home/andrew/Code/ucas/src/npn.c:123:33: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  123 |                                         static const int ops[3] = {O_AND, O_OR, O_XOR};
+      |                                                                    ^
+/home/andrew/Code/ucas/src/npn.c:123:40: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  123 |                                         static const int ops[3] = {O_AND, O_OR, O_XOR};
+      |                                                                           ^
+/home/andrew/Code/ucas/src/npn.c:123:46: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  123 |                                         static const int ops[3] = {O_AND, O_OR, O_XOR};
+      |                                                                                 ^
+/home/andrew/Code/ucas/src/npn.c:149:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  149 |                 if ((f >> g_npn.map[t][m]) & 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:150:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  150 |                         g |= (uint16_t)(1u << m);
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/npn.c:158:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  158 |         uint32_t best = 0x10000;
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:183:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  183 |                 if ((tt >> (m ^ (1 << k))) & 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:183:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  183 |                 if ((tt >> (m ^ (1 << k))) & 1)
+      |                         ~~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/npn.c:183:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  183 |                 if ((tt >> (m ^ (1 << k))) & 1)
+      |                             ^ ~
+/home/andrew/Code/ucas/src/npn.c:183:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  183 |                 if ((tt >> (m ^ (1 << k))) & 1)
+      |                                  ^ ~~
+/home/andrew/Code/ucas/src/npn.c:184:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  184 |                         r |= (uint8_t)(1u << m);
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/npn.c:198:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         if ((m >> i) & 1)
+      |                             ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:198:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  198 |                         if ((m >> i) & 1)
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/npn.c:199:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  199 |                                 v[i] |= (uint16_t)(1u << m);
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/npn.c:206:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                                 x |= ((v[c->a[i][k]] >> m) & 1) << k;
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/npn.c:206:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                                 x |= ((v[c->a[i][k]] >> m) & 1) << k;
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:206:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                                 x |= ((v[c->a[i][k]] >> m) & 1) << k;
+      |                                       ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:206:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                                 x |= ((v[c->a[i][k]] >> m) & 1) << k;
+      |                                                      ~~ ^
+/home/andrew/Code/ucas/src/npn.c:207:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                         if ((c->tt[i] >> x) & 1)
+      |                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:207:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                         if ((c->tt[i] >> x) & 1)
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/npn.c:208:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |                                 v[4 + i] |= (uint16_t)(1u << m);
+      |                                                           ~~ ^
+/home/andrew/Code/ucas/src/npn.c:211:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  211 |         return (uint16_t)((c->out < 0 ? 0 : v[c->out]) ^ (inv ? 0xffff : 0));
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:219:9: warning: no header providing "gprog" is directly included [misc-include-cleaner]
+  219 |         struct gprog gp;
+      |                ^
+/home/andrew/Code/ucas/src/npn.c:225:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  225 |                 fail("npn: more than %d classes of 4-input functions (the "
+      |                 ^
+/home/andrew/Code/ucas/src/npn.c:242:10: warning: no header providing "gates_synth" is directly included [misc-include-cleaner]
+  242 |                 cost = gates_synth(&g_npn.lut3, 4, rep, 0xffff, 3, 1ULL << 24,
+      |                        ^
+/home/andrew/Code/ucas/src/npn.c:242:62: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  242 |                 cost = gates_synth(&g_npn.lut3, 4, rep, 0xffff, 3, 1ULL << 24,
+      |                                                                         ~~ ^~
+/home/andrew/Code/ucas/src/npn.c:257:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                                 t0 |= (uint8_t)(((rep >> m) & 1) << m);
+      |                                                 ^~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:257:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                                 t0 |= (uint8_t)(((rep >> m) & 1) << m);
+      |                                                  ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:257:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                                 t0 |= (uint8_t)(((rep >> m) & 1) << m);
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/npn.c:258:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |                                 t1 |= (uint8_t)(((rep >> (m + 8)) & 1) << m);
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:258:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |                                 t1 |= (uint8_t)(((rep >> (m + 8)) & 1) << m);
+      |                                                  ^~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:258:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |                                 t1 |= (uint8_t)(((rep >> (m + 8)) & 1) << m);
+      |                                                       ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/npn.c:310:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                         if ((t % 16 >> a) & 1)
+      |                             ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:310:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                         if ((t % 16 >> a) & 1)
+      |                              ^~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:317:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  317 |                 *inv = o ^ c->inv ^ ((t % 16 >> c->out) & 1);
+      |                        ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:317:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  317 |                 *inv = o ^ c->inv ^ ((t % 16 >> c->out) & 1);
+      |                                      ^~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:317:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  317 |                 *inv = o ^ c->inv ^ ((t % 16 >> c->out) & 1);
+      |                                       ^~~~~~ ~~
+/home/andrew/Code/ucas/src/npn.c:323:9: warning: comparison between 'signed char' and 'unsigned char' [bugprone-signed-char-misuse]
+  323 |                                 if (out->a[i][k] == c->out)
+      |                                     ^
+/home/andrew/Code/ucas/src/npn.c:335:9: warning: no header providing "nid" is directly included [misc-include-cleaner]
+  335 | bitwise(nid n)
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:337:11: warning: no header providing "N" is directly included [misc-include-cleaner]
+  337 |         int op = N.op[n];
+      |                  ^
+/home/andrew/Code/ucas/src/npn.c:339:9: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  339 |         return TY_ISINT(N.ty[n]) && N.ty[n] != TY_BOOL && TY_SIZED(N.ty[n]) &&
+      |                ^
+/home/andrew/Code/ucas/src/npn.c:339:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/npn.c:339:41: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  339 |         return TY_ISINT(N.ty[n]) && N.ty[n] != TY_BOOL && TY_SIZED(N.ty[n]) &&
+      |                                                ^
+/home/andrew/Code/ucas/src/npn.c:339:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:339:52: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+  339 |         return TY_ISINT(N.ty[n]) && N.ty[n] != TY_BOOL && TY_SIZED(N.ty[n]) &&
+      |                                                           ^
+/home/andrew/Code/ucas/src/npn.c:339:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/npn.c:388:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  388 |         switch (N.op[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:397:33: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  397 | x3_expr(int tt, const nid *arg, ty_t t)
+      |                                 ^
+/home/andrew/Code/ucas/src/npn.c:404:10: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  404 |                 return mk_un(O_NOT, x3_expr(g_npn.xl[tt], arg, t));
+      |                        ^
+/home/andrew/Code/ucas/src/npn.c:405:9: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  405 |         return mk_bin(op, x3_expr(g_npn.xl[tt], arg, t), x3_expr(g_npn.xr[tt],
+      |                ^
+/home/andrew/Code/ucas/src/npn.c:425:41: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  425 |                 return mk_un(O_NOT, x3_expr((uint8_t)~tt, arg, t));
+      |                                                      ~^~
+/home/andrew/Code/ucas/src/npn.c:429:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |                 if ((tt >> (m & ~(1 << k))) & 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:429:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |                 if ((tt >> (m & ~(1 << k))) & 1)
+      |                      ^~ ~~
+/home/andrew/Code/ucas/src/npn.c:429:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |                 if ((tt >> (m & ~(1 << k))) & 1)
+      |                             ^ ~
+/home/andrew/Code/ucas/src/npn.c:429:20: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  429 |                 if ((tt >> (m & ~(1 << k))) & 1)
+      |                                 ~^~~~~~~~
+/home/andrew/Code/ucas/src/npn.c:429:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |                 if ((tt >> (m & ~(1 << k))) & 1)
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/npn.c:430:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  430 |                         g0 |= (uint8_t)(1u << m);
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/npn.c:431:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 if ((tt >> (m | (1 << k))) & 1)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/npn.c:431:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 if ((tt >> (m | (1 << k))) & 1)
+      |                      ^~ ~~
+/home/andrew/Code/ucas/src/npn.c:431:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 if ((tt >> (m | (1 << k))) & 1)
+      |                             ^ ~
+/home/andrew/Code/ucas/src/npn.c:431:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 if ((tt >> (m | (1 << k))) & 1)
+      |                                  ^ ~~
+/home/andrew/Code/ucas/src/npn.c:432:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  432 |                         g1 |= (uint8_t)(1u << m);
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/npn.c:467:17: warning: no header providing "model_active" is directly included [misc-include-cleaner]
+  467 |         if (fuse_lut_k(model_active()) < 3)
+      |                        ^
+/home/andrew/Code/ucas/src/npn.c:470:9: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  470 |         mark = xcalloc(lim, 1);
+      |                ^
+/home/andrew/Code/ucas/src/npn.c:472:7: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  472 |         st = xmalloc(((size_t)lim * 3 + N.nlst + 4) * sizeof *st);
+      |              ^
+/home/andrew/Code/ucas/src/npn.c:489:10: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  489 |                 struct sbuf pf = {0};
+      |                        ^
+/home/andrew/Code/ucas/src/npn.c:496:18: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  496 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF ||
+      |                                ^
+/home/andrew/Code/ucas/src/npn.c:496:40: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  496 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF ||
+      |                                                      ^
+/home/andrew/Code/ucas/src/npn.c:496:60: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+  496 |                 if (N.op[n] == O_CONST || N.op[n] == O_VAR || N.op[n] == O_UNDEF ||
+      |                                                                          ^
+/home/andrew/Code/ucas/src/npn.c:497:18: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  497 |                     N.op[n] == O_TABLE || N.op[n] == O_LOOP)
+      |                                ^
+/home/andrew/Code/ucas/src/npn.c:497:40: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+  497 |                     N.op[n] == O_TABLE || N.op[n] == O_LOOP)
+      |                                                      ^
+/home/andrew/Code/ucas/src/npn.c:518:17: warning: no header providing "model" is directly included [misc-include-cleaner]
+  518 |                         const struct model *md = model_active();
+      |                                      ^
+/home/andrew/Code/ucas/src/npn.c:541:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   28 |                 snprintf(what, sizeof what, "the bitwise function of %d values "
+      |                 ^
+/home/andrew/Code/ucas/src/npn.c:546:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  546 |                 sb_printf(&pf, "bit for bit the value is a function of the bits "
+      |                 ^
+/home/andrew/Code/ucas/src/npn.c:549:42: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  549 |                         sb_printf(&pf, "%s%s", i ? ", " : "", shared_str(leaf[i], 40));
+      |                                                               ^
+/home/andrew/Code/ucas/src/npn.c:559:56: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  559 |                 rw = irw_add(out, cnt, cap, root, n, to, what, cond, sb_str(&pf), 1);
+      |                                                                      ^
+/home/andrew/Code/ucas/src/npn.c:584:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  584 |         printf("npn: the 65536 functions of 4 inputs fall in %d classes; "
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:591:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+   27 |         rep_begin("npn");
+      |         ^
+/home/andrew/Code/ucas/src/npn.c:592:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  592 |         rep_int("classes", g_npn.nc);
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

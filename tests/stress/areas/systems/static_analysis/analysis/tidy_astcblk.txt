@@ -1,0 +1,1638 @@
+/home/andrew/Code/ucas/src/astcblk.c:39:8: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   34 | #include <stdlib.h>
+   35 | #include <string.h>
+   36 | 
+   37 | /* ---- the decoder ---- */
+   38 | 
+   39 | static uint32_t
+      |        ^
+/home/andrew/Code/ucas/src/astcblk.c:40:15: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   40 | bits_at(const uint8_t *b, int at, int n)
+      |               ^
+/home/andrew/Code/ucas/src/astcblk.c:47:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |                         v |= (uint32_t)((b[(at + i) >> 3] >> ((at + i) & 7)) & 1) << i;
+      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:47:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |                         v |= (uint32_t)((b[(at + i) >> 3] >> ((at + i) & 7)) & 1) << i;
+      |                                            ^~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:47:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |                         v |= (uint32_t)((b[(at + i) >> 3] >> ((at + i) & 7)) & 1) << i;
+      |                                                           ~~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:47:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |                         v |= (uint32_t)((b[(at + i) >> 3] >> ((at + i) & 7)) & 1) << i;
+      |                                                               ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:47:65: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   47 |                         v |= (uint32_t)((b[(at + i) >> 3] >> ((at + i) & 7)) & 1) << i;
+      |                                                                                   ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:74:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   74 |         return (q->trits ? 3 : q->quints ? 5 : 1) << q->bits;
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:97:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   97 |                         v |= bits_at(r->b, r->rev ? r->at - i : r->at + i, 1) << i;
+      |                                                                               ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:110:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  110 |         if (((T >> 2) & 7) == 7) {
+      |                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:110:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  110 |         if (((T >> 2) & 7) == 7) {
+      |                       ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:111:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  111 |                 C = (int)(((T >> 5) & 7) << 2 | (T & 3));
+      |                               ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:111:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  111 |                 C = (int)(((T >> 5) & 7) << 2 | (T & 3));
+      |                                     ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:111:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  111 |                 C = (int)(((T >> 5) & 7) << 2 | (T & 3));
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:111:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  111 |                 C = (int)(((T >> 5) & 7) << 2 | (T & 3));
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:114:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  114 |                 C = (int)(T & 31);
+      |                             ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:115:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  115 |                 if (((T >> 5) & 3) == 3) {
+      |                         ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:115:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  115 |                 if (((T >> 5) & 3) == 3) {
+      |                               ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:117:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  117 |                         t[3] = (int)(T >> 7) & 1;
+      |                                ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:117:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  117 |                         t[3] = (int)(T >> 7) & 1;
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:119:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  119 |                         t[4] = (int)(T >> 7) & 1;
+      |                                ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:119:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  119 |                         t[4] = (int)(T >> 7) & 1;
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:120:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  120 |                         t[3] = (int)(T >> 5) & 3;
+      |                                ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:120:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  120 |                         t[3] = (int)(T >> 5) & 3;
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:123:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  123 |         if ((C & 3) == 3) {
+      |              ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:125:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  125 |                 t[1] = (C >> 4) & 1;
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:125:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  125 |                 t[1] = (C >> 4) & 1;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:126:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                        ^~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:126:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                         ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:126:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:126:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                                               ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:126:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:126:49: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                                                              ~^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:126:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  126 |                 t[0] = ((C >> 3) & 1) << 1 | ((C >> 2) & 1 & ~(C >> 3));
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:127:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |         } else if (((C >> 2) & 3) == 3) {
+      |                     ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:127:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |         } else if (((C >> 2) & 3) == 3) {
+      |                      ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:130:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  130 |                 t[0] = C & 3;
+      |                        ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:132:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  132 |                 t[2] = (C >> 4) & 1;
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:132:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  132 |                 t[2] = (C >> 4) & 1;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:133:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  133 |                 t[1] = (C >> 2) & 3;
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:133:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  133 |                 t[1] = (C >> 2) & 3;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:134:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |                 t[0] = (C & 2) | (C & 1 & ~(C >> 1));
+      |                        ^~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:134:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |                 t[0] = (C & 2) | (C & 1 & ~(C >> 1));
+      |                         ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:134:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |                 t[0] = (C & 2) | (C & 1 & ~(C >> 1));
+      |                                   ^~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:134:30: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  134 |                 t[0] = (C & 2) | (C & 1 & ~(C >> 1));
+      |                                           ~^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:134:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |                 t[0] = (C & 2) | (C & 1 & ~(C >> 1));
+      |                                             ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:144:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  144 |         if (((Q >> 1) & 3) == 3 && ((Q >> 5) & 3) == 0) {
+      |                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:144:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  144 |         if (((Q >> 1) & 3) == 3 && ((Q >> 5) & 3) == 0) {
+      |                       ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:144:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  144 |         if (((Q >> 1) & 3) == 3 && ((Q >> 5) & 3) == 0) {
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:144:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  144 |         if (((Q >> 1) & 3) == 3 && ((Q >> 5) & 3) == 0) {
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:145:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |                 v[2] = (int)((Q & 1) << 2 | ((Q >> 4) & 1 & ~Q) << 1 |
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:145:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |                 v[2] = (int)((Q & 1) << 2 | ((Q >> 4) & 1 & ~Q) << 1 |
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:145:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |                 v[2] = (int)((Q & 1) << 2 | ((Q >> 4) & 1 & ~Q) << 1 |
+      |                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:145:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |                 v[2] = (int)((Q & 1) << 2 | ((Q >> 4) & 1 & ~Q) << 1 |
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:145:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |                 v[2] = (int)((Q & 1) << 2 | ((Q >> 4) & 1 & ~Q) << 1 |
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:146:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  146 |                     ((Q >> 3) & 1 & ~Q));
+      |                         ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:146:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  146 |                     ((Q >> 3) & 1 & ~Q));
+      |                               ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:150:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  150 |         if (((Q >> 1) & 3) == 3) {
+      |                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:150:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  150 |         if (((Q >> 1) & 3) == 3) {
+      |                       ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                               ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                     ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                                      ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:152:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  152 |                 C = (int)(((Q >> 3) & 3) << 3 | (~(Q >> 5) & 3) << 1 | (Q & 1));
+      |                                                                           ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:154:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  154 |                 v[2] = (int)(Q >> 5) & 3;
+      |                        ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:154:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  154 |                 v[2] = (int)(Q >> 5) & 3;
+      |                                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:155:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  155 |                 C = (int)(Q & 31);
+      |                             ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:157:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  157 |         if ((C & 7) == 5) {
+      |              ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:159:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  159 |                 v[0] = (C >> 3) & 3;
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:159:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  159 |                 v[0] = (C >> 3) & 3;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:161:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  161 |                 v[1] = (C >> 3) & 3;
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:161:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  161 |                 v[1] = (C >> 3) & 3;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:162:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  162 |                 v[0] = C & 7;
+      |                        ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:179:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  179 |                         T |= rd(r, 2) << 2;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:181:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  181 |                         T |= rd(r, 1) << 4;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:183:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  183 |                         T |= rd(r, 2) << 5;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:185:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  185 |                         T |= rd(r, 1) << 7;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:188:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  188 |                                 val[i + j] = t[j] << m | (int)mb[j];
+      |                                              ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:197:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |                         Q |= rd(r, 2) << 3;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:199:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  199 |                         Q |= rd(r, 2) << 5;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:202:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  202 |                                 val[i + j] = v[j] << m | (int)mb[j];
+      |                                              ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:213:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |         int m = q->bits, d = v >> m, a = v & 1, b = (v >> 1) & 1;
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:213:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |         int m = q->bits, d = v >> m, a = v & 1, b = (v >> 1) & 1;
+      |                                          ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:213:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |         int m = q->bits, d = v >> m, a = v & 1, b = (v >> 1) & 1;
+      |                                                     ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:213:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |         int m = q->bits, d = v >> m, a = v & 1, b = (v >> 1) & 1;
+      |                                                      ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:214:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                 ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:214:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:214:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                                    ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:214:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                                     ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:214:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                                                      ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:214:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  214 |         int c = (v >> 2) & 1, dd = (v >> 3) & 1, e = (v >> 4) & 1;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:215:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  215 |         int f = (v >> 5) & 1, A = a ? 0x1ff : 0, B = 0, C = 0, T;
+      |                 ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:215:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  215 |         int f = (v >> 5) & 1, A = a ? 0x1ff : 0, B = 0, C = 0, T;
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:220:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  220 |                         r = (r << m) | v;
+      |                             ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:220:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  220 |                         r = (r << m) | v;
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:223:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  223 |                 return (r >> (n - 8)) & 255;
+      |                        ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:223:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  223 |                 return (r >> (n - 8)) & 255;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:228:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 case 2: C = 93; B = b << 8 | b << 4 | b << 2 | b << 1; break;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:228:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 case 2: C = 93; B = b << 8 | b << 4 | b << 2 | b << 1; break;
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:228:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 case 2: C = 93; B = b << 8 | b << 4 | b << 2 | b << 1; break;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:228:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  228 |                 case 2: C = 93; B = b << 8 | b << 4 | b << 2 | b << 1; break;
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:229:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                 case 3: C = 44; B = c << 8 | b << 7 | c << 3 | b << 2 | c << 1 | b;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:229:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                 case 3: C = 44; B = c << 8 | b << 7 | c << 3 | b << 2 | c << 1 | b;
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:229:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                 case 3: C = 44; B = c << 8 | b << 7 | c << 3 | b << 2 | c << 1 | b;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:229:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                 case 3: C = 44; B = c << 8 | b << 7 | c << 3 | b << 2 | c << 1 | b;
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:229:59: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                 case 3: C = 44; B = c << 8 | b << 7 | c << 3 | b << 2 | c << 1 | b;
+      |                                                                         ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:231:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 case 4: C = 22; B = dd << 8 | c << 7 | b << 6 | dd << 2 | c << 1 |
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:231:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 case 4: C = 22; B = dd << 8 | c << 7 | b << 6 | dd << 2 | c << 1 |
+      |                                               ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:231:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 case 4: C = 22; B = dd << 8 | c << 7 | b << 6 | dd << 2 | c << 1 |
+      |                                                        ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:231:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 case 4: C = 22; B = dd << 8 | c << 7 | b << 6 | dd << 2 | c << 1 |
+      |                                                                 ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:231:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  231 |                 case 4: C = 22; B = dd << 8 | c << 7 | b << 6 | dd << 2 | c << 1 |
+      |                                                                           ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:233:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  233 |                 case 5: C = 11; B = e << 8 | dd << 7 | c << 6 | b << 5 | e << 1 |
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:233:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  233 |                 case 5: C = 11; B = e << 8 | dd << 7 | c << 6 | b << 5 | e << 1 |
+      |                                              ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:233:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  233 |                 case 5: C = 11; B = e << 8 | dd << 7 | c << 6 | b << 5 | e << 1 |
+      |                                                        ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:233:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  233 |                 case 5: C = 11; B = e << 8 | dd << 7 | c << 6 | b << 5 | e << 1 |
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:233:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  233 |                 case 5: C = 11; B = e << 8 | dd << 7 | c << 6 | b << 5 | e << 1 |
+      |                                                                          ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:235:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  235 |                 default: C = 5; B = f << 8 | e << 7 | dd << 6 | c << 5 | b << 4 |
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:235:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  235 |                 default: C = 5; B = f << 8 | e << 7 | dd << 6 | c << 5 | b << 4 |
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:235:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  235 |                 default: C = 5; B = f << 8 | e << 7 | dd << 6 | c << 5 | b << 4 |
+      |                                                       ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:235:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  235 |                 default: C = 5; B = f << 8 | e << 7 | dd << 6 | c << 5 | b << 4 |
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:235:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  235 |                 default: C = 5; B = f << 8 | e << 7 | dd << 6 | c << 5 | b << 4 |
+      |                                                                          ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:241:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  241 |                 case 2: C = 54; B = b << 8 | b << 3 | b << 2; break;
+      |                                     ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:241:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  241 |                 case 2: C = 54; B = b << 8 | b << 3 | b << 2; break;
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:241:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  241 |                 case 2: C = 54; B = b << 8 | b << 3 | b << 2; break;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:242:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  242 |                 case 3: C = 26; B = c << 8 | b << 7 | c << 2 | b << 1 | c; break;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:242:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  242 |                 case 3: C = 26; B = c << 8 | b << 7 | c << 2 | b << 1 | c; break;
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:242:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  242 |                 case 3: C = 26; B = c << 8 | b << 7 | c << 2 | b << 1 | c; break;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:242:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  242 |                 case 3: C = 26; B = c << 8 | b << 7 | c << 2 | b << 1 | c; break;
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:243:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  243 |                 case 4: C = 13; B = dd << 8 | c << 7 | b << 6 | dd << 1 | c;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:243:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  243 |                 case 4: C = 13; B = dd << 8 | c << 7 | b << 6 | dd << 1 | c;
+      |                                               ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:243:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  243 |                 case 4: C = 13; B = dd << 8 | c << 7 | b << 6 | dd << 1 | c;
+      |                                                        ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:243:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  243 |                 case 4: C = 13; B = dd << 8 | c << 7 | b << 6 | dd << 1 | c;
+      |                                                                 ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:245:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  245 |                 default: C = 6; B = e << 8 | dd << 7 | c << 6 | b << 5 | e;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:245:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  245 |                 default: C = 6; B = e << 8 | dd << 7 | c << 6 | b << 5 | e;
+      |                                              ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:245:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  245 |                 default: C = 6; B = e << 8 | dd << 7 | c << 6 | b << 5 | e;
+      |                                                        ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:245:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  245 |                 default: C = 6; B = e << 8 | dd << 7 | c << 6 | b << 5 | e;
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:249:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  249 |         T = (d * C + B) ^ A;
+      |             ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:250:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  250 |         return (A & 0x80) | (T >> 2);
+      |                ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:250:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  250 |         return (A & 0x80) | (T >> 2);
+      |                 ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:250:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  250 |         return (A & 0x80) | (T >> 2);
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:257:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         int m = q->bits, d = v >> m, b = (v >> 1) & 1, c = (v >> 2) & 1;
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:257:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         int m = q->bits, d = v >> m, b = (v >> 1) & 1, c = (v >> 2) & 1;
+      |                                          ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:257:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         int m = q->bits, d = v >> m, b = (v >> 1) & 1, c = (v >> 2) & 1;
+      |                                           ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:257:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         int m = q->bits, d = v >> m, b = (v >> 1) & 1, c = (v >> 2) & 1;
+      |                                                            ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:257:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |         int m = q->bits, d = v >> m, b = (v >> 1) & 1, c = (v >> 2) & 1;
+      |                                                             ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:258:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |         int A = (v & 1) ? 0x7f : 0, B = 0, C = 0, T;
+      |                  ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:263:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         r = (r << m) | v;
+      |                             ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:263:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  263 |                         r = (r << m) | v;
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:266:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  266 |                 T = (r >> (n - 6)) & 63;
+      |                     ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:266:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  266 |                 T = (r >> (n - 6)) & 63;
+      |                      ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:274:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  274 |                         case 2: C = 23; B = b << 6 | b << 2 | b; break;
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:274:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  274 |                         case 2: C = 23; B = b << 6 | b << 2 | b; break;
+      |                                                      ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:275:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                         default: C = 11; B = c << 6 | b << 5 | c << 1 | b; break;
+      |                                              ^~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:275:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                         default: C = 11; B = c << 6 | b << 5 | c << 1 | b; break;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:275:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                         default: C = 11; B = c << 6 | b << 5 | c << 1 | b; break;
+      |                                                                ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:280:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  280 |                         default: C = 13; B = b << 6 | b << 1; break;
+      |                                              ^~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:280:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  280 |                         default: C = 13; B = b << 6 | b << 1; break;
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:283:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  283 |                 T = (d * C + B) ^ A;
+      |                     ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:284:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  284 |                 T = (A & 0x20) | (T >> 2);
+      |                     ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:284:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  284 |                 T = (A & 0x20) | (T >> 2);
+      |                      ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:284:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  284 |                 T = (A & 0x20) | (T >> 2);
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:298:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  298 |                 x <<= 1;
+      |                 ^ ~~~
+/home/andrew/Code/ucas/src/astcblk.c:299:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  299 |                 y <<= 1;
+      |                 ^ ~~~
+/home/andrew/Code/ucas/src/astcblk.c:303:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  303 |         p ^= p >> 15;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:304:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  304 |         p -= p << 17;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:305:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  305 |         p += p << 7;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:306:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  306 |         p += p << 4;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:307:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  307 |         p ^= p >> 5;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:308:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  308 |         p += p << 16;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:309:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  309 |         p ^= p >> 7;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:310:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |         p ^= p >> 3;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:311:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |         p ^= p << 6;
+      |                ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:312:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  312 |         p ^= p >> 17;
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:315:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  315 |                 s[i] = (p >> (4 * (i - 1))) & 15;
+      |                           ~~ ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:315:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  315 |                 s[i] = (p >> (4 * (i - 1))) & 15;
+      |                                             ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:318:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  318 |         if (seed & 1) {
+      |             ^~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:319:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  319 |                 sh1 = seed & 2 ? 4 : 5;
+      |                       ^~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:323:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  323 |                 sh2 = seed & 2 ? 4 : 5;
+      |                       ^~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:326:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  326 |                 s[i] >>= i & 1 ? sh1 : sh2;
+      |                      ~~~ ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:327:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  327 |         a = (int)((s[1] * (uint32_t)x + s[2] * (uint32_t)y + (p >> 14)) & 63);
+      |                                                                 ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:327:68: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  327 |         a = (int)((s[1] * (uint32_t)x + s[2] * (uint32_t)y + (p >> 14)) & 63);
+      |                                                                         ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:328:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  328 |         b = (int)((s[3] * (uint32_t)x + s[4] * (uint32_t)y + (p >> 10)) & 63);
+      |                                                                 ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:328:68: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  328 |         b = (int)((s[3] * (uint32_t)x + s[4] * (uint32_t)y + (p >> 10)) & 63);
+      |                                                                         ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:329:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  329 |         c = (int)((s[5] * (uint32_t)x + s[6] * (uint32_t)y + (p >> 6)) & 63);
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:329:67: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  329 |         c = (int)((s[5] * (uint32_t)x + s[6] * (uint32_t)y + (p >> 6)) & 63);
+      |                                                                        ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:330:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  330 |         d = (int)((s[7] * (uint32_t)x + s[8] * (uint32_t)y + (p >> 2)) & 63);
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:330:67: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  330 |         d = (int)((s[7] * (uint32_t)x + s[8] * (uint32_t)y + (p >> 2)) & 63);
+      |                                                                        ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:346:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  346 |         *b >>= 1;
+      |         ^~ ~~~
+/home/andrew/Code/ucas/src/astcblk.c:347:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  347 |         *b |= *a & 0x80;
+      |         ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:347:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  347 |         *b |= *a & 0x80;
+      |               ^~ ~
+/home/andrew/Code/ucas/src/astcblk.c:348:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  348 |         *a >>= 1;
+      |         ^~ ~~~
+/home/andrew/Code/ucas/src/astcblk.c:349:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  349 |         *a &= 0x3f;
+      |         ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:350:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  350 |         if (*a & 0x20)
+      |             ^~ ~
+/home/andrew/Code/ucas/src/astcblk.c:363:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  363 |         e[0] = (e[0] + e[2]) >> 1;
+      |                ^~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:364:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  364 |         e[1] = (e[1] + e[2]) >> 1;
+      |                ^~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:390:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  390 |                 int l0 = (v[0] >> 2) | (v[1] & 0xc0), l1 = l0 + (v[1] & 0x3f);
+      |                          ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:390:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  390 |                 int l0 = (v[0] >> 2) | (v[1] & 0xc0), l1 = l0 + (v[1] & 0x3f);
+      |                           ^~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:390:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  390 |                 int l0 = (v[0] >> 2) | (v[1] & 0xc0), l1 = l0 + (v[1] & 0x3f);
+      |                                         ^~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:390:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  390 |                 int l0 = (v[0] >> 2) | (v[1] & 0xc0), l1 = l0 + (v[1] & 0x3f);
+      |                                                                  ^~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:410:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  410 |                 set4(e0, v[0] * v[3] >> 8, v[1] * v[3] >> 8, v[2] * v[3] >> 8,
+      |                          ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:410:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  410 |                 set4(e0, v[0] * v[3] >> 8, v[1] * v[3] >> 8, v[2] * v[3] >> 8,
+      |                                            ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:410:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  410 |                 set4(e0, v[0] * v[3] >> 8, v[1] * v[3] >> 8, v[2] * v[3] >> 8,
+      |                                                              ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:458:20: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+  458 | error_block(int n, uint16_t *out)
+      |                    ^
+/home/andrew/Code/ucas/src/astcblk.c:463:3: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  463 |                 out[4 * i] = 0xffff;
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:463:7: note: make conversion explicit to silence this warning
+   34 |                 out[4 * i] = 0xffff;
+      |                     ^~~~~
+      |                     (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/astcblk.c:463:7: note: perform multiplication in a wider type
+  463 |                 out[4 * i] = 0xffff;
+      |                     ^
+      |                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/astcblk.c:476:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         int A = (int)(mode >> 5) & 3, B = (int)(mode >> 7) & 3;
+      |                 ^~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:476:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         int A = (int)(mode >> 5) & 3, B = (int)(mode >> 7) & 3;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:476:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         int A = (int)(mode >> 5) & 3, B = (int)(mode >> 7) & 3;
+      |                                           ^~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:476:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         int A = (int)(mode >> 5) & 3, B = (int)(mode >> 7) & 3;
+      |                                                      ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:478:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |                   ~ ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:478:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |                                              ~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:480:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  480 |         *D = (int)(mode >> 10) & 1;
+      |              ^~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:480:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  480 |         *D = (int)(mode >> 10) & 1;
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/astcblk.c:481:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  481 |         *Hp = (int)(mode >> 9) & 1;
+      |               ^~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:481:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  481 |         *Hp = (int)(mode >> 9) & 1;
+      |                          ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:482:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  482 |         if (mode & 3) {
+      |                  ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:483:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                 *r = (int)((mode & 3) << 1 | ((mode >> 4) & 1));
+      |                                  ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:483:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                 *r = (int)((mode & 3) << 1 | ((mode >> 4) & 1));
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:483:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                 *r = (int)((mode & 3) << 1 | ((mode >> 4) & 1));
+      |                                                     ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:483:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |                 *r = (int)((mode & 3) << 1 | ((mode >> 4) & 1));
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:484:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  484 |                 switch ((mode >> 2) & 3) {
+      |                               ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:484:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  484 |                 switch ((mode >> 2) & 3) {
+      |                                     ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:489:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  489 |                         if (B & 2) {
+      |                             ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:490:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  490 |                                 *W = (B & 1) + 2;
+      |                                       ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:494:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  494 |                                 *H = (B & 1) + 6;
+      |                                       ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:498:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 *r = (int)(((mode >> 2) & 3) << 1 | ((mode >> 4) & 1));
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:498:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 *r = (int)(((mode >> 2) & 3) << 1 | ((mode >> 4) & 1));
+      |                                         ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:498:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 *r = (int)(((mode >> 2) & 3) << 1 | ((mode >> 4) & 1));
+      |                                              ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:498:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 *r = (int)(((mode >> 2) & 3) << 1 | ((mode >> 4) & 1));
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:498:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  498 |                 *r = (int)(((mode >> 2) & 3) << 1 | ((mode >> 4) & 1));
+      |                                                                  ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:504:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  504 |                         *H = (int)((mode >> 9) & 3) + 6;
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:504:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  504 |                         *H = (int)((mode >> 9) & 3) + 6;
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:527:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  527 |         int gs = (ds * i * (W - 1) + 32) >> 6, gt = (dt * j * (H - 1) + 32) >> 6;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:527:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  527 |         int gs = (ds * i * (W - 1) + 32) >> 6, gt = (dt * j * (H - 1) + 32) >> 6;
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:528:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |         int js = gs >> 4, fs = gs & 15, jt = gt >> 4, ft = gt & 15;
+      |                  ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:528:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |         int js = gs >> 4, fs = gs & 15, jt = gt >> 4, ft = gt & 15;
+      |                                ^~ ~
+/home/andrew/Code/ucas/src/astcblk.c:528:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |         int js = gs >> 4, fs = gs & 15, jt = gt >> 4, ft = gt & 15;
+      |                                              ^~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:528:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |         int js = gs >> 4, fs = gs & 15, jt = gt >> 4, ft = gt & 15;
+      |                                                            ^~ ~
+/home/andrew/Code/ucas/src/astcblk.c:529:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  529 |         int w11 = (fs * ft + 8) >> 4;
+      |                   ^~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:551:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  551 |         if ((mode & 0x1ff) == 0x1fc) {
+      |                   ~ ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:559:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  559 |                         all &= e[i] == 0x1fff;
+      |                         ^~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:583:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                 if ((f & 3) == 0) {
+      |                        ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:585:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |                                 cem[i] = (int)(f >> 2) & 15;
+      |                                          ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:585:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |                                 cem[i] = (int)(f >> 2) & 15;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:587:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                         int cls = (int)(f & 3) - 1, extra = 3 * parts - 4;
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:589:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  589 |                         f |= bits_at(blk, below, extra) << 6;
+      |                                                         ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:591:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  591 |                                 cem[i] = (cls + (int)((f >> (2 + i)) & 1)) * 4 +
+      |                                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:591:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  591 |                                 cem[i] = (cls + (int)((f >> (2 + i)) & 1)) * 4 +
+      |                                                                      ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:592:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                                     (int)((f >> (2 + parts + 2 * i)) & 3);
+      |                                              ~~ ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:592:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                                     (int)((f >> (2 + parts + 2 * i)) & 3);
+      |                                                                      ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:631:18: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  631 |                         uint16_t *o = out + 4 * (j * bw + i);
+      |                                       ^
+/home/andrew/Code/ucas/src/astcblk.c:631:24: note: make conversion explicit to silence this warning
+  631 |                         uint16_t *o = out + 4 * (j * bw + i);
+      |                                             ^~~~~~~~~~~~~~~~
+      |                                             (ptrdiff_t)(    )
+/home/andrew/Code/ucas/src/astcblk.c:631:24: note: perform multiplication in a wider type
+  631 |                         uint16_t *o = out + 4 * (j * bw + i);
+      |                                             ^
+      |                                             (ptrdiff_t)
+/home/andrew/Code/ucas/src/astcblk.c:637:40: warning: The left operand of '*' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:551:6: note: Assuming the condition is false
+  551 |         if ((mode & 0x1ff) == 0x1fc) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:551:2: note: Taking false branch
+  551 |         if ((mode & 0x1ff) == 0x1fc) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:568:7: note: Calling 'mode_of'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:478:6: note: Left side of '||' is false
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:478:33: note: Assuming the condition is false
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |                                        ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:478:2: note: Taking false branch
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:480:2: note: Value assigned to 'D', which participates in a condition later
+  480 |         *D = (int)(mode >> 10) & 1;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:482:6: note: Assuming the condition is false
+  482 |         if (mode & 3) {
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:482:2: note: Taking false branch
+  482 |         if (mode & 3) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:499:3: note: Control jumps to 'case 1:'  at line 501
+  499 |                 switch (B) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:501:32: note:  Execution continues on line 518
+  501 |                 case 1: *W = A + 2; *H = 12; break;
+      |                                              ^
+/home/andrew/Code/ucas/src/astcblk.c:518:9: note: Assuming the condition is true
+  518 |         return *r >= 2;
+      |                ^~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:568:7: note: Returning from 'mode_of'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:568:6: note: Left side of '||' is false
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:568:45: note: Assuming 'W' is <= 'bw'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |                                                    ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:568:6: note: Left side of '||' is false
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:568:55: note: Assuming 'H' is <= 'bh'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |                                                              ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:568:2: note: Taking false branch
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:571:16: note: Assuming 'D' is 0
+  571 |         nw = W * H * (D ? 2 : 1);
+      |                       ^
+/home/andrew/Code/ucas/src/astcblk.c:571:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:574:6: note: Assuming 'nw' is <= 64
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:574:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/astcblk.c:574:17: note: Assuming 'wbits' is >= 24
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                        ^~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:574:6: note: Left side of '||' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:574:31: note: Assuming 'wbits' is <= 96
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                      ^~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:574:6: note: Left side of '||' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:574:46: note: 'D' is 0
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                                     ^
+/home/andrew/Code/ucas/src/astcblk.c:574:48: note: Left side of '&&' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                                       ^
+/home/andrew/Code/ucas/src/astcblk.c:577:6: note: Assuming 'parts' is not equal to 1
+  577 |         if (parts == 1) {
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:577:2: note: Taking false branch
+  577 |         if (parts == 1) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:583:7: note: Assuming the condition is true
+  583 |                 if ((f & 3) == 0) {
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:583:3: note: Taking true branch
+  583 |                 if ((f & 3) == 0) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:584:16: note: Assuming 'i' is >= 'parts'
+  584 |                         for (i = 0; i < parts; i++)
+      |                                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:584:4: note: Loop condition is false. Execution continues on line 596
+  584 |                         for (i = 0; i < parts; i++)
+      |                         ^
+/home/andrew/Code/ucas/src/astcblk.c:596:6: note: 'D' is 0
+  596 |         if (D) {
+      |             ^
+/home/andrew/Code/ucas/src/astcblk.c:596:2: note: Taking false branch
+  596 |         if (D) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:600:14: note: 'i' is >= 'parts'
+  600 |         for (i = 0; i < parts; i++)
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:600:2: note: Loop condition is false. Execution continues on line 602
+  600 |         for (i = 0; i < parts; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:603:6: note: 'ncv' is <= 18
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |             ^~~
+/home/andrew/Code/ucas/src/astcblk.c:603:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/astcblk.c:603:18: note: Assuming the condition is false
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:603:2: note: Taking false branch
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:605:16: note: 'qi' is >= 0
+  605 |         for (qi = 20; qi >= 0 && bise_bits(&crange[qi], ncv) > cbits; qi--)
+      |                       ^~
+/home/andrew/Code/ucas/src/astcblk.c:605:16: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/astcblk.c:605:2: note: Loop condition is false. Execution continues on line 607
+  605 |         for (qi = 20; qi >= 0 && bise_bits(&crange[qi], ncv) > cbits; qi--)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:607:6: note: 'qi' is >= 4
+  607 |         if (qi < 4)
+      |             ^~
+/home/andrew/Code/ucas/src/astcblk.c:607:2: note: Taking false branch
+  607 |         if (qi < 4)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:614:2: note: Loop condition is false. Execution continues on line 616
+  614 |         for (i = 0; i < ncv; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:616:21: note: 'i' is >= 'parts'
+  616 |         for (i = 0, k = 0; i < parts; i++) {
+      |                            ^
+/home/andrew/Code/ucas/src/astcblk.c:616:2: note: Loop condition is false. Execution continues on line 622
+  616 |         for (i = 0, k = 0; i < parts; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:626:14: note: Assuming 'i' is >= 'nw'
+  626 |         for (i = 0; i < nw; i++)
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:626:2: note: Loop condition is false. Execution continues on line 628
+  626 |         for (i = 0; i < nw; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:628:14: note: 'j' is < 'bh'
+  628 |         for (j = 0; j < bh; j++)
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:628:2: note: Loop condition is true.  Entering loop body
+  628 |         for (j = 0; j < bh; j++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:629:15: note: Assuming 'i' is < 'bw'
+  629 |                 for (i = 0; i < bw; i++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:629:3: note: Loop condition is true.  Entering loop body
+  629 |                 for (i = 0; i < bw; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:633:23: note: 'D' is 0
+  633 |                         for (pl = 0; pl < (D ? 2 : 1); pl++) {
+      |                                            ^
+/home/andrew/Code/ucas/src/astcblk.c:633:23: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:633:4: note: Loop condition is true.  Entering loop body
+  633 |                         for (pl = 0; pl < (D ? 2 : 1); pl++) {
+      |                         ^
+/home/andrew/Code/ucas/src/astcblk.c:635:5: note: Loop condition is true.  Entering loop body
+  635 |                                 for (q = 0; q < 4; q++)
+      |                                 ^
+/home/andrew/Code/ucas/src/astcblk.c:636:6: note: Taking true branch
+  636 |                                         if (pt[q] >= 0)
+      |                                         ^
+/home/andrew/Code/ucas/src/astcblk.c:637:23: note: 'D' is 0
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                                 ^
+/home/andrew/Code/ucas/src/astcblk.c:637:23: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:637:40: note: The left operand of '*' is a garbage value
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:638:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  638 |                                 wt[pl] = s >> 4;
+      |                                          ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:656:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |                                 int c0 = x80 ? e0[p][c] << 8 | 0x80 : e0[p][c] * 257;
+      |                                                ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:657:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |                                 int c1 = x80 ? e1[p][c] << 8 | 0x80 : e1[p][c] * 257;
+      |                                                ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:658:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  658 |                                 o[c] = (uint16_t)((c0 * (64 - ww) + c1 * ww + 32) >> 6);
+      |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:697:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  697 |                 w->s[w->n++] = (uint8_t)((v >> i) & 1);
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:697:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  697 |                 w->s[w->n++] = (uint8_t)((v >> i) & 1);
+      |                                                   ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:720:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  720 |                         hi[j] = val[i + j] >> m;
+      |                                 ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:725:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  725 |                         if (keep < (q->trits ? 8 : 7) && (k >> keep))
+      |                                                           ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:744:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  744 |                                 put(w, LO(j), m);
+      |                                        ^
+/home/andrew/Code/ucas/src/astcblk.c:739:49: note: expanded from macro 'LO'
+  739 | #define LO(j) ((uint32_t)val[i + (j)] & ((1u << m) - 1))
+      |                                              ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:745:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  745 |                                 put(w, P >> at[j], nb[j]);
+      |                                          ~~ ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:750:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  750 |                                 put(w, LO(j), m);
+      |                                        ^
+/home/andrew/Code/ucas/src/astcblk.c:739:49: note: expanded from macro 'LO'
+  739 | #define LO(j) ((uint32_t)val[i + (j)] & ((1u << m) - 1))
+      |                                              ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:751:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  751 |                                 put(w, P >> at[j], nb[j]);
+      |                                          ~~ ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:840:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  840 |                 put(&c, (uint32_t)L->cem << 2, 6);
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:848:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  848 |                 out[i >> 3] |= (uint8_t)(c.s[i] << (i & 7));
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:848:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  848 |                 out[i >> 3] |= (uint8_t)(c.s[i] << (i & 7));
+      |                                                 ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:848:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  848 |                 out[i >> 3] |= (uint8_t)(c.s[i] << (i & 7));
+      |                                                     ^ ~
+/home/andrew/Code/ucas/src/astcblk.c:855:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |                         out[(below + i) >> 3] |= (uint8_t)(((hi >> i) & 1) <<
+      |                             ^~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:855:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |                         out[(below + i) >> 3] |= (uint8_t)(((hi >> i) & 1) <<
+      |                                                                 ~~ ^
+/home/andrew/Code/ucas/src/astcblk.c:855:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |                         out[(below + i) >> 3] |= (uint8_t)(((hi >> i) & 1) <<
+      |                                                                       ~ ^
+/home/andrew/Code/ucas/src/astcblk.c:856:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |                         out[(below + i) >> 3] |= (uint8_t)(((hi >> i) & 1) <<
+      |                                                                            ~~
+  856 |                             ((below + i) & 7));
+      |                             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:856:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  856 |                             ((below + i) & 7));
+      |                              ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:861:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  861 |                 out[(127 - i) >> 3] |= (uint8_t)(w.s[i] << ((127 - i) & 7));
+      |                     ^~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:861:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  861 |                 out[(127 - i) >> 3] |= (uint8_t)(w.s[i] << ((127 - i) & 7));
+      |                                                         ~~ ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:861:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  861 |                 out[(127 - i) >> 3] |= (uint8_t)(w.s[i] << ((127 - i) & 7));
+      |                                                             ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:893:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  893 |         return srgb ? texenc_srgb8(c >> 8) : (double)(float)((c >> 8) / 255.0);
+      |                                    ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:893:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  893 |         return srgb ? texenc_srgb8(c >> 8) : (double)(float)((c >> 8) / 255.0);
+      |                                                               ^ ~~
+/home/andrew/Code/ucas/src/astcblk.c:901:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  901 |         int a16 = srgb ? a << 8 | 0x80 : a * 257, b16 = srgb ? b << 8 | 0x80 :
+      |                          ^~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:901:57: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  901 |         int a16 = srgb ? a << 8 | 0x80 : a * 257, b16 = srgb ? b << 8 | 0x80 :
+      |                                                                ^~~~~~ ~
+/home/andrew/Code/ucas/src/astcblk.c:904:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  904 |         return (a16 * (64 - w) + b16 * w + 32) >> 6;
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:1021:14: warning: Out of bound access to memory after the end of 'x' [clang-analyzer-security.ArrayBound]
+ 1021 |                 double s = x[i];
+      |                            ^
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:15: note: Assuming 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: 'k' is >= field 'n'
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false. Execution continues on line 1243
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false.  Exiting loop
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1244:8: note: Calling 'plane_fit'
+ 1244 |                 pb = plane_fit(g, &lw, P, t, ea, eb, gi[t], polish);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1064:6: note: Assuming field 'W' is not equal to field 'bw'
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1064:20: note: Left side of '&&' is false
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |                           ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:14: note: 'k' is >= field 'n'
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:2: note: Loop condition is false. Execution continues on line 1086
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1086:2: note: Calling 'grid_solve'
+ 1086 |         grid_solve(g, P->n, wt, P->care, x);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1009:14: note: 'k' is >= 'n'
+ 1009 |         for (k = 0; k < n; k++)
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1009:2: note: Loop condition is false. Execution continues on line 1014
+ 1009 |         for (k = 0; k < n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1014:14: note: Assuming 'i' is >= 'm'
+ 1014 |         for (i = 0; i < m; i++) {
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1014:2: note: Loop condition is false. Execution continues on line 1020
+ 1014 |         for (i = 0; i < m; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1020:18: note: Assuming 'i' is >= 0
+ 1020 |         for (i = m - 1; i >= 0; i--) {
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1020:2: note: Loop condition is true.  Entering loop body
+ 1020 |         for (i = m - 1; i >= 0; i--) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1021:14: note: Access of 'x' at index 2147483647, while it holds only 64 'double' elements
+ 1021 |                 double s = x[i];
+      |                            ^~~~
+/home/andrew/Code/ucas/src/astcblk.c:1046:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1046 |                 w = sum >> 4;
+      |                     ^~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:1154:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1154 |                         perm &= perms[i][h] < parts;
+      |                         ^~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:1194:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1194 |                                 used |= cut[q] == c;
+      |                                 ^~~~ ~~
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1239:12: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                                 ^    ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is < field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is true.  Entering loop body
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1227:13: note: Assuming field 'parts' is not equal to 1
+ 1227 |                 part[k] = L->parts == 1 ? 0 : astcb_partition(L->seed, k % P->bw,
+      |                           ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1227:13: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:1228:28: note: Assuming the condition is false
+ 1228 |                     k / P->bw, L->parts, P->bw * P->bh < 31);
+      |                                          ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:15: note: 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is true.  Entering loop body
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Array subscript is undefined
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1239:12: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                                 ^    ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1239:10: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1224:2: note: Calling 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:14: note: Assuming 'k' is >= 'nl'
+  918 |         for (k = 0; k < nl; k++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:2: note: Loop condition is false. Execution continues on line 1224
+  918 |         for (k = 0; k < nl; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1224:2: note: Returning from 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is < field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is true.  Entering loop body
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1227:13: note: Assuming field 'parts' is equal to 1
+ 1227 |                 part[k] = L->parts == 1 ? 0 : astcb_partition(L->seed, k % P->bw,
+      |                           ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1227:13: note: '?' condition is true
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is true.  Entering loop body
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1234:20: note: Calling 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:938:9: note: 'b' initialized to 0
+  938 |         int i, b = 0;
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:940:2: note: Loop condition is false. Execution continues on line 943
+  940 |         for (i = 1; i < L->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:943:2: note: Returning zero (loaded from 'b')
+  943 |         return b;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1234:20: note: Returning from 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1234:4: note: Assigning 0
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is true.  Entering loop body
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Assigned value is uninitialized
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1239:10: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1279:20: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1279 |                         L->cv[L->ncv++] = lc.v[ends[p][t][0]];
+      |                                         ^ ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1224:2: note: Calling 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:14: note: Assuming 'k' is >= 'nl'
+  918 |         for (k = 0; k < nl; k++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:2: note: Loop condition is false. Execution continues on line 1224
+  918 |         for (k = 0; k < nl; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1224:2: note: Returning from 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:15: note: Assuming 'p' is < field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is true.  Entering loop body
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1234:20: note: Calling 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:938:9: note: 'b' initialized to 0
+  938 |         int i, b = 0;
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:940:2: note: Loop condition is false. Execution continues on line 943
+  940 |         for (i = 1; i < L->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:943:2: note: Returning zero (loaded from 'b')
+  943 |         return b;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1234:20: note: Returning from 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1234:4: note: Assigning 0
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:15: note: Assuming 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: 'k' is >= field 'n'
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false. Execution continues on line 1243
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false.  Exiting loop
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1245:15: note: Assuming 'polish' is 0
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1245:22: note: Left side of '&&' is false
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                                    ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: 'k' is >= field 'n'
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: Loop condition is false. Execution continues on line 1267
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: Loop condition is false.  Exiting loop
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1270:7: note: Assuming 'pb.mx' is <= 'sc.mx'
+ 1270 |                 if (pb.mx > sc.mx)
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1270:3: note: Taking false branch
+ 1270 |                 if (pb.mx > sc.mx)
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is >= field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is false. Execution continues on line 1276
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1277:2: note: Loop condition is true.  Entering loop body
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1278:3: note: Loop condition is true.  Entering loop body
+ 1278 |                 for (t = 0; t < P->nt; t++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1279:20: note: Assigned value is uninitialized
+ 1279 |                         L->cv[L->ncv++] = lc.v[ends[p][t][0]];
+      |                                         ^ ~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1285:34: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                       ^ ~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1225:2: note: Calling 'lvl_of'
+ 1225 |         lvl_of(&lw, &wrange[L->Hp][L->r], 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:14: note: Assuming 'k' is >= 'nl'
+  918 |         for (k = 0; k < nl; k++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:918:2: note: Loop condition is false. Execution continues on line 1225
+  918 |         for (k = 0; k < nl; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1225:2: note: Returning from 'lvl_of'
+ 1225 |         lvl_of(&lw, &wrange[L->Hp][L->r], 0);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1231:15: note: Assuming 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: 'k' is >= field 'n'
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false. Execution continues on line 1243
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1243:3: note: Loop condition is false.  Exiting loop
+ 1243 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1244:8: note: Calling 'plane_fit'
+ 1244 |                 pb = plane_fit(g, &lw, P, t, ea, eb, gi[t], polish);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1064:6: note: Assuming field 'W' is not equal to field 'bw'
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1064:20: note: Left side of '&&' is false
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |                           ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:14: note: 'k' is >= field 'n'
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:2: note: Loop condition is false. Execution continues on line 1086
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1087:2: note: Loop condition is true.  Entering loop body
+ 1087 |         for (i = 0; i < m; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1087:2: note: Loop condition is false. Execution continues on line 1089
+/home/andrew/Code/ucas/src/astcblk.c:1090:33: note: Assuming 'moved' is 0
+ 1090 |         for (pass = 0, moved = polish; moved && pass < 6; pass++) {
+      |                                        ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1090:39: note: Left side of '&&' is false
+ 1090 |         for (pass = 0, moved = polish; moved && pass < 6; pass++) {
+      |                                              ^
+/home/andrew/Code/ucas/src/astcblk.c:1244:8: note: Returning from 'plane_fit'
+ 1244 |                 pb = plane_fit(g, &lw, P, t, ea, eb, gi[t], polish);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1245:15: note: 'polish' is 0
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                             ^~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1245:22: note: Left side of '&&' is false
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                                    ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: 'k' is >= field 'n'
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: Loop condition is false. Execution continues on line 1267
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1267:3: note: Loop condition is false.  Exiting loop
+ 1267 |                 ENDS();
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1269:8: note: Calling 'plane_fit'
+ 1269 |                 pb = plane_fit(g, &lw, P, t, ea, eb, gi[t], polish);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1064:9: note: Field 'W' is not equal to field 'bw'
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:1064:20: note: Left side of '&&' is false
+ 1064 |         if (g->W == P->bw && g->H == P->bh) {
+      |                           ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:14: note: 'k' is >= field 'n'
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1081:2: note: Loop condition is false. Execution continues on line 1086
+ 1081 |         for (k = 0; k < P->n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1087:2: note: Loop condition is true.  Entering loop body
+ 1087 |         for (i = 0; i < m; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1088:11: note: Calling 'lvl_near'
+ 1088 |                 gi[i] = lvl_near(lw, x[i]);
+      |                         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:938:9: note: 'b' initialized to 0
+  938 |         int i, b = 0;
+      |                ^
+/home/andrew/Code/ucas/src/astcblk.c:940:2: note: Loop condition is false. Execution continues on line 943
+  940 |         for (i = 1; i < L->n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:943:2: note: Returning zero (loaded from 'b')
+  943 |         return b;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1088:11: note: Returning from 'lvl_near'
+ 1088 |                 gi[i] = lvl_near(lw, x[i]);
+      |                         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1088:3: note: Assigning 0
+ 1088 |                 gi[i] = lvl_near(lw, x[i]);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1087:2: note: Loop condition is false. Execution continues on line 1089
+ 1087 |         for (i = 0; i < m; i++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1090:33: note: 'moved' is 0
+ 1090 |         for (pass = 0, moved = polish; moved && pass < 6; pass++) {
+      |                                        ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1090:39: note: Left side of '&&' is false
+ 1090 |         for (pass = 0, moved = polish; moved && pass < 6; pass++) {
+      |                                              ^
+/home/andrew/Code/ucas/src/astcblk.c:1269:8: note: Returning from 'plane_fit'
+ 1269 |                 pb = plane_fit(g, &lw, P, t, ea, eb, gi[t], polish);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1270:7: note: Assuming 'pb.mx' is <= 'sc.mx'
+ 1270 |                 if (pb.mx > sc.mx)
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1270:3: note: Taking false branch
+ 1270 |                 if (pb.mx > sc.mx)
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is >= field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is false. Execution continues on line 1276
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1277:14: note: 'p' is >= field 'parts'
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1277:2: note: Loop condition is false. Execution continues on line 1282
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1282:25: note: Assuming field 'D' is 0
+ 1282 |         L->nw = g->W * g->H * (L->D ? 2 : 1);
+      |                                ^~~~
+/home/andrew/Code/ucas/src/astcblk.c:1282:25: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:1283:7: note: The value 0 is assigned to 'k'
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1283:2: note: Loop condition is true.  Entering loop body
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:23: note: Field 'D' is 0
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:20: note: '?' condition is false
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                  ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:3: note: Loop condition is true.  Entering loop body
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1285:18: note: Field 'D' is 0
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                       ^
+/home/andrew/Code/ucas/src/astcblk.c:1285:15: note: '?' condition is false
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                    ^
+/home/andrew/Code/ucas/src/astcblk.c:1285:34: note: Assigned value is uninitialized
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                       ^ ~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1285:36: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                         ^    ~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1229:14: note: Assuming 't' is >= field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1229:2: note: Loop condition is false. Execution continues on line 1276
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1277:14: note: Assuming 'p' is >= field 'parts'
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1277:2: note: Loop condition is false. Execution continues on line 1282
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1282:25: note: Assuming field 'D' is 0
+ 1282 |         L->nw = g->W * g->H * (L->D ? 2 : 1);
+      |                                ^~~~
+/home/andrew/Code/ucas/src/astcblk.c:1282:25: note: '?' condition is false
+/home/andrew/Code/ucas/src/astcblk.c:1283:7: note: The value 0 is assigned to 'k'
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1283:14: note: Assuming the condition is true
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |                     ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1283:2: note: Loop condition is true.  Entering loop body
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |         ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:23: note: Field 'D' is 0
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                     ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:20: note: '?' condition is false
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                  ^
+/home/andrew/Code/ucas/src/astcblk.c:1284:3: note: Loop condition is true.  Entering loop body
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                 ^
+/home/andrew/Code/ucas/src/astcblk.c:1285:36: note: Array subscript is undefined
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                         ^    ~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1307:13: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1307 |             (L->qi = color_range(L)) < 0)
+      |              ~~~~~~^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astcblk.c:1307:13: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/astcblk.c:1307:13: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

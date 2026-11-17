@@ -1128,13 +1128,16 @@ rep_note_hook(const char *text)
 
 /* ---- files ---- */
 
-void
-rep_file(const char *name, const char *mime, const char *data, size_t n)
+/* ok, when given, reports whether the file was actually written. */
+static void
+rep_file_write(const char *name, const char *mime, const char *data, size_t n,
+    int *ok)
 {
 	struct jv *o;
 	char path[PATH_MAX], real[PATH_MAX];
 	const char *base;
 	FILE *fp;
+	int saved_errno;
 
 	if (!rep_on)
 		return;
@@ -1143,13 +1146,20 @@ rep_file(const char *name, const char *mime, const char *data, size_t n)
 	jv_set(o, "name", jv_str(base));
 	jv_set(o, "mime", jv_str(mime));
 	jv_set(o, "bytes", jv_int((long long)n));
+	if (ok)
+		*ok = 1;
 	if (R.fmode & REP_FILES_WRITE) {
 		snprintf(path, sizeof path, "%s/%s", R.outdir, base);
-		if ((fp = fopen(path, "wb")) == NULL ||
-		    fwrite(data, 1, n, fp) != n) {
-			if (fp)
+		fp = fopen(path, "wb");
+		if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+			saved_errno = errno;
+			if (fp) {
 				fclose(fp);
-			jv_set(o, "error", jv_str(strerror(errno)));
+				unlink(path);   /* no partial file on a short write */
+			}
+			jv_set(o, "error", jv_str(strerror(saved_errno)));
+			if (ok)
+				*ok = 0;
 		} else {
 			fclose(fp);
 			jv_set(o, "path", jv_str(realpath(path, real) ? real : path));
@@ -1164,6 +1174,12 @@ rep_file(const char *name, const char *mime, const char *data, size_t n)
 	jv_push(R.files, o);
 }
 
+void
+rep_file(const char *name, const char *mime, const char *data, size_t n)
+{
+	rep_file_write(name, mime, data, n, NULL);
+}
+
 /* anim.c's deliver: 1 when the file went into the response */
 int
 rep_deliver(const char *name, const char *mime, const char *data, size_t n,
@@ -1175,10 +1191,14 @@ rep_deliver(const char *name, const char *mime, const char *data, size_t n,
 		printf("  (files: none) %s, %zu bytes, not written\n", name, n);
 		return 1;
 	}
-	rep_file(name, mime, data, n);
-	if (R.fmode & REP_FILES_WRITE)
-		printf("  wrote %s\n", name);
-	else
+	int written = 1;
+	rep_file_write(name, mime, data, n, &written);
+	if (R.fmode & REP_FILES_WRITE) {
+		if (written)
+			printf("  wrote %s\n", name);
+		else
+			printf("  could not write %s\n", name);
+	} else
 		printf("  attached %s (%zu bytes)\n", name, n);
 	return 1;
 }

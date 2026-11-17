@@ -1,0 +1,29 @@
+# SAT/algebra equivalence paths on large domains, with where clauses.
+f1(x: u32 in 0..10000000) = x*x
+g1(x: u32 in 0..10000000) = x*x + (x == 1234567 ? 1 : 0)
+equiv f1 ~ g1
+a1(x: u32) = x & 0xffff
+b1(x: u32) = x % 65536
+equiv a1 ~ b1
+p1(x: u32 in 0..20000000) = x where x < 10000000
+q1(x: u32 in 0..20000000) = x + (x == 15000000 ? 1 : 0)
+equiv p1 ~ q1
+p2(x: u32 in 0..20000000) = x where x != 10000000
+q2(x: u32 in 0..20000000) = x + (x == 10000000 ? 7 : 0)
+equiv p2 ~ q2
+d1(x: u32 in 1..10000000) = x/x
+d2(x: u32 in 1..10000000) = 1
+equiv d1 ~ d2
+d3(x: u32 in 0..10000000) = x/x
+d4(x: u32 in 0..10000000) = 1
+equiv d3 ~ d4
+e1(x: u32) = 100/x where x > 0
+e2(x: u32) = 100/x
+equiv e1 ~ e2
+domain e1
+t1(x: u32 in 0..10000000) = x
+t2(x: u32 in 0..10000000) = [0,1,2,3][x]
+equiv t1 ~ t2
+mul1(x: u32, y: u32) = x*y
+mul2(x: u32, y: u32) = y*x
+equiv mul1 ~ mul2

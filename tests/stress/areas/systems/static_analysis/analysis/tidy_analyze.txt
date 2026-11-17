@@ -1,0 +1,1531 @@
+/home/andrew/Code/ucas/src/analyze.c:28:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   18 | #include <stdlib.h>
+   19 | #include <string.h>
+   20 | 
+   21 | #define EXH (1ULL << 22)
+   22 | #define NSAMPLE (1ULL << 16)
+   23 | 
+   24 | struct run {
+   25 |         const struct func *f;
+   26 |         struct plan p;
+   27 |         struct diter d;
+   28 |         int64_t *in_i;
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:30:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   30 |         uint8_t ok[CH];
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:31:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   31 |         uint32_t wloc;
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:36:16: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   36 |     int ideal, uint64_t maxexh, uint32_t rsteps, uint64_t nsample)
+      |                ^
+/home/andrew/Code/ucas/src/analyze.c:83:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   18 |                 printf("  over all %llu points of the domain\n",
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:85:34: warning: no header providing "UINT64_MAX" is directly included [misc-include-cleaner]
+   85 |         else if (!seen && r->d.total == UINT64_MAX)
+      |                                         ^
+/home/andrew/Code/ucas/src/analyze.c:106:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  106 |         return TYK(t) == K_UINT || TYK(t) == K_BOOL;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:106:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  106 |         return TYK(t) == K_UINT || TYK(t) == K_BOOL;
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:127:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |                         if (TY_FP(p->ty))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:137:28: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  137 |         print_shared(&b, f->body, 4 * EXPR_CAP);
+      |                                   ^
+/home/andrew/Code/ucas/src/analyze.c:137:28: note: make conversion explicit to silence this warning
+   18 |         print_shared(&b, f->body, 4 * EXPR_CAP);
+      |                                   ^~~~~~~~~~~~
+      |                                   (size_t)(   )
+/home/andrew/Code/ucas/src/analyze.c:137:28: note: perform multiplication in a wider type
+  137 |         print_shared(&b, f->body, 4 * EXPR_CAP);
+      |                                   ^
+      |                                   (long)
+/home/andrew/Code/ucas/src/analyze.c:143:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+   11 |         rep_begin("show");
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:144:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  144 |         rep_str("definition", sb_str(&b));
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:145:2: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  145 |         rep_expr("body", f->body);
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:166:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  166 |         run_open(&r, f, &root, 1, 0, EXH, 21, 64);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:169:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+  169 |         rep_list("rows");
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:178:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  178 |                         if (COLF(&r.p, loc)[i] & F_UNDEF)
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:184:4: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  184 |                         rep_obj(NULL);
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:185:4: warning: no header providing "rep_strf" is directly included [misc-include-cleaner]
+  185 |                         rep_strf("at", "%.*s", (int)at, b.p);
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:187:4: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  187 |                         rep_bool("defined", !(COLF(&r.p, loc)[i] & F_UNDEF));
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:187:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  187 |                         rep_bool("defined", !(COLF(&r.p, loc)[i] & F_UNDEF));
+      |                                                                  ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:188:4: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  188 |                         rep_end();
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:251:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  251 |                 r = C(0);
+      |                     ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:254:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  254 |                 r = C((uint32_t)N.ki[e] == slot ? 1 : 0);
+      |                     ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:275:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  275 |                             mk_bin(O_MUL, a, db)), mk_bin(O_POW, b, C(2)));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:282:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  282 |                             mk_bin(O_SUB, b, C(1)))), da);
+      |                                              ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:302:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  302 |                     C(2)));
+      |                     ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:305:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  305 |                 r = mk_bin(O_DIV, d1(a, slot), mk_bin(O_MUL, C(2), e));
+      |                                                              ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:314:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  314 |                 r = C(0);
+      |                     ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:326:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  326 |                 r = TY_FP(N.ty[a]) ? mk_cast(t, d1(a, slot)) : C(0);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:326:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  326 |                 r = TY_FP(N.ty[a]) ? mk_cast(t, d1(a, slot)) : C(0);
+      |                                                                ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:340:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  340 |                     mk_bin(O_POW, mk_un(O_SIN, a), C(2))));
+      |                                                    ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:343:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  343 |                 r = mk_bin(O_DIV, d1(a, slot), mk_bin(O_ADD, C(1),
+      |                                                              ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:344:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  344 |                     mk_bin(O_POW, a, C(2))));
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:348:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  348 |                     mk_bin(O_COPYSIGN, C(1), b)), d1(a, slot));
+      |                                        ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:357:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  357 |                     mk_bin(O_ADD, C(1), e)));
+      |                                   ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:370:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  370 |                 if (TY_ISINT(t) && !(N.fl[e] & NF_VAR))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:370:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  370 |                 if (TY_ISINT(t) && !(N.fl[e] & NF_VAR))
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/ucas.h:272:16: note: expanded from macro 'NF_VAR'
+  272 | #define NF_VAR 2     /* depends on a parameter */
+      |                ^
+/home/andrew/Code/ucas/src/analyze.c:371:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  371 |                         r = C(0);
+      |                             ^
+/home/andrew/Code/ucas/src/analyze.c:247:25: note: expanded from macro 'C'
+  247 | #define C(v) mk_const_i(TY_FP(t) ? t : TY_REAL, v)
+      |                         ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:405:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  405 |         if (TY_FP(f->p[slot].ty)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:415:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  415 |                 map[slot] = mk_bin(O_ADD, x, mk_const_i(TY_LIT, 1));
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:440:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  440 |         return !(COLF(p, loc)[0] & F_UNDEF) && !isnan(*out);
+      |                                  ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:482:23: warning: 'dl' is confusable with 'd1' [misc-confusable-identifiers]
+  482 |         uint32_t np, i, loc, dl = NOTOK;
+      |                              ^
+/home/andrew/Code/ucas/src/analyze.c:237:1: note: other declaration found here
+  237 | d1(nid e, uint32_t slot)
+      | ^
+/home/andrew/Code/ucas/src/analyze.c:491:3: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   18 |                 jmp_buf saved;
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:493:7: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+  493 |                 if (setjmp(fail_jmp) == 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/analyze.c:501:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  501 |         run_open(&r, f, roots, 2, 0, EXH, GRID, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:501:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  501 |         run_open(&r, f, roots, 2, 0, EXH, GRID, NSAMPLE);
+      |                                                 ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:512:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  512 |                         if (COLF(&r.p, loc)[i] & F_UNDEF) {
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:528:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |                         if (have_d && !(COLF(&r.p, dl)[i] & F_UNDEF)) {
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:562:3: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  562 |                 rep_num("min", lo);
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:567:2: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  567 |         rep_int("points", (long long)seen);
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:573:2: warning: no header providing "rep_proof" is directly included [misc-include-cleaner]
+  573 |         rep_proof("numeric", have_d ? "a grid of points, extrema refined "
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:575:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  575 |         if (TYK(f->p[0].ty) == K_REAL)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:597:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  597 |         double tol = TY_FP(N.ty[f->body]) ? 1e-12 * fmax(1, fmax(fabs(smn),
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:618:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  618 |                     TY_FP(N.ty[f->body]) ? "; the end values evaluated in double" :
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:666:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  666 |         if (f->np == 1 && TY_FP(f->p[0].ty) && TY_FP(t) &&
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:666:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  666 |         if (f->np == 1 && TY_FP(f->p[0].ty) && TY_FP(t) &&
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:667:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  667 |             TYK(f->p[0].ty) == K_REAL) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:671:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  671 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:671:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  671 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                                ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:673:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  673 |         if (TY_ISINT(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:677:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  677 |                 if (TY_SIZED(t) && it.w <= 24) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:679:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  679 |                         base = TYK(t) == K_SINT ? it.smin : 0;
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:691:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  691 |                         if (vf[i] & F_UNDEF) {
+      |                                   ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:695:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  695 |                         if (TY_FP(t)) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:716:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  716 |                                 if (!(bm[k >> 3] & (1 << (k & 7)))) {
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:716:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  716 |                                 if (!(bm[k >> 3] & (1 << (k & 7)))) {
+      |                                                  ~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:716:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  716 |                                 if (!(bm[k >> 3] & (1 << (k & 7)))) {
+      |                                                     ^ ~~
+/home/andrew/Code/ucas/src/analyze.c:716:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  716 |                                 if (!(bm[k >> 3] & (1 << (k & 7)))) {
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/analyze.c:717:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  717 |                                         bm[k >> 3] |= (uint8_t)(1 << (k & 7));
+      |                                              ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:717:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  717 |                                         bm[k >> 3] |= (uint8_t)(1 << (k & 7));
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/analyze.c:717:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  717 |                                         bm[k >> 3] |= (uint8_t)(1 << (k & 7));
+      |                                                                         ~ ^
+/home/andrew/Code/ucas/src/analyze.c:730:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  730 |         if (TY_FP(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:738:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |         if (any && TY_FP(t)) {
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:746:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  746 |         else if (TY_FP(t))
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:751:3: warning: no header providing "rep_exact" is directly included [misc-include-cleaner]
+  751 |                 rep_exact("min", (double)mn, sb_str(&b));
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:770:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                                 if (bm[k >> 3] & (1 << (k & 7)))
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:770:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                                 if (bm[k >> 3] & (1 << (k & 7)))
+      |                                                ~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:770:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                                 if (bm[k >> 3] & (1 << (k & 7)))
+      |                                                   ^ ~~
+/home/andrew/Code/ucas/src/analyze.c:770:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  770 |                                 if (bm[k >> 3] & (1 << (k & 7)))
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/analyze.c:783:43: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  783 |                         int bb = bits_for((uint64_t)(mn < 0 ? ~mn : mn));
+      |                                                               ~^~
+/home/andrew/Code/ucas/src/analyze.c:784:44: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+  784 |                         int bb2 = bits_for((uint64_t)(mx < 0 ? ~mx : mx));
+      |                                                                ~^~
+/home/andrew/Code/ucas/src/analyze.c:796:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  796 |         if (!r.d.exhaustive && TY_ISINT(t)) {
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:814:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  814 |         if (any && TYK(t) == K_REAL && f->np >= 2)
+      |                    ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:833:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  833 |                 snprintf(buf, sizeof buf, "%.*g", d, x);
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:854:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  854 |                 switch (N.op[n]) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:874:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  874 |                 if (TYK(N.ty[n]) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:890:3: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  890 |                 switch (N.op[n]) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:896:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  896 |                         if (TYK(N.ty[n]) == K_SINT && !is_const(N.b[n]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:923:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  923 |                         if (TYK(N.ty[n]) == K_REAL && !(is_const(N.b[n]) &&
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:926:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  926 |                         else if (TY_ISINT(N.ty[n]) && !is_const(N.b[n]))
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:938:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  938 |                                     TYW(N.ty[n]) == 64 && !TY_SIZED(N.ty[n]) ?
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:938:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  938 |                                     TYW(N.ty[n]) == 64 && !TY_SIZED(N.ty[n]) ?
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:939:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  939 |                                     64 : TYW(N.ty[n]));
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:940:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  940 |                         if (N.op[n] == O_SHL && TYK(N.ty[n]) == K_SINT)
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1013:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1013 |                         if (TY_FP(N.ty[N.a[n]]) && TY_ISINT(N.ty[n]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1013:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1013 |                         if (TY_FP(N.ty[N.a[n]]) && TY_ISINT(N.ty[n]))
+      |                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1022:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1022 |                         if (TYK(N.ty[n]) == K_SINT)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1050:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1050 |         run_open(&r, f, &root, 1, 0, EXH, GRID, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1050:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1050 |         run_open(&r, f, &root, 1, 0, EXH, GRID, NSAMPLE);
+      |                                                 ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1058:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1058 |                         ok = !(COLF(&r.p, loc)[i] & F_UNDEF) &&
+      |                                                   ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1108:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1108 |                         if (N.op[g] != O_DIV || TYK(N.ty[g]) != K_REAL)
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1159:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1159 |                 if (TY_FP(p->ty))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1161:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1161 |                             p->ranged ? "" : TYK(p->ty) == K_FLOAT ?
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1177:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1177 |         if (f->np == 1 && TYK(f->p[0].ty) == K_REAL) {
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1181:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1181 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1181:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1181 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                                ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1193:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1193 |                                     (COLF(&r.p, k)[i] & F_UB))
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:735:14: note: expanded from macro 'F_UB'
+  735 | #define F_UB 8     /* undefined behaviour in C */
+      |              ^
+/home/andrew/Code/ucas/src/analyze.c:1200:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |                         if (COLF(&r.p, loc)[i] & F_UNDEF) {
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1210:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1210 |                         if (f->np == 1 && r.d.exhaustive && !TY_FP(f->p[0].ty)) {
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1269:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1269 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1269:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1269 |         run_open(&r, f, &root, 1, 0, EXH, 101, NSAMPLE);
+      |                                                ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1270:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1270 |         run_open(&ir, f, &root, 1, 1, EXH, 101, NSAMPLE);
+      |                                       ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1270:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1270 |         run_open(&ir, f, &root, 1, 1, EXH, 101, NSAMPLE);
+      |                                                 ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1290:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1290 |                                 HIT(uw, wu, F_UW);
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:1288:37: note: expanded from macro 'HIT'
+ 1288 | #define HIT(cnt, buf, bit) if (fl & (bit)) { if (!s->cnt++) \
+      |                                   ~ ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:1291:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1291 |                                 HIT(sw, ws, F_SW);
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:1288:37: note: expanded from macro 'HIT'
+ 1288 | #define HIT(cnt, buf, bit) if (fl & (bit)) { if (!s->cnt++) \
+      |                                   ~ ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:1292:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1292 |                                 HIT(tr, wt, F_TRUNC);
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:1288:37: note: expanded from macro 'HIT'
+ 1288 | #define HIT(cnt, buf, bit) if (fl & (bit)) { if (!s->cnt++) \
+      |                                   ~ ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:1293:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1293 |                                 HIT(nan, wn, F_NAN);
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:1288:37: note: expanded from macro 'HIT'
+ 1288 | #define HIT(cnt, buf, bit) if (fl & (bit)) { if (!s->cnt++) \
+      |                                   ~ ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:1294:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1294 |                                 HIT(inf, wi, F_INF);
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:1288:37: note: expanded from macro 'HIT'
+ 1288 | #define HIT(cnt, buf, bit) if (fl & (bit)) { if (!s->cnt++) \
+      |                                   ~ ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:1296:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1296 |                                 if (fl & F_UB)
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/ucas.h:735:14: note: expanded from macro 'F_UB'
+  735 | #define F_UB 8     /* undefined behaviour in C */
+      |              ^
+/home/andrew/Code/ucas/src/analyze.c:1300:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1300 |                         if ((COLF(&r.p, loc)[i] | COLF(&ir.p, iloc)[i]) & F_UNDEF) {
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:1301:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1301 |                                 if ((COLF(&r.p, loc)[i] ^ COLF(&ir.p, iloc)[i]) & F_UNDEF)
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:1305:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1305 |                         if (TY_FP(t)) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1324:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1324 |                                 if (TYK(t) == K_FLOAT) {
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1325:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1325 |                                         double u = fabs((double)(fkey(TYW(t), m) -
+      |                                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:1326:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1326 |                                             fkey(TYW(t), id)));
+      |                                                  ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:1365:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1365 |                 if (TYK(tk) == K_FLOAT && (op == O_ADD || op == O_SUB ||
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1395:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1395 |                 if (!TY_SIZED(tk) || TYK(tk) == K_BOOL)
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1395:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1395 |                 if (!TY_SIZED(tk) || TYK(tk) == K_BOOL)
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1411:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1411 |                         rep_bool("c_ub", s->sw && TYK(tk) == K_SINT);
+      |                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1426:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1426 |                                     sb_str(&s->ws), TYK(tk) == K_SINT ?
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1430:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1430 |                                 printf("      nsw holds%s\n", TYK(tk) == K_SINT ?
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1450:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1450 |         if (TY_FP(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1453:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1453 |                 if (TYK(t) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1480:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1480 |         if (TY_FP(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1483:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1483 |                 if (TYK(t) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1539:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1539 |         if (f->p[0].ty == TY_INT && f->p[0].ranged)
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:98:16: note: expanded from macro 'TY_INT'
+   98 | #define TY_INT TY(K_INT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:1546:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1546 |                         if (!r->ok[i] || (COLF(&r->p, loc)[i] & F_UNDEF) ||
+      |                                                               ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1609:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1609 |         run_open(&r, f, &root, 1, 0, 1u << 20, 2, 0);
+      |                                         ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1618:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1618 |         if (TY_FP(t)) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1638:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1638 |                         if (!r.ok[i] || (COLF(&r.p, loc)[i] & F_UNDEF)) {
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1644:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1644 |                         if (int_unsigned(t) && TYW(t) == 64 && y < 0)
+      |                                                ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:1645:9: warning: no header providing "INT64_MAX" is directly included [misc-include-cleaner]
+ 1645 |                                 y = INT64_MAX;
+      |                                     ^
+/home/andrew/Code/ucas/src/analyze.c:1730:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1730 |                         if (!TY_FP(f->p[j].ty))
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1751:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1751 |         if (!TY_FP(f->p[0].ty)) {
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1760:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1760 |         run_open(&r, f, roots, 2, 0, EXH, 4001, 4001);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:1764:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1764 |         if (TYK(f->p[0].ty) == K_FLOAT && !f->p[0].ranged) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1783:21: warning: multilevel pointer conversion from 'void *' to 'const char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 1783 |                 const char **ck = xmalloc(MAXC * sizeof *ck);
+      |                                   ^
+/home/andrew/Code/ucas/src/analyze.c:1810:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1810 |                                 fdef = !(COLF(&r.p, fl)[i] & F_UNDEF) &&
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1812:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1812 |                                 ddef = !(COLF(&r.p, dl)[i] & F_UNDEF) &&
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:1890:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1890 |                 if (TYK(f->p[0].ty) == K_FLOAT && !r.d.exhaustive) {
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1951:8: warning: multilevel pointer conversion from 'const char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+ 1951 |                 free(ck);
+      |                      ^
+/home/andrew/Code/ucas/src/analyze.c:1990:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1990 |         if (TY_FP(t) && isnan(ar) && isnan(br) && equiv_nanbits &&
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1991:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1991 |             TYK(t) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:1992:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1992 |                 return fbits(TYW(t), ar) == fbits(TYW(t), br);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:1992:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1992 |                 return fbits(TYW(t), ar) == fbits(TYW(t), br);
+      |                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:1993:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1993 |         if (TY_FP(t))
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2002:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2002 |         if (equiv_nanbits && TYK(t) == K_FLOAT && isnan(vr))
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2003:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2003 |                 sb_printf(b, "NaN 0x%0*llx", TYW(t) / 4,
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:2004:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2004 |                     (unsigned long long)fbits(TYW(t), vr));
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:2028:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2028 |         run_open(&r, f, roots, 2, 0, EXH, 1001, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:2028:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2028 |         run_open(&r, f, roots, 2, 0, EXH, 1001, NSAMPLE);
+      |                                                 ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:2036:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2036 |                         ua = COLF(&r.p, la)[i] & F_UNDEF;
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2037:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2037 |                         ub = COLF(&r.p, lb)[i] & F_UNDEF;
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2100:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2100 |                 if (TYK(f->p[j].ty) == K_FLOAT)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2101:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2101 |                         in_r[(size_t)j * CH] = frombits(TYW(f->p[j].ty),
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:2109:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2109 |         if (ok[0] && !(COLF(&p, la)[0] & F_UNDEF)) {
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2110:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2110 |                 int ub = COLF(&p, lb)[0] & F_UNDEF;
+      |                                          ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2146:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2146 |         if (!nsat_supported(f) || !TY_ISINT(N.ty[a])) {
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2168:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2168 |                         if (f->p[j].name == lane && TY_ISINT(f->p[j].ty)) {
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2169:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2169 |                                 lp = mk_cast(TY(K_UINT, 32), mk_var((uint32_t)j, lane,
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:2225:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2225 |         if ((N.fl[a] | N.fl[b]) & NF_LANES)
+      |             ^~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/analyze.c:2242:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2242 |         if (!nsat_supported(f) || TYK(N.ty[a]) == K_REAL || (!nsat_floats &&
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2243:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2243 |             (!TY_ISINT(N.ty[a]) || nsat_has_float(f, 0)))) {
+      |               ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2328:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2328 |         rflt = TYK(N.ty[f->body]) == K_FLOAT;
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2423:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2423 |                 diter_init(&d, f, EXH, 2, 0);
+      |                                   ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:2466:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2466 |         run_open(&r, f, roots, 2, 0, EXH, 1001, NSAMPLE);
+      |                                      ^
+/home/andrew/Code/ucas/src/analyze.c:21:22: note: expanded from macro 'EXH'
+   21 | #define EXH (1ULL << 22)
+      |                   ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:2466:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2466 |         run_open(&r, f, roots, 2, 0, EXH, 1001, NSAMPLE);
+      |                                                 ^
+/home/andrew/Code/ucas/src/analyze.c:22:26: note: expanded from macro 'NSAMPLE'
+   22 | #define NSAMPLE (1ULL << 16)
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/analyze.c:2473:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2473 |                         if (!r.ok[i] || (COLF(&r.p, lt)[i] & F_UNDEF))
+      |                                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2475:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2475 |                         t = TY_FP(N.ty[f->body]) ? COLR(&r.p, lt)[i] :
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2479:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2479 |                         a = TY_FP(ta) ? COLR(&r.p, la)[i] : (double)COLI(&r.p, la)[i];
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2480:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2480 |                         if ((COLF(&r.p, la)[i] & F_UNDEF) || isnan(a) || isinf(a)) {
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2499:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2499 |                         if (TYK(ta) == K_FLOAT) {
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2500:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2500 |                                 double u = fabs((double)(fkey(TYW(ta), a) -
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:2501:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2501 |                                     fkey(TYW(ta), t)));
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/analyze.c:2521:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2521 |         if (TYK(ta) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2530:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2530 |         if (TYK(ta) == K_FLOAT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2570:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2570 |         if (TYK(N.ty[g->body]) == K_FLOAT) {
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2621:42: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 2621 |                                 in_i[(size_t)(c->nin + j) * CH + np] = (int64_t)k[j];
+      |                                                                      ^
+/home/andrew/Code/ucas/src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:8: note: Field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |               ^
+/home/andrew/Code/ucas/src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2734:9: note: Calling 'fit_obj'
+ 2734 |         best = fit_obj(&c, k, 1);
+      |                ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2613:17: note: Assuming 'base' is < field 'npts'
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |                        ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2613:2: note: Loop condition is true.  Entering loop body
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2615:18: note: 'i' is < field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^
+/home/andrew/Code/ucas/src/analyze.c:2615:18: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/analyze.c:2615:3: note: Loop condition is true.  Entering loop body
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2616:16: note: Assuming 'j' is >= field 'nin'
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2616:4: note: Loop condition is false. Execution continues on line 2620
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:2620:16: note: 'j' is >= field 'nk'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                                     ^
+/home/andrew/Code/ucas/src/analyze.c:2620:4: note: Loop condition is false. Execution continues on line 2615
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:2615:18: note: Assuming 'i' is >= field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2615:30: note: Left side of '&&' is false
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                            ^
+/home/andrew/Code/ucas/src/analyze.c:2626:3: note: Loop condition is true.  Entering loop body
+ 2626 |                 for (i = 0; i < np; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2628:8: note: Assuming the condition is true
+ 2628 |                         if (isnan(t))
+      |                             ^
+/usr/include/math.h:1148:20: note: expanded from macro 'isnan'
+ 1148 | #  define isnan(x) __builtin_isnan (x)
+      |                    ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2628:4: note: Taking true branch
+ 2628 |                         if (isnan(t))
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:2629:5: note:  Execution continues on line 2626
+ 2629 |                                 continue;
+      |                                 ^
+/home/andrew/Code/ucas/src/analyze.c:2626:3: note: Loop condition is false. Execution continues on line 2613
+ 2626 |                 for (i = 0; i < np; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2613:17: note: Assuming 'base' is < field 'npts'
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |                        ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2613:2: note: Loop condition is true.  Entering loop body
+ 2613 |         for (base = 0; base < c->npts; base += CH * stride) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2615:18: note: 'i' is < field 'npts'
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                                ^
+/home/andrew/Code/ucas/src/analyze.c:2615:18: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/analyze.c:2615:3: note: Loop condition is true.  Entering loop body
+ 2615 |                 for (i = base; i < c->npts && np < CH; i += stride, np++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2616:16: note: Assuming 'j' is >= field 'nin'
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2616:4: note: Loop condition is false. Execution continues on line 2620
+ 2616 |                         for (j = 0; j < c->nin; j++) {
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:2620:9: note: The value 0 is assigned to 'j'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                              ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:2620:16: note: Assuming 'j' is < field 'nk'
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2620:4: note: Loop condition is true.  Entering loop body
+ 2620 |                         for (j = 0; j < c->nk; j++) {
+      |                         ^
+/home/andrew/Code/ucas/src/analyze.c:2621:42: note: Assigned value is uninitialized
+ 2621 |                                 in_i[(size_t)(c->nin + j) * CH + np] = (int64_t)k[j];
+      |                                                                      ^ ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2630:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2630 |                         if (COLF(&c->p, c->la)[i] & F_UNDEF)
+      |                                                   ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2632:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2632 |                         a = TY_FP(ta) ? COLR(&c->p, c->la)[i] :
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2656:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2656 |         *isint = TY_ISINT(t);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2718:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2718 |                         double t = TY_FP(N.ty[f->body]) ? COLR(&tp, tl)[i] :
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2720:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2720 |                         if (COLF(&tp, tl)[i] & F_UNDEF || isinf(t))
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2733:10: warning: Branch condition evaluates to a garbage value [clang-analyzer-core.uninitialized.Branch]
+ 2733 |                 k[j] = isint[j] ? floor((lo[j] + hi[j]) / 2) : (lo[j] + hi[j]) / 2;
+      |                        ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:8: note: Field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |               ^
+/home/andrew/Code/ucas/src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2732:7: note: The value 0 is assigned to 'j'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |              ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:2732:14: note: Assuming 'j' is < field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2732:2: note: Loop condition is true.  Entering loop body
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2733:10: note: Branch condition evaluates to a garbage value
+ 2733 |                 k[j] = isint[j] ? floor((lo[j] + hi[j]) / 2) : (lo[j] + hi[j]) / 2;
+      |                        ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2737:24: warning: The left operand of '-' is a garbage value [clang-analyzer-core.UndefinedBinaryOperatorResult]
+ 2737 |                         double span = hi[j] - lo[j], step, cand[8], cv[8], save;
+      |                                       ~~~~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:8: note: Field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |               ^
+/home/andrew/Code/ucas/src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2735:27: note: Assuming field 'nk' is > 1
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |                                  ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2735:27: note: '?' condition is true
+/home/andrew/Code/ucas/src/analyze.c:2735:2: note: Loop condition is true.  Entering loop body
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2736:8: note: The value 0 is assigned to 'j'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:2736:15: note: 'j' is < field 'nk'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                             ^
+/home/andrew/Code/ucas/src/analyze.c:2736:3: note: Loop condition is true.  Entering loop body
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2737:24: note: The left operand of '-' is a garbage value
+ 2737 |                         double span = hi[j] - lo[j], step, cand[8], cv[8], save;
+      |                                       ~~~~~ ^
+/home/andrew/Code/ucas/src/analyze.c:2739:9: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+ 2739 |                         save = k[j];
+      |                              ^ ~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:6: note: Assuming field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2690:8: note: Field 'nk' is > 0
+ 2690 |         if (c.nk <= 0)
+      |               ^
+/home/andrew/Code/ucas/src/analyze.c:2690:2: note: Taking false branch
+ 2690 |         if (c.nk <= 0)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2693:14: note: Assuming 'j' is < field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2693:2: note: Loop condition is true.  Entering loop body
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2694:7: note: Assuming 'j' is >= field 'np'
+ 2694 |                 if (j < f->np)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2694:3: note: Taking false branch
+ 2694 |                 if (j < f->np)
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2693:14: note: Assuming 'j' is >= field 'np'
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2693:2: note: Loop condition is false. Execution continues on line 2704
+ 2693 |         for (j = 0; j < g->np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2715:9: note: Assuming the condition is false
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2715:2: note: Loop condition is false. Execution continues on line 2730
+ 2715 |         while ((np = diter_next(&d, in_i, in_r)) != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2732:14: note: Assuming 'j' is >= field 'nk'
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2732:2: note: Loop condition is false. Execution continues on line 2734
+ 2732 |         for (j = 0; j < c.nk; j++)
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2735:27: note: Assuming field 'nk' is > 1
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |                                  ^~~~~~~~
+/home/andrew/Code/ucas/src/analyze.c:2735:27: note: '?' condition is true
+/home/andrew/Code/ucas/src/analyze.c:2735:2: note: Loop condition is true.  Entering loop body
+ 2735 |         for (round = 0; round < (c.nk > 1 ? 6 : 1); round++) {
+      |         ^
+/home/andrew/Code/ucas/src/analyze.c:2736:8: note: The value 0 is assigned to 'j'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/analyze.c:2736:15: note: 'j' is < field 'nk'
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                             ^
+/home/andrew/Code/ucas/src/analyze.c:2736:3: note: Loop condition is true.  Entering loop body
+ 2736 |                 for (j = 0; j < c.nk; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/analyze.c:2739:9: note: Assigned value is uninitialized
+ 2739 |                         save = k[j];
+      |                              ^ ~~~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

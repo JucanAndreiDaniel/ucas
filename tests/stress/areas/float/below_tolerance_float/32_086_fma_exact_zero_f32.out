@@ -1,0 +1,11 @@
+> f_fma_exact_zero_f32(a: f32 in -10..10, b: f32 in -10..10) = fma(a,b,-a*b)
+> g_fma_exact_zero_f32(a: f32 in -10..10, b: f32 in -10..10) = f32(0)
+> equiv f_fma_exact_zero_f32 g_fma_exact_zero_f32
+f_fma_exact_zero_f32 and g_fma_exact_zero_f32 differ at 32774 points of the sample, e.g. a=-0.871434331, b=-7.92492866e-16: -5.82460183e-24 vs 0
+> error g_fma_exact_zero_f32 ~ f_fma_exact_zero_f32
+error of g_fma_exact_zero_f32 against f_fma_exact_zero_f32:
+  max abs error 1.47276e-06 at a=-3.79764891, b=-9.43736839
+  max rel error 1 (100%) at a=-0.871434331, b=-7.92492866e-16
+  mean rel error 0.500092 over 65536 points
+  max 902146968 ulp
+  rounding: not analysed (no input of the sample gives a finite, non-zero value)

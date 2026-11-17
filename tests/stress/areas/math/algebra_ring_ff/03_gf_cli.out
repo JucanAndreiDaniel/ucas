@@ -1,0 +1,82 @@
+> ring Z/12
+Z/12: the integers mod 12 = 2^2 * 3
+  12 elements, characteristic 12
+  a field: no; an integral domain: no (12 is not prime: 2 * 6 = 0 with both nonzero)
+  CRT: Z/12 = Z/4 x Z/3 (a -> (a mod 4, a mod 3))
+  units: phi(12) = 4: 1, 5, 7, 11
+  unit group: C2 x C2 (order 4, exponent lambda(12) = 2); not cyclic, so there is no primitive root
+  zero divisors: 7 nonzero (every nonzero non-unit of a finite ring): 2, 3, 4, 6, 8, 9, 10
+  nilpotents: the multiples of rad(12) = 6, 2 of them: 0, 6
+  idempotents: 2^2 (e = 0 or 1 mod each prime power): 0, 1, 4, 9
+  ideals: (d) for each d | 12 (6 of them; Z/12 is a principal ideal ring): (1) (2) (3) (4) (6) (0)
+  quotients: Z/12 / (d) = Z/d (a -> a mod d)
+  maximal = prime ideals: (2), (3) (quotients Z/p, fields)
+  check: by brute force over the 12 elements: 4 units, 7 zero divisors, 2 nilpotents, 4 idempotents
+> ring GF(2^8)
+GF(2^8) = GF(2)[x]/(x^8 + x^4 + x^3 + x^2 + 1), 0x11d
+  256 elements (2^8), characteristic 2, dimension 8 over GF(2)
+  modulus: the smallest primitive polynomial of degree 8 over GF(2) (by its coefficients read as a base-2 number; not necessarily the Conway polynomial)
+  a field: yes, the modulus is irreducible (Rabin: x^(2^8) = x mod f and gcd(x^(2^(8/r)) - x, f) = 1 for each prime r | 8)
+  check: Ben-Or's test agrees; Berlekamp's matrix has nullity 1 (one irreducible factor)
+  check by brute force over all 256 x 256 products: every nonzero element has an inverse, no zero divisors, commutative and equal to shift-and-add
+  x has order 255: the modulus is primitive
+  unit group: cyclic of order 255 = 3 * 5 * 17; phi(255) = 128 generators
+  subfields: GF(2), GF(2^2), GF(2^4), GF(2^8) (GF(2^d) for each d | 8: the a with a^(2^d) = a)
+  Frobenius a -> a^2: an automorphism of order 8 fixing GF(2); the Galois group is cyclic of order 8
+> ring GF(4)
+GF(2^2) = GF(2)[x]/(x^2 + x + 1), 0x7
+  4 elements (2^2), characteristic 2, dimension 2 over GF(2)
+  modulus: the smallest primitive polynomial of degree 2 over GF(2) (by its coefficients read as a base-2 number; not necessarily the Conway polynomial)
+  a field: yes, the modulus is irreducible (Rabin: x^(2^2) = x mod f and gcd(x^(2^(2/r)) - x, f) = 1 for each prime r | 2)
+  check: Ben-Or's test agrees; Berlekamp's matrix has nullity 1 (one irreducible factor)
+  check by brute force over all 4 x 4 products: every nonzero element has an inverse, no zero divisors, commutative and equal to shift-and-add
+  x has order 3: the modulus is primitive
+  unit group: cyclic of order 3 = 3; phi(3) = 2 generators
+  subfields: GF(2), GF(2^2) (GF(2^d) for each d | 2: the a with a^(2^d) = a)
+  Frobenius a -> a^2: an automorphism of order 2 fixing GF(2); the Galois group is cyclic of order 2
+> factor x^2+1 over GF(5)
+x^2 + 1 = (x + 2) (x + 3) over GF(5)
+  how: square-free split (gcd(f, f'), p-th roots where f' = 0), distinct-degree split (gcd(x^(q^i) - x, f)), Cantor-Zassenhaus equal-degree split
+  check: the product of the factors is f; each factor is irreducible (Rabin); Berlekamp counts 2 distinct factors
+  roots in GF(5): 2 by evaluation at every element, the number of distinct linear factors (2)
+> irreducible x^2+1 over GF(3)
+x^2 + 1 is irreducible over GF(3)
+  how: Rabin's test (degree 2: x^(q^2) = x mod f, and gcd(x^(q^(2/r)) - x, f) = 1 for each prime r | 2; q = 3)
+  check: Ben-Or's test agrees; Berlekamp: 1 distinct irreducible factor; trial division by every monic polynomial of degree <= 1: none divides
+> irreducible x^2+1 over GF(5)
+x^2 + 1 is not irreducible over GF(5)
+  how: Rabin's test (degree 2: x^(q^2) = x mod f, and gcd(x^(q^(2/r)) - x, f) = 1 for each prime r | 2; q = 5)
+  x^2 + 1 = (x + 2) (x + 3)
+  check: Ben-Or's test agrees; Berlekamp: 2 distinct irreducible factors; trial division by every monic polynomial of degree <= 1: a factor found
+> primitive x^3+x+1 over GF(2)
+x^3 + x + 1 is irreducible over GF(2)
+  how: Rabin's test (degree 3: x^(q^3) = x mod f, and gcd(x^(q^(3/r)) - x, f) = 1 for each prime r | 3; q = 2)
+  check: Ben-Or's test agrees; Berlekamp: 1 distinct irreducible factor; trial division by every monic polynomial of degree <= 1: none divides
+primitive: x has order 7 = q^3 - 1 = 7
+  how: x^((q^n - 1)/r) != 1 mod f for each prime r | q^n - 1 = 7
+  so an LFSR with this feedback polynomial has period 7 (maximal: every nonzero state)
+  check: stepping x, x^2, ... mod f: x^k = 1 first at k = 7
+> primitive x^4+x^3+x^2+x+1 over GF(2)
+x^4 + x^3 + x^2 + x + 1 is irreducible over GF(2)
+  how: Rabin's test (degree 4: x^(q^4) = x mod f, and gcd(x^(q^(4/r)) - x, f) = 1 for each prime r | 4; q = 2)
+  check: Ben-Or's test agrees; Berlekamp: 1 distinct irreducible factor; trial division by every monic polynomial of degree <= 2: none divides
+not primitive: x has order 5 < q^4 - 1 = 15
+  how: x^((q^n - 1)/r) != 1 mod f for each prime r | q^n - 1 = 3 * 5
+  so an LFSR with this feedback polynomial has period 5
+  check: stepping x, x^2, ... mod f: x^k = 1 first at k = 5
+> roots x^2+1 over GF(5)
+roots of x^2 + 1 in GF(5): 2 3
+  how: the linear factors (gcd with x^q - x, then Cantor-Zassenhaus)
+  check: evaluation at all 5 elements: 2 roots
+> roots x^2-1 over Z/8
+roots of x^2 + 7 in Z/8: 4: 1 3 5 7
+  how: evaluation at every element (Z/8 is not a field: a polynomial can have more roots than its degree)
+> factor x^4+x^3+x^2+x+1 over GF(2)
+x^4 + x^3 + x^2 + x + 1 is irreducible over GF(2)
+  how: square-free split (gcd(f, f'), p-th roots where f' = 0), distinct-degree split (gcd(x^(q^i) - x, f)), Cantor-Zassenhaus equal-degree split (by the trace map)
+  check: the product of the factors is f; each factor is irreducible (Rabin); Berlekamp counts 1 distinct factor
+  roots in GF(2): 0 by evaluation at every element, the number of distinct linear factors (0)
+> ring Z/0
+03_gf_cli.ucas:12:6: error: the modulus must be positive
+    ring Z/0
+         ^

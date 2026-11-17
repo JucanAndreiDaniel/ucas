@@ -1,0 +1,39 @@
+> range of a word x
+  note: "word": read as 32 bits (ARM word), not 16 bits (x86 WORD) or 64 bits (machine word) (say "16-bit", "32-bit" or "64-bit", or "assume words are 64-bit")
+  ucas: it(x: u32) = x
+  ucas: range it
+range of it -> u32:
+  0..4294967295  (sampled min/max; not a sound bound)
+  fits in u32
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..4294967295
+  proved bound (monotonicity, exact algebra): 0..4294967295
+  the sample reaches both ends: the range is exactly 0..4294967295 (proved)
+    max: it is nondecreasing in x, so take x = 4294967295:
+      4294967295
+    min: it is nondecreasing in x, so take x = 0:
+      0
+> range of a 4-bit x
+  note: "4-bit" without signed or unsigned: read as unsigned, u4, not signed, i4 (say "unsigned" or "signed", or "assume N-bit numbers are signed")
+  ucas: it(x: u4) = x
+  ucas: range it
+range of it -> u4:
+  0..15   (16 distinct values)
+  values: 0..15
+  fits in u4
+  over all 16 points of the domain
+> the not of x
+  note: "not" of a number: read as bitwise not, ~, not logical not, ! (say "bitwise not" or "logical not")
+  ucas: it(x) = ~x
+  ucas: show it
+  note: x has no type: inferred int from the integer operations in the body
+it(x: int) = ~x
+  -> int
+> range of the integer square root of a 4-bit unsigned x
+  ucas: it(x: u4) = isqrt(x)
+  ucas: range it
+range of it -> u4:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 16 points of the domain

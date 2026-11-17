@@ -1,0 +1,20 @@
+> fl(x: u32) = asfloat(x) > f32(-2^(-126)) && asfloat(x) < f32(2^(-126)) ? f32(0) : asfloat(x)
+> mul1(x: u32) = asfloat(x) * f32(1)
+> passthru(x: u32) = asfloat(x)
+> mul3(x: u32) = asfloat(x) * f32(3)
+> fl3(x: u32) = fl(x) * f32(3)
+> equiv mul1 passthru noftz
+mul1 and passthru are equal on the domain of mul1 (proved by SAT: 1105 AIG nodes, 0 conflicts)
+> equiv mul1 passthru ftz
+mul1 and passthru are equal on the domain of mul1 (proved by SAT: 1105 AIG nodes, 0 conflicts)
+  every float operation flushed subnormals to zero (ftz)
+> equiv mul1 fl noftz
+mul1 and fl differ at 259 points of the sample, e.g. x=1: 1.40129846e-45 vs 0
+> equiv mul1 fl ftz
+mul1 and fl differ at 259 points of the sample, e.g. x=1: 1.40129846e-45 vs 0
+  every float operation flushed subnormals to zero (ftz)
+> equiv mul3 fl3 noftz
+mul3 and fl3 differ at 259 points of the sample, e.g. x=1: 4.20389539e-45 vs 0
+> equiv mul3 fl3 ftz
+mul3 and fl3 are equal on the domain of mul3 (proved by SAT: 8418 AIG nodes, 4211 conflicts)
+  every float operation flushed subnormals to zero (ftz)

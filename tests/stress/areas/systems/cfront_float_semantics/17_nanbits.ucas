@@ -1,0 +1,13 @@
+e1(a: f32) = -(-a)
+e2(a: f32) = a
+equiv e1 e2 nanbits
+m1(a: f32) = a*1.0f
+equiv m1 e2 nanbits
+z1(a: f32) = a+0.0f
+equiv z1 e2 nanbits
+s1(a: f32) = a+a
+s2(a: f32) = 2.0f*a
+equiv s1 s2 nanbits
+fm1(a: f32,b: f32,c: f32) = fma(a,b,c)
+fm2(a: f32,b: f32,c: f32) = a*b+c
+equiv fm1 fm2 nanbits

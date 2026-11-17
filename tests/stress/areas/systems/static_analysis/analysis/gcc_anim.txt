@@ -1,0 +1,491 @@
+src/anim.c: In function ‘deliver’:
+src/anim.c:1617:17: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1617 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver’: events 1-2
+ 1589 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1595 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver’: events 3-4
+ 1595 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1598 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver’: events 5-8
+ 1598 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1610 |│                snprintf(path, sizeof path, "%s.gif", name);
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(6) ...to here
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ~      ~~~~~~~~~~~~~~~~~
+      |                    |      |
+      |                    |      (7) allocated here
+      |                    (8) assuming ‘fp’ is NULL
+  ‘deliver’: events 9-13
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ^
+      |                    |
+      |                    (9) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+      |                                                                          │
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 1612 |│                    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+ 1613 |│                        if (fp)
+      |│                           ~
+      |│                           |
+      |└──────────────────────────>(10) ...to here
+      |                            (11) following ‘false’ branch (when ‘fp’ is NULL)... ─>─┐
+      |                                                                                    │
+      |                                                                                    │
+      |┌───────────────────────────────────────────────────────────────────────────────────┘
+ 1614 |│                                fclose(fp);
+ 1615 |│                        fail("cannot write %s", path);
+      |│                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                        |
+      |└───────────────────────>(12) ...to here
+ 1616 |                 }
+ 1617 |                 fclose(fp);
+      |                 ~~~~~~~~~~
+      |                 |
+      |                 (13) ⚠️  argument 1 (‘fp’) NULL where non-null expected
+In file included from src/ucas.h:20,
+                 from src/anim.c:29:
+/usr/include/stdio.h:191:12: note: argument 1 of ‘fclose’ must be non-null
+  191 | extern int fclose (FILE *__stream) __nonnull ((1));
+      |            ^~~~~~
+src/anim.c:1617:17: warning: double ‘fclose’ of FILE ‘fp’ [CWE-1341] [-Wanalyzer-double-fclose]
+ 1617 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver’: events 1-2
+ 1589 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1595 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver’: events 3-4
+ 1595 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1598 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver’: events 5-8
+ 1598 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1610 |│                snprintf(path, sizeof path, "%s.gif", name);
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(6) ...to here
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ~      ~~~~~~~~~~~~~~~~~
+      |                    |      |
+      |                    |      (7) opened here
+      |                    (8) assuming ‘fp’ is non-NULL
+  ‘deliver’: events 9-10
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ^
+      |                    |
+      |                    (9) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                               │
+      |                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────┘
+ 1612 |│                    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+      |│                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                    |
+      |└───────────────────>(10) ...to here
+  ‘deliver’: events 11-16
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+      |                                                      |
+      |                                                      (11) following ‘true’ branch... ─>─┐
+      |                                                                                         │
+      |                                                                                         │
+      |┌────────────────────────────────────────────────────────────────────────────────────────┘
+ 1612 |│                    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+      |│                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1613 |│                        if (fp)
+      |│                           ~                          
+      |│                           |
+      |└──────────────────────────>(12) ...to here
+      |                            (13) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                                       │
+      |                                                                                       │
+      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+ 1614 |│                                fclose(fp);
+      |│                                ~~~~~~~~~~            
+      |│                                |
+      |└───────────────────────────────>(14) ...to here
+      |                                 (15) first ‘fclose’ here
+......
+ 1617 |                 fclose(fp);
+      |                 ~~~~~~~~~~                            
+      |                 |
+      |                 (16) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (15)
+src/anim.c:1617:17: warning: double-‘fclose’ of ‘fp’ [CWE-415] [-Wanalyzer-double-free]
+ 1617 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver’: events 1-2
+ 1589 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1595 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver’: events 3-4
+ 1595 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1598 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver’: events 5-8
+ 1598 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1610 |│                snprintf(path, sizeof path, "%s.gif", name);
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(6) ...to here
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ~      ~~~~~~~~~~~~~~~~~
+      |                    |      |
+      |                    |      (7) allocated here
+      |                    (8) assuming ‘fp’ is non-NULL
+  ‘deliver’: events 9-10
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                    ^
+      |                    |
+      |                    (9) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                               │
+      |                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────┘
+ 1612 |│                    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+      |│                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                    |
+      |└───────────────────>(10) ...to here
+  ‘deliver’: events 11-16
+ 1611 |                 if ((fp = fopen(path, "wb")) == NULL ||
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+      |                                                      |
+      |                                                      (11) following ‘true’ branch... ─>─┐
+      |                                                                                         │
+      |                                                                                         │
+      |┌────────────────────────────────────────────────────────────────────────────────────────┘
+ 1612 |│                    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+      |│                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1613 |│                        if (fp)
+      |│                           ~                          
+      |│                           |
+      |└──────────────────────────>(12) ...to here
+      |                            (13) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                                       │
+      |                                                                                       │
+      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+ 1614 |│                                fclose(fp);
+      |│                                ~~~~~~~~~~            
+      |│                                |
+      |└───────────────────────────────>(14) ...to here
+      |                                 (15) first ‘fclose’ here
+......
+ 1617 |                 fclose(fp);
+      |                 ~~~~~~~~~~                            
+      |                 |
+      |                 (16) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (15)
+src/anim.c: In function ‘deliver_file’:
+src/anim.c:1660:17: warning: use of NULL ‘fp’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+ 1660 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver_file’: events 1-2
+ 1633 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1639 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver_file’: events 3-4
+ 1639 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1640 |│                rep_deliver(name, type, data, n, 0);
+ 1641 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver_file’: events 5-13
+ 1641 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1654 |│                FILE *fp = fopen(name, "wb");
+      |│                           ~~~~~~~~~~~~~~~~~
+      |│                           |
+      |└──────────────────────────>(6) ...to here
+      |                            (7) allocated here
+ 1655 |                 if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |                    ~
+      |                    |
+      |                    (8) assuming ‘fp’ is NULL
+      |                    (9) following ‘true’ branch (when ‘fp’ is NULL)... ─>─┐
+      |                                                                          │
+      |                                                                          │
+      |┌─────────────────────────────────────────────────────────────────────────┘
+ 1656 |│                        if (fp)
+      |│                           ~
+      |│                           |
+      |└──────────────────────────>(10) ...to here
+      |                            (11) following ‘false’ branch (when ‘fp’ is NULL)... ─>─┐
+      |                                                                                    │
+      |                                                                                    │
+      |┌───────────────────────────────────────────────────────────────────────────────────┘
+ 1657 |│                                fclose(fp);
+ 1658 |│                        fail("cannot write %s", name);
+      |│                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                        |
+      |└───────────────────────>(12) ...to here
+ 1659 |                 }
+ 1660 |                 fclose(fp);
+      |                 ~~~~~~~~~~
+      |                 |
+      |                 (13) ⚠️  argument 1 (‘fp’) NULL where non-null expected
+/usr/include/stdio.h:191:12: note: argument 1 of ‘fclose’ must be non-null
+  191 | extern int fclose (FILE *__stream) __nonnull ((1));
+      |            ^~~~~~
+src/anim.c:1660:17: warning: double ‘fclose’ of FILE ‘fp’ [CWE-1341] [-Wanalyzer-double-fclose]
+ 1660 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver_file’: events 1-2
+ 1633 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1639 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver_file’: events 3-4
+ 1639 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1640 |│                rep_deliver(name, type, data, n, 0);
+ 1641 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver_file’: events 5-9
+ 1641 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1654 |│                FILE *fp = fopen(name, "wb");
+      |│                           ~~~~~~~~~~~~~~~~~
+      |│                           |
+      |└──────────────────────────>(6) ...to here
+      |                            (7) opened here
+ 1655 |                 if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |                    ~
+      |                    |
+      |                    (8) assuming ‘fp’ is non-NULL
+      |                    (9) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                               │
+  ‘deliver_file’: event 10
+      |                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────┘
+ 1655 |│                if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |│                                  ^~~~~~~~~~~~~~~~~~~~~~
+      |│                                  |
+      |└─────────────────────────────────>(10) ...to here
+  ‘deliver_file’: events 11-16
+ 1655 |                 if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |                     ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                |
+      |                                (11) following ‘true’ branch... ─>─┐
+      |                                                                   │
+      |                                                                   │
+      |┌──────────────────────────────────────────────────────────────────┘
+ 1656 |│                        if (fp)
+      |│                           ~    
+      |│                           |
+      |└──────────────────────────>(12) ...to here
+      |                            (13) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                                       │
+      |                                                                                       │
+      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+ 1657 |│                                fclose(fp);
+      |│                                ~~~~~~~~~~
+      |│                                |
+      |└───────────────────────────────>(14) ...to here
+      |                                 (15) first ‘fclose’ here
+......
+ 1660 |                 fclose(fp);
+      |                 ~~~~~~~~~~      
+      |                 |
+      |                 (16) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (15)
+src/anim.c:1660:17: warning: double-‘fclose’ of ‘fp’ [CWE-415] [-Wanalyzer-double-free]
+ 1660 |                 fclose(fp);
+      |                 ^~~~~~~~~~
+  ‘deliver_file’: events 1-2
+ 1633 |         if (nofile) {
+      |            ^
+      |            |
+      |            (1) following ‘false’ branch (when ‘nofile == 0’)... ─>─┐
+      |                                                                    │
+......
+      |                                                                    │
+      |┌───────────────────────────────────────────────────────────────────┘
+ 1639 |│        } else if (rep_on) {    /* JSON: into the response's files */
+      |│                   ~~~~~~
+      |│                   |
+      |└──────────────────>(2) ...to here
+  ‘deliver_file’: events 3-4
+ 1639 |         } else if (rep_on) {    /* JSON: into the response's files */
+      |                   ^
+      |                   |
+      |                   (3) following ‘false’ branch... ─>─┐
+      |                                                      │
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1640 |│                rep_deliver(name, type, data, n, 0);
+ 1641 |│        } else if (nlp_defer) {
+      |│                   ~~~~~~~~~
+      |│                   |
+      |└──────────────────>(4) ...to here
+  ‘deliver_file’: events 5-9
+ 1641 |         } else if (nlp_defer) {
+      |                   ^
+      |                   |
+      |                   (5) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+ 1654 |│                FILE *fp = fopen(name, "wb");
+      |│                           ~~~~~~~~~~~~~~~~~
+      |│                           |
+      |└──────────────────────────>(6) ...to here
+      |                            (7) allocated here
+ 1655 |                 if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |                    ~
+      |                    |
+      |                    (8) assuming ‘fp’ is non-NULL
+      |                    (9) following ‘false’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                               │
+  ‘deliver_file’: event 10
+      |                                                                               │
+      |┌──────────────────────────────────────────────────────────────────────────────┘
+ 1655 |│                if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |│                                  ^~~~~~~~~~~~~~~~~~~~~~
+      |│                                  |
+      |└─────────────────────────────────>(10) ...to here
+  ‘deliver_file’: events 11-16
+ 1655 |                 if (fp == NULL || fwrite(data, 1, n, fp) != n) {
+      |                     ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                |
+      |                                (11) following ‘true’ branch... ─>─┐
+      |                                                                   │
+      |                                                                   │
+      |┌──────────────────────────────────────────────────────────────────┘
+ 1656 |│                        if (fp)
+      |│                           ~    
+      |│                           |
+      |└──────────────────────────>(12) ...to here
+      |                            (13) following ‘true’ branch (when ‘fp’ is non-NULL)... ─>─┐
+      |                                                                                       │
+      |                                                                                       │
+      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+ 1657 |│                                fclose(fp);
+      |│                                ~~~~~~~~~~
+      |│                                |
+      |└───────────────────────────────>(14) ...to here
+      |                                 (15) first ‘fclose’ here
+......
+ 1660 |                 fclose(fp);
+      |                 ~~~~~~~~~~      
+      |                 |
+      |                 (16) ⚠️  second ‘fclose’ here; first ‘fclose’ was at (15)

@@ -1,0 +1,25 @@
+# Coercion/cross-type/partial-domain oracle-verified cases
+cba(x: bool) = x
+cbb(x: u1) = x
+equiv cba ~ cbb
+cna(x: bool) = !x
+cnb(x: u1) = ~x
+equiv cna ~ cnb
+cia(x: bool) = int(x)
+cib(x: u1) = u1(x)
+equiv cia ~ cib
+xna(a: bool, b: bool) = a xor b
+xnb(a: bool, b: bool) = a != b
+equiv xna ~ xnb
+nda(a: bool, b: bool) = !(a & b)
+ndb(a: bool, b: bool) = !a | !b
+equiv nda ~ ndb
+nora(a: bool, b: bool) = !(a | b)
+norb(a: bool, b: bool) = !a & !b
+equiv nora ~ norb
+xna2(a: bool, b: bool) = a == b
+xnb2(a: bool, b: bool) = !(a xor b)
+equiv xna2 ~ xnb2
+i1a(a: bool, b: bool) = !a | b
+i1b(a: bool, b: bool) = a ? b : 1
+equiv i1a ~ i1b

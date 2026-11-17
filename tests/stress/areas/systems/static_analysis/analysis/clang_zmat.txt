@@ -1,0 +1,56 @@
+src/zmat.c:144:3: warning: Null pointer passed to 2nd parameter expecting 'nonnull' [core.NonNullParamChecker]
+  144 |                 memcpy(m->a, row, (size_t)nrow * sizeof *row);
+      |                 ^            ~~~
+src/zmat.c:131:21: note: 'row' initialized to a null pointer value
+  131 |         zint *all = NULL, *row = NULL;
+      |                            ^~~
+src/zmat.c:136:6: note: Assuming the condition is false
+  136 |         if (*s != '[')
+      |             ^~~~~~~~~
+src/zmat.c:136:2: note: Taking false branch
+  136 |         if (*s != '[')
+      |         ^
+src/zmat.c:139:6: note: Assuming the condition is true
+  139 |         if (*e != '[') {
+      |             ^~~~~~~~~
+src/zmat.c:139:2: note: Taking true branch
+  139 |         if (*e != '[') {
+      |         ^
+src/zmat.c:141:8: note: Calling 'parse_row'
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/zmat.c:99:6: note: Assuming the condition is false
+   99 |         if (*s != '[')
+      |             ^~~~~~~~~
+src/zmat.c:99:2: note: Taking false branch
+   99 |         if (*s != '[')
+      |         ^
+src/zmat.c:103:6: note: Assuming the condition is true
+  103 |         if (*s == ']') {
+      |             ^~~~~~~~~
+src/zmat.c:103:2: note: Taking true branch
+  103 |         if (*s == ']') {
+      |         ^
+src/zmat.c:105:3: note: Returning without writing to '*v'
+  105 |                 return 1;
+      |                 ^
+src/zmat.c:141:8: note: Returning from 'parse_row'
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/zmat.c:141:3: note: Taking false branch
+  141 |                 if (!parse_row(s, &row, &nrow, &caprow, &e))
+      |                 ^
+src/zmat.c:143:14: note: 'nrow' is 0
+  143 |                 zm_init(m, nrow ? 1 : 0, nrow);
+      |                            ^~~~
+src/zmat.c:143:14: note: '?' condition is false
+src/zmat.c:144:3: note: Null pointer passed to 2nd parameter expecting 'nonnull'
+  144 |                 memcpy(m->a, row, (size_t)nrow * sizeof *row);
+      |                 ^            ~~~
+src/zmat.c:568:3: warning: Value stored to 'prev' is never read [deadcode.DeadStores]
+  568 |                 prev = ZM(&m, r, c);
+      |                 ^      ~~~~~~~~~~~~
+src/zmat.c:568:3: note: Value stored to 'prev' is never read
+  568 |                 prev = ZM(&m, r, c);
+      |                 ^      ~~~~~~~~~~~~
+2 warnings generated.

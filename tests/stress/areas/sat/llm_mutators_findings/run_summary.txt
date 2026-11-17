@@ -1,0 +1,72 @@
+# Corpus run summary
+
+seed 20261116 | 224 mutations | 9.5s wall
+
+## By outcome class
+
+  semantic          209
+  parse_error       8
+  structured_error  0
+  crash             4
+  hang              0
+  empty             0
+  other             3
+
+## By family
+
+  cast_coercion      sem=15  parse=3   crash=0  hang=0  other=0
+  deep_nesting       sem=3   parse=0   crash=4  hang=0  other=3
+  domain_total       sem=14  parse=0   crash=0  hang=0  other=0
+  english_boundflip  sem=18  parse=0   crash=0  hang=0  other=0
+  equiv_domain       sem=38  parse=0   crash=0  hang=0  other=0
+  laplace_ic         sem=10  parse=0   crash=0  hang=0  other=0
+  mixed_sign         sem=14  parse=0   crash=0  hang=0  other=0
+  nlp_number         sem=13  parse=1   crash=0  hang=0  other=0
+  powerseries_var    sem=12  parse=0   crash=0  hang=0  other=0
+  range_spike        sem=18  parse=0   crash=0  hang=0  other=0
+  real_identity      sem=20  parse=4   crash=0  hang=0  other=0
+  stale_autoname     sem=12  parse=0   crash=0  hang=0  other=0
+  symmetry_both      sem=12  parse=0   crash=0  hang=0  other=0
+  vacuous            sem=10  parse=0   crash=0  hang=0  other=0
+
+## Known-bug signatures matched
+
+  equiv_ignores_G_domain           38
+  true_identity_refuted            20
+  english_ascending_flip           16
+  cast_coercion_equal              15
+  range_excludes_reachable         14
+  mixed_sign_reinterpret           14
+  symmetric_and_antisymmetric      12
+  powerseries_times_x              12
+  stale_autoname_false             12
+  nlp_misparse                     11
+  identical_counterexample         10
+  total_but_0_defined              10
+  laplace_ic_dropped               10
+  vacuous_equal                    10
+  parser_limit                     4
+
+## Anomalies that need eyeballing (crash/hang/structured_error,
+or semantic with no known signature)
+
+  #86 domain_total       semantic  rc=0    hits=[] | domain of x / (x - x) on u16
+  #87 domain_total       semantic  rc=0    hits=[] | domain of x / (x - x) on u8
+  #88 domain_total       semantic  rc=0    hits=[] | domain of x / (x - x) on i8
+  #89 domain_total       semantic  rc=0    hits=[] | domain of x % (x - x) on u32
+  #95 range_spike        semantic  rc=0    hits=[] | range of spike/corner x == f32(1.0) ? 1e30 : 0
+  #98 range_spike        semantic  rc=0    hits=[] | range of spike/corner x == f32(1.0) ? f32(3.14) : 0
+  #104 range_spike        semantic  rc=0    hits=[] | range of spike/corner x == f32(1.0) ? -1e20 : 0
+  #107 range_spike        semantic  rc=0    hits=[] | range of spike/corner x == f32(1.0) ? 12345 : 0
+  #177 english_boundflip  semantic  rc=0    hits=[] | English integral 10 to 3
+  #182 english_boundflip  semantic  rc=0    hits=[] | English integral 5 to 1
+  #201 deep_nesting       semantic  rc=0    hits=[] | paren nesting depth 1100
+  #202 deep_nesting       crash     rc=-11  hits=['parser_limit'] | minus nesting depth 1600
+  #203 deep_nesting       semantic  rc=0    hits=[] | sqrt nesting depth 1100
+  #205 deep_nesting       crash     rc=-11  hits=['parser_limit'] | paren nesting depth 1600
+  #207 deep_nesting       semantic  rc=0    hits=[] | sqrt nesting depth 1400
+  #208 deep_nesting       crash     rc=-11  hits=['parser_limit'] | abs nesting depth 1600
+  #209 deep_nesting       crash     rc=-11  hits=['parser_limit'] | paren nesting depth 1600
+  #212 nlp_number         semantic  rc=0    hits=[] | English 'is 3 > 2 > 1?'
+  #215 nlp_number         semantic  rc=0    hits=[] | English 'what is one billion billion?'
+  #222 nlp_number         semantic  rc=0    hits=[] | English 'what is one thousand?'

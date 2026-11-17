@@ -1,0 +1,51 @@
+> fneg(x: i8) = x + u8(0)
+  note: mixing i8 and u8: computed as u8
+> gneg(x: i8) = x
+> show fneg
+fneg(x: i8) = u8(x)
+  -> u8
+> show gneg
+gneg(x: i8) = x
+  -> i8
+> equiv fneg gneg
+fneg and gneg differ at 128 points, e.g. x=-128: 128 vs -128
+> equiv gneg fneg
+gneg and fneg differ at 128 points, e.g. x=-128: -128 vs 128
+> const255(x: i8 in -1..-1) = 255
+> constm1(x: i8 in -1..-1) = -1
+> show const255
+const255(x: i8 in -1..-1) = 255
+  -> int
+> show constm1
+constm1(x: i8 in -1..-1) = -1
+  -> int
+> equiv fneg const255
+fneg and const255 differ at 255 points, e.g. x=-128: 128 vs 255
+> equiv fneg constm1
+fneg and constm1 differ at 256 points, e.g. x=-128: 128 vs -1
+> equiv gneg const255
+gneg and const255 differ at 256 points, e.g. x=-128: -128 vs 255
+> equiv gneg constm1
+gneg and constm1 differ at 255 points, e.g. x=-128: -128 vs -1
+> a(x: u8) = x
+> b(x: u8) = i8(x)
+> show a
+a(x: u8) = x
+  -> u8
+> show b
+b(x: u8) = i8(x)
+  -> i8
+> range a
+range of a -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> range b
+range of b -> i8:
+  -128..127   (256 distinct values)
+  fits in i8
+  over all 256 points of the domain
+> equiv a b
+a and b differ at 128 points, e.g. x=128: 128 vs -128
+> equiv b a
+b and a differ at 128 points, e.g. x=128: -128 vs 128

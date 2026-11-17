@@ -1,0 +1,32 @@
+> parse -x^2
+(-(x ^ 2))
+> parse (-x)^2
+((-x) ^ 2)
+> parse x^-2
+(x ^ -2)
+> parse 2^-3
+0.125
+> parse 2x^2
+(2 * (x ^ 2))
+> parse (2x)^2
+((2 * x) ^ 2)
+> parse x^2^3
+(x ^ 8)
+> parse -2^2
+-4
+> parse x = 0
+(x == 0)
+  note: '=' inside an expression read as '=='
+> parse x = y = z
+((x == y) && (y == z))
+  note: '=' inside an expression read as '=='
+  note: chained comparison read as a conjunction
+> parse 1 && 2 || 3
+1
+> parse a & b == c
+((a & b) == c)
+  note: bitwise operators bind tighter than comparisons here (unlike C): read as ((a & b) == c)
+> parse 8 / 4 / 2
+1
+> parse 2^3^2
+512

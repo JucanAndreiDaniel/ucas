@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:r,s
+# meaning-preserving rewrite: plusz
+f(x: u8, y: u8) = (x/8)*y + (x/8)*3
+g(x: u8, y: u8) = (x/8)*(y + 3)
+f2(x: u8, y: u8) = 0 + ((x/8)*y + (x/8)*3)
+g2(x: u8, y: u8) = 0 + ((x/8)*(y + 3))
+f1(x: u8, y: u8) = 0 + ((x/8)*y + (x/8)*3)
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

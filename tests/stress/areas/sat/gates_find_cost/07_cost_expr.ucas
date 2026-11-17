@@ -1,0 +1,19 @@
+# cost of arithmetic, float, memory, atomics, branches, loops.
+rsqrt(x: f32) = 1/sqrt(x)
+quake(x: f32) = y * (1.5f - 0.5f * x * y * y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+d(x: f64) = x * x + 1
+k(x: f32, y: f32) = x > 0 ? sqrt(x) * y + exp(y) : y
+w(i: u32, v: u32) = barrier(atomic_add_shared(i, v) + 1)
+div7(a: u32) = a / 7
+loop(x: u32) = { s = 0; for i in 0..49 { s = s + x + i }; s }
+fprice(x: u32) = x & 0xff | x >> 8
+cost rsqrt
+cost quake
+cost d
+cost k
+cost w
+cost div7
+cost loop
+cost loop model zen4
+cost fprice
+cost fprice model gt1030 consecutive x

@@ -1,0 +1,16 @@
+c optimize nofile target zen4 assume n 0 31 budget 3
+```c
+unsigned shl_assume(unsigned x,unsigned n){return x<<n;}
+unsigned shl_guard(unsigned x,unsigned n){return n<32?x>>n:0;}
+```
+c optimize nofile assume a 1 1000 budget 3
+```c
+int divb(int a){return 100/a;}
+int mulb(int a){return a*100;}
+```
+c lower nofile wrapv
+```c
+int sadd(int a,int b){return a+b;}
+int smul(int a,int b){return a*b;}
+int shl(int a,int n){return a<<n;}
+```

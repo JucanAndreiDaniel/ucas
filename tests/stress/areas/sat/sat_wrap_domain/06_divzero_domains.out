@@ -1,0 +1,106 @@
+> d8(x: i8) = 100 / x
+> domain d8
+domain of d8:
+  x: i8, -128..127
+  requires x != 0  (in 100/x)
+  C assumes not (100 == min and x == -1)  (in 100/x)
+  defined at 255 of 256 points
+  defined for: -128..-1, 1..127
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 256 points of the domain
+> range d8
+range of d8 -> i8:
+  -100..100   (39 distinct values)
+  values: -100, -50, -33, -25, -20, -16, -14, -12..12, 14, 16, 20, 25, 33, 50, 100
+  fits in i8
+  undefined at 1 points
+  over all 256 points of the domain
+> du8(x: u8) = 100 / x
+> domain du8
+domain of du8:
+  x: u8, 0..255
+  requires x != 0  (in 100/x)
+  defined at 255 of 256 points
+  defined for: 1..255
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 256 points of the domain
+> range du8
+range of du8 -> u8:
+  0..100   (20 distinct values)
+  values: 0..12, 14, 16, 20, 25, 33, 50, 100
+  fits in u7
+  undefined at 1 points
+  over all 256 points of the domain
+> dvar(x: i8) = x / (x - 5)
+> domain dvar
+domain of dvar:
+  x: i8, -128..127
+  requires x - 5 != 0  (in x/(x - 5))
+  C assumes not (x == min and x - 5 == -1)  (in x/(x - 5))
+  C assumes x - 5 does not overflow i8  (signed overflow)
+  defined at 255 of 256 points
+  defined for: -128..4, 6..127
+  undefined e.g. at x=5
+  C undefined behaviour at 6 points, e.g. x=-128
+  over all 256 points of the domain
+> d16(x: i16) = 32767 / x
+> domain d16
+domain of d16:
+  x: i16, -32768..32767
+  requires x != 0  (in 32767/x)
+  C assumes not (32767 == min and x == -1)  (in 32767/x)
+  defined at 65535 of 65536 points
+  defined for: -32768..-1, 1..32767
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 65536 points of the domain
+> mod0(x: u8) = x % 0
+> domain mod0
+domain of mod0:
+  x: u8, 0..255
+  requires 0 != 0  (in x % 0)
+  defined at 0 of 256 points
+  empty domain: undefined at every point of the parameter types
+  undefined e.g. at x=0; x=1; x=2; x=3
+  C undefined behaviour at 256 points, e.g. x=0
+  over all 256 points of the domain
+> mvar(x: i8, y: i8) = x % y
+> domain mvar
+domain of mvar:
+  x: i8, -128..127
+  y: i8, -128..127
+  requires y != 0  (in x % y)
+  C assumes not (x == min and y == -1)  (in x % y)
+  defined at 65280 of 65536 points
+  undefined e.g. at x=-128, y=0; x=-127, y=0; x=-126, y=0; x=-125, y=0
+  C undefined behaviour at 257 points, e.g. x=-128, y=-1
+  over all 65536 points of the domain
+> dshift(x: u8, n: u8 in 0..3) = x / (n + 1)
+> domain dshift
+domain of dshift:
+  x: u8, 0..255
+  n: u8, 0..3
+  requires n + 1 != 0  (in x/(n + 1))
+  defined at 1024 of 1024 points
+  over all 1024 points of the domain
+> range dshift
+range of dshift -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 1024 points of the domain
+> dchain(x: i8) = 100 / (x / (x - 10))
+> domain dchain
+domain of dchain:
+  x: i8, -128..127
+  requires x/(x - 10) != 0  (in 100/(x/(x - 10)))
+  C assumes not (100 == min and x/(x - 10) == -1)  (in 100/(x/(x - 10)))
+  requires x - 10 != 0  (in x/(x - 10))
+  C assumes not (x == min and x - 10 == -1)  (in x/(x - 10))
+  C assumes x - 10 does not overflow i8  (signed overflow)
+  defined at 128 of 256 points
+  defined for: -128..-123, 5..9, 11..127
+  undefined e.g. at x=-122; x=-121; x=-120; x=-119
+  C undefined behaviour at 134 points, e.g. x=-128
+  over all 256 points of the domain

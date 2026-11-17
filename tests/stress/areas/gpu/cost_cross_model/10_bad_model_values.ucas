@@ -1,0 +1,16 @@
+# REPRO (deterministic): malformed/non-numeric cost values are accepted as 0,
+# and a failed model definition still leaves a usable (default-cost) model behind.
+f(x: u32) = x*7 + 11
+model nan_cost : gt1030 { imul: abc }
+cost f model nan_cost
+model inf_cost : gt1030 { imul: inf }
+cost f model inf_cost
+model neg_cost : gt1030 { imul: -5 }
+cost f model neg_cost
+model plus_cost : gt1030 { imul: +3 }
+cost f model plus_cost
+model phantom : nosuch_parent { imul: 5 }
+cost f model phantom
+use phantom
+cost f
+cost totally_undefined_function

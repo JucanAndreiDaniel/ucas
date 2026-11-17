@@ -1,0 +1,50 @@
+# Unsigned shift-then-mask identities (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: u8) = x << 1 >> 1
+g01(x: u8) = x & 0x7F
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: u8) = x << 3 >> 3
+g02(x: u8) = x & 0x1F
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u8) = x << 7 >> 7
+g03(x: u8) = x & 0x01
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u8) = x << 8 >> 8
+g04(x: u8) = x & 0x00
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u16) = x << 4 >> 4
+g05(x: u16) = x & 0x0FFF
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: u16) = x << 8 >> 8
+g06(x: u16) = x & 0x00FF
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u16) = x << 16 >> 16
+g07(x: u16) = x & 0x0000
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: u32) = x << 1 >> 1
+g08(x: u32) = x & 0x7FFFFFFF
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: u32) = x << 16 >> 16
+g09(x: u32) = x & 0xFFFF
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: u64) = x << 1 >> 1
+g10(x: u64) = x & 0x7FFFFFFFFFFFFFFF
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: u64) = x << 32 >> 32
+g11(x: u64) = x & 0xFFFFFFFF
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u8) = (x << 4 >> 4) | (x << 7 >> 7)
+g12(x: u8) = x & 0x0F
+equiv f12 g12

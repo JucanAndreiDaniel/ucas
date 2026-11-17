@@ -1,0 +1,18 @@
+> rotl(x: u32, n: u32 in 1..31) = (x << n) | (x >> (32-n))
+> rotr(x: u32, n: u32 in 1..31) = (x >> n) | (x << (32-n))
+> big0(x: u32) = rotl(x, 2) xor rotl(x, 13) xor rotl(x, 22)
+> big0b(x: u32) = rotl(x, 22) xor rotl(x, 13) xor rotl(x, 2)
+> equiv big0 big0b
+big0 and big0b are equal on the domain of big0 (proved by SAT: 544 AIG nodes, 540 conflicts)
+> small0(x: u32) = rotr(x, 7) xor rotr(x, 18) xor (x >> 3)
+> small0b(x: u32) = (x >> 3) xor rotr(x, 18) xor rotr(x, 7)
+> equiv small0 small0b
+small0 and small0b are equal on the domain of small0 (proved by SAT: 505 AIG nodes, 466 conflicts)
+> maj(x: u32, y: u32, z: u32) = (x&y) xor (x&z) xor (y&z)
+> maj2(x: u32, y: u32, z: u32) = (x&y) | (x&z) | (y&z)
+> equiv maj maj2
+maj and maj2 are equal on the domain of maj (proved by SAT: 576 AIG nodes, 202 conflicts)
+> ch(x: u32, y: u32, z: u32) = (x&y) xor (~x & z)
+> ch2(x: u32, y: u32, z: u32) = z xor (x & (y xor z))
+> equiv ch ch2
+ch and ch2 are equal on the domain of ch (proved by SAT: 608 AIG nodes, 227 conflicts)

@@ -1,0 +1,67 @@
+> arclength x^2 from 0 to 1
+arc length of x^2
+  x in [0, 1]: given
+  L = ∫ sqrt(1 + (2x)^2) dx from 0 to 1
+  antiderivative: x*sqrt(2x*2x + 1)/2 + asinh(2x)/2/2
+  exact: F(1) - F(0) = 1.4789428575446
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 1.4789428575446, estimated error 1.6e-14
+  the two agree to 2.7e-15
+  (the chord from end to end: 1.414; the arc is never shorter)
+  arc length: 1.479
+> arclength sqrt(1-x^2) from -1 to 1
+arc length of sqrt(1 - x^2)
+  x in [-1, 1]: given
+  L = ∫ sqrt(1 + (-2x/(2sqrt(1 - x^2)))^2) dx from -1 to 1
+  no antiderivative found: numeric only
+  (singular at an end but integrable: the ends trimmed by 1e-8 and 1e-12 of the interval give values 0.0004 apart)
+  numeric (adaptive Gauss-Kronrod 7-15, 3630 evaluations): 3.14158865363784, estimated error 0.0004
+  (the chord from end to end: 2; the arc is never shorter)
+  arc length: 3.142
+> area x^2 from 0 to 1 nofile
+area under x^2
+  x in [0, 1]: given
+  ∫ x^2 dx from 0 to 1
+  antiderivative: x^3/3
+  exact: F(1) - F(0) = 0.333333333333333 = 1/3
+  numeric (adaptive Gauss-Kronrod 7-15, 15 evaluations): 0.333333333333333, estimated error 3.7e-15
+  the two agree to 0
+  above the axis everywhere: the area is 1/3 = 0.3333
+  image: 640x440, 8959 bytes
+  (nofile: GIF checksum c956faf9)
+> volume x^2 from 0 to 1 about x
+solid of revolution: the region between x^2 and the x-axis about the x-axis
+  x in [0, 1]: given
+  method: disks, V = pi ∫ (x^2)^2 dx from 0 to 1
+    antiderivative of the integrand: x^5/5
+    exact: V = 0.628318530717959 = pi/5
+    numeric (Gauss-Kronrod): 0.628318530717959, estimated error 6.9e-15
+    the two agree to 8.7e-17
+  check: shells in the radius on a grid: V ≈ 0.628322 (relative difference 6e-06, the grid's resolution)
+  volume: pi/5 = 0.6283 (exact)
+  region: area 1/3 = 0.3333, centroid (3/4 = 0.75, 3/10 = 0.3) (exact)
+  Pappus: V = 2pi d A, d = 3/10 = 0.3 from the centroid to the axis: 0.6283 (agrees)
+> volume x from 0 to 1 about y
+solid of revolution: the region between x and the x-axis about the y-axis
+  note: the region between the curve and the x-axis (with two curves, the region between them)
+  x in [0, 1]: given
+  method: shells, V = 2pi ∫ |x| |x| dx from 0 to 1
+    antiderivative of the integrand: x^3/3
+    exact: V = 2.0943951023932 = 2pi/3
+    numeric (Gauss-Kronrod): 2.0943951023932, estimated error 2.3e-14
+    the two agree to 0
+  check: washers in y on a grid: V ≈ 2.09437 (relative difference 1e-05, the grid's resolution)
+  volume: 2pi/3 = 2.094 (exact)
+  region: area 1/2 = 0.5, centroid (2/3 = 0.6667, 1/3 = 0.3333) (exact)
+  Pappus: V = 2pi d A, d = 2/3 = 0.6667 from the centroid to the axis: 2.094 (agrees)
+> surfacearea x from 0 to 1 about x
+surface of revolution: x about the x-axis
+  x in [0, 1]: given
+  surface area (the curves swept around the x-axis, without the end disks):
+    x: S = 2pi ∫ |x| sqrt(1 + (1)^2) dx
+      exact: 4.44288293815837 = pi*sqrt(2)
+      numeric: 4.44288293815837, estimated error 4.9e-14
+> centroid x^2 from 0 to 1
+centroid of the region between x^2 and the x-axis
+  x in [0, 1]: given
+  region: area 1/3 = 0.3333, centroid (3/4 = 0.75, 3/10 = 0.3) (exact)
+  Pappus: turned about the x-axis it sweeps 2pi*|ybar|*A = 0.6283; about the y-axis 2pi*|xbar|*A = 1.571 (when the region stays on one side)

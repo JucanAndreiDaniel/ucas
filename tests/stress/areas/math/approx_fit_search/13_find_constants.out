@@ -1,0 +1,59 @@
+> gr(x: u8 in 0..3) = match x { 0 => 3, 1 => 5, 2 => 7, 3 => 9 }
+  note: match has no default arm: other values are outside the domain
+> find gr 3
+  note: the result is int: searching in u8
+find gr: 4 points, computing in u8, costs from gt1030
+  dropping operations of gr (cost 16 as written; each checked on the whole domain):
+  cost 12  x == 0 ? 3 : x == 1 ? 5 : x == 2 ? 7 : 9 drops the ?: on x == 3 (it always takes the first arm) (exhaustive)
+  cost 6   int(0x6420 >> (u32(x) << 2) & 15) + 3    all of them: drops the ?: on x == 3 (it always takes the first arm), then the map x == 0 ? 3 : x == 1 ? 5 : x == 2 ? 7 : 9 of x as a table in one constant (4 entries of 4 bits) (derived; the drops exhaustive)
+  cost 2   2x + 3                                   affine fit
+  cost 2   x + x + 3                                affine fit
+  cost 3   3 - (-x - x)                             exact
+  [searched every term up to cost 3: 5096 distinct columns; 'more' continues]
+> equiv gr 2x + 3
+gr and 2x + 3 are equal on the domain of gr (exhaustive)
+> days(m: u8 in 1..12) = match m { 2 => 28, 4 | 6 | 9 | 11 => 30, _ => 31 }
+> find days 2
+  note: the result is int: searching in u8
+find days: 12 points, computing in u8, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 6   int(0x3bbeecc >> (u32(m) << 1) & 3) + 28 the map m == 2 ? 28 : m == 4 || m == 6 || m == 9 || m == 11 ? 30 : 3… (1 more characters) of m as a table in one constant (12 entries of 2 bits) (derived; checked on every point)
+      holds where m in [1, 12] (its range)
+      m == 2 ? 28 : m == 4 || m == 6 || m == 9 || m == 11 ? 30 : 3… (1 more characters) at m = 1..12 is [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] (evaluated at each of the 12)
+      bits [2*i, 2*i + 2) of 0x3bbeecc hold the value at m = i, less the least value: shifting right by that many bits times m and masking reads it
+  cost 6   u8(0x3bbeecc >> (u32(m) << 1) & 3) + 28  packed table in one constant
+  cost 8   [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m - 1] lookup table (baseline)
+  [searched every term up to cost 5: 1398101 distinct columns, bank full; 'more' continues]
+> isprime(n: u8 in 0..31) = match n { 2 | 3 | 5 | 7 | 11 | 13 | 17 | 19 | 23 | 29 | 31 => 1, _ => 0 }
+> find isprime 2
+  note: the result is int: searching in u8
+find isprime: 32 points, computing in u8, costs from gt1030
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 3   int(0xa08a28ac >> u32(n) & 1)            the map n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13 |… (61 more characters) of n as a table in one constant (32 entries of 1 bit) (derived; checked on every point)
+      holds where n in [0, 31] (its range)
+      n == 2 || n == 3 || n == 5 || n == 7 || n == 11 || n == 13 |… (61 more characters) at n = 0..31 is [0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, ... (16 more)] (evaluated at each of the 32)
+      bits [1*i, 1*i + 1) of 0xa08a28ac hold the value at n = i: shifting right by n and masking reads it
+  cost 3   u8(0xa08a28ac >> u32(n) & 1)             packed table in one constant
+  cost 7   [0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1][n] lookup table (baseline)
+  [searched every term up to cost 5: 524288 distinct columns, bank full; 'more' continues]
+> sq(x: u8 in 0..15) = x * x
+> find sq 2
+find sq: 16 points, computing in u8, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
+  cost 2   u8(udot4x8(x, x))
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
+           x in 0..15 (proved range)
+           udot4x8's sum is in 0..225: it does not wrap
+           exhaustive
+  cost 3   x*x                                      exact
+  cost 3   x^2                                      polynomial (Horner)
+  [searched every term up to cost 3: 16682 distinct columns; 'more' continues]
+> more 2
+more for sq:
+  cost 5   x + (x*x - x)                            exact
+  cost 7   [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225][x] lookup table (baseline)
+  [searched every term up to cost 5: 1048576 distinct columns, bank full; 'more' continues]
+> f(x: f32 in 0..1)=x*x
+> find f 2
+find f: IEEE bit-level families, magic constant K fitted for max relative error
+  [exact x*x costs 1 under gt1030; refine a family with a Newton step and check it with 'error']

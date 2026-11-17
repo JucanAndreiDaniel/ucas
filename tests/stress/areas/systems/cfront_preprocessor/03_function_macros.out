@@ -1,0 +1,13 @@
+> c lower nofile
+  c1(x: i32, y: i32) = x + y
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + i64(y)
+  c2(x: i32) = x + x
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + i64(x)
+  c3(x: i32, y: i32) = (x + y)*x
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 >= -2147483648 && t2 <= 2147483647) where t1 = i64(x) + i64(y), t2 = i64(x + y)*i64(x)
+  c4(x: i32, y: i32) = x*y + (x - y)
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 >= -2147483648 && t2 <= 2147483647) && (t3 >= -2147483648 && t3 <= 2147483647) where t1 = i64(x)*i64(y), t2 = i64(x) - i64(y), t3 = i64(x*y) + i64(x - y)
+  c5(x: i32, y: i32, z: i32) = x + y + y*z
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 >= -2147483648 && t2 <= 2147483647) && (t3 >= -2147483648 && t3 <= 2147483647) where t1 = i64(x) + i64(y), t2 = i64(y)*i64(z), t3 = i64(x + y) + i64(y*z)
+  c6(x: i32) = x
+    defined where (no C UB): i64(x) >= -2147483648 && i64(x) <= 2147483647

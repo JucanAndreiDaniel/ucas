@@ -1,0 +1,13 @@
+# 32-bit add-rotate-xor mixing (ARX) equivalences.
+rotl(x: u32, n: u32 in 1..31) = (x << n) | (x >> (32-n))
+mix1(x: u32, y: u32) = rotl(x + y, 7) xor rotl(y, 13) xor x
+mix2(x: u32, y: u32) = x xor rotl(y, 13) xor rotl(x + y, 7)
+equiv mix1 mix2
+xs(x: u32) = (x xor (x << 13)) xor ((x xor (x << 13)) >> 17)
+xs2(x: u32) = (x xor (x << 13) xor ((x xor (x << 13)) >> 17))
+equiv xs xs2
+arxsub(x: u32, y: u32) = (x + y) xor (x - y)
+arxsub2(x: u32, y: u32) = (x - y) xor (x + y)
+equiv arxsub arxsub2
+badmix(x: u32, y: u32) = rotl(x + y, 7) xor rotl(y, 13) xor (x + 1)
+equiv mix1 badmix

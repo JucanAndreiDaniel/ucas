@@ -1,0 +1,579 @@
+src/zint.c: In function ‘z_print’:
+src/zint.c:1221:9: warning: use of uninitialized value ‘v.d’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 1221 |         memcpy(t, v.d, n * sizeof *t);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘zq_print’: events 1-2
+    │
+    │ 1400 | zq_print(struct sbuf *b, struct zq a)
+    │      | ^~~~~~~~
+    │      | |
+    │      | (1) entry to ‘zq_print’
+    │ 1401 | {
+    │ 1402 |         z_print(b, a.n);
+    │      |         ~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘z_print’ from ‘zq_print’
+    │
+    └──> ‘z_print’: events 3-7
+           │
+           │ 1207 | z_print(struct sbuf *b, zint a)
+           │      | ^~~~~~~
+           │      | |
+           │      | (3) entry to ‘z_print’
+           │ 1208 | {
+           │ 1209 |         struct zv v;
+           │      |                   ~
+           │      |                   |
+           │      |                   (4) region created on stack here
+           │......
+           │ 1214 |         if (Z_IS_SMALL(a)) {
+           │      |            ~
+           │      |            |
+           │      |            (5) following ‘false’ branch... ─>─┐
+           │      |                                               │
+           │......
+           │      |                                               │
+           │      |┌──────────────────────────────────────────────┘
+           │ 1218 |│        view(a, &v);
+           │      |│        ~~~~~~~~~~~
+           │      |│        |
+           │      |└───────>(6) ...to here
+           │      |         (7) calling ‘view’ from ‘z_print’
+           │
+           └──> ‘view’: events 8-11
+                  │
+                  │   62 | view(zint h, struct zv *v)
+                  │      | ^~~~
+                  │      | |
+                  │      | (8) entry to ‘view’
+                  │   63 | {
+                  │   64 |         if (Z_IS_SMALL(h)) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (9) following ‘true’ branch... ─>─┐
+                  │      |                                              │
+                  │      |                                              │
+                  │      |┌─────────────────────────────────────────────┘
+                  │   65 |│                int64_t x = sval(h);
+                  │      |│                            ~~~~~~~
+                  │      |│                            |
+                  │      |└───────────────────────────>(10) ...to here
+                  │   66 |                 uint64_t m;
+                  │   67 |                 v->sg = x < 0 ? -1 : x > 0;
+                  │      |                         ~~~~~~~~~~~~~~~~~~
+                  │      |                                    |
+                  │      |                                    (11) following ‘false’ branch (when ‘x < 0’)... ─>─┐
+                  │      |                                                                                       │
+                  │
+                ‘view’: events 12-13
+                  │
+                  │      |                                                                                       │
+                  │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+                  │   67 |│                v->sg = x < 0 ? -1 : x > 0;
+                  │      |│                        ~~~~~~~~~~~^~~~~~~
+                  │      |│                                   |
+                  │      |└──────────────────────────────────>(12) ...to here
+                  │......
+                  │   71 |                 v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                  │      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |                                      |
+                  │      |                                      (13) following ‘true’ branch... ─>─┐
+                  │      |                                                                         │
+                  │
+                ‘view’: event 14
+                  │
+                  │      |                                                                         │
+                  │      |┌────────────────────────────────────────────────────────────────────────┘
+                  │   71 |│                v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                  │      |│                                       ~~~~~~^~~
+                  │      |│                                             |
+                  │      |└────────────────────────────────────────────>(14) ...to here
+                  │
+           <──────┘
+           │
+         ‘z_print’: events 15-16
+           │
+           │ 1218 |         view(a, &v);
+           │      |         ^~~~~~~~~~~
+           │      |         |
+           │      |         (15) returning to ‘z_print’ from ‘view’
+           │......
+           │ 1221 |         memcpy(t, v.d, n * sizeof *t);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (16) ⚠️  use of uninitialized value ‘v.d’ here
+           │
+src/zint.c:1221:9: warning: use of uninitialized value ‘v.d’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 1221 |         memcpy(t, v.d, n * sizeof *t);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘zq_str’: events 1-2
+    │
+    │ 1410 | zq_str(struct zq a)
+    │      | ^~~~~~
+    │      | |
+    │      | (1) entry to ‘zq_str’
+    │......
+    │ 1415 |         zq_print(&b, a);
+    │      |         ~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘zq_print’ from ‘zq_str’
+    │
+    └──> ‘zq_print’: events 3-4
+           │
+           │ 1400 | zq_print(struct sbuf *b, struct zq a)
+           │      | ^~~~~~~~
+           │      | |
+           │      | (3) entry to ‘zq_print’
+           │ 1401 | {
+           │ 1402 |         z_print(b, a.n);
+           │      |         ~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘z_print’ from ‘zq_print’
+           │
+           └──> ‘z_print’: events 5-9
+                  │
+                  │ 1207 | z_print(struct sbuf *b, zint a)
+                  │      | ^~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘z_print’
+                  │ 1208 | {
+                  │ 1209 |         struct zv v;
+                  │      |                   ~
+                  │      |                   |
+                  │      |                   (6) region created on stack here
+                  │......
+                  │ 1214 |         if (Z_IS_SMALL(a)) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (7) following ‘false’ branch... ─>─┐
+                  │      |                                               │
+                  │......
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │ 1218 |│        view(a, &v);
+                  │      |│        ~~~~~~~~~~~
+                  │      |│        |
+                  │      |└───────>(8) ...to here
+                  │      |         (9) calling ‘view’ from ‘z_print’
+                  │
+                  └──> ‘view’: events 10-13
+                         │
+                         │   62 | view(zint h, struct zv *v)
+                         │      | ^~~~
+                         │      | |
+                         │      | (10) entry to ‘view’
+                         │   63 | {
+                         │   64 |         if (Z_IS_SMALL(h)) {
+                         │      |            ~
+                         │      |            |
+                         │      |            (11) following ‘true’ branch... ─>─┐
+                         │      |                                               │
+                         │      |                                               │
+                         │      |┌──────────────────────────────────────────────┘
+                         │   65 |│                int64_t x = sval(h);
+                         │      |│                            ~~~~~~~
+                         │      |│                            |
+                         │      |└───────────────────────────>(12) ...to here
+                         │   66 |                 uint64_t m;
+                         │   67 |                 v->sg = x < 0 ? -1 : x > 0;
+                         │      |                         ~~~~~~~~~~~~~~~~~~
+                         │      |                                    |
+                         │      |                                    (13) following ‘false’ branch (when ‘x < 0’)... ─>─┐
+                         │      |                                                                                       │
+                         │
+                       ‘view’: events 14-15
+                         │
+                         │      |                                                                                       │
+                         │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+                         │   67 |│                v->sg = x < 0 ? -1 : x > 0;
+                         │      |│                        ~~~~~~~~~~~^~~~~~~
+                         │      |│                                   |
+                         │      |└──────────────────────────────────>(14) ...to here
+                         │......
+                         │   71 |                 v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                         │      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |                                      |
+                         │      |                                      (15) following ‘true’ branch... ─>─┐
+                         │      |                                                                         │
+                         │
+                       ‘view’: event 16
+                         │
+                         │      |                                                                         │
+                         │      |┌────────────────────────────────────────────────────────────────────────┘
+                         │   71 |│                v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                         │      |│                                       ~~~~~~^~~
+                         │      |│                                             |
+                         │      |└────────────────────────────────────────────>(16) ...to here
+                         │
+                  <──────┘
+                  │
+                ‘z_print’: events 17-18
+                  │
+                  │ 1218 |         view(a, &v);
+                  │      |         ^~~~~~~~~~~
+                  │      |         |
+                  │      |         (17) returning to ‘z_print’ from ‘view’
+                  │......
+                  │ 1221 |         memcpy(t, v.d, n * sizeof *t);
+                  │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |         |
+                  │      |         (18) ⚠️  use of uninitialized value ‘v.d’ here
+                  │
+src/zint.c:1221:9: warning: use of uninitialized value ‘v.d’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 1221 |         memcpy(t, v.d, n * sizeof *t);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘zq_print’: events 1-2
+    │
+    │ 1400 | zq_print(struct sbuf *b, struct zq a)
+    │      | ^~~~~~~~
+    │      | |
+    │      | (1) entry to ‘zq_print’
+    │ 1401 | {
+    │ 1402 |         z_print(b, a.n);
+    │      |         ~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘z_print’ from ‘zq_print’
+    │
+    └──> ‘z_print’: events 3-4
+           │
+           │ 1207 | z_print(struct sbuf *b, zint a)
+           │      | ^~~~~~~
+           │      | |
+           │      | (3) entry to ‘z_print’
+           │ 1208 | {
+           │ 1209 |         struct zv v;
+           │      |                   ~
+           │      |                   |
+           │      |                   (4) region created on stack here
+           │
+    <──────┘
+    │
+  ‘zq_print’: events 5-8
+    │
+    │ 1402 |         z_print(b, a.n);
+    │      |         ^~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (5) returning to ‘zq_print’ from ‘z_print’
+    │ 1403 |         if (!z_is_one(a.d)) {
+    │      |            ~
+    │      |            |
+    │      |            (6) following ‘true’ branch... ─>─┐
+    │      |                                              │
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 1404 |│                sb_putc(b, '/');
+    │      |│                ~~~~~~~~~~~~~~~
+    │      |│                |
+    │      |└───────────────>(7) ...to here
+    │ 1405 |                 z_print(b, a.d);
+    │      |                 ~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (8) calling ‘z_print’ from ‘zq_print’
+    │
+    └──> ‘z_print’: events 9-13
+           │
+           │ 1207 | z_print(struct sbuf *b, zint a)
+           │      | ^~~~~~~
+           │      | |
+           │      | (9) entry to ‘z_print’
+           │ 1208 | {
+           │ 1209 |         struct zv v;
+           │      |                   ~
+           │      |                   |
+           │      |                   (10) region created on stack here
+           │......
+           │ 1214 |         if (Z_IS_SMALL(a)) {
+           │      |            ~
+           │      |            |
+           │      |            (11) following ‘false’ branch... ─>─┐
+           │      |                                                │
+           │......
+           │      |                                                │
+           │      |┌───────────────────────────────────────────────┘
+           │ 1218 |│        view(a, &v);
+           │      |│        ~~~~~~~~~~~
+           │      |│        |
+           │      |└───────>(12) ...to here
+           │      |         (13) calling ‘view’ from ‘z_print’
+           │
+           └──> ‘view’: events 14-17
+                  │
+                  │   62 | view(zint h, struct zv *v)
+                  │      | ^~~~
+                  │      | |
+                  │      | (14) entry to ‘view’
+                  │   63 | {
+                  │   64 |         if (Z_IS_SMALL(h)) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (15) following ‘true’ branch... ─>─┐
+                  │      |                                               │
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │   65 |│                int64_t x = sval(h);
+                  │      |│                            ~~~~~~~
+                  │      |│                            |
+                  │      |└───────────────────────────>(16) ...to here
+                  │   66 |                 uint64_t m;
+                  │   67 |                 v->sg = x < 0 ? -1 : x > 0;
+                  │      |                         ~~~~~~~~~~~~~~~~~~
+                  │      |                                    |
+                  │      |                                    (17) following ‘false’ branch (when ‘x < 0’)... ─>─┐
+                  │      |                                                                                       │
+                  │
+                ‘view’: events 18-19
+                  │
+                  │      |                                                                                       │
+                  │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+                  │   67 |│                v->sg = x < 0 ? -1 : x > 0;
+                  │      |│                        ~~~~~~~~~~~^~~~~~~
+                  │      |│                                   |
+                  │      |└──────────────────────────────────>(18) ...to here
+                  │......
+                  │   71 |                 v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                  │      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |                                      |
+                  │      |                                      (19) following ‘true’ branch... ─>─┐
+                  │      |                                                                         │
+                  │
+                ‘view’: event 20
+                  │
+                  │      |                                                                         │
+                  │      |┌────────────────────────────────────────────────────────────────────────┘
+                  │   71 |│                v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                  │      |│                                       ~~~~~~^~~
+                  │      |│                                             |
+                  │      |└────────────────────────────────────────────>(20) ...to here
+                  │
+           <──────┘
+           │
+         ‘z_print’: events 21-22
+           │
+           │ 1218 |         view(a, &v);
+           │      |         ^~~~~~~~~~~
+           │      |         |
+           │      |         (21) returning to ‘z_print’ from ‘view’
+           │ 1219 |         n = v.n;
+           │ 1220 |         t = scratch(3, n);
+           │      |             ~~~~~~~~~~~~~
+           │      |             |
+           │      |             (22) calling ‘scratch’ from ‘z_print’
+           │
+           └──> ‘scratch’: events 23-25
+                  │
+                  │  207 | scratch(int k, uint64_t n)
+                  │      | ^~~~~~~
+                  │      | |
+                  │      | (23) entry to ‘scratch’
+                  │......
+                  │  212 |         if (n + 2 > cap[k]) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (24) following ‘false’ branch... ─>─┐
+                  │      |                                                │
+                  │......
+                  │      |                                                │
+                  │      |┌───────────────────────────────────────────────┘
+                  │  216 |│        return s[k];
+                  │      |│               ~~~~
+                  │      |│                |
+                  │      |└───────────────>(25) ...to here
+                  │
+           <──────┘
+           │
+         ‘z_print’: events 26-27
+           │
+           │ 1220 |         t = scratch(3, n);
+           │      |             ^~~~~~~~~~~~~
+           │      |             |
+           │      |             (26) returning to ‘z_print’ from ‘scratch’
+           │ 1221 |         memcpy(t, v.d, n * sizeof *t);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (27) ⚠️  use of uninitialized value ‘v.d’ here
+           │
+src/zint.c:1221:9: warning: use of uninitialized value ‘v.d’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+ 1221 |         memcpy(t, v.d, n * sizeof *t);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘zq_str’: events 1-2
+    │
+    │ 1410 | zq_str(struct zq a)
+    │      | ^~~~~~
+    │      | |
+    │      | (1) entry to ‘zq_str’
+    │......
+    │ 1415 |         zq_print(&b, a);
+    │      |         ~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (2) calling ‘zq_print’ from ‘zq_str’
+    │
+    └──> ‘zq_print’: events 3-4
+           │
+           │ 1400 | zq_print(struct sbuf *b, struct zq a)
+           │      | ^~~~~~~~
+           │      | |
+           │      | (3) entry to ‘zq_print’
+           │ 1401 | {
+           │ 1402 |         z_print(b, a.n);
+           │      |         ~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (4) calling ‘z_print’ from ‘zq_print’
+           │
+           └──> ‘z_print’: events 5-6
+                  │
+                  │ 1207 | z_print(struct sbuf *b, zint a)
+                  │      | ^~~~~~~
+                  │      | |
+                  │      | (5) entry to ‘z_print’
+                  │ 1208 | {
+                  │ 1209 |         struct zv v;
+                  │      |                   ~
+                  │      |                   |
+                  │      |                   (6) region created on stack here
+                  │
+           <──────┘
+           │
+         ‘zq_print’: events 7-10
+           │
+           │ 1402 |         z_print(b, a.n);
+           │      |         ^~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (7) returning to ‘zq_print’ from ‘z_print’
+           │ 1403 |         if (!z_is_one(a.d)) {
+           │      |            ~
+           │      |            |
+           │      |            (8) following ‘true’ branch... ─>─┐
+           │      |                                              │
+           │      |                                              │
+           │      |┌─────────────────────────────────────────────┘
+           │ 1404 |│                sb_putc(b, '/');
+           │      |│                ~~~~~~~~~~~~~~~
+           │      |│                |
+           │      |└───────────────>(9) ...to here
+           │ 1405 |                 z_print(b, a.d);
+           │      |                 ~~~~~~~~~~~~~~~
+           │      |                 |
+           │      |                 (10) calling ‘z_print’ from ‘zq_print’
+           │
+           └──> ‘z_print’: events 11-15
+                  │
+                  │ 1207 | z_print(struct sbuf *b, zint a)
+                  │      | ^~~~~~~
+                  │      | |
+                  │      | (11) entry to ‘z_print’
+                  │ 1208 | {
+                  │ 1209 |         struct zv v;
+                  │      |                   ~
+                  │      |                   |
+                  │      |                   (12) region created on stack here
+                  │......
+                  │ 1214 |         if (Z_IS_SMALL(a)) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (13) following ‘false’ branch... ─>─┐
+                  │      |                                                │
+                  │......
+                  │      |                                                │
+                  │      |┌───────────────────────────────────────────────┘
+                  │ 1218 |│        view(a, &v);
+                  │      |│        ~~~~~~~~~~~
+                  │      |│        |
+                  │      |└───────>(14) ...to here
+                  │      |         (15) calling ‘view’ from ‘z_print’
+                  │
+                  └──> ‘view’: events 16-19
+                         │
+                         │   62 | view(zint h, struct zv *v)
+                         │      | ^~~~
+                         │      | |
+                         │      | (16) entry to ‘view’
+                         │   63 | {
+                         │   64 |         if (Z_IS_SMALL(h)) {
+                         │      |            ~
+                         │      |            |
+                         │      |            (17) following ‘true’ branch... ─>─┐
+                         │      |                                               │
+                         │      |                                               │
+                         │      |┌──────────────────────────────────────────────┘
+                         │   65 |│                int64_t x = sval(h);
+                         │      |│                            ~~~~~~~
+                         │      |│                            |
+                         │      |└───────────────────────────>(18) ...to here
+                         │   66 |                 uint64_t m;
+                         │   67 |                 v->sg = x < 0 ? -1 : x > 0;
+                         │      |                         ~~~~~~~~~~~~~~~~~~
+                         │      |                                    |
+                         │      |                                    (19) following ‘false’ branch (when ‘x < 0’)... ─>─┐
+                         │      |                                                                                       │
+                         │
+                       ‘view’: events 20-21
+                         │
+                         │      |                                                                                       │
+                         │      |┌──────────────────────────────────────────────────────────────────────────────────────┘
+                         │   67 |│                v->sg = x < 0 ? -1 : x > 0;
+                         │      |│                        ~~~~~~~~~~~^~~~~~~
+                         │      |│                                   |
+                         │      |└──────────────────────────────────>(20) ...to here
+                         │......
+                         │   71 |                 v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                         │      |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                         │      |                                      |
+                         │      |                                      (21) following ‘true’ branch... ─>─┐
+                         │      |                                                                         │
+                         │
+                       ‘view’: event 22
+                         │
+                         │      |                                                                         │
+                         │      |┌────────────────────────────────────────────────────────────────────────┘
+                         │   71 |│                v->n = v->buf[1] ? 2 : v->buf[0] ? 1 : 0;
+                         │      |│                                       ~~~~~~^~~
+                         │      |│                                             |
+                         │      |└────────────────────────────────────────────>(22) ...to here
+                         │
+                  <──────┘
+                  │
+                ‘z_print’: events 23-24
+                  │
+                  │ 1218 |         view(a, &v);
+                  │      |         ^~~~~~~~~~~
+                  │      |         |
+                  │      |         (23) returning to ‘z_print’ from ‘view’
+                  │ 1219 |         n = v.n;
+                  │ 1220 |         t = scratch(3, n);
+                  │      |             ~~~~~~~~~~~~~
+                  │      |             |
+                  │      |             (24) calling ‘scratch’ from ‘z_print’
+                  │
+                  └──> ‘scratch’: events 25-27
+                         │
+                         │  207 | scratch(int k, uint64_t n)
+                         │      | ^~~~~~~
+                         │      | |
+                         │      | (25) entry to ‘scratch’
+                         │......
+                         │  212 |         if (n + 2 > cap[k]) {
+                         │      |            ~
+                         │      |            |
+                         │      |            (26) following ‘false’ branch... ─>─┐
+                         │      |                                                │
+                         │......
+                         │      |                                                │
+                         │      |┌───────────────────────────────────────────────┘
+                         │  216 |│        return s[k];
+                         │      |│               ~~~~
+                         │      |│                |
+                         │      |└───────────────>(27) ...to here
+                         │
+                  <──────┘
+                  │
+                ‘z_print’: events 28-29
+                  │
+                  │ 1220 |         t = scratch(3, n);
+                  │      |             ^~~~~~~~~~~~~
+                  │      |             |
+                  │      |             (28) returning to ‘z_print’ from ‘scratch’
+                  │ 1221 |         memcpy(t, v.d, n * sizeof *t);
+                  │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |         |
+                  │      |         (29) ⚠️  use of uninitialized value ‘v.d’ here
+                  │
