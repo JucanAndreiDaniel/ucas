@@ -3,6 +3,9 @@
   skx    skylake-x      Intel Skylake-SP/X server core: AVX-512 F/CD/BW/DQ/VL, two 512-bit FMA units (ports 0+1 fused, 5)
   glc    goldencove     Intel Golden Cove P-core as in Sapphire Rapids: AVX-512 with VBMI, VPOPCNTDQ, BITALG, GFNI
   rpl    raptorlake     Intel Raptor Lake / Alder Lake P-core (Golden Cove/Raptor Cove): Golden Cove costs, AVX-512 fused off; GFNI, VAES and VPCLMULQDQ on xmm/ymm
+  zen2   znver2         AMD Zen 2 (Ryzen 5 3600, Steam Deck's Custom APU 0932): AVX2, no AVX-512; latencies measured on both machines with x86bench, other columns estimated from Zen 4
+  zen1   znver1         AMD Zen+ (Ryzen 5 3550H, Picasso): AVX2, no AVX-512; latencies measured with x86bench on this host, other columns estimated from Zen 4
+  zen3   znver3         AMD Zen 3 (Ryzen 7 5825U, Cezanne): AVX2, no AVX-512; latencies measured with x86bench on the NAS, other columns estimated from Zen 4
   zen4   znver4         AMD Zen 4: AVX-512 (VBMI, VPOPCNTDQ, BITALG, GFNI) on 256-bit pipes, 512-bit ops double-pumped
   x86v2  x86-64-v2      generic x86-64-v2 (SSE4.2, POPCNT): the worst of Skylake, Golden Cove and Zen 4 per class
   x86v3  x86-64-v3      generic x86-64-v3 (AVX2, FMA, BMI1/2, LZCNT, MOVBE): the worst of Skylake, Golden Cove and Zen 4
@@ -345,6 +348,9 @@ __m256i _mm256_add_epi16(__m256i a, __m256i b)
   skx          1  0.33    1  p015
   glc          1  0.33    1  p015
   rpl          1  0.33    1  p015
+  zen2         1  0.25    1  FP0 FP1 FP2 FP3
+  zen1         1  0.25    1  FP0
+  zen3         1  0.25    1  FP0 FP1 FP2 FP3
   zen4         1  0.25    1  FP0 FP1 FP2 FP3
   x86v3        1  0.33    1  p015
   x86v4        1  0.33    1  p015
@@ -381,6 +387,9 @@ __m256i _mm256_madd_epi16(__m256i a, __m256i b)
   skx          5   0.5    1  p01
   glc          5   0.5    1  p01
   rpl          5   0.5    1  p01
+  zen2         3   0.5    1  FP0 FP3
+  zen1         3   0.5    1  FP0
+  zen3         3   0.5    1  FP0 FP3
   zen4         3   0.5    1  FP0 FP3
   x86v3        5   0.5    1  p01
   x86v4        5   0.5    1  p01
@@ -411,6 +420,9 @@ __m256i _mm256_loadu_si256(void * a)
   skx          7   0.5    1  p23
   glc          7  0.33    1  p23 p11
   rpl          7  0.33    1  p23 p11
+  zen2         7   0.5    1  AGU0 AGU1 AGU2
+  zen1         7   0.5    1  AGU0 AGU1 AGU2
+  zen3         7   0.5    1  AGU0 AGU1 AGU2
   zen4         7   0.5    1  AGU0 AGU1 AGU2
   x86v3        7   0.5    1  p23
   x86v4        7   0.5    1  p23
@@ -456,6 +468,9 @@ __m256i _mm256_i32gather_epi32(void * a, __m256i b, const int c)
   skx         22     5    4  p0235
   glc         22     5    5  p0235 p11
   rpl         22     5    5  p0235 p11
+  zen2        22     8   17  AGU0 AGU1 AGU2
+  zen1        22     8   17  AGU0 AGU1 AGU2
+  zen3        22     8   17  AGU0 AGU1 AGU2
   zen4        22     8   17  AGU0 AGU1 AGU2
   x86v3       22     8    4  p0235
   x86v4       22     8    4  p0235
