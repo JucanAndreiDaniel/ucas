@@ -1,0 +1,464 @@
+/home/andrew/Code/ucas/src/ec_cmd.c:36:15: warning: no header providing "z_from_i64" is directly included [misc-include-cleaner]
+   36 | #define IZ(v) z_from_i64(v)
+      |               ^
+/home/andrew/Code/ucas/src/ec_cmd.c:38:15: warning: no header providing "ecf" is directly included [misc-include-cleaner]
+   26 | #include "ecq.h"
+   27 | #include "ecan.h"
+   28 | #include "ucas.h"
+   29 | #include "report.h"
+   30 | 
+   31 | #include <ctype.h>
+   32 | #include <math.h>
+   33 | #include <stdlib.h>
+   34 | #include <string.h>
+   35 | 
+   36 | #define IZ(v) z_from_i64(v)
+   37 | 
+   38 | static struct ecf QC;
+      |               ^
+/home/andrew/Code/ucas/src/ec_cmd.c:46:3: warning: no header providing "ecf_q" is directly included [misc-include-cleaner]
+   46 |                 ecf_q(&QC);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:67:35: warning: no header providing "ec" is directly included [misc-include-cleaner]
+   67 | parse_curve(const char *s, struct ec *E, const char **rest)
+      |                                   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:71:10: warning: no header providing "zq" is directly included [misc-include-cleaner]
+   26 |                 struct zq q[5];
+      |                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:72:3: warning: no header providing "fe" is directly included [misc-include-cleaner]
+   72 |                 fe a[5];
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:78:19: warning: no header providing "zq_parse" is directly included [misc-include-cleaner]
+   78 |                         if (n == 5 || !zq_parse(s, &q[n], &e))
+      |                                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:96:11: warning: no header providing "fe_from_q" is directly included [misc-include-cleaner]
+   96 |                         a[i] = fe_from_q(zq_int(0));
+      |                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:96:21: warning: no header providing "zq_int" is directly included [misc-include-cleaner]
+   96 |                         a[i] = fe_from_q(zq_int(0));
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:103:3: warning: no header providing "ec_init" is directly included [misc-include-cleaner]
+  103 |                 ec_init(E, QQc(), a);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:132:3: warning: Out of bound access to memory after the end of 'buf' [clang-analyzer-security.ArrayBound]
+  132 |                 buf[end - s] = 0;
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1001:6: note: Assuming the condition is false
+ 1001 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1001:2: note: Taking false branch
+ 1001 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1003:14: note: Left side of '&&' is true
+ 1003 |         for (k = 0; words[k] && strcmp(words[k], w); k++)
+      |                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1003:2: note: Loop condition is false. Execution continues on line 1005
+ 1003 |         for (k = 0; words[k] && strcmp(words[k], w); k++)
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1005:6: note: Left side of '||' is false
+ 1005 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1005:19: note: Assuming the condition is false
+ 1005 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1005:2: note: Taking false branch
+ 1005 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1010:6: note: Assuming the condition is false
+ 1010 |         if (!cmdp_eos(p))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1010:2: note: Taking false branch
+ 1010 |         if (!cmdp_eos(p))
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1013:6: note: Left side of '||' is false
+ 1013 |         if (text[0] == '=' || text[0] == '(' || (!text[0] && k > 2)) {
+      |             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1013:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ec_cmd.c:1013:43: note: Left side of '&&' is true
+ 1013 |         if (text[0] == '=' || text[0] == '(' || (!text[0] && k > 2)) {
+      |                                                  ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1013:55: note: 'k' is <= 2
+ 1013 |         if (text[0] == '=' || text[0] == '(' || (!text[0] && k > 2)) {
+      |                                                              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1013:2: note: Taking false branch
+ 1013 |         if (text[0] == '=' || text[0] == '(' || (!text[0] && k > 2)) {
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:6: note: Assuming the condition is false
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |             ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:6: note: Left side of '||' is false
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |             ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:31: note: Assuming the condition is false
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |                                      ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:6: note: Left side of '||' is false
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |             ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1019:6: note: Assuming the condition is false
+ 1019 |             strstr(text, "over F_") || strstr(text, "over Z/")) {
+      |             ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:6: note: Left side of '||' is false
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |             ^
+/usr/include/string.h:381:3: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ^
+/usr/include/sys/cdefs.h:838:3: note: expanded from macro '__glibc_const_generic'
+  838 |   _Generic (0 ? (PTR) : (void *) 1,                     \
+      |   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1019:33: note: Assuming the condition is false
+ 1019 |             strstr(text, "over F_") || strstr(text, "over Z/")) {
+      |                                        ^
+/usr/include/string.h:382:5: note: expanded from macro 'strstr'
+  381 |   __glibc_const_generic (HAYSTACK, const char *,        \
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  382 |                          strstr (HAYSTACK, NEEDLE))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/sys/cdefs.h:840:15: note: expanded from macro '__glibc_const_generic'
+  840 |             default: CALL)
+      |                      ^~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:1018:2: note: Taking false branch
+ 1018 |         if (strstr(text, " mod ") || strstr(text, "over GF") ||
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1026:6: note: 'k' is <= 2
+ 1026 |         if (k <= 2) {
+      |             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1026:2: note: Taking true branch
+ 1026 |         if (k <= 2) {
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1031:3: note: Taking true branch
+ 1031 |                 if (!text[0])
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1034:3: note: Calling 'parse_curve'
+ 1034 |                 parse_curve(text, &E, &rest);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:70:2: note: Taking false branch
+   70 |         if (*s == '[') {
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:115:3: note: Loop condition is false. Execution continues on line 129
+  115 |                 for (t = s; *t; t++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:129:7: note: Assuming the condition is true
+  129 |                 if ((size_t)(end - s) >= sizeof buf)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:129:3: note: Taking true branch
+  129 |                 if ((size_t)(end - s) >= sizeof buf)
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:132:3: note: Access of 'buf' at index 2048, while it holds only 2048 'char' elements
+  132 |                 buf[end - s] = 0;
+      |                 ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:149:10: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   33 |                         const uint8_t *e = D.F.e + i * QP_MAXV;
+      |                               ^
+/home/andrew/Code/ucas/src/ec_cmd.c:149:23: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  149 |                         const uint8_t *e = D.F.e + i * QP_MAXV;
+      |                                            ^
+/home/andrew/Code/ucas/src/ec_cmd.c:149:31: note: make conversion explicit to silence this warning
+   33 |                         const uint8_t *e = D.F.e + i * QP_MAXV;
+      |                                                    ^~~~~~~~~~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ec_cmd.c:149:31: note: perform multiplication in a wider type
+  149 |                         const uint8_t *e = D.F.e + i * QP_MAXV;
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/ec_cmd.c:159:7: warning: no header providing "zq_is_zero" is directly included [misc-include-cleaner]
+  159 |                 if (zq_is_zero(c[0]) || !zq_eq(c[0], zq_neg(c[3])))
+      |                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:159:28: warning: no header providing "zq_eq" is directly included [misc-include-cleaner]
+  159 |                 if (zq_is_zero(c[0]) || !zq_eq(c[0], zq_neg(c[3])))
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:159:40: warning: no header providing "zq_neg" is directly included [misc-include-cleaner]
+  159 |                 if (zq_is_zero(c[0]) || !zq_eq(c[0], zq_neg(c[3])))
+      |                                                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:164:18: warning: no header providing "zq_inv" is directly included [misc-include-cleaner]
+  164 |                         struct zq k = zq_inv(c[0]);
+      |                                       ^
+/home/andrew/Code/ucas/src/ec_cmd.c:165:21: warning: no header providing "zq_mul" is directly included [misc-include-cleaner]
+  165 |                         a[0] = fe_from_q(zq_mul(c[1], k));
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:181:36: warning: no header providing "ecpt" is directly included [misc-include-cleaner]
+  181 | pt_need(const struct ec *E, struct ecpt *P, const char **s)
+      |                                    ^
+/home/andrew/Code/ucas/src/ec_cmd.c:185:7: warning: no header providing "ec_pt_parse" is directly included [misc-include-cleaner]
+  185 |         if (!ec_pt_parse(E, P, *s, &e))
+      |              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:187:7: warning: no header providing "ec_on" is directly included [misc-include-cleaner]
+  187 |         if (!ec_on(E, P))
+      |              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:188:38: warning: no header providing "ec_pt_str" is directly included [misc-include-cleaner]
+  188 |                 fail("ec: %s is not on the curve", ec_pt_str(E, P));
+      |                                                    ^
+/home/andrew/Code/ucas/src/ec_cmd.c:197:2: warning: no header providing "ec_print" is directly included [misc-include-cleaner]
+  197 |         ec_print(&s, E);
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:198:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   33 |         printf("%s%s\n", label, sb_str(&s));
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:212:48: warning: no header providing "zint" is directly included [misc-include-cleaner]
+  212 | print_local(const struct ecq_local *L, int nl, zint N)
+      |                                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:215:15: warning: no header providing "Z_ONE" is directly included [misc-include-cleaner]
+  215 |         zint prodc = Z_ONE;
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:217:30: warning: no header providing "z_str" is directly included [misc-include-cleaner]
+  217 |         printf("  conductor: %s\n", z_str(N));
+      |                                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:224:11: warning: no header providing "z_mul" is directly included [misc-include-cleaner]
+  224 |                 prodc = z_mul(prodc, IZ(L[i].cp));
+      |                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:269:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  269 |         uint32_t i;
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:293:3: warning: no header providing "ecpts_get" is directly included [misc-include-cleaner]
+  293 |                 ecpts_get(&M->gens, i, &P);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:324:28: warning: no header providing "creal" is directly included [misc-include-cleaner]
+   31 |             "(%d component%s)\n", creal(P.w1), creal(P.w2), cimag(P.w2),
+      |                                   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:324:54: warning: no header providing "cimag" is directly included [misc-include-cleaner]
+  324 |             "(%d component%s)\n", creal(P.w1), creal(P.w2), cimag(P.w2),
+      |                                                             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:369:32: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  369 | ec_summary(const struct ec *E, int64_t search, int analytic)
+      |                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:379:3: warning: no header providing "ec_print_ainv" is directly included [misc-include-cleaner]
+  379 |                 ec_print_ainv(&s, E);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:384:47: warning: no header providing "fe_str" is directly included [misc-include-cleaner]
+  384 |         printf("  b2, b4, b6, b8: %s, %s, %s, %s\n", fe_str(E->F, &E->b2),
+      |                                                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:399:3: warning: no header providing "eciso_print" is directly included [misc-include-cleaner]
+  399 |                 eciso_print(&s, QQc(), &M.tomin);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:431:3: warning: no header providing "ec_eval" is directly included [misc-include-cleaner]
+  431 |                 ec_eval(E, &v, &P.x, &P.y);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:433:7: warning: no header providing "fe_is_zero" is directly included [misc-include-cleaner]
+  433 |                     fe_is_zero(F, &v) ? "is" : "is not", fe_str(F, &v));
+      |                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:443:3: warning: no header providing "ec_add" is directly included [misc-include-cleaner]
+  443 |                 ec_add(E, &R, &P, &Q);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:457:8: warning: no header providing "z_parse" is directly included [misc-include-cleaner]
+  457 |                 if (!z_parse(s, &k, &e))
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:463:3: warning: no header providing "ec_mul" is directly included [misc-include-cleaner]
+  463 |                 ec_mul(E, &R, k, &P);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:475:7: warning: no header providing "ec_order_upto" is directly included [misc-include-cleaner]
+  475 |                 o = ec_order_upto(E, &P, 12);
+      |                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:499:10: warning: no header providing "eciso" is directly included [misc-include-cleaner]
+  499 |                 struct eciso m;
+      |                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:506:3: warning: no header providing "ecpts_init" is directly included [misc-include-cleaner]
+  506 |                 ecpts_init(&T);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:514:4: warning: no header providing "eciso_pt_inv" is directly included [misc-include-cleaner]
+  514 |                         eciso_pt_inv(E, &m, &Q, &P);
+      |                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:521:3: warning: no header providing "ecpts_free" is directly included [misc-include-cleaner]
+  521 |                 ecpts_free(&T);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:577:4: warning: Value stored to 'nl' is never read [clang-analyzer-deadcode.DeadStores]
+  577 |                         nl = ecq_local_all(&Em, L, 64, &N);
+      |                         ^    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:577:4: note: Value stored to 'nl' is never read
+  577 |                         nl = ecq_local_all(&Em, L, 64, &N);
+      |                         ^    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ec_cmd.c:602:10: warning: no header providing "complex" is directly included [misc-include-cleaner]
+  602 |                 double complex x, y;
+      |                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:614:30: warning: no header providing "I" is directly included [misc-include-cleaner]
+  614 |                 ecan_wp(&Em, &P, re + im * I, &x, &y, &chk);
+      |                                            ^
+/home/andrew/Code/ucas/src/ec_cmd.c:627:34: warning: no header providing "nt_isprime" is directly included [misc-include-cleaner]
+   28 |                 if (p < 2 || p > 100000000 || !nt_isprime((u64)p))
+      |                                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:627:46: warning: no header providing "u64" is directly included [misc-include-cleaner]
+  627 |                 if (p < 2 || p > 100000000 || !nt_isprime((u64)p))
+      |                                                            ^
+/home/andrew/Code/ucas/src/ec_cmd.c:630:7: warning: no header providing "z_mod_u64" is directly included [misc-include-cleaner]
+  630 |                 if (z_mod_u64(fe_qz(&Em.disc), (u64)p) == 0) {
+      |                     ^
+/home/andrew/Code/ucas/src/ec_cmd.c:650:10: warning: no header providing "ecmodel" is directly included [misc-include-cleaner]
+  650 |                 struct ecmodel Mo;
+      |                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:655:8: warning: no header providing "ecm_kind_parse" is directly included [misc-include-cleaner]
+  655 |                 mk = ecm_kind_parse(kind);
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:659:8: warning: no header providing "ecm_from_weierstrass" is directly included [misc-include-cleaner]
+  659 |                 if (!ecm_from_weierstrass(mk, E, &Mo, &iso)) {
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:660:35: warning: no header providing "ecm_kind_name" is directly included [misc-include-cleaner]
+  660 |                         printf("no %s model over Q (", ecm_kind_name(mk));
+      |                                                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:661:14: warning: no header providing "ECM_MONTGOMERY" is directly included [misc-include-cleaner]
+  661 |                         if (mk == ECM_MONTGOMERY || mk == ECM_EDWARDS ||
+      |                                   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:661:38: warning: no header providing "ECM_EDWARDS" is directly included [misc-include-cleaner]
+  661 |                         if (mk == ECM_MONTGOMERY || mk == ECM_EDWARDS ||
+      |                                                           ^
+/home/andrew/Code/ucas/src/ec_cmd.c:662:14: warning: no header providing "ECM_TWISTED_EDWARDS" is directly included [misc-include-cleaner]
+  662 |                             mk == ECM_TWISTED_EDWARDS)
+      |                                   ^
+/home/andrew/Code/ucas/src/ec_cmd.c:666:19: warning: no header providing "ECM_LEGENDRE" is directly included [misc-include-cleaner]
+  666 |                         else if (mk == ECM_LEGENDRE)
+      |                                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:678:11: warning: no header providing "ecmpt" is directly included [misc-include-cleaner]
+  678 |                         struct ecmpt N0;
+      |                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:679:4: warning: no header providing "ecm_print" is directly included [misc-include-cleaner]
+  679 |                         ecm_print(&b, &Mo);
+      |                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:686:4: warning: no header providing "ecm_to_weierstrass" is directly included [misc-include-cleaner]
+  686 |                         ecm_to_weierstrass(&Mo, &W);
+      |                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:687:4: warning: no header providing "ecm_neutral" is directly included [misc-include-cleaner]
+  687 |                         ecm_neutral(&Mo, &N0);
+      |                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:709:6: warning: no header providing "eciso_pt" is directly included [misc-include-cleaner]
+  709 |                                         eciso_pt(E, &iso, &Wp, &Q);
+      |                                         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:710:11: warning: no header providing "ecm_pt_from_w" is directly included [misc-include-cleaner]
+  710 |                                         if (!ecm_pt_from_w(&Mo, &W, &Wp, &mp))
+      |                                              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:712:11: warning: no header providing "ecm_on" is directly included [misc-include-cleaner]
+  712 |                                         if (!ecm_on(&Mo, &mp))
+      |                                              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:714:11: warning: no header providing "ecm_pt_to_w" is directly included [misc-include-cleaner]
+  714 |                                         if (!ecm_pt_to_w(&Mo, &W, &mp, &back) ||
+      |                                              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:715:11: warning: no header providing "ec_pt_eq" is directly included [misc-include-cleaner]
+  715 |                                             !ec_pt_eq(&W, &back, &Wp))
+      |                                              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:754:14: warning: no header providing "z_add" is directly included [misc-include-cleaner]
+  754 |                                 zint L = z_add(z_mul(a1, IZ(x)), a3), R;
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:761:8: warning: no header providing "ec_lift_x" is directly included [misc-include-cleaner]
+  761 |                         n = ec_lift_x(E, &X, P);
+      |                             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:763:10: warning: no header providing "z_is_one" is directly included [misc-include-cleaner]
+  763 |                                 if (!z_is_one(fe_q(&P[k].y).d))
+      |                                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:763:19: warning: no header providing "fe_q" is directly included [misc-include-cleaner]
+  763 |                                 if (!z_is_one(fe_q(&P[k].y).d))
+      |                                               ^
+/home/andrew/Code/ucas/src/ec_cmd.c:791:35: warning: no header providing "z_sign" is directly included [misc-include-cleaner]
+  791 |         if (!z_parse(skip(s), &n, &e) || z_sign(n) <= 0)
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:795:8: warning: no header providing "z_eq" is directly included [misc-include-cleaner]
+  795 |                 if (!z_eq(part, n))
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:801:26: warning: no header providing "z_neg" is directly included [misc-include-cleaner]
+  801 |         a[3] = fe_from_q(zq_int(z_neg(z_mul(n, n))));
+      |                                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:806:15: warning: no header providing "z_fits_i64" is directly included [misc-include-cleaner]
+  806 |         rep_int("n", z_fits_i64(n) ? z_to_i64(n) : 0);
+      |                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:806:31: warning: no header providing "z_to_i64" is directly included [misc-include-cleaner]
+  806 |         rep_int("n", z_fits_i64(n) ? z_to_i64(n) : 0);
+      |                                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:818:8: warning: no header providing "zq_div" is directly included [misc-include-cleaner]
+  818 |                         A = zq_div(zq_sub(zq_mul(x, x), n2), y);
+      |                             ^
+/home/andrew/Code/ucas/src/ec_cmd.c:818:15: warning: no header providing "zq_sub" is directly included [misc-include-cleaner]
+  818 |                         A = zq_div(zq_sub(zq_mul(x, x), n2), y);
+      |                                    ^
+/home/andrew/Code/ucas/src/ec_cmd.c:820:15: warning: no header providing "zq_add" is directly included [misc-include-cleaner]
+  820 |                         C = zq_div(zq_add(zq_mul(x, x), n2), y);
+      |                                    ^
+/home/andrew/Code/ucas/src/ec_cmd.c:833:44: warning: no header providing "zq_str" is directly included [misc-include-cleaner]
+  833 |                 printf("  a = %s\n  b = %s\n  c = %s\n", zq_str(A), zq_str(B),
+      |                                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:852:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  852 |                         int64_t A1 = 0, B1 = 0, x, y, z, m = nn & 1 ? nn : nn / 2;
+      |                                                              ^~ ~
+/home/andrew/Code/ucas/src/ec_cmd.c:853:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                      ^~ ~
+/home/andrew/Code/ucas/src/ec_cmd.c:853:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                                           ^~ ~
+/home/andrew/Code/ucas/src/ec_cmd.c:853:45: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                                                  ^
+/home/andrew/Code/ucas/src/ec_cmd.c:853:49: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                                                      ^
+/home/andrew/Code/ucas/src/ec_cmd.c:853:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                                                                 ^~ ~
+/home/andrew/Code/ucas/src/ec_cmd.c:853:67: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  853 |                         int64_t c1 = nn & 1 ? 2 : 4, c3 = nn & 1 ? 8 : 8, c3b = nn & 1 ?
+      |                                                                                        ^
+/home/andrew/Code/ucas/src/ec_cmd.c:854:11: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  854 |                             32 : 32;
+      |                                ^
+/home/andrew/Code/ucas/src/ec_cmd.c:859:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  859 |                                                 if (nn & 1) {
+      |                                                     ^~ ~
+/home/andrew/Code/ucas/src/ec_cmd.c:890:35: warning: no header providing "z_is_zero" is directly included [misc-include-cleaner]
+  890 |         if (!z_parse(skip(s), &k, &e) || z_is_zero(k))
+      |                                          ^
+/home/andrew/Code/ucas/src/ec_cmd.c:902:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  902 |                 snprintf(buf, sizeof buf, "%lld", (long long)B);
+      |                 ^
+/home/andrew/Code/ucas/src/ec_cmd.c:999:2: warning: no header providing "zmark" is directly included [misc-include-cleaner]
+  999 |         zmark mk;
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1003:26: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1003 |         for (k = 0; words[k] && strcmp(words[k], w); k++)
+      |                                 ^                  
+      |                                                     != 0
+/home/andrew/Code/ucas/src/ec_cmd.c:1025:7: warning: no header providing "z_mark" is directly included [misc-include-cleaner]
+ 1025 |         mk = z_mark();
+      |              ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1060:2: warning: no header providing "z_release" is directly included [misc-include-cleaner]
+ 1060 |         z_release(mk);
+      |         ^
+/home/andrew/Code/ucas/src/ec_cmd.c:1066:1: warning: function 'ec_word' can be made static to enforce internal linkage [misc-use-internal-linkage]
+ 1065 | int
+      | static 
+ 1066 | ec_word(const char *w)
+      | ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

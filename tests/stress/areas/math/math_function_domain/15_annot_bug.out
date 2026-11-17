@@ -1,0 +1,60 @@
+> domain sqrt(x: real in 0..10)
+  note: sqrt of the integer x >= 0 && x <= 10 read as floor square root isqrt(); write sqrt(real(x >= 0 && x <= 10)) for the real one
+domain of isqrt(x >= 0 && x <= 10):
+  x: real (default [-10, 10])
+  no conditions: total on its parameter types
+  defined on (numerically, grid of 20001 over [-10, 10]):
+    x in [-10, 10]
+> range sqrt(x: real in 0..10)
+  note: sqrt of the integer x >= 0 && x <= 10 read as floor square root isqrt(); write sqrt(real(x >= 0 && x <= 10)) for the real one
+range of isqrt(x >= 0 && x <= 10) -> bool:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  over all 101 points of the domain
+> diff sqrt(x: real in 0..10)
+  note: sqrt of the integer x >= 0 && x <= 10 read as floor square root isqrt(); write sqrt(real(x >= 0 && x <= 10)) for the real one
+d/dx isqrt(x >= 0 && x <= 10) = 0
+  holds for x != 10 and x != 0
+    at x = 10 isqrt(x >= 0 && x <= 10) jumps (not continuous)
+    at x = 0 isqrt(x >= 0 && x <= 10) jumps (not continuous)
+    (points looked for in [-10, 10])
+  check: matches central differences at 200 points (max relative difference 0)
+> domain log(x: real in 1..10)
+domain of log(real(x >= 1 && x <= 10)):
+  x: real (default [-10, 10])
+  requires real(x >= 1 && x <= 10) > 0
+  defined on (numerically, grid of 20001 over [-10, 10]):
+    x in [1, 10]
+> range log(x: real in 1..10)
+range of log(real(x >= 1 && x <= 10)):
+  [0, 0]   min at x ≈ 1, max at x ≈ 1
+  undefined at 11000 of 20001 grid points
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points
+> domain asin(x: real in -1..1)
+domain of asin(real(x >= -1 && x <= 1)):
+  x: real (default [-10, 10])
+  requires -1 <= real(x >= -1 && x <= 1) <= 1
+  defined on (numerically, grid of 20001 over [-10, 10]):
+    x in [-10, 10]
+> range asin(x: real in -1..1)
+range of asin(real(x >= -1 && x <= 1)):
+  [0, 1.570796327]   min at x ≈ -10, max at x ≈ -1
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points
+> domain W(x: real in 0..10)
+domain of W(real(x >= 0 && x <= 10)):
+  x: real (default [-10, 10])
+  requires real(x >= 0 && x <= 10) >= -1/e  (Lambert W, principal branch)
+  defined on (numerically, grid of 20001 over [-10, 10]):
+    x in [-10, 10]
+> range W(x: real in 0..10)
+range of W(real(x >= 0 && x <= 10)):
+  [0, 0.5671432904]   min at x ≈ -10, max at x ≈ 0
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points
+> range isqrt(x: int in 0..255)
+range of isqrt(x >= 0 && x <= 255) -> bool:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  sampled 65536 points (domain has 2^64 or more points); not exhaustive
+  sound bound (intervals): 0..1

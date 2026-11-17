@@ -1,0 +1,8 @@
+# WRONG: for a float formula that SAT will not prove, equiv still reports
+# "are equal" from a sample that misses a counterexample.  show() at
+# (x=1, y=-0.5) returns -0.5 vs -1.5, so the two functions are not equal.
+f(x: f32, y: f32) = ((abs(((-1.0f == (y / (0.5f + 1.0f))) ? asfloat(u32(0)) : asfloat(asuint(x))))) - 1.5f)
+g(x: f32, y: f32) = ((abs(((-1.0f == (y / 0.5f)) ? asfloat(u32(0)) : asfloat(asuint(x))))) - 1.5f)
+equiv f g
+show f(1.0, -0.5)
+show g(1.0, -0.5)

@@ -1,0 +1,13 @@
+# Static-analysis probe: shifts at/beyond width (warn sites eval.c:783, fpfold.c:240, spirv.c:957)
+a(x: u64) = x << 64
+b(x: u64) = x << 65
+c(x: u64) = x << 1010
+d(x: u64) = x >> 64
+e(x: u64) = x << -1
+f(x: u8) = x << 64
+g(x: u64) = x * (1 << 63)
+h(x: u64) = (x << 63) >> 63
+range a
+range d
+equiv a b
+equiv e f

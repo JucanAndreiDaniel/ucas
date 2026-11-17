@@ -1,0 +1,82 @@
+src/knorm.c:102:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+  102 |         qsort(p->t, (size_t)p->n, sizeof *p->t, mcmp);
+      |         ^
+src/knorm.c:628:6: note: Assuming the condition is false
+  628 |         if (KSORT(t) == KS_INT) {
+      |             ^~~~~~~~~~~~~~~~~~
+src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+src/knorm.c:628:2: note: Taking false branch
+  628 |         if (KSORT(t) == KS_INT) {
+      |         ^
+src/knorm.c:639:18: note: Calling 'nlin'
+  639 |                 struct lin l = nlin(t);
+      |                                ^~~~~~~
+src/knorm.c:397:2: note: Control jumps to 'case KO_MUL:'  at line 415
+  397 |         switch (KOP(t)) {
+      |         ^
+src/knorm.c:418:3: note: Calling 'laddto'
+  418 |                 laddto(&r, &b, &s);
+      |                 ^~~~~~~~~~~~~~~~~~
+src/knorm.c:385:14: note: Assuming 'i' is < field 'n'
+  385 |         for (i = 0; i < b->n; i++)
+      |                     ^~~~~~~~
+src/knorm.c:385:2: note: Loop condition is true.  Entering loop body
+  385 |         for (i = 0; i < b->n; i++)
+      |         ^
+src/knorm.c:386:23: note: Calling 'pmul'
+  386 |                 lpush(r, b->t[i].a, pmul(&b->t[i].c, s));
+      |                                     ^~~~~~~~~~~~~~~~~~~
+src/knorm.c:209:2: note: 'r.t' initialized to a null pointer value
+  209 |         struct poly r = {0};
+      |         ^~~~~~~~~~~~~
+src/knorm.c:212:14: note: Assuming 'i' is >= field 'n'
+  212 |         for (i = 0; i < a->n; i++)
+      |                     ^~~~~~~~
+src/knorm.c:212:2: note: Loop condition is false. Execution continues on line 216
+  212 |         for (i = 0; i < a->n; i++)
+      |         ^
+src/knorm.c:216:2: note: Calling 'pcanon'
+  216 |         pcanon(&r);
+      |         ^~~~~~~~~~
+src/knorm.c:102:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  102 |         qsort(p->t, (size_t)p->n, sizeof *p->t, mcmp);
+      |         ^     ~~~~
+src/knorm.c:362:2: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+  362 |         qsort(l->t, (size_t)l->n, sizeof *l->t, lcmp);
+      |         ^
+src/knorm.c:628:6: note: Assuming the condition is false
+  628 |         if (KSORT(t) == KS_INT) {
+      |             ^~~~~~~~~~~~~~~~~~
+src/prove.h:73:18: note: expanded from macro 'KSORT'
+   73 | #define KSORT(t) (KT.sort[t])
+      |                  ^
+src/knorm.c:628:2: note: Taking false branch
+  628 |         if (KSORT(t) == KS_INT) {
+      |         ^
+src/knorm.c:639:18: note: Calling 'nlin'
+  639 |                 struct lin l = nlin(t);
+      |                                ^~~~~~~
+src/knorm.c:393:25: note: 'r.t' initialized to a null pointer value
+  393 |         struct lin a = {0}, b, r = {0};
+      |                                ^
+src/knorm.c:397:2: note: Control jumps to 'case KO_MUL:'  at line 415
+  397 |         switch (KOP(t)) {
+      |         ^
+src/knorm.c:418:3: note: Calling 'laddto'
+  418 |                 laddto(&r, &b, &s);
+      |                 ^~~~~~~~~~~~~~~~~~
+src/knorm.c:385:14: note: Assuming 'i' is >= field 'n'
+  385 |         for (i = 0; i < b->n; i++)
+      |                     ^~~~~~~~
+src/knorm.c:385:2: note: Loop condition is false. Execution continues on line 387
+  385 |         for (i = 0; i < b->n; i++)
+      |         ^
+src/knorm.c:387:2: note: Calling 'lcanon'
+  387 |         lcanon(r);
+      |         ^~~~~~~~~
+src/knorm.c:362:2: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  362 |         qsort(l->t, (size_t)l->n, sizeof *l->t, lcmp);
+      |         ^     ~~~~
+2 warnings generated.

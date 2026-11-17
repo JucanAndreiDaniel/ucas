@@ -1,0 +1,40 @@
+# Cost of the same integer expressions under every built-in microarchitectural model.
+# gt1030 / GPU models first, then the x86 models (skl, skx, glc, rpl, zen2, zen4, x86v*).
+addc(x: u32) = x + 11
+mulc(x: u32) = x * 7
+divc(x: u32) = x / 7
+divv(x: u32, y: u32) = x / y
+remv(x: u32, y: u32) = x % y
+shl(x: u32) = x << 3
+logic(x: u32, y: u32) = (x & y) | (x xor y)
+select(x: u32, y: u32) = x < y ? x : y
+cost addc model gt1030
+cost addc model zen4
+cost addc model skl
+cost addc model glc
+cost addc model x86v4
+cost mulc model gt1030
+cost mulc model zen4
+cost mulc model skl
+cost mulc model glc
+cost mulc model x86v4
+cost divc model gt1030
+cost divc model zen4
+cost divc model skl
+cost divc model glc
+cost divv model gt1030
+cost divv model zen4
+cost divv model skl
+cost divv model glc
+cost remv model gt1030
+cost remv model zen4
+cost remv model skl
+cost shl model gt1030
+cost shl model zen4
+cost shl model skl
+cost logic model gt1030
+cost logic model zen4
+cost logic model skl
+cost select model gt1030
+cost select model zen4
+cost select model skl

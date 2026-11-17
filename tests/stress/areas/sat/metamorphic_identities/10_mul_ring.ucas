@@ -1,0 +1,50 @@
+# Multiplication ring identities (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: u8, y: u8, z: u8) = (x*y)*z
+g01(x: u8, y: u8, z: u8) = x*(y*z)
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: u16, y: u16) = x*y
+g02(x: u16, y: u16) = y*x
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u32, y: u32, z: u32) = x*(y+z)
+g03(x: u32, y: u32, z: u32) = x*y+x*z
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u64, y: u64) = x*y
+g04(x: u64, y: u64) = y*x
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u8, y: u8, z: u8) = (x+y)*z
+g05(x: u8, y: u8, z: u8) = x*z+y*z
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: i16, y: i16, z: i16) = x*(y+z)
+g06(x: i16, y: i16, z: i16) = x*y+x*z
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u8) = x * 1
+g07(x: u8) = x
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: u16) = x * 2
+g08(x: u16) = x << 1
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: u32) = x^2
+g09(x: u32) = x*x
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: i64) = x^2
+g10(x: i64) = x*x
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: u8, y: u8) = x*y
+g11(x: u8, y: u8) = x*(y xor 0) xor 0
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u16, y: u16) = x*y + x*y
+g12(x: u16, y: u16) = x*y*2
+equiv f12 g12

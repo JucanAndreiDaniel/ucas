@@ -1,0 +1,11 @@
+qz(x: f32 in 0..100) = f32(i32(x * 0.1)) * 10
+qzx(x: f32 in 0..100) = f32(i32(f64(x) * 0.1)) * 10
+error qz ~ qzx
+dot2(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = (a*b + c*d) + (((a*b - ((a*b + c*d) - c*d)) + (c*d - ((a*b + c*d) - ((a*b + c*d) - c*d)))) + (fma(a, b, -(a*b)) + fma(c, d, -(c*d))))
+dot(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = f32(f64(a) * f64(b) + f64(c) * f64(d))
+naive(a: f32 in 1..2, b: f32 in 1..2, c: f32 in -2..-1, d: f32 in 1..2) = a*b + c*d
+error dot2 ~ dot
+error naive ~ dot
+s20(x: f32 in 1..2) = x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x+x*x+x
+e20(x: real in 1..2) = 11*x + 10*x*x
+error s20 ~ e20

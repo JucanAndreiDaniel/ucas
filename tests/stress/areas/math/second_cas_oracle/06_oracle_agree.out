@@ -1,0 +1,50 @@
+> expand (x+1)^10
+  ucas: expand (x+1)^10
+expand (x + 1)^10
+  = x^10 + 10x^9 + 45x^8 + 120x^7 + 210x^6 + 252x^5 + 210x^4 + 120x^3 + 45x^2 + 10x + 1
+  check: exact (both sides have the same normal form)
+> factor x^9 - 1
+factor x^9 - 1
+  = (x - 1)*(x^2 + x + 1)*(x^6 + x^3 + 1)
+  check: exact (both sides have the same normal form)
+  (factors are irreducible over the rationals)
+> diff sin(x)*exp(x)
+d/dx sin(x)*exp(x) = exp(x)*cos(x) + sin(x)*exp(x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 8e-15)
+> integrate x^2*log(x)
+∫ x^2*log(x) dx
+  = x^3*log(x)/3 - x^3/9 + C
+  check: d/dx of it equals the integrand at 200 points of [-10, 10] (max difference 5.7e-14)
+> zmat det [[1,2,3],[4,5,6],[7,8,10]]
+det = -3
+  how: Bareiss fraction-free elimination
+  check: Gaussian elimination over Q gives -3
+> factorint 123456789
+123456789 = 3^2 * 3607 * 3803 (not prime)
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 123456789; each factor is prime
+> limit sin(x)/x x -> 0
+limit of sin(x)/x as x -> 0:
+  0/0: L'Hôpital: lim (cos(x))/(1) = lim cos(x)
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> taylor sin(x) order 7
+Maclaurin (Taylor at 0) series of sin(x) at x = 0, through order 7:
+  sin(x) = x - x^3/6 + x^5/120 - x^7/5040 + O(x^8)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 0 1 0 -1/6 0 1/120 0 -1/5040
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 2.76e-15 at x = 0 ± 1/10, 5.38e-18 at ± 1/20, 1.02e-20 at ± 1/40 (at rounding level)
+> gcd x^3-1, x^2-1
+gcd x^3 - 1, x^2 - 1
+  = x - 1
+  check: it divides both exactly, and the cofactors are coprime
+  (normalized: integer coefficients without a common factor, leading coefficient positive)
+> resultant x^2-2, x^2-3x+2
+resultant x^2 - 2, x^2 - 3x + 2
+  in x: -2
+  nonzero: no common root
+  check: lc(P)^deg(Q) * product of Q over the roots of P = -2 (agrees)

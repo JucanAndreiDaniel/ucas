@@ -1,0 +1,15 @@
+> f_thresh_ge_const(x: f32 in 0..1) = x > f32(0.1) ? f32(1) : f32(0)
+> g_thresh_ge_const(x: f32 in 0..1) = x >= f32(0.1) ? f32(1) : f32(0)
+> equiv f_thresh_ge_const g_thresh_ge_const
+f_thresh_ge_const and g_thresh_ge_const differ, e.g. x=0.100000001: 0 vs 1 (found by SAT, checked by evaluation)
+> error g_thresh_ge_const ~ f_thresh_ge_const
+error of g_thresh_ge_const against f_thresh_ge_const:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 121 inputs
+    choices: 1 select (?:); at no input of the sample is one within its operands' error of going the other way
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]

@@ -1,0 +1,22 @@
+> c lower nofile
+  f2id(d: f64) = i32(d)
+    defined where (no C UB): d > -2147483649 && d < 2147483648
+  f2if(f: f32) = i32(f)
+    defined where (no C UB): f64(f) > -2147483649 && f64(f) < 2147483648
+  f2ineg(d: f64) = i32(-d)
+    defined where (no C UB): -d > -2147483649 && -d < 2147483648
+  f2iu(d: f64) = u32(d)
+    defined where (no C UB): d > -1 && d < 4294967296
+  f2il(d: f64) = i64(d)
+    defined where (no C UB): d >= -9.2233720368547758e+18 && d < 9.2233720368547758e+18
+  f2i16(d: f64) = i16(d)
+    defined where (no C UB): d > -32769 && d < 32768
+  f2iu8(d: f64) = u8(d)
+    defined where (no C UB): d > -1 && d < 256
+  f2ibig() = i32(1e+20)
+  f2ismall() = i32(-1e+20)
+  f2inan() = i32(0/0)
+    defined where (no C UB): 0/0 > -2147483649 && 0/0 < 2147483648
+  f2iinf() = i32(1/0)
+    defined where (no C UB): 1/0 > -2147483649 && 1/0 < 2147483648
+  f2if32big() = i32(inf)

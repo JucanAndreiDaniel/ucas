@@ -1,0 +1,140 @@
+> approx sin(x) in -pi/2..pi/2 degree 5..9 norational nosplit noreduce list 2
+approx sin(x) on [-1.57079637, 1.57079637] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1.57079637]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    0.000134     0.000135     0.000108     
+    7    1.17e-06     1.18e-06     9.39e-07     
+    9    6.65e-09     6.68e-09     5.31e-09     
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131102 f32 in [-1.57079637, 1.57079637]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  1.82e+03 ulp             0.000122      0.000108      4    at x=-1.16394172e-10
+      x*P(x^2): x*fma(fma(0.00760290353, s, -0.165960118), s, 0.999891818) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 3.07, probable no better (under 16 operations), expected 0.926; `error ap1 ~ F` says what each means
+  2   minimax   7     horner+fma  17.1 ulp (17.1)          1.86e-06      1.02e-06      5    at x=-1.5704608
+      x*P(x^2): x*fma(fma(fma(-0.000184881399, s, 0.00831189938), s, -0.16665554), s, 0.999999046) where s = x*x
+  3 more: 'approx more [n]'
+> approx cos(x) in 0..pi/2 relative norational nosplit list 2
+  note: cos(x) has special points at the interval's ends (at x = 0 a maximum, at x = 1.57079633 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx cos(x) on [0, 1.57079637] as f32, fma
+  checked: cos(x) is even (f(-x) = f(x) at 64 points): fitting P(x^2) on [0, 1.57079637]
+  metric: relative error
+  checked: the target equals cos(x) at 33 points: range reductions and identities for cos apply
+  fits in real arithmetic (max relative error of P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    0    4.38e+07     4.66e+07     1            
+    2    2.64e+06     2.7e+06      0.12         
+    4    5.75e+04     5.82e+04     0.00263      
+    6    652          657          2.98e-05     
+    8    4.55         4.57         2.08e-07     
+    10   0.0215       0.0216       9.83e-10     
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131083 f32 in [0, 1.57079637]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   identity  3     horner+fma  1.21e+05 ulp             0.00722       0.0072        5    at x=2.32875302e-10
+      sin(pi/2 - x), pi/2 in 2 parts: r*fma(-0.146206215, s, 0.992784619) where r = 1.57079637 - x - 4.37113883e-08, s = r*r
+      rounding of ap1, first order, 5 operations, relative, in u = 2^-24: worst case 4, probable no better (under 16 operations), expected 1.15; `error ap1 ~ F` says what each means
+  2   identity  5     horner+fma  1.81e+03 ulp             0.000108      0.000108      6    at x=1.55519271
+      sin(pi/2 - x), pi/2 in 2 parts: r*fma(fma(0.00760275777, s, -0.16595982), s, 0.999891758) where r = 1.57079637 - x - 4.37113883e-08, s = r*r
+  24 more: 'approx more [n]'
+> approx exp(x) in 0..1 degree 4 as f32 list 1
+approx exp(x) on [0, 1] as f32, fma
+  metric: relative error
+  checked: the target equals exp(x) at 33 points: range reductions and identities for exp apply
+  fits in real arithmetic (max relative error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    4    2.49e-05     2.6e-05      1.61e-05     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    0/1 0.0616 (-) 1/1 0.0026 (0.104) 0/2 0.00515 (0.264) 2/1 0.000108 (0.0117)
+    1/2 0.000108 (0.019) 0/3 0.000322 (0.104) 3/1 4.06e-06 (0.00145) 2/2 2.71e-06 (0.00147) 1/3 4.06e-06 (0.00331) 4/1 1.35e-07 (0.000172)
+    3/2 6.78e-08 (0.000123) 2/3 6.78e-08 (0.000172) 4/2 1.61e-09 (1.02e-05) 3/3 1.21e-09 (1.03e-05) 4/3 2.16e-11 (6.45e-07)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.0156 2: 0.000649 3: 2.03e-05 4: 5.08e-07
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  253 ulp                  1.62e-05      4.4e-05       4    at x=0.624551773
+      P(x): fma(fma(fma(fma(0.0679844916, x, 0.143048942), x, 0.508119881), x, 0.999068499), x, 1.00001609)
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 1.97, probable no better (under 16 operations), expected 0.701; `error ap1 ~ F` says what each means
+  13 more: 'approx more [n]'
+> approx atan(x) in -1..1 degree 5 as f32 list 1
+approx atan(x) on [-1, 1] as f32, fma
+  checked: atan(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals atan(x) at 33 points: range reductions and identities for atan apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    0.00181      -            0.00158      
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00548 (0.0451) 3/2 0.000243 (0.00798) 1/4 0.000491 (0.0231) 5/2 1.68e-05 (0.00263)
+    3/4 1.07e-05 (0.00138) 1/6 5.46e-05 (0.0138) 5/4 4.65e-07 (0.000239) 3/6 7.02e-07 (0.000433) 5/6 2.02e-08 (4.11e-05)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.0377 2: 0.00839 3: 0.000611 4: 4.69e-05 5: 7.91e-06
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130931 f32 in [-1, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  2.64e+04 ulp             0.0016        0.00124       4    at x=-5.16979994e-26
+      x*P(x^2): x*fma(fma(0.0892504826, s, -0.301038682), s, 0.998424113) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 2.43, probable no better (under 16 operations), expected 0.836; `error ap1 ~ F` says what each means
+  7 more: 'approx more [n]'
+> approx tanh(x) in 0..1 degree 3 as f32 list 1
+  note: tanh(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx tanh(x) on [0, 1] as f32, fma
+  checked: tanh(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  checked: the target equals tanh(x) at 33 points: range reductions and identities for tanh apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    3    0.0117       0.0119       0.0113       
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00211 (0.0152) 3/2 1.48e-05 (0.000408) 1/4 4.75e-05 (0.00147) 3/4 5.85e-08 (6.24e-06)
+    1/6 1.13e-06 (0.000146) 3/6 3.06e-10 (1.31e-07)
+  piecewise (2 pieces split at 0.5, max rel error): 1: 0.0394 2: 0.00905 3: 0.00046
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   3     horner+fma  1.9e+05 ulp              0.0113        0.00863       3    at x=2.27371927e-13
+      x*P(x^2): x*fma(-0.235703304, s, 0.98866415) where s = x*x
+      rounding of ap1, first order, 3 operations, relative, in u = 2^-24: worst case 2.31, probable no better (under 16 operations), expected 0.836; `error ap1 ~ F` says what each means
+  8 more: 'approx more [n]'
+> approx sqrt(x) in 0..1 degree 2 nosplit noreduce list 1
+  note: sqrt(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sqrt(x) on [0, 1] as f32, fma
+  checked: zero at x = 0 is not simple (f(x)/(x - c) is unbounded): no factor
+  metric: absolute error (a zero that a polynomial factor cannot match)
+  checked: the target equals sqrt(x) at 33 points: range reductions and identities for sqrt apply
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    2    0.173        -            0.0676       
+  rational fits (num/den degree: minimax, Pade; max abs error):
+    0/1 0.268 (-) 1/1 0.0437 (-) 0/2 0.181 (-) 2/1 0.0187 (-)
+    1/2 0.0248 (-) 0/3 0.137 (-) 2/2 0.0103 (-) 1/3 0.0172 (-) 2/3 0.00726 (-)
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   2     horner+fma  0.0676 abs               inf           0.0676        2    at x=0.603784263
+      P(x): fma(fma(-1.06554115, x, 1.9302994), x, 0.0676208958)
+      rounding of ap1, first order, 2 operations, relative, in u = 2^-24: worst case 1.93, probable no better (under 16 operations), expected 0.788; `error ap1 ~ F` says what each means
+  6 more: 'approx more [n]'
+> approx 1/sqrt(x) in 0.01..100 ulp 2 nosplit norational list 2
+approx 1/sqrt(x) on [0.00999999978, 100] as f32, fma
+  metric: relative error
+  checked: the target equals rsqrt(x) at 33 points: range reductions and identities for rsqrt apply
+  fits in real arithmetic (max relative error of P(t)):
+    deg  cheb interp  cheb econ    minimax
+    0    0.986        -            0.98         
+    1    0.971        -            0.95         
+    2    0.956        -            0.919        
+    3    0.941        -            0.89         
+    4    0.926        -            0.861        
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131046 f32 in [0.00999999978, 100]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   seed+nwt  6     horner+fma  1.95 ulp                 1.26e-07      1.14e-06      24   at x=66.9537888  *
+      2^-k * P(m) seed + 1 Newton step: fma(y0, fma(-(h*y0), y0, 0.5), y0) where u = asuint(x), kb = ((u >> 23) + 130) >> 1, m = asfloat(u - ((kb - 128) << 24)), t = m - 1.0, y0 = asfloat(asuint(fma(fma(fma(fma(fma(fma(0.110007837, t, -0.300791502), t, 0.349690825), t, -0.318412602), t, 0.3656905), t, -0.499111354), t, 1.00017524)) - ((kb - 128) << 23)), h = 0.5*x
+      rounding of ap1, first order, 11 operations, relative, in u = 2^-24: worst case 2, probable no better (under 16 operations), expected 0.707; `error ap1 ~ F` says what each means
+  2   bithack   -     -           2.84e+04 ulp             0.00175       0.0175        8    at x=4.0000658
+      bit hack + 1 Newton step: y1 where y0 = asfloat(0x5f375a86 - (asuint(x) >> 1)), h = 0.5*x, y1 = y0*(1.5 - h*y0*y0)
+  25 more: 'approx more [n]'

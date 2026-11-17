@@ -1,0 +1,15 @@
+# domain/wrap disagree on int overflow at 2^63; wrap reports mixed-sign narrowing.
+ovf(x: int in 0..10) = x + 9223372036854775807
+domain ovf
+wrap ovf
+range ovf
+u8ovf(x: u8 in 250..255) = x + 10
+wrap u8ovf
+range u8ovf
+i8neg(x: i8 in -128..-1) = -x
+range i8neg
+wrap i8neg
+mix8(x: i8, y: u8) = x + y
+domain mix8
+wrap mix8
+range mix8

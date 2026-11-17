@@ -1,0 +1,30 @@
+> f(x: u8 in 0..15) = x*x
+> g(x: u8) = x + 1
+> show f
+f(x: u8 in 0..15) = x*x
+  -> u8
+> c lower nofile
+  bad: not lowered: line 1: return without a value
+> show g
+g(x: u8) = x + 1
+  -> u8
+> groebner x^2, not-a-poly
+  input: f1 = x^2, f2 = -a + not - poly
+reduced Groebner basis (grevlex, a > not > poly > x, over Q): 2 elements
+  g1: x^2
+  g2: a - not + poly
+  g1 = (1)*f1
+  g2 = (-1)*f2
+  pairs: 1; reduced: 0; skipped by the criteria: 1
+  how: Buchberger (normal strategy, product and chain criteria), every element carrying its cofactors
+  check: each g_i = sum c_ij f_j multiplied out; each f_j reduces to 0; every S-pair of the basis reduces to 0: verified
+> show f
+f(x: u8 in 0..15) = x*x
+  -> u8
+> pmsnf [[x], bad]
+01_longjmp_recover.ucas:12:7: error: pmsnf: polynomials in one variable (found 2)
+    pmsnf [[x], bad]
+          ^
+> show g
+g(x: u8) = x + 1
+  -> u8

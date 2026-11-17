@@ -1,0 +1,11 @@
+# find ... saturate option (find.c) — no stress area exercises this option
+f(x: u32 in 0..255) = x == 255 ? 255 : x + 1
+find f 1 saturate
+g(x: u8) = min(x + 1, 255)
+find g 2 saturate
+h(x: u16 in 0..1000) = max(0, min(x, 1000))
+find h 1 saturate
+k(x: u32 in 0..15) = (x + 1) & 15
+find k 1 saturate
+m(x: i8 in -8..7) = max(-8, min(x + 1, 7))
+find m 1 saturate

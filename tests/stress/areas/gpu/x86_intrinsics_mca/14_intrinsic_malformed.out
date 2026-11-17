@@ -1,0 +1,35 @@
+> intrinsic
+_(intrinsic: real) = intrinsic
+  -> real
+> intrinsic _mm_foo
+14_intrinsic_malformed.ucas:2:18: error: unknown intrinsic _mm_foo
+    intrinsic _mm_foo
+                     ^
+> intrinsic 123
+14_intrinsic_malformed.ucas:3:11: error: intrinsic NAME [on MODEL]
+    intrinsic 123
+              ^
+> intrinsic _mm_add_epi32 _mm_add_epi64
+14_intrinsic_malformed.ucas:4:25: error: intrinsic NAME [on MODEL]
+    intrinsic _mm_add_epi32 _mm_add_epi64
+                            ^
+> intrinsics zzzzznotathing
+0 intrinsics matching zzzzznotathing; by feature:
+> intrinsic _mm512_
+14_intrinsic_malformed.ucas:6:18: error: unknown intrinsic _mm512_; similar: _mm512_set1_epi64, _mm512_setzero_si512, _mm512_bslli_epi128, _mm512_bsrli_epi128, _mm512_clmulepi64_epi128, _mm512_loadu_si512, _mm512_loadu_ps, _mm512_loadu_pd
+    intrinsic _mm512_
+                     ^
+> intrinsic _mm_add_epi32 on skl
+__m128i _mm_add_epi32(__m128i a, __m128i b)
+  needs: sse2
+  class: vpaddd (paddb/w/d/q psub pand pandn por pxor)
+  semantics (each lane i of 4): a + b
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a0 + b0
+    r3 = a3 + b3
+  cost       lat   rtp uops  ports
+  skl          1  0.33    1  p015
+> intrinsic _mm_add_epi32 on bogus
+14_intrinsic_malformed.ucas:8:33: error: unknown x86 µarch 'bogus' (skl skx glc rpl zen4 x86v2 x86v3 x86v4)
+    intrinsic _mm_add_epi32 on bogus
+                                    ^

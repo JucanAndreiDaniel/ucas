@@ -1,0 +1,9 @@
+ou(x: f32 in 0..1e30, y: f32 in 0..1e30) = asuint(x) < asuint(y)
+of(x: f32 in 0..1e30, y: f32 in 0..1e30) = x < y
+equiv ou ~ of
+ou2(x: f32 in 0..1e30, y: f32 in 0..1e30) = asuint(x) <= asuint(y)
+of2(x: f32 in 0..1e30, y: f32 in 0..1e30) = x <= y
+equiv ou2 ~ of2
+negbit(x: f32) = asfloat(asuint(x) ^ 0x80000000)
+negref(x: f32) = -x
+equiv negbit ~ negref

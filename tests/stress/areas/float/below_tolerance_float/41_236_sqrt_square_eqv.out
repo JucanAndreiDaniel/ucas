@@ -1,0 +1,14 @@
+> f_sqrt_square_eqv(x: f32 in 0.01..10) = sqrt(x^2)
+> g_sqrt_square_eqv(x: f32 in 0.01..10) = x
+> equiv f_sqrt_square_eqv g_sqrt_square_eqv
+f_sqrt_square_eqv and g_sqrt_square_eqv are equal on the domain of f_sqrt_square_eqv (sampled, not proved; no SAT proof: a float power)
+> error g_sqrt_square_eqv ~ f_sqrt_square_eqv
+error of g_sqrt_square_eqv against f_sqrt_square_eqv:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]

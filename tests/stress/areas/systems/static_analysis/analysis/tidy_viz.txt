@@ -1,0 +1,609 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/viz.c:192:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  192 |         e = calc_parse_text(buf, &tmp, TY_REAL);
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:195:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  195 |         return TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/viz.c:237:12: warning: both sides of operator are equivalent [misc-redundant-expression]
+  237 |         if (!(R.a == R.a) || !(R.b == R.b) || !isfinite(R.a) || !isfinite(R.b))
+      |                   ^
+/home/andrew/Code/ucas/src/viz.c:237:29: warning: both sides of operator are equivalent [misc-redundant-expression]
+  237 |         if (!(R.a == R.a) || !(R.b == R.b) || !isfinite(R.a) || !isfinite(R.b))
+      |                                    ^
+/home/andrew/Code/ucas/src/viz.c:256:3: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+  256 |                 memmove(t, t + 3, strlen(t + 3) + 1);
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:256:3: note: Other elements might also be undefined
+  256 |                 memmove(t, t + 3, strlen(t + 3) + 1);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+  318 |         if (tw(0, "under") || tw(0, "of") || tw(0, "between") || tw(0, "for"))
+      |             ^
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:318:2: note: Taking false branch
+  318 |         if (tw(0, "under") || tw(0, "of") || tw(0, "between") || tw(0, "for"))
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:321:2: note: Loop condition is true.  Entering loop body
+  321 |         for (s = i, k = i; ; k++)
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:322:7: note: 'k' is >= 'nt'
+  322 |                 if (k >= nt || (T[k].d == 0 && (kwat(k) || T[k].k == ',' ||
+      |                     ^
+/home/andrew/Code/ucas/src/viz.c:322:15: note: Left side of '||' is true
+  322 |                 if (k >= nt || (T[k].d == 0 && (kwat(k) || T[k].k == ',' ||
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:324:8: note: 'k' is <= 's'
+  324 |                         if (k > s) {
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:324:4: note: Taking false branch
+  324 |                         if (k > s) {
+      |                         ^
+/home/andrew/Code/ucas/src/viz.c:329:8: note: 'k' is >= 'nt'
+  329 |                         if (k >= nt || kwat(k))
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:329:16: note: Left side of '||' is true
+  329 |                         if (k >= nt || kwat(k))
+      |                                     ^
+/home/andrew/Code/ucas/src/viz.c:330:5: note:  Execution continues on line 333
+  330 |                                 break;
+      |                                 ^
+/home/andrew/Code/ucas/src/viz.c:333:6: note: 'np' is equal to 0
+  333 |         if (np == 0)
+      |             ^~
+/home/andrew/Code/ucas/src/viz.c:333:2: note: Taking true branch
+  333 |         if (np == 0)
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:337:9: note: Assuming 'i' is < 'nt'
+  337 |         while (i < nt) {
+      |                ^~~~~~
+/home/andrew/Code/ucas/src/viz.c:337:2: note: Loop condition is true.  Entering loop body
+  337 |         while (i < nt) {
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Assuming the condition is false
+  339 |                 if (T[i].k == ',' || tw(i, "and") || tw(i, "with") || tw(i, "by") ||
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:3: note: Taking false branch
+  339 |                 if (T[i].k == ',' || tw(i, "and") || tw(i, "with") || tw(i, "by") ||
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:344:3: note: Taking true branch
+  344 |                 if (T[i].k != 'w') {
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:350:7: note: Assuming the condition is false
+  350 |                 if (!strcmp(w, "from")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:350:3: note: Taking false branch
+  350 |                 if (!strcmp(w, "from")) {
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:353:10: note: Taking false branch
+  353 |                 } else if (tw(i + 1, "in")) {
+      |                        ^
+/home/andrew/Code/ucas/src/viz.c:356:14: note: Assuming the condition is true
+  356 |                 } else if (!strcmp(w, "about") || !strcmp(w, "around")) {
+      |                            ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:356:34: note: Left side of '||' is true
+  356 |                 } else if (!strcmp(w, "about") || !strcmp(w, "around")) {
+      |                                                ^
+/home/andrew/Code/ucas/src/viz.c:357:8: note: Calling 'axis_at'
+  357 |                         i = axis_at(i + 1);
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:245:15: note: 't' declared without an initial value
+  245 |         char s[128], t[128];
+      |                      ^
+/home/andrew/Code/ucas/src/viz.c:248:9: note: 'e' is >= 'nt'
+  248 |         while (e < nt && !(T[e].d == 0 && kwat(e)))
+      |                ^
+/home/andrew/Code/ucas/src/viz.c:248:16: note: Left side of '&&' is false
+  248 |         while (e < nt && !(T[e].d == 0 && kwat(e)))
+      |                       ^
+/home/andrew/Code/ucas/src/viz.c:251:19: note: Left side of '&&' is false
+  251 |         for (k = 0; s[k] && m + 1 < (int)sizeof t; k++)
+      |                          ^
+/home/andrew/Code/ucas/src/viz.c:255:6: note: Assuming the condition is true
+  255 |         if (!strncmp(t, "the", 3))
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:255:2: note: Taking true branch
+  255 |         if (!strncmp(t, "the", 3))
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:256:3: note: The first element of the 2nd argument is undefined
+  256 |                 memmove(t, t + 3, strlen(t + 3) + 1);
+      |                 ^          ~~~~~
+/home/andrew/Code/ucas/src/viz.c:258:3: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+  258 |                 memmove(t, t + 4, strlen(t + 4) + 1);
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:258:3: note: Other elements might also be undefined
+  258 |                 memmove(t, t + 4, strlen(t + 4) + 1);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+  318 |         if (tw(0, "under") || tw(0, "of") || tw(0, "between") || tw(0, "for"))
+      |             ^
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:318:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:318:2: note: Taking false branch
+  318 |         if (tw(0, "under") || tw(0, "of") || tw(0, "between") || tw(0, "for"))
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:321:2: note: Loop condition is true.  Entering loop body
+  321 |         for (s = i, k = i; ; k++)
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:322:7: note: 'k' is >= 'nt'
+  322 |                 if (k >= nt || (T[k].d == 0 && (kwat(k) || T[k].k == ',' ||
+      |                     ^
+/home/andrew/Code/ucas/src/viz.c:322:15: note: Left side of '||' is true
+  322 |                 if (k >= nt || (T[k].d == 0 && (kwat(k) || T[k].k == ',' ||
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:324:8: note: 'k' is <= 's'
+  324 |                         if (k > s) {
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:324:4: note: Taking false branch
+  324 |                         if (k > s) {
+      |                         ^
+/home/andrew/Code/ucas/src/viz.c:329:8: note: 'k' is >= 'nt'
+  329 |                         if (k >= nt || kwat(k))
+      |                             ^
+/home/andrew/Code/ucas/src/viz.c:329:16: note: Left side of '||' is true
+  329 |                         if (k >= nt || kwat(k))
+      |                                     ^
+/home/andrew/Code/ucas/src/viz.c:330:5: note:  Execution continues on line 333
+  330 |                                 break;
+      |                                 ^
+/home/andrew/Code/ucas/src/viz.c:333:6: note: 'np' is equal to 0
+  333 |         if (np == 0)
+      |             ^~
+/home/andrew/Code/ucas/src/viz.c:333:2: note: Taking true branch
+  333 |         if (np == 0)
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:337:9: note: Assuming 'i' is < 'nt'
+  337 |         while (i < nt) {
+      |                ^~~~~~
+/home/andrew/Code/ucas/src/viz.c:337:2: note: Loop condition is true.  Entering loop body
+  337 |         while (i < nt) {
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Assuming the condition is false
+  339 |                 if (T[i].k == ',' || tw(i, "and") || tw(i, "with") || tw(i, "by") ||
+      |                     ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/viz.c:339:3: note: Taking false branch
+  339 |                 if (T[i].k == ',' || tw(i, "and") || tw(i, "with") || tw(i, "by") ||
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:344:3: note: Taking true branch
+  344 |                 if (T[i].k != 'w') {
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:350:7: note: Assuming the condition is false
+  350 |                 if (!strcmp(w, "from")) {
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:350:3: note: Taking false branch
+  350 |                 if (!strcmp(w, "from")) {
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:353:10: note: Taking false branch
+  353 |                 } else if (tw(i + 1, "in")) {
+      |                        ^
+/home/andrew/Code/ucas/src/viz.c:356:14: note: Assuming the condition is true
+  356 |                 } else if (!strcmp(w, "about") || !strcmp(w, "around")) {
+      |                            ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:356:34: note: Left side of '||' is true
+  356 |                 } else if (!strcmp(w, "about") || !strcmp(w, "around")) {
+      |                                                ^
+/home/andrew/Code/ucas/src/viz.c:357:8: note: Calling 'axis_at'
+  357 |                         i = axis_at(i + 1);
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:245:15: note: 't' declared without an initial value
+  245 |         char s[128], t[128];
+      |                      ^
+/home/andrew/Code/ucas/src/viz.c:248:9: note: 'e' is >= 'nt'
+  248 |         while (e < nt && !(T[e].d == 0 && kwat(e)))
+      |                ^
+/home/andrew/Code/ucas/src/viz.c:248:16: note: Left side of '&&' is false
+  248 |         while (e < nt && !(T[e].d == 0 && kwat(e)))
+      |                       ^
+/home/andrew/Code/ucas/src/viz.c:251:19: note: Left side of '&&' is false
+  251 |         for (k = 0; s[k] && m + 1 < (int)sizeof t; k++)
+      |                          ^
+/home/andrew/Code/ucas/src/viz.c:255:6: note: Assuming the condition is false
+  255 |         if (!strncmp(t, "the", 3))
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:255:2: note: Taking false branch
+  255 |         if (!strncmp(t, "the", 3))
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:257:6: note: Assuming the condition is true
+  257 |         if (!strncmp(t, "line", 4))
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:257:2: note: Taking true branch
+  257 |         if (!strncmp(t, "line", 4))
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:258:3: note: The first element of the 2nd argument is undefined
+  258 |                 memmove(t, t + 4, strlen(t + 4) + 1);
+      |                 ^          ~~~~~
+/home/andrew/Code/ucas/src/viz.c:304:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  304 |                 f->p[0].ty = TY_REAL;
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:417:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   42 |                 printf("  note: the bounds in order: from %s to %s\n", btxt(R.a),
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:436:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  436 |         return TY_FP(N.ty[x]) ? x : mk_cast(TY_REAL, x);
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/viz.c:436:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  436 |         return TY_FP(N.ty[x]) ? x : mk_cast(TY_REAL, x);
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:442:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  442 |         return mk_cast(TY_REAL, f->body);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:447:5: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   42 |     uint8_t *ok)
+      |     ^
+/home/andrew/Code/ucas/src/viz.c:480:36: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  480 | rparts(double v, int *pm, int *pk, int64_t *pn, int64_t *pd)
+      |                                    ^
+/home/andrew/Code/ucas/src/viz.c:511:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  511 |         snprintf(f, sizeof f, "%s%s%s", k == 1 ? "pi" : k == 2 ? "pi^2" : "",
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:542:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  542 |         char *b = buf[r++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/viz.c:581:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  581 |         if (op == O_CAST && TY_FP(N.ty[e]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/viz.c:609:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  609 |                         double tv = sg[i] * (eval_const_at(mk_cast(TY_REAL, t[i]), 0, b,
+      |                                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:610:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  610 |                             &o1) - eval_const_at(mk_cast(TY_REAL, t[i]), 0, a, &o2)) *
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:653:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  653 |         char *b = buf[r++ & 3], num[40];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/viz.c:659:14: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  659 |         if (q[0] && strcmp(q, num))
+      |                     ^             
+      |                                    != 0
+/home/andrew/Code/ucas/src/viz.c:672:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  672 |         char *b = buf[r++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/viz.c:700:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  700 |         char *b = buf[r++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/viz.c:703:14: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  703 |         if (q[0] && strcmp(q, pr_g4(v)))
+      |                     ^                  
+      |                                         != 0
+/home/andrew/Code/ucas/src/viz.c:816:7: warning: no header providing "rep_on" is directly included [misc-include-cleaner]
+   34 |         if (!rep_on)
+      |              ^
+/home/andrew/Code/ucas/src/viz.c:819:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  819 |         rep_obj(key);
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:820:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  820 |         rep_num("value", v);
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:822:3: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  822 |                 rep_str("exact", q);
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:823:2: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  823 |         rep_bool("is_exact", exact);
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:824:2: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  824 |         rep_end();
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:840:3: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  840 |                 rep_expr("antiderivative", I->F);
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:847:3: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  847 |                 rep_int("evaluations", I->nev);
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:853:3: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+  853 |                 rep_check("numeric_integral", I->nev, fabs(I->v - I->ve) *
+      |                 ^
+/home/andrew/Code/ucas/src/viz.c:1179:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1179 |                 int p = k & ~1;
+      |                         ^ ~
+/home/andrew/Code/ucas/src/viz.c:1179:16: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 1179 |                 int p = k & ~1;
+      |                             ~^
+/home/andrew/Code/ucas/src/viz.c:1266:9: warning: Value stored to 'y0px' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 1266 |         double y0px = PY(A, 0), cut = ac->tcut;
+      |                ^~~~   ~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:1266:9: note: Value stored to 'y0px' during its initialization is never read
+ 1266 |         double y0px = PY(A, 0), cut = ac->tcut;
+      |                ^~~~   ~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:1361:28: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1361 |                         if (fabs(hl) < fabs(hr) ? 0 : 0) {}
+      |                                                 ^
+/home/andrew/Code/ucas/src/viz.c:1361:32: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 1361 |                         if (fabs(hl) < fabs(hr) ? 0 : 0) {}
+      |                                                     ^
+/home/andrew/Code/ucas/src/viz.c:1544:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1544 |                 allexact &= ex;
+      |                 ^~~~~~~~ ~~
+/home/andrew/Code/ucas/src/viz.c:1603:11: warning: 'l' is confusable with 'I' [misc-confusable-identifiers]
+ 1603 |                         double l = A.lo[0], h = A.hi[0], fa;
+      |                                ^
+/home/andrew/Code/ucas/src/viz.c:1476:15: note: other declaration found here
+ 1476 |         struct integ I, P;
+      |                      ^
+/home/andrew/Code/ucas/src/viz.c:1906:24: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1906 |                 double *ri = xmalloc(2 * NX * sizeof *ri);
+      |                                      ^
+/home/andrew/Code/ucas/src/viz.c:1906:24: note: make conversion explicit to silence this warning
+   42 |                 double *ri = xmalloc(2 * NX * sizeof *ri);
+      |                                      ^~~~~~
+      |                                      (__size_t)( )
+/home/andrew/Code/ucas/src/viz.c:1906:24: note: perform multiplication in a wider type
+ 1906 |                 double *ri = xmalloc(2 * NX * sizeof *ri);
+      |                                      ^
+      |                                      (long)
+/home/andrew/Code/ucas/src/viz.c:1923:5: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1923 |                                 ri[2 * n] = r0;
+      |                                 ^
+/home/andrew/Code/ucas/src/viz.c:1923:8: note: make conversion explicit to silence this warning
+ 1923 |                                 ri[2 * n] = r0;
+      |                                    ^~~~~
+      |                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1923:8: note: perform multiplication in a wider type
+ 1923 |                                 ri[2 * n] = r0;
+      |                                    ^
+      |                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1929:17: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1929 |                                 double s0 = ri[2 * k], s1 = ri[2 * k + 1];
+      |                                             ^
+/home/andrew/Code/ucas/src/viz.c:1929:20: note: make conversion explicit to silence this warning
+ 1929 |                                 double s0 = ri[2 * k], s1 = ri[2 * k + 1];
+      |                                                ^~~~~
+      |                                                (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1929:20: note: perform multiplication in a wider type
+ 1929 |                                 double s0 = ri[2 * k], s1 = ri[2 * k + 1];
+      |                                                ^
+      |                                                (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1931:22: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1931 |                                 while (q >= 0 && ri[2 * q] > s0) {
+      |                                                  ^
+/home/andrew/Code/ucas/src/viz.c:1931:25: note: make conversion explicit to silence this warning
+ 1931 |                                 while (q >= 0 && ri[2 * q] > s0) {
+      |                                                     ^~~~~
+      |                                                     (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1931:25: note: perform multiplication in a wider type
+ 1931 |                                 while (q >= 0 && ri[2 * q] > s0) {
+      |                                                     ^
+      |                                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1932:22: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1932 |                                         ri[2 * q + 2] = ri[2 * q];
+      |                                                         ^
+/home/andrew/Code/ucas/src/viz.c:1932:25: note: make conversion explicit to silence this warning
+ 1932 |                                         ri[2 * q + 2] = ri[2 * q];
+      |                                                            ^~~~~
+      |                                                            (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1932:25: note: perform multiplication in a wider type
+ 1932 |                                         ri[2 * q + 2] = ri[2 * q];
+      |                                                            ^
+      |                                                            (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1940:9: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1940 |                                 if (ri[2 * k] > cur_hi) {
+      |                                     ^
+/home/andrew/Code/ucas/src/viz.c:1940:12: note: make conversion explicit to silence this warning
+ 1940 |                                 if (ri[2 * k] > cur_hi) {
+      |                                        ^~~~~
+      |                                        (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1940:12: note: perform multiplication in a wider type
+ 1940 |                                 if (ri[2 * k] > cur_hi) {
+      |                                        ^
+      |                                        (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1943:15: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1943 |                                         cur_lo = ri[2 * k];
+      |                                                  ^
+/home/andrew/Code/ucas/src/viz.c:1943:18: note: make conversion explicit to silence this warning
+ 1943 |                                         cur_lo = ri[2 * k];
+      |                                                     ^~~~~
+      |                                                     (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/viz.c:1943:18: note: perform multiplication in a wider type
+ 1943 |                                         cur_lo = ri[2 * k];
+      |                                                     ^
+      |                                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/viz.c:1976:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   42 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:1980:6: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+ 1980 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/home/andrew/Code/ucas/src/viz.c:2001:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2001 |         d = mk_cast(TY_REAL, d);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:2044:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2044 |         if (op == O_CAST && TY_FP(N.ty[e]) && TY_FP(N.ty[a]))
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/viz.c:2044:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2044 |         if (op == O_CAST && TY_FP(N.ty[e]) && TY_FP(N.ty[a]))
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/viz.c:2047:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2047 |                 return mk_cast(TY_REAL, a);
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:2052:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2052 |                     mk_un(O_COS, MUL(KR(2), mk_cast(TY_REAL, a)))));
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/calc.h:84:39: note: expanded from macro 'MUL'
+   84 | #define MUL(a, b) mk_bin(O_MUL, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/calc.h:84:39: note: expanded from macro 'MUL'
+   84 | #define MUL(a, b) mk_bin(O_MUL, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/viz.c:2054:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2054 |                 return mk_un(O_EXP, MUL(KR(2), mk_cast(TY_REAL, a)));
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/calc.h:84:39: note: expanded from macro 'MUL'
+   84 | #define MUL(a, b) mk_bin(O_MUL, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/viz.c:2157:9: warning: Although the value stored to 'e' is used in the enclosing expression, the value is never actually read from 'e' [clang-analyzer-deadcode.DeadStores]
+ 2157 |                         ef = e = mk_bin(O_MAX, MUL(u, u), MUL(v, v));
+      |                              ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2157:9: note: Although the value stored to 'e' is used in the enclosing expression, the value is never actually read from 'e'
+ 2157 |                         ef = e = mk_bin(O_MAX, MUL(u, u), MUL(v, v));
+      |                              ^   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2176:3: warning: Value stored to 'method' is never read [clang-analyzer-deadcode.DeadStores]
+ 2176 |                 method = "shells";
+      |                 ^        ~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2176:3: note: Value stored to 'method' is never read
+ 2176 |                 method = "shells";
+      |                 ^        ~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2181:3: warning: Value stored to 'e' is never read [clang-analyzer-deadcode.DeadStores]
+ 2181 |                 e = ef = MUL(rr, hh);
+      |                 ^   ~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2181:3: note: Value stored to 'e' is never read
+ 2181 |                 e = ef = MUL(rr, hh);
+      |                 ^   ~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/viz.c:2207:49: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 2207 |                                     "%.2g%s\n", k * I.v, k * I.err, I.exact ? "" : "");
+      |                                                                             ^
+/home/andrew/Code/ucas/src/viz.c:2207:54: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 2207 |                                     "%.2g%s\n", k * I.v, k * I.err, I.exact ? "" : "");
+      |                                                                                  ^
+/home/andrew/Code/ucas/src/viz.c:2375:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2375 |                         wproj(v, bb[i & 1], bb[2 + ((i >> 1) & 1)], bb[4 + (i >> 2)], &sx,
+      |                                     ^ ~
+/home/andrew/Code/ucas/src/viz.c:2375:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2375 |                         wproj(v, bb[i & 1], bb[2 + ((i >> 1) & 1)], bb[4 + (i >> 2)], &sx,
+      |                                                     ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:2375:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2375 |                         wproj(v, bb[i & 1], bb[2 + ((i >> 1) & 1)], bb[4 + (i >> 2)], &sx,
+      |                                                      ^ ~~
+/home/andrew/Code/ucas/src/viz.c:2375:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2375 |                         wproj(v, bb[i & 1], bb[2 + ((i >> 1) & 1)], bb[4 + (i >> 2)], &sx,
+      |                                                                             ^ ~~
+/home/andrew/Code/ucas/src/viz.c:2422:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2422 |                         if (door && ((i + j) & 1) == 0)
+      |                                      ^~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:2430:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2430 |                             (bayer[j & 3][i & 3] + 0.5) / 16.0 - 0.5;
+      |                                    ^ ~
+/home/andrew/Code/ucas/src/viz.c:2430:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2430 |                             (bayer[j & 3][i & 3] + 0.5) / 16.0 - 0.5;
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/viz.c:2669:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2669 |                         } else if (xray && ((i + j) & 1) == 0)
+      |                                             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:3002:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3002 |         d = mk_cast(TY_REAL, d);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/viz.c:3048:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+ 3048 |         uint32_t pos = cmdp_pos(p);
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:3054:26: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 3054 |         for (k = 0; words[k] && strcmp(words[k], w); k++)
+      |                                 ^                  
+      |                                                     != 0
+/home/andrew/Code/ucas/src/viz.c:3085:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 3085 |         rep_begin(w);
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:3086:2: warning: no header providing "rep_text_fields" is directly included [misc-include-cleaner]
+ 3086 |         rep_text_fields();
+      |         ^
+/home/andrew/Code/ucas/src/viz.c:3091:3: warning: no header providing "longjmp" is directly included [misc-include-cleaner]
+ 3091 |                 longjmp(fail_jmp, 1);
+      |                 ^

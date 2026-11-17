@@ -1,0 +1,8 @@
+# rule declarations + rules infer (stoch.c) — NO stress area for `rule`
+rule dbl(a: u32) = a << 1 => a + a
+rule shlsub(a: i32) = a << 3 => a * 8
+rule bad(a: u32) = a << 1 => a + 1
+rule narrow(a: u32 in 0..9) = a << 1 => a + a
+rule two(a: u32, b: u32) = a + b => b + a
+f(x: u32, y: u32) = (x * y << 1) xor y
+find f 1

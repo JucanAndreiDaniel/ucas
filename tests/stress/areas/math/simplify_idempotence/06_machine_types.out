@@ -1,0 +1,54 @@
+> f1(x: u8) = x + 1 - 1
+> f2(x: u8) = 2*x + 3*x
+> f3(x: u8) = ~(~x)
+> f4(x: u8) = x xor x
+> f5(x: u8) = x | 0
+> f6(x: f32) = x + 0
+> f7(x: i8) = x + (-x)
+> simplify f1
+  ucas: simplify f1
+simplify x + 1 - 1
+  = x
+  check: exact (both sides have the same normal form)
+> simplify f2
+  ucas: simplify f2
+simplify 2x + 3x
+  = 5x
+  check: exact (both sides have the same normal form)
+> simplify f3
+  ucas: simplify f3
+simplify x
+  = x
+  check: exact (both sides have the same normal form)
+> simplify f4
+  ucas: simplify f4
+simplify 0
+  = 0
+  check: exact (both sides have the same normal form)
+> simplify f5
+  ucas: simplify f5
+simplify x
+  = x
+  check: exact (both sides have the same normal form)
+> simplify f6
+  ucas: simplify f6
+simplify real(x + 0)
+  = x
+  check: exact (both sides have the same normal form)
+> simplify f7
+  ucas: simplify f7
+simplify 0
+  = 0
+  check: exact (both sides have the same normal form)
+> f8(x: u8) = x << 1
+> f9(x: u8) = x & 255
+> simplify f8
+  ucas: simplify f8
+<english>:1:10: error: shift needs integer operands
+    simplify f8
+             ^
+> simplify f9
+  ucas: simplify f9
+<english>:1:10: error: '&' needs integer operands (declare the parameter as int or uN)
+    simplify f9
+             ^

@@ -1,0 +1,9 @@
+# A function whose result is a bigint >= 2^63 is treated as undefined by the
+# domain engine, so `equiv` "proves" it equal to a totally different function.
+f(x: u8) = 2^63
+g(x: u8) = x
+show f(0)
+show g(0)
+show f(1)
+show g(1)
+equiv f g

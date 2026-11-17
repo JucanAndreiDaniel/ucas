@@ -1,0 +1,28 @@
+> xr(x: u8, y: u8) = (x | y) - (x & y)
+> stoke xr steps 5000 restarts 1 seed 3
+stoke xr under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  1 chain of 5000 proposals, seed 3; xr as written costs 3
+  5000 proposals, 4213 accepted, 4213 at distance 0 on the 40 tests (0 counterexamples joined them), 4 verified
+  cost 1      y xor x
+      every input enumerated
+  cost 1      (x | y) xor x & y
+      every input enumerated
+  cost 1      x & y xor (x | y)
+      every input enumerated
+  -> 1 against 3 (-66.7%)
+> m9(x: u8) = x * 9
+> stoke m9 steps 3000 restarts 1 seed 3
+stoke m9 under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  1 chain of 3000 proposals, seed 3; m9 as written costs 3
+  3000 proposals, 2521 accepted, 2521 at distance 0 on the 40 tests (0 counterexamples joined them), 1 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> stoke m9 steps 3000 restarts 1 seed 7
+stoke m9 under gt1030: Metropolis-Hastings over programs of up to 8 instructions (add sub mul and or xor shl shr not neg),
+  1 chain of 3000 proposals, seed 7; m9 as written costs 3
+  3000 proposals, 2487 accepted, 2487 at distance 0 on the 40 tests (0 counterexamples joined them), 1 verified
+  -> nothing cheaper than 3 was found and verified (the search is stochastic: more `steps`, another `seed`)
+> f(x: f32 in 0..1)=x*x
+> stoke f steps 1000
+14_stoke_seeded.ucas:8:19: error: stoke: an integer function on machine types (uN, iN)
+    stoke f steps 1000
+                      ^

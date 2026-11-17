@@ -1,0 +1,35 @@
+> keep(x: u32) = x & 255
+> show keep
+keep(x: u32) = x & 0xff
+  -> u32
+> c optimize nofile
+error: <block>:1:30: expected an expression before ';'
+> show keep
+keep(x: u32) = x & 0xff
+  -> u32
+> spvsimplify nofile
+  note: %x: type unknown, float assumed
+  note: %out: type unknown, float assumed
+  input %x: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 14 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+> show keep
+keep(x: u32) = x & 0xff
+  -> u32
+> find keep bad_option
+02_longjmp_deep.ucas:15:11: error: unexpected 'bad_option' after the statement
+    find keep bad_option
+              ^
+> show keep
+keep(x: u32) = x & 0xff
+  -> u32
+> snf [[1,2],[3]]
+02_longjmp_deep.ucas:17:5: error: snf: the rows have different lengths
+    snf [[1,2],[3]]
+        ^
+> show keep
+keep(x: u32) = x & 0xff
+  -> u32

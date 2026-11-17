@@ -1,0 +1,53 @@
+> basis x86bmi2 : c { andn(x, y) = ~x & y }
+> basis lut2 { f(x, y) = lut }
+> basis lut3 { f(x, y, z) = lut }
+> basis onlynot { not(x) = ~x }
+> maj(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+> gates maj basis x86bmi2
+gates for maj: 3 input bits -> 1 output bit, basis x86bmi2
+  minimal: cost 4, 4 steps (no program of cost <= 3 exists; 18524 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = and(a, b)               = a & b
+  t1 = or(a, b)                = a | b
+  t2 = and(c, t1)               = c & t1
+  t3 = or(t0, t2)                = t0 | t2
+  r0 = t3
+> gates maj basis lut2 max 4
+gates for maj: 3 input bits -> 1 output bit, basis lut2
+  minimal: cost 4, 4 steps (no program of cost <= 3 exists; 2216 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = f(a, b, 0x01)                 = (~b & ~a)
+  t1 = f(a, b, 0x06)                 = (~b & a) | (b & ~a)
+  t2 = f(c, t1, 0x02)                 = (t1 & ~c)
+  t3 = f(t0, t2, 0x01)                 = (~t2 & ~t0)
+  r0 = t3
+> gates maj basis lut3
+gates for maj: 3 input bits -> 1 output bit, basis lut3
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = f(a, b, c, 0xe8)             = (~c & b & a) | (c & ~b & a) | (c & b & ~a) | (c & b & a)
+  r0 = t0
+> gates maj basis onlynot max 3
+gates for maj: 3 input bits -> 1 output bit, basis onlynot
+  exact search stopped (cost limit at cost 3); Shannon decomposition instead:
+  no program found for output 0 (basis not complete, or more than 244 steps)
+> gates maj basis nosuch
+02_gates_bases.ucas:11:17: error: unknown basis
+    gates maj basis nosuch
+                    ^
+> gates maj basis c
+gates for maj: 3 input bits -> 1 output bit, basis c
+  minimal: cost 4, 4 steps (no program of cost <= 3 exists; 5499 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = and(a, b)               = a & b
+  t1 = or(a, b)                = a | b
+  t2 = and(c, t1)               = c & t1
+  t3 = or(t0, t2)                = t0 | t2
+  r0 = t3
+> gates npn
+npn: the 65536 functions of 4 inputs fall in 222 classes; minimum networks of 3-input tables (lut3, gates' exact search):
+  0 tables: 2 classes
+  1 table: 12 classes
+  2 tables: 117 classes
+  3 tables: 91 classes
+  each proved minimal: 222 of 222

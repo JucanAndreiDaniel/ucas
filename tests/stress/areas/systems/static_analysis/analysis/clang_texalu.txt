@@ -1,0 +1,193 @@
+src/texalu.c:3053:4: warning: 4th function call argument is an uninitialized value [core.CallAndMessage]
+ 3053 |                         mm_out(n, xa, 0, lo, hi, 0, 0, irange(xa, &lo, &hi));
+      |                         ^                ~~
+src/texalu.c:2990:42: note: Assuming field 'bits' is 0
+ 2990 |         int op = N.op[n], nl, k, i, two, bits = X.bits ? X.bits : 4, isint;
+      |                                                 ^~~~~~
+src/texalu.c:2990:42: note: '?' condition is false
+src/texalu.c:3004:6: note: Assuming 'op' is equal to O_MIN
+ 3004 |         if (op != O_MIN && op != O_MAX)
+      |             ^~~~~~~~~~~
+src/texalu.c:3004:18: note: Left side of '&&' is false
+ 3004 |         if (op != O_MIN && op != O_MAX)
+      |                         ^
+src/texalu.c:3007:6: note: 'nl' is equal to 2
+ 3007 |         if (nl != 2 && nl != 4 && nl != 8)
+      |             ^~
+src/texalu.c:3007:14: note: Left side of '&&' is false
+ 3007 |         if (nl != 2 && nl != 4 && nl != 8)
+      |                     ^
+src/texalu.c:3009:2: note: Loop condition is true.  Entering loop body
+ 3009 |         for (k = 0; k < nl; k++)
+      |         ^
+src/texalu.c:3010:7: note: Assuming the condition is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+src/texalu.c:3010:35: note: Assuming the condition is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+ 3011 |                     N.a[leaf[0]]) || !aff_of(N.b[leaf[k]], &ax[k], 0) ||
+      |                     ~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^
+src/texalu.c:3011:24: note: Assuming the condition is false
+ 3011 |                     N.a[leaf[0]]) || !aff_of(N.b[leaf[k]], &ax[k], 0) ||
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^
+src/texalu.c:3012:7: note: Assuming the condition is false
+ 3012 |                     !aff_same_base(&ax[0], &ax[k]))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:3: note: Taking false branch
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                 ^
+src/texalu.c:3009:2: note: Loop condition is true.  Entering loop body
+ 3009 |         for (k = 0; k < nl; k++)
+      |         ^
+src/texalu.c:3010:7: note: Assuming the condition is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+src/texalu.c:3010:35: note: Assuming the condition is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+ 3011 |                     N.a[leaf[0]]) || !aff_of(N.b[leaf[k]], &ax[k], 0) ||
+      |                     ~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^
+src/texalu.c:3011:24: note: Assuming the condition is false
+ 3011 |                     N.a[leaf[0]]) || !aff_of(N.b[leaf[k]], &ax[k], 0) ||
+      |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:7: note: Left side of '||' is false
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                     ^
+src/texalu.c:3012:7: note: Assuming the condition is false
+ 3012 |                     !aff_same_base(&ax[0], &ax[k]))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3010:3: note: Taking false branch
+ 3010 |                 if (N.op[leaf[k]] != O_INDEX || !same_table(N.a[leaf[k]],
+      |                 ^
+src/texalu.c:3009:2: note: Loop condition is false. Execution continues on line 3014
+ 3009 |         for (k = 0; k < nl; k++)
+      |         ^
+src/texalu.c:3017:10: note: Assuming the condition is true
+ 3017 |         isint = TY_ISINT(N.ty[tab]);
+      |                 ^~~~~~~~~~~~~~~~~~~
+src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/texalu.c:3017:10: note: Left side of '||' is true
+src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^
+src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+src/texalu.c:3018:14: note: Assuming 'j' is >= 'cnt'
+ 3018 |         for (j = 0; j < cnt; j++) {
+      |                     ^~~~~~~
+src/texalu.c:3018:2: note: Loop condition is false. Execution continues on line 3034
+ 3018 |         for (j = 0; j < cnt; j++) {
+      |         ^
+src/texalu.c:3034:6: note: Assuming 'isint' is 0
+ 3034 |         if (isint && (vmin < -16777216 || vmax > 16777216))
+      |             ^~~~~
+src/texalu.c:3034:12: note: Left side of '&&' is false
+ 3034 |         if (isint && (vmin < -16777216 || vmax > 16777216))
+      |                   ^
+src/texalu.c:3039:2: note: Loop condition is true.  Entering loop body
+ 3039 |         for (k = 1; k < nl; k++)
+      |         ^
+src/texalu.c:3040:7: note: Assuming 'c0' is <= field 'c'
+ 3040 |                 if (ax[k].c < c0)
+      |                     ^~~~~~~~~~~~
+src/texalu.c:3040:3: note: Taking false branch
+ 3040 |                 if (ax[k].c < c0)
+      |                 ^
+src/texalu.c:3039:2: note: Loop condition is false. Execution continues on line 3042
+ 3039 |         for (k = 1; k < nl; k++)
+      |         ^
+src/texalu.c:3042:6: note: 'nl' is equal to 2
+ 3042 |         if (nl == 2) {
+      |             ^~
+src/texalu.c:3042:2: note: Taking true branch
+ 3042 |         if (nl == 2) {
+      |         ^
+src/texalu.c:3044:21: note: 'c0' is equal to field 'c'
+ 3044 |                 two = (ax[0].c == c0 && ax[1].c == c0 + 1) || (ax[1].c == c0 &&
+      |                                   ^~
+src/texalu.c:3044:10: note: Left side of '&&' is true
+ 3044 |                 two = (ax[0].c == c0 && ax[1].c == c0 + 1) || (ax[1].c == c0 &&
+      |                        ^
+src/texalu.c:3044:27: note: Assuming the condition is true
+ 3044 |                 two = (ax[0].c == c0 && ax[1].c == c0 + 1) || (ax[1].c == c0 &&
+      |                                         ^~~~~~~~~~~~~~~~~
+src/texalu.c:3044:46: note: Left side of '||' is true
+ 3044 |                 two = (ax[0].c == c0 && ax[1].c == c0 + 1) || (ax[1].c == c0 &&
+      |                                                            ^
+src/texalu.c:3046:8: note: 'two' is 1
+ 3046 |                 if (!two)
+      |                      ^~~
+src/texalu.c:3046:3: note: Taking false branch
+ 3046 |                 if (!two)
+      |                 ^
+src/texalu.c:3049:15: note: 'k' is < 2
+ 3049 |                 for (k = 0; k < 2 && ax[k].c != c0; k++)
+      |                             ^
+src/texalu.c:3049:15: note: Left side of '&&' is true
+src/texalu.c:3049:3: note: Loop condition is false. Execution continues on line 3051
+ 3049 |                 for (k = 0; k < 2 && ax[k].c != c0; k++)
+      |                 ^
+src/texalu.c:3052:8: note: Calling 'irange'
+ 3052 |                 if (!irange(xa, &lo, &hi) || lo < 0 || hi + 1 > cnt - 1) {
+      |                      ^~~~~~~~~~~~~~~~~~~~
+src/texalu.c:725:6: note: Assuming the condition is false
+  725 |         if (is_const(e)) {
+      |             ^~~~~~~~~~~
+src/texalu.c:725:2: note: Taking false branch
+  725 |         if (is_const(e)) {
+      |         ^
+src/texalu.c:730:6: note: Assuming 'k' is equal to NOTOK
+  730 |         if (k == NOTOK || X.iv[k].top || X.iv[k].wrap)
+      |             ^~~~~~~~~~
+src/texalu.c:730:17: note: Left side of '||' is true
+  730 |         if (k == NOTOK || X.iv[k].top || X.iv[k].wrap)
+      |                        ^
+src/texalu.c:731:3: note: Returning without writing to '*lo'
+  731 |                 return 0;
+      |                 ^
+src/texalu.c:3052:8: note: Returning from 'irange'
+ 3052 |                 if (!irange(xa, &lo, &hi) || lo < 0 || hi + 1 > cnt - 1) {
+      |                      ^~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3052:29: note: Left side of '||' is true
+ 3052 |                 if (!irange(xa, &lo, &hi) || lo < 0 || hi + 1 > cnt - 1) {
+      |                                           ^
+src/texalu.c:3053:35: note: Calling 'irange'
+ 3053 |                         mm_out(n, xa, 0, lo, hi, 0, 0, irange(xa, &lo, &hi));
+      |                                                        ^~~~~~~~~~~~~~~~~~~~
+src/texalu.c:725:6: note: Assuming the condition is true
+  725 |         if (is_const(e)) {
+      |             ^~~~~~~~~~~
+src/texalu.c:725:2: note: Taking true branch
+  725 |         if (is_const(e)) {
+      |         ^
+src/texalu.c:3053:35: note: Returning from 'irange'
+ 3053 |                         mm_out(n, xa, 0, lo, hi, 0, 0, irange(xa, &lo, &hi));
+      |                                                        ^~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3053:4: note: Uninitialized value stored to 'lo'
+ 3053 |                         mm_out(n, xa, 0, lo, hi, 0, 0, irange(xa, &lo, &hi));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/texalu.c:3053:4: note: 4th function call argument is an uninitialized value
+ 3053 |                         mm_out(n, xa, 0, lo, hi, 0, 0, irange(xa, &lo, &hi));
+      |                         ^                ~~
+1 warning generated.

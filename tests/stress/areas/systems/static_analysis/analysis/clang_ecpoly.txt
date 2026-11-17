@@ -1,0 +1,58 @@
+src/ecpoly.c:95:3: warning: Null pointer passed to 1st parameter expecting 'nonnull' [core.NonNullParamChecker]
+   95 |                 memcpy(r->c, a->c, sizeof(u64) * (size_t)F->n *
+      |                 ^
+src/ecpoly.c:753:6: note: Assuming field 'd' is > 0
+  753 |         if (f0->d <= 0)
+      |             ^~~~~~~~~~
+src/ecpoly.c:753:2: note: Taking false branch
+  753 |         if (f0->d <= 0)
+      |         ^
+src/ecpoly.c:755:2: note: Calling 'px_init'
+  755 |         px_init(&f);
+      |         ^~~~~~~~~~~
+src/ecpoly.c:23:2: note: Null pointer value stored to 'f.c'
+   23 |         memset(a, 0, sizeof *a);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+src/ecpoly.c:755:2: note: Returning from 'px_init'
+  755 |         px_init(&f);
+      |         ^~~~~~~~~~~
+src/ecpoly.c:759:2: note: Calling 'px_copy'
+  759 |         px_copy(F, &f, f0);
+      |         ^~~~~~~~~~~~~~~~~~
+src/ecpoly.c:91:6: note: Assuming 'r' is not equal to 'a'
+   91 |         if (r == a)
+      |             ^~~~~~
+src/ecpoly.c:91:2: note: Taking false branch
+   91 |         if (r == a)
+      |         ^
+src/ecpoly.c:93:22: note: Field 'd' is >= 0
+   93 |         px_reserve(F, r, a->d < 0 ? 0 : a->d);
+      |                             ^
+src/ecpoly.c:93:19: note: '?' condition is false
+   93 |         px_reserve(F, r, a->d < 0 ? 0 : a->d);
+      |                          ^
+src/ecpoly.c:93:2: note: Calling 'px_reserve'
+   93 |         px_reserve(F, r, a->d < 0 ? 0 : a->d);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ecpoly.c:37:6: note: Assuming the condition is false
+   37 |         if (d + 1 > a->cap) {
+      |             ^~~~~~~~~~~~~~
+src/ecpoly.c:37:2: note: Taking false branch
+   37 |         if (d + 1 > a->cap) {
+      |         ^
+src/ecpoly.c:46:1: note: Returning without writing to 'a->c'
+   46 | }
+      | ^
+src/ecpoly.c:93:2: note: Returning from 'px_reserve'
+   93 |         px_reserve(F, r, a->d < 0 ? 0 : a->d);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ecpoly.c:94:9: note: Field 'd' is >= 0
+   94 |         if (a->d >= 0)
+      |                ^
+src/ecpoly.c:94:2: note: Taking true branch
+   94 |         if (a->d >= 0)
+      |         ^
+src/ecpoly.c:95:3: note: Null pointer passed to 1st parameter expecting 'nonnull'
+   95 |                 memcpy(r->c, a->c, sizeof(u64) * (size_t)F->n *
+      |                 ^      ~~~~
+1 warning generated.

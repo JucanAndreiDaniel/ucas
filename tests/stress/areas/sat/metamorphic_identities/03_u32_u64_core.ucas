@@ -1,0 +1,50 @@
+# Mixed identities on u32 and u64 (all true)
+# All identities hold on their declared domain unless noted.
+# case 1: expect EQUAL
+f01(x: u32) = x + x
+g01(x: u32) = x << 1
+equiv f01 g01
+# case 2: expect EQUAL
+f02(x: u32, y: u32) = ~(x & y)
+g02(x: u32, y: u32) = ~x | ~y
+equiv f02 g02
+# case 3: expect EQUAL
+f03(x: u64, y: u64) = x * y
+g03(x: u64, y: u64) = y * x
+equiv f03 g03
+# case 4: expect EQUAL
+f04(x: u64, y: u64) = (x + y) - y
+g04(x: u64, y: u64) = x
+equiv f04 g04
+# case 5: expect EQUAL
+f05(x: u64, y: u64) = x & (x | y)
+g05(x: u64, y: u64) = x
+equiv f05 g05
+# case 6: expect EQUAL
+f06(x: u64) = (x xor 0x0123456789ABCDEF) xor 0x0123456789ABCDEF
+g06(x: u64) = x
+equiv f06 g06
+# case 7: expect EQUAL
+f07(x: u64) = x - x
+g07(x: u64) = x * 0
+equiv f07 g07
+# case 8: expect EQUAL
+f08(x: u32, y: u32) = (x xor y) + 2*(x & y)
+g08(x: u32, y: u32) = x + y
+equiv f08 g08
+# case 9: expect EQUAL
+f09(x: u64) = ~x
+g09(x: u64) = -x - 1
+equiv f09 g09
+# case 10: expect EQUAL
+f10(x: u32) = x + x + x
+g10(x: u32) = x * 3
+equiv f10 g10
+# case 11: expect EQUAL
+f11(x: u64, y: u64) = (x & y) + (x xor y)
+g11(x: u64, y: u64) = x | y
+equiv f11 g11
+# case 12: expect EQUAL
+f12(x: u32, y: u32) = x xor y
+g12(x: u32, y: u32) = (x | y) - (x & y)
+equiv f12 g12

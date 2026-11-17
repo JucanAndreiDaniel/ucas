@@ -1,0 +1,17 @@
+> f(x: u8) = x >> 2
+> g(x: u8) = (x >> 2) + (x == 255 ? 1 : 0)
+> equiv f g
+f and g differ at 1 point, e.g. x=255: 63 vs 64
+> equiv g f
+g and f differ at 1 point, e.g. x=255: 64 vs 63
+> range f
+range of f -> u8:
+  0..63   (64 distinct values)
+  values: 0..63
+  fits in u6
+  over all 256 points of the domain
+> range g
+range of g -> u8:
+  0..64   (65 distinct values)
+  fits in u7
+  over all 256 points of the domain

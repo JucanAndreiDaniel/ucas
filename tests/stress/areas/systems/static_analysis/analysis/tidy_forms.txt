@@ -1,0 +1,1842 @@
+/home/andrew/Code/ucas/src/forms.c:48:7: warning: no header providing "O_ASIN" is directly included [misc-include-cleaner]
+   34 | 
+   35 | #include <complex.h>
+   36 | #include <ctype.h>
+   37 | #include <math.h>
+   38 | #include <setjmp.h>
+   39 | #include <stdlib.h>
+   40 | #include <string.h>
+   41 | 
+   42 | /* ---- the functions this file adds ---- */
+   43 | 
+   44 | int
+   45 | forms_scalar(int op, double a, double b, double *r)
+   46 | {
+   47 |         switch (op) {
+   48 |         case O_ASIN:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:49:7: warning: no header providing "O_ACOS" is directly included [misc-include-cleaner]
+   49 |         case O_ACOS:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:54:7: warning: no header providing "O_ATAN2" is directly included [misc-include-cleaner]
+   54 |         case O_ATAN2:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:61:7: warning: no header providing "O_SINH" is directly included [misc-include-cleaner]
+   61 |         case O_SINH: *r = sinh(a); break;
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:62:7: warning: no header providing "O_COSH" is directly included [misc-include-cleaner]
+   62 |         case O_COSH: *r = cosh(a); break;
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:63:7: warning: no header providing "O_TANH" is directly included [misc-include-cleaner]
+   63 |         case O_TANH: *r = tanh(a); break;
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:64:7: warning: no header providing "O_ASINH" is directly included [misc-include-cleaner]
+   64 |         case O_ASINH: *r = asinh(a); break;
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:65:7: warning: no header providing "O_ACOSH" is directly included [misc-include-cleaner]
+   65 |         case O_ACOSH:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:70:7: warning: no header providing "O_ATANH" is directly included [misc-include-cleaner]
+   70 |         case O_ATANH:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:82:12: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   82 | forms_cond(nid n)
+      |            ^
+/home/andrew/Code/ucas/src/forms.c:86:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   86 |         char *b = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/forms.c:87:18: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+   87 |         const char *a = node_str(N.a[n]);
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:87:27: warning: no header providing "N" is directly included [misc-include-cleaner]
+   87 |         const char *a = node_str(N.a[n]);
+      |                                  ^
+/home/andrew/Code/ucas/src/forms.c:92:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   39 |                 snprintf(b, 256, "-1 <= %s <= 1", a);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:110:14: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:110:25: warning: no header providing "TY_LIT" is directly included [misc-include-cleaner]
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:110:34: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                                  ^
+/home/andrew/Code/ucas/src/forms.c:111:19: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                   ^
+/home/andrew/Code/ucas/src/forms.c:112:22: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                      ^
+/home/andrew/Code/ucas/src/forms.c:115:19: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   39 | forms_diff(nid e, uint32_t slot)
+      |                   ^
+/home/andrew/Code/ucas/src/forms.c:117:23: warning: no header providing "diff_node" is directly included [misc-include-cleaner]
+  117 |         nid u = N.a[e], du = diff_node(u, slot), r;
+      |                              ^
+/home/andrew/Code/ucas/src/forms.c:119:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  119 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:122:10: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:122:24: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                                      ^
+/home/andrew/Code/ucas/src/forms.c:122:35: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                                                 ^
+/home/andrew/Code/ucas/src/forms.c:122:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                                                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:36: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:122:51: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                                                                 ^
+/home/andrew/Code/ucas/src/forms.c:122:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                 r = B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, K(1), B2(O_POW, u, K(2)))));
+      |                                                                           ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:123:33: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  123 |                 return N.op[e] == O_ACOS ? U1(O_NEG, r) : r;
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:126:33: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  126 |                 return B2(O_DIV, B2(O_SUB, B2(O_MUL, x, du), B2(O_MUL, u, dx)),
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:127:10: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  127 |                     B2(O_ADD, B2(O_POW, x, K(2)), B2(O_POW, u, K(2))));
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:127:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |                     B2(O_ADD, B2(O_POW, x, K(2)), B2(O_POW, u, K(2))));
+      |                                            ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:36: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:127:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |                     B2(O_ADD, B2(O_POW, x, K(2)), B2(O_POW, u, K(2))));
+      |                                                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:134:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |                 return B2(O_DIV, du, B2(O_POW, U1(O_COSH, u), K(2)));
+      |                                                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:136:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  136 |                 return B2(O_DIV, du, U1(O_SQRT, B2(O_ADD, B2(O_POW, u, K(2)),
+      |                                                                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:36: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:137:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  137 |                     K(1))));
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:139:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  139 |                 return B2(O_DIV, du, U1(O_SQRT, B2(O_SUB, B2(O_POW, u, K(2)),
+      |                                                                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:36: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:140:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  140 |                     K(1))));
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:111:32: note: expanded from macro 'U1'
+  111 | #define U1(op, a) mk_un((op), (a))
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:142:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  142 |                 return B2(O_DIV, du, B2(O_SUB, K(1), B2(O_POW, u, K(2))));
+      |                                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:36: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:142:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  142 |                 return B2(O_DIV, du, B2(O_SUB, K(1), B2(O_POW, u, K(2))));
+      |                                                                   ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:112:41: note: expanded from macro 'B2'
+  112 | #define B2(op, a, b) mk_bin((op), (a), (b))
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:144:2: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  144 |         fail("no derivative for %s", opinfo[N.op[e]].name);
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:144:31: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  144 |         fail("no derivative for %s", opinfo[N.op[e]].name);
+      |                                      ^
+/home/andrew/Code/ucas/src/forms.c:356:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  356 |         char *b = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/forms.c:368:8: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  368 | static uint64_t unit_slots;     /* slots of the current function that are i */
+      |        ^
+/home/andrew/Code/ucas/src/forms.c:380:20: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  380 |         return N.op[e] == O_VAR && N.ki[e] < 64 &&
+      |                           ^
+/home/andrew/Code/ucas/src/forms.c:381:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  381 |             (unit_slots >> N.ki[e] & 1);
+      |                         ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/forms.c:381:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  381 |             (unit_slots >> N.ki[e] & 1);
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/forms.c:387:9: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  387 |         return mk_var(63, sym_cstr("i"), TY_REAL);
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:387:20: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  387 |         return mk_var(63, sym_cstr("i"), TY_REAL);
+      |                           ^
+/home/andrew/Code/ucas/src/forms.c:387:35: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+  387 |         return mk_var(63, sym_cstr("i"), TY_REAL);
+      |                                          ^
+/home/andrew/Code/ucas/src/forms.c:387:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:392:23: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  392 | static void pr(struct sbuf *b, nid e, int prec);
+      |                       ^
+/home/andrew/Code/ucas/src/forms.c:421:11: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  421 |                 t[*n] = mk_const_r(-v);
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:477:27: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  477 |             op != O_POW && op != O_SEL && !(opinfo[op].fl & OF_CMP) &&
+      |                                  ^
+/home/andrew/Code/ucas/src/forms.c:477:54: warning: no header providing "OF_CMP" is directly included [misc-include-cleaner]
+  477 |             op != O_POW && op != O_SEL && !(opinfo[op].fl & OF_CMP) &&
+      |                                                             ^
+/home/andrew/Code/ucas/src/forms.c:477:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  477 |             op != O_POW && op != O_SEL && !(opinfo[op].fl & OF_CMP) &&
+      |                                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:478:12: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  478 |             op != O_LAND && op != O_LOR && op != O_LNOT && op != O_CAST);
+      |                   ^
+/home/andrew/Code/ucas/src/forms.c:478:28: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  478 |             op != O_LAND && op != O_LOR && op != O_LNOT && op != O_CAST);
+      |                                   ^
+/home/andrew/Code/ucas/src/forms.c:478:43: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+  478 |             op != O_LAND && op != O_LOR && op != O_LNOT && op != O_CAST);
+      |                                                  ^
+/home/andrew/Code/ucas/src/forms.c:478:59: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  478 |             op != O_LAND && op != O_LOR && op != O_LNOT && op != O_CAST);
+      |                                                                  ^
+/home/andrew/Code/ucas/src/forms.c:488:4: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  488 |                         sb_putc(b, '*');
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:508:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  508 |                 sb_puts(&t, cn.num);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:535:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  535 |                 sb_printf(b, "(%s)", t.p);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:547:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  547 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:547:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:548:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  548 |         case O_CONST: {
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:560:52: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  560 |                 sb_puts(b, is_unit(e) || N.a[e] == sym_i ? "i" : sym_str(N.a[e]));
+      |                                                                  ^
+/home/andrew/Code/ucas/src/forms.c:630:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  630 |         if (opinfo[op].fl & OF_CMP) {
+      |                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:640:12: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  640 |         if (op == O_ABS) {
+      |                   ^
+/home/andrew/Code/ucas/src/forms.c:646:61: warning: no header providing "O_NOPS" is directly included [misc-include-cleaner]
+  646 |         if (opinfo[op].arity >= 1 && opinfo[op].arity <= 3 && op < O_NOPS &&
+      |                                                                    ^
+/home/andrew/Code/ucas/src/forms.c:647:12: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  647 |             op != O_TABLE && op != O_INDEX && op != O_LOOP && op != O_ATOMIC) {
+      |                   ^
+/home/andrew/Code/ucas/src/forms.c:647:29: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+  647 |             op != O_TABLE && op != O_INDEX && op != O_LOOP && op != O_ATOMIC) {
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:647:46: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+  647 |             op != O_TABLE && op != O_INDEX && op != O_LOOP && op != O_ATOMIC) {
+      |                                                     ^
+/home/andrew/Code/ucas/src/forms.c:647:62: warning: no header providing "O_ATOMIC" is directly included [misc-include-cleaner]
+  647 |             op != O_TABLE && op != O_INDEX && op != O_LOOP && op != O_ATOMIC) {
+      |                                                                     ^
+/home/andrew/Code/ucas/src/forms.c:669:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  669 |         struct sbuf *b = &buf[k++ & 7];
+      |                               ^~~ ~
+/home/andrew/Code/ucas/src/forms.c:671:2: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  671 |         sb_clear(b);
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:673:9: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  673 |         return sb_str(b);
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:682:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  682 |         struct sbuf *b = &buf[k++ & 7];
+      |                               ^~~ ~
+/home/andrew/Code/ucas/src/forms.c:719:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  719 |                 if (n & 1)
+      |                     ^ ~
+/home/andrew/Code/ucas/src/forms.c:722:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  722 |                 n >>= 1;
+      |                 ^ ~~~
+/home/andrew/Code/ucas/src/forms.c:744:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  744 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:744:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:750:7: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+  750 |         case O_UNDEF:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:773:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  773 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:773:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:795:7: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+  795 |         case O_EXP: return cexp(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:796:7: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+  796 |         case O_LOG:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:807:7: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+  807 |         case O_SIN: return re ? sin(x) : csin(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:808:7: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+  808 |         case O_COS: return re ? cos(x) : ccos(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:809:7: warning: no header providing "O_TAN" is directly included [misc-include-cleaner]
+  809 |         case O_TAN:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:814:7: warning: no header providing "O_SEC" is directly included [misc-include-cleaner]
+  814 |         case O_SEC:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:817:7: warning: no header providing "O_CSC" is directly included [misc-include-cleaner]
+  817 |         case O_CSC:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:820:7: warning: no header providing "O_COT" is directly included [misc-include-cleaner]
+  820 |         case O_COT:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:823:7: warning: no header providing "O_ATAN" is directly included [misc-include-cleaner]
+  823 |         case O_ATAN: return re ? atan(x) : catan(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:853:7: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+  853 |         case O_BARRIER:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:855:7: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  855 |         case O_FMA:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:858:7: warning: no header providing "O_CONJ" is directly included [misc-include-cleaner]
+  858 |         case O_CONJ: return conj(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:859:7: warning: no header providing "O_RE" is directly included [misc-include-cleaner]
+  859 |         case O_RE: return creal(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:860:7: warning: no header providing "O_IM" is directly included [misc-include-cleaner]
+  860 |         case O_IM: return cimag(a);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:861:7: warning: no header providing "O_ARG" is directly included [misc-include-cleaner]
+  861 |         case O_ARG:
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:870:3: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  870 |                 uint8_t fl = 0;
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:871:14: warning: no header providing "scalar_real" is directly included [misc-include-cleaner]
+  871 |                 double y = scalar_real(op, x, creal(b), &fl);
+      |                            ^
+/home/andrew/Code/ucas/src/forms.c:872:12: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  872 |                 if (fl & F_UNDEF)
+      |                          ^
+/home/andrew/Code/ucas/src/forms.c:872:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  872 |                 if (fl & F_UNDEF)
+      |                        ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:900:8: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+  900 |                 cv = xrealloc(cv, c * sizeof *cv);
+      |                      ^
+/home/andrew/Code/ucas/src/forms.c:1063:3: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1063 |                 strcat(lc_conds, ", ");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:1063:3: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 1063 |                 strcat(lc_conds, ", ");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:1064:2: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1064 |         strcat(lc_conds, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:1064:2: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 1064 |         strcat(lc_conds, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:1434:13: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+ 1434 |                 p_atom(r, mk_sel(lc_node(N.a[e]), lc_node(N.b[e]),
+      |                           ^
+/home/andrew/Code/ucas/src/forms.c:1439:13: warning: no header providing "mk_fma" is directly included [misc-include-cleaner]
+ 1439 |                 p_atom(r, mk_fma(lc_node(N.a[e]), lc_node(N.b[e]),
+      |                           ^
+/home/andrew/Code/ucas/src/forms.c:1462:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1462 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:1598:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1598 |                         f = mk_bin(O_POW, f, K(abs(t->p[k])));
+      |                                              ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1608:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1608 |                 return K((int64_t)c);
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1655:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1655 |                 r = K(0);
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1657:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1657 |                 r = mk_bin(O_DIV, r, K(L));
+      |                                      ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1669:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1669 |                 return K(0);
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1671:6: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+ 1671 |         g = xcalloc(p->n, sizeof *g);
+      |             ^
+/home/andrew/Code/ucas/src/forms.c:1672:7: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+ 1672 |         tt = xmalloc(p->n * sizeof *tt);
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:1753:9: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+ 1753 |         return is_const(e) && const_is(e, 0);
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:1753:24: warning: no header providing "const_is" is directly included [misc-include-cleaner]
+ 1753 |         return is_const(e) && const_is(e, 0);
+      |                               ^
+/home/andrew/Code/ucas/src/forms.c:1786:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1786 |                 return K(0);
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1798:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1798 |                 return K(0);
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1813:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1813 |         return mk_bin(O_POW, a, K(2));
+      |                                 ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1869:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1869 |         struct cz r = Z(K(1), K(0));
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1869:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1869 |         struct cz r = Z(K(1), K(0));
+      |                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1875:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1875 |                 if (n & 1)
+      |                     ^ ~
+/home/andrew/Code/ucas/src/forms.c:1877:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1877 |                 n >>= 1;
+      |                 ^ ~~~
+/home/andrew/Code/ucas/src/forms.c:1882:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1882 |                 r = zdiv(Z(K(1), K(0)), r);
+      |                            ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1882:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1882 |                 r = zdiv(Z(K(1), K(0)), r);
+      |                                  ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1919:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1919 |                         return K(0);
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1938:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1938 |                 return Z(r, K(0));
+      |                             ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1947:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1947 |                         return Z(mk_un(O_LOG, z.re), K(0));
+      |                                                      ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1951:21: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+ 1951 |                     mk_sel(mk_bin(O_LT, z.re, K(0)), mk_const_r(M_PI), K(0)));
+      |                                   ^
+/home/andrew/Code/ucas/src/forms.c:1951:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1951 |                     mk_sel(mk_bin(O_LT, z.re, K(0)), mk_const_r(M_PI), K(0)));
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1951:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1951 |                     mk_sel(mk_bin(O_LT, z.re, K(0)), mk_const_r(M_PI), K(0)));
+      |                                                                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1953:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1953 |         return Z(ndiv(mk_un(O_LOG, nadd(nsq(z.re), nsq(z.im))), K(2)), zarg(z));
+      |                                                                 ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1963:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1963 |                         return Z(mk_un(O_SQRT, z.re), K(0));
+      |                                                       ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1965:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1965 |                         return Z(K(0), mk_un(O_SQRT, nneg(z.re)));
+      |                                  ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1966:26: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+ 1966 |                 return Z(mk_sel(mk_bin(O_GE, z.re, K(0)), mk_un(O_SQRT, z.re), K(0)),
+      |                                        ^
+/home/andrew/Code/ucas/src/forms.c:1966:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1966 |                 return Z(mk_sel(mk_bin(O_GE, z.re, K(0)), mk_un(O_SQRT, z.re), K(0)),
+      |                                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1966:66: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1966 |                 return Z(mk_sel(mk_bin(O_GE, z.re, K(0)), mk_un(O_SQRT, z.re), K(0)),
+      |                                                                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1967:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1967 |                     mk_sel(mk_bin(O_LT, z.re, K(0)), mk_un(O_SQRT, nneg(z.re)),
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1968:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1968 |                     K(0)));
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1971:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1971 |         re = norm(mk_un(O_SQRT, ndiv(nadd(m, z.re), K(2))));
+      |                                                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1972:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1972 |         im = norm(mk_un(O_SQRT, ndiv(nsub(m, z.re), K(2))));
+      |                                                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:1976:15: warning: no header providing "O_COPYSIGN" is directly included [misc-include-cleaner]
+ 1976 |                 im = mk_bin(O_COPYSIGN, im, z.im);
+      |                             ^
+/home/andrew/Code/ucas/src/forms.c:1990:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1990 |                 return Z(mk_bin(O_POW, a.re, b.re), K(0));
+      |                                                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2007:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2007 |         return Z(K(0), K(1));
+      |                  ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2007:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2007 |         return Z(K(0), K(1));
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2013:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2013 |         return Z(r, K(0));
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2026:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2026 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:2026:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:2046:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2046 |                 return zdiv(zre(K(1)), op == O_SEC ? c : s);
+      |                                 ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2057:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2057 |         struct cz one_ = zre(K(1)), i = zi(), r;
+      |                              ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2069:4: warning: no header providing "note" is directly included [misc-include-cleaner]
+ 2069 |                         note("%s(%s) is taken as the real function: %s", opinfo[op].name,
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:2082:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2082 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:2082:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:2092:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2092 |                 return Z(ndiv(nneg(r.im), K(2)), ndiv(r.re, K(2)));
+      |                                           ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2092:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2092 |                 return Z(ndiv(nneg(r.im), K(2)), ndiv(r.re, K(2)));
+      |                                                             ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2100:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2100 |                 return Z(ndiv(r.re, K(2)), ndiv(r.im, K(2)));
+      |                                     ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2100:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2100 |                 return Z(ndiv(r.re, K(2)), ndiv(r.im, K(2)));
+      |                                                       ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2125:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2125 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:2125:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:2184:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2184 |                 b = opinfo[op].arity >= 2 ? zof(N.b[e]) : zre(K(0));
+      |                                                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2223:9: warning: no header providing "mk_raw" is directly included [misc-include-cleaner]
+ 2223 |         return mk_raw(op, TY_REAL, a, 0, 0, 0, 0);
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:2223:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2223 |         return mk_raw(op, TY_REAL, a, 0, 0, 0, 0);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2229:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2229 |         return mk_raw(op, TY_REAL, a, b, 0, 0, 0);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2457:9: warning: no header providing "func" is directly included [misc-include-cleaner]
+ 2457 |         struct func fn;
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:2472:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2472 |                         unit_slots |= 1ull << k;
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2495:24: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2495 |         if (k == (int)n && (g = func_find(sym_intern(text, n))) != NULL &&
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:2495:24: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/forms.c:2495:24: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/forms.c:2495:26: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+ 2495 |         if (k == (int)n && (g = func_find(sym_intern(text, n))) != NULL &&
+      |                                 ^
+/home/andrew/Code/ucas/src/forms.c:2495:36: warning: no header providing "sym_intern" is directly included [misc-include-cleaner]
+ 2495 |         if (k == (int)n && (g = func_find(sym_intern(text, n))) != NULL &&
+      |                                           ^
+/home/andrew/Code/ucas/src/forms.c:2508:9: warning: no header providing "nlp_ask_choice" is directly included [misc-include-cleaner]
+ 2508 |                                 if (nlp_ask_choice(what, o, 2, 0) == 0) {
+      |                                     ^
+/home/andrew/Code/ucas/src/forms.c:2509:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2509 |                                         unit_slots |= 1ull << k;
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2521:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2521 |                 in->body = calc_parse_text(sb_str(&t), &in->fn, TY_REAL);
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2527:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2527 |                                 unit_slots |= 1ull << k;
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2534:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2534 |                 if (!(unit_slots >> k & 1)) {
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2534:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2534 |                 if (!(unit_slots >> k & 1)) {
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/forms.c:2536:9: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+ 2536 |                         if (!TY_FP(in->fn.p[k].ty))
+      |                              ^
+/home/andrew/Code/ucas/src/forms.c:2536:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2550:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2550 |                 if (!(unit_slots >> k & 1))
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2550:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2550 |                 if (!(unit_slots >> k & 1))
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/forms.c:2575:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2575 |         return (double)(rng_state >> 11) / 9007199254740992.0;
+      |                                   ~~ ^~
+/home/andrew/Code/ucas/src/forms.c:2597:16: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+ 2597 |         memcpy(saved, fail_jmp, sizeof saved);
+      |                       ^
+/home/andrew/Code/ucas/src/forms.c:2599:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2599 |                 *out = calc_parse_text(text, fn, TY_REAL);
+      |                                                  ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:2603:2: warning: no header providing "notes_drop" is directly included [misc-include-cleaner]
+ 2603 |         notes_drop();
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:2639:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 2639 |         switch (check_part) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:2639:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:2659:14: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+ 2659 |         double vals[MAXP];
+      |                     ^
+/home/andrew/Code/ucas/src/forms.c:2669:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2669 |                 if (unit_slots >> k & 1)
+      |                                ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2669:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2669 |                 if (unit_slots >> k & 1)
+      |                                     ~ ^
+/home/andrew/Code/ucas/src/forms.c:2700:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2700 |                             (k < in->fn.np && (unit_slots >> k & 1)) ? I :
+      |                                                           ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2700:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2700 |                             (k < in->fn.np && (unit_slots >> k & 1)) ? I :
+      |                                                                ~ ^
+/home/andrew/Code/ucas/src/forms.c:2725:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2725 |                                                 if (!(unit_slots >> k & 1))
+      |                                                                  ~~ ^
+/home/andrew/Code/ucas/src/forms.c:2725:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2725 |                                                 if (!(unit_slots >> k & 1))
+      |                                                                       ~ ^
+/home/andrew/Code/ucas/src/forms.c:2752:31: warning: parameter 'in' is unused [misc-unused-parameters]
+ 2752 | print_check(const struct inp *in, const struct chk *r, const char *cond,
+      |             ~~~~~~~~~~~~~~~~~~^~~
+/home/andrew/Code/ucas/src/forms.c:2758:3: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+   34 |                 rep_check(r->pts == 1 ? "value" : "sample_points", r->pts == 1 ?
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:2761:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+ 2761 |                 printf("%scheck: %s\n", ind, r->wit[0] ? r->wit :
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:2878:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2878 |         struct sbuf *s = &b[k++ & 3];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/forms.c:2949:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2949 |                         P->r = K(0);
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3032:3: warning: no header providing "rep_cond" is directly included [misc-include-cleaner]
+ 3032 |                 rep_cond("%s", lc_conds);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:3048:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+ 3048 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3058:3: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 3058 |                 rep_begin(which >= 0 && which < 7 ? kn[which] : "complex");
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:3060:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+ 3060 |         rep_str("input", lhs);
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3061:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 3061 |         switch (which) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3061:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:3103:4: warning: no header providing "rep_null" is directly included [misc-include-cleaner]
+ 3103 |                         rep_null("theta");
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3112:5: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+ 3112 |                                 rep_num("value", P.thv);
+      |                                 ^
+/home/andrew/Code/ucas/src/forms.c:3244:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3244 |                             raw2(O_DIV, K(1), K(n)));
+      |                                         ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3244:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3244 |                             raw2(O_DIV, K(1), K(n)));
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3253:4: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+ 3253 |                         rep_list("roots");
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3254:4: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+ 3254 |                         rep_obj(NULL);
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3255:4: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+ 3255 |                         rep_int("k", k);
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3261:4: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+ 3261 |                         rep_bool("principal", k == 0);
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3262:4: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+ 3262 |                         rep_end();
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:3353:3: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 3353 |                 strcat(rw_cond, " && ");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:3353:3: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 3353 |                 strcat(rw_cond, " && ");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:3354:2: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 3354 |         strcat(rw_cond, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:3354:2: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 3354 |         strcat(rw_cond, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:3365:10: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+ 3365 |                 return mk_cast(N.ty[e], a);
+      |                        ^
+/home/andrew/Code/ucas/src/forms.c:3426:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3426 |         return K(v);
+      |                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3431:31: warning: parameter 'b' is unused [misc-unused-parameters]
+ 3431 | rule_sincos(nid e, nid a, nid b)
+      |                               ^
+/home/andrew/Code/ucas/src/forms.c:3433:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3433 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3445:28: warning: parameter 'b' is unused [misc-unused-parameters]
+ 3445 | rule_exp(nid e, nid a, nid b)
+      |                            ^
+/home/andrew/Code/ucas/src/forms.c:3452:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3452 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3462:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3462 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3487:29: warning: parameter 'b' is unused [misc-unused-parameters]
+ 3487 | rule_half(nid e, nid a, nid b)
+      |                             ^
+/home/andrew/Code/ucas/src/forms.c:3498:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 3498 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3498:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:3510:32: warning: parameter 'b' is unused [misc-unused-parameters]
+ 3510 | rule_compose(nid e, nid a, nid b)
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:3520:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 3520 |         switch (op * 1000 + ia) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3536:2: warning: switch has 3 consecutive identical branches [bugprone-branch-clone]
+ 3536 |         case O_TANH * 1000 + O_ATANH: return u;
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3538:40: note: last of these clones ends here
+ 3538 |         case O_ATANH * 1000 + O_TANH: return u;
+      |                                               ^
+/home/andrew/Code/ucas/src/forms.c:3540:2: warning: switch has 2 consecutive identical branches [bugprone-branch-clone]
+ 3540 |         case O_LOG * 1000 + O_EXP: return u;
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3541:37: note: last of these clones ends here
+ 3541 |         case O_EXP * 1000 + O_LOG: return u;
+      |                                            ^
+/home/andrew/Code/ucas/src/forms.c:3570:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3570 |                 r |= has_op(N.a[e], op, seen);
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/forms.c:3573:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3573 |                 r |= has_op(N.b[e], op, seen);
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/forms.c:3575:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3575 |                 r |= has_op(N.c[e], op, seen);
+      |                 ^ ~~
+/home/andrew/Code/ucas/src/forms.c:3666:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3666 |                 if (fatom[k] == m && (k & 1) == hyp)
+      |                                       ^ ~
+/home/andrew/Code/ucas/src/forms.c:3755:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 3755 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:3755:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:3801:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3801 |         nid r = K(0);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3855:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3855 |                         nid th, mono = ft[k].mono ? ft[k].mono : K(1), t;
+      |                                                                  ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:3865:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3865 |                                         if (j & 1)
+      |                                             ^ ~
+/home/andrew/Code/ucas/src/forms.c:4006:31: warning: parameter 'b' is unused [misc-unused-parameters]
+ 4006 | rule_expand(nid e, nid a, nid b)
+      |                               ^
+/home/andrew/Code/ucas/src/forms.c:4051:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4051 |                         f = Z(K(1), mk_un(hyp ? O_TANH : O_TAN, ba));
+      |                               ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4063:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 4063 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4063:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:4155:4: warning: Value stored to 'o2' is never read [clang-analyzer-deadcode.DeadStores]
+ 4155 |                         o2 = O_SIN;
+      |                         ^    ~~~~~
+/home/andrew/Code/ucas/src/forms.c:4155:4: note: Value stored to 'o2' is never read
+ 4155 |                         o2 = O_SIN;
+      |                         ^    ~~~~~
+/home/andrew/Code/ucas/src/forms.c:4158:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4158 |         s = norm(ndiv(nadd(a, b), K(2)));
+      |                                   ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4159:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4159 |         d = norm(ndiv(nsub(a, b), K(2)));
+      |                                   ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4162:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4162 |                         res = nmul(K(2), nmul(mk_un(O_SIN, s), mk_un(O_COS, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4164:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4164 |                         res = nmul(K(2), nmul(mk_un(O_COS, s), mk_un(O_SIN, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4166:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4166 |                         res = nmul(K(2), nmul(mk_un(O_COS, s), mk_un(O_COS, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4168:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4168 |                         res = nmul(K(-2), nmul(mk_un(O_SIN, s), mk_un(O_SIN, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4171:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4171 |                         res = nmul(K(2), nmul(mk_un(O_SINH, s), mk_un(O_COSH, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4173:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4173 |                         res = nmul(K(2), nmul(mk_un(O_COSH, s), mk_un(O_SINH, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4175:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4175 |                         res = nmul(K(2), nmul(mk_un(O_COSH, s), mk_un(O_COSH, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4177:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4177 |                         res = nmul(K(2), nmul(mk_un(O_SINH, s), mk_un(O_SINH, d)));
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4180:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4180 |         res = norm(nmul(res, mono_node(&r1) == K(1) ? K(1) : mono_node(&r1)));
+      |                                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4180:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4180 |         res = norm(nmul(res, mono_node(&r1) == K(1) ? K(1) : mono_node(&r1)));
+      |                                                       ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4211:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4211 |         nid th = 0, A = K(0), B = K(0), C = K(0), R, ph, ps;
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4211:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4211 |         nid th = 0, A = K(0), B = K(0), C = K(0), R, ph, ps;
+      |                                   ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4211:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4211 |         nid th = 0, A = K(0), B = K(0), C = K(0), R, ph, ps;
+      |                                             ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4286:23: warning: parameter 'a' is unused [misc-unused-parameters]
+ 4286 | rule_subst(nid e, nid a, nid b)
+      |                       ^
+/home/andrew/Code/ucas/src/forms.c:4286:30: warning: parameter 'b' is unused [misc-unused-parameters]
+ 4286 | rule_subst(nid e, nid a, nid b)
+      |                              ^
+/home/andrew/Code/ucas/src/forms.c:4493:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 4493 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4493:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/forms.c:4579:32: warning: parameter 'b' is unused [misc-unused-parameters]
+ 4579 | rule_halfexp(nid e, nid a, nid b)
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:4626:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4626 |                     neg ? nadd(K(1), nmul(a, b)) : nsub(K(1), nmul(a, b)))));
+      |                                ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4626:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4626 |                     neg ? nadd(K(1), nmul(a, b)) : nsub(K(1), nmul(a, b)))));
+      |                                                         ^
+/home/andrew/Code/ucas/src/forms.c:110:25: note: expanded from macro 'K'
+  110 | #define K(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                         ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4641:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4641 |         M_PRODUCT, M_SUM, M_EXPAND, M_HARM, M_HALF | M_TSUB, M_INV, M_ALL,
+      |                                             ^~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4642:2: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4642 |         M_EXPAND | M_REDUCE, M_EXP, M_REDUCE, M_TSUB};
+      |         ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4677:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4677 |         if (modes & M_SIMP) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4690:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4690 |         if ((modes & M_SINCOS) && rw_hit)
+      |              ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4693:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4693 |         if (modes & (M_REDUCE | M_PRODUCT)) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4693:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4693 |         if (modes & (M_REDUCE | M_PRODUCT)) {
+      |                      ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4695:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4695 |                 if (x && ((pw && (modes & M_REDUCE)) || (prod && (modes &
+      |                                   ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4695:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4695 |                 if (x && ((pw && (modes & M_REDUCE)) || (prod && (modes &
+      |                                                                   ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4710:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4710 |         if (modes & M_EXPAND) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4724:6: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 4724 |                                         strcat(id, "sin(a + b) = sin a cos b + cos a sin b, "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4724:6: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 4724 |                                         strcat(id, "sin(a + b) = sin a cos b + cos a sin b, "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4727:6: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 4727 |                                         strcat(id, "tan(a + b) = (tan a + tan b)/(1 - tan a "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4727:6: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 4727 |                                         strcat(id, "tan(a + b) = (tan a + tan b)/(1 - tan a "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4731:6: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 4731 |                                         strcat(id, "sinh(a + b) = sinh a cosh b + cosh a sinh b, "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4731:6: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 4731 |                                         strcat(id, "sinh(a + b) = sinh a cosh b + cosh a sinh b, "
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4763:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4763 |         if (modes & M_SUM) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4770:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4770 |         if (modes & M_HARM) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4787:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4787 |         if (modes & M_TSUB) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4796:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4796 |         if (modes & M_HALF) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4806:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4806 |         if (modes & M_INV) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4810:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4810 |         if (modes & M_EXP) {
+      |             ^~~~~ ~
+/home/andrew/Code/ucas/src/forms.c:4840:7: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 4840 |                                                 strcat(id, ", ");
+      |                                                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4840:7: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 4840 |                                                 strcat(id, ", ");
+      |                                                 ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4841:6: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 4841 |                                         strcat(id, ids[j].id);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4841:6: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+ 4841 |                                         strcat(id, ids[j].id);
+      |                                         ^~~~~~
+/home/andrew/Code/ucas/src/forms.c:4903:51: warning: Out of bound access to memory preceding 'rest' [clang-analyzer-security.ArrayBound]
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                                                                 ^
+/home/andrew/Code/ucas/src/forms.c:4919:6: note: Assuming the condition is false
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4919:2: note: Taking false branch
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4921:2: note: Loop condition is true.  Entering loop body
+ 4921 |         for (k = 0; words[k]; k++)
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4922:7: note: Assuming the condition is true
+ 4922 |                 if (!strcmp(words[k], w))
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4922:3: note: Taking true branch
+ 4922 |                 if (!strcmp(words[k], w))
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4923:4: note:  Execution continues on line 4924
+ 4923 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:4924:6: note: Left side of '||' is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |             ^
+/home/andrew/Code/ucas/src/forms.c:4924:19: note: Assuming the condition is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4924:2: note: Taking false branch
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4929:6: note: Assuming the condition is true
+ 4929 |         if (!cmdp_eos(p))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4929:2: note: Taking true branch
+ 4929 |         if (!cmdp_eos(p))
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4931:6: note: Calling 'has_assign'
+ 4931 |         if (has_assign(rest)) {
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4898:2: note: Loop condition is true.  Entering loop body
+ 4898 |         for (; *s; s++) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4899:7: note: Assuming the condition is false
+ 4899 |                 if (*s == '(' || *s == '[')
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4899:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/forms.c:4899:20: note: Assuming the condition is false
+ 4899 |                 if (*s == '(' || *s == '[')
+      |                                  ^~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4899:3: note: Taking false branch
+ 4899 |                 if (*s == '(' || *s == '[')
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4901:12: note: Assuming the condition is false
+ 4901 |                 else if (*s == ')' || *s == ']')
+      |                          ^~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4901:12: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/forms.c:4901:25: note: Assuming the condition is false
+ 4901 |                 else if (*s == ')' || *s == ']')
+      |                                       ^~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4901:8: note: Taking false branch
+ 4901 |                 else if (*s == ')' || *s == ']')
+      |                      ^
+/home/andrew/Code/ucas/src/forms.c:4903:12: note: Assuming the condition is true
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                          ^~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4903:12: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/forms.c:4903:25: note: 'd' is equal to 0
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                                       ^
+/home/andrew/Code/ucas/src/forms.c:4903:12: note: Left side of '&&' is true
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                          ^
+/home/andrew/Code/ucas/src/forms.c:4903:35: note: Assuming the condition is true
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                                                 ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4903:12: note: Left side of '&&' is true
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                          ^
+/home/andrew/Code/ucas/src/forms.c:4903:51: note: Access of 'char' element in 'rest' at negative index -1
+ 4903 |                 else if (*s == '=' && d == 0 && s[1] != '=' && (s[-1] != '=' &&
+      |                                                                 ^~~~~
+/home/andrew/Code/ucas/src/forms.c:4911:22: warning: no header providing "P" is directly included [misc-include-cleaner]
+ 4911 | forms_command(struct P *p)
+      |                      ^
+/home/andrew/Code/ucas/src/forms.c:4916:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+ 4916 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/forms.c:4919:7: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:4925:3: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+ 4925 |                 cmdp_seek(p, at);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4929:7: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+ 4929 |         if (!cmdp_eos(p))
+      |              ^
+/home/andrew/Code/ucas/src/forms.c:4930:3: warning: no header providing "cmdp_rest" is directly included [misc-include-cleaner]
+ 4930 |                 cmdp_rest(p, rest, sizeof rest, NULL);
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4941:3: warning: no header providing "rep_text_fields" is directly included [misc-include-cleaner]
+ 4941 |                 rep_text_fields();
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4942:10: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                        ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^                   ~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4919:6: note: Assuming the condition is false
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4919:2: note: Taking false branch
+ 4919 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4921:2: note: Loop condition is true.  Entering loop body
+ 4921 |         for (k = 0; words[k]; k++)
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4922:7: note: Assuming the condition is true
+ 4922 |                 if (!strcmp(words[k], w))
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4922:3: note: Taking true branch
+ 4922 |                 if (!strcmp(words[k], w))
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4923:4: note:  Execution continues on line 4924
+ 4923 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/forms.c:4924:6: note: Left side of '||' is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |             ^
+/home/andrew/Code/ucas/src/forms.c:4924:19: note: Assuming the condition is false
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4924:2: note: Taking false branch
+ 4924 |         if (!words[k] || func_find(sym_cstr(w))) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4929:6: note: Assuming the condition is false
+ 4929 |         if (!cmdp_eos(p))
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4929:2: note: Taking false branch
+ 4929 |         if (!cmdp_eos(p))
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4931:2: note: Taking false branch
+ 4931 |         if (has_assign(rest)) {
+      |         ^
+/home/andrew/Code/ucas/src/forms.c:4938:6: note: Assuming the condition is true
+ 4938 |         if (!strcmp(w, "nthroots") || !strcmp(w, "unity")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4938:29: note: Left side of '||' is true
+ 4938 |         if (!strcmp(w, "nthroots") || !strcmp(w, "unity")) {
+      |                                    ^
+/home/andrew/Code/ucas/src/forms.c:4942:3: note: Loop condition is true.  Entering loop body
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                 ^
+/home/andrew/Code/ucas/src/forms.c:4942:10: note: Array subscript is undefined
+ 4942 |                 while (isspace((unsigned char)*s))
+      |                        ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^                   ~~~~~~~~~
+/home/andrew/Code/ucas/src/forms.c:4979:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4979 |                         modes |= mode_bits[j];
+      |                         ^~~~~ ~~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

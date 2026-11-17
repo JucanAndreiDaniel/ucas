@@ -1,0 +1,84 @@
+> laplace solve y'=y, y(0)=1
+y'=y, y(0) = 1
+  transformed: (s - 1)Y(s) - 1 = 0
+  Y(s) = 1/(s - 1)
+  y(t) = e^t    for t >= 0
+  poles of Y: 1
+  check: residual of the equation at 201 points of [0, 10]: max 0; initial values hold (max difference 0)
+  check: a numeric solution (RK4, h = 1/1000) agrees at 20 points of [0, 10]: max difference 1.8e-09
+> laplace solve y'' + y = 0, y(0)=1, y'(0)=0
+y'' + y = 0, y(0) = 1, y'(0) = 0
+  transformed: (s^2 + 1)Y(s) - (s) = 0
+  Y(s) = s/(s^2 + 1)
+  y(t) = cos(t)    for t >= 0
+  poles of Y: +-i
+  check: residual of the equation at 201 points of [0, 10]: max 0; initial values hold (max difference 0)
+  check: a numeric solution (RK4, h = 1/1000) agrees at 20 points of [0, 10]: max difference 6.6e-14
+> laplace solve y'' - 3y' + 2y = 0, y(0)=1, y'(0)=0
+y'' - 3y' + 2y = 0, y(0) = 1, y'(0) = 0
+  transformed: (s^2 - 3s + 2)Y(s) - (s - 3) = 0
+  Y(s) = (s - 3)/((s - 1)*(s - 2))
+  y(t) = 2*e^t - e^(2t)    for t >= 0
+  poles of Y: 1, 2
+  check: residual of the equation at 201 points of [0, 10]: max 4.8e-07; initial values hold (max difference 0)
+  check: a numeric solution (RK4, h = 1/1000) agrees at 20 points of [0, 10]: max difference 0.0013
+> laplace solve y' + 2y = exp(-t), y(0)=0
+y' + 2y = exp(-t), y(0) = 0
+  transformed: (s + 2)Y(s) = 1/(s + 1)
+  Y(s) = 1/((s + 1)*(s + 2))
+  y(t) = e^(-t) - e^(-2t)    for t >= 0
+  poles of Y: -1, -2
+  check: residual of the equation at 201 points of [0, 10]: max 5.6e-17; initial values hold (max difference 0)
+  check: a numeric solution (RK4, h = 1/1000) agrees at 20 points of [0, 10]: max difference 3.2e-14
+> zsolve x[n+1] = 2x[n], x[0]=1
+x[n+1] = 2x[n], x[0] = 1
+  transformed: (z - 2)Y(z) - (z) = 0
+  Y(z) = z/(z - 2)
+  x[n] = 2^n    for n >= 0
+  poles of Y: 2
+  check: iterating the recurrence gives the same x[0..39] (max relative difference 0)
+> zsolve x[k+2] = x[k+1] + x[k], x[0]=0, x[1]=1
+x[k+2] = x[k+1] + x[k], x[0] = 0, x[1] = 1
+  transformed: (z^2 - z - 1)Y(z) - (z) = 0
+  Y(z) = z/(z^2 - z - 1)
+  x[k] = sqrt(5)*((1 + sqrt(5))/2)^k/5 - sqrt(5)*((1 - sqrt(5))/2)^k/5    for k >= 0
+  poles of Y: (1 + sqrt(5))/2, (1 - sqrt(5))/2
+  check: iterating the recurrence gives the same x[0..39] (max relative difference 1.2e-15)
+> y' = -y
+> y(0) = 1
+> dsolve y from 0 to 2 steps 4
+y' = -y, y(0) = 1
+  linear with constant coefficients: eigenvalues -1
+  y(t) = exp(-t)
+  check: satisfies the equations at 201 points of [0, 2] (max relative residual 0) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 57 steps) agrees with it to 7.5e-12
+      t            y(t)
+      0            1
+      0.5          0.6065306597
+      1            0.3678794412
+      1.5          0.2231301601
+      2            0.1353352832
+> y' = y*(1-y)
+> y(0) = 0.5
+> dsolve y from 0 to 1 steps 4
+y' = y*(1-y), y(0) = 0.5
+  not linear with constant coefficients: numeric only
+  numeric (Dormand-Prince 5(4), adaptive, 13 steps, tolerance 1e-10); a 1000x looser solve differs by 3.6e-11
+      t            y(t)
+      0            0.5
+      0.25         0.5621765009
+      0.5          0.6224593312
+      0.75         0.6791786992
+      1            0.7310585786
+> y' = y/t
+> y(1) = 1
+> dsolve y from 1 to 3 steps 4
+y' = y/t, y(1) = 1
+  not linear with constant coefficients: numeric only
+  numeric (Dormand-Prince 5(4), adaptive, 16 steps, tolerance 1e-10); a 1000x looser solve differs by 0
+      t            y(t)
+      1            1
+      1.5          1.5
+      2            2
+      2.5          2.5
+      3            3

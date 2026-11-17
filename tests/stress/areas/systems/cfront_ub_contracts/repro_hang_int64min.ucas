@@ -1,0 +1,7 @@
+# HANG: a lower assume bound of INT64_MIN with an int-range upper bound
+# makes c optimize run >35 s (intended to be killed by timeout).
+# Run: timeout 10 $ROOT/ucas repro_hang_int64min.ucas
+c optimize nofile budget 3 assume x -9223372036854775808 2147483647
+```c
+int f(int x){return x+1;}
+```

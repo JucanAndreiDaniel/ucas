@@ -1,0 +1,24 @@
+# Multi-parameter ranges, cross-parameter where clauses, uniform params, find/gates.
+u1(x: u8 uniform in 0..15, y: u8 in 0..15) = x*y + y
+u2(x: u8 uniform in 0..15, y: u8 in 0..15) = y*(x+1)
+equiv u1 ~ u2
+domain u1
+range u1
+m1(v: u32, n: u32 in 5..8) = v >> n where v < (1 << n)
+domain m1
+range m1
+m2(a: u8 in 0..15, b: u8 in 0..15) = a + b where a + b < 20
+domain m2
+range m2
+m3(a: u8 in 0..15, b: u8 in 0..15) = a - b where a >= b
+domain m3
+range m3
+m4(a: u8 in 0..15, b: u8 in 0..15) = a*b where a != b
+domain m4
+range m4
+days(m: u8 in 1..12) = match m { 2 => 28, 4 | 6 | 9 | 11 => 30, _ => 31 }
+find days
+range days
+g4(x: u4 in 0..15) = [1,0,1,1,0,1,1,1,1,1][x]
+domain g4
+range g4

@@ -1,0 +1,18 @@
+> gt(x: f32 in -1..1) = x > 0 ? f32(1) : f32(0)
+> ge(x: f32 in -1..1) = x >= 0 ? f32(1) : f32(0)
+> d(x: f32 in -1..1) = ge(x) - gt(x)
+> approx d in -1..1 as f32 list 1
+  note: d has special points at the interval's ends (at x = -1 it is 0, at x = 1 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx d on [-1, 1] as f32, fma
+  metric: absolute error (the function crosses zero away from the expansion point)
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    0    1            -            0            
+  piecewise (2 pieces split at 0, max abs error): 1: 0.5 2: 0.5 3: 0.5 4: 0.5 5: 0.5 6: 0.5 7: 0.5
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130931 f32 in [-1, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   0     horner+fma  1 abs                    1             1             0    at x=0
+      P(x): 0.0
+      rounding of ap1: not analysed (the result is real, not a float)
+  7 more: 'approx more [n]' (dominated or worse)

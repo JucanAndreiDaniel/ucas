@@ -1,0 +1,50 @@
+> g(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+> fit g ~ 1/sqrt(real(x))
+fit g to 1/sqrt(x) (max relative error, 257 sample points):
+  K = 1597464627  (0x5f376033)
+  objective 0.0341151
+  asfloat(1597464627 - (asuint(f32(x)) >> 1))
+  max abs error 0.170493 at x=0.04
+  max rel error 0.0341951 (3.42%) at x=3.74
+  mean rel error 0.0237068 over 500 points
+  max 565197 ulp
+> g2(x: f64, K: u64) = asfloat(K - (asuint(x) >> 1))
+> fit g2 ~ 1/sqrt(x: f64)
+fit g2 to 1/sqrt(x) (max relative error, 4096 sample points):
+  K = 6910574033949839360  (0x5fe74a78579e5000)
+  objective 0.0526772
+  asfloat(6910574033949839360 - (asuint(x) >> 1))
+  max abs error 2.01564e+154 at x=1.1302541485935431e-309
+  max rel error 0.677642 (67.8%) at x=1.1302541485935431e-309
+  mean rel error 0.0339121 over 32736 points
+  max 7561334348314416 ulp
+> gh(x: f16, K: u16) = asfloat(K - (asuint(x) >> 1))
+> fit gh ~ 1/sqrt(x: f16)
+fit gh to 1/sqrt(x) (max relative error, 4096 sample points):
+  K = 23786  (0x5cea)
+  objective 0.812352
+  asfloat(23786 - (asuint(x) >> 1))
+  max abs error 3781.5 at x=5.9605e-08
+  max rel error 0.923218 (92.3%) at x=5.9605e-08
+  mean rel error 0.748484 over 31743 points
+  max 3862 ulp
+> gm(x: f32, K: u32 in 0x5f370000..0x5f380000) = asfloat(K - (asuint(x) >> 1))
+> fit gm ~ 1/sqrt(x) metric maxrel
+fit gm to 1/sqrt(x) (max relative error, 257 sample points):
+  K = 1597464627  (0x5f376033)
+  objective 0.0341151
+  asfloat(1597464627 - (asuint(f32(x)) >> 1))
+  max abs error 0.170493 at x=0.04
+  max rel error 0.0341951 (3.42%) at x=3.74
+  mean rel error 0.0237068 over 500 points
+  max 565197 ulp
+> gn(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1)) - 1.5
+> fit gn ~ 1/sqrt(x)
+fit gn to 1/sqrt(x) (max relative error, 257 sample points):
+  K = 1612665611  (0x601f530b)
+  objective 2.20255
+  asfloat(1612665611 - (asuint(f32(x)) >> 1)) - 1.5
+  max abs error 17.1045 at x=0.02
+  max rel error 2.41894 (242%) at x=0.02
+  mean rel error 1.09229 over 500 points
+  max 2103745647 ulp

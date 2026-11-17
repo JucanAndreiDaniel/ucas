@@ -1,0 +1,25 @@
+# Auto-generated boolean/u1 stress cases (oracle-verified)
+xor_not_A(a: bool, b: bool) = !(a xor b)
+xor_not_B(a: bool, b: bool) = a xor !b
+equiv xor_not_A ~ xor_not_B
+xnor_eq_A(a: bool, b: bool) = !(a xor b)
+xnor_eq_B(a: bool, b: bool) = a == b
+equiv xnor_eq_A ~ xnor_eq_B
+consensus_A(a: bool, b: bool, c: bool) = (a & b) | (!a & c)
+consensus_B(a: bool, b: bool, c: bool) = (a & b) | (!a & c) | (b & c)
+equiv consensus_A ~ consensus_B
+maj_alt_A(a: bool, b: bool, c: bool) = (a & b) | (a & c) | (b & c)
+maj_alt_B(a: bool, b: bool, c: bool) = (a & b) | (c & (a xor b))
+equiv maj_alt_A ~ maj_alt_B
+maj_comm_A(a: bool, b: bool, c: bool) = (a & b) | (a & c) | (b & c)
+maj_comm_B(a: bool, b: bool, c: bool) = (b & a) | (b & c) | (a & c)
+equiv maj_comm_A ~ maj_comm_B
+mux_andor_A(c: bool, a: bool, b: bool) = c ? a : b
+mux_andor_B(c: bool, a: bool, b: bool) = (c & a) | (!c & b)
+equiv mux_andor_A ~ mux_andor_B
+mux_andor2_A(c: bool, a: bool, b: bool) = c ? a : b
+mux_andor2_B(c: bool, a: bool, b: bool) = (b & !c) | (a & c)
+equiv mux_andor2_A ~ mux_andor2_B
+mux_true_A(c: bool, d: bool) = c ? c : d
+mux_true_B(c: bool, d: bool) = c | d
+equiv mux_true_A ~ mux_true_B

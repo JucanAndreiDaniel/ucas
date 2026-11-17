@@ -1,0 +1,13 @@
+# Carry-less multiplication in GF(2^8) and GF(2^16).
+xt16(x: u16) = ((x << 1) & 0xffff) xor ((x & 0x8000) != 0 ? 0x2d : 0)
+gm16(a: u16, b: u16) = ((((((((((((((((0 xor ((b & 1) != 0 ? a : 0)) xor ((b & 2) != 0 ? xt16(a) : 0)) xor ((b & 4) != 0 ? xt16(xt16(a)) : 0)) xor ((b & 8) != 0 ? xt16(xt16(xt16(a))) : 0)) xor ((b & 16) != 0 ? xt16(xt16(xt16(xt16(a)))) : 0)) xor ((b & 32) != 0 ? xt16(xt16(xt16(xt16(xt16(a))))) : 0)) xor ((b & 64) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(a)))))) : 0)) xor ((b & 128) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))) : 0)) xor ((b & 256) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))) : 0)) xor ((b & 512) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))) : 0)) xor ((b & 1024) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))) : 0)) xor ((b & 2048) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))) : 0)) xor ((b & 4096) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))))) : 0)) xor ((b & 8192) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))))) : 0)) xor ((b & 16384) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a)))))))))))))) : 0)) xor ((b & 32768) != 0 ? xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(xt16(a))))))))))))))) : 0))
+gm16r(a: u16, b: u16) = gm16(b, a)
+equiv gm16 gm16r
+range xt16
+range gm16
+xt(x: u8) = ((x << 1) & 0xff) xor ((x & 0x80) != 0 ? 0x1b : 0)
+gm(a: u8, b: u8) = ((b&1)!=0?a:0) xor ((b&2)!=0?xt(a):0) xor ((b&4)!=0?xt(xt(a)):0) xor ((b&8)!=0?xt(xt(xt(a))):0) xor ((b&16)!=0?xt(xt(xt(xt(a)))):0) xor ((b&32)!=0?xt(xt(xt(xt(xt(a))))):0) xor ((b&64)!=0?xt(xt(xt(xt(xt(xt(a)))))):0) xor ((b&128)!=0?xt(xt(xt(xt(xt(xt(xt(a))))))):0)
+gm8r(a: u8, b: u8) = gm(b, a)
+equiv gm gm8r
+mx(x: u16) = gm16(1, x)
+range mx

@@ -1,0 +1,381 @@
+src/jsonmode.c:2025:40: warning: Value of 'errno' was not checked and may be overwritten by function 'fread' [unix.Errno]
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                               ^
+src/jsonmode.c:2800:7: note: Assuming field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^~~~~~~~~~~~~~
+src/jsonmode.c:2800:7: note: '?' condition is true
+src/jsonmode.c:2801:10: note: Field 't' is equal to J_OBJ
+ 2801 |         if (rq->t != J_OBJ)
+      |                 ^
+src/jsonmode.c:2801:2: note: Taking false branch
+ 2801 |         if (rq->t != J_OBJ)
+      |         ^
+src/jsonmode.c:2804:14: note: Assuming 'k' is >= field 'n'
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |                     ^~~~~~~~~
+src/jsonmode.c:2804:2: note: Loop condition is false. Execution continues on line 2812
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |         ^
+src/jsonmode.c:2812:6: note: Assuming the condition is false
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2812:2: note: Taking false branch
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |         ^
+src/jsonmode.c:2815:2: note: Taking false branch
+ 2815 |         if ((r.c = find_cmd(cmd)) == NULL) {
+      |         ^
+src/jsonmode.c:2822:6: note: Assuming 'a' is null
+ 2822 |         if (a && a->t != J_OBJ)
+      |             ^
+src/jsonmode.c:2822:8: note: Left side of '&&' is false
+ 2822 |         if (a && a->t != J_OBJ)
+      |               ^
+src/jsonmode.c:2828:47: note: Left side of '&&' is false
+ 2828 |         equiv_need_ftz = !strcmp(r.c->name, "equiv") && jv_get(a, "ftz") == NULL;
+      |                                                      ^
+src/jsonmode.c:2829:51: note: Left side of '&&' is false
+ 2829 |         equiv_need_nanbits = !strcmp(r.c->name, "equiv") &&
+      |                                                          ^
+src/jsonmode.c:2831:6: note: Assuming the condition is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2831:39: note: Left side of '&&' is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |                                              ^
+src/jsonmode.c:2835:13: note: Assuming the condition is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2835:49: note: Left side of '&&' is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                                                        ^
+src/jsonmode.c:2836:6: note: Assuming the condition is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2836:40: note: Left side of '&&' is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |                                               ^
+src/jsonmode.c:2845:6: note: Assuming field 'ecode' is null
+ 2845 |         if (!r.ecode) {
+      |             ^~~~~~~~
+src/jsonmode.c:2845:2: note: Taking true branch
+ 2845 |         if (!r.ecode) {
+      |         ^
+src/jsonmode.c:2850:7: note: Assuming the condition is false
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2850:3: note: Taking false branch
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                 ^
+src/jsonmode.c:2852:12: note: Assuming the condition is false
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2852:8: note: Taking false branch
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                      ^
+src/jsonmode.c:2854:12: note: Assuming the condition is false
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2854:8: note: Taking false branch
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                      ^
+src/jsonmode.c:2856:12: note: Assuming the condition is false
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2856:8: note: Taking false branch
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                      ^
+src/jsonmode.c:2858:12: note: Assuming the condition is false
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2858:12: note: Left side of '||' is false
+src/jsonmode.c:2859:7: note: Assuming the condition is false
+ 2859 |                     !strcmp(cmd, "infinite_product"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2858:8: note: Taking false branch
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                      ^
+src/jsonmode.c:2861:12: note: Assuming the condition is false
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                          ^~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2861:8: note: Taking false branch
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                      ^
+src/jsonmode.c:2866:14: note: Assuming the condition is false
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2866:10: note: Taking false branch
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                        ^
+src/jsonmode.c:2878:14: note: Assuming field 'special' is not equal to 0
+ 2878 |                 } else if (!r.c->special) {
+      |                            ^~~~~~~~~~~~~
+src/jsonmode.c:2878:10: note: Taking false branch
+ 2878 |                 } else if (!r.c->special) {
+      |                        ^
+src/jsonmode.c:2892:8: note: Field 'ecode' is null
+ 2892 |         if (r.ecode) {
+      |               ^
+src/jsonmode.c:2892:2: note: Taking false branch
+ 2892 |         if (r.ecode) {
+      |         ^
+src/jsonmode.c:2908:16: note: Assuming field 'p' is null
+ 2908 |         sb_puts(&src, r.pre.p ? r.pre.p : "");
+      |                       ^~~~~~~
+src/jsonmode.c:2908:16: note: '?' condition is false
+src/jsonmode.c:2909:16: note: Assuming field 'p' is null
+ 2909 |         sb_puts(&src, r.stmt.p ? r.stmt.p : "");
+      |                       ^~~~~~~~
+src/jsonmode.c:2909:16: note: '?' condition is false
+src/jsonmode.c:2913:7: note: Assuming 'id' is null
+ 2913 |                 if (id) {
+      |                     ^~
+src/jsonmode.c:2913:3: note: Taking false branch
+ 2913 |                 if (id) {
+      |                 ^
+src/jsonmode.c:2923:2: note: Taking true branch
+ 2923 |         if (!strcmp(cmd, "schema")) {
+      |         ^
+src/jsonmode.c:2971:9: note: Calling 'cap_end'
+ 2971 |         text = cap_end();
+      |                ^~~~~~~~~
+src/jsonmode.c:2017:6: note: Assuming 'cap_fp' is not equal to NULL
+ 2017 |         if (cap_fp == NULL)
+      |             ^~~~~~~~~~~~~~
+src/jsonmode.c:2017:2: note: Taking false branch
+ 2017 |         if (cap_fp == NULL)
+      |         ^
+src/jsonmode.c:2019:6: note: Assuming 'cap_shm' is 0
+ 2019 |         if (cap_shm)
+      |             ^~~~~~~
+src/jsonmode.c:2019:2: note: Taking false branch
+ 2019 |         if (cap_shm)
+      |         ^
+src/jsonmode.c:2024:2: note: After calling 'rewind' reading 'errno' is required to find out if the call has failed
+ 2024 |         rewind(cap_fp);
+      |         ^~~~~~~~~~~~~~
+src/jsonmode.c:2025:10: note: 'left' is < 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                 ^~~~
+src/jsonmode.c:2025:19: note: Left side of '||' is true
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                          ^
+src/jsonmode.c:2025:54: note: 'left' is < 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                                             ^~~~
+src/jsonmode.c:2025:64: note: Left side of '&&' is false
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                                                       ^
+src/jsonmode.c:2025:40: note: Value of 'errno' was not checked and may be overwritten by function 'fread'
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2026 |             left < (off_t)sizeof buf ? (size_t)left : sizeof buf, cap_fp)) > 0) {
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2033:2: warning: Value of 'errno' was not checked and may be overwritten by function 'fclose' [unix.Errno]
+ 2033 |         fclose(cap_fp);
+      |         ^
+src/jsonmode.c:2800:7: note: Assuming field 't' is equal to J_OBJ
+ 2800 |         id = rq->t == J_OBJ ? jv_get(rq, "id") : NULL;
+      |              ^~~~~~~~~~~~~~
+src/jsonmode.c:2800:7: note: '?' condition is true
+src/jsonmode.c:2801:10: note: Field 't' is equal to J_OBJ
+ 2801 |         if (rq->t != J_OBJ)
+      |                 ^
+src/jsonmode.c:2801:2: note: Taking false branch
+ 2801 |         if (rq->t != J_OBJ)
+      |         ^
+src/jsonmode.c:2804:14: note: Assuming 'k' is >= field 'n'
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |                     ^~~~~~~~~
+src/jsonmode.c:2804:2: note: Loop condition is false. Execution continues on line 2812
+ 2804 |         for (k = 0; k < rq->n; k++)
+      |         ^
+src/jsonmode.c:2812:6: note: Assuming the condition is false
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2812:2: note: Taking false branch
+ 2812 |         if ((cmd = jv_gets(rq, "cmd")) == NULL)
+      |         ^
+src/jsonmode.c:2815:2: note: Taking false branch
+ 2815 |         if ((r.c = find_cmd(cmd)) == NULL) {
+      |         ^
+src/jsonmode.c:2822:6: note: Assuming 'a' is null
+ 2822 |         if (a && a->t != J_OBJ)
+      |             ^
+src/jsonmode.c:2822:8: note: Left side of '&&' is false
+ 2822 |         if (a && a->t != J_OBJ)
+      |               ^
+src/jsonmode.c:2828:47: note: Left side of '&&' is false
+ 2828 |         equiv_need_ftz = !strcmp(r.c->name, "equiv") && jv_get(a, "ftz") == NULL;
+      |                                                      ^
+src/jsonmode.c:2829:51: note: Left side of '&&' is false
+ 2829 |         equiv_need_nanbits = !strcmp(r.c->name, "equiv") &&
+      |                                                          ^
+src/jsonmode.c:2831:6: note: Assuming the condition is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2831:39: note: Left side of '&&' is false
+ 2831 |         if ((v = jv_get(a, "files")) != NULL && v->t == J_STR)
+      |                                              ^
+src/jsonmode.c:2835:13: note: Assuming the condition is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2835:49: note: Left side of '&&' is false
+ 2835 |         defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+      |                                                        ^
+src/jsonmode.c:2836:6: note: Assuming the condition is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2836:40: note: Left side of '&&' is false
+ 2836 |         if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
+      |                                               ^
+src/jsonmode.c:2845:6: note: Assuming field 'ecode' is null
+ 2845 |         if (!r.ecode) {
+      |             ^~~~~~~~
+src/jsonmode.c:2845:2: note: Taking true branch
+ 2845 |         if (!r.ecode) {
+      |         ^
+src/jsonmode.c:2850:7: note: Assuming the condition is false
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2850:3: note: Taking false branch
+ 2850 |                 if (!strcmp(cmd, "define"))
+      |                 ^
+src/jsonmode.c:2852:12: note: Assuming the condition is false
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2852:8: note: Taking false branch
+ 2852 |                 else if (!strcmp(cmd, "limit"))
+      |                      ^
+src/jsonmode.c:2854:12: note: Assuming the condition is false
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2854:8: note: Taking false branch
+ 2854 |                 else if (!strcmp(cmd, "spirv_simplify"))
+      |                      ^
+src/jsonmode.c:2856:12: note: Assuming the condition is false
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                          ^~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2856:8: note: Taking false branch
+ 2856 |                 else if (!strcmp(cmd, "matrix"))
+      |                      ^
+src/jsonmode.c:2858:12: note: Assuming the condition is false
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2858:12: note: Left side of '||' is false
+src/jsonmode.c:2859:7: note: Assuming the condition is false
+ 2859 |                     !strcmp(cmd, "infinite_product"))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2858:8: note: Taking false branch
+ 2858 |                 else if (!strcmp(cmd, "infinite_sum") ||
+      |                      ^
+src/jsonmode.c:2861:12: note: Assuming the condition is false
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                          ^~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2861:8: note: Taking false branch
+ 2861 |                 else if (!strcmp(cmd, "ucas")) {
+      |                      ^
+src/jsonmode.c:2866:14: note: Assuming the condition is false
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:2866:10: note: Taking false branch
+ 2866 |                 } else if (!strcmp(cmd, "english")) {
+      |                        ^
+src/jsonmode.c:2878:14: note: Assuming field 'special' is not equal to 0
+ 2878 |                 } else if (!r.c->special) {
+      |                            ^~~~~~~~~~~~~
+src/jsonmode.c:2878:10: note: Taking false branch
+ 2878 |                 } else if (!r.c->special) {
+      |                        ^
+src/jsonmode.c:2892:8: note: Field 'ecode' is null
+ 2892 |         if (r.ecode) {
+      |               ^
+src/jsonmode.c:2892:2: note: Taking false branch
+ 2892 |         if (r.ecode) {
+      |         ^
+src/jsonmode.c:2908:16: note: Assuming field 'p' is null
+ 2908 |         sb_puts(&src, r.pre.p ? r.pre.p : "");
+      |                       ^~~~~~~
+src/jsonmode.c:2908:16: note: '?' condition is false
+src/jsonmode.c:2909:16: note: Assuming field 'p' is null
+ 2909 |         sb_puts(&src, r.stmt.p ? r.stmt.p : "");
+      |                       ^~~~~~~~
+src/jsonmode.c:2909:16: note: '?' condition is false
+src/jsonmode.c:2913:7: note: Assuming 'id' is null
+ 2913 |                 if (id) {
+      |                     ^~
+src/jsonmode.c:2913:3: note: Taking false branch
+ 2913 |                 if (id) {
+      |                 ^
+src/jsonmode.c:2923:2: note: Taking true branch
+ 2923 |         if (!strcmp(cmd, "schema")) {
+      |         ^
+src/jsonmode.c:2971:9: note: Calling 'cap_end'
+ 2971 |         text = cap_end();
+      |                ^~~~~~~~~
+src/jsonmode.c:2017:6: note: Assuming 'cap_fp' is not equal to NULL
+ 2017 |         if (cap_fp == NULL)
+      |             ^~~~~~~~~~~~~~
+src/jsonmode.c:2017:2: note: Taking false branch
+ 2017 |         if (cap_fp == NULL)
+      |         ^
+src/jsonmode.c:2019:6: note: Assuming 'cap_shm' is not equal to 0
+ 2019 |         if (cap_shm)
+      |             ^~~~~~~
+src/jsonmode.c:2019:2: note: Taking true branch
+ 2019 |         if (cap_shm)
+      |         ^
+src/jsonmode.c:2024:2: note: After calling 'rewind' reading 'errno' is required to find out if the call has failed
+ 2024 |         rewind(cap_fp);
+      |         ^~~~~~~~~~~~~~
+src/jsonmode.c:2025:10: note: 'left' is >= 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                 ^~~~
+src/jsonmode.c:2025:10: note: Left side of '||' is false
+src/jsonmode.c:2025:22: note: Assuming 'left' is <= 0
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                             ^~~~~~~~
+src/jsonmode.c:2025:32: note: Left side of '&&' is false
+ 2025 |         while ((left < 0 || left > 0) && (n = fread(buf, 1, left >= 0 &&
+      |                                       ^
+src/jsonmode.c:2033:2: note: Value of 'errno' was not checked and may be overwritten by function 'fclose'
+ 2033 |         fclose(cap_fp);
+      |         ^~~~~~~~~~~~~~
+src/jsonmode.c:3362:9: warning: The 1st argument to 'fdopen' is -1 but should be >= 0 [unix.StdCLibraryFunctions]
+ 3362 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+src/jsonmode.c:3337:6: note: Assuming the condition is false
+ 3337 |         if (!strcmp(argv[i], "--json-schema")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/jsonmode.c:3337:2: note: Taking false branch
+ 3337 |         if (!strcmp(argv[i], "--json-schema")) {
+      |         ^
+src/jsonmode.c:3344:12: note: Assuming 'i' is >= 'argc'
+ 3344 |         for (i++; i < argc; i++) {
+      |                   ^~~~~~~~
+src/jsonmode.c:3344:2: note: Loop condition is false. Execution continues on line 3361
+ 3344 |         for (i++; i < argc; i++) {
+      |         ^
+src/jsonmode.c:3361:7: note: Assuming that 'dup' fails
+ 3361 |         fd = dup(1);
+      |              ^~~~~~
+src/jsonmode.c:3361:2: note: Value assigned to 'fd'
+ 3361 |         fd = dup(1);
+      |         ^~~~~~~~~~~
+src/jsonmode.c:3362:9: note: The 1st argument to 'fdopen' is -1 but should be >= 0
+ 3362 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+src/jsonmode.c:3397:9: warning: The 1st argument to 'fdopen' is -1 but should be >= 0 [unix.StdCLibraryFunctions]
+ 3397 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+src/jsonmode.c:3396:7: note: Assuming that 'dup' fails
+ 3396 |         fd = dup(1);
+      |              ^~~~~~
+src/jsonmode.c:3396:2: note: Value assigned to 'fd'
+ 3396 |         fd = dup(1);
+      |         ^~~~~~~~~~~
+src/jsonmode.c:3397:9: note: The 1st argument to 'fdopen' is -1 but should be >= 0
+ 3397 |         jout = fdopen(fd, "w");
+      |                ^      ~~
+4 warnings generated.

@@ -1,0 +1,22 @@
+# Models that list only a subset of classes (bare models, mali_g715 which has no
+# f64 / subgroup classes) still price expressions, using class fallbacks.  A class
+# a model does not have (dot4x8 on the x86 models) is priced/unavailable.
+d(x: u32, y: u32) = x / y
+f64(x: f64) = x * 2.5
+bits(x: u32) = popcnt(x)
+dot(x: u32, y: u32) = udot4x8(x, y)
+model tiny { iadd: 2 }
+cost d model tiny
+cost f64 model tiny
+cost bits model tiny
+cost dot model tiny
+cost d model mali_g715
+cost f64 model mali_g715
+cost bits model mali_g715
+cost dot model mali_g715
+cost d model gt1030
+cost f64 model gt1030
+cost bits model gt1030
+cost dot model gt1030
+cost dot model zen4
+cost dot model skl

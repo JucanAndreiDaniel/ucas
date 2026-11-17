@@ -1,0 +1,59 @@
+> zmat det [[1,0,0,0,0],[2,3,0,0,0],[0,0,5,0,0],[0,0,0,7,0],[1,0,0,0,11]]
+det = 1155
+  how: Bareiss fraction-free elimination
+  check: Gaussian elimination over Q gives 1155
+> zmat rank [[1,2,3],[2,4,6],[0,0,0]]
+rank = 1
+  how: Bareiss fraction-free elimination
+  check: the Smith form has 1 nonzero invariant factors
+> zmat kernel [[1,2],[2,4]]
+kernel of the 2x2 matrix over Z: rank 1
+  basis (columns): [[2], [-1]]
+  how: U A^T = H (Hermite); the rows of U past the rank; a saturated basis (Z^2 / ker is torsion free)
+  check: A K = 0
+> zmat image [[1,2],[3,4]]
+image of the 2x2 matrix (the lattice of its columns): rank 2
+  basis (columns, Hermite form): [[1, 0], [1, 2]]
+  index / quotient: Z^2 / image = Z/2
+  check: each column of A lies in the lattice and each basis vector in the column span: verified
+> snf [[2,4,0],[0,6,0],[0,0,12]]
+Smith normal form of the 3x3 matrix: diag(2, 6, 12), rank 3
+  D: [[2, 0, 0], [0, 6, 0], [0, 0, 12]]
+  U: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+  V: [[1, -2, 0], [0, 1, 0], [0, 0, 1]]
+  U^-1: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+  V^-1: [[1, 2, 0], [0, 1, 0], [0, 0, 1]]
+  cokernel: Z^3 / (columns) = Z/2 + Z/6 + Z/12
+  check: U A V = D, U U^-1 = I and V V^-1 = I (unimodular), d_i | d_(i+1): verified
+> hnf [[2,4,0],[0,6,0],[0,0,12]]
+Hermite normal form (rows) of the 3x3 matrix: rank 3
+  H: [[2, 4, 0], [0, 6, 0], [0, 0, 12]]
+  U: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+  check: U A = H, det U = +-1, H in echelon form with positive pivots and reduced entries above them: verified
+> zmat solve [[2,0],[0,2]], [[4],[6]]
+x = [[2], [3]]
+  check: A x = b
+> zmat solve [[1,2],[2,4]], [[3],[6]]
+x = [[3], [0]]
+  general solution: x + K t, K = [[2], [-1]]
+  check: A x = b
+> qmat det [[1/2,0,0],[0,3/4,0],[0,0,1/5]]
+det = 3/40
+> qmat rank [[1,2,3],[2,4,6]]
+rank = 1
+> qmat inverse [[1,2],[3,4]]
+inverse = [[-2, 1], [3/2, -1/2]]
+  check: A A^-1 = I verified
+> zmat det [[2^63,1],[1,1]]
+det = 9223372036854775807
+  how: Bareiss fraction-free elimination
+  check: Gaussian elimination over Q gives 9223372036854775807
+> snf [[2^63,0],[0,2^63-1]]
+Smith normal form of the 2x2 matrix: diag(1, 85070591730234615856620279821087277056), rank 2
+  D: [[1, 0], [0, 85070591730234615856620279821087277056]]
+  U: [[1, 1], [9223372036854775807, 9223372036854775808]]
+  V: [[1, -9223372036854775807], [-1, 9223372036854775808]]
+  U^-1: [[9223372036854775808, -1], [-9223372036854775807, 1]]
+  V^-1: [[9223372036854775808, 9223372036854775807], [1, 1]]
+  cokernel: Z^2 / (columns) = Z/85070591730234615856620279821087277056
+  check: U A V = D, U U^-1 = I and V V^-1 = I (unimodular), d_i | d_(i+1): verified

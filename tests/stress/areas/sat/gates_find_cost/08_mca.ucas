@@ -1,0 +1,19 @@
+# cycle-level mca estimates under x86 microarchitectures, plus errors.
+f(x: u32) = x*x + 7
+dot(x: u32) = { s = 0; for i in 0..99 { s = s + (x + i) * (x xor i) }; s }
+q(x: u32) = (x * 3 + 7) / 13 + popcnt(x)
+h(x: f32, y: f32) = { a = x; for i in 1..32 { a = a * y + x }; a }
+one(x: u32) = 1
+mca f
+mca f on skl
+mca f on zen4
+mca f on glc
+mca f on x86v4
+mca dot on skl
+mca dot on zen4
+mca q on skl
+mca q on glc
+mca h on skl
+mca h on glc
+mca one on skl
+mca f on nosuch

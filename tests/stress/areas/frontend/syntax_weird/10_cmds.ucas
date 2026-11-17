@@ -1,0 +1,13 @@
+f(x: u8) = x mod 2
+g(x: u8) = x & 1
+equiv f g
+h(x: u8) = match x { 0 => 0, 1 => 1, _ => x mod 2 }
+equiv f h
+m(x: u8) = 0 < x < 255
+n(x: u8) = x >= 1 && x <= 254
+equiv m n
+range match(x: u8) { 0..3 => x, 4..7 => 7-x, _ => 0 }
+s(x: u8 in 0..3) = x*x
+show s
+range s
+find s

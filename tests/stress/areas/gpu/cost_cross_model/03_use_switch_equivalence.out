@@ -1,0 +1,58 @@
+> f(x: u32) = x*7 + 11
+> g(x: f32, y: f32, z: f32) = x*y + z
+> cost f model gt1030
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> use gt1030
+cost model: gt1030
+> cost f
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> cost f model zen4
+cost of f under zen4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> use zen4
+cost model: zen4
+> cost f
+cost of f under zen4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> cost g
+cost of g under zen4: 6 (2 operations, shared subterms counted once)
+  fadd             1 x 3     = 3
+  fmul             1 x 3     = 3
+> use skl
+cost model: skl
+> cost f
+cost of f under skl: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> cost g
+cost of g under skl: 8 (2 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+  fmul             1 x 4     = 4
+> use glc
+cost model: glc
+> cost f
+cost of f under glc: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> use x86v4
+cost model: x86v4
+> cost f
+cost of f under x86v4: 4 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 3     = 3
+> use gt1030
+cost model: gt1030
+> cost f
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)
+> cost f model gt1030
+cost of f under gt1030: 3 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 3     = 3  (a*b + c; saves 1)

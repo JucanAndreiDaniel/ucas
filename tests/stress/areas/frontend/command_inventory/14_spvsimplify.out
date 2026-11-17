@@ -1,0 +1,62 @@
+> spvsimplify nofile nofunctions
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 4 -> 4 (+0.0%)
+  counting the strength reductions any driver also does: 5 -> 4 (-20.0%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 a multiply by a power of two is a shift
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 477 bytes, checksum b42d6615)
+> spvsimplify nofile nofunctions budget 0.5
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 16 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 1 -> 1 (+0.0%)
+  counting the strength reductions any driver also does: 2 -> 1 (-50.0%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 an extract at bit 0 is a mask
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 487 bytes, checksum 1a6547cb)
+> spvsimplify nofile nofunctions advice
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 2 -> 2 (+0.0%)
+  counting the strength reductions any driver also does: 3 -> 2 (-33.3%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 a multiply by a power of two is a shift
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 458 bytes, checksum 537b39e0)
+advice: nothing in this module depends only on its uniforms or its flat inputs, is affine in its varyings or in gl_FragCoord, is what a vertex format or an instance divisor computes, is a discard the clipper could do, is a point sprite's coordinate, or keeps the depth test after a fragment shader with effects
+> spvsimplify nofile nofunctions sink rgba8
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once), beyond what spirv-opt -O and a driver's back end do: 2 -> 2 (+0.0%)
+  counting the strength reductions any driver also does: 3 -> 2 (-33.3%)
+  also done by any driver compiler (1 rewrite, -1; kept in the written module, not counted above): 1 a multiply by a power of two is a shift
+  beyond those, no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 458 bytes, checksum 537b39e0)
+> spvsimplify nofile nofunctions sink int
+  input %x: int
+  output %out: int (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 7 -> 7 (+0.0%)
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+> spvsimplify nofile nofunctions assume x 0 31
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  assuming x in [0, 31] (every load of it)
+  integer arithmetic cost under gt1030 (each instruction once): 2 -> 2 (+0.0%)
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  range search on a result (one input, x in [0, 31]; every one of the 32 inputs checked):
+    cheaper: (x + 0) >> 2   (cost 3)
+    cheaper: (x - (x >> 5) + 0) >> 2   (cost 6)
+    cheaper: (x + (x >> 5) + 0) >> 2   (cost 6)
+    cheaper: (x - (x >> 6) + 0) >> 2   (cost 6)
+    (its cost now: 28.5; each form above equals it on every input in the range)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs

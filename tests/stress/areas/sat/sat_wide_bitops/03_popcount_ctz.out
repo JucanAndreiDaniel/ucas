@@ -1,0 +1,38 @@
+> pc(x: u16) = popcount(x)
+> pbits(x: u16) = (x&1)+((x>>1)&1)+((x>>2)&1)+((x>>3)&1)+((x>>4)&1)+((x>>5)&1)+((x>>6)&1)+((x>>7)&1)+((x>>8)&1)+((x>>9)&1)+((x>>10)&1)+((x>>11)&1)+((x>>12)&1)+((x>>13)&1)+((x>>14)&1)+((x>>15)&1)
+> equiv pc pbits
+pc and pbits are equal on the domain of pc (exhaustive)
+> range pc
+range of pc -> u16:
+  0..16   (17 distinct values)
+  values: 0..16
+  fits in u5
+  over all 65536 points of the domain
+> clz16(x: u16) = clz(x)
+> range clz16
+range of clz16 -> u16:
+  0..16   (17 distinct values)
+  values: 0..16
+  fits in u5
+  over all 65536 points of the domain
+> domain clz16
+domain of clz16:
+  x: u16, 0..65535
+  C assumes x != 0  (__builtin_clz)
+  defined at 65536 of 65536 points
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 65536 points of the domain
+> ctz16(x: u16) = ctz(x)
+> range ctz16
+range of ctz16 -> u16:
+  0..16   (17 distinct values)
+  values: 0..16
+  fits in u5
+  over all 65536 points of the domain
+> domain ctz16
+domain of ctz16:
+  x: u16, 0..65535
+  C assumes x != 0  (__builtin_ctz)
+  defined at 65536 of 65536 points
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 65536 points of the domain

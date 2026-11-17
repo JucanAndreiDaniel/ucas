@@ -1,0 +1,7 @@
+pc(c: u32 in 0..15) = { x = c; while x != 0 { x = x & (x - 1) }; x }
+cost pc
+quant(v: i32 in 0..255) = { best = 0; berr = 100000; q0 = (v*31 + 127)/255
+  for d in -2..2 { q = q0 + d; qc = q < 0 ? 0 : q > 31 ? 31 : q
+    r = (qc << 3) | (qc >> 2); e = (r - v)*(r - v)
+    if e < berr { berr = e; best = qc } }; best }
+cost quant

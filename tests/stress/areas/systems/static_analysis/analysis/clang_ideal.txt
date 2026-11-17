@@ -1,0 +1,55 @@
+src/ideal.c:499:10: warning: Branch condition evaluates to a garbage value [core.uninitialized.Branch]
+  499 |                 while (k) {
+      |                        ^
+src/ideal.c:601:7: note: Calling 'pexpr'
+  601 |         ok = pexpr(&t);
+      |              ^~~~~~~~~
+src/ideal.c:573:7: note: Calling 'pterm'
+  573 |         if (!pterm(f))
+      |              ^~~~~~~~
+src/ideal.c:535:7: note: Calling 'punary'
+  535 |         if (!punary(f))
+      |              ^~~~~~~~~
+src/ideal.c:516:6: note: Assuming the condition is false
+  516 |         if (*pp == '-') {
+      |             ^~~~~~~~~~
+src/ideal.c:516:2: note: Taking false branch
+  516 |         if (*pp == '-') {
+      |         ^
+src/ideal.c:523:6: note: Assuming the condition is false
+  523 |         if (*pp == '+') {
+      |             ^~~~~~~~~~
+src/ideal.c:523:2: note: Taking false branch
+  523 |         if (*pp == '+') {
+      |         ^
+src/ideal.c:527:9: note: Calling 'ppow'
+  527 |         return ppow(f);
+      |                ^~~~~~~
+src/ideal.c:481:6: note: Assuming the condition is false
+  481 |         if (!pbase(f))
+      |             ^~~~~~~~~
+src/ideal.c:481:2: note: Taking false branch
+  481 |         if (!pbase(f))
+      |         ^
+src/ideal.c:484:6: note: Assuming the condition is true
+  484 |         if (*pp == '^' || (pp[0] == '*' && pp[1] == '*')) {
+      |             ^~~~~~~~~~
+src/ideal.c:484:17: note: Left side of '||' is true
+  484 |         if (*pp == '^' || (pp[0] == '*' && pp[1] == '*')) {
+      |                        ^
+src/ideal.c:487:3: note: 'k' declared without an initial value
+  487 |                 int64_t k;
+      |                 ^~~~~~~~~
+src/ideal.c:489:9: note: '?' condition is true
+  489 |                 pp += *pp == '^' ? 1 : 2;
+      |                       ^
+src/ideal.c:491:7: note: Assuming the condition is true
+  491 |                 if (!z_parse(pp, &e, &q) || z_sign(e) < 0 || !z_fits_i64(e) ||
+      |                     ^~~~~~~~~~~~~~~~~~~~
+src/ideal.c:491:28: note: Left side of '||' is true
+  491 |                 if (!z_parse(pp, &e, &q) || z_sign(e) < 0 || !z_fits_i64(e) ||
+      |                                          ^
+src/ideal.c:499:10: note: Branch condition evaluates to a garbage value
+  499 |                 while (k) {
+      |                        ^
+1 warning generated.

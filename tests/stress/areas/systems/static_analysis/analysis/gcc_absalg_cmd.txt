@@ -1,0 +1,433 @@
+src/absalg_cmd.c: In function ‘cmd_permsub’:
+src/absalg_cmd.c:1718:13: warning: dereference of NULL ‘in’ [CWE-476] [-Wanalyzer-null-dereference]
+ 1718 |         *in = 0;
+      |         ~~~~^~~
+  ‘absalg_cmd2’: events 1-2
+    │
+    │ 2353 | absalg_cmd2(const char *w, char *s)
+    │      | ^~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘absalg_cmd2’
+    │ 2354 | {
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (2) calling ‘absalg_is_cmd2’ from ‘absalg_cmd2’
+    │
+    └──> ‘absalg_is_cmd2’: events 3-5
+           │
+           │ 2342 | absalg_is_cmd2(const char *w)
+           │      | ^~~~~~~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘absalg_is_cmd2’
+           │......
+           │ 2346 |         for (k = 0; acmds2[k].w; k++)
+           │      |                     ~~~~~~
+           │      |                     |
+           │      |                     (4) following ‘true’ branch... ─>─┐
+           │      |                                                       │
+           │      |                                                       │
+           │      |┌──────────────────────────────────────────────────────┘
+           │ 2347 |│                if (!strcmp(acmds2[k].w, w))
+           │      |│                            ~~~~~~~~~~~
+           │      |│                                     |
+           │      |└────────────────────────────────────>(5) ...to here
+           │
+    <──────┘
+    │
+  ‘absalg_cmd2’: event 6
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ^~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (6) returning to ‘absalg_cmd2’ from ‘absalg_is_cmd2’
+    │
+  ‘absalg_cmd2’: events 7-9
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |         ^~~~~~
+    │      |         |
+    │      |         (7) following ‘case 3:’ branch... ─>─┐
+    │      |                                              │
+    │......
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2362 |│        case 3:
+    │      |│        ~~~~
+    │      |│        |
+    │      |└───────>(8) ...to here
+    │ 2363 |                 cmd_permsub(s);
+    │      |                 ~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (9) calling ‘cmd_permsub’ from ‘absalg_cmd2’
+    │
+    └──> ‘cmd_permsub’: events 10-11
+           │
+           │ 1709 | cmd_permsub(char *s)
+           │      | ^~~~~~~~~~~
+           │      | |
+           │      | (10) entry to ‘cmd_permsub’
+           │ 1710 | {
+           │ 1711 |         char *in = find_word(s, "in");
+           │      |                    ~~~~~~~~~~~~~~~~~~
+           │      |                    |
+           │      |                    (11) calling ‘find_word’ from ‘cmd_permsub’
+           │
+           └──> ‘find_word’: event 12
+                  │
+                  │   79 | find_word(char *s, const char *w)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (12) entry to ‘find_word’
+                  │
+                ‘find_word’: event 13
+                  │
+                  │   94 |         return NULL;
+                  │      |                ^~~~
+                  │      |                |
+                  │      |                (13) using NULL here
+                  │
+           <──────┘
+           │
+         ‘cmd_permsub’: events 14-17
+           │
+           │ 1711 |         char *in = find_word(s, "in");
+           │      |                    ^~~~~~~~~~~~~~~~~~
+           │      |                    |
+           │      |                    (14) return of NULL to ‘cmd_permsub’ from ‘find_word’
+           │......
+           │ 1715 |         if (!in)
+           │      |            ~        
+           │      |            |
+           │      |            (15) following ‘true’ branch (when ‘in’ is NULL)... ─>─┐
+           │      |                                                                   │
+           │      |                                                                   │
+           │      |┌──────────────────────────────────────────────────────────────────┘
+           │ 1716 |│                fail("permsub: H in G (each a group: S4, or generators in cycle "
+           │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│                |
+           │      |└───────────────>(16) ...to here
+           │ 1717 |                     "notation separated by commas)");
+           │      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │ 1718 |         *in = 0;
+           │      |         ~~~~~~~     
+           │      |             |
+           │      |             (17) ⚠️  dereference of NULL ‘in’
+           │
+src/absalg_cmd.c: In function ‘cmd_permhom’:
+src/absalg_cmd.c:1774:16: warning: dereference of NULL ‘arrow’ [CWE-476] [-Wanalyzer-null-dereference]
+ 1774 |         *arrow = 0;
+      |         ~~~~~~~^~~
+  ‘absalg_cmd2’: events 1-2
+    │
+    │ 2353 | absalg_cmd2(const char *w, char *s)
+    │      | ^~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘absalg_cmd2’
+    │ 2354 | {
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (2) calling ‘absalg_is_cmd2’ from ‘absalg_cmd2’
+    │
+    └──> ‘absalg_is_cmd2’: events 3-5
+           │
+           │ 2342 | absalg_is_cmd2(const char *w)
+           │      | ^~~~~~~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘absalg_is_cmd2’
+           │......
+           │ 2346 |         for (k = 0; acmds2[k].w; k++)
+           │      |                     ~~~~~~
+           │      |                     |
+           │      |                     (4) following ‘true’ branch... ─>─┐
+           │      |                                                       │
+           │      |                                                       │
+           │      |┌──────────────────────────────────────────────────────┘
+           │ 2347 |│                if (!strcmp(acmds2[k].w, w))
+           │      |│                            ~~~~~~~~~~~
+           │      |│                                     |
+           │      |└────────────────────────────────────>(5) ...to here
+           │
+    <──────┘
+    │
+  ‘absalg_cmd2’: event 6
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ^~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (6) returning to ‘absalg_cmd2’ from ‘absalg_is_cmd2’
+    │
+  ‘absalg_cmd2’: events 7-9
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |         ^~~~~~
+    │      |         |
+    │      |         (7) following ‘case 4:’ branch... ─>─┐
+    │      |                                              │
+    │......
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2365 |│        case 4:
+    │      |│        ~~~~
+    │      |│        |
+    │      |└───────>(8) ...to here
+    │ 2366 |                 cmd_permhom(s);
+    │      |                 ~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (9) calling ‘cmd_permhom’ from ‘absalg_cmd2’
+    │
+    └──> ‘cmd_permhom’: events 10-11
+           │
+           │ 1765 | cmd_permhom(char *s)
+           │      | ^~~~~~~~~~~
+           │      | |
+           │      | (10) entry to ‘cmd_permhom’
+           │ 1766 | {
+           │ 1767 |         char *arrow = find_arrow(s), *by = find_word(s, "by"), *part[64];
+           │      |                       ~~~~~~~~~~~~~
+           │      |                       |
+           │      |                       (11) calling ‘find_arrow’ from ‘cmd_permhom’
+           │
+           └──> ‘find_arrow’: event 12
+                  │
+                  │   98 | find_arrow(char *s)
+                  │      | ^~~~~~~~~~
+                  │      | |
+                  │      | (12) entry to ‘find_arrow’
+                  │
+                ‘find_arrow’: event 13
+                  │
+                  │  111 |         return NULL;
+                  │      |                ^~~~
+                  │      |                |
+                  │      |                (13) using NULL here
+                  │
+           <──────┘
+           │
+         ‘cmd_permhom’: events 14-15
+           │
+           │ 1767 |         char *arrow = find_arrow(s), *by = find_word(s, "by"), *part[64];
+           │      |                       ^~~~~~~~~~~~~        ~~~~~~~~~~~~~~~~~~
+           │      |                       |                    |
+           │      |                       |                    (15) calling ‘find_word’ from ‘cmd_permhom’
+           │      |                       (14) returning to ‘cmd_permhom’ from ‘find_arrow’
+           │
+           └──> ‘find_word’: event 16
+                  │
+                  │   79 | find_word(char *s, const char *w)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (16) entry to ‘find_word’
+                  │
+                ‘find_word’: event 17
+                  │
+                  │   94 |         return NULL;
+                  │      |                ^~~~
+                  │      |                |
+                  │      |                (17) ‘arrow’ is NULL
+                  │
+           <──────┘
+           │
+         ‘cmd_permhom’: events 18-21
+           │
+           │ 1767 |         char *arrow = find_arrow(s), *by = find_word(s, "by"), *part[64];
+           │      |                                            ^~~~~~~~~~~~~~~~~~
+           │      |                                            |
+           │      |                                            (18) returning to ‘cmd_permhom’ from ‘find_word’
+           │......
+           │ 1772 |         if (!arrow || !by || by < arrow)
+           │      |            ~                                
+           │      |            |
+           │      |            (19) following ‘true’ branch (when ‘arrow’ is NULL)... ─>─┐
+           │      |                                                                      │
+           │      |                                                                      │
+           │      |┌─────────────────────────────────────────────────────────────────────┘
+           │ 1773 |│                fail("permhom: G -> H by images of G's generators");
+           │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│                |
+           │      |└───────────────>(20) ...to here
+           │ 1774 |         *arrow = 0;
+           │      |         ~~~~~~~~~~                          
+           │      |                |
+           │      |                (21) ⚠️  dereference of NULL ‘arrow’
+           │
+src/absalg_cmd.c: In function ‘cmd_idealmember’:
+src/absalg_cmd.c:2113:13: warning: dereference of NULL ‘in’ [CWE-476] [-Wanalyzer-null-dereference]
+ 2113 |         *in = 0;
+      |         ~~~~^~~
+  ‘absalg_cmd2’: events 1-2
+    │
+    │ 2353 | absalg_cmd2(const char *w, char *s)
+    │      | ^~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘absalg_cmd2’
+    │ 2354 | {
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (2) calling ‘absalg_is_cmd2’ from ‘absalg_cmd2’
+    │
+    └──> ‘absalg_is_cmd2’: events 3-5
+           │
+           │ 2342 | absalg_is_cmd2(const char *w)
+           │      | ^~~~~~~~~~~~~~
+           │      | |
+           │      | (3) entry to ‘absalg_is_cmd2’
+           │......
+           │ 2346 |         for (k = 0; acmds2[k].w; k++)
+           │      |                     ~~~~~~
+           │      |                     |
+           │      |                     (4) following ‘true’ branch... ─>─┐
+           │      |                                                       │
+           │      |                                                       │
+           │      |┌──────────────────────────────────────────────────────┘
+           │ 2347 |│                if (!strcmp(acmds2[k].w, w))
+           │      |│                            ~~~~~~~~~~~
+           │      |│                                     |
+           │      |└────────────────────────────────────>(5) ...to here
+           │
+    <──────┘
+    │
+  ‘absalg_cmd2’: event 6
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |                 ^~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (6) returning to ‘absalg_cmd2’ from ‘absalg_is_cmd2’
+    │
+  ‘absalg_cmd2’: events 7-9
+    │
+    │ 2355 |         switch (absalg_is_cmd2(w)) {
+    │      |         ^~~~~~
+    │      |         |
+    │      |         (7) following ‘case 7:’ branch... ─>─┐
+    │      |                                              │
+    │......
+    │      |                                              │
+    │      |┌─────────────────────────────────────────────┘
+    │ 2374 |│        case 7:
+    │      |│        ~~~~
+    │      |│        |
+    │      |└───────>(8) ...to here
+    │ 2375 |                 cmd_idealmember(s);
+    │      |                 ~~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (9) calling ‘cmd_idealmember’ from ‘absalg_cmd2’
+    │
+    └──> ‘cmd_idealmember’: events 10-11
+           │
+           │ 2099 | cmd_idealmember(char *s)
+           │      | ^~~~~~~~~~~~~~~
+           │      | |
+           │      | (10) entry to ‘cmd_idealmember’
+           │......
+           │ 2109 |         s = popts(s, &o, "grevlex");
+           │      |             ~~~~~~~~~~~~~~~~~~~~~~~
+           │      |             |
+           │      |             (11) calling ‘popts’ from ‘cmd_idealmember’
+           │
+           └──> ‘popts’: events 12-15
+                  │
+                  │ 1929 | popts(char *s, struct popts *o, const char *dflt_order)
+                  │      | ^~~~~
+                  │      | |
+                  │      | (12) entry to ‘popts’
+                  │......
+                  │ 1932 |         char *cut = NULL, *p;
+                  │      |               ~~~
+                  │      |               |
+                  │      |               (13) ‘cut’ is NULL
+                  │......
+                  │ 1946 |         if (cut) {
+                  │      |            ~
+                  │      |            |
+                  │      |            (14) following ‘false’ branch (when ‘cut’ is NULL)... ─>─┐
+                  │      |                                                                     │
+                  │......
+                  │      |                                                                     │
+                  │      |┌────────────────────────────────────────────────────────────────────┘
+                  │ 1950 |│        if (o->nv == 0) {
+                  │      |│            ~~~~~
+                  │      |│             |
+                  │      |└────────────>(15) ...to here
+                  │
+                ‘popts’: events 16-19
+                  │
+                  │ 1950 |         if (o->nv == 0) {
+                  │      |            ^
+                  │      |            |
+                  │      |            (16) following ‘true’ branch... ─>─┐
+                  │      |                                               │
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │ 1951 |│                /* collect identifiers */
+                  │ 1952 |│                for (p = s; *p;) {
+                  │      |│                     ~~~~~
+                  │      |│                       |
+                  │      |└──────────────────────>(17) ...to here
+                  │......
+                  │ 1977 |                         for (i = 1; i < o->nv; i++)
+                  │      |                                     ~~~~~~~~~
+                  │      |                                       |
+                  │      |                                       (18) following ‘false’ branch... ─>─┐
+                  │      |                                                                           │
+                  │......
+                  │      |                                                                           │
+                  │      |┌──────────────────────────────────────────────────────────────────────────┘
+                  │ 1987 |│        return trim(s);
+                  │      |│               ~~~~~~~
+                  │      |│               |
+                  │      |└──────────────>(19) ...to here
+                  │
+           <──────┘
+           │
+         ‘cmd_idealmember’: events 20-21
+           │
+           │ 2109 |         s = popts(s, &o, "grevlex");
+           │      |             ^~~~~~~~~~~~~~~~~~~~~~~
+           │      |             |
+           │      |             (20) returning to ‘cmd_idealmember’ from ‘popts’
+           │ 2110 |         in = find_word(s, "in");
+           │      |              ~~~~~~~~~~~~~~~~~~
+           │      |              |
+           │      |              (21) calling ‘find_word’ from ‘cmd_idealmember’
+           │
+           └──> ‘find_word’: event 22
+                  │
+                  │   79 | find_word(char *s, const char *w)
+                  │      | ^~~~~~~~~
+                  │      | |
+                  │      | (22) entry to ‘find_word’
+                  │
+                ‘find_word’: event 23
+                  │
+                  │   94 |         return NULL;
+                  │      |                ^~~~
+                  │      |                |
+                  │      |                (23) using NULL here
+                  │
+           <──────┘
+           │
+         ‘cmd_idealmember’: events 24-27
+           │
+           │ 2110 |         in = find_word(s, "in");
+           │      |              ^~~~~~~~~~~~~~~~~~
+           │      |              |
+           │      |              (24) return of NULL to ‘cmd_idealmember’ from ‘find_word’
+           │ 2111 |         if (!in)
+           │      |            ~  
+           │      |            |
+           │      |            (25) following ‘true’ branch (when ‘in’ is NULL)... ─>─┐
+           │      |                                                                   │
+           │      |                                                                   │
+           │      |┌──────────────────────────────────────────────────────────────────┘
+           │ 2112 |│                fail("idealmember: h in f1, f2, ...");
+           │      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│                |
+           │      |└───────────────>(26) ...to here
+           │ 2113 |         *in = 0;
+           │      |         ~~~~~~~
+           │      |             |
+           │      |             (27) ⚠️  dereference of NULL ‘in’
+           │

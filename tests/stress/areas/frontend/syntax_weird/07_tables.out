@@ -1,0 +1,35 @@
+> parse [1, 2, 3][i]
+[1, 2, 3][i]
+> parse [1, 2.5, x][i]
+[1, 2.5, real(x)][i]
+> parse [[1, 2], [3, 4]][i]
+[[1, 2], [3, 4]][i]
+> parse [[1, 2], [3, 4]][1][0]
+3
+> parse [[1, 2], [3, 4]][1][j]
+[3, 4][j]
+> parse [x+1, x*2][i]
+[(x + 1), (2 * x)][i]
+> parse [1][0]
+1
+> parse [1, 2, 3][i+1]
+[1, 2, 3][(i + 1)]
+> parse [sin x, cos x][i]
+[sin(real(x)), cos(real(x))][i]
+> T = [[1, 2], [3, 4]]
+> parse T[1]
+[3, 4]
+> parse T[1][0]
+3
+> parse T[1][j]
+[3, 4][j]
+> f(i) = [10, 20, 30][i] where i in 0..2
+  note: i has no type: inferred int from the integer operations in the body
+> show f
+f(i: int) = [10, 20, 30][i]  where i >= 0 && i <= 2
+  -> int
+> range f
+range of f -> int:
+  10..30
+  fits in u5
+  over all 3 points of the domain

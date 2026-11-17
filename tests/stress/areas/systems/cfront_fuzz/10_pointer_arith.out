@@ -1,0 +1,123 @@
+> c optimize nofile budget 3
+c optimize: 5 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  parray (line 1): not lowered: line 1: a parameter that is not an integer or a float (p)
+  parray (line 1): proposed, not applied: 256-bit vectors, 8 lanes of 32 bits (avx avx2), reductions reassociated (exact mod 2^n); 8 lanes proved (8 equal DAGs, 0 exhaustive, 0 SAT); proof: lanes (each lane of each store proved equal to the scalar body); clang -O2 vectorises such loops itself: 'bench' measures against it, 'vectorize' applies
+    code (not applied):
+      {
+      	int i=0;
+      #if defined(__AVX__) && defined(__AVX2__)
+      	{
+      	__m256i cf_acc0_0 = _mm256_set1_epi32((int32_t)0);
+      	__m256i cf_acc0_1 = _mm256_set1_epi32((int32_t)0);
+      	__m256i cf_acc0_2 = _mm256_set1_epi32((int32_t)0);
+      	__m256i cf_acc0_3 = _mm256_set1_epi32((int32_t)0);
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 32; i += 32) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((p) + cf_i));
+      		cf_acc0_0 = _mm256_add_epi32(cf_acc0_0, cf_v0);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 8;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((p) + cf_i));
+      		cf_acc0_1 = _mm256_add_epi32(cf_acc0_1, cf_v0);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 16;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((p) + cf_i));
+      		cf_acc0_2 = _mm256_add_epi32(cf_acc0_2, cf_v0);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 24;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((p) + cf_i));
+      		cf_acc0_3 = _mm256_add_epi32(cf_acc0_3, cf_v0);
+      	    }
+      	}
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 8; i += 8) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_loadu_si256((const void *)((p) + cf_i));
+      		cf_acc0_0 = _mm256_add_epi32(cf_acc0_0, cf_v0);
+      	    }
+      	}
+      	cf_acc0_0 = _mm256_add_epi32(cf_acc0_0, cf_acc0_1);
+      	cf_acc0_0 = _mm256_add_epi32(cf_acc0_0, cf_acc0_2);
+      	cf_acc0_0 = _mm256_add_epi32(cf_acc0_0, cf_acc0_3);
+      	{
+      		int32_t cf_part[8];
+      		_mm256_storeu_si256((void *)cf_part, cf_acc0_0);
+      		for (int cf_j = 0; cf_j < 8; cf_j++)
+      			s = (int32_t)((uint32_t)s + (uint32_t)cf_part[cf_j]);
+      	}
+      	}
+      #endif
+      	for (; i < (n); i += 1) {
+      		const int32_t cf_ld0 = (p)[(long)((int64_t)((i)))];
+      		const int32_t cf_rn0 = (int)((int32_t)((uint32_t)((s)) + (uint32_t)((cf_ld0))));
+      		s = cf_rn0;
+      	}
+      }
+  ptrinc (line 2): not lowered: line 2: a parameter that is not an integer or a float (p)
+  ptrdiff (line 3): not lowered: line 3: a parameter that is not an integer or a float (a)
+  arrstore (line 4): not lowered: line 4: the function does not return an integer or a float
+  arrstore (line 4): proposed, not applied: 256-bit vectors, 8 lanes of 32 bits (avx avx2); 8 lanes proved (8 equal DAGs, 0 exhaustive, 0 SAT); proof: lanes (each lane of each store proved equal to the scalar body); clang -O2 vectorises such loops itself: 'bench' measures against it, 'vectorize' applies
+    code (not applied):
+      {
+      	int i=0;
+      	static const int32_t cf_iota1[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+      	(void)cf_iota1;
+      #if defined(__AVX__) && defined(__AVX2__)
+      	{
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 32; i += 32) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_set1_epi32((int32_t)(cf_i));
+      		__m256i cf_v1 = _mm256_loadu_si256((const void *)cf_iota1);
+      		__m256i cf_v2 = _mm256_add_epi32(cf_v0, cf_v1);
+      		_mm256_storeu_si256((void *)((a) + cf_i), cf_v2);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 8;
+      		__m256i cf_v0 = _mm256_set1_epi32((int32_t)(cf_i));
+      		__m256i cf_v1 = _mm256_loadu_si256((const void *)cf_iota1);
+      		__m256i cf_v2 = _mm256_add_epi32(cf_v0, cf_v1);
+      		_mm256_storeu_si256((void *)((a) + cf_i), cf_v2);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 16;
+      		__m256i cf_v0 = _mm256_set1_epi32((int32_t)(cf_i));
+      		__m256i cf_v1 = _mm256_loadu_si256((const void *)cf_iota1);
+      		__m256i cf_v2 = _mm256_add_epi32(cf_v0, cf_v1);
+      		_mm256_storeu_si256((void *)((a) + cf_i), cf_v2);
+      	    }
+      	    {
+      		const int32_t cf_i = i + 24;
+      		__m256i cf_v0 = _mm256_set1_epi32((int32_t)(cf_i));
+      		__m256i cf_v1 = _mm256_loadu_si256((const void *)cf_iota1);
+      		__m256i cf_v2 = _mm256_add_epi32(cf_v0, cf_v1);
+      		_mm256_storeu_si256((void *)((a) + cf_i), cf_v2);
+      	    }
+      	}
+      	for (; i < (n) && (unsigned)((unsigned)(n) - (unsigned)i) >= 8; i += 8) {
+      	    {
+      		const int32_t cf_i = i + 0;
+      		__m256i cf_v0 = _mm256_set1_epi32((int32_t)(cf_i));
+      		__m256i cf_v1 = _mm256_loadu_si256((const void *)cf_iota1);
+      		__m256i cf_v2 = _mm256_add_epi32(cf_v0, cf_v1);
+      		_mm256_storeu_si256((void *)((a) + cf_i), cf_v2);
+      	    }
+      	}
+      	}
+      #endif
+      	for (; i < (n); i += 1) {
+      		(a)[(long)((int64_t)((i)))] = (int)(i);
+      	}
+      }
+  ptreq (line 5): not lowered: line 5: a parameter that is not an integer or a float (a)
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  int parray(int*p,int n){int s=0;for(int i=0;i<n;i++)s+=p[i];return s;}
+  int ptrinc(int*p,int n){int s=0;for(int i=0;i<n;i++)s+=*p++;return s;}
+  int ptrdiff(int*a,int*b){return (int)(b-a);}
+  void arrstore(int*a,int n){for(int i=0;i<n;i++)a[i]=i;}
+  int ptreq(int*a,int*b){return a==b;}

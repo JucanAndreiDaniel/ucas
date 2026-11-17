@@ -1,0 +1,17 @@
+{"jsonrpc":"2.0","id":0,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"stress","version":"1"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"mg","params":[{"name":"x","type":"u6"}],"body":"x*x*x+47"}}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"mh1","params":[{"name":"x","type":"u64"}],"body":"(x*0x9e3779b97f4a7c15)*0x9e3779b97f4a7c15"}}}}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"mh2","params":[{"name":"x","type":"u64"}],"body":"x*(0x9e3779b97f4a7c15*0x9e3779b97f4a7c15)"}}}}
+{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"mheavy","params":[{"name":"x","type":"real"}],"body":"exp(sin(exp(x)))*cos(exp(cos(exp(x))))"}}}}
+{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"mg"}}}}
+{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"gates","args":{"f":"mg","max":40,"nodes":4194304,"timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"find","args":{"f":"mg","n":200,"max":40,"timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"mg"}}}}
+{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"equiv","args":{"f":"mh1","g":"mh2","timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"approx","args":{"f":"mheavy","in":[-10,10],"options":"degree 50 as f64","timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":11,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"fit","args":{"g":"a*x^4+b*x^3+c*x^2+d*x+e","f":"sin(x)","metric":"maxrel","timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":12,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"range","args":{"f":"mheavy","timeout_s":0.005}}}}
+{"jsonrpc":"2.0","id":13,"method":"tools/call","params":{"name":"proofs","arguments":{"op":"prove","args":{"name":"bockstein","timeout_s":0.02}}}}
+{"jsonrpc":"2.0","id":14,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"mg"}}}}
+{"jsonrpc":"2.0","id":15,"method":"tools/call","params":{"name":"session","arguments":{"op":"state","args":{}}}}

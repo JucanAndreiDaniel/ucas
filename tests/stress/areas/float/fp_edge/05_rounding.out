@@ -1,0 +1,34 @@
+> re(x: f32 in -1000..1000) = roundeven(x)
+> fl(x: f32 in -1000..1000) = floor(x + f32(0.5))
+> equiv re fl
+re and fl differ, e.g. x=992.5: 992 vs 993 (found by SAT, checked by evaluation)
+> show roundeven(f32(2.5))
+_() = 2
+  -> f32
+> show roundeven(f32(3.5))
+_() = 4
+  -> f32
+> show roundeven(f32(-2.5))
+_() = -2
+  -> f32
+> show floor(f32(-0.0))
+_() = -0
+  -> f32
+> show ceil(f32(-0.0))
+_() = -0
+  -> f32
+> show roundeven(f32(0.5))
+_() = 0
+  -> f32
+> show roundeven(f32(1.5))
+_() = 2
+  -> f32
+> rr(x: f32 in -1000..1000) = roundeven(x)
+> find rr 1
+find rr: rewrites by identities the model prices lower (cost 3 as written, under gt1030)
+  cost 2   x + 12582912 - 12582912                  roundeven(x) by adding and subtracting 1.5*2^23 (derived)
+      holds where x in [-1000, 1000], inside [-2^22, 2^22]; where the result is zero its sign may differ (allowed by Vulkan's default float controls, without SignedZeroInfNanPreserve)
+      x + 1.5*2^23 lies in [2^23, 2^24], where the f32 are the integers: the add rounds x to the nearest integer, a tie to the even one, giving roundeven(x) + 1.5*2^23 exactly
+      subtracting 1.5*2^23 leaves roundeven(x), an integer up to 2^22 in magnitude, an f32: no rounding
+find rr: IEEE bit-level families, magic constant K fitted for max relative error
+  [exact roundeven(x) costs 3 under gt1030; refine a family with a Newton step and check it with 'error']

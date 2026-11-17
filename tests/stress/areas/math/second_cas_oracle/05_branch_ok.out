@@ -1,0 +1,37 @@
+> limit tan(x) x -> pi/2+
+limit of tan(x) as x -> pi/2+ (from the right):
+  = -inf
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -6.313751515, -101.8558911, -1629.746413, -26075.94586, -417215.134, -13350884.3
+    the values grow without bound (-): agrees
+> limit tan(x) x -> pi/2-
+limit of tan(x) as x -> pi/2- (from the left):
+  = inf
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 6.313751515, 101.8558911, 1629.746413, 26075.94586, 417215.134, 13350884.28
+    the values grow without bound (+): agrees
+> limit atan(1/x) x -> 0+
+limit of atan(1/x) as x -> 0+ (from the right):
+  1/x -> inf (the numerator -> 1, x -> 0+)
+  = pi/2
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 1.471127674, 1.564546408, 1.570405702, 1.570771913, 1.570794801, 1.570796279
+    extrapolated (Richardson): 1.57079632679 (estimated error 0): agrees
+> limit atan(1/x) x -> 0-
+limit of atan(1/x) as x -> 0- (from the left):
+  1/x -> -inf (the numerator -> 1, x -> 0-)
+  = -pi/2
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -1.471127674, -1.564546408, -1.570405702, -1.570771913, -1.570794801, -1.570796279
+    extrapolated (Richardson): -1.57079632679 (estimated error 0): agrees
+> solve a*x^2 + b*x + c = 0 for x
+  ucas: solve a*x^2 + b*x + c = 0 for x
+solve a*x^2 + b*x + c = 0 for x
+  x = (-b + sqrt(b^2 - 4a*c))/(2a)
+  x = (-b - sqrt(b^2 - 4a*c))/(2a)
+  where a != 0 (else the equation is linear)
+  real when the discriminant b^2 - 4a*c >= 0
+  check: x = the first substituted, the equation holds at 42 sample points of the other variables (residual 1.4e-13)
+  check: x = the second substituted, the equation holds at 42 sample points of the other variables (residual 1.2e-14)
+> simplify (x^2-1)/(x-1)
+  ucas: simplify (x^2-1)/(x-1)
+simplify (x^2 - 1)/(x - 1)
+  = x + 1
+  holds where x - 1 != 0 (cancelled there)
+  check: exact (both sides have the same normal form)

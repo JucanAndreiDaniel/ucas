@@ -1,0 +1,19 @@
+> a(x: f32, y: f32) = x * y
+> b(x: f32, y: f32) = y == f32(1) ? x : x * y
+> equiv a b noftz
+a and b are equal on the domain of a (proved by SAT: 14913 AIG nodes, 5078 conflicts)
+> equiv a b ftz
+a and b differ, e.g. x=-2.24207754e-43, y=1: -0 vs -2.24207754e-43 (found by SAT, checked by evaluation)
+  every float operation flushed subnormals to zero (ftz)
+> n1(x: f32, y: f32) = x * y
+> n2(x: f32, y: f32) = f32(f64(x) * f64(y))
+> equiv n1 n2
+n1 and n2 are equal on the domain of n1 (proved by SAT: 16609 AIG nodes, 0 conflicts)
+> equiv n1 n2 ftz
+n1 and n2 are equal on the domain of n1 (proved by SAT: 18530 AIG nodes, 0 conflicts)
+  every float operation flushed subnormals to zero (ftz)
+> sub(x: f32) = asfloat(asuint(x) & 0x007fffff)
+> sub2(x: f32) = asfloat(asuint(x) & 0x007ffffe)
+> equiv sub sub2 ftz
+sub and sub2 differ at 32707 points of the sample, e.g. x=-3.40282347e+38: 1.17549421e-38 vs 1.17549407e-38
+  every float operation flushed subnormals to zero (ftz)

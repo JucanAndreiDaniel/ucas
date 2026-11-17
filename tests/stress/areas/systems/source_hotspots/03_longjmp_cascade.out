@@ -1,0 +1,35 @@
+> a(x: u8) = x+1
+> b(x: u8) = x*2
+> c(x: u8) = x-1
+> show a
+a(x: u8) = x + 1
+  -> u8
+> cost a model no_such
+03_longjmp_cascade.ucas:6:14: error: unknown model
+    cost a model no_such
+                 ^
+> show b
+b(x: u8) = 2x
+  -> u8
+> gates a basis no_such
+03_longjmp_cascade.ucas:8:15: error: unknown basis
+    gates a basis no_such
+                  ^
+> show c
+c(x: u8) = x - 1
+  -> u8
+> abgroup nonsense
+03_longjmp_cascade.ucas:10:9: error: abgroup: expected an abelian group like Z/4 + Z/6, Z^2 + Z/3, 0 or coker [[2, 0], [0, 3]], got "nonsense"
+    abgroup nonsense
+            ^
+> show a
+a(x: u8) = x + 1
+  -> u8
+> range b
+range of b -> u8:
+  0..254   (128 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> show c
+c(x: u8) = x - 1
+  -> u8

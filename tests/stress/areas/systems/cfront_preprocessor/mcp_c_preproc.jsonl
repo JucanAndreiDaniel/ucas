@@ -1,0 +1,5 @@
+{"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "stress", "version": "1"}}}
+{"jsonrpc": "2.0", "method": "notifications/initialized"}
+{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "c", "arguments": {"op": "c_lower", "args": {"code": "#define N 5\n#define ADD(a,b) ((a)+(b))\nint f(int x){ return ADD(x,N); }\nint g(int x){\n#ifdef N\n return x*2;\n#else\n return x*3;\n#endif\n}"}}}}
+{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "c", "arguments": {"op": "c_lower", "args": {"code": "#include <stdint.h>\nuint32_t h(uint32_t x){ return x/7; }"}}}}
+{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "c", "arguments": {"op": "c_optimize", "args": {"code": "#define S 3\nint k(unsigned x){ return (x*S)/2; }", "nofile": true, "budget": 3}}}}

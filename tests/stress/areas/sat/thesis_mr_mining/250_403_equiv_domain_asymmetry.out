@@ -1,0 +1,21 @@
+> f(x: u8) = x / x
+> g(x: u8) = 1
+> domain f
+domain of f:
+  x: u8, 0..255
+  requires x != 0  (in x/x)
+  defined at 255 of 256 points
+  defined for: 1..255
+  undefined e.g. at x=0
+  C undefined behaviour at 1 points, e.g. x=0
+  over all 256 points of the domain
+> domain g
+domain of g:
+  x: u8, 0..255
+  no conditions: total on its parameter types
+  defined at 256 of 256 points
+  over all 256 points of the domain
+> equiv f g
+f and g are equal on the domain of f (exhaustive)
+> equiv g f
+g and f differ at 1 point, e.g. x=0: 1 vs undefined

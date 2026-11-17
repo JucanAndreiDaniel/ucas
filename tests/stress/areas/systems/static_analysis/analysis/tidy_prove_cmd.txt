@@ -1,0 +1,46 @@
+/home/andrew/Code/ucas/src/prove_cmd.c:37:8: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   23 | #include <stdlib.h>
+   24 | #include <string.h>
+   25 | 
+   26 | extern char ks_load_msg[];
+   27 | 
+   28 | static int
+   29 | user_find(const char *name)
+   30 | {
+   31 |         int i = kl_find(name);
+   32 | 
+   33 |         return i;
+   34 | }
+   35 | 
+   36 | /* the theorem a lemma's proof rests on: lemmas and axioms it cites */
+   37 | static uint32_t *lemma_of;      /* thm -> lemma index + 1 */
+      |        ^
+/home/andrew/Code/ucas/src/prove_cmd.c:79:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   79 |         uint8_t *mark = xcalloc(n, 1);
+      |         ^
+/home/andrew/Code/ucas/src/prove_cmd.c:183:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   23 |         printf("%*s%s  (%u inferences", depth * 2, "",
+      |         ^
+/home/andrew/Code/ucas/src/prove_cmd.c:297:4: warning: Value stored to 'li' is never read [clang-analyzer-deadcode.DeadStores]
+  297 |                         li = ks_add_user(name, phi, src);
+      |                         ^    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_cmd.c:297:4: note: Value stored to 'li' is never read
+  297 |                         li = ks_add_user(name, phi, src);
+      |                         ^    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/prove_cmd.c:329:6: warning: no header providing "sscanf" is directly included [misc-include-cleaner]
+  329 |         if (sscanf(s, "%63s", name) != 1)
+      |             ^
+/home/andrew/Code/ucas/src/prove_cmd.c:403:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  403 |                 snprintf(why, sizeof why, "%s", ka_why);
+      |                 ^
+/home/andrew/Code/ucas/src/prove_cmd.c:408:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  408 |                             strcmp(klemmas[i].route, "theorem") ||
+      |                             ^
+      |                                                                 != 0
+/home/andrew/Code/ucas/src/prove_cmd.c:650:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  650 |         switch (c) {
+      |         ^
+/home/andrew/Code/ucas/src/prove_cmd.c:650:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

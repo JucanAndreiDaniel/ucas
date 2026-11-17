@@ -1,0 +1,30 @@
+# Float rewrites: derived, not sampled. Default is within Vulkan precision.
+simplify float nofile
+```spv
+%a = OpFDiv %float %x %float_3_0
+OpStore %out %a
+```
+# Bit-exact mode: a divide by a power of two is an exact scaling.
+simplify float exact nofile
+```spv
+%a = OpFDiv %float %x %float_2_0
+OpStore %out %a
+```
+# A requested ulp budget: a 1-ulp rewrite meets ulp 2.
+simplify float ulp 2 nofile
+```spv
+%a = OpFDiv %float %x %float_3_0
+OpStore %out %a
+```
+# ulp 0 rejects the non-bit-exact multiply.
+simplify float ulp 0 nofile
+```spv
+%a = OpFDiv %float %x %float_3_0
+OpStore %out %a
+```
+# A float range assumption narrows where a rewrite is derived.
+simplify float c in [0.1, 10] nofile
+```spv
+%a = OpExtInst %float %glsl Pow %c %float_2_0
+OpStore %out %a
+```

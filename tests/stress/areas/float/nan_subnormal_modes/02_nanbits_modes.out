@@ -1,0 +1,37 @@
+> nanf(x: u32) = asfloat(x | 0x7fc12345)
+> nang(x: u32) = asfloat(u32(0x7fc00000))
+> equiv nanf nang
+nanf and nang are equal on the domain of nanf (proved by SAT: 33 AIG nodes, 0 conflicts)
+> equiv nanf nang nanbits
+nanf and nang differ at 65536 points of the sample, e.g. x=0: NaN 0x7fc12345 vs NaN 0x7fc00000
+  NaN results compared by their bits, sign and payload (nanbits)
+> nannegf(x: u32) = asfloat(x | 0xffc54321)
+> equiv nannegf nang
+nannegf and nang are equal on the domain of nannegf (proved by SAT: 33 AIG nodes, 0 conflicts)
+> equiv nannegf nang nanbits
+nannegf and nang differ at 65536 points of the sample, e.g. x=0: NaN 0xffc54321 vs NaN 0x7fc00000
+  NaN results compared by their bits, sign and payload (nanbits)
+> hnanf(x: u16) = asfloat(x | 0x7e01)
+> hnang(x: u16) = asfloat(u16(0x7e00))
+> equiv hnanf hnang
+hnanf and hnang are equal on the domain of hnanf (exhaustive)
+> equiv hnanf hnang nanbits
+hnanf and hnang differ at 65536 points, e.g. x=0: NaN 0x7e01 vs NaN 0x7e00
+  NaN results compared by their bits, sign and payload (nanbits)
+> negf(x: u32) = -(-asfloat(x))
+> passthru(x: u32) = asfloat(x)
+> absf(x: u32) = abs(asfloat(x))
+> absb(x: u32) = asfloat(x & 0x7fffffff)
+> equiv negf passthru nanbits
+negf and passthru are equal on the domain of negf (proved by SAT: 1168 AIG nodes, 17 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> equiv absf absb nanbits
+absf and absb are equal on the domain of absf (proved by SAT: 1168 AIG nodes, 17 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> sqf(x: u32) = asfloat(x | 0x7f800001)
+> sqg(x: u32) = asfloat(x | 0x7f800001) + f32(0)
+> equiv sqf sqg
+sqf and sqg are equal on the domain of sqf (proved by SAT: 80 AIG nodes, 0 conflicts)
+> equiv sqf sqg nanbits
+sqf and sqg are equal on the domain of sqf (sampled, not proved; no SAT proof: its counterexample did not reproduce)
+  NaN results compared by their bits, sign and payload (nanbits)

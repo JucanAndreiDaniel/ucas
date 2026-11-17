@@ -1,0 +1,17 @@
+> c lower nofile wrapv
+  sadd(a: i32, b: i32) = a + b
+  smul(a: i32, b: i32) = a*b
+  shl(a: i32, n: i32) = a << n
+  divz(a: i32, b: i32) = a/b
+> c optimize nofile wrapv budget 3
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 4.8 -> 2.0 cycles
+  abs_bad (line 1): abs(a)
+    proof: sat (proved by SAT: 248 AIG nodes, 0 conflicts); cost 4.8 -> 2.0
+    before: {return a<0?-a:a;}
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  int abs_bad(int a){
+  	return (int)((int32_t)((int32_t)((a)) < 0 ? 0u - (uint32_t)((a)) : (uint32_t)((a))));
+  }

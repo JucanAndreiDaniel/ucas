@@ -1,0 +1,30 @@
+> f1(x: f32) = x + 1
+> f2(x: f32) = 1 + x
+> equiv f1 f2
+f1 and f2 are equal on the domain of f1 (proved by SAT: 6677 AIG nodes, 0 conflicts)
+> equiv f1 f2 ftz
+f1 and f2 are equal on the domain of f1 (proved by SAT: 8051 AIG nodes, 0 conflicts)
+  every float operation flushed subnormals to zero (ftz)
+> equiv f1 f2 nanbits
+f1 and f2 are equal on the domain of f1 (proved by SAT: 6727 AIG nodes, 84 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> m1(x: f32) = -(-asfloat(asuint(x)))
+> m2(x: f32) = asfloat(asuint(x))
+> equiv m1 m2 nanbits
+m1 and m2 are equal on the domain of m1 (proved by SAT: 2625 AIG nodes, 11 conflicts)
+  NaN results compared by their bits, sign and payload (nanbits)
+> l2a(x: f32, y: f32) = x * y
+> l2b(x: f32, y: f32) = f32(f64(x) * f64(y))
+> equiv l2a l2b
+l2a and l2b are equal on the domain of l2a (proved by SAT: 16609 AIG nodes, 0 conflicts)
+> u1(x: f16, y: f16) = x + y
+> u2(x: f16, y: f16) = x == f16(1) && y == f16(2^(-10)) ? x : x + y
+> equiv u1 u2
+u1 and u2 differ, e.g. x=1, y=0.00097656: 1.001 vs 1 (found by SAT, checked by evaluation)
+> q1(x: u32) = asfloat(x | 0x7fc00000)
+> q2(x: u32) = asfloat(u32(0x7fc00000))
+> equiv q1 q2
+q1 and q2 are equal on the domain of q1 (proved by SAT: 54 AIG nodes, 0 conflicts)
+> equiv q1 q2 nanbits
+q1 and q2 differ at 65533 points of the sample, e.g. x=4294967295: NaN 0xffffffff vs NaN 0x7fc00000
+  NaN results compared by their bits, sign and payload (nanbits)

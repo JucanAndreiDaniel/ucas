@@ -1,0 +1,425 @@
+/home/andrew/Code/ucas/src/integ.c:19:8: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   14 | 
+   15 | #include <math.h>
+   16 | #include <stdlib.h>
+   17 | #include <string.h>
+   18 | 
+   19 | static nid
+      |        ^
+/home/andrew/Code/ucas/src/integ.c:22:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   16 | #include <stdlib.h>
+   17 | #include <string.h>
+   18 | 
+   19 | static nid
+   20 | xvar(nid f, int s)
+   21 | {
+   22 |         uint32_t j;
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:27:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+   27 |         if (N.op[f] == O_VAR)
+      |             ^
+/home/andrew/Code/ucas/src/integ.c:27:17: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   27 |         if (N.op[f] == O_VAR)
+      |                        ^
+/home/andrew/Code/ucas/src/integ.c:29:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+   29 |         if (N.op[f] == O_TABLE) {
+      |                        ^
+/home/andrew/Code/ucas/src/integ.c:31:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   31 |                         if ((r = xvar(N.lst[N.a[f] + j], s)) != 0)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/integ.c:31:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/integ.c:31:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/integ.c:35:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   35 |         if ((r = xvar(N.a[f], s)) != 0)
+      |              ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/integ.c:35:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/integ.c:35:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/integ.c:37:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   37 |         if ((r = xvar(N.b[f], s)) != 0)
+      |              ~~^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/integ.c:37:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/integ.c:37:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/integ.c:65:25: warning: no header providing "const_is" is directly included [misc-include-cleaner]
+   65 |         for (k = 0; k < 14 && !const_is(d, 0); k++) {
+      |                                ^
+/home/andrew/Code/ucas/src/integ.c:68:13: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+   68 |                 if (op == O_EXP)
+      |                           ^
+/home/andrew/Code/ucas/src/integ.c:70:18: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+   70 |                 else if (op == O_SIN)
+      |                                ^
+/home/andrew/Code/ucas/src/integ.c:71:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   71 |                         term = MUL(c, (k & 1) ? mk_un(O_SIN, u) :
+      |                                        ^
+/home/andrew/Code/ucas/src/integ.c:71:28: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+   71 |                         term = MUL(c, (k & 1) ? mk_un(O_SIN, u) :
+      |                                                 ^
+/home/andrew/Code/ucas/src/integ.c:72:14: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+   72 |                             mk_un(O_NEG, mk_un(O_COS, u)));
+      |                                   ^
+/home/andrew/Code/ucas/src/integ.c:72:27: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+   72 |                             mk_un(O_NEG, mk_un(O_COS, u)));
+      |                                                ^
+/home/andrew/Code/ucas/src/integ.c:74:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   74 |                         term = MUL(c, (k & 1) ? mk_un(O_COS, u) : mk_un(O_SIN, u));
+      |                                        ^
+/home/andrew/Code/ucas/src/integ.c:76:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   76 |                 if (op == O_EXP ? (k & 1) : ((k >> 1) & 1))
+      |                                    ^ ~
+/home/andrew/Code/ucas/src/integ.c:76:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   76 |                 if (op == O_EXP ? (k & 1) : ((k >> 1) & 1))
+      |                                              ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:76:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   76 |                 if (op == O_EXP ? (k & 1) : ((k >> 1) & 1))
+      |                                               ^ ~~
+/home/andrew/Code/ucas/src/integ.c:79:7: warning: no header providing "diff_node" is directly included [misc-include-cleaner]
+   79 |                 d = diff_node(d, (uint32_t)s);
+      |                     ^
+/home/andrew/Code/ucas/src/integ.c:110:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  110 |         switch (N.op[f]) {
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:111:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  111 |         case O_ADD:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:112:7: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  112 |         case O_SUB: {
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:114:19: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  114 |                 return A && B ? mk_bin(N.op[f], A, B) : 0;
+      |                                 ^
+/home/andrew/Code/ucas/src/integ.c:119:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  119 |         case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:120:8: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  120 |                 if (!TY_FP(N.ty[f]))
+      |                      ^
+/home/andrew/Code/ucas/src/integ.c:120:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/integ.c:123:7: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  123 |         case O_MUL:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:140:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  140 |                                     (r = by_parts(P, g, s, x)) != 0)
+      |                                      ~~^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/integ.c:140:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/integ.c:140:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/integ.c:145:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  145 |         case O_DIV:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:154:34: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+  154 |                                 return DIV(MUL(N.a[f], mk_un(O_LOG, mk_un(O_ABS, u))),
+      |                                                              ^
+/home/andrew/Code/ucas/src/integ.c:154:47: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  154 |                                 return DIV(MUL(N.a[f], mk_un(O_LOG, mk_un(O_ABS, u))),
+      |                                                                           ^
+/home/andrew/Code/ucas/src/integ.c:156:19: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  156 |                         if (N.op[u] == O_POW && num_of(N.b[u], &k) &&
+      |                                        ^
+/home/andrew/Code/ucas/src/integ.c:186:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  186 |         case O_SQRT:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:206:7: warning: no header providing "O_TAN" is directly included [misc-include-cleaner]
+  206 |         case O_TAN:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:217:7: warning: no header providing "O_LAMBERTW" is directly included [misc-include-cleaner]
+  217 |         case O_LAMBERTW:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:218:7: warning: no header providing "O_LAMBERTWM1" is directly included [misc-include-cleaner]
+  218 |         case O_LAMBERTWM1:
+      |              ^
+/home/andrew/Code/ucas/src/integ.c:236:24: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  236 |                 return mk_bin(O_MUL, mk_cast(TY_REAL, f), TY_FP(N.ty[xv]) ? xv :
+      |                                      ^
+/home/andrew/Code/ucas/src/integ.c:236:32: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+  236 |                 return mk_bin(O_MUL, mk_cast(TY_REAL, f), TY_FP(N.ty[xv]) ? xv :
+      |                                              ^
+/home/andrew/Code/ucas/src/integ.c:236:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:236:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  236 |                 return mk_bin(O_MUL, mk_cast(TY_REAL, f), TY_FP(N.ty[xv]) ? xv :
+      |                                                           ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/integ.c:237:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  237 |                     mk_cast(TY_REAL, xv));
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:246:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   16 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:252:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  252 |         if (!TY_FP(N.ty[x]))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/integ.c:253:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  253 |                 x = mk_cast(TY_REAL, x);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:254:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  254 |         f = mk_cast(TY_REAL, f);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:255:16: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+  255 |         memcpy(saved, fail_jmp, sizeof saved);
+      |                       ^
+/home/andrew/Code/ucas/src/integ.c:256:6: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+  256 |         if (setjmp(fail_jmp)) {
+      |             ^
+/home/andrew/Code/ucas/src/integ.c:258:3: warning: no header providing "notes_drop" is directly included [misc-include-cleaner]
+  258 |                 notes_drop();
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:263:19: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  263 |         if (r == 0 && (r = ad(f, s, x)) != 0)
+      |                        ~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/integ.c:263:19: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/integ.c:263:19: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/integ.c:276:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+  276 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/integ.c:277:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  277 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:277:18: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  277 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                         ^
+/home/andrew/Code/ucas/src/integ.c:277:34: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+  277 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                         ^
+/home/andrew/Code/ucas/src/integ.c:277:41: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  277 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                                ^
+/home/andrew/Code/ucas/src/integ.c:281:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  281 |         plan_build(&p, &e, 1, 0);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:284:2: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  284 |         plan_run(&p, 1, in_i, in_r);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:286:10: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  286 |         *ok = !(COLF(&p, l)[0] & F_UNDEF);
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:286:27: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  286 |         *ok = !(COLF(&p, l)[0] & F_UNDEF);
+      |                                  ^
+/home/andrew/Code/ucas/src/integ.c:286:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  286 |         *ok = !(COLF(&p, l)[0] & F_UNDEF);
+      |                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:287:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |         v = TY_FP(N.ty[e]) ? COLR(&p, l)[0] : (double)COLI(&p, l)[0];
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/integ.c:287:23: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  287 |         v = TY_FP(N.ty[e]) ? COLR(&p, l)[0] : (double)COLI(&p, l)[0];
+      |                              ^
+/home/andrew/Code/ucas/src/integ.c:287:48: warning: no header providing "COLI" is directly included [misc-include-cleaner]
+  287 |         v = TY_FP(N.ty[e]) ? COLR(&p, l)[0] : (double)COLI(&p, l)[0];
+      |                                                       ^
+/home/andrew/Code/ucas/src/integ.c:290:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  290 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:326:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  326 |         switch (mode) {
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:326:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/integ.c:342:27: warning: no header providing "func" is directly included [misc-include-cleaner]
+  342 | gk_integrate(const struct func *f, nid e, int slot, double a, double b,
+      |                           ^
+/home/andrew/Code/ucas/src/integ.c:348:21: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  348 |         struct gkint *iv = xmalloc(4096 * sizeof *iv);
+      |                            ^
+/home/andrew/Code/ucas/src/integ.c:368:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  368 |         e = mk_cast(TY_REAL, e);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:406:30: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  406 |                                 in_r[(size_t)slot * CH + w * 15 + k] = xmap(mode, base, t,
+      |                                                          ^
+/home/andrew/Code/ucas/src/integ.c:406:30: note: make conversion explicit to silence this warning
+   16 |                                 in_r[(size_t)slot * CH + w * 15 + k] = xmap(mode, base, t,
+      |                                                          ^~~~~~
+      |                                                          (size_t)( )
+/home/andrew/Code/ucas/src/integ.c:406:30: note: perform multiplication in a wider type
+  406 |                                 in_r[(size_t)slot * CH + w * 15 + k] = xmap(mode, base, t,
+      |                                                          ^
+      |                                                          (long)
+/home/andrew/Code/ucas/src/integ.c:420:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  420 |                                 if (COLF(&p, l)[w * 15 + k] & F_UNDEF ||
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:429:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  429 |                                 if (j & 1)
+      |                                     ^ ~
+/home/andrew/Code/ucas/src/integ.c:469:9: warning: no header providing "subst" is directly included [misc-include-cleaner]
+  469 |         return subst(mk_cast(TY_REAL, e), map, NSLOT);
+      |                ^
+/home/andrew/Code/ucas/src/integ.c:469:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  469 |         return subst(mk_cast(TY_REAL, e), map, NSLOT);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:486:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  486 |         F = mk_cast(TY_REAL, F);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:542:7: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   16 |                                                 printf("  the antiderivative jumps by %.15g at %s = %s "
+      |                                                 ^
+/home/andrew/Code/ucas/src/integ.c:567:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  567 |                 fail("%s has no variable to integrate over", f->anon ?
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:568:7: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  568 |                     node_str(body) : sym_str(f->name));
+      |                     ^
+/home/andrew/Code/ucas/src/integ.c:568:24: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  568 |                     node_str(body) : sym_str(f->name));
+      |                                      ^
+/home/andrew/Code/ucas/src/integ.c:575:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+   14 |         rep_begin("integrate");
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:576:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  576 |         rep_str("var", xn);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:577:2: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  577 |         rep_expr("integrand", body);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:580:10: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  580 |                 struct sbuf conds = {0};
+      |                        ^
+/home/andrew/Code/ucas/src/integ.c:581:12: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  581 |                 nid xv = mk_var((uint32_t)slot, f->p[slot].name, f->p[slot].ty);
+      |                          ^
+/home/andrew/Code/ucas/src/integ.c:582:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  582 |                 nid simpler = cancel_quotients(mk_cast(TY_REAL, body), slot,
+      |                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:583:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                     TY_FP(N.ty[xv]) ? xv : mk_cast(TY_REAL, xv), &conds);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/integ.c:583:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                     TY_FP(N.ty[xv]) ? xv : mk_cast(TY_REAL, xv), &conds);
+      |                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:587:4: warning: no header providing "rep_cond" is directly included [misc-include-cleaner]
+  587 |                         rep_cond("%s", conds.p);
+      |                         ^
+/home/andrew/Code/ucas/src/integ.c:627:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  627 |                                 fv = eval_const_at(mk_cast(TY_REAL, body), slot, x, &o1);
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:636:5: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+  636 |                                 rep_check("derivative", checked, maxres,
+      |                                 ^
+/home/andrew/Code/ucas/src/integ.c:650:3: warning: no header providing "rep_null" is directly included [misc-include-cleaner]
+  650 |                 rep_null("antiderivative");
+      |                 ^
+/home/andrew/Code/ucas/src/integ.c:664:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  664 |         rep_obj("definite");
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:665:2: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  665 |         rep_num("from", a);
+      |         ^
+/home/andrew/Code/ucas/src/integ.c:677:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  677 |                                 eval_const_at(mk_cast(TY_REAL, ibody), slot,
+      |                                                       ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:688:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  688 |                                         double jt = f_jumps(F, mk_cast(TY_REAL, ibody), slot, lo,
+      |                                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/integ.c:703:4: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  703 |                         rep_int("evaluations", nev);
+      |                         ^
+/home/andrew/Code/ucas/src/integ.c:713:3: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  713 |                 rep_end();
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

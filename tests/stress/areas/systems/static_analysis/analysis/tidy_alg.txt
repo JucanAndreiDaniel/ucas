@@ -1,0 +1,606 @@
+/home/andrew/Code/ucas/src/alg.c:28:8: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   23 | #include <stdlib.h>
+   24 | #include <string.h>
+   25 | 
+   26 | /* ---- the canonical variables of a command ---- */
+   27 | 
+   28 | static uint32_t vname[MAXP];
+      |        ^
+/home/andrew/Code/ucas/src/alg.c:28:23: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+   28 | static uint32_t vname[MAXP];
+      |                       ^
+/home/andrew/Code/ucas/src/alg.c:32:1: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   21 | 
+   22 | #include <math.h>
+   23 | #include <stdlib.h>
+   24 | #include <string.h>
+   25 | 
+   26 | /* ---- the canonical variables of a command ---- */
+   27 | 
+   28 | static uint32_t vname[MAXP];
+   29 | static int nvname;
+   30 | 
+   31 | void alg_vars_reset(void);
+   32 | nid alg_canon(struct func *f);
+      | ^
+/home/andrew/Code/ucas/src/alg.c:32:22: warning: no header providing "func" is directly included [misc-include-cleaner]
+   32 | nid alg_canon(struct func *f);
+      |                      ^
+/home/andrew/Code/ucas/src/alg.c:50:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+   50 |                 fail("too many variables (at most %d)", MAXP);
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:59:10: warning: no header providing "NSLOT" is directly included [misc-include-cleaner]
+   59 |         nid map[NSLOT];
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:64:3: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   64 |                 ty_t t = f->p[k].ty;
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:65:8: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+   65 |                 if (!TY_FP(t))
+      |                      ^
+/home/andrew/Code/ucas/src/alg.c:65:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/alg.c:66:8: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+   66 |                         t = TY_REAL;
+      |                             ^
+/home/andrew/Code/ucas/src/alg.c:66:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/alg.c:67:12: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+   67 |                 map[k] = mk_var((uint32_t)vslot(f->p[k].name), f->p[k].name, t);
+      |                          ^
+/home/andrew/Code/ucas/src/alg.c:70:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   70 |                 if (!TY_FP(f->p[k].ty))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/alg.c:72:9: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+   72 |         return mk_cast(TY_REAL, subst(f->body, map, NSLOT));
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:72:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   72 |         return mk_cast(TY_REAL, subst(f->body, map, NSLOT));
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/alg.c:72:26: warning: no header providing "subst" is directly included [misc-include-cleaner]
+   72 |         return mk_cast(TY_REAL, subst(f->body, map, NSLOT));
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:76:1: warning: function 'alg_nvars' can be made static to enforce internal linkage [misc-use-internal-linkage]
+   75 | int
+      | static 
+   76 | alg_nvars(uint32_t *names)
+      | ^
+/home/andrew/Code/ucas/src/alg.c:85:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   85 |         return mk_var((uint32_t)vslot(name), name, TY_REAL);
+      |                                                    ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/alg.c:91:17: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   91 | slots_of(nid e, uint64_t *m, int depth)
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:97:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+   97 |         if (N.op[e] == O_VAR) {
+      |             ^
+/home/andrew/Code/ucas/src/alg.c:97:17: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   97 |         if (N.op[e] == O_VAR) {
+      |                        ^
+/home/andrew/Code/ucas/src/alg.c:99:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   99 |                         *m |= (uint64_t)1 << N.ki[e];
+      |                                           ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/alg.c:102:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  102 |         if (N.op[e] == O_TABLE) {
+      |                        ^
+/home/andrew/Code/ucas/src/alg.c:107:17: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  107 |         if (N.op[e] == O_CONST || N.op[e] == O_UNDEF)
+      |                        ^
+/home/andrew/Code/ucas/src/alg.c:107:39: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+  107 |         if (N.op[e] == O_CONST || N.op[e] == O_UNDEF)
+      |                                              ^
+/home/andrew/Code/ucas/src/alg.c:124:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+  124 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:126:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  126 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:126:18: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  126 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                         ^
+/home/andrew/Code/ucas/src/alg.c:126:41: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  126 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                                ^
+/home/andrew/Code/ucas/src/alg.c:133:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  133 |         roots[0] = mk_cast(TY_REAL, a);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/alg.c:134:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  134 |         roots[1] = mk_cast(TY_REAL, b);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/alg.c:135:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  135 |         plan_build(&p, roots, 2, 1);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:139:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  139 |                         rng ^= rng << 13;
+      |                                    ~~ ^~
+/home/andrew/Code/ucas/src/alg.c:140:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  140 |                         rng ^= rng >> 7;
+      |                                    ~~ ^
+/home/andrew/Code/ucas/src/alg.c:141:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  141 |                         rng ^= rng << 17;
+      |                                    ~~ ^~
+/home/andrew/Code/ucas/src/alg.c:142:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  142 |                         u = (double)(rng >> 11) / 9007199254740992.0;
+      |                                          ~~ ^~
+/home/andrew/Code/ucas/src/alg.c:149:2: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  149 |         plan_run(&p, 64, in_i, in_r);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:153:14: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  153 |                 int da = !(COLF(&p, la)[i] & F_UNDEF) && isfinite(COLR(&p, la)[i]);
+      |                            ^
+/home/andrew/Code/ucas/src/alg.c:153:32: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  153 |                 int da = !(COLF(&p, la)[i] & F_UNDEF) && isfinite(COLR(&p, la)[i]);
+      |                                              ^
+/home/andrew/Code/ucas/src/alg.c:153:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  153 |                 int da = !(COLF(&p, la)[i] & F_UNDEF) && isfinite(COLR(&p, la)[i]);
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:153:53: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  153 |                 int da = !(COLF(&p, la)[i] & F_UNDEF) && isfinite(COLR(&p, la)[i]);
+      |                                                                   ^
+/home/andrew/Code/ucas/src/alg.c:154:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  154 |                 int db = !(COLF(&p, lb)[i] & F_UNDEF) && isfinite(COLR(&p, lb)[i]);
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:167:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  167 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:202:3: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   23 |                 printf("  check: exact (both sides have the same normal form)\n");
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:203:3: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+   21 |                 rep_check("normal_form", -1, -1, 1, "both sides have the same "
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:205:3: warning: no header providing "rep_proof" is directly included [misc-include-cleaner]
+  205 |                 rep_proof("symbolic", "both sides have the same normal form over "
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:232:35: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  232 | static nid simp_rec(nid e, struct sbuf *conds, int depth);
+      |                                   ^
+/home/andrew/Code/ucas/src/alg.c:241:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  241 |         snprintf(buf, sizeof buf, fmt, node_str(u));
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:241:33: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  241 |         snprintf(buf, sizeof buf, fmt, node_str(u));
+      |                                        ^
+/home/andrew/Code/ucas/src/alg.c:245:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  245 |                 sb_puts(conds, ", ");
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:271:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  271 |                 if (m[i] & 1) {
+      |                     ^~~~ ~
+/home/andrew/Code/ucas/src/alg.c:279:8: warning: no header providing "POW" is directly included [misc-include-cleaner]
+  279 |                         t = POW(t, KI(m[i] / 2));
+      |                             ^
+/home/andrew/Code/ucas/src/alg.c:279:15: warning: no header providing "KI" is directly included [misc-include-cleaner]
+  279 |                         t = POW(t, KI(m[i] / 2));
+      |                                    ^
+/home/andrew/Code/ucas/src/alg.c:279:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/calc.h:80:26: note: expanded from macro 'KI'
+   80 | #define KI(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                          ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/calc.h:86:39: note: expanded from macro 'POW'
+   86 | #define POW(a, b) mk_bin(O_POW, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/alg.c:280:11: warning: no header providing "MUL" is directly included [misc-include-cleaner]
+  280 |                 w = w ? MUL(w, t) : t;
+      |                         ^
+/home/andrew/Code/ucas/src/alg.c:282:6: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  282 |         w = mk_un(O_ABS, w);
+      |             ^
+/home/andrew/Code/ucas/src/alg.c:282:12: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  282 |         w = mk_un(O_ABS, w);
+      |                   ^
+/home/andrew/Code/ucas/src/alg.c:297:6: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  297 |         if (opinfo[op].arity != 1 || op == O_CAST || N.a[e] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/alg.c:297:37: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  297 |         if (opinfo[op].arity != 1 || op == O_CAST || N.a[e] == 0)
+      |                                            ^
+/home/andrew/Code/ucas/src/alg.c:300:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  300 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:300:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/alg.c:301:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  301 |         case O_SQRT:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:302:18: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+  302 |                 if (N.op[a] == O_POW && const_is(N.b[a], 2))
+      |                                ^
+/home/andrew/Code/ucas/src/alg.c:302:27: warning: no header providing "const_is" is directly included [misc-include-cleaner]
+  302 |                 if (N.op[a] == O_POW && const_is(N.b[a], 2))
+      |                                         ^
+/home/andrew/Code/ucas/src/alg.c:304:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  304 |                 if ((r = sqrt_rule(a)) != 0)
+      |                      ~~^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:304:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/alg.c:304:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/alg.c:307:7: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+  307 |         case O_EXP:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:308:18: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+  308 |                 if (N.op[a] == O_LOG) {
+      |                                ^
+/home/andrew/Code/ucas/src/alg.c:320:18: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  320 |                 if (N.op[a] == O_NEG)
+      |                                ^
+/home/andrew/Code/ucas/src/alg.c:333:33: warning: no header providing "NF_VAR" is directly included [misc-include-cleaner]
+  333 |         if (depth > 100 || !(N.fl[e] & NF_VAR))
+      |                                        ^
+/home/andrew/Code/ucas/src/alg.c:333:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  333 |         if (depth > 100 || !(N.fl[e] & NF_VAR))
+      |                                      ~ ^
+/home/andrew/Code/ucas/src/ucas.h:272:16: note: expanded from macro 'NF_VAR'
+  272 | #define NF_VAR 2     /* depends on a parameter */
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:335:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  335 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:335:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/alg.c:340:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  340 |         case O_ADD:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:341:7: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  341 |         case O_SUB:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:342:7: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  342 |         case O_MUL:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:343:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  343 |         case O_DIV:
+      |              ^
+/home/andrew/Code/ucas/src/alg.c:345:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  345 |                 if (!TY_FP(N.ty[e]))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/alg.c:352:43: warning: no header providing "num_of" is directly included [misc-include-cleaner]
+   21 |                         if (op == O_POW && N.op[a] == O_EXP && num_of(b, &k) &&
+      |                                                                ^
+/home/andrew/Code/ucas/src/alg.c:355:11: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  355 |                         return mk_bin(op, a, b);
+      |                                ^
+/home/andrew/Code/ucas/src/alg.c:360:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  360 |                 if (TY_FP(N.ty[e]))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/alg.c:385:18: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+  385 |                 t.t[0].e[s] = (uint8_t)(e & 1);
+      |                                ^
+/home/andrew/Code/ucas/src/alg.c:385:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  385 |                 t.t[0].e[s] = (uint8_t)(e & 1);
+      |                                         ^ ~
+/home/andrew/Code/ucas/src/alg.c:413:15: warning: no header providing "KR" is directly included [misc-include-cleaner]
+  413 |                                                 u = MUL(KR(t.t[0].e[k]), u);
+      |                                                         ^
+/home/andrew/Code/ucas/src/alg.c:414:18: warning: no header providing "ADD" is directly included [misc-include-cleaner]
+  414 |                                         arg = arg ? ADD(arg, u) : u;
+      |                                                     ^
+/home/andrew/Code/ucas/src/alg.c:458:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  458 |         if (!TY_FP(N.ty[e])) {
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/alg.c:487:14: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+  487 |                         if ((s == O_SIN && c == O_COS) || (s == O_COSH &&
+      |                                   ^
+/home/andrew/Code/ucas/src/alg.c:487:28: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+  487 |                         if ((s == O_SIN && c == O_COS) || (s == O_COSH &&
+      |                                                 ^
+/home/andrew/Code/ucas/src/alg.c:487:44: warning: no header providing "O_COSH" is directly included [misc-include-cleaner]
+  487 |                         if ((s == O_SIN && c == O_COS) || (s == O_COSH &&
+      |                                                                 ^
+/home/andrew/Code/ucas/src/alg.c:488:13: warning: no header providing "O_SINH" is directly included [misc-include-cleaner]
+  488 |                             c == O_SINH)) {
+      |                                  ^
+/home/andrew/Code/ucas/src/alg.c:515:2: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   23 |         jmp_buf saved;
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:518:16: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+  518 |         memcpy(saved, fail_jmp, sizeof saved);
+      |                       ^
+/home/andrew/Code/ucas/src/alg.c:519:6: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+  519 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/home/andrew/Code/ucas/src/alg.c:537:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+  537 |         rep_begin(what);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:538:2: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  538 |         rep_expr("input", e);
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:564:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  564 |                 if (llabs(a.t[i].c.n) > ((int64_t)1 << 53) || a.t[i].c.d >
+      |                                          ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/alg.c:565:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  565 |                     ((int64_t)1 << 53))
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/alg.c:583:3: warning: no header providing "rep_cond" is directly included [misc-include-cleaner]
+  583 |                 rep_cond("%s", conds->p);
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:627:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  627 |                 if ((used & (1u << k)) && N.op[at_node[k]] == O_VAR &&
+      |                                 ~~ ^
+/home/andrew/Code/ucas/src/alg.c:628:15: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  628 |                     !strcmp(sym_str(N.a[at_node[k]]), "x"))
+      |                             ^
+/home/andrew/Code/ucas/src/alg.c:633:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  633 |                         if ((used & (1u << k)) && N.op[at_node[k]] == O_VAR &&
+      |                                         ~~ ^
+/home/andrew/Code/ucas/src/alg.c:639:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  639 |                                 if (k != best && (used & (1u << k)) &&
+      |                                                              ~~ ^
+/home/andrew/Code/ucas/src/alg.c:649:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  649 |                 if (used & (1u << k))
+      |                                ~~ ^
+/home/andrew/Code/ucas/src/alg.c:706:4: warning: Value stored to 'L' is never read [clang-analyzer-deadcode.DeadStores]
+  706 |                         L = qi(1);
+      |                         ^   ~~~~~
+/home/andrew/Code/ucas/src/alg.c:706:4: note: Value stored to 'L' is never read
+  706 |                         L = qi(1);
+      |                         ^   ~~~~~
+/home/andrew/Code/ucas/src/alg.c:713:10: warning: no header providing "gcd64" is directly included [misc-include-cleaner]
+  713 |                                         g = gcd64(g, qmul(fm.c[j], qi(l)).n);
+      |                                             ^
+/home/andrew/Code/ucas/src/alg.c:729:7: warning: Value stored to 'c' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+  729 |                         aq c = qi(1);
+      |                            ^   ~~~~~
+/home/andrew/Code/ucas/src/alg.c:729:7: note: Value stored to 'c' during its initialization is never read
+  729 |                         aq c = qi(1);
+      |                            ^   ~~~~~
+/home/andrew/Code/ucas/src/alg.c:742:14: warning: Out of bound access to memory preceding 'am.c' [clang-analyzer-security.ArrayBound]
+  742 |                                 if (qsgn(am.c[am.d]) < 0)
+      |                                          ^
+/home/andrew/Code/ucas/src/alg.c:796:6: note: Assuming the condition is false
+  796 |         if (!strcmp(cmd, "simplify")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:796:2: note: Taking false branch
+  796 |         if (!strcmp(cmd, "simplify")) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:801:2: note: Taking false branch
+  801 |         if (!conv_or_say(e, &r, &dall))
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:803:14: note: Left side of '||' is false
+  803 |         big_coefs = mp_big(r.n) || mp_big(r.d);
+      |                     ^
+/home/andrew/Code/ucas/src/alg.c:804:6: note: Assuming the condition is false
+  804 |         if (strcmp(cmd, "expand"))
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:804:2: note: Taking false branch
+  804 |         if (strcmp(cmd, "expand"))
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:806:6: note: Assuming the condition is false
+  806 |         if (!strcmp(cmd, "expand") || !strcmp(cmd, "cancel")) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:806:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/alg.c:806:32: note: Assuming the condition is false
+  806 |         if (!strcmp(cmd, "expand") || !strcmp(cmd, "cancel")) {
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:806:2: note: Taking false branch
+  806 |         if (!strcmp(cmd, "expand") || !strcmp(cmd, "cancel")) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:811:13: note: Assuming the condition is false
+  811 |         } else if (!strcmp(cmd, "factor")) {
+      |                    ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:811:9: note: Taking false branch
+  811 |         } else if (!strcmp(cmd, "factor")) {
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:830:13: note: Assuming the condition is false
+  830 |         } else if (!strcmp(cmd, "collect")) {
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:830:9: note: Taking false branch
+  830 |         } else if (!strcmp(cmd, "collect")) {
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:841:13: note: Assuming the condition is false
+  841 |         } else if (!strcmp(cmd, "together")) {
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:841:9: note: Taking false branch
+  841 |         } else if (!strcmp(cmd, "together")) {
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:862:9: note: Taking true branch
+  862 |         } else if (!strcmp(cmd, "apart")) {
+      |                ^
+/home/andrew/Code/ucas/src/alg.c:863:3: note: Calling 'cmd_apart'
+  863 |                 cmd_apart(e, var);
+      |                 ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:671:2: note: Taking false branch
+  671 |         if (!conv_or_say(e, &r, &dall))
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:675:6: note: Assuming 'v' is >= 0
+  675 |         if (v < 0) {
+      |             ^~~~~
+/home/andrew/Code/ucas/src/alg.c:675:2: note: Taking false branch
+  675 |         if (v < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:680:6: note: Assuming the condition is false
+  680 |         if (!up_of_mp(r.n, v, &n) || !up_of_mp(r.d, v, &d)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:680:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/alg.c:680:31: note: Assuming the condition is false
+  680 |         if (!up_of_mp(r.n, v, &n) || !up_of_mp(r.d, v, &d)) {
+      |                                      ^~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:680:2: note: Taking false branch
+  680 |         if (!up_of_mp(r.n, v, &n) || !up_of_mp(r.d, v, &d)) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:687:6: note: Assuming 'nt' is >= 0
+  687 |         if (nt < 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/alg.c:687:2: note: Taking false branch
+  687 |         if (nt < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:691:6: note: Assuming the condition is false
+  691 |         if (!up_iszero(&pol))
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:691:2: note: Taking false branch
+  691 |         if (!up_iszero(&pol))
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:693:14: note: Assuming 'i' is < 'nt'
+  693 |         for (i = 0; i < nt; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/alg.c:693:2: note: Loop condition is true.  Entering loop body
+  693 |         for (i = 0; i < nt; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/alg.c:710:17: note: Assuming 'j' is > field 'd'
+  710 |                                 for (j = 0; j <= fm.d; j++)
+      |                                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:710:5: note: Loop condition is false. Execution continues on line 712
+  710 |                                 for (j = 0; j <= fm.d; j++)
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:712:17: note: 'j' is > field 'd'
+  712 |                                 for (j = 0; j <= fm.d; j++)
+      |                                             ^
+/home/andrew/Code/ucas/src/alg.c:712:5: note: Loop condition is false. Execution continues on line 714
+  712 |                                 for (j = 0; j <= fm.d; j++)
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:714:16: note: 'g' is 0
+  714 |                                 L = qmk(l, g ? g : 1);
+      |                                            ^
+/home/andrew/Code/ucas/src/alg.c:714:16: note: '?' condition is false
+/home/andrew/Code/ucas/src/alg.c:723:17: note: Assuming 'j' is >= field 'k'
+  723 |                                 for (j = 0; j < t[i].k; j++)
+      |                                             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:723:5: note: Loop condition is false. Execution continues on line 727
+  723 |                                 for (j = 0; j < t[i].k; j++)
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:731:8: note: Assuming field 'd' is not equal to 0
+  731 |                         if (am.d == 0) {
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:731:4: note: Taking false branch
+  731 |                         if (am.d == 0) {
+      |                         ^
+/home/andrew/Code/ucas/src/alg.c:738:17: note: Assuming 'j' is > field 'd'
+  738 |                                 for (j = 0; j <= am.d; j++)
+      |                                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:738:5: note: Loop condition is false. Execution continues on line 740
+  738 |                                 for (j = 0; j <= am.d; j++)
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:740:17: note: 'j' is > field 'd'
+  740 |                                 for (j = 0; j <= am.d; j++)
+      |                                             ^
+/home/andrew/Code/ucas/src/alg.c:740:5: note: Loop condition is false. Execution continues on line 742
+  740 |                                 for (j = 0; j <= am.d; j++)
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:742:14: note: Access of 'am.c' at a negative index
+  742 |                                 if (qsgn(am.c[am.d]) < 0)
+      |                                          ^~~~~~~~~~
+/home/andrew/Code/ucas/src/alg.c:749:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  749 |                                 den = POW(den, KI(t[i].k));
+      |                                                ^
+/home/andrew/Code/ucas/src/calc.h:80:26: note: expanded from macro 'KI'
+   80 | #define KI(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                          ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/calc.h:86:39: note: expanded from macro 'POW'
+   86 | #define POW(a, b) mk_bin(O_POW, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/alg.c:759:10: warning: no header providing "DIV" is directly included [misc-include-cleaner]
+  759 |                         num = DIV(num, den);
+      |                               ^
+/home/andrew/Code/ucas/src/alg.c:763:17: warning: no header providing "SUB" is directly included [misc-include-cleaner]
+  763 |                                 acc = neg ? SUB(acc, num) : ADD(acc, num);
+      |                                             ^
+/home/andrew/Code/ucas/src/alg.c:804:6: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  804 |         if (strcmp(cmd, "expand"))
+      |             ^                    
+      |                                   != 0
+/home/andrew/Code/ucas/src/alg.c:881:3: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  881 |                 rep_int("degree", mp_deg(r.n, v));
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:885:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  885 |                         if (strcmp(node_str(fd), node_str(mp_node(d))))
+      |                             ^                                         
+      |                                                                        != 0
+/home/andrew/Code/ucas/src/alg.c:905:12: warning: no header providing "root" is directly included [misc-include-cleaner]
+  905 |                                 struct root rr[16];
+      |                                        ^
+/home/andrew/Code/ucas/src/alg.c:910:10: warning: no header providing "poly_roots" is directly included [misc-include-cleaner]
+  910 |                                 nr = poly_roots(c, u.d, rr);
+      |                                      ^
+/home/andrew/Code/ucas/src/alg.c:1013:5: warning: no header providing "rep_strf" is directly included [misc-include-cleaner]
+ 1013 |                                 rep_strf("result", "%lld", (long long)gg);
+      |                                 ^
+/home/andrew/Code/ucas/src/alg.c:1032:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1032 |                         if (strcmp(node_str(out), mp_str(g)))
+      |                             ^                               
+      |                                                              != 0
+/home/andrew/Code/ucas/src/alg.c:1058:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1058 |                         if (strcmp(node_str(out), mp_str(l)))
+      |                             ^                               
+      |                                                              != 0
+/home/andrew/Code/ucas/src/alg.c:1084:3: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+ 1084 |                 rep_str("result", mp_str(res));
+      |                 ^
+/home/andrew/Code/ucas/src/alg.c:1087:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1087 |                         if (strcmp(node_str(fr), mp_str(res)))
+      |                             ^                                
+      |                                                               != 0
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

@@ -1,0 +1,12 @@
+> s(x: i8) = x * 2 + 1
+> wrap s
+wrap analysis of s:
+  2x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 128 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  2x + 1   (i8)
+      nuw holds
+      nsw holds (C requires it: signed overflow is UB)
+  end to end: differs from the mathematical result at 128 points, e.g. x=-128
+      exact for: -64..63
+  over all 256 points of the domain

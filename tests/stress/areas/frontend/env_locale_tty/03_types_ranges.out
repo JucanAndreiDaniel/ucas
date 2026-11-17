@@ -1,0 +1,70 @@
+> f(x: u8) = x^2
+> range f
+range of f -> u8:
+  0..249   (44 distinct values)
+  values: 0..1, 4, 9, 16..17, 25, 33, 36, 41, 49, 57, 64..65, 68, 73, 81, 89, 97, 100, 105, 113, 121, 129, 132, 137, 144..145, ...
+  fits in u8
+  over all 256 points of the domain
+> g(x: i8) = x^2
+> domain g
+domain of g:
+  x: i8, -128..127
+  no conditions: total on its parameter types
+  defined at 256 of 256 points
+  C undefined behaviour at 233 points, e.g. x=-128
+  over all 256 points of the domain
+> h(x: u8) = x + 1
+> wrap h
+wrap analysis of h:
+  x + 1   (u8)
+      nuw fails: unsigned wrap at 1 points, e.g. x=255
+      nsw fails: signed wrap at 1 points, e.g. x=127
+  end to end: differs from the mathematical result at 1 points, e.g. x=255
+      exact for: 0..254
+  over all 256 points of the domain
+> show f32(3.0)
+_() = 3
+  -> f32
+> show f64(1/3)
+_() = 0.33333333333333331
+  -> f64
+> show f16(0.1)
+_() = 0.099976
+  -> f16
+> k(x: u4) = x*x
+> equiv k k
+k and k are equal on the domain of k (exhaustive)
+> crit f
+critical points of f:
+  piecewise-affine segments (consecutive x with a constant step):
+    x in 0..1: f = 1x + 0
+    x in 1..2: f = 3x - 2
+    x in 2..3: f = 5x - 6
+    x in 3..4: f = 7x - 12
+    x in 4..5: f = 9x - 20
+    x in 5..6: f = 11x - 30
+    x in 6..7: f = 13x - 42
+    x in 7..8: f = 15x - 56
+    x in 8..9: f = 17x - 72
+    x in 9..10: f = 19x - 90
+    x in 10..11: f = 21x - 110
+    x in 11..12: f = 23x - 132
+    x in 12..13: f = 25x - 156
+    x in 13..14: f = 27x - 182
+    x in 14..15: f = 29x - 210
+    x in 15..16: f = -225x + 3600
+    ... 255 segments in all
+  local extrema (where the step changes sign):
+    x = 15: local maximum, f = 225
+    x = 16: local minimum, f = 0
+    x = 22: local maximum, f = 228
+    x = 23: local minimum, f = 17
+    x = 27: local maximum, f = 217
+    x = 28: local minimum, f = 16
+    x = 31: local maximum, f = 193
+    x = 32: local minimum, f = 0
+    x = 35: local maximum, f = 201
+    x = 36: local minimum, f = 16
+    x = 39: local maximum, f = 241
+    x = 40: local minimum, f = 64
+    ... 127 in all

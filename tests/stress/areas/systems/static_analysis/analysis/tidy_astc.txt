@@ -1,0 +1,704 @@
+/home/andrew/Code/ucas/src/astc.c:83:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   83 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   84 | #include "fuse.h"
+/home/andrew/Code/ucas/src/astc.c:87:1: warning: included header stdlib.h is not used directly [misc-include-cleaner]
+   87 | #include <stdlib.h>
+      | ^~~~~~~~~~~~~~~~~~~
+   88 | 
+/home/andrew/Code/ucas/src/astc.c:89:13: warning: no header providing "TY" is directly included [misc-include-cleaner]
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^
+/home/andrew/Code/ucas/src/astc.c:89:16: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   89 | #define U32 TY(K_UINT, 32)
+      |                ^
+/home/andrew/Code/ucas/src/astc.c:91:8: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   85 | 
+   86 | #include <stdint.h>
+   87 | #include <stdlib.h>
+   88 | 
+   89 | #define U32 TY(K_UINT, 32)
+   90 | 
+   91 | static nid
+      |        ^
+/home/andrew/Code/ucas/src/astc.c:94:9: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+   94 |         return mk_const_i(U32, (int64_t)v);
+      |                ^
+/home/andrew/Code/ucas/src/astc.c:94:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   94 |         return mk_const_i(U32, (int64_t)v);
+      |                           ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:100:9: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  100 |         return mk_bin(O_SHR, x, ku((uint32_t)k));
+      |                ^
+/home/andrew/Code/ucas/src/astc.c:100:16: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  100 |         return mk_bin(O_SHR, x, ku((uint32_t)k));
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:106:16: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  106 |         return mk_bin(O_SHL, x, ku((uint32_t)k));
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:112:16: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  112 |         return mk_bin(O_AND, x, ku(m));
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:118:16: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  118 |         return mk_bin(O_NE, band(x, m), ku(0));
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:129:13: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  129 |         p = mk_bin(O_ADD, band(seed, 1023), ku(1024u * (uint32_t)(n - 1)));
+      |                    ^
+/home/andrew/Code/ucas/src/astc.c:130:13: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  130 |         p = mk_bin(O_XOR, p, shr(p, 15));
+      |                    ^
+/home/andrew/Code/ucas/src/astc.c:131:13: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  131 |         p = mk_bin(O_SUB, p, shl(p, 17));
+      |                    ^
+/home/andrew/Code/ucas/src/astc.c:145:23: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  145 |         sd[12] = band(mk_bin(O_OR, shr(p, 30), shl(p, 2)), 15);
+      |                              ^
+/home/andrew/Code/ucas/src/astc.c:152:18: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  152 |                 nid q = mk_bin(O_MUL, sd[i], sd[i]);
+      |                                ^
+/home/andrew/Code/ucas/src/astc.c:153:13: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+  153 |                 nid b45 = mk_sel(b1, shr(q, 4), shr(q, 5));
+      |                           ^
+/home/andrew/Code/ucas/src/astc.c:159:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  159 |                 sd[i] = i <= 8 ? (i & 1 ? s1 : s2) : mk_sel(b4, s1, s2);
+      |                                   ^ ~
+/home/andrew/Code/ucas/src/astc.c:167:16: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  167 |         ge01 = mk_bin(O_GE, v[0], v[1]);
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:173:24: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  173 |                 return mk_sel(mk_bin(O_LAND, ge01, ge02), ku(0), mk_sel(ge12,
+      |                                      ^
+/home/andrew/Code/ucas/src/astc.c:192:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  192 |                 if (L == (int64_t)1 << k) {
+      |                          ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:196:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  196 |                 if (L == (int64_t)3 << k) {
+      |                          ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:200:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  200 |                 if (L == (int64_t)5 << k) {
+      |                          ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:238:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  238 |         return band(shr(r, n - to), (1u << to) - 1);
+      |                                         ~~ ^~
+/home/andrew/Code/ucas/src/astc.c:320:30: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  320 |                 T = q == 3 ? mk_sel(mk_bin(O_EQ, v, ku(0)), ku(0),
+      |                                            ^
+/home/andrew/Code/ucas/src/astc.c:327:56: warning: Out of bound access to memory after the end of 'qb' [clang-analyzer-security.ArrayBound]
+  327 |                 B = q == 3 ? scramble(v, tb[m], m - 1) : scramble(v, qb[m],
+      |                                                                      ^
+/home/andrew/Code/ucas/src/astc.c:1128:2: note: Loop condition is false. Execution continues on line 1132
+ 1128 |         for (j = 0; j < opinfo[N.op[n]].arity; j++)
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:1132:27: note: Calling 'astc_expand'
+ 1132 |         return fuse_expr_cost(m, astc_expand(N.op[n], N.ki[n], op[0], op[1],
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 1133 |             op[2]));
+      |             ~~~~~~
+/home/andrew/Code/ucas/src/astc.c:951:2: note: Control jumps to 'case O_ASTC_UNQW:'  at line 955
+  951 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:956:10: note: Calling 'unquant'
+  956 |                 return unquant(op == O_ASTC_UNQW, a, b);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astc.c:354:6: note: Assuming the condition is true
+  354 |         if (is_const(levels))
+      |             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astc.c:354:2: note: Taking true branch
+  354 |         if (is_const(levels))
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:355:10: note: '?' condition is true
+  355 |                 return level_ok(N.ki[levels], w) ? unquant_at(w, N.ki[levels], v) :
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:355:38: note: Calling 'unquant_at'
+  355 |                 return level_ok(N.ki[levels], w) ? unquant_at(w, N.ki[levels], v) :
+      |                                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astc.c:342:10: note: 'w' is 1
+  342 |         nid r = w ? weight_unq(q, m, v) : color_unq(q, m, v);
+      |                 ^
+/home/andrew/Code/ucas/src/astc.c:342:10: note: '?' condition is true
+/home/andrew/Code/ucas/src/astc.c:342:14: note: Calling 'weight_unq'
+  342 |         nid r = w ? weight_unq(q, m, v) : color_unq(q, m, v);
+      |                     ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/astc.c:316:6: note: 'q' is not equal to 1
+  316 |         if (q == 1)
+      |             ^
+/home/andrew/Code/ucas/src/astc.c:316:2: note: Taking false branch
+  316 |         if (q == 1)
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:318:11: note: 'm' is not equal to 0
+  318 |         else if (m == 0)
+      |                  ^
+/home/andrew/Code/ucas/src/astc.c:318:7: note: Taking false branch
+  318 |         else if (m == 0)
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:327:7: note: 'q' is not equal to 3
+  327 |                 B = q == 3 ? scramble(v, tb[m], m - 1) : scramble(v, qb[m],
+      |                     ^
+/home/andrew/Code/ucas/src/astc.c:327:7: note: '?' condition is false
+/home/andrew/Code/ucas/src/astc.c:327:56: note: Access of 'qb' at index 3, while it holds only 3 'int[1][3]' elements
+  327 |                 B = q == 3 ? scramble(v, tb[m], m - 1) : scramble(v, qb[m],
+      |                                                                      ^~~~~
+/home/andrew/Code/ucas/src/astc.c:334:23: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  334 |         return mk_sel(mk_bin(O_GT, T, ku(32)), mk_bin(O_ADD, T, ku(1)), T);
+      |                              ^
+/home/andrew/Code/ucas/src/astc.c:344:23: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  344 |         return mk_sel(mk_bin(O_LT, v, ku((uint32_t)L)), r, mk_undef(U32));
+      |                              ^
+/home/andrew/Code/ucas/src/astc.c:344:53: warning: no header providing "mk_undef" is directly included [misc-include-cleaner]
+  344 |         return mk_sel(mk_bin(O_LT, v, ku((uint32_t)L)), r, mk_undef(U32));
+      |                                                            ^
+/home/andrew/Code/ucas/src/astc.c:344:62: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  344 |         return mk_sel(mk_bin(O_LT, v, ku((uint32_t)L)), r, mk_undef(U32));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:351:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  351 |         nid r = mk_undef(U32);
+      |                          ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:354:6: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  354 |         if (is_const(levels))
+      |             ^
+/home/andrew/Code/ucas/src/astc.c:355:19: warning: no header providing "N" is directly included [misc-include-cleaner]
+  355 |                 return level_ok(N.ki[levels], w) ? unquant_at(w, N.ki[levels], v) :
+      |                                 ^
+/home/andrew/Code/ucas/src/astc.c:356:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  356 |                     mk_undef(U32);
+      |                              ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:366:16: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  366 | #define I32 TY(K_SINT, 32)
+      |                ^
+/home/andrew/Code/ucas/src/astc.c:371:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  371 |         return mk_const_i(I32, v);
+      |                           ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:383:16: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  383 |         return mk_bin(O_MIN, mk_bin(O_MAX, x, ks(0)), ks(255));
+      |                       ^
+/home/andrew/Code/ucas/src/astc.c:383:30: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  383 |         return mk_bin(O_MIN, mk_bin(O_MAX, x, ks(0)), ks(255));
+      |                                     ^
+/home/andrew/Code/ucas/src/astc.c:424:10: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  424 |                 v[i] = mk_cast(I32, mk_bin(O_AND, mk_bin(O_SHR, v64, mk_const_i(
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:424:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  424 |                 v[i] = mk_cast(I32, mk_bin(O_AND, mk_bin(O_SHR, v64, mk_const_i(
+      |                                ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:425:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  425 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:425:23: warning: performing an implicit widening conversion to type 'int64_t' (aka 'long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  425 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^
+/home/andrew/Code/ucas/src/astc.c:425:23: note: make conversion explicit to silence this warning
+   86 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^~~~~
+      |                                     (int64_t)( )
+/home/andrew/Code/ucas/src/astc.c:425:23: note: perform multiplication in a wider type
+  425 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^
+      |                                     (int64_t)
+/home/andrew/Code/ucas/src/astc.c:425:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  425 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:426:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  426 |         switch (cem) {
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:426:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/astc.c:495:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  495 |                 e[i] = ks((i & 3) == 1 ? 0 : 255);
+      |                            ^ ~
+/home/andrew/Code/ucas/src/astc.c:502:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  502 |         nid r = mk_undef(I32), e[8];
+      |                          ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:506:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  506 |                 nid b = mk_undef(I32);
+      |                                  ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:518:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  518 |         return mk_cast(U32, r);
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:535:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  535 |                 nid x = mk_bin(O_ADD, js, ku(i & 1)), y = mk_bin(O_ADD, jt, ku(i >> 1));
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/astc.c:535:71: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  535 |                 nid x = mk_bin(O_ADD, js, ku(i & 1)), y = mk_bin(O_ADD, jt, ku(i >> 1));
+      |                                                                                  ~~ ^
+/home/andrew/Code/ucas/src/astc.c:540:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  540 |                 p[i] = mk_sel(in, mk_cast(U32, mk_index(G, at)), ku(0));
+      |                                           ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:540:34: warning: no header providing "mk_index" is directly included [misc-include-cleaner]
+  540 |                 p[i] = mk_sel(in, mk_cast(U32, mk_index(G, at)), ku(0));
+      |                                                ^
+/home/andrew/Code/ucas/src/astc.c:550:48: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  550 |         nid ok = mk_bin(O_LAND, mk_bin(O_LAND, mk_bin(O_LE, e0, ku(255)),
+      |                                                       ^
+/home/andrew/Code/ucas/src/astc.c:555:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  555 |         return mk_sel(ok, r, mk_undef(U32));
+      |                                       ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:584:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  584 |         return mk_bin(O_SUB, mk_bin(O_XOR, mk_bin(O_AND, x, ks((1 << n) - 1)),
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/astc.c:585:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |             ks(1 << (n - 1))), ks(1 << (n - 1)));
+      |                ^ ~~
+/home/andrew/Code/ucas/src/astc.c:585:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  585 |             ks(1 << (n - 1))), ks(1 << (n - 1)));
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/astc.c:592:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |         return mk_bin(O_MUL, x, ks(1 << k));
+      |                                    ^ ~~
+/home/andrew/Code/ucas/src/astc.c:629:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  629 |                 int ohm = 1 << m, sh = (m >> 1) ^ 3;
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/astc.c:629:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  629 |                 int ohm = 1 << m, sh = (m >> 1) ^ 3;
+      |                                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:629:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  629 |                 int ohm = 1 << m, sh = (m >> 1) ^ 3;
+      |                                         ^ ~~
+/home/andrew/Code/ucas/src/astc.c:635:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  635 |                 if (ohm & 0xA4)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:637:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  637 |                 if (ohm & 0x08)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:639:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  639 |                 if (ohm & 0x50)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:641:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  641 |                 if (ohm & 0x50)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:643:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  643 |                 if (ohm & 0xA0)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:645:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  645 |                 if (ohm & 0xC0)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:647:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  647 |                 if (ohm & 0x04)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:649:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  649 |                 if (ohm & 0xE8)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:651:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  651 |                 if (ohm & 0x20)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:653:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  653 |                 if (ohm & 0x5B)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:655:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  655 |                 if (ohm & 0x5B)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:657:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |                 if (ohm & 0x12)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:659:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  659 |                 if (ohm & 0x12)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:676:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  676 |                         if ((i & 3) == 3)
+      |                              ^ ~
+/home/andrew/Code/ucas/src/astc.c:721:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  721 |                 if ((mv & 0xC) != 0xC) {
+      |                      ^~ ~
+/home/andrew/Code/ucas/src/astc.c:722:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  722 |                         maj = mv >> 2;
+      |                               ^~ ~~
+/home/andrew/Code/ucas/src/astc.c:723:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  723 |                         mode = mv & 3;
+      |                                ^~ ~
+/home/andrew/Code/ucas/src/astc.c:725:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  725 |                         maj = mv & 3;
+      |                               ^~ ~
+/home/andrew/Code/ucas/src/astc.c:731:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  731 |                 ohm = 1 << mode;
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/astc.c:732:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  732 |                 if (ohm & 0x30)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:734:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                 if (ohm & 0x3A)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:736:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  736 |                 if (ohm & 0x30)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:738:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                 if (ohm & 0x3A)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:740:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                 if (ohm & 0x3D)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:742:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  742 |                 if (ohm & 0x2D)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:744:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  744 |                 if (ohm & 0x04)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:746:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  746 |                 if (ohm & 0x3B)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:748:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  748 |                 if (ohm & 0x04)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:750:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  750 |                 if (ohm & 0x10)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:752:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 if (ohm & 0x0F)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:754:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  754 |                 if (ohm & 0x05)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:756:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  756 |                 if (ohm & 0x0A)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:758:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  758 |                 if (ohm & 0x05)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:760:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |                 if (ohm & 0x02)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:762:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  762 |                 if (ohm & 0x01)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:764:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  764 |                 if (ohm & 0x02)
+      |                     ^~~ ~
+/home/andrew/Code/ucas/src/astc.c:791:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  791 |                         if ((i & 3) != 3)
+      |                              ^ ~
+/home/andrew/Code/ucas/src/astc.c:812:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |                 nid b7 = mk_bin(O_SUB, mk_bin(O_XOR, mk_bin(O_AND, a7, ks(0x3F >>
+      |                                                                           ^~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:813:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  813 |                     m)), ks(0x20 >> m)), ks(0x20 >> m));
+      |                             ^~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:813:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  813 |                     m)), ks(0x20 >> m)), ks(0x20 >> m));
+      |                                             ^~~~ ~~
+/home/andrew/Code/ucas/src/astc.c:832:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  832 |                 v[i] = mk_cast(I32, mk_bin(O_AND, mk_bin(O_SHR, v64, mk_const_i(
+      |                                ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:833:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  833 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:833:23: warning: performing an implicit widening conversion to type 'int64_t' (aka 'long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  833 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^
+/home/andrew/Code/ucas/src/astc.c:833:23: note: make conversion explicit to silence this warning
+  833 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^~~~~
+      |                                     (int64_t)( )
+/home/andrew/Code/ucas/src/astc.c:833:23: note: perform multiplication in a wider type
+  833 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                     ^
+      |                                     (int64_t)
+/home/andrew/Code/ucas/src/astc.c:833:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  833 |                     TY(K_UINT, 64), 8 * i)), mk_const_i(TY(K_UINT, 64), 255)));
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:834:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  834 |         switch (cem) {
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:834:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/astc.c:877:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  877 |         nid r = mk_undef(I32), e[8];
+      |                          ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:881:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  881 |                 nid b = mk_undef(I32);
+      |                                  ^
+/home/andrew/Code/ucas/src/astc.c:366:13: note: expanded from macro 'I32'
+  366 | #define I32 TY(K_SINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:894:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  894 |         return mk_cast(U32, r);
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:906:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  906 |         return mk_sel(ok, r, mk_undef(U32));
+      |                                       ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:921:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  921 |             mk_undef(U32));
+      |                      ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:935:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  935 |                 nid in = mk_bin(O_GE, c, ku(1u << e)), v;
+      |                                                ~~ ^
+/home/andrew/Code/ucas/src/astc.c:939:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  939 |                         v = mk_bin(O_OR, ku((uint32_t)(e - 1) << 10), e >= 10 ?
+      |                                                               ~~ ^~
+/home/andrew/Code/ucas/src/astc.c:945:57: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  945 |         return mk_sel(mk_bin(O_LE, c, ku(0xFFFF)), r, mk_undef(U32));
+      |                                                                ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:951:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  951 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:951:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/astc.c:952:7: warning: no header providing "O_ASTC_PART" is directly included [misc-include-cleaner]
+  952 |         case O_ASTC_PART:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:954:7: warning: no header providing "O_ASTC_UNQ" is directly included [misc-include-cleaner]
+  954 |         case O_ASTC_UNQ:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:955:7: warning: no header providing "O_ASTC_UNQW" is directly included [misc-include-cleaner]
+  955 |         case O_ASTC_UNQW:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:957:7: warning: no header providing "O_ASTC_ENDPOINT" is directly included [misc-include-cleaner]
+  957 |         case O_ASTC_ENDPOINT:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:959:7: warning: no header providing "O_ASTC_BILERP" is directly included [misc-include-cleaner]
+  959 |         case O_ASTC_BILERP:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:961:7: warning: no header providing "O_ASTC_LERP" is directly included [misc-include-cleaner]
+  961 |         case O_ASTC_LERP:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:963:7: warning: no header providing "O_ASTC_HDR" is directly included [misc-include-cleaner]
+  963 |         case O_ASTC_HDR:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:965:7: warning: no header providing "O_ASTC_LERPH" is directly included [misc-include-cleaner]
+  965 |         case O_ASTC_LERPH:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:967:7: warning: no header providing "O_ASTC_LNS" is directly included [misc-include-cleaner]
+  967 |         case O_ASTC_LNS:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:969:7: warning: no header providing "O_ASTC_F16" is directly included [misc-include-cleaner]
+  969 |         case O_ASTC_F16:
+      |              ^
+/home/andrew/Code/ucas/src/astc.c:972:2: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  972 |         fail("%s: not an ASTC step", opinfo[op].name);
+      |         ^
+/home/andrew/Code/ucas/src/astc.c:972:31: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  972 |         fail("%s: not an ASTC step", opinfo[op].name);
+      |                                      ^
+/home/andrew/Code/ucas/src/astc.c:982:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  982 |         if (N.op[t] != O_TABLE)
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:994:34: warning: no header providing "NF_SG" is directly included [misc-include-cleaner]
+  994 |         int ar = opinfo[op].arity, fl = NF_SG, i;
+      |                                         ^
+/home/andrew/Code/ucas/src/astc.c:1001:8: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+ 1001 |                             node_str(a));
+      |                             ^
+/home/andrew/Code/ucas/src/astc.c:1007:8: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+ 1007 |                 if (!TY_ISINT(N.ty[o[i]]))
+      |                      ^
+/home/andrew/Code/ucas/src/astc.c:1007:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/astc.c:1057:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1057 |                     1 ? TY(K_UINT, 64) : U32, o[i]);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:1057:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1057 |                     1 ? TY(K_UINT, 64) : U32, o[i]);
+      |                                          ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:1058:21: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+ 1058 |                 if (N.op[o[i]] == O_UNDEF)
+      |                                   ^
+/home/andrew/Code/ucas/src/astc.c:1059:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1059 |                         return mk_undef(U32);
+      |                                         ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:1073:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1073 |                 fl |= N.fl[o[i]] & NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/astc.c:1073:22: warning: no header providing "NF_PARTIAL" is directly included [misc-include-cleaner]
+ 1073 |                 fl |= N.fl[o[i]] & NF_PARTIAL;
+      |                                    ^
+/home/andrew/Code/ucas/src/astc.c:1073:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1073 |                 fl |= N.fl[o[i]] & NF_PARTIAL;
+      |                                  ~ ^
+/home/andrew/Code/ucas/src/ucas.h:271:20: note: expanded from macro 'NF_PARTIAL'
+  271 | #define NF_PARTIAL 1 /* this subterm can be undefined */
+      |                    ^
+/home/andrew/Code/ucas/src/astc.c:1078:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1078 |                 fl |= NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/astc.c:1079:9: warning: no header providing "mk_raw" is directly included [misc-include-cleaner]
+ 1079 |         return mk_raw(op, U32, o[0], o[1], o[2], ki, fl);
+      |                ^
+/home/andrew/Code/ucas/src/astc.c:1079:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1079 |         return mk_raw(op, U32, o[0], o[1], o[2], ki, fl);
+      |                           ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:1096:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1096 |                 if (!is_const(n) || !TY_ISINT(N.ty[n]))
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/astc.c:1104:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1104 |         if (!TY_ISINT(N.ty[n]))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/astc.c:1109:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1109 |         r = mk_undef(U32);
+      |                      ^
+/home/andrew/Code/ucas/src/astc.c:89:13: note: expanded from macro 'U32'
+   89 | #define U32 TY(K_UINT, 32)
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/astc.c:1122:24: warning: no header providing "model" is directly included [misc-include-cleaner]
+ 1122 | astc_cost(const struct model *m, nid n)
+      |                        ^
+/home/andrew/Code/ucas/src/astc.c:1130:12: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+ 1130 |                         op[j] = mk_var((uint32_t)j, sym_cstr(nm[j]),
+      |                                 ^
+/home/andrew/Code/ucas/src/astc.c:1130:32: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+ 1130 |                         op[j] = mk_var((uint32_t)j, sym_cstr(nm[j]),
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

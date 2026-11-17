@@ -1,0 +1,31 @@
+> R = [255,219,183,147,111,75,39,3,255,3,39,75,111,147,183,219]
+> texenc R
+texenc R: 16 entries as BC4, rows of 4 (4 x 4 texels): 1 block, 8 bytes (16 as R8_UNORM, 64 as R32_SFLOAT); whole numbers k are stored as k/255
+  block (0, 0): endpoints 255, 3 (six steps of 1/7 between them), selectors 0 2 3 4 5 6 7 1 0 1 7 6 5 4 3 2, bytes ff 03 d0 58 3f c8 5d 4e
+  decodes to [1, 0.858823538, 0.717647076, 0.576470613, 0.435294122, 0.294117659, 0.152941182, 0.0117647061, 1, 0.0117647061, 0.152941182, 0.294117659, 0.435294122, 0.576470613, 0.717647076, 0.858823538]
+  exact: every texel is its entry's f32 over 255 (16 texels a block against 8 palette values, every pair of endpoints tried)
+  a nearest or filtered read of the texture is that read of the decoded table (fetch_..., tex_linear...); no model prices a BC4 read apart from its uncompressed one: not measured
+> T = [0,36,73,109,146,182,219,255,0,36,73,109,146,182,219,255]
+> texenc T
+texenc T: 16 entries as BC4, rows of 4 (4 x 4 texels): 1 block, 8 bytes (16 as R8_UNORM, 64 as R32_SFLOAT); whole numbers k are stored as k/255
+  block (0, 0): endpoints 36, 219 (four steps of 1/5, then 0 and 1), selectors 6 0 2 3 4 5 1 7 6 0 2 3 4 5 1 7, bytes 24 db 86 c6 e6 86 c6 e6
+  decodes to [0, 0.141176477, 0.284705877, 0.428235292, 0.571764708, 0.715294123, 0.858823538, 1, 0, 0.141176477, 0.284705877, 0.428235292, 0.571764708, 0.715294123, 0.858823538, 1]
+  not exact: the closest blocks are within 0.00157 of the table (entry 2: 0.286274523 as 0.284705877), every pair of endpoints tried
+  a nearest or filtered read of the texture is that read of the decoded table (fetch_..., tex_linear...); no model prices a BC4 read apart from its uncompressed one: not measured
+> C = [10,20,30,40]
+> D = [50,60,70,80]
+> texenc C, D
+texenc C, D: 4 entries a channel as BC5 (red C, green D), rows of 4 (4 x 1 texels): 1 block, 16 bytes (8 as R8G8_UNORM, 32 as R32G32_SFLOAT)
+  block (0, 0) red: endpoints 0, 50 (four steps of 1/5, then 0 and 1), selectors 2 3 4 5 0 0 0 0 0 0 0 0 0 0 0 0
+  block (0, 0) green: endpoints 30, 80 (four steps of 1/5, then 0 and 1), selectors 3 4 5 1 0 0 0 0 0 0 0 0 0 0 0 0
+  block (0, 0) bytes 00 32 1a 0b 00 00 00 00 1e 50 63 03 00 00 00 00
+  red: decodes to [0.0392156877, 0.0784313753, 0.117647059, 0.156862751]
+  red: exact: every texel is its entry's f32 over 255
+  green: decodes to [0.196078435, 0.235294119, 0.274509817, 0.313725501]
+  green: exact: every texel is its entry's f32 over 255
+  a read of the texture is that read of the decoded tables, red and green; no model prices a BC5 read apart from its uncompressed one: not measured
+> U = [300,-5,128,0,1000,255,7,63,12,200,1,2,3,4,5,6]
+> texenc U
+07_texenc.ucas:10:9: error: texenc: BC4 holds numbers from 0 to 1 (or whole numbers 0 to 255, read as k/255); U has an entry that is neither
+    texenc U
+            ^

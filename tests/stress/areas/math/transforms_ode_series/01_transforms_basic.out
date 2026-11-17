@@ -1,0 +1,90 @@
+> laplace x^3 - 3x
+L{x^3 - 3x}(s) = -3(s^2 - 2)/s^4
+  region of convergence: Re(s) > 0
+  one-sided: f(x) for x >= 0 (0 before)
+  rules: linearity, t^n f(t) -> (-1)^n F^(n)(s)
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4: max relative difference 1.9e-16
+> laplace sin(2x)
+L{sin(2x)}(s) = 2/(s^2 + 4)
+  region of convergence: Re(s) > 0
+  one-sided: f(x) for x >= 0 (0 before)
+  rules: sin/cos table
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4: max relative difference 1.4e-16
+> laplace exp(-2x)*cos(3x)
+L{e^(-2x)*cos(3x)}(s) = (s + 2)/(s^2 + 4s + 13)
+  region of convergence: Re(s) > -2
+  one-sided: f(x) for x >= 0 (0 before)
+  rules: e^(at) f(t) -> F(s - a), sin/cos table
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = -3/2, -1/2, 2: max relative difference 2.6e-13
+> laplace t^5
+L{t^5}(s) = 120/s^6
+  region of convergence: Re(s) > 0
+  one-sided: f(t) for t >= 0 (0 before)
+  rules: t^n f(t) -> (-1)^n F^(n)(s)
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4: max relative difference 1.7e-16
+> laplace exp(-x)
+L{e^(-x)}(s) = 1/(s + 1)
+  region of convergence: Re(s) > -1
+  one-sided: f(x) for x >= 0 (0 before)
+  rules: e^(at) f(t) -> F(s - a)
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = -1/2, 1/2, 3: max relative difference 0
+> ilaplace 1/(s^2+9)
+L^-1{1/(s^2 + 9)}(t) = sin(3t)/3
+  poles: s = +-3i
+  for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 0 (right of every pole)
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
+> ilaplace 1/(s-1)^3
+L^-1{1/(s - 1)^3}(t) = t^2*e^t/2
+  poles: s = 1 (triple)
+  for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 1 (right of every pole)
+  check: transformed back (Gauss-Kronrod), it matches F at s = 2, 3, 9/2: max relative difference 1.1e-16
+> ilaplace e^(-3s)/(s^2+1)
+L^-1{e^(-3s)/(s^2 + 1)}(t) = sin(t - 3)*u(t - 3)
+  poles: s = +-i
+  for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 0 (right of every pole)
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 2.2e-16
+> ztrans 2^n
+Z{2^n}(z) = z/(z - 2)
+  in powers of z^-1: 1/(1 - 2z^-1)
+  region of convergence: |z| > 2
+  one-sided: x[n] for n >= 0
+  rules: a^n x[n] -> X(z/a)
+  check: matches sum_n x[n] z^-n (141 terms) at z = 3, 6, 11: max relative difference 4.4e-16
+> ztrans n
+Z{n}(z) = z/(z - 1)^2
+  in powers of z^-1: z^-1/(1 - 2z^-1 + z^-2)
+  region of convergence: |z| > 1
+  one-sided: x[n] for n >= 0
+  rules: n x[n] -> -z X'(z)
+  check: matches sum_n x[n] z^-n (106 terms) at z = 2, 4, 8: max relative difference 1.7e-16
+> ztrans n^2
+Z{n^2}(z) = (z^2 + z)/(z - 1)^3
+  in powers of z^-1: (z^-1 + z^-2)/(1 - 3z^-1 + 3z^-2 - z^-3)
+  region of convergence: |z| > 1
+  one-sided: x[n] for n >= 0
+  rules: n x[n] -> -z X'(z)
+  check: matches sum_n x[n] z^-n (111 terms) at z = 2, 4, 8: max relative difference 1.5e-16
+> iztrans z/(z-2)
+Z^-1{z/(z - 2)}[n] = 2^n    for n >= 0
+  poles: z = 2
+  taken as causal (right-sided): region of convergence |z| > 2
+  long division in z^-1: 1, 2, 4, 8, 16, 32, 64, 128, ...
+  check: the closed form equals the long division for n = 0..31 (max difference 0)
+> iztrans 1/(1-z^-1)^2
+Z^-1{1/(1 - 1/z)^2}[n] = n + 1    for n >= 0
+  poles: z = 1 (double)
+  taken as causal (right-sided): region of convergence |z| > 1
+  long division in z^-1: 1, 2, 3, 4, 5, 6, 7, 8, ...
+  check: the closed form equals the long division for n = 0..31 (max difference 0)
+> fourier exp(-x^2)
+F{e^(-x^2)}(w) = sqrt(pi)*e^(-w^2/4)
+  convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
+  check: matches the integral computed numerically at w = 1/2, 13/10, 27/10: max relative difference 6.7e-16
+> fourier 1/(x^2+4)
+F{1/(x^2 + 4)}(w) = pi*e^(-2abs(w))/2
+  convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
+  check: matches the integral computed numerically at w = 1/2, 13/10, 27/10: max relative difference 1.5e-09
+> ifourier exp(-abs(w))
+F^-1{e^(-abs(w))}(x) = 1/(pi*(x^2 + 1))
+  convention: f(x) = (1/(2pi)) int F(w) e^(iwx) dw
+  check: matches the integral computed numerically at x = 1/2, 13/10, 27/10: max relative difference 1e-14

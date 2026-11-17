@@ -1,0 +1,25 @@
+# Auto-generated boolean/u1 stress cases (oracle-verified)
+mux_false_A(c: bool, d: bool) = c ? d : c
+mux_false_B(c: bool, d: bool) = c & d
+equiv mux_false_A ~ mux_false_B
+mux_same_A(c: bool, a: bool) = c ? a : a
+mux_same_B(c: bool, a: bool) = a
+equiv mux_same_A ~ mux_same_B
+mux_not_A(c: bool, a: bool, b: bool) = c ? a : b
+mux_not_B(c: bool, a: bool, b: bool) = !c ? b : a
+equiv mux_not_A ~ mux_not_B
+mux_cond_xor_A(x: u1, y: u1, a: bool, b: bool) = (x xor y) ? a : b
+mux_cond_xor_B(x: u1, y: u1, a: bool, b: bool) = ((x xor y) & a) | (!(x xor y) & b)
+equiv mux_cond_xor_A ~ mux_cond_xor_B
+mux_cond_gt_A(x: u1, y: u1, a: bool, b: bool) = (x > y) ? a : b
+mux_cond_gt_B(x: u1, y: u1, a: bool, b: bool) = ((x > y) & a) | (!(x > y) & b)
+equiv mux_cond_gt_A ~ mux_cond_gt_B
+mux_cond_and_A(x: u1, y: u1, a: bool, b: bool) = (x & y) ? a : b
+mux_cond_and_B(x: u1, y: u1, a: bool, b: bool) = ((x & y) & a) | (!(x & y) & b)
+equiv mux_cond_and_A ~ mux_cond_and_B
+chain1_A(x: u8) = 0 < x < 10
+chain1_B(x: u8) = x in 1..9
+equiv chain1_A ~ chain1_B
+chain2_A(x: u8) = 1 <= x <= 8
+chain2_B(x: u8) = x in 1..8
+equiv chain2_A ~ chain2_B

@@ -1,0 +1,16 @@
+> rotl(x: u32, n: u32 in 1..31) = (x << n) | (x >> (32-n))
+> mix1(x: u32, y: u32) = rotl(x + y, 7) xor rotl(y, 13) xor x
+> mix2(x: u32, y: u32) = x xor rotl(y, 13) xor rotl(x + y, 7)
+> equiv mix1 mix2
+mix1 and mix2 are equal on the domain of mix1 (proved by SAT: 859 AIG nodes, 499 conflicts)
+> xs(x: u32) = (x xor (x << 13)) xor ((x xor (x << 13)) >> 17)
+> xs2(x: u32) = (x xor (x << 13) xor ((x xor (x << 13)) >> 17))
+> equiv xs xs2
+xs and xs2 are equal on the domain of xs (proved by SAT: 135 AIG nodes, 0 conflicts)
+> arxsub(x: u32, y: u32) = (x + y) xor (x - y)
+> arxsub2(x: u32, y: u32) = (x - y) xor (x + y)
+> equiv arxsub arxsub2
+arxsub and arxsub2 are equal on the domain of arxsub (proved by SAT: 664 AIG nodes, 0 conflicts)
+> badmix(x: u32, y: u32) = rotl(x + y, 7) xor rotl(y, 13) xor (x + 1)
+> equiv mix1 badmix
+mix1 and badmix differ at 65536 points of the sample, e.g. x=0, y=4294967294: 8320 vs 8321

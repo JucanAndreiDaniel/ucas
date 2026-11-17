@@ -1,0 +1,17 @@
+> rev8(x: u8) = ((x&1)<<7) | ((x&2)<<5) | ((x&4)<<3) | ((x&8)<<1) | ((x&16)>>1) | ((x&32)>>3) | ((x&64)>>5) | ((x&128)>>7)
+> rev8b(x: u8) = ((x&128)>>7) | ((x&64)>>5) | ((x&32)>>3) | ((x&16)>>1) | ((x&8)<<1) | ((x&4)<<3) | ((x&2)<<5) | ((x&1)<<7)
+> equiv rev8 rev8b
+rev8 and rev8b are equal on the domain of rev8 (exhaustive)
+> revrev(x: u8) = rev8(rev8(x))
+> id8(x: u8) = x
+> equiv revrev id8
+revrev and id8 are equal on the domain of revrev (exhaustive)
+> nbr(x: u32) = ((x & 0x55555555) << 1) | ((x & 0xaaaaaaaa) >> 1)
+> nbrnbr(x: u32) = nbr(nbr(x))
+> id32(x: u32) = x
+> equiv nbrnbr id32
+nbrnbr and id32 are equal on the domain of nbrnbr (proved by SAT: 33 AIG nodes, 0 conflicts)
+> bswap(x: u32) = ((x & 0xff) << 24) | ((x & 0xff00) << 8) | ((x >> 8) & 0xff00) | ((x >> 24) & 0xff)
+> bswap2(x: u32) = bswap(bswap(x))
+> equiv bswap2 id32
+bswap2 and id32 are equal on the domain of bswap2 (proved by SAT: 33 AIG nodes, 0 conflicts)

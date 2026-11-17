@@ -1,0 +1,638 @@
+/home/andrew/Code/ucas/src/loop.c:21:1: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   17 | #include <stdlib.h>
+   18 | #include <string.h>
+   19 | 
+   20 | struct ltab loops;
+   21 | uint64_t loop_skipped;
+      | ^
+/home/andrew/Code/ucas/src/loop.c:26:8: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   15 | 
+   16 | #include <math.h>
+   17 | #include <stdlib.h>
+   18 | #include <string.h>
+   19 | 
+   20 | struct ltab loops;
+   21 | uint64_t loop_skipped;
+   22 | 
+   23 | /* ---- small helpers ---- */
+   24 | 
+   25 | int
+   26 | num_of(nid n, double *v)
+      |        ^
+/home/andrew/Code/ucas/src/loop.c:28:7: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+   28 |         if (!is_const(n))
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:30:6: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+   30 |         if (TY_FP(N.ty[n]))
+      |             ^
+/home/andrew/Code/ucas/src/loop.c:30:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:30:12: warning: no header providing "N" is directly included [misc-include-cleaner]
+   30 |         if (TY_FP(N.ty[n]))
+      |                   ^
+/home/andrew/Code/ucas/src/loop.c:32:11: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+   32 |         else if (TYK(N.ty[n]) == K_UINT && TYW(N.ty[n]) == 64)
+      |                  ^
+/home/andrew/Code/ucas/src/loop.c:32:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:32:27: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+   32 |         else if (TYK(N.ty[n]) == K_UINT && TYW(N.ty[n]) == 64)
+      |                                  ^
+/home/andrew/Code/ucas/src/loop.c:32:37: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+   32 |         else if (TYK(N.ty[n]) == K_UINT && TYW(N.ty[n]) == 64)
+      |                                            ^
+/home/andrew/Code/ucas/src/loop.c:32:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/loop.c:40:15: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   40 | int_of(nid n, int64_t *v)
+      |               ^
+/home/andrew/Code/ucas/src/loop.c:46:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   46 |         if (!TY_FP(N.ty[n])) {
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:57:18: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   57 | var_of(int slot, uint32_t name, ty_t t)
+      |                  ^
+/home/andrew/Code/ucas/src/loop.c:57:33: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+   57 | var_of(int slot, uint32_t name, ty_t t)
+      |                                 ^
+/home/andrew/Code/ucas/src/loop.c:59:9: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+   59 |         return mk_var((uint32_t)slot, name, t);
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:65:8: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   65 | static uint8_t *sdone;
+      |        ^
+/home/andrew/Code/ucas/src/loop.c:77:16: warning: no header providing "newcap" is directly included [misc-include-cleaner]
+   77 |                 uint32_t c = newcap(scap, N.n + 1);
+      |                              ^
+/home/andrew/Code/ucas/src/loop.c:78:11: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+   78 |                 smask = xrealloc(smask, c * sizeof *smask);
+      |                         ^
+/home/andrew/Code/ucas/src/loop.c:86:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+   86 |         case O_CONST:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:87:7: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+   87 |         case O_UNDEF:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:89:7: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+   89 |         case O_VAR:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:90:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   90 |                 m = N.ki[n] < 64 ? 1ULL << N.ki[n] : 0;
+      |                                         ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/loop.c:92:18: warning: no header providing "SG_COPY_SLOT" is directly included [misc-include-cleaner]
+   92 |                 if (N.ki[n] >= SG_COPY_SLOT + MAXP && N.ki[n] < SG_COPY_SLOT + 64)
+      |                                ^
+/home/andrew/Code/ucas/src/loop.c:92:33: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+   92 |                 if (N.ki[n] >= SG_COPY_SLOT + MAXP && N.ki[n] < SG_COPY_SLOT + 64)
+      |                                               ^
+/home/andrew/Code/ucas/src/loop.c:93:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   93 |                         m = 1ULL << (N.ki[n] - SG_COPY_SLOT);
+      |                                  ~~ ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:95:7: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+   95 |         case O_TABLE:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:99:7: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+   99 |         case O_LOOP:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:115:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  115 |         return (node_slots(n) >> slot) & 1;
+      |                               ~~ ^~~~
+/home/andrew/Code/ucas/src/loop.c:115:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  115 |         return (node_slots(n) >> slot) & 1;
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/loop.c:127:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  127 |                 m >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/loop.c:148:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  148 |         return (uint32_t)(h ^ (h >> 32));
+      |                                  ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:198:13: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  198 |         loops.ht = xcalloc(loops.htcap, sizeof *loops.ht);
+      |                    ^
+/home/andrew/Code/ucas/src/loop.c:248:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  248 |                 bound |= 1ULL << d->islot;
+      |                               ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:255:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  255 |                 bound |= 1ULL << d->sslot[k];
+      |                               ~~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:299:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  299 |         return (int)((uint64_t)N.ki[n] >> 32);
+      |                                        ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:307:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+  307 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:308:41: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  308 |         int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
+      |                                                ^
+/home/andrew/Code/ucas/src/loop.c:312:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  312 |         plan_build(&p, &n, 1, 0);
+      |         ^
+/home/andrew/Code/ucas/src/loop.c:313:2: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  313 |         plan_run(&p, 1, in_i, in_r);
+      |         ^
+/home/andrew/Code/ucas/src/loop.c:314:9: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  314 |         ok = !(COLF(&p, p.root[0])[0] & F_UNDEF);
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:314:34: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  314 |         ok = !(COLF(&p, p.root[0])[0] & F_UNDEF);
+      |                                         ^
+/home/andrew/Code/ucas/src/loop.c:314:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  314 |         ok = !(COLF(&p, p.root[0])[0] & F_UNDEF);
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:315:8: warning: no header providing "COLI" is directly included [misc-include-cleaner]
+  315 |         *vi = COLI(&p, p.root[0])[0];
+      |               ^
+/home/andrew/Code/ucas/src/loop.c:316:8: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  316 |         *vr = COLR(&p, p.root[0])[0];
+      |               ^
+/home/andrew/Code/ucas/src/loop.c:317:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  317 |         plan_free(&p);
+      |         ^
+/home/andrew/Code/ucas/src/loop.c:334:8: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  334 |                 lo = mk_cast(TY_INT, lo);
+      |                      ^
+/home/andrew/Code/ucas/src/loop.c:334:16: warning: no header providing "TY_INT" is directly included [misc-include-cleaner]
+  334 |                 lo = mk_cast(TY_INT, lo);
+      |                              ^
+/home/andrew/Code/ucas/src/loop.c:334:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:98:16: note: expanded from macro 'TY_INT'
+   98 | #define TY_INT TY(K_INT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:335:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  335 |                 hi = mk_cast(TY_INT, hi);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:98:16: note: expanded from macro 'TY_INT'
+   98 | #define TY_INT TY(K_INT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:337:11: warning: no header providing "mk_undef" is directly included [misc-include-cleaner]
+  337 |                         return mk_undef(t);
+      |                                ^
+/home/andrew/Code/ucas/src/loop.c:338:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  338 |                 fl |= (N.fl[lo] | N.fl[hi]) & NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:338:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  338 |                 fl |= (N.fl[lo] | N.fl[hi]) & NF_PARTIAL;
+      |                       ^~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:338:33: warning: no header providing "NF_PARTIAL" is directly included [misc-include-cleaner]
+  338 |                 fl |= (N.fl[lo] | N.fl[hi]) & NF_PARTIAL;
+      |                                               ^
+/home/andrew/Code/ucas/src/loop.c:341:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  341 |                 fl |= NF_PARTIAL;   /* it may not terminate */
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:343:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  343 |         if (loops.flags[e] & LF_NEGUNDEF)
+      |                            ~ ^
+/home/andrew/Code/ucas/src/calc.h:32:21: note: expanded from macro 'LF_NEGUNDEF'
+   32 | #define LF_NEGUNDEF 1        /* hi < lo - 1 is outside the domain */
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:344:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  344 |                 fl |= NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:346:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  346 |                 fl |= (N.fl[loops.init[s + k]] | N.fl[loops.next[s + k]]) & NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:346:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  346 |                 fl |= (N.fl[loops.init[s + k]] | N.fl[loops.next[s + k]]) & NF_PARTIAL;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:348:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  348 |                 fl |= N.fl[loops.cond[e]] & NF_PARTIAL;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:348:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  348 |                 fl |= N.fl[loops.cond[e]] & NF_PARTIAL;
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:271:20: note: expanded from macro 'NF_PARTIAL'
+  271 | #define NF_PARTIAL 1 /* this subterm can be undefined */
+      |                    ^
+/home/andrew/Code/ucas/src/loop.c:349:6: warning: no header providing "mk_raw" is directly included [misc-include-cleaner]
+  349 |         n = mk_raw(O_LOOP, t, lo, hi, q,
+      |             ^
+/home/andrew/Code/ucas/src/loop.c:350:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  350 |             (int64_t)((uint64_t)e | ((uint64_t)res << 32)), fl);
+      |                                                    ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:351:40: warning: no header providing "NF_VAR" is directly included [misc-include-cleaner]
+  351 |         if (node_slots(n) != 0 && !(N.fl[n] & NF_VAR))
+      |                                               ^
+/home/andrew/Code/ucas/src/loop.c:351:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  351 |         if (node_slots(n) != 0 && !(N.fl[n] & NF_VAR))
+      |                                             ~ ^
+/home/andrew/Code/ucas/src/ucas.h:272:16: note: expanded from macro 'NF_VAR'
+  272 | #define NF_VAR 2     /* depends on a parameter */
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:352:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  352 |                 N.fl[n] |= NF_VAR;
+      |                         ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:272:16: note: expanded from macro 'NF_VAR'
+  272 | #define NF_VAR 2     /* depends on a parameter */
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:355:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  355 |                 N.fl[n] |= (N.fl[loops.init[s + k]] | N.fl[loops.next[s + k]]) &
+      |                         ~~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:356:8: warning: no header providing "NF_SG" is directly included [misc-include-cleaner]
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                      ^
+/home/andrew/Code/ucas/src/loop.c:356:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                      ^                             ~
+/home/andrew/Code/ucas/src/ucas.h:273:15: note: expanded from macro 'NF_SG'
+  273 | #define NF_SG 4      /* has an operation that sg_lower spells out: a
+      |               ^
+/home/andrew/Code/ucas/src/loop.c:356:16: warning: no header providing "NF_LANE" is directly included [misc-include-cleaner]
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                              ^
+/home/andrew/Code/ucas/src/loop.c:356:26: warning: no header providing "NF_LANEREAD" is directly included [misc-include-cleaner]
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                                        ^
+/home/andrew/Code/ucas/src/loop.c:356:40: warning: no header providing "NF_LANES" is directly included [misc-include-cleaner]
+  356 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                                                      ^
+/home/andrew/Code/ucas/src/loop.c:358:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  358 |                 N.fl[n] |= N.fl[loops.cond[e]] &
+      |                         ~~ ^~~~~~~~~~~~~~~~~~~~~
+  359 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:359:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  358 |                 N.fl[n] |= N.fl[loops.cond[e]] &
+      |                                                ~
+  359 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:359:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  359 |                     (NF_SG | NF_LANE | NF_LANEREAD | NF_LANES);
+      |                      ^                             ~
+/home/andrew/Code/ucas/src/ucas.h:273:15: note: expanded from macro 'NF_SG'
+  273 | #define NF_SG 4      /* has an operation that sg_lower spells out: a
+      |               ^
+/home/andrew/Code/ucas/src/loop.c:361:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  361 |         if (node_slots(n) == 0 && !(N.fl[n] & (NF_LANE | NF_LANEREAD |
+      |                                             ~ ^~~~~~~~~~~~~~~~~~~~~~~~
+  362 |             NF_LANES))) {
+      |             ~~~~~~~~~
+/home/andrew/Code/ucas/src/loop.c:361:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  361 |         if (node_slots(n) == 0 && !(N.fl[n] & (NF_LANE | NF_LANEREAD |
+      |                                                ^                     ~
+/home/andrew/Code/ucas/src/ucas.h:275:17: note: expanded from macro 'NF_LANE'
+  275 | #define NF_LANE 8    /* the lane of a subgroup operation's operand is free
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:366:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  366 |                         return TY_FP(t) ? (TYK(t) == K_FLOAT ?
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:366:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  366 |                         return TY_FP(t) ? (TYK(t) == K_FLOAT ?
+      |                                            ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:366:33: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  366 |                         return TY_FP(t) ? (TYK(t) == K_FLOAT ?
+      |                                                      ^
+/home/andrew/Code/ucas/src/loop.c:367:19: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  367 |                             mk_cast(t, mk_const_r(vr)) : mk_const_r(vr)) :
+      |                                        ^
+/home/andrew/Code/ucas/src/loop.c:368:8: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  368 |                             mk_const_i(t, vi);
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:405:2: warning: result of multiplication in type 'uint32_t' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+  405 |         roots[2 * m] = loops.cond[e];
+      |         ^
+/home/andrew/Code/ucas/src/loop.c:405:8: note: make conversion explicit to silence this warning
+   17 |         roots[2 * m] = loops.cond[e];
+      |               ^~~~~
+      |               (size_t)( )
+/home/andrew/Code/ucas/src/loop.c:405:8: note: perform multiplication in a wider type
+  405 |         roots[2 * m] = loops.cond[e];
+      |               ^
+      |               (size_t)
+/home/andrew/Code/ucas/src/loop.c:411:12: warning: result of multiplication in type 'uint32_t' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+  411 |         c->cond = c->p.root[2 * m];
+      |                   ^
+/home/andrew/Code/ucas/src/loop.c:411:22: note: make conversion explicit to silence this warning
+  411 |         c->cond = c->p.root[2 * m];
+      |                             ^~~~~
+      |                             (size_t)( )
+/home/andrew/Code/ucas/src/loop.c:411:22: note: perform multiplication in a wider type
+  411 |         c->cond = c->p.root[2 * m];
+      |                             ^
+      |                             (size_t)
+/home/andrew/Code/ucas/src/loop.c:450:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  450 |                 if (TY_FP(loops.sty[s + k]))
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:494:16: warning: no header providing "plan_loc" is directly included [misc-include-cleaner]
+  494 |         uint32_t cl = plan_loc(&c->p, lpr.cond), l, base, W = (uint32_t)lpr.warp;
+      |                       ^
+/home/andrew/Code/ucas/src/loop.c:496:12: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  496 |         if (cl == NOTOK)
+      |                   ^
+/home/andrew/Code/ucas/src/loop.c:504:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  504 |                         if (!isfor && ((COLF(&c->p, c->cond)[l] & F_UNDEF) ||
+      |                                                                 ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:507:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  507 |                         if (COLF(&c->p, cl)[l] & F_UNDEF)
+      |                                                ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:528:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  528 |         uint32_t res = (uint32_t)(key >> 32);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:538:3: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  538 |                 fail("loops nested too deeply to evaluate");
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:551:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  551 |                 if ((COLF(p, p->a[k])[l] | COLF(p, p->b[k])[l]) & F_UNDEF) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:558:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  558 |                         if (loops.flags[e] & LF_NEGUNDEF)
+      |                                            ~ ^
+/home/andrew/Code/ucas/src/calc.h:32:21: note: expanded from macro 'LF_NEGUNDEF'
+   32 | #define LF_NEGUNDEF 1        /* hi < lo - 1 is outside the domain */
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:562:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  562 |                 if (B->trip[l] > (int64_t)MAXTRIP) {
+      |                                           ^
+/home/andrew/Code/ucas/src/calc.h:28:24: note: expanded from macro 'MAXTRIP'
+   28 | #define MAXTRIP (1u << 20)   /* iterations per point before giving up */
+      |                     ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:586:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |                         if (COLF(&c->p, loc)[l] & F_UNDEF)
+      |                                                 ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:587:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  587 |                                 B->dead[l] |= 1;
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/loop.c:599:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  599 |                 if (!isfor && it >= (int64_t)MAXTRIP) {
+      |                                              ^
+/home/andrew/Code/ucas/src/calc.h:28:24: note: expanded from macro 'MAXTRIP'
+   28 | #define MAXTRIP (1u << 20)   /* iterations per point before giving up */
+      |                     ~~ ^~
+/home/andrew/Code/ucas/src/loop.c:621:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  621 |                                 if (COLF(&c->p, cl)[l] & F_UNDEF) {
+      |                                                        ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:632:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  632 |                                 if (COLF(&c->p, loc)[l] & F_UNDEF)
+      |                                                         ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:657:19: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  657 | loop_print(struct sbuf *b, nid n, const struct pctx *pc)
+      |                   ^
+/home/andrew/Code/ucas/src/loop.c:657:48: warning: no header providing "pctx" is directly included [misc-include-cleaner]
+  657 | loop_print(struct sbuf *b, nid n, const struct pctx *pc)
+      |                                                ^
+/home/andrew/Code/ucas/src/loop.c:662:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  662 |         switch (loops.orig[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/loop.c:665:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  665 |                 sb_printf(b, "%s(%s, ", loops.orig[e] == LO_SUM ? "sum" : "prod",
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:666:7: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  666 |                     sym_str(loops.name[e]));
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:667:3: warning: no header providing "print_node" is directly included [misc-include-cleaner]
+  667 |                 print_node(b, N.a[n], pc);
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:668:3: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  668 |                 sb_puts(b, ", ");
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:672:3: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  672 |                 sb_putc(b, ')');
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:705:9: warning: no header providing "SG_LCOPY_SLOT" is directly included [misc-include-cleaner]
+  705 |         nid m2[SG_LCOPY_SLOT + MAXP];
+      |                ^
+/home/andrew/Code/ucas/src/loop.c:711:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  711 |         bfl = (d.cond ? N.fl[d.cond] : 0) | (d.aux ? N.fl[d.aux] : 0);
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:713:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  713 |                 bfl |= N.fl[d.init[k]] | N.fl[d.next[k]];
+      |                 ^~~ ~~
+/home/andrew/Code/ucas/src/loop.c:716:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  716 |         if (nmap > SG_LCOPY_SLOT && (bfl & NF_LANES))
+      |                                      ^~~ ~
+/home/andrew/Code/ucas/src/loop.c:724:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  724 |                 if (map[j] && ((loops.free[e] >> j) & 1)) {
+      |                                               ~~ ^
+/home/andrew/Code/ucas/src/loop.c:724:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  724 |                 if (map[j] && ((loops.free[e] >> j) & 1)) {
+      |                                                     ~ ^
+/home/andrew/Code/ucas/src/loop.c:737:13: warning: no header providing "SG_LANE_SLOT" is directly included [misc-include-cleaner]
+  737 |         if (nmap > SG_LANE_SLOT && map[SG_LANE_SLOT]) {
+      |                    ^
+/home/andrew/Code/ucas/src/loop.c:738:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  738 |                 int fl = (d.cond ? N.fl[d.cond] : 0) | (d.aux ? N.fl[d.aux] : 0);
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:740:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  740 |                         fl |= N.fl[d.init[k]] | N.fl[d.next[k]];
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:741:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  741 |                 if ((fl & NF_LANE) || copies) {
+      |                      ^~ ~
+/home/andrew/Code/ucas/src/loop.c:752:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 if ((loops.bound[e] >> j) & 1) {
+      |                                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:752:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  752 |                 if ((loops.bound[e] >> j) & 1) {
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/loop.c:761:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  761 |                         if ((vals >> j) & 1)
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/loop.c:761:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  761 |                         if ((vals >> j) & 1)
+      |                                         ~ ^
+/home/andrew/Code/ucas/src/loop.c:783:15: warning: no header providing "subst" is directly included [misc-include-cleaner]
+  783 |                 d.init[k] = subst(d.init[k], m2, SG_LCOPY_SLOT + MAXP);
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:823:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  823 |                 ch |= t != d.init[k];
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:826:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  826 |                 ch |= t != d.next[k];
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:831:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  831 |                 ch |= t != d.cond;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:836:3: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  836 |                 ch |= t != d.aux;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/loop.c:861:7: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  861 |                 e = xmalloc(N.b[n] * sizeof *e + 1);
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:864:7: warning: no header providing "mk_table" is directly included [misc-include-cleaner]
+  864 |                 r = mk_table(e, N.b[n]);
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:867:7: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  867 |         case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:868:7: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+  868 |                 r = mk_sel(xr1(x, N.a[n]), xr1(x, N.b[n]), xr1(x, N.c[n]));
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:870:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  870 |         case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:873:7: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+  873 |         case O_INDEX:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:874:7: warning: no header providing "mk_index" is directly included [misc-include-cleaner]
+  874 |                 r = mk_index(xr1(x, N.a[n]), xr1(x, N.b[n]));
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:876:7: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+  876 |         case O_BARRIER:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:877:7: warning: no header providing "O_ATOMIC" is directly included [misc-include-cleaner]
+  877 |         case O_ATOMIC:
+      |              ^
+/home/andrew/Code/ucas/src/loop.c:885:7: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  885 |                 if (opinfo[N.op[n]].arity == 1)
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:886:8: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  886 |                         r = mk_un(N.op[n], xr1(x, N.a[n]));
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:887:12: warning: no header providing "IS_TEX" is directly included [misc-include-cleaner]
+  887 |                 else if (IS_TEX(N.op[n]))
+      |                          ^
+/home/andrew/Code/ucas/src/loop.c:888:8: warning: no header providing "mk_tex" is directly included [misc-include-cleaner]
+  888 |                         r = mk_tex(N.op[n], N.ki[n], xr1(x, N.a[n]),
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:890:12: warning: no header providing "IS_OP3" is directly included [misc-include-cleaner]
+  890 |                 else if (IS_OP3(N.op[n]))
+      |                          ^
+/home/andrew/Code/ucas/src/loop.c:891:8: warning: no header providing "mk_like" is directly included [misc-include-cleaner]
+  891 |                         r = mk_like(n, xr1(x, N.a[n]), xr1(x, N.b[n]),
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:894:8: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  894 |                         r = mk_bin(N.op[n], xr1(x, N.a[n]), xr1(x, N.b[n]));
+      |                             ^
+/home/andrew/Code/ucas/src/loop.c:919:24: warning: no header providing "model" is directly included [misc-include-cleaner]
+  919 | body_cost(const struct model *m, nid n, uint8_t *mark, uint32_t lim)
+      |                        ^
+/home/andrew/Code/ucas/src/loop.c:933:6: warning: no header providing "node_cost" is directly included [misc-include-cleaner]
+  933 |         c = node_cost(m, n, &cls);
+      |             ^
+/home/andrew/Code/ucas/src/loop.c:952:18: warning: no header providing "C_BRANCH" is directly included [misc-include-cleaner]
+  952 |         return c + m->c[C_BRANCH];
+      |                         ^
+/home/andrew/Code/ucas/src/loop.c:1012:4: warning: no header providing "note" is directly included [misc-include-cleaner]
+ 1012 |                         note("loop %s priced as %g once and %lld iterations x %g "
+      |                         ^
+/home/andrew/Code/ucas/src/loop.c:1013:33: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+ 1013 |                             "(listed under branch)", shared_str(n, 120),
+      |                                                      ^
+/home/andrew/Code/ucas/src/loop.c:1014:22: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+ 1014 |                             (double)once, (long long)(hi - lo + 1), (double)per);
+      |                                           ^
+/home/andrew/Code/ucas/src/loop.c:1017:39: warning: either cast from 'int64_t' (aka 'long') to 'long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+ 1017 |                             "branch)", shared_str(n, 120), (long long)(hi - lo + 1),
+      |                                                            ^
+/home/andrew/Code/ucas/src/loop.c:1045:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1045 |         if (!((node_slots(n) >> slot) & 1))
+      |                                       ~ ^
+/home/andrew/Code/ucas/src/loop.c:1046:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1046 |                 return mk_const_i(TY_FP(N.ty[n]) ? N.ty[n] : TY_REAL, 0);
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:1046:48: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+ 1046 |                 return mk_const_i(TY_FP(N.ty[n]) ? N.ty[n] : TY_REAL, 0);
+      |                                                              ^
+/home/andrew/Code/ucas/src/loop.c:1046:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/loop.c:1048:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1048 |         if (!TY_FP(d.sty[res]))
+      |              ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:1051:7: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+ 1051 |                     node_str(n));
+      |                     ^
+/home/andrew/Code/ucas/src/loop.c:1053:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1053 |                 if ((loops.bound[loop_ent(n)] >> j) & 1 && j > top)
+      |                                               ~~ ^
+/home/andrew/Code/ucas/src/loop.c:1053:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1053 |                 if ((loops.bound[loop_ent(n)] >> j) & 1 && j > top)
+      |                                                     ~ ^
+/home/andrew/Code/ucas/src/loop.c:1062:12: warning: no header providing "diff_node" is directly included [misc-include-cleaner]
+ 1062 |                 nid dg = diff_node(d.aux, slot), sv;
+      |                          ^
+/home/andrew/Code/ucas/src/loop.c:1066:40: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+ 1066 |                 e.next[0] = mk_cast(e.sty[0], mk_bin(O_ADD, sv, dg));
+      |                                                      ^
+/home/andrew/Code/ucas/src/loop.c:1075:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1075 |                 if (!TY_FP(d.sty[j]))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/loop.c:1079:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   17 |                 snprintf(nm, sizeof nm, "d%s", sym_str(d.sname[j]));
+      |                 ^
+/home/andrew/Code/ucas/src/loop.c:1082:16: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+ 1082 |                 e.sname[m] = sym_cstr(nm);
+      |                              ^
+/home/andrew/Code/ucas/src/loop.c:1098:36: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+ 1098 |                         acc = mk_bin(O_ADD, acc, mk_bin(O_MUL,
+      |                                                         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

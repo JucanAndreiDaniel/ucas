@@ -1,0 +1,19 @@
+# TRUE identities over real. The independent exact oracle (expand of f-g = 0)
+# and algebra `expand` both confirm these are identically equal, yet `equiv`
+# over `real` rejects all of them with a "counterexample" whose two printed
+# values are numerically identical (exact difference = 0 there).
+fA(x: real, y: real) = (x + y) ^ 2
+gA(x: real, y: real) = x ^ 2 + 2 * x * y + y ^ 2
+equiv fA gA
+fB(x: real, y: real) = (x + 3 * y) ^ 4
+gB(x: real, y: real) = x ^ 4 + 12 * x ^ 3 * y + 54 * x ^ 2 * y ^ 2 + 108 * x * y ^ 3 + 81 * y ^ 4
+equiv fB gB
+fC(x: real, y: real) = (x + 0) ^ 2 - (y + -2) ^ 2
+gC(x: real, y: real) = (x + 0 - (y + -2)) * (x + 0 + (y + -2))
+equiv fC gC
+fD(x: real) = x * x + 8 * x + 16
+gD(x: real) = (x + 4) ^ 2
+equiv fD gD
+fE(x: real) = (x ^ 3 - 1) / (x - 1)
+gE(x: real) = x * x + x + 1
+equiv fE gE

@@ -1,0 +1,107 @@
+> a1(x: u32, y: u32) = (x * 7 + y) * 3
+> a2(x: u32, y: u32) = (x << 3) + (y >> 2)
+> f1(x: f32, y: f32, z: f32) = x*y + z
+> f2(x: f32, y: f32) = x*x + y*y
+> mca a1 on skl
+mca of a1 on skl (skylake)
+  straight-line code: 3 instructions, 3 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  imul      7x                      3     1    1  p1        
+     1  add       7x + y                  1  0.25    1  p0156     0
+     2  lea       3(7x + y)               3     1    1  p1        1
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 0.38 p1 2.00 p5 0.31 p6 0.31
+  bounds: critical path 7.00, ports 2.00 (p1), front end 0.75 (3 uops / 4)
+  simulated: 7.00 cycles, limited by the critical path
+> cost a1 model skl
+cost of a1 under skl: 7 (3 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             2 x 3     = 6
+> mca a1 on zen4
+mca of a1 on zen4 (znver4)
+  straight-line code: 3 instructions, 3 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  imul      7x                      3     1    1  ALU1      
+     1  add       7x + y                  1  0.25    1  ALU0 ALU1 ALU2 ALU3 0
+     2  lea       3(7x + y)               2   0.5    1  ALU0 ALU1 ALU2 ALU3 1
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: ALU0 1.00 ALU1 1.00 ALU2 1.00 ALU3 1.00
+  bounds: critical path 6.00, ports 1.00 (ALU0), front end 0.50 (3 uops / 6)
+  simulated: 6.00 cycles, limited by the critical path
+> cost a1 model zen4
+cost of a1 under zen4: 7 (3 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             2 x 3     = 6
+> mca a2 on skl
+mca of a2 on skl (skylake)
+  straight-line code: 3 instructions, 3 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  shl       x << 3                  1   0.5    1  p06       
+     1  shl       y >> 2                  1   0.5    1  p06       
+     2  add       (x << 3) + (y >> 2)     1  0.25    1  p0156     0 1
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 0.50 p5 0.50 p6 1.00
+  bounds: critical path 2.00, ports 1.00 (p0), front end 0.75 (3 uops / 4)
+  simulated: 2.00 cycles, limited by the critical path
+> cost a2 model skl
+cost of a2 under skl: 3 (3 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  shift            2 x 1     = 2
+> mca a2 on glc
+mca of a2 on glc (goldencove)
+  straight-line code: 3 instructions, 3 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  shl       x << 3                  1   0.5    1  p06       
+     1  shl       y >> 2                  1   0.5    1  p06       
+     2  add       (x << 3) + (y >> 2)     1   0.2    1  p0156 p10 0 1
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 0.38 p5 0.31 p6 1.00 p10 0.31
+  bounds: critical path 2.00, ports 1.00 (p0), front end 0.50 (3 uops / 6)
+  simulated: 2.00 cycles, limited by the critical path
+> cost a2 model glc
+cost of a2 under glc: 3 (3 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  shift            2 x 1     = 2
+> mca f1 on skl
+mca of f1 on skl (skylake)
+  straight-line code: 2 instructions, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  vmulps    x*y                     4   0.5    1  p01       
+     1  vaddps    x*y + z                 4   0.5    1  p01       0
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 1.00
+  bounds: critical path 8.00, ports 1.00 (p0), front end 0.50 (2 uops / 4)
+  simulated: 8.00 cycles, limited by the critical path
+> cost f1 model skl
+cost of f1 under skl: 8 (2 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+  fmul             1 x 4     = 4
+> mca f1 on zen4
+mca of f1 on zen4 (znver4)
+  straight-line code: 2 instructions, 2 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  vmulps    x*y                     3   0.5    1  FP0 FP1   
+     1  vaddps    x*y + z                 3   0.5    1  FP2 FP3   0
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: FP0 0.50 FP1 0.50 FP2 0.50 FP3 0.50
+  bounds: critical path 6.00, ports 0.50 (FP0), front end 0.33 (2 uops / 6)
+  simulated: 6.00 cycles, limited by the critical path
+> cost f1 model zen4
+cost of f1 under zen4: 6 (2 operations, shared subterms counted once)
+  fadd             1 x 3     = 3
+  fmul             1 x 3     = 3
+> mca f2 on glc
+mca of f2 on glc (goldencove)
+  straight-line code: 3 instructions, 3 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  vmulps    x*x                     4   0.5    1  p01       
+     1  vmulps    y*y                     4   0.5    1  p01       
+     2  vaddps    x*x + y*y               2   0.5    1  p15       0 1
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 1.00 p1 1.00 p5 1.00
+  bounds: critical path 6.00, ports 1.00 (p0), front end 0.50 (3 uops / 6)
+  simulated: 6.00 cycles, limited by the critical path
+> cost f2 model glc
+cost of f2 under glc: 10 (3 operations, shared subterms counted once)
+  fadd             1 x 2     = 2
+  fmul             2 x 4     = 8

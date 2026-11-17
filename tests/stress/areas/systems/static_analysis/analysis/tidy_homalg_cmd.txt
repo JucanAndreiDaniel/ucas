@@ -1,0 +1,409 @@
+/home/andrew/Code/ucas/src/homalg_cmd.c:89:9: warning: Array subscript is undefined [clang-analyzer-core.uninitialized.ArraySubscript]
+   89 |         while (isspace((unsigned char)*s))
+      |                ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:994:6: note: Assuming the condition is false
+  994 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:994:2: note: Taking false branch
+  994 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:996:2: note: Loop condition is true.  Entering loop body
+  996 |         for (k = 0; hcmds[k].w; k++)
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:997:7: note: Assuming the condition is true
+  997 |                 if (!strcmp(hcmds[k].w, w)) {
+      |                     ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:997:3: note: Taking true branch
+  997 |                 if (!strcmp(hcmds[k].w, w)) {
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:999:4: note:  Execution continues on line 1003
+  999 |                         break;
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:7: note: 'c' is 1
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |              ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:6: note: Left side of '||' is false
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:12: note: Assuming the condition is false
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |                   ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:6: note: Left side of '||' is false
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:38: note: Assuming the condition is false
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |                                             ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:1003:2: note: Taking false branch
+ 1003 |         if (!c || func_find(sym_cstr(w)) || !cmdp_at(p, T_ID)) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1009:2: note: Calling 'parse_opts'
+ 1009 |         parse_opts(&o, text);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:107:14: note: 'i' is <= 'n'
+  107 |         for (i = 0; i <= n; i++) {
+      |                     ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:107:2: note: Loop condition is true.  Entering loop body
+  107 |         for (i = 0; i <= n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:109:7: note: Assuming 'i' is < 'n'
+  109 |                 if (i < n && !is_kw_at(text, i, &k2))
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:109:7: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/homalg_cmd.c:109:3: note: Taking false branch
+  109 |                 if (i < n && !is_kw_at(text, i, &k2))
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:112:7: note: 'cur' is equal to NULL
+  112 |                 if (cur == NULL)
+      |                     ^~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:112:3: note: Taking true branch
+  112 |                 if (cur == NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:155:7: note: 'i' is not equal to 'n'
+  155 |                 if (i == n)
+      |                     ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:155:3: note: Taking false branch
+  155 |                 if (i == n)
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:107:14: note: Assuming 'i' is <= 'n'
+  107 |         for (i = 0; i <= n; i++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:107:2: note: Loop condition is true.  Entering loop body
+  107 |         for (i = 0; i <= n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:109:7: note: Assuming 'i' is >= 'n'
+  109 |                 if (i < n && !is_kw_at(text, i, &k2))
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:109:13: note: Left side of '&&' is false
+  109 |                 if (i < n && !is_kw_at(text, i, &k2))
+      |                           ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:112:7: note: 'cur' is not equal to NULL
+  112 |                 if (cur == NULL)
+      |                     ^~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:112:3: note: Taking false branch
+  112 |                 if (cur == NULL)
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:116:4: note: Calling 'trim_copy'
+  116 |                         trim_copy(arg, sizeof arg, text + start, text + i);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:73:9: note: 'a' is >= 'b'
+   73 |         while (a < b && isspace((unsigned char)*a))
+      |                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:73:15: note: Left side of '&&' is false
+   73 |         while (a < b && isspace((unsigned char)*a))
+      |                      ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:75:9: note: 'b' is <= 'a'
+   75 |         while (b > a && isspace((unsigned char)b[-1]))
+      |                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:75:15: note: Left side of '&&' is false
+   75 |         while (b > a && isspace((unsigned char)b[-1]))
+      |                      ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:77:2: note: Taking false branch
+   77 |         if ((size_t)(b - a) >= n)
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:116:4: note: Returning from 'trim_copy'
+  116 |                         trim_copy(arg, sizeof arg, text + start, text + i);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:117:4: note: Taking false branch
+  117 |                         if (!strcmp(cur, "with")) {
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:120:11: note: Taking true branch
+  120 |                         } else if (!strcmp(cur, "mod")) {
+      |                                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:121:14: note: Calling 'opt_int'
+  121 |                                 o->mod = opt_int(arg, "mod");
+      |                                          ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:89:2: note: Loop condition is true.  Entering loop body
+   89 |         while (isspace((unsigned char)*s))
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:89:9: note: Array subscript is undefined
+   89 |         while (isspace((unsigned char)*s))
+      |                ^
+/usr/include/ctype.h:197:21: note: expanded from macro 'isspace'
+  197 | # define isspace(c)     __isctype((c), _ISspace)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~
+/usr/include/ctype.h:89:4: note: expanded from macro '__isctype'
+   89 |   ((*__ctype_b_loc ())[(int) (c)] & (unsigned short int) type)
+      |    ^                   ~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:118:5: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   20 |                                 snprintf(o->with, sizeof o->with, "%s", arg);
+      |                                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:210:32: warning: no header providing "zint" is directly included [misc-include-cleaner]
+   24 | to_cells(int k, int coh, const zint *x, zint *y)
+      |                                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:212:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   20 |         uint32_t c, n = hs_ncells(cur_s, k);
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:231:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+   24 |         rep_obj("reduced");
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:232:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+  232 |         rep_list("cells_before");
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:235:3: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  235 |                 rep_int(NULL, hs_ncells(cur_s, k));
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:237:2: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  237 |         rep_end();
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:246:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  246 |         printf("  reduced: cells %s -> %s (unit pivots cancelled; f g = 1, "
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:257:43: warning: no header providing "fgab" is directly included [misc-include-cleaner]
+  257 | canon_matrix(struct sbuf *b, const struct fgab *G, const struct fgab *H,
+      |                                           ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:258:18: warning: no header providing "zmat" is directly included [misc-include-cleaner]
+  258 |     const struct zmat *M)
+      |                  ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:270:2: warning: no header providing "zm_init" is directly included [misc-include-cleaner]
+  270 |         zm_init(&C, H->ninv, G->ninv);
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:272:3: warning: no header providing "ab_gen" is directly included [misc-include-cleaner]
+  272 |                 ab_gen(G, j, x);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:273:3: warning: no header providing "ab_hom_apply" is directly included [misc-include-cleaner]
+  273 |                 ab_hom_apply(G, H, M, x, y);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:274:8: warning: no header providing "ab_canon" is directly included [misc-include-cleaner]
+  274 |                 if (!ab_canon(H, y, c))
+      |                      ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:277:4: warning: no header providing "ZM" is directly included [misc-include-cleaner]
+  277 |                         ZM(&C, i, j) = c[i];
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:279:6: warning: no header providing "zm_is_zero" is directly included [misc-include-cleaner]
+  279 |         if (zm_is_zero(&C))
+      |             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:282:3: warning: no header providing "zm_print" is directly included [misc-include-cleaner]
+  282 |                 zm_print(b, &C);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:283:2: warning: no header providing "zm_free" is directly included [misc-include-cleaner]
+  283 |         zm_free(&C);
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:307:3: warning: no header providing "z_print" is directly included [misc-include-cleaner]
+  307 |                 z_print(b, c[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:320:7: warning: no header providing "z_is_zero" is directly included [misc-include-cleaner]
+  320 |                 if (z_is_zero(x[i]))
+      |                     ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:326:7: warning: no header providing "z_sign" is directly included [misc-include-cleaner]
+  326 |                 if (z_sign(x[i]) < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:330:8: warning: no header providing "z_is_pm1" is directly included [misc-include-cleaner]
+  330 |                 if (!z_is_pm1(x[i])) {
+      |                      ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:331:15: warning: no header providing "z_abs" is directly included [misc-include-cleaner]
+  331 |                         z_print(b, z_abs(x[i]));
+      |                                    ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:356:4: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+  356 |                         rep_check(hal_check_name[k], hal_checks[k], -1, 1, t);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:369:3: warning: no header providing "ab_cyclic" is directly included [misc-include-cleaner]
+  369 |                 ab_cyclic(G, Z_ZERO);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:369:16: warning: no header providing "Z_ZERO" is directly included [misc-include-cleaner]
+  369 |                 ab_cyclic(G, Z_ZERO);
+      |                              ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:372:7: warning: no header providing "ab_parse" is directly included [misc-include-cleaner]
+  372 |         if (!ab_parse(G, o->with, &end) || (end && *end))
+      |              ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:387:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  387 |         rep_str("space", hs_name(s));
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:403:9: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  403 |                 const int64_t *v;
+      |                       ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:442:7: warning: no header providing "ab_isomorphic" is directly included [misc-include-cleaner]
+  442 |         if (!ab_isomorphic(X, Y, NULL, NULL))
+      |              ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:444:54: warning: no header providing "ab_str" is directly included [misc-include-cleaner]
+  444 |                     "%d: %s is %s, the formula gives %s", n, what, ab_str(X),
+      |                                                                    ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:479:15: warning: no header providing "ab_invariants" is directly included [misc-include-cleaner]
+  479 |                         int k, m = ab_invariants(&H[n], inv);
+      |                                    ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:483:20: warning: no header providing "z_str" is directly included [misc-include-cleaner]
+  483 |                                         rep_str(NULL, z_str(inv[k]));
+      |                                                       ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:513:4: warning: no header providing "ab_free_abelian" is directly included [misc-include-cleaner]
+  513 |                         ab_free_abelian(&zero, 0);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:516:4: warning: no header providing "ab_hom_group" is directly included [misc-include-cleaner]
+  516 |                         ab_hom_group(&A, &HZ[n], &G);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:517:4: warning: no header providing "ab_ext" is directly included [misc-include-cleaner]
+  517 |                         ab_ext(&B, prev ? prev : &zero, &G);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:520:4: warning: no header providing "ab_tensor" is directly included [misc-include-cleaner]
+  520 |                         ab_tensor(&A, &HZ[n], &G);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:521:4: warning: no header providing "ab_tor" is directly included [misc-include-cleaner]
+  521 |                         ab_tor(&B, prev ? prev : &zero, &G);
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:523:3: warning: no header providing "ab_direct_sum" is directly included [misc-include-cleaner]
+  523 |                 ab_direct_sum(&S, &A, &B, NULL, NULL, NULL, NULL);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:525:3: warning: no header providing "ab_free" is directly included [misc-include-cleaner]
+  525 |                 ab_free(&A);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:580:6: warning: no header providing "z_from_i64" is directly included [misc-include-cleaner]
+  580 |         m = z_from_i64(o->mod);
+      |             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:678:3: warning: no header providing "rep_null" is directly included [misc-include-cleaner]
+  678 |                 rep_null("stable_page");
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:718:8: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  718 |                         if (strcmp(sb_str(&m), "0")) {
+      |                             ^                      
+      |                                                     != 0
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:18: warning: no header providing "z_parse" is directly included [misc-include-cleaner]
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:767:5: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+  767 |                 s = end;
+      |                   ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:839:6: note: Assuming field 'ninv' is not equal to 0
+  839 |         if (H->ninv == 0) {
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:839:2: note: Taking false branch
+  839 |         if (H->ninv == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:844:9: note: Assuming field 'stable' is 0
+  844 |         rmax = S.stable ? S.stable : S.npages;
+      |                ^~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:844:9: note: '?' condition is false
+/home/andrew/Code/ucas/src/homalg_cmd.c:845:6: note: Assuming 'rmax' is >= 2
+  845 |         if (rmax < 2)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:845:2: note: Taking false branch
+  845 |         if (rmax < 2)
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:851:14: note: Assuming 'k' is < field 'ninv'
+  851 |         for (k = 0; k < H->ninv; k++) {
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:851:2: note: Loop condition is true.  Entering loop body
+  851 |         for (k = 0; k < H->ninv; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:853:7: note: Assuming the condition is true
+  853 |                 if (o->tvec[0]) {
+      |                     ^~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:853:3: note: Taking true branch
+  853 |                 if (o->tvec[0]) {
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:854:8: note: 'k' is <= 0
+  854 |                         if (k > 0)
+      |                             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:854:4: note: Taking false branch
+  854 |                         if (k > 0)
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:856:4: note: Calling 'parse_vec'
+  856 |                         parse_vec(o->tvec, y, H->ninv);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:753:2: note: Loop condition is false. Execution continues on line 755
+  753 |         while (isspace((unsigned char)*s))
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:755:6: note: Assuming the condition is false
+  755 |         if (*s++ != '[')
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:755:2: note: Taking false branch
+  755 |         if (*s++ != '[')
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:758:2: note: Loop condition is true.  Entering loop body
+  758 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:760:3: note: Loop condition is false. Execution continues on line 762
+  760 |                 while (isspace((unsigned char)*s))
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:762:7: note: Assuming the condition is false
+  762 |                 if (*s == ']' && i == 0)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:762:17: note: Left side of '&&' is false
+  762 |                 if (*s == ']' && i == 0)
+      |                               ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:7: note: 'i' is < 'n'
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                     ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:7: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:17: note: Assuming the condition is false
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:3: note: Taking false branch
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:768:3: note: Loop condition is false. Execution continues on line 770
+  768 |                 while (isspace((unsigned char)*s))
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:770:7: note: Assuming the condition is true
+  770 |                 if (*s == ',') {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:770:3: note: Taking true branch
+  770 |                 if (*s == ',') {
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:772:4: note:  Execution continues on line 758
+  772 |                         continue;
+      |                         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:758:2: note: Loop condition is true.  Entering loop body
+  758 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:759:3: note: 'end' declared without an initial value
+  759 |                 const char *end;
+      |                 ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:760:3: note: Loop condition is false. Execution continues on line 762
+  760 |                 while (isspace((unsigned char)*s))
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:762:7: note: Assuming the condition is false
+  762 |                 if (*s == ']' && i == 0)
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:762:17: note: Left side of '&&' is false
+  762 |                 if (*s == ']' && i == 0)
+      |                               ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:7: note: Assuming 'i' is >= 'n'
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:764:14: note: Left side of '||' is true
+  764 |                 if (i >= n || !z_parse(s, &y[i], &end))
+      |                            ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:767:5: note: Assigned value is uninitialized
+  767 |                 s = end;
+      |                   ^ ~~~
+/home/andrew/Code/ucas/src/homalg_cmd.c:809:2: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  809 |         rep_bool("zero", T.zero);
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:859:11: warning: no header providing "Z_ONE" is directly included [misc-include-cleaner]
+  859 |                         y[k] = Z_ONE;
+      |                                ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:861:3: warning: no header providing "ab_from_canon" is directly included [misc-include-cleaner]
+  861 |                 ab_from_canon(H, y, x);
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:961:2: warning: no header providing "rep_proof" is directly included [misc-include-cleaner]
+  961 |         rep_proof(all ? "exhaustive" : "counterexample", all ? "checked for "
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:972:1: warning: function 'homalg_line' can be made static to enforce internal linkage [misc-use-internal-linkage]
+  971 | int
+      | static 
+  972 | homalg_line(const char *s, size_t n)
+      | ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:992:2: warning: no header providing "zmark" is directly included [misc-include-cleaner]
+  992 |         zmark m;
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1015:6: warning: no header providing "z_mark" is directly included [misc-include-cleaner]
+ 1015 |         m = z_mark();
+      |             ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1016:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 1016 |         switch (c) {
+      |         ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1016:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/homalg_cmd.c:1018:3: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+ 1018 |                 rep_begin("space");
+      |                 ^
+/home/andrew/Code/ucas/src/homalg_cmd.c:1047:2: warning: no header providing "z_release" is directly included [misc-include-cleaner]
+ 1047 |         z_release(m);
+      |         ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

@@ -1,0 +1,16 @@
+{"jsonrpc":"2.0","id":0,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"stress","version":"1"}}}
+{"jsonrpc":"2.0","method":"notifications/initialized"}
+{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"u8(1)+i8(2)"}}}}
+{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"re(z)","defaults":true}}}}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"a","params":[{"name":"x","type":"u8"}],"body":"x"}}}}
+{"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"b","params":[{"name":"x","type":"u8"}],"body":"i8(x)"}}}}
+{"jsonrpc":"2.0","id":5,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"equiv","args":{"f":"a","g":"b"}}}}
+{"jsonrpc":"2.0","id":6,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"range","args":{"f":"a"}}}}
+{"jsonrpc":"2.0","id":7,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"range","args":{"f":"b"}}}}
+{"jsonrpc":"2.0","id":8,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"mix8","params":[{"name":"x","type":"i8"},{"name":"y","type":"u8"}],"body":"x+y"}}}}
+{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"wrap","args":{"f":"mix8"}}}}
+{"jsonrpc":"2.0","id":10,"method":"tools/call","params":{"name":"session","arguments":{"op":"define","args":{"name":"ovf","params":[{"name":"x","type":"int","range":[0,10]}],"body":"x+9223372036854775807"}}}}
+{"jsonrpc":"2.0","id":11,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"domain","args":{"f":"ovf"}}}}
+{"jsonrpc":"2.0","id":12,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"asuint(1)"}}}}
+{"jsonrpc":"2.0","id":13,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"9223372036854775808"}}}}
+{"jsonrpc":"2.0","id":14,"method":"tools/call","params":{"name":"analyze","arguments":{"op":"show","args":{"f":"z+w","defaults":true}}}}

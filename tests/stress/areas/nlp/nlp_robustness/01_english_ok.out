@@ -1,0 +1,36 @@
+> what is the range of x squared for a signed byte x?
+  ucas: it(x: i8) = x^2
+  ucas: range it
+range of it -> i8:
+  -127..121   (44 distinct values)
+  values: -127, -124, -119, -112..-111, -103, -95, -92, -87, -79, -71, -63, -60, -55, -47, -39, -31, -28, -23, -15, -7, 0..1, 4, 9, 16..17, ...
+  fits in i8
+  over all 256 points of the domain
+> what is the wrap of x squared for u8 x?
+  ucas: it(x: u8) = x^2
+  ucas: wrap it
+wrap analysis of it:
+  no wrapping or rounding operations
+  end to end: differs from the mathematical result at 240 points, e.g. x=16
+      exact for: 0..15
+  over all 256 points of the domain
+> the sum of a and b
+  ucas: it(a, b) = a + b
+  ucas: show it
+it(a: real, b: real) = a + b
+  -> real
+> what is 2 + 2?
+  ucas: 2 + 2
+4
+> factor x squared minus 1
+  ucas: factor x^2 - 1
+factor x^2 - 1
+  = (x - 1)*(x + 1)
+  check: exact (both sides have the same normal form)
+  (factors are irreducible over the rationals)
+> solve x squared = 4 for x
+  ucas: solve x^2 == 4 for x
+solve x^2 == 4 for x
+  x = -2
+  x = 2
+  check: each solution substituted (2 values): residual 0

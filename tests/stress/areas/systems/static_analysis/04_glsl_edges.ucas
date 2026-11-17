@@ -1,0 +1,18 @@
+# Static-analysis probe: glslc.c:269-271 (pointer subtraction), spirv.c:957/968
+# (shift by 64), spirv.c:5016 (negative shift), glslfn.c:7857 (OOB).
+simplify functions nofile
+```glsl
+#version 450
+layout(local_size_x=64) in;
+layout(std430,binding=0) buffer B { uint v[]; };
+uint f(uint x){ return (x & 255u) + 1u; }
+uint g(uint x){ return (x << 64u) | (x >> 64u); }
+void main(){ uint i=gl_GlobalInvocationID.x; v[i]=f(i&15u)+g(i); }
+```
+simplify nofile
+```glsl
+#version 450
+layout(local_size_x=1) in;
+layout(std430,binding=0) buffer B { uint v[]; };
+void main(){ uint i=gl_GlobalInvocationID.x; uint x=v[i]; v[i] = (x<<32u) + (x>>32u); }
+```

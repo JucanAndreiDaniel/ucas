@@ -1,0 +1,550 @@
+src/nodesat.c:258:14: warning: Array access (via field 'b') results in a null pointer dereference [core.NullDereference]
+  258 |                         la.b[i] = a->b[k * df->bits + i];
+      |                                   ^
+src/nodesat.c:298:25: note: Assuming the condition is true
+  298 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+src/nodesat.c:298:25: note: '?' condition is true
+src/nodesat.c:306:6: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |             ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:306:6: note: Left side of '||' is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:306:28: note: Assuming the condition is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                   ^~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:306:47: note: Left side of '&&' is false
+  306 |         if (TYK(t) == K_FLOAT || (TYK(ta) == K_FLOAT && ((opinfo[op].fl &
+      |                                                      ^
+src/nodesat.c:310:6: note: Assuming 'op' is not equal to O_TABLE
+  310 |         if (op != O_TABLE && w == 0) {
+      |             ^~~~~~~~~~~~~
+src/nodesat.c:310:6: note: Left side of '&&' is true
+src/nodesat.c:310:23: note: 'w' is equal to 0
+  310 |         if (op != O_TABLE && w == 0) {
+      |                              ^
+src/nodesat.c:310:2: note: Taking true branch
+  310 |         if (op != O_TABLE && w == 0) {
+      |         ^
+src/nodesat.c:314:14: note: 'w' is 1
+  314 |         w_const(&r, w ? w : 1, 0);
+      |                     ^
+src/nodesat.c:314:14: note: '?' condition is true
+src/nodesat.c:315:2: note: Control jumps to the 'default' case at line 413
+  315 |         switch (op) {
+      |         ^
+src/nodesat.c:414:7: note: Assuming the condition is true
+  414 |                 if (N.a[n])
+      |                     ^~~~~~
+src/nodesat.c:414:3: note: Taking true branch
+  414 |                 if (N.a[n])
+      |                 ^
+src/nodesat.c:416:7: note: Assuming the condition is true
+  416 |                 if (N.b[n])
+      |                     ^~~~~~
+src/nodesat.c:416:3: note: Taking true branch
+  416 |                 if (N.b[n])
+      |                 ^
+src/nodesat.c:418:7: note: Assuming field 'arity' is < 3
+  418 |                 if (opinfo[op].arity >= 3 && N.c[n] && !IS_DOT(op))
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:418:29: note: Left side of '&&' is false
+  418 |                 if (opinfo[op].arity >= 3 && N.c[n] && !IS_DOT(op))
+      |                                           ^
+src/nodesat.c:420:7: note: Assuming 'op' is >= O_UDOT4X8
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^~~~~~~~~~
+src/ucas.h:243:21: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/nodesat.c:420:7: note: Left side of '&&' is true
+src/ucas.h:243:21: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                     ^
+src/nodesat.c:420:7: note: Assuming 'op' is <= O_SUDOT8X4S
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                     ^~~~~~~~~~
+src/ucas.h:243:44: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                                            ^~~~~~~~~~~~~~~~~~
+src/nodesat.c:420:7: note: Left side of '&&' is true
+src/ucas.h:243:20: note: expanded from macro 'IS_DOT'
+  243 | #define IS_DOT(op) ((op) >= O_DOT_FIRST && (op) <= O_DOT_LAST)
+      |                    ^
+src/nodesat.c:420:21: note: Assuming the condition is true
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                                   ^~~~~~
+src/nodesat.c:420:3: note: Taking true branch
+  420 |                 if (IS_DOT(op) && N.c[n]) {
+      |                 ^
+src/nodesat.c:422:8: note: Value assigned to 'B.v'
+  422 |                         d = aig_and(g, aig_and(g, D(a), D(b)), D(k));
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:423:22: note: Passing value via 3rd parameter 'a'
+  423 |                         blast_dot(op, &r, V(a), V(b), V(k));
+      |                                           ^~~~
+src/nodesat.c:291:14: note: expanded from macro 'V'
+  291 | #define V(i) (&B.v[i].v)
+      |              ^~~~~~~~~~~
+src/nodesat.c:423:4: note: Calling 'blast_dot'
+  423 |                         blast_dot(op, &r, V(a), V(b), V(k));
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:251:10: note: Assuming 'acc' is null
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                 ^~~
+src/nodesat.c:251:10: note: '?' condition is false
+src/nodesat.c:251:52: note: Assuming field 'sa' is not equal to 0
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                                                           ^~~~~~
+src/nodesat.c:251:59: note: Left side of '||' is true
+  251 |         int E = acc ? 2 * df->bits + 4 : 32, k, i, sres = df->sa || df->sb;
+      |                                                                  ^
+src/nodesat.c:255:14: note: Assuming 'k' is < field 'lanes'
+  255 |         for (k = 0; k < df->lanes; k++) {
+      |                     ^~~~~~~~~~~~~
+src/nodesat.c:255:2: note: Loop condition is true.  Entering loop body
+  255 |         for (k = 0; k < df->lanes; k++) {
+      |         ^
+src/nodesat.c:257:15: note: Assuming 'i' is < field 'bits'
+  257 |                 for (i = 0; i < df->bits; i++) {
+      |                             ^~~~~~~~~~~~
+src/nodesat.c:257:3: note: Loop condition is true.  Entering loop body
+  257 |                 for (i = 0; i < df->bits; i++) {
+      |                 ^
+src/nodesat.c:258:14: note: Array access (via field 'b') results in a null pointer dereference
+  258 |                         la.b[i] = a->b[k * df->bits + i];
+      |                                   ^  ~
+src/nodesat.c:666:46: warning: The left operand of '-' is a garbage value [core.UndefinedBinaryOperatorResult]
+  666 |         return aig_mux(B.g, x->nan, x->nb.b[x->nb.w - 1], x->s);
+      |                                                     ^
+src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+src/nodesat.c:761:25: note: '?' condition is true
+src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:762:26: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^~~~~~~~~~
+src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/nodesat.c:774:13: note: Left side of '&&' is false
+src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+src/nodesat.c:856:22: note: Assuming 'op' is not equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:856:37: note: Assuming 'op' is not equal to O_MUL
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                            ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:856:52: note: Assuming 'op' is not equal to O_MIN
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                                           ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:6: note: Assuming 'op' is not equal to O_MAX
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |             ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:21: note: Assuming 'op' is equal to O_COPYSIGN
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                            ^~~~~~~~~~~~~~~~
+src/nodesat.c:857:38: note: Left side of '||' is true
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                             ^
+src/nodesat.c:858:7: note: Assuming the condition is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:858:7: note: Left side of '||' is false
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:859:6: note: Assuming the condition is false
+  859 |             TYW(ta) != TYW(t))) {
+      |             ^~~~~~~~~~~~~~~~~
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:856:2: note: Taking false branch
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |         ^
+src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+src/nodesat.c:876:2: note: Control jumps to 'case O_COPYSIGN:'  at line 884
+  876 |         switch (op) {
+      |         ^
+src/nodesat.c:885:11: note: Calling 'fsign'
+  885 |                 lit s = fsign(&xb);
+      |                         ^~~~~~~~~~
+src/nodesat.c:666:46: note: The left operand of '-' is a garbage value
+  666 |         return aig_mux(B.g, x->nan, x->nb.b[x->nb.w - 1], x->s);
+      |                                             ~~~~~~~ ^
+src/nodesat.c:894:11: warning: The left operand of '^' is a garbage value [core.UndefinedBinaryOperatorResult]
+  894 |                         xb.s = L_NOT(xb.s);
+      |                                ^     ~~~~
+src/sat.h:19:23: note: expanded from macro 'L_NOT'
+   19 | #define L_NOT(a) ((a) ^ 1u)
+      |                    ~  ^
+src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+src/nodesat.c:761:25: note: '?' condition is true
+src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:762:26: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^~~~~~~~~~
+src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/nodesat.c:774:13: note: Left side of '&&' is false
+src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+src/nodesat.c:856:22: note: Assuming 'op' is equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+src/nodesat.c:856:34: note: Left side of '||' is true
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                         ^
+src/nodesat.c:858:7: note: Assuming the condition is false
+  858 |             (TYW(N.ty[N.b[n]]) != TYW(t) ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:858:7: note: Left side of '||' is false
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:859:6: note: Assuming the condition is false
+  859 |             TYW(ta) != TYW(t))) {
+      |             ^~~~~~~~~~~~~~~~~
+src/ucas.h:95:16: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                ^
+src/nodesat.c:856:2: note: Taking false branch
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |         ^
+src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+src/nodesat.c:876:2: note: Control jumps to 'case O_SUB:'  at line 892
+  876 |         switch (op) {
+      |         ^
+src/nodesat.c:893:7: note: 'op' is equal to O_SUB
+  893 |                 if (op == O_SUB)
+      |                     ^~
+src/nodesat.c:893:3: note: Taking true branch
+  893 |                 if (op == O_SUB)
+      |                 ^
+src/nodesat.c:894:11: note: The left operand of '^' is a garbage value
+  894 |                         xb.s = L_NOT(xb.s);
+      |                                ^     ~~~~
+src/sat.h:19:23: note: expanded from macro 'L_NOT'
+   19 | #define L_NOT(a) ((a) ^ 1u)
+      |                    ~  ^
+src/nodesat.c:954:3: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
+  954 |                 fp_mux(g, &r, xa.nan, &xa, &r);
+      |                 ^             ~~~~~~
+src/nodesat.c:761:25: note: Assuming the condition is true
+  761 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |                                ^~~~~~
+src/nodesat.c:761:25: note: '?' condition is true
+src/nodesat.c:762:26: note: Assuming the condition is false
+  762 |         const struct fpfmt *F = TYK(t) == K_FLOAT ? fp_fmt(TYW(t)) : NULL;
+      |                                 ^~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:762:26: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: Assuming the condition is false
+  763 |         const struct fpfmt *FA = TYK(ta) == K_FLOAT ? fp_fmt(TYW(ta)) : NULL;
+      |                                  ^~~~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:763:27: note: '?' condition is false
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/nodesat.c:771:6: note: Assuming 'nsat_floats' is not equal to 0
+  771 |         if (!nsat_floats) {
+      |             ^~~~~~~~~~~~
+src/nodesat.c:771:2: note: Taking false branch
+  771 |         if (!nsat_floats) {
+      |         ^
+src/nodesat.c:774:13: note: Assuming 'op' is < O_FETCH_REPEAT
+  774 |         } else if (IS_TEX(op) && !IS_FETCH(op) && !IS_TEXEL(op) &&
+      |                    ^~~~~~~~~~
+src/ucas.h:239:21: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/nodesat.c:774:13: note: Left side of '&&' is false
+src/ucas.h:239:41: note: expanded from macro 'IS_TEX'
+  239 | #define IS_TEX(op) ((op) >= O_TEX_FIRST && (op) <= O_TEX_LAST)
+      |                                         ^
+src/nodesat.c:780:2: note: 'Default' branch taken. Execution continues on line 846
+  780 |         switch (op) {
+      |         ^
+src/nodesat.c:847:10: note: Assuming field 'arity' is < 2
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                 ^~~~~~~~~~~~~~~~~~~~~
+src/nodesat.c:847:32: note: Left side of '&&' is false
+  847 |         has_b = opinfo[op].arity >= 2 && N.b[n] != 0;
+      |                                       ^
+src/nodesat.c:848:6: note: Assuming 'has_a' is 0
+  848 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:848:2: note: Taking false branch
+  848 |         if (has_a)
+      |         ^
+src/nodesat.c:850:6: note: 'has_b' is 0
+  850 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:850:2: note: Taking false branch
+  850 |         if (has_b)
+      |         ^
+src/nodesat.c:852:6: note: 'has_a' is 0
+  852 |         if (has_a)
+      |             ^~~~~
+src/nodesat.c:852:2: note: Taking false branch
+  852 |         if (has_a)
+      |         ^
+src/nodesat.c:854:6: note: 'has_b' is 0
+  854 |         if (has_b)
+      |             ^~~~~
+src/nodesat.c:854:2: note: Taking false branch
+  854 |         if (has_b)
+      |         ^
+src/nodesat.c:856:7: note: Assuming 'op' is not equal to O_ADD
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+src/nodesat.c:856:22: note: Assuming 'op' is not equal to O_SUB
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                             ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:856:37: note: Assuming 'op' is not equal to O_MUL
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                            ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:856:52: note: Assuming 'op' is not equal to O_MIN
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |                                                           ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:6: note: Assuming 'op' is not equal to O_MAX
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |             ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:21: note: Assuming 'op' is not equal to O_COPYSIGN
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                            ^~~~~~~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:41: note: Assuming 'op' is not equal to O_FMA
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                ^~~~~~~~~~~
+src/nodesat.c:856:7: note: Left side of '||' is false
+  856 |         if ((op == O_ADD || op == O_SUB || op == O_MUL || op == O_MIN ||
+      |              ^
+src/nodesat.c:857:56: note: Assuming 'op' is not equal to O_DIV
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                               ^~~~~~~~~~~
+src/nodesat.c:857:69: note: Left side of '&&' is false
+  857 |             op == O_MAX || op == O_COPYSIGN || op == O_FMA || op == O_DIV) &&
+      |                                                                            ^
+src/nodesat.c:864:6: note: 'FA' is null
+  864 |         if (FA) {
+      |             ^~
+src/nodesat.c:864:2: note: Taking false branch
+  864 |         if (FA) {
+      |         ^
+src/nodesat.c:870:6: note: 'has_b' is 0
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |             ^~~~~
+src/nodesat.c:870:12: note: Left side of '&&' is false
+  870 |         if (has_b && TYK(N.ty[N.b[n]]) == K_FLOAT) {
+      |                   ^
+src/nodesat.c:876:2: note: Control jumps to 'case O_SIGN:'  at line 941
+  876 |         switch (op) {
+      |         ^
+src/nodesat.c:954:3: note: 3rd function call argument is an uninitialized value
+  954 |                 fp_mux(g, &r, xa.nan, &xa, &r);
+      |                 ^             ~~~~~~
+4 warnings generated.

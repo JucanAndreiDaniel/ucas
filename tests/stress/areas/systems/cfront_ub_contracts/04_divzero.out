@@ -1,0 +1,16 @@
+> c lower nofile
+  div0(x: i32) = x/0
+  mod0(x: i32) = x % 0
+  divvar(x: i32, y: i32) = x/y
+    defined where (no C UB): !(x == -2147483648 && y == -1)
+  modvar(x: i32, y: i32) = x % y
+    defined where (no C UB): !(x == -2147483648 && y == -1)
+  div0u(x: u32) = x/0
+  mod0u(x: u32) = x % 0
+  divexpr(x: i32) = x/0
+  divassign(x: i32) = x/0
+  divguard(x: i32, y: i32) = y != 0 ? x/y : 0
+    defined where (no C UB): y == 0 || !(x == -2147483648 && y == -1)
+  div1(x: i32) = x
+  mod1(x: i32) = x % 1
+  div0l(x: i64) = x/0

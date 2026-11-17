@@ -1,0 +1,27 @@
+# signed zero and min/max NaN propagation.
+
+# -0 + +0 = +0: bit pattern changes at -0.
+zerof(x: u32) = asuint(asfloat(x) + f32(0))
+zerog(x: u32) = x
+equiv zerof zerog
+
+# asuint/asfloat round trip quiets sNaN patterns -> not a bit identity.
+zidf(x: u32) = asuint(asfloat(x))
+equiv zidf zerog
+
+# min / max are commutative for ucas (NaNs excluded from f32 domains).
+minf(x: f32, y: f32) = min(x, y)
+ming(x: f32, y: f32) = min(y, x)
+maxf(x: f32, y: f32) = max(x, y)
+maxg(x: f32, y: f32) = max(y, x)
+equiv minf ming
+equiv minf ming nanbits
+equiv maxf maxg
+equiv maxf maxg nanbits
+
+# with u32->asfloat inputs, NaNs enter the domain: min of two NaNs can
+# propagate a different operand depending on argument order.
+mnf(a: u32, b: u32) = min(asfloat(a), asfloat(b))
+mng(a: u32, b: u32) = min(asfloat(b), asfloat(a))
+equiv mnf mng
+equiv mnf mng nanbits

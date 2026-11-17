@@ -1,0 +1,9 @@
+# simplify is NOT idempotent on 1/x - 1/y.
+# The 1st application yields -(x - y)/(x*y); applying simplify to that result
+# yields a DIFFERENT normal form (y - x)/(y*x).  A third application is stable.
+# Yet the two forms are mathematically equal (their difference simplifies to 0),
+# so this is a non-canonical / non-idempotent normal form, not a wrong value.
+simplify 1/x - 1/y
+simplify -(x - y)/(x*y)
+simplify (y - x)/(y*x)
+simplify (-(x - y)/(x*y)) - ((y - x)/(y*x))

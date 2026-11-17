@@ -1,0 +1,16 @@
+> c lower nofile
+  sadd(a: i32, b: i32) = a + b
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(a) + i64(b)
+  ssub(a: i32, b: i32) = a - b
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(a) - i64(b)
+  smul(a: i32, b: i32) = a*b
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(a)*i64(b)
+  sneg(a: i32) = -a
+    defined where (no C UB): -i64(a) >= -2147483648 && -i64(a) <= 2147483647
+  abs_bad(a: i32) = i32(a < 0) != 0 ? -a : a
+    defined where (no C UB): i32(a < 0) == 0 || -i64(a) >= -2147483648 && -i64(a) <= 2147483647
+  inc(x: i32) = x + 1
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
+  lmul(a: i64, b: i64) = a*b
+  addmul(a: i32, b: i32, c: i32) = a*b + c
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 >= -2147483648 && t2 <= 2147483647) where t1 = i64(a)*i64(b), t2 = i64(a*b) + i64(c)

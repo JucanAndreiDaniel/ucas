@@ -1,0 +1,94 @@
+> phi 1
+phi(1) = 1
+  how: 1 = 1; phi = product of p^(e-1) (p - 1): 1 (the empty product)
+  the order of the unit group (Z/1)*; lambda(1) = 1 is its exponent
+  check: counted the k in 1..1 with gcd(k, 1) = 1: 1
+> phi 12
+phi(12) = 4
+  how: 12 = 2^2 * 3; phi = product of p^(e-1) (p - 1): 2^1*1 * 2
+  the order of the unit group (Z/12)*; lambda(12) = 2 is its exponent
+  check: counted the k in 1..12 with gcd(k, 12) = 1: 4
+> carmichael 561
+lambda(561) = 80 (Carmichael: the least m with a^m = 1 for every unit a)
+  how: 561 = 3 * 11 * 17; lambda is the lcm of 2 (3^1), 10 (11^1), 16 (17^1)
+  lambda(2^e) = 2^(e-2) for e >= 3; lambda(p^e) = phi(p^e) otherwise; phi(561) = 320
+  check: the lcm of the orders of all units, by stepping through their powers: 80
+> carmichael 8
+lambda(8) = 2 (Carmichael: the least m with a^m = 1 for every unit a)
+  how: 8 = 2^3; lambda is the lcm of 2 (2^3)
+  lambda(2^e) = 2^(e-2) for e >= 3; lambda(p^e) = phi(p^e) otherwise; phi(8) = 4
+  check: the lcm of the orders of all units, by stepping through their powers: 2
+> factorint 600851475143
+600851475143 = 71 * 839 * 1471 * 6857 (not prime)
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 600851475143; each factor is prime
+> inverse 3 mod 11
+3^-1 = 4 mod 11
+  how: extended Euclid: 4*3 - 1*11 = 1
+  check: 3 * 4 = 12 = 1*11 + 1
+> inverse 2 mod 4
+2 has no inverse mod 4: gcd(2, 4) = 2 > 1
+  2 * 2 = 4 = 0 mod 4, so 2 is a zero divisor; a*x = 1 would give 2 = 2 * 2 * x = 0
+  the units mod 4 are the residues coprime to 4 (phi(4) = 2 of them)
+> order 3 mod 11
+ord(3) = 5 mod 11
+  how: the order divides lambda(11) = 10; 3^5 = 1 and 3^(5/5) = 3
+  not a primitive root: phi(11) = 10
+  additive order: 11
+  check: stepping through the powers, 3^k = 1 first at k = 5
+> legendre 2 7
+(2/7) = 1
+  a quadratic residue: x^2 = a has a solution
+  (4^2 = 2 mod 7)
+  how: quadratic reciprocity (the binary Jacobi algorithm)
+  check: Euler's criterion 2^((7-1)/2) = 1 mod 7
+> legendre -1 5
+(-1/5) = 1
+  a quadratic residue: x^2 = a has a solution
+  (3^2 = 4 mod 5)
+  how: quadratic reciprocity (the binary Jacobi algorithm)
+  check: Euler's criterion 4^((5-1)/2) = 1 mod 5
+> jacobi 2 15
+(2/15) = 1
+  how: quadratic reciprocity; the product of the Legendre symbols over 15 = 3 * 5
+  15 is composite: (a/n) = 1 does not make a a square mod n; here 2 is not a square mod 15
+> sqrtmod 4 mod 7
+x^2 = 4 mod 7: x = 2, 5
+  how: p = 3 mod 4: x = a^((p+1)/4)
+  check: 2^2 = 4, 5^2 = 4 (mod 7); brute force over 0..6: 2 solutions
+> sqrtmod 2 mod 8
+x^2 = 2 mod 8: no solution (2 is not a square mod 8)
+  how: 8 = 2^3: roots mod each prime (Tonelli-Shanks), lifted to the prime powers (Hensel), combined by CRT
+  check: brute force over 0..7: 0 solutions
+> solve x = 2 mod 3, x = 3 mod 5
+the system
+  x = 2 mod 3: x = 2
+    x = 2 (mod 3)
+  x = 3 mod 5: x = 3
+    x = 3 (mod 5)
+x = 8 (mod 15)
+  how: the Chinese remainder theorem, pairwise (moduli that share factors must agree mod their gcd)
+  check: the solution substituted into every congruence: it holds; brute force over 0..14: 1 solution
+> magic 7 u32
+x / 7 for unsigned x: u32
+  m = ceil(2^35 / 7) = 4908534053 (0x124924925, 33 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*7 = 2^35 + e with e = 3 <= 2^3.  Write x = q*7 + r, 0 <= r < 7.  Then x*m/2^35 = x/7 + x*e/(7*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/7: it cannot carry r/7 <= 6/7 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x24924925 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x24924925); q = (t + ((x - t) >> 1)) >> 2;
+    in ucas: (u32((u64(x) * 0x24924925) >> 32) + ((x - u32((u64(x) * 0x24924925) >> 32)) >> 1)) >> 2
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 7 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 7 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 7 i32
+x / 7 for signed x: i32
+  m = ceil(2^34 / 7) = 2454267027 (0x92492493, 32 bits), shift s = 3
+  q = floor(x * m / 2^34) for x >= 0, plus 1 for x < 0
+  proof (Granlund-Montgomery): m*7 = 2^34 + e with e = 5 <= 2^3.  Write x = q*7 + r, 0 <= r < 7.  Then x*m/2^34 = x/7 + x*e/(7*2^34), and x*e/2^34 <= 1 because |x| <= 2^31, so the extra term is at most 1/7: it cannot carry r/7 <= 6/7 past the next integer
+  (for x < 0 the floor lands one below the truncated quotient, since e > 0: hence the + 1)
+  as i32, m = -1840700269 (negative: the sequence adds x back):
+    C:    t = mulhs(x, -1840700269) + x; q = (t >> 2) + ((uint32_t)x >> 31);   (mulhs: the high 32 bits of the signed product, which already divides by 2^32)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 7 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> phi 0
+02_rings_cli.ucas:17:5: error: phi(n) for 1 <= n < 2^64
+    phi 0
+        ^

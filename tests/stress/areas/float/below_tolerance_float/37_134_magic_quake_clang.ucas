@@ -1,0 +1,4 @@
+f_magic_quake_clang(x: f32 in 0.01..100) = y*(1.5f-0.5f*x*y*y) where y = asfloat(0x5f3759df - (asuint(x)>>1))
+g_magic_quake_clang(x: f32 in 0.01..100) = y*(1.5f-0.5f*x*y*y) where y = asfloat(0x5f375a86 - (asuint(x)>>1))
+equiv f_magic_quake_clang g_magic_quake_clang
+error g_magic_quake_clang ~ f_magic_quake_clang

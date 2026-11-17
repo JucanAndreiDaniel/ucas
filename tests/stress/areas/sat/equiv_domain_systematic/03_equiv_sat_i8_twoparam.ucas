@@ -1,0 +1,14 @@
+# WRONG: the same dropped-restriction bug on i8, a two-parameter where clause,
+# a sparse declared set (SAT path) and a large domain (SAT path).
+f1(x: i8) = x
+g1(x: i8 in -5..5) = x
+equiv f1 ~ g1
+f2(x: u8, y: u8) = x + y
+g2(x: u8, y: u8) = x + y where y < 4
+equiv f2 ~ g2
+f3(x: u32) = x
+g3(x: u32 in {0, 4000000000}) = x
+equiv f3 ~ g3
+f4(x: u32 in 0..100000000) = x where x < 10000000
+g4(x: u32 in 0..100000000) = x where x < 5000000
+equiv f4 ~ g4

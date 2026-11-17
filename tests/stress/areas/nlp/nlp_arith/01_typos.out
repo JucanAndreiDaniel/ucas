@@ -1,0 +1,56 @@
+> is x + y comutative for u8 x and y?
+  note: read "comutative" as "commutative"
+  note: commutative: it(x, y) = it(y, x) everywhere?
+  ucas: it(x: u8, y: u8) = x + y
+  ucas: lhs(x: u8, y: u8) = it(x, y)
+  ucas: rhs(x: u8, y: u8) = it(y, x)
+  ucas: equiv lhs rhs
+lhs and rhs are equal on the domain of lhs (exhaustive)
+> is x + y asociative for u8 x, y and z?
+  note: read "asociative" as "associative"
+  note: z is declared but not used here
+  note: associative: it(it(a, b), c) = it(a, it(b, c)) everywhere?
+  ucas: it(x: u8, y: u8) = x + y
+  ucas: lhs(x: u8, y: u8, x3: u8) = it(it(x, y), x3)
+  ucas: rhs(x: u8, y: u8, x3: u8) = it(x, it(y, x3))
+  ucas: equiv lhs rhs
+lhs and rhs are equal on the domain of lhs (proved by SAT: 324 AIG nodes, 2248 conflicts)
+> is x add ivite for u8 x?
+  note: read "add ivite" as "additive"
+  note: additive: it(a + b) = it(a) + it(b) everywhere?
+  ucas: it(x: u8) = x
+  ucas: lhs(x: u8, x2: u8) = it(x + x2)
+  ucas: rhs(x: u8, x2: u8) = it(x) + it(x2)
+  ucas: equiv lhs rhs
+lhs and rhs are equal on the domain of lhs (exhaustive)
+> is x monotonik for u8 x?
+  note: read "monotonik" as "monotonic"
+  ucas: it(x: u8) = x
+  ucas: monotonic it
+monotonic it:
+  strictly increasing on 0..255
+  proved, exhaustive over all 256 points (forward difference f(x+1) - f(x))
+> is x injctive for u8 x?
+  note: read "injctive" as "injective"
+  ucas: it(x: u8) = x
+  ucas: injective it
+injective it:
+  injective: yes (one-to-one)
+  proved, exhaustive over all 256 points
+> is x surjctive for u8 x?
+  note: read "surjctive" as "surjective"
+  ucas: it(x: u8) = x
+  ucas: surjective it
+surjective it:
+  surjective onto its type u8 (0..255): yes
+  256 distinct values (proved, exhaustive over all 256 points)
+> is x bijctive for u8 x?
+  note: read "bijctive" as "bijective"
+  ucas: it(x: u8) = x
+  ucas: bijective it
+bijective it:
+  injective: yes (one-to-one)
+  proved, exhaustive over all 256 points
+  surjective onto its type u8 (0..255): yes
+  256 distinct values (proved, exhaustive over all 256 points)
+  bijective: yes

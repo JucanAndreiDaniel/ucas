@@ -1,0 +1,12 @@
+> c lower nofile
+  addchars(a: i8, b: i8) = i32(a) + i32(b)
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(i32(a)) + i64(i32(b))
+  adduchars(a: u8, b: u8) = i32(a) + i32(b)
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(i32(a)) + i64(i32(b))
+  cmpsigned(a: u32, b: i32) = i32(a < u32(b))
+  cmpsigned2(a: i32, b: u32) = i32(u32(a) < b)
+  mix(x: u32, y: i32) = i32(x + u32(y))
+  shiftpromo(x: u8) = i32(x) << 24
+  mixshort(a: i16, b: u16) = i32(a) + i32(b)
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(i32(a)) + i64(i32(b))
+  charext(x: i8) = i32(x)

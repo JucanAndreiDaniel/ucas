@@ -1,0 +1,2198 @@
+/home/andrew/Code/ucas/src/img.c:10:1: warning: included header ucas.h is not used directly [misc-include-cleaner]
+   10 | #include "ucas.h"
+      | ^~~~~~~~~~~~~~~~~
+   11 | #include "img.h"
+/home/andrew/Code/ucas/src/img.c:80:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   13 |                 snprintf(err, errn, "not an image file I can read (PNG, JPEG, GIF, "
+      |                 ^
+/home/andrew/Code/ucas/src/img.c:90:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   90 |         if (n > IMG_MAXFILE || n > 0x7fffffff) {
+      |                 ^
+/home/andrew/Code/ucas/src/img.h:17:29: note: expanded from macro 'IMG_MAXFILE'
+   17 | #define IMG_MAXFILE (12u << 20)         /* encoded bytes */
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/img.c:92:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |                     f, n, IMG_MAXFILE >> 20);
+      |                           ^
+/home/andrew/Code/ucas/src/img.h:17:29: note: expanded from macro 'IMG_MAXFILE'
+   17 | #define IMG_MAXFILE (12u << 20)         /* encoded bytes */
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/img.c:92:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |                     f, n, IMG_MAXFILE >> 20);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/img.c:100:7: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   13 |             (uint64_t)w * (uint64_t)h > IMG_MAXPIX) {
+      |              ^
+/home/andrew/Code/ucas/src/img.c:100:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  100 |             (uint64_t)w * (uint64_t)h > IMG_MAXPIX) {
+      |                                         ^
+/home/andrew/Code/ucas/src/img.h:16:28: note: expanded from macro 'IMG_MAXPIX'
+   16 | #define IMG_MAXPIX (24u << 20)          /* decoded pixels (w * h) */
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/img.c:102:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  102 |                     "Mpixels)", f, w, h, IMG_MAXDIM, IMG_MAXPIX >> 20);
+      |                                                      ^
+/home/andrew/Code/ucas/src/img.h:16:28: note: expanded from macro 'IMG_MAXPIX'
+   16 | #define IMG_MAXPIX (24u << 20)          /* decoded pixels (w * h) */
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/img.c:102:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  102 |                     "Mpixels)", f, w, h, IMG_MAXDIM, IMG_MAXPIX >> 20);
+      |                                                                 ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1187:11: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1187 |    return stbi__errpuc("unknown image type", "Image not of any known type, or corrupt");
+      |           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1197:32: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1197 |    if (reduced == NULL) return stbi__errpuc("outofmem", "Out of memory");
+      |                                ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1200:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |       reduced[i] = (stbi_uc)((orig[i] >> 8) & 0xFF); // top half of each byte is sufficient approx of 16->8 bit scaling
+      |                              ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1200:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |       reduced[i] = (stbi_uc)((orig[i] >> 8) & 0xFF); // top half of each byte is sufficient approx of 16->8 bit scaling
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1212:45: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1212 |    enlarged = (stbi__uint16 *) stbi__malloc(img_len*2);
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1212:45: note: make conversion explicit to silence this warning
+  386 |    enlarged = (stbi__uint16 *) stbi__malloc(img_len*2);
+      |                                             ^~~~~~~~~
+      |                                             (size_t)()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1212:45: note: perform multiplication in a wider type
+ 1212 |    enlarged = (stbi__uint16 *) stbi__malloc(img_len*2);
+      |                                             ^~~~~~~
+      |                                             (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1213:50: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1213 |    if (enlarged == NULL) return (stbi__uint16 *) stbi__errpuc("outofmem", "Out of memory");
+      |                                                  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1216:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1216 |       enlarged[i] = (stbi__uint16)((orig[i] << 8) + orig[i]); // replicate to high and low byte, maps 0->0, 255->0xffff
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1229:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1229 |    for (row = 0; row < (h>>1); row++) {
+      |                         ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1566:4: warning: suspicious usage of 'sizeof()' on an expression of pointer type [bugprone-sizeof-expression]
+ 1566 |    STBI_NOTUSED(clbk);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:660:32: note: expanded from macro 'STBI_NOTUSED'
+  660 | #define STBI_NOTUSED(v)  (void)sizeof(v)
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1697:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1697 |    return (z << 8) + stbi__get8(s);
+      |            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1707:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1707 |    return (z << 16) + stbi__get16be(s);
+      |              ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1717:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1717 |    return z + (stbi__get8(s) << 8);
+      |                              ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1725:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1725 |    z += (stbi__uint32)stbi__get16le(s) << 16;
+      |                                        ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1748:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1748 |    return (stbi_uc) (((r*77) + (g*150) +  (29*b)) >> 8);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1766:14: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1766 |       return stbi__errpuc("outofmem", "Out of memory");
+      |              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1770:29: warning: result of multiplication in type 'unsigned int' is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1770 |       unsigned char *src  = data + j * x * img_n   ;
+      |                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1770:36: note: make conversion explicit to silence this warning
+ 1770 |       unsigned char *src  = data + j * x * img_n   ;
+      |                                    ^~~~~~~~~~~~~
+      |                                    (size_t)(    )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1770:36: note: perform multiplication in a wider type
+ 1770 |       unsigned char *src  = data + j * x * img_n   ;
+      |                                    ^~~~~
+      |                                    (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1771:29: warning: result of multiplication in type 'unsigned int' is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1771 |       unsigned char *dest = good + j * x * req_comp;
+      |                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1771:36: note: make conversion explicit to silence this warning
+ 1771 |       unsigned char *dest = good + j * x * req_comp;
+      |                                    ^~~~~~~~~~~~~~~~
+      |                                    (size_t)(       )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1771:36: note: perform multiplication in a wider type
+ 1771 |       unsigned char *dest = good + j * x * req_comp;
+      |                                    ^~~~~
+      |                                    (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1774:87: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 1774 |       #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
+      |                                                                                       ^
+      |                                                                                       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1774:98: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 1774 |       #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
+      |                                                                                                  ^
+      |                                                                                                  ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1790:76: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1790 |          default: STBI_ASSERT(0); STBI_FREE(data); STBI_FREE(good); return stbi__errpuc("unsupported", "Unsupported format conversion");
+      |                                                                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1805:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1805 |    return (stbi__uint16) (((r*77) + (g*150) +  (29*b)) >> 8);
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1820:41: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'unsigned int' [bugprone-implicit-widening-of-multiplication-result]
+ 1820 |    good = (stbi__uint16 *) stbi__malloc(req_comp * x * y * 2);
+      |                                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1820:41: note: make conversion explicit to silence this warning
+ 1820 |    good = (stbi__uint16 *) stbi__malloc(req_comp * x * y * 2);
+      |                                         ^~~~~~~~~~~~~~~~~~~~
+      |                                         (size_t)(           )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1820:41: note: perform multiplication in a wider type
+ 1820 |    good = (stbi__uint16 *) stbi__malloc(req_comp * x * y * 2);
+      |                                         ^~~~~~~~~~~~~~~~
+      |                                         (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1823:31: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1823 |       return (stbi__uint16 *) stbi__errpuc("outofmem", "Out of memory");
+      |                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1827:28: warning: result of multiplication in type 'unsigned int' is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1827 |       stbi__uint16 *src  = data + j * x * img_n   ;
+      |                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1827:35: note: make conversion explicit to silence this warning
+ 1827 |       stbi__uint16 *src  = data + j * x * img_n   ;
+      |                                   ^~~~~~~~~~~~~
+      |                                   (size_t)(    )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1827:35: note: perform multiplication in a wider type
+ 1827 |       stbi__uint16 *src  = data + j * x * img_n   ;
+      |                                   ^~~~~
+      |                                   (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1828:28: warning: result of multiplication in type 'unsigned int' is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1828 |       stbi__uint16 *dest = good + j * x * req_comp;
+      |                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1828:35: note: make conversion explicit to silence this warning
+ 1828 |       stbi__uint16 *dest = good + j * x * req_comp;
+      |                                   ^~~~~~~~~~~~~~~~
+      |                                   (size_t)(       )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1828:35: note: perform multiplication in a wider type
+ 1828 |       stbi__uint16 *dest = good + j * x * req_comp;
+      |                                   ^~~~~
+      |                                   (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1831:87: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 1831 |       #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
+      |                                                                                       ^
+      |                                                                                       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1831:98: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 1831 |       #define STBI__CASE(a,b)   case STBI__COMBO(a,b): for(i=x-1; i >= 0; --i, src += a, dest += b)
+      |                                                                                                  ^
+      |                                                                                                  ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1847:92: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1847 |          default: STBI_ASSERT(0); STBI_FREE(data); STBI_FREE(good); return (stbi__uint16*) stbi__errpuc("unsupported", "Unsupported format conversion");
+      |                                                                                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1940:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1940 |    stbi_uc  fast[1 << FAST_BITS];
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1955:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1955 |    stbi__int16 fast_ac[4][1 << FAST_BITS];
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2025:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2025 |          if (code-1 >= (1u << j)) return stbi__err("bad code lengths","Corrupt JPEG");
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2028:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2028 |       h->maxcode[j] = code << (16-j);
+      |                            ~~ ^~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2029:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2029 |       code <<= 1;
+      |            ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2034:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2034 |    memset(h->fast, 255, 1 << FAST_BITS);
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2038:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2038 |          int c = h->code[i] << (FAST_BITS-s);
+      |                             ~~ ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2039:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2039 |          int m = 1 << (FAST_BITS-s);
+      |                  ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2053:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2053 |    for (i=0; i < (1 << FAST_BITS); ++i) {
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2058:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2058 |          int run = (rs >> 4) & 15;
+      |                    ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2058:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2058 |          int run = (rs >> 4) & 15;
+      |                     ^~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2059:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2059 |          int magbits = rs & 15;
+      |                        ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2064:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2064 |             int k = ((i << len) & ((1 << FAST_BITS) - 1)) >> (FAST_BITS - magbits);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2064:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2064 |             int k = ((i << len) & ((1 << FAST_BITS) - 1)) >> (FAST_BITS - magbits);
+      |                      ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2064:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2064 |             int k = ((i << len) & ((1 << FAST_BITS) - 1)) >> (FAST_BITS - magbits);
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2064:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2064 |             int k = ((i << len) & ((1 << FAST_BITS) - 1)) >> (FAST_BITS - magbits);
+      |                                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2065:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2065 |             int m = 1 << (magbits - 1);
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2066:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2066 |             if (k < m) k += (~0U << magbits) + 1;
+      |                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2088:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2088 |       j->code_buffer |= b << (24 - j->code_bits);
+      |                           ~~ ^~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2106:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2106 |    c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                        ~~ ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2106:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2106 |    c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                             ~ ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2106:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2106 |    c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                                 ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2112:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2112 |       j->code_buffer <<= s;
+      |                      ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2123:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2123 |    temp = j->code_buffer >> 16;
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2137:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2137 |    c = ((j->code_buffer >> (32 - k)) & stbi__bmask[k]) + h->delta[k];
+      |                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2140:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2140 |    STBI_ASSERT((((j->code_buffer) >> (32 - h->size[c])) & stbi__bmask[h->size[c]]) == h->code[c]);
+      |                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:603:31: note: expanded from macro 'STBI_ASSERT'
+  603 | #define STBI_ASSERT(x) assert(x)
+      |                               ^
+/usr/include/assert.h:164:42: note: expanded from macro 'assert'
+  164 |     ((void) sizeof (__assert_single_arg (__VA_ARGS__)), __extension__ ({ \
+      |                                          ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2144:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2144 |    j->code_buffer <<= k;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2160:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2160 |    sgn = j->code_buffer >> 31; // sign bit always in MSB; 0 if MSB clear (positive), 1 if MSB set (negative)
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2161:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2161 |    k = stbi_lrot(j->code_buffer, n);
+      |        ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:670:37: note: expanded from macro 'stbi_lrot'
+  670 |    #define stbi_lrot(x,y)  (((x) << (y)) | ((x) >> (-(y) & 31)))
+      |                                  ~~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2165:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2165 |    return k + (stbi__jbias[n] & (sgn - 1));
+      |                ^~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2174:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2174 |    k = stbi_lrot(j->code_buffer, n);
+      |        ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:670:37: note: expanded from macro 'stbi_lrot'
+  670 |    #define stbi_lrot(x,y)  (((x) << (y)) | ((x) >> (-(y) & 31)))
+      |                                  ~~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2187:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2187 |    j->code_buffer <<= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2235:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2235 |       c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                           ~~ ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2235:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2235 |       c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                                ~ ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2235:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2235 |       c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                                    ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2238:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2238 |          k += (r >> 4) & 15; // run
+      |               ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2238:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2238 |          k += (r >> 4) & 15; // run
+      |                ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2239:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2239 |          s = r & 15; // combined length
+      |              ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2241:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2241 |          j->code_buffer <<= s;
+      |                         ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2245:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2245 |          data[zig] = (short) ((r >> 8) * dequant[zig]);
+      |                                ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2249:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2249 |          s = rs & 15;
+      |              ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2250:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2250 |          r = rs >> 4;
+      |              ^~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2283:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2283 |       if (!stbi__mul2shorts_valid(dc, 1 << j->succ_low)) return stbi__err("can't merge dc and ac", "Corrupt JPEG");
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2284:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2284 |       data[0] = (short) (dc * (1 << j->succ_low));
+      |                                ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2288:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2288 |          data[0] += (short) (1 << j->succ_low);
+      |                              ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2313:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2313 |          c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                              ~~ ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2313:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2313 |          c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                                   ~ ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2313:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2313 |          c = (j->code_buffer >> (32 - FAST_BITS)) & ((1 << FAST_BITS)-1);
+      |                                                       ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2316:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2316 |             k += (r >> 4) & 15; // run
+      |                  ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2316:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2316 |             k += (r >> 4) & 15; // run
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2317:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2317 |             s = r & 15; // combined length
+      |                 ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2319:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2319 |             j->code_buffer <<= s;
+      |                            ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2322:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2322 |             data[zig] = (short) ((r >> 8) * (1 << shift));
+      |                                   ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2322:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2322 |             data[zig] = (short) ((r >> 8) * (1 << shift));
+      |                                              ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2326:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2326 |             s = rs & 15;
+      |                 ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2327:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2327 |             r = rs >> 4;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2330:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2330 |                   j->eob_run = (1 << r);
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2340:66: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2340 |                data[zig] = (short) (stbi__extend_receive(j,s) * (1 << shift));
+      |                                                                  ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2347:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2347 |       short bit = (short) (1 << j->succ_low);
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2355:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2355 |                   if ((*p & bit)==0) {
+      |                        ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2368:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2368 |             s = rs & 15;
+      |                 ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2369:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2369 |             r = rs >> 4;
+      |                 ^~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2372:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2372 |                   j->eob_run = (1 << r) - 1;
+      |                                 ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2395:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2395 |                      if ((*p & bit)==0) {
+      |                           ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2489:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2489 |          v[ 0] = (x0+t3) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2490:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2490 |          v[56] = (x0-t3) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2491:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2491 |          v[ 8] = (x1+t2) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2492:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2492 |          v[48] = (x1-t2) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2493:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2493 |          v[16] = (x2+t1) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2494:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2494 |          v[40] = (x2-t1) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2495:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2495 |          v[24] = (x3+t0) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2496:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2496 |          v[32] = (x3-t0) >> 10;
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2509:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2509 |       x0 += 65536 + (128<<17);
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2510:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2510 |       x1 += 65536 + (128<<17);
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2511:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2511 |       x2 += 65536 + (128<<17);
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2512:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2512 |       x3 += 65536 + (128<<17);
+      |                      ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2515:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2515 |       o[0] = stbi__clamp((x0+t3) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2516:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2516 |       o[7] = stbi__clamp((x0-t3) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2517:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2517 |       o[1] = stbi__clamp((x1+t2) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2518:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2518 |       o[6] = stbi__clamp((x1-t2) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2519:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2519 |       o[2] = stbi__clamp((x2+t1) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2520:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2520 |       o[5] = stbi__clamp((x2-t1) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2521:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2521 |       o[3] = stbi__clamp((x3+t0) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2522:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2522 |       o[4] = stbi__clamp((x3-t0) >> 17);
+      |                          ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2571:10: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2571 |          out0 = _mm_packs_epi32(_mm_srai_epi32(sum_l, s), _mm_srai_epi32(sum_h, s)); \
+      |          ^
+      |          (   )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2572:10: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2572 |          out1 = _mm_packs_epi32(_mm_srai_epi32(dif_l, s), _mm_srai_epi32(dif_h, s)); \
+      |          ^
+      |          (   )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2578:7: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2578 |       a = _mm_unpacklo_epi8(a, b); \
+      |       ^
+      |       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2579:7: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2579 |       b = _mm_unpackhi_epi8(tmp, b)
+      |       ^
+      |       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2584:7: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2584 |       a = _mm_unpacklo_epi16(a, b); \
+      |       ^
+      |       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2585:7: warning: macro argument should be enclosed in parentheses [bugprone-macro-parentheses]
+ 2585 |       b = _mm_unpackhi_epi16(tmp, b)
+      |       ^
+      |       ()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2615:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2615 |    __m128i rot0_0 = dct_const(stbi__f2f(0.5411961f), stbi__f2f(0.5411961f) + stbi__f2f(-1.847759065f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:43: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2616:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2616 |    __m128i rot0_1 = dct_const(stbi__f2f(0.5411961f) + stbi__f2f( 0.765366865f), stbi__f2f(0.5411961f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:47: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2617:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2617 |    __m128i rot1_0 = dct_const(stbi__f2f(1.175875602f) + stbi__f2f(-0.899976223f), stbi__f2f(1.175875602f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:47: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2618:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2618 |    __m128i rot1_1 = dct_const(stbi__f2f(1.175875602f), stbi__f2f(1.175875602f) + stbi__f2f(-2.562915447f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:43: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2619:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2619 |    __m128i rot2_0 = dct_const(stbi__f2f(-1.961570560f) + stbi__f2f( 0.298631336f), stbi__f2f(-1.961570560f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:47: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2620:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2620 |    __m128i rot2_1 = dct_const(stbi__f2f(-1.961570560f), stbi__f2f(-1.961570560f) + stbi__f2f( 3.072711026f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:43: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2621:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2621 |    __m128i rot3_0 = dct_const(stbi__f2f(-0.390180644f) + stbi__f2f( 2.053119869f), stbi__f2f(-0.390180644f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:47: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2622:21: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 2622 |    __m128i rot3_1 = dct_const(stbi__f2f(-0.390180644f), stbi__f2f(-0.390180644f) + stbi__f2f( 1.501321110f));
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2537:43: note: expanded from macro 'dct_const'
+ 2537 |    #define dct_const(x,y)  _mm_setr_epi16((x),(y),(x),(y),(x),(y),(x),(y))
+      |                                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2626:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2626 |    __m128i bias_1 = _mm_set1_epi32(65536 + (128<<17));
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2629:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2629 |    row0 = _mm_load_si128((const __m128i *) (data + 0*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2629:52: note: make conversion explicit to silence this warning
+ 2629 |    row0 = _mm_load_si128((const __m128i *) (data + 0*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2629:52: note: perform multiplication in a wider type
+ 2629 |    row0 = _mm_load_si128((const __m128i *) (data + 0*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2630:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2630 |    row1 = _mm_load_si128((const __m128i *) (data + 1*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2630:52: note: make conversion explicit to silence this warning
+ 2630 |    row1 = _mm_load_si128((const __m128i *) (data + 1*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2630:52: note: perform multiplication in a wider type
+ 2630 |    row1 = _mm_load_si128((const __m128i *) (data + 1*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2631:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2631 |    row2 = _mm_load_si128((const __m128i *) (data + 2*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2631:52: note: make conversion explicit to silence this warning
+ 2631 |    row2 = _mm_load_si128((const __m128i *) (data + 2*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2631:52: note: perform multiplication in a wider type
+ 2631 |    row2 = _mm_load_si128((const __m128i *) (data + 2*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2632:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2632 |    row3 = _mm_load_si128((const __m128i *) (data + 3*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2632:52: note: make conversion explicit to silence this warning
+ 2632 |    row3 = _mm_load_si128((const __m128i *) (data + 3*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2632:52: note: perform multiplication in a wider type
+ 2632 |    row3 = _mm_load_si128((const __m128i *) (data + 3*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2633:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2633 |    row4 = _mm_load_si128((const __m128i *) (data + 4*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2633:52: note: make conversion explicit to silence this warning
+ 2633 |    row4 = _mm_load_si128((const __m128i *) (data + 4*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2633:52: note: perform multiplication in a wider type
+ 2633 |    row4 = _mm_load_si128((const __m128i *) (data + 4*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2634:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2634 |    row5 = _mm_load_si128((const __m128i *) (data + 5*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2634:52: note: make conversion explicit to silence this warning
+ 2634 |    row5 = _mm_load_si128((const __m128i *) (data + 5*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2634:52: note: perform multiplication in a wider type
+ 2634 |    row5 = _mm_load_si128((const __m128i *) (data + 5*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2635:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2635 |    row6 = _mm_load_si128((const __m128i *) (data + 6*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2635:52: note: make conversion explicit to silence this warning
+ 2635 |    row6 = _mm_load_si128((const __m128i *) (data + 6*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2635:52: note: perform multiplication in a wider type
+ 2635 |    row6 = _mm_load_si128((const __m128i *) (data + 6*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2636:45: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2636 |    row7 = _mm_load_si128((const __m128i *) (data + 7*8));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2636:52: note: make conversion explicit to silence this warning
+ 2636 |    row7 = _mm_load_si128((const __m128i *) (data + 7*8));
+      |                                                    ^~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2636:52: note: perform multiplication in a wider type
+ 2636 |    row7 = _mm_load_si128((const __m128i *) (data + 7*8));
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2961:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2961 |          int w = (z->img_comp[n].x+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2962:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2962 |          int h = (z->img_comp[n].y+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2967:37: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2967 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2967:79: note: make conversion explicit to silence this warning
+ 2967 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                                                               ^~~
+      |                                                                               (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2967:79: note: perform multiplication in a wider type
+ 2967 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                                                               ^
+      |                                                                               (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2995:46: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 2995 |                         z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*y2+x2, z->img_comp[n].w2, data);
+      |                                              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2995:66: note: make conversion explicit to silence this warning
+ 2995 |                         z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*y2+x2, z->img_comp[n].w2, data);
+      |                                                                  ^~~~~~~~~~~~~~~~~~~~
+      |                                                                  (ptrdiff_t)(        )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:2995:66: note: perform multiplication in a wider type
+ 2995 |                         z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*y2+x2, z->img_comp[n].w2, data);
+      |                                                                  ^~~~~~~~~~~~~~~~~
+      |                                                                  (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3018:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3018 |          int w = (z->img_comp[n].x+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3019:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3019 |          int h = (z->img_comp[n].y+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3022:30: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3022 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3022:53: note: make conversion explicit to silence this warning
+ 3022 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                     (ptrdiff_t)(                         )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3022:53: note: perform multiplication in a wider type
+ 3022 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                                                     ^~
+      |                                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3053:39: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3053 |                         short *data = z->img_comp[n].coeff + 64 * (x2 + y2 * z->img_comp[n].coeff_w);
+      |                                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3053:62: note: make conversion explicit to silence this warning
+ 3053 |                         short *data = z->img_comp[n].coeff + 64 * (x2 + y2 * z->img_comp[n].coeff_w);
+      |                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                              (ptrdiff_t)(                           )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3053:62: note: perform multiplication in a wider type
+ 3053 |                         short *data = z->img_comp[n].coeff + 64 * (x2 + y2 * z->img_comp[n].coeff_w);
+      |                                                              ^~
+      |                                                              (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3086:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3086 |          int w = (z->img_comp[n].x+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3087:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3087 |          int h = (z->img_comp[n].y+7) >> 3;
+      |                  ^~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3090:30: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3090 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3090:53: note: make conversion explicit to silence this warning
+ 3090 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                     (ptrdiff_t)(                         )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3090:53: note: perform multiplication in a wider type
+ 3090 |                short *data = z->img_comp[n].coeff + 64 * (i + j * z->img_comp[n].coeff_w);
+      |                                                     ^~
+      |                                                     (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3092:37: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3092 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3092:79: note: make conversion explicit to silence this warning
+ 3092 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                                                               ^~~
+      |                                                                               (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3092:79: note: perform multiplication in a wider type
+ 3092 |                z->idct_block_kernel(z->img_comp[n].data+z->img_comp[n].w2*j*8+i*8, z->img_comp[n].w2, data);
+      |                                                                               ^
+      |                                                                               (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3102:4: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 3102 |    switch (m) {
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3102:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3115:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3115 |             int p = q >> 4, sixteen = (p != 0);
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3116:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3116 |             int t = q & 15,i;
+      |                     ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3132:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3132 |             int tc = q >> 4;
+      |                      ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3133:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3133 |             int th = q & 15;
+      |                      ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3217:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3217 |       z->img_comp[which].hd = q >> 4;   if (z->img_comp[which].hd > 3) return stbi__err("bad DC huff","Corrupt JPEG");
+      |                               ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3218:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3218 |       z->img_comp[which].ha = q & 15;   if (z->img_comp[which].ha > 3) return stbi__err("bad AC huff","Corrupt JPEG");
+      |                               ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3227:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3227 |       z->succ_high = (aa >> 4);
+      |                       ^~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3228:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3228 |       z->succ_low  = (aa & 15);
+      |                       ^~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3291:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3291 |       z->img_comp[i].h = (q >> 4);  if (!z->img_comp[i].h || z->img_comp[i].h > 4) return stbi__err("bad H","Corrupt JPEG");
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3292:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3292 |       z->img_comp[i].v = q & 15;    if (!z->img_comp[i].v || z->img_comp[i].v > 4) return stbi__err("bad V","Corrupt JPEG");
+      |                          ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3341:83: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3341 |       z->img_comp[i].data = (stbi_uc*) (((size_t) z->img_comp[i].raw_data + 15) & ~15);
+      |                                                                                 ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3341:84: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 3341 |       z->img_comp[i].data = (stbi_uc*) (((size_t) z->img_comp[i].raw_data + 15) & ~15);
+      |                                                                                   ~^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3349:86: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3349 |          z->img_comp[i].coeff = (short*) (((size_t) z->img_comp[i].raw_coeff + 15) & ~15);
+      |                                                                                    ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3349:87: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 3349 |          z->img_comp[i].coeff = (short*) (((size_t) z->img_comp[i].raw_coeff + 15) & ~15);
+      |                                                                                      ~^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3471:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3471 |       out[i] = stbi__div4(3*in_near[i] + in_far[i] + 2);
+      |                ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3488:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3488 |    out[1] = stbi__div4(input[0]*3 + input[1] + 2);
+      |             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3491:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3491 |       out[i*2+0] = stbi__div4(n+input[i-1]);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3492:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3492 |       out[i*2+1] = stbi__div4(n+input[i+1]);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3494:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3494 |    out[i*2+0] = stbi__div4(input[w-2]*3 + input[w-1] + 2);
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3510:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3510 |       out[0] = out[1] = stbi__div4(3*in_near[0] + in_far[0] + 2);
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3515:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3515 |    out[0] = stbi__div4(t1+2);
+      |             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3519:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3519 |       out[i*2-1] = stbi__div16(3*t0 + t1 + 8);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3503:36: note: expanded from macro 'stbi__div16'
+ 3503 | #define stbi__div16(x) ((stbi_uc) ((x) >> 4))
+      |                                    ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3520:7: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3520 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3520:11: note: make conversion explicit to silence this warning
+ 3520 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |           ^~~
+      |           (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3520:11: note: perform multiplication in a wider type
+ 3520 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |           ^
+      |           (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3520:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3520 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3503:36: note: expanded from macro 'stbi__div16'
+ 3503 | #define stbi__div16(x) ((stbi_uc) ((x) >> 4))
+      |                                    ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3522:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3522 |    out[w*2-1] = stbi__div4(t1+2);
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3536:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3536 |       out[0] = out[1] = stbi__div4(3*in_near[0] + in_far[0] + 2);
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3544:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3544 |    for (; i < ((w-1) & ~7); i += 8) {
+      |                ^~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3544:25: warning: use of a signed integer operand with a unary bitwise operator [bugprone-signed-bitwise]
+ 3544 |    for (; i < ((w-1) & ~7); i += 8) {
+      |                        ~^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3587:37: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3587 |       _mm_storeu_si128((__m128i *) (out + i*2), outv);
+      |                                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3587:43: note: make conversion explicit to silence this warning
+ 3587 |       _mm_storeu_si128((__m128i *) (out + i*2), outv);
+      |                                           ^~~
+      |                                           (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3587:43: note: perform multiplication in a wider type
+ 3587 |       _mm_storeu_si128((__m128i *) (out + i*2), outv);
+      |                                           ^
+      |                                           (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3630:4: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3630 |    out[i*2] = stbi__div16(3*t1 + t0 + 8);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3630:8: note: make conversion explicit to silence this warning
+ 3630 |    out[i*2] = stbi__div16(3*t1 + t0 + 8);
+      |        ^~~
+      |        (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3630:8: note: perform multiplication in a wider type
+ 3630 |    out[i*2] = stbi__div16(3*t1 + t0 + 8);
+      |        ^
+      |        (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3630:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3630 |    out[i*2] = stbi__div16(3*t1 + t0 + 8);
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3503:36: note: expanded from macro 'stbi__div16'
+ 3503 | #define stbi__div16(x) ((stbi_uc) ((x) >> 4))
+      |                                    ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3635:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3635 |       out[i*2-1] = stbi__div16(3*t0 + t1 + 8);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3503:36: note: expanded from macro 'stbi__div16'
+ 3503 | #define stbi__div16(x) ((stbi_uc) ((x) >> 4))
+      |                                    ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3636:7: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3636 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3636:11: note: make conversion explicit to silence this warning
+ 3636 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |           ^~~
+      |           (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3636:11: note: perform multiplication in a wider type
+ 3636 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |           ^
+      |           (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3636:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3636 |       out[i*2  ] = stbi__div16(3*t1 + t0 + 8);
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3503:36: note: expanded from macro 'stbi__div16'
+ 3503 | #define stbi__div16(x) ((stbi_uc) ((x) >> 4))
+      |                                    ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3638:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3638 |    out[w*2-1] = stbi__div4(t1+2);
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3454:35: note: expanded from macro 'stbi__div4'
+ 3454 | #define stbi__div4(x) ((stbi_uc) ((x) >> 2))
+      |                                   ^~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3664:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3664 |       int y_fixed = (y[i] << 20) + (1<<19); // rounding
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3664:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3664 |       int y_fixed = (y[i] << 20) + (1<<19); // rounding
+      |                                     ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3668:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3668 |       r = y_fixed +  cr* stbi__float2fixed(1.40200f);
+      |                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3669:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3669 |       g = y_fixed + (cr*-stbi__float2fixed(0.71414f)) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3669:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3669 |       g = y_fixed + (cr*-stbi__float2fixed(0.71414f)) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3669:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3669 |       g = y_fixed + (cr*-stbi__float2fixed(0.71414f)) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3670:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3670 |       b = y_fixed                                     +   cb* stbi__float2fixed(1.77200f);
+      |                                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3671:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3671 |       r >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3672:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3672 |       g >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3673:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3673 |       b >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3698:45: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 3698 |       __m128i cr_const1 = _mm_set1_epi16( - (short) ( 0.71414f*4096.0f+0.5f));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3699:45: warning: casting (double + 0.5) to integer leads to incorrect rounding; consider using lround (#include <cmath>) instead [bugprone-incorrect-roundings]
+ 3699 |       __m128i cb_const0 = _mm_set1_epi16( - (short) ( 0.34414f*4096.0f+0.5f));
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3798:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3798 |       int y_fixed = (y[i] << 20) + (1<<19); // rounding
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3798:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3798 |       int y_fixed = (y[i] << 20) + (1<<19); // rounding
+      |                                     ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3802:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3802 |       r = y_fixed + cr* stbi__float2fixed(1.40200f);
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3803:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3803 |       g = y_fixed + cr*-stbi__float2fixed(0.71414f) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3803:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3803 |       g = y_fixed + cr*-stbi__float2fixed(0.71414f) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3803:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3803 |       g = y_fixed + cr*-stbi__float2fixed(0.71414f) + ((cb*-stbi__float2fixed(0.34414f)) & 0xffff0000);
+      |                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3804:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3804 |       b = y_fixed                                   +   cb* stbi__float2fixed(1.77200f);
+      |                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3659:32: note: expanded from macro 'stbi__float2fixed'
+ 3659 | #define stbi__float2fixed(x)  (((int) ((x) * 4096.0f + 0.5f)) << 8)
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3805:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3805 |       r >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3806:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3806 |       g >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3807:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3807 |       b >>= 20;
+      |       ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3862:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3862 |    return (stbi_uc) ((t + (t >>8)) >> 8);
+      |                              ~~^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3862:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3862 |    return (stbi_uc) ((t + (t >>8)) >> 8);
+      |                                    ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3871:45: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 3871 |    if (req_comp < 0 || req_comp > 4) return stbi__errpuc("bad req_comp", "Internal error");
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3905:71: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 3905 |          if (!z->img_comp[k].linebuf) { stbi__cleanup_jpeg(z); return stbi__errpuc("outofmem", "Out of memory"); }
+      |                                                                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3909:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3909 |          r->ystep   = r->vs >> 1;
+      |                       ^~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3923:52: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 3923 |       if (!output) { stbi__cleanup_jpeg(z); return stbi__errpuc("outofmem", "Out of memory"); }
+      |                                                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3927:25: warning: result of multiplication in type 'unsigned int' is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 3927 |          stbi_uc *out = output + n * z->s->img_x * j;
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3927:34: note: make conversion explicit to silence this warning
+ 3927 |          stbi_uc *out = output + n * z->s->img_x * j;
+      |                                  ^~~~~~~~~~~~~~~~~~~
+      |                                  (size_t)(          )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3927:34: note: perform multiplication in a wider type
+ 3927 |          stbi_uc *out = output + n * z->s->img_x * j;
+      |                                  ^~~~~~~~~~~~~~~
+      |                                  (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:3930:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 3930 |             int y_bot = r->ystep >= (r->vs >> 1);
+      |                                      ^~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4032:19: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 4032 |    if (!j) return stbi__errpuc("outofmem", "Out of memory");
+      |                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4034:4: warning: suspicious usage of 'sizeof()' on an expression of pointer type [bugprone-sizeof-expression]
+ 4034 |    STBI_NOTUSED(ri);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:660:32: note: expanded from macro 'STBI_NOTUSED'
+  660 | #define STBI_NOTUSED(v)  (void)sizeof(v)
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4099:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4099 |    stbi__uint16 fast[1 << STBI__ZFAST_BITS];
+      |                      ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4109:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4109 |   n = ((n & 0xAAAA) >>  1) | ((n & 0x5555) << 1);
+      |       ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4109:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4109 |   n = ((n & 0xAAAA) >>  1) | ((n & 0x5555) << 1);
+      |        ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4109:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4109 |   n = ((n & 0xAAAA) >>  1) | ((n & 0x5555) << 1);
+      |         ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4109:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4109 |   n = ((n & 0xAAAA) >>  1) | ((n & 0x5555) << 1);
+      |                               ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4109:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4109 |   n = ((n & 0xAAAA) >>  1) | ((n & 0x5555) << 1);
+      |                                ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4110:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4110 |   n = ((n & 0xCCCC) >>  2) | ((n & 0x3333) << 2);
+      |       ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4110:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4110 |   n = ((n & 0xCCCC) >>  2) | ((n & 0x3333) << 2);
+      |        ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4110:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4110 |   n = ((n & 0xCCCC) >>  2) | ((n & 0x3333) << 2);
+      |         ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4110:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4110 |   n = ((n & 0xCCCC) >>  2) | ((n & 0x3333) << 2);
+      |                               ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4110:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4110 |   n = ((n & 0xCCCC) >>  2) | ((n & 0x3333) << 2);
+      |                                ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4111:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4111 |   n = ((n & 0xF0F0) >>  4) | ((n & 0x0F0F) << 4);
+      |       ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4111:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4111 |   n = ((n & 0xF0F0) >>  4) | ((n & 0x0F0F) << 4);
+      |        ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4111:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4111 |   n = ((n & 0xF0F0) >>  4) | ((n & 0x0F0F) << 4);
+      |         ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4111:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4111 |   n = ((n & 0xF0F0) >>  4) | ((n & 0x0F0F) << 4);
+      |                               ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4111:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4111 |   n = ((n & 0xF0F0) >>  4) | ((n & 0x0F0F) << 4);
+      |                                ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4112:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4112 |   n = ((n & 0xFF00) >>  8) | ((n & 0x00FF) << 8);
+      |       ^~~~~~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4112:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4112 |   n = ((n & 0xFF00) >>  8) | ((n & 0x00FF) << 8);
+      |        ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4112:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4112 |   n = ((n & 0xFF00) >>  8) | ((n & 0x00FF) << 8);
+      |         ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4112:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4112 |   n = ((n & 0xFF00) >>  8) | ((n & 0x00FF) << 8);
+      |                               ^~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4112:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4112 |   n = ((n & 0xFF00) >>  8) | ((n & 0x00FF) << 8);
+      |                                ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4121:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4121 |    return stbi__bitreverse16(v) >> (16-bits);
+      |           ^~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4136:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4136 |       if (sizes[i] > (1 << i))
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4145:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4145 |          if (code-1 >= (1 << i)) return stbi__err("bad codelengths","Corrupt PNG");
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4146:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4146 |       z->maxcode[i] = code << (16-i); // preshift for inner loop
+      |                       ^~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4147:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4147 |       code <<= 1;
+      |       ^~~~ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4155:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4155 |          stbi__uint16 fastv = (stbi__uint16) ((s << 9) | i);
+      |                                               ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4155:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4155 |          stbi__uint16 fastv = (stbi__uint16) ((s << 9) | i);
+      |                                                ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4160:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4160 |             while (j < (1 << STBI__ZFAST_BITS)) {
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4162:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4162 |                j += (1 << s);
+      |                      ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4205:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4205 |       if (z->code_buffer >= (1U << z->num_bits)) {
+      |                                 ~~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4209:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4209 |       z->code_buffer |= (unsigned int) stbi__zget8(z) << z->num_bits;
+      |                                                       ~~ ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4218:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4218 |    k = z->code_buffer & ((1 << n) - 1);
+      |                       ~ ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4218:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4218 |    k = z->code_buffer & ((1 << n) - 1);
+      |                           ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4219:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4219 |    z->code_buffer >>= n;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4235:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4235 |    b = (k >> (16-s)) - z->firstcode[s] + z->firstsymbol[s];
+      |         ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4238:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4238 |    a->code_buffer >>= s;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4263:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4263 |    b = z->fast[a->code_buffer & STBI__ZFAST_MASK];
+      |                               ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4092:27: note: expanded from macro 'STBI__ZFAST_MASK'
+ 4092 | #define STBI__ZFAST_MASK  ((1 << STBI__ZFAST_BITS) - 1)
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4265:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4265 |       s = b >> 9;
+      |           ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4266:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4266 |       a->code_buffer >>= s;
+      |                      ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4268:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4268 |       return b & 511;
+      |              ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4280:12: warning: Although the value stored to 'old_limit' is used in the enclosing expression, the value is never actually read from 'old_limit' [clang-analyzer-deadcode.DeadStores]
+ 4280 |    limit = old_limit = (unsigned) (z->zout_end - z->zout_start);
+      |            ^           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4280:12: note: Although the value stored to 'old_limit' is used in the enclosing expression, the value is never actually read from 'old_limit'
+ 4280 |    limit = old_limit = (unsigned) (z->zout_end - z->zout_start);
+      |            ^           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4413:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4413 |    if (a->num_bits & 7)
+      |        ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4414:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4414 |       stbi__zreceive(a, a->num_bits & 7); // discard
+      |                         ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4418:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4418 |       header[k++] = (stbi_uc) (a->code_buffer & 255); // suppress MSVC run-time check
+      |                                               ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4419:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4419 |       a->code_buffer >>= 8;
+      |                      ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4428:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4428 |    if (nlen != (len ^ 0xffff)) return stbi__err("zlib corrupt","Corrupt PNG");
+      |                 ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4441:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4441 |    int cm    = cmf & 15;
+      |                ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4446:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4446 |    if (flg & 32) return stbi__err("no preset dict","Corrupt PNG"); // preset dictionary not allowed in png
+      |        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4718:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4718 |    img_width_bytes = (((img_n * x * depth) + 7) >> 3);
+      |                                                 ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4739:22: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4739 |       stbi_uc *cur = filter_buf + (j & 1)*img_width_bytes;
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4739:35: note: make conversion explicit to silence this warning
+ 4739 |       stbi_uc *cur = filter_buf + (j & 1)*img_width_bytes;
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~
+      |                                   (size_t)(              )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4739:35: note: perform multiplication in a wider type
+ 4739 |       stbi_uc *cur = filter_buf + (j & 1)*img_width_bytes;
+      |                                   ^~~~~~
+      |                                    (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4739:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4739 |       stbi_uc *cur = filter_buf + (j & 1)*img_width_bytes;
+      |                                      ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4740:24: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4740 |       stbi_uc *prior = filter_buf + (~j & 1)*img_width_bytes;
+      |                        ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4740:37: note: make conversion explicit to silence this warning
+ 4740 |       stbi_uc *prior = filter_buf + (~j & 1)*img_width_bytes;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                                     (size_t)(               )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4740:37: note: perform multiplication in a wider type
+ 4740 |       stbi_uc *prior = filter_buf + (~j & 1)*img_width_bytes;
+      |                                     ^~~~~~~
+      |                                      (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4740:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4740 |       stbi_uc *prior = filter_buf + (~j & 1)*img_width_bytes;
+      |                                         ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4741:23: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4741 |       stbi_uc *dest = a->out + stride*j;
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4741:32: note: make conversion explicit to silence this warning
+ 4741 |       stbi_uc *dest = a->out + stride*j;
+      |                                ^~~~~~~~
+      |                                (size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4741:32: note: perform multiplication in a wider type
+ 4741 |       stbi_uc *dest = a->out + stride*j;
+      |                                ^~~~~~
+      |                                (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4755:7: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+ 4755 |       switch (filter) {
+      |       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4755:7: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4762:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4762 |             cur[k] = STBI__BYTECAST(raw[k] + cur[k-filter_bytes]);
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4766:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4766 |             cur[k] = STBI__BYTECAST(raw[k] + prior[k]);
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4770:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4770 |             cur[k] = STBI__BYTECAST(raw[k] + (prior[k]>>1));
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4770:57: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4770 |             cur[k] = STBI__BYTECAST(raw[k] + (prior[k]>>1));
+      |                                                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4772:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4772 |             cur[k] = STBI__BYTECAST(raw[k] + ((prior[k] + cur[k-filter_bytes])>>1));
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4772:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4772 |             cur[k] = STBI__BYTECAST(raw[k] + ((prior[k] + cur[k-filter_bytes])>>1));
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:41: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4776:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4776 |             cur[k] = STBI__BYTECAST(raw[k] + prior[k]); // prior[k] == stbi__paeth(0,prior[k],0)
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4778:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4778 |             cur[k] = STBI__BYTECAST(raw[k] + stbi__paeth(cur[k-filter_bytes], prior[k], prior[k-filter_bytes]));
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4783:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4783 |             cur[k] = STBI__BYTECAST(raw[k] + (cur[k-filter_bytes] >> 1));
+      |                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4783:70: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4783 |             cur[k] = STBI__BYTECAST(raw[k] + (cur[k-filter_bytes] >> 1));
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4800:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4800 |                if ((i & 1) == 0) inb = *in++;
+      |                       ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4801:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4801 |                *out++ = scale * (inb >> 4);
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4802:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4802 |                inb <<= 4;
+      |                    ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4806:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4806 |                if ((i & 3) == 0) inb = *in++;
+      |                       ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4807:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4807 |                *out++ = scale * (inb >> 6);
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4808:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4808 |                inb <<= 2;
+      |                    ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4813:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4813 |                if ((i & 7) == 0) inb = *in++;
+      |                       ~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4814:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4814 |                *out++ = scale * (inb >> 7);
+      |                                      ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4815:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4815 |                inb <<= 1;
+      |                    ~~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4824:31: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'stbi__uint32' (aka 'unsigned int') [bugprone-implicit-widening-of-multiplication-result]
+ 4824 |             memcpy(dest, cur, x*img_n);
+      |                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4824:31: note: make conversion explicit to silence this warning
+ 4824 |             memcpy(dest, cur, x*img_n);
+      |                               ^~~~~~~
+      |                               (__size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4824:31: note: perform multiplication in a wider type
+ 4824 |             memcpy(dest, cur, x*img_n);
+      |                               ^
+      |                               (__size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4834:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4834 |                *dest16 = (cur[0] << 8) | cur[1];
+      |                          ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4834:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4834 |                *dest16 = (cur[0] << 8) | cur[1];
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4839:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4839 |                   dest16[0] = (cur[0] << 8) | cur[1];
+      |                               ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4839:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4839 |                   dest16[0] = (cur[0] << 8) | cur[1];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4845:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4845 |                   dest16[0] = (cur[0] << 8) | cur[1];
+      |                               ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4845:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4845 |                   dest16[0] = (cur[0] << 8) | cur[1];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4846:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4846 |                   dest16[1] = (cur[2] << 8) | cur[3];
+      |                               ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4846:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4846 |                   dest16[1] = (cur[2] << 8) | cur[3];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4847:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4847 |                   dest16[2] = (cur[4] << 8) | cur[5];
+      |                               ^~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4847:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4847 |                   dest16[2] = (cur[4] << 8) | cur[5];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4883:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 4883 |          stbi__uint32 img_len = ((((a->s->img_n * x * depth) + 7) >> 3) + 1) * y;
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:23: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:61: note: make conversion explicit to silence this warning
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                                                             ^~~~~~~~~~~~~~~
+      |                                                             (ptrdiff_t)(   )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:61: note: perform multiplication in a wider type
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                                                             ^~~~~
+      |                                                             (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:23: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:31: note: make conversion explicit to silence this warning
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                               (size_t)(                  )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4892:31: note: perform multiplication in a wider type
+ 4892 |                memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+      |                               ^~~~~~~~~~~~~~~~~
+      |                               (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4893:23: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 4893 |                       a->out + (j*x+i)*out_bytes, out_bytes);
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4893:32: note: make conversion explicit to silence this warning
+ 4893 |                       a->out + (j*x+i)*out_bytes, out_bytes);
+      |                                ^~~~~~~~~~~~~~~~~
+      |                                (ptrdiff_t)(     )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:4893:32: note: perform multiplication in a wider type
+ 4893 |                       a->out + (j*x+i)*out_bytes, out_bytes);
+      |                                ^~~~~~
+      |                                 (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5098:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5098 |          case STBI__PNG_TYPE('C','g','B','I'):
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5102:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5102 |          case STBI__PNG_TYPE('I','H','D','R'): {
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5114:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5114 |             if (color == 3) pal_img_n = 3; else if (color & 1) return stbi__err("bad ctype","Corrupt PNG");
+      |                                                     ^~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5120:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5120 |                s->img_n = (color & 2 ? 3 : 1) + (color & 4 ? 1 : 0);
+      |                            ^~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5120:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5120 |                s->img_n = (color & 2 ? 3 : 1) + (color & 4 ? 1 : 0);
+      |                                                  ^~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5121:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5121 |                if ((1 << 30) / s->img_x / s->img_n < s->img_y) return stbi__err("too large", "Image too large to decode");
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5126:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5126 |                if ((1 << 30) / s->img_x / 4 < s->img_y) return stbi__err("too large","Corrupt PNG");
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5132:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5132 |          case STBI__PNG_TYPE('P','L','T','E'):  {
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5146:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5146 |          case STBI__PNG_TYPE('t','R','N','S'): {
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5157:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5157 |                if (!(s->img_n & 1)) return stbi__err("tRNS with alpha","Corrupt PNG");
+      |                      ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5167:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5167 |                      tc[k] = (stbi_uc)(stbi__get16be(s) & 255) * stbi__depth_scale_table[z->depth]; // non 8-bit images will be larger
+      |                                        ^~~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5173:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5173 |          case STBI__PNG_TYPE('I','D','A','T'): {
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5182:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5182 |             if (c.length > (1u << 30)) return stbi__err("IDAT size limit", "IDAT section larger than 2^30 bytes");
+      |                                ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5185:29: warning: Value stored to 'idata_limit_old' during its initialization is never read [clang-analyzer-deadcode.DeadStores]
+ 5185 |                stbi__uint32 idata_limit_old = idata_limit;
+      |                             ^~~~~~~~~~~~~~~   ~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5185:29: note: Value stored to 'idata_limit_old' during its initialization is never read
+ 5185 |                stbi__uint32 idata_limit_old = idata_limit;
+      |                             ^~~~~~~~~~~~~~~   ~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5199:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5199 |          case STBI__PNG_TYPE('I','E','N','D'): {
+      |               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5076:54: note: expanded from macro 'STBI__PNG_TYPE'
+ 5076 | #define STBI__PNG_TYPE(a,b,c,d)  (((unsigned) (a) << 24) + ((unsigned) (b) << 16) + ((unsigned) (c) << 8) + (unsigned) (d))
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5244:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5244 |             if ((c.type & (1 << 29)) == 0) {
+      |                         ~ ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5244:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5244 |             if ((c.type & (1 << 29)) == 0) {
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5248:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5248 |                invalid_chunk[0] = STBI__BYTECAST(c.type >> 24);
+      |                                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:46: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                            ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5248:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5248 |                invalid_chunk[0] = STBI__BYTECAST(c.type >> 24);
+      |                                                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5249:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5249 |                invalid_chunk[1] = STBI__BYTECAST(c.type >> 16);
+      |                                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:46: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                            ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5249:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5249 |                invalid_chunk[1] = STBI__BYTECAST(c.type >> 16);
+      |                                                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5250:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5250 |                invalid_chunk[2] = STBI__BYTECAST(c.type >>  8);
+      |                                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:46: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                            ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5250:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5250 |                invalid_chunk[2] = STBI__BYTECAST(c.type >>  8);
+      |                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5251:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5251 |                invalid_chunk[3] = STBI__BYTECAST(c.type >>  0);
+      |                                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:46: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                            ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5251:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5251 |                invalid_chunk[3] = STBI__BYTECAST(c.type >>  0);
+      |                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5266:45: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5266 |    if (req_comp < 0 || req_comp > 4) return stbi__errpuc("bad req_comp", "Internal error");
+      |                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5273:17: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5273 |          return stbi__errpuc("bad bits_per_channel", "PNG not supported: unsupported color depth");
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5374:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5374 |    if (z >= 0x10000) { n += 16; z >>= 16; }
+      |                                   ~~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5375:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5375 |    if (z >= 0x00100) { n +=  8; z >>=  8; }
+      |                                   ~~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5376:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5376 |    if (z >= 0x00010) { n +=  4; z >>=  4; }
+      |                                   ~~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5377:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5377 |    if (z >= 0x00004) { n +=  2; z >>=  2; }
+      |                                   ~~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5384:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5384 |    a = (a & 0x55555555) + ((a >>  1) & 0x55555555); // max 2
+      |           ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5384:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5384 |    a = (a & 0x55555555) + ((a >>  1) & 0x55555555); // max 2
+      |                               ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5384:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5384 |    a = (a & 0x55555555) + ((a >>  1) & 0x55555555); // max 2
+      |                                      ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5385:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5385 |    a = (a & 0x33333333) + ((a >>  2) & 0x33333333); // max 4
+      |           ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5385:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5385 |    a = (a & 0x33333333) + ((a >>  2) & 0x33333333); // max 4
+      |                               ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5385:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5385 |    a = (a & 0x33333333) + ((a >>  2) & 0x33333333); // max 4
+      |                                      ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5386:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5386 |    a = (a + (a >> 4)) & 0x0f0f0f0f; // max 8 per 4, now 8 bits
+      |                ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5386:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5386 |    a = (a + (a >> 4)) & 0x0f0f0f0f; // max 8 per 4, now 8 bits
+      |                       ~ ^~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5387:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5387 |    a = (a + (a >> 8)); // max 16 per 8 bits
+      |                ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5388:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5388 |    a = (a + (a >> 16)); // max 32 per 8 bits
+      |                ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5389:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5389 |    return a & 0xff;
+      |             ~ ^~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5406:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5406 |       v <<= -shift;
+      |         ~~~ ^~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5408:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5408 |       v >>= shift;
+      |         ~~~ ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5410:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5410 |    v >>= (8-bits);
+      |      ~~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5412:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5412 |    return (int) ((unsigned) v * mul_table[bits]) >> shift_table[bits];
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5430:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5430 |          info->mr = 31u << 10;
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5431:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5431 |          info->mg = 31u <<  5;
+      |                         ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5432:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5432 |          info->mb = 31u <<  0;
+      |                         ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5434:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5434 |          info->mr = 0xffu << 16;
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5435:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5435 |          info->mg = 0xffu <<  8;
+      |                           ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5436:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5436 |          info->mb = 0xffu <<  0;
+      |                           ~~  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5437:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5437 |          info->ma = 0xffu << 24;
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5451:29: warning: logical expression is always true [misc-redundant-expression]
+ 5451 |    if (stbi__get8(s) != 'B' || stbi__get8(s) != 'M') return stbi__errpuc("not BMP", "Corrupt BMP");
+      |                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5451:61: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5451 |    if (stbi__get8(s) != 'B' || stbi__get8(s) != 'M') return stbi__errpuc("not BMP", "Corrupt BMP");
+      |                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5460:33: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5460 |    if (info->offset < 0) return stbi__errpuc("bad BMP", "bad BMP");
+      |                                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5462:80: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5462 |    if (hsz != 12 && hsz != 40 && hsz != 56 && hsz != 108 && hsz != 124) return stbi__errpuc("unknown BMP", "BMP type not supported: unknown");
+      |                                                                                ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5470:38: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5470 |    if (stbi__get16le(s) != 1) return stbi__errpuc("bad BMP", "bad BMP");
+      |                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5474:50: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5474 |       if (compress == 1 || compress == 2) return stbi__errpuc("BMP RLE", "BMP type not supported: RLE");
+      |                                                  ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5475:33: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5475 |       if (compress >= 4) return stbi__errpuc("BMP JPEG/PNG", "BMP type not supported: unsupported compression"); // this includes PNG/JPEG modes
+      |                                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5476:71: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5476 |       if (compress == 3 && info->bpp != 16 && info->bpp != 32) return stbi__errpuc("bad BMP", "bad BMP"); // bitfields requires 16 or 32 bits/pixel
+      |                                                                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5500:26: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5500 |                   return stbi__errpuc("bad BMP", "bad BMP");
+      |                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5503:23: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5503 |                return stbi__errpuc("bad BMP", "bad BMP");
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5509:20: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5509 |             return stbi__errpuc("bad BMP", "bad BMP");
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5539:4: warning: suspicious usage of 'sizeof()' on an expression of pointer type [bugprone-sizeof-expression]
+ 5539 |    STBI_NOTUSED(ri);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:660:32: note: expanded from macro 'STBI_NOTUSED'
+  660 | #define STBI_NOTUSED(v)  (void)sizeof(v)
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5548:47: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5548 |    if (s->img_y > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5549:47: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5549 |    if (s->img_x > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5562:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5562 |          psize = (info.offset - info.extra_read - info.hsz) >> 2;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5571:17: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5571 |          return stbi__errpuc("bad header", "Corrupt BMP");
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5578:17: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5578 |          return stbi__errpuc("bad offset", "Corrupt BMP");
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5595:14: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5595 |       return stbi__errpuc("too large", "Corrupt BMP");
+      |              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5598:21: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5598 |    if (!out) return stbi__errpuc("outofmem", "Out of memory");
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5601:63: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5601 |       if (psize == 0 || psize > 256) { STBI_FREE(out); return stbi__errpuc("invalid", "Corrupt BMP"); }
+      |                                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5610:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5610 |       if (info.bpp == 1) width = (s->img_x + 7) >> 3;
+      |                                                 ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5611:57: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5611 |       else if (info.bpp == 4) width = (s->img_x + 1) >> 1;
+      |                                                      ~~ ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5613:37: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5613 |       else { STBI_FREE(out); return stbi__errpuc("bad bpp", "Corrupt BMP"); }
+      |                                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5614:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5614 |       pad = (-width)&3;
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5619:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5619 |                int color = (v>>bit_offset)&0x1;
+      |                            ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5619:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5619 |                int color = (v>>bit_offset)&0x1;
+      |                             ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5637:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5637 |                   v2 = v & 15;
+      |                        ^ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5638:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5638 |                   v >>= 4;
+      |                   ^ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5662:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5662 |       pad = (-width) & 3;
+      |             ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5670:58: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5670 |          if (!mr || !mg || !mb) { STBI_FREE(out); return stbi__errpuc("bad masks", "Corrupt BMP"); }
+      |                                                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5676:93: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 5676 |          if (rcount > 8 || gcount > 8 || bcount > 8 || acount > 8) { STBI_FREE(out); return stbi__errpuc("bad masks", "Corrupt BMP"); }
+      |                                                                                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5695:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5695 |                out[z++] = STBI__BYTECAST(stbi__shiftsigned(v & mr, rshift, rcount));
+      |                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5696:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5696 |                out[z++] = STBI__BYTECAST(stbi__shiftsigned(v & mg, gshift, gcount));
+      |                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5697:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5697 |                out[z++] = STBI__BYTECAST(stbi__shiftsigned(v & mb, bshift, bcount));
+      |                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:40: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                        ^~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5700:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5700 |                if (target == 4) out[z++] = STBI__BYTECAST(a);
+      |                                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1730:46: note: expanded from macro 'STBI__BYTECAST'
+ 1730 | #define STBI__BYTECAST(x)  ((stbi_uc) ((x) & 255))  // truncate int to byte without warnings
+      |                                            ~ ^~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5714:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 5714 |       for (j=0; j < (int) s->img_y>>1; ++j) {
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5715:24: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 5715 |          stbi_uc *p1 = out +      j     *s->img_x*target;
+      |                        ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5715:35: note: make conversion explicit to silence this warning
+ 5715 |          stbi_uc *p1 = out +      j     *s->img_x*target;
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~
+      |                                   (size_t)(             )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5715:35: note: perform multiplication in a wider type
+ 5715 |          stbi_uc *p1 = out +      j     *s->img_x*target;
+      |                                   ^~~~~~~~~~~~~~~
+      |                                   (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5716:24: warning: result of multiplication in type 'stbi__uint32' (aka 'unsigned int') is used as a pointer offset after an implicit widening conversion to type 'size_t' [bugprone-implicit-widening-of-multiplication-result]
+ 5716 |          stbi_uc *p2 = out + (s->img_y-1-j)*s->img_x*target;
+      |                        ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5716:30: note: make conversion explicit to silence this warning
+ 5716 |          stbi_uc *p2 = out + (s->img_y-1-j)*s->img_x*target;
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                              (size_t)(                     )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:5716:30: note: perform multiplication in a wider type
+ 5716 |          stbi_uc *p2 = out + (s->img_y-1-j)*s->img_x*target;
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~
+      |                              (size_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6583:29: warning: logical expression is always true [misc-redundant-expression]
+ 6583 |    if (stbi__get8(s) != 'G' || stbi__get8(s) != 'I' || stbi__get8(s) != 'F' || stbi__get8(s) != '8') return 0;
+      |                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6611:29: warning: logical expression is always true [misc-redundant-expression]
+ 6611 |    if (stbi__get8(s) != 'G' || stbi__get8(s) != 'I' || stbi__get8(s) != 'F' || stbi__get8(s) != '8')
+      |                             ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6633:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6633 |    if (g->flags & 0x80)
+      |        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6634:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6634 |       stbi__gif_parse_colortable(s,g->pal, 2 << (g->flags & 7), -1);
+      |                                            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6634:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6634 |       stbi__gif_parse_colortable(s,g->pal, 2 << (g->flags & 7), -1);
+      |                                                  ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6670:9: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6670 |    c = &g->color_table[g->codes[code].suffix * 4];
+      |         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6670:24: note: make conversion explicit to silence this warning
+ 6670 |    c = &g->color_table[g->codes[code].suffix * 4];
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                        (ptrdiff_t)(             )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6670:24: note: perform multiplication in a wider type
+ 6670 |    c = &g->color_table[g->codes[code].suffix * 4];
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+      |                        (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6684:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6684 |          g->step = (1 << g->parse) * g->line_size;
+      |                     ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6685:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6685 |          g->cur_y = g->start_y + (g->step >> 1);
+      |                                   ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6701:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6701 |    clear = 1 << lzw_cs;
+      |            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6704:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6704 |    codemask = (1 << codesize) - 1;
+      |                ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6726:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6726 |          bits |= (stbi__int32) stbi__get8(s) << valid_bits;
+      |          ^~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6726:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6726 |          bits |= (stbi__int32) stbi__get8(s) << valid_bits;
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6729:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6729 |          stbi__int32 code = bits & codemask;
+      |                             ^~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6730:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6730 |          bits >>= codesize;
+      |          ^~~~ ~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6735:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6735 |             codemask = (1 << codesize) - 1;
+      |                         ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6746:23: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6746 |                return stbi__errpuc("no clear code", "Corrupt GIF");
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6752:26: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6752 |                   return stbi__errpuc("too many codes", "Corrupt GIF");
+      |                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6759:23: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6759 |                return stbi__errpuc("illegal code in raster", "Corrupt GIF");
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6763:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6763 |             if ((avail & codemask) == 0 && avail <= 0x0FFF) {
+      |                  ^~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6765:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6765 |                codemask = (1 << codesize) - 1;
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6770:20: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6770 |             return stbi__errpuc("illegal code in raster", "Corrupt GIF");
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6791:17: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6791 |          return stbi__errpuc("too large", "GIF image is too large");
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6793:41: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6793 |       g->out = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6793:41: note: make conversion explicit to silence this warning
+ 6793 |       g->out = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                         ^~~~~~~~~~
+      |                                         (size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6793:41: note: perform multiplication in a wider type
+ 6793 |       g->out = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                         ^
+      |                                         (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6794:48: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6794 |       g->background = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                                ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6794:48: note: make conversion explicit to silence this warning
+ 6794 |       g->background = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                                ^~~~~~~~~~
+      |                                                (size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6794:48: note: perform multiplication in a wider type
+ 6794 |       g->background = (stbi_uc *) stbi__malloc(4 * pcount);
+      |                                                ^
+      |                                                (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6797:17: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6797 |          return stbi__errpuc("outofmem", "Out of memory");
+      |                 ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6802:28: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6802 |       memset(g->out, 0x00, 4 * pcount);
+      |                            ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6802:28: note: make conversion explicit to silence this warning
+ 6802 |       memset(g->out, 0x00, 4 * pcount);
+      |                            ^~~~~~~~~~
+      |                            (__size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6802:28: note: perform multiplication in a wider type
+ 6802 |       memset(g->out, 0x00, 4 * pcount);
+      |                            ^
+      |                            (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6803:35: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6803 |       memset(g->background, 0x00, 4 * pcount); // state of the background (starts transparent)
+      |                                   ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6803:35: note: make conversion explicit to silence this warning
+ 6803 |       memset(g->background, 0x00, 4 * pcount); // state of the background (starts transparent)
+      |                                   ^~~~~~~~~~
+      |                                   (__size_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6803:35: note: perform multiplication in a wider type
+ 6803 |       memset(g->background, 0x00, 4 * pcount); // state of the background (starts transparent)
+      |                                   ^
+      |                                   (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6808:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6808 |       dispose = (g->eflags & 0x1C) >> 2;
+      |                 ^~~~~~~~~~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6808:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6808 |       dispose = (g->eflags & 0x1C) >> 2;
+      |                  ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:25: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:32: note: make conversion explicit to silence this warning
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                                ^~~~~~
+      |                                (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:32: note: perform multiplication in a wider type
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                                ^~
+      |                                (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:42: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:51: note: make conversion explicit to silence this warning
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                                                   ^~~~~~
+      |                                                   (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6818:51: note: perform multiplication in a wider type
+ 6818 |                memcpy( &g->out[pi * 4], &two_back[pi * 4], 4 );
+      |                                                   ^~
+      |                                                   (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:25: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                         ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:32: note: make conversion explicit to silence this warning
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                                ^~~~~~
+      |                                (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:32: note: perform multiplication in a wider type
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                                ^~
+      |                                (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:42: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:56: note: make conversion explicit to silence this warning
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                                                        ^~~~~~
+      |                                                        (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6825:56: note: perform multiplication in a wider type
+ 6825 |                memcpy( &g->out[pi * 4], &g->background[pi * 4], 4 );
+      |                                                        ^~
+      |                                                        (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6836:38: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6836 |       memcpy( g->background, g->out, 4 * g->w * g->h );
+      |                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6836:38: note: make conversion explicit to silence this warning
+ 6836 |       memcpy( g->background, g->out, 4 * g->w * g->h );
+      |                                      ^~~~~~~~~~~~~~~
+      |                                      (__size_t)(    )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6836:38: note: perform multiplication in a wider type
+ 6836 |       memcpy( g->background, g->out, 4 * g->w * g->h );
+      |                                      ^~~~~~~~
+      |                                      (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6840:30: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6840 |    memset( g->history, 0x00, g->w * g->h );        // pixels that were affected previous frame
+      |                              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6840:30: note: make conversion explicit to silence this warning
+ 6840 |    memset( g->history, 0x00, g->w * g->h );        // pixels that were affected previous frame
+      |                              ^~~~~~~~~~~
+      |                              (__size_t)()
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6840:30: note: perform multiplication in a wider type
+ 6840 |    memset( g->history, 0x00, g->w * g->h );        // pixels that were affected previous frame
+      |                              ^~~~
+      |                              (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6855:23: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6855 |                return stbi__errpuc("bad Image Descriptor", "Corrupt GIF");
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6874:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6874 |             if (g->lflags & 0x40) {
+      |                 ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6882:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6882 |             if (g->lflags & 0x80) {
+      |                 ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6883:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6883 |                stbi__gif_parse_colortable(s,g->lpal, 2 << (g->lflags & 7), g->eflags & 0x01 ? g->transparent : -1);
+      |                                                      ^ ~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6883:60: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6883 |                stbi__gif_parse_colortable(s,g->lpal, 2 << (g->lflags & 7), g->eflags & 0x01 ? g->transparent : -1);
+      |                                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6883:76: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6883 |                stbi__gif_parse_colortable(s,g->lpal, 2 << (g->lflags & 7), g->eflags & 0x01 ? g->transparent : -1);
+      |                                                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6885:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6885 |             } else if (g->flags & 0x80) {
+      |                        ^~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6888:23: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6888 |                return stbi__errpuc("missing color table", "Corrupt GIF");
+      |                       ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6900:31: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 6900 |                      memcpy( &g->out[pi * 4], &g->pal[g->bgindex], 4 );
+      |                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6900:38: note: make conversion explicit to silence this warning
+ 6900 |                      memcpy( &g->out[pi * 4], &g->pal[g->bgindex], 4 );
+      |                                      ^~~~~~
+      |                                      (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6900:38: note: perform multiplication in a wider type
+ 6900 |                      memcpy( &g->out[pi * 4], &g->pal[g->bgindex], 4 );
+      |                                      ^~
+      |                                      (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6922:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 6922 |                   if (g->eflags & 0x01) {
+      |                       ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6947:20: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6947 |             return stbi__errpuc("unknown code", "Corrupt GIF");
+      |                    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6960:11: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 6960 |    return stbi__errpuc("outofmem", "Out of memory");
+      |           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6994:74: warning: performing an implicit widening conversion to type '__size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 6994 |                void *tmp = (stbi_uc*) STBI_REALLOC_SIZED( out, out_size, layers * stride );
+      |                                                                          ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6994:74: note: make conversion explicit to silence this warning
+ 6994 |                void *tmp = (stbi_uc*) STBI_REALLOC_SIZED( out, out_size, layers * stride );
+      |                                                                          ^
+      |                                                                          (__size_t)(
+/home/andrew/Code/ucas/src/third_party/stb_image.h:688:58: note: expanded from macro 'STBI_REALLOC_SIZED'
+  688 | #define STBI_REALLOC_SIZED(p,oldsz,newsz) STBI_REALLOC(p,newsz)
+      |                                                          ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:683:45: note: expanded from macro 'STBI_REALLOC'
+  683 | #define STBI_REALLOC(p,newsz)     realloc(p,newsz)
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6994:74: note: perform multiplication in a wider type
+ 6994 |                void *tmp = (stbi_uc*) STBI_REALLOC_SIZED( out, out_size, layers * stride );
+      |                                                                          ^
+      |                                                                          (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:688:58: note: expanded from macro 'STBI_REALLOC_SIZED'
+  688 | #define STBI_REALLOC_SIZED(p,oldsz,newsz) STBI_REALLOC(p,newsz)
+      |                                                          ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:683:45: note: expanded from macro 'STBI_REALLOC'
+  683 | #define STBI_REALLOC(p,newsz)     realloc(p,newsz)
+      |                                             ^~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6999:20: warning: Value stored to 'out_size' is never read [clang-analyzer-deadcode.DeadStores]
+ 6999 |                    out_size = layers * stride;
+      |                    ^          ~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:6999:20: note: Value stored to 'out_size' is never read
+ 6999 |                    out_size = layers * stride;
+      |                    ^          ~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7007:19: warning: Value stored to 'delays_size' is never read [clang-analyzer-deadcode.DeadStores]
+ 7007 |                   delays_size = layers * sizeof(int);
+      |                   ^             ~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7007:19: note: Value stored to 'delays_size' is never read
+ 7007 |                   delays_size = layers * sizeof(int);
+      |                   ^             ~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7010:46: warning: performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 7010 |                out = (stbi_uc*)stbi__malloc( layers * stride );
+      |                                              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7010:46: note: make conversion explicit to silence this warning
+ 7010 |                out = (stbi_uc*)stbi__malloc( layers * stride );
+      |                                              ^~~~~~~~~~~~~~~
+      |                                              (size_t)(      )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7010:46: note: perform multiplication in a wider type
+ 7010 |                out = (stbi_uc*)stbi__malloc( layers * stride );
+      |                                              ^~~~~~
+      |                                              (long)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7013:16: warning: Value stored to 'out_size' is never read [clang-analyzer-deadcode.DeadStores]
+ 7013 |                out_size = layers * stride;
+      |                ^          ~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7013:16: note: Value stored to 'out_size' is never read
+ 7013 |                out_size = layers * stride;
+      |                ^          ~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7018:19: warning: Value stored to 'delays_size' is never read [clang-analyzer-deadcode.DeadStores]
+ 7018 |                   delays_size = layers * sizeof(int);
+      |                   ^             ~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7018:19: note: Value stored to 'delays_size' is never read
+ 7018 |                   delays_size = layers * sizeof(int);
+      |                   ^             ~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7021:21: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 7021 |             memcpy( out + ((layers - 1) * stride), u, stride );
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7021:28: note: make conversion explicit to silence this warning
+ 7021 |             memcpy( out + ((layers - 1) * stride), u, stride );
+      |                            ^~~~~~~~~~~~~~~~~~~~~
+      |                            (ptrdiff_t)(         )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7021:28: note: perform multiplication in a wider type
+ 7021 |             memcpy( out + ((layers - 1) * stride), u, stride );
+      |                            ^~~~~~~~~~~
+      |                             (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7023:27: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 7023 |                two_back = out - 2 * stride;
+      |                           ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7023:33: note: make conversion explicit to silence this warning
+ 7023 |                two_back = out - 2 * stride;
+      |                                 ^~~~~~~~~~
+      |                                 (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7023:33: note: perform multiplication in a wider type
+ 7023 |                two_back = out - 2 * stride;
+      |                                 ^
+      |                                 (ptrdiff_t)
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7044:14: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7044 |       return stbi__errpuc("not GIF", "Image was not as a gif type.");
+      |              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7053:4: warning: suspicious usage of 'sizeof()' on an expression of pointer type [bugprone-sizeof-expression]
+ 7053 |    STBI_NOTUSED(ri);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:660:32: note: expanded from macro 'STBI_NOTUSED'
+  660 | #define STBI_NOTUSED(v)  (void)sizeof(v)
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7509:4: warning: suspicious usage of 'sizeof()' on an expression of pointer type [bugprone-sizeof-expression]
+ 7509 |    STBI_NOTUSED(ri);
+      |    ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:660:32: note: expanded from macro 'STBI_NOTUSED'
+  660 | #define STBI_NOTUSED(v)  (void)sizeof(v)
+      |                                ^~~~~~~~~
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7515:47: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7515 |    if (s->img_y > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7516:47: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7516 |    if (s->img_x > STBI_MAX_DIMENSIONS) return stbi__errpuc("too large","Very large image (corrupt?)");
+      |                                               ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7523:14: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7523 |       return stbi__errpuc("too large", "PNM too large");
+      |              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7526:21: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7526 |    if (!out) return stbi__errpuc("outofmem", "Out of memory");
+      |                     ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:7529:14: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 7529 |       return stbi__errpuc("bad PNM", "PNM file truncated");
+      |              ^
+/home/andrew/Code/ucas/src/third_party/stb_image.h:1099:70: note: expanded from macro 'stbi__errpuc'
+ 1099 | #define stbi__errpuc(x,y)  ((unsigned char *)(size_t) (stbi__err(x,y)?NULL:NULL))
+      |                                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

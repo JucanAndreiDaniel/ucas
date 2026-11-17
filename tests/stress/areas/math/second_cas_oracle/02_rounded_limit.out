@@ -1,0 +1,18 @@
+> limit (1+x)^(1/x) x -> 0
+limit of (x + 1)^(1/x) as x -> 0:
+  (x + 1)^(1/x) = exp((1/x)*log(x + 1))
+  0/0: L'Hôpital: lim (1/(x + 1))/(1) = lim 1/(x + 1)
+  = 2.718281828 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 2.867971991, 2.726825418, 2.718812933, 2.718315011, 2.718283902, 2.718281893
+    extrapolated (Richardson): 2.71828182846 (estimated error 1e-16): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 2.59374246, 2.709835576, 2.717751104, 2.718248647, 2.718279755, 2.718281764
+    extrapolated (Richardson): 2.71828182846 (estimated error 3e-16): agrees
+> limit (1+1/x)^x x -> inf
+limit of (1/x + 1)^x as x -> inf:
+  (1/x + 1)^x = exp((x)*log(1/x + 1))
+  0*inf: x*log(1/x + 1) = (log(1/x + 1))/(1/x)
+  0/0: L'Hôpital: lim (-1/(x^2*(1/x + 1)))/(-1/x^2) = lim x^2/(x^2*(1/x + 1))
+  at inf: x^2 ~ 1|x|^2, x^2*(1/x + 1) ~ 1|x|^2
+  = 2.718281828
+  numeric (x = 10*2^k, k = 0..21): 2.59374246, 2.709835576, 2.717751104, 2.718248647, 2.718279755, 2.718281764
+    extrapolated (Richardson): 2.71828182846 (estimated error 3e-16): agrees

@@ -1,0 +1,57 @@
+src/winograd.c:66:2: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+   66 |         nid s = t[0];
+      |         ^
+src/winograd.c:219:6: note: Assuming the condition is false
+  219 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/winograd.c:219:2: note: Taking false branch
+  219 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+src/winograd.c:221:6: note: Assuming the condition is false
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/winograd.c:221:6: note: Left side of '||' is false
+src/winograd.c:221:36: note: Assuming the condition is false
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+src/winograd.c:221:2: note: Taking false branch
+  221 |         if (strcmp(w, "winograd") != 0 || func_find(sym_cstr(w))) {
+      |         ^
+src/winograd.c:226:9: note: Assuming the condition is false
+  226 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+src/winograd.c:226:2: note: Loop condition is false. Execution continues on line 244
+  226 |         while (!cmdp_eos(p)) {
+      |         ^
+src/winograd.c:245:2: note: Calling 'winograd_run'
+  245 |         winograd_run(f, rows, cols, tol);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/winograd.c:110:47: note: Assuming the condition is true
+  110 |         int n = gather(f->body, x, y, 0), h, j, fp = TY_FP(N.ty[f->body]);
+      |                                                      ^~~~~~~~~~~~~~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/winograd.c:110:47: note: Left side of '||' is true
+src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+src/winograd.c:115:6: note: 'n' is < 2
+  115 |         if (n < 2 || (n & 1))
+      |             ^
+src/winograd.c:115:12: note: Left side of '||' is true
+  115 |         if (n < 2 || (n & 1))
+      |                   ^
+src/winograd.c:119:2: note: Loop condition is false. Execution continues on line 125
+  119 |         for (j = 0; j < h; j++) {
+      |         ^
+src/winograd.c:125:7: note: Calling 'sum_of'
+  125 |         xi = sum_of(xx, h);
+      |              ^~~~~~~~~~~~~
+src/winograd.c:66:2: note: Assigned value is uninitialized
+   66 |         nid s = t[0];
+      |         ^       ~~~~
+1 warning generated.

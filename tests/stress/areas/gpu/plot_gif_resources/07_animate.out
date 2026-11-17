@@ -1,0 +1,73 @@
+> animate scan n 8 nofile
+prefix sum of 8 u32 values (1..n), cost model gt1030
+  values: 1 2 3 4 5 6 7 8
+  per element: load 6.875, add 1, barrier 9.125, divergence 20.625
+    algorithm      levels     time     work
+    Hillis-Steele       3      145      464   <- animated
+    Blelloch            7      294      358
+    sequential          7      110      110
+  Hillis-Steele levels:
+    d=1        7 ops  lane 21.625 +diverge +barrier  t = 0..51.375
+    d=2        6 ops  lane 21.625 +diverge +barrier  t = 51.375..102.75
+    d=4        4 ops  lane 21.625 +diverge  t = 102.75..145
+  result: 1 3 6 10 15 21 28 36
+  animation: 420x242, 225 frames at 30 fps (6.0 s, then the result for 1.5 s), 1 s = 24.2 cost units; 236204 bytes
+  (nofile: GIF checksum 8ed8ac69)
+> animate scan n 16 nofile
+prefix sum of 16 u32 values (1..n), cost model gt1030
+  values: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+  per element: load 6.875, add 1, barrier 9.125, divergence 20.625
+    algorithm      levels     time     work
+    Hillis-Steele       4      196     1266   <- animated
+    Blelloch            9      404      759
+    sequential         15      228      228
+  Hillis-Steele levels:
+    d=1       15 ops  lane 21.625 +diverge +barrier  t = 0..51.375
+    d=2       14 ops  lane 21.625 +diverge +barrier  t = 51.375..102.75
+    d=4       12 ops  lane 21.625 +diverge +barrier  t = 102.75..154.125
+    d=8        8 ops  lane 21.625 +diverge  t = 154.125..196.375
+  result: 1 3 6 10 15 21 28 36 45 55 66 78 91 105 120 136
+  animation: 632x282, 225 frames at 30 fps (6.0 s, then the result for 1.5 s), 1 s = 32.7 cost units; 393351 bytes
+  (nofile: GIF checksum 789aea03)
+> animate exec of 32-bit x*x+1 seed 1 nofile
+  note: 32-bit: every variable is u32 (say "signed 32-bit" for i32)
+exec of x*x + 1, cost model gt1030, 4 lanes in lockstep; x: u32
+  random inputs (seed 1)
+  result per lane: 197 401 170 362
+  serial form:
+    t0 = x * x                                   imul           3  t = 0..3  -> 196 400 169 361
+    t1 = t0 + 1                                  iadd           1  t = 3..4  -> 197 401 170 362
+  time 4 for every lane; lanes busy 100% (0 lane-units idle: masked, or waiting for an atomic)
+  animation: 608x250, 225 frames at 30 fps (6.0 s, then the result for 1.5 s), 1 s = 0.7 cost units; 36570 bytes
+  (nofile: GIF checksum 2bb81f10)
+> animate exec of 32-bit x*x+1 random seed 1 nofile
+  note: 32-bit: every variable is u32 (say "signed 32-bit" for i32)
+exec of x*x + 1, cost model gt1030, 4 lanes in lockstep; x: u32
+  random inputs (seed 1)
+  result per lane: 197 401 170 362
+  serial form:
+    t0 = x * x                                   imul           3  t = 0..3  -> 196 400 169 361
+    t1 = t0 + 1                                  iadd           1  t = 3..4  -> 197 401 170 362
+  time 4 for every lane; lanes busy 100% (0 lane-units idle: masked, or waiting for an atomic)
+  animation: 608x250, 225 frames at 30 fps (6.0 s, then the result for 1.5 s), 1 s = 0.7 cost units; 36570 bytes
+  (nofile: GIF checksum 2bb81f10)
+> plot sin(x-t) animate t frames 2 nofile
+plot of sin(x - t)
+  t in [-6.283 (-2pi), 6.283 (2pi)]: periodic with period 6.283 (2pi): two periods
+  t: one period [0, 6.283 (2pi)), looping
+  x in [-6.283 (-2pi), 6.283 (2pi)]: periodic with period 6.283 (2pi): two periods
+  y in [-1.1, 1.1]: the values
+  frames over t in [0, 6.283]
+  sin(x - t): 1201 samples, values in [-1, 1]
+  animation: 640x440, 2 frames at 12 fps (0.2 s), 14926 bytes
+  (nofile: GIF checksum 949af7d3)
+> plot sin(x-t) animate t frames 0 nofile
+plot of sin(x - t)
+  t in [-6.283 (-2pi), 6.283 (2pi)]: periodic with period 6.283 (2pi): two periods
+  t: one period [0, 6.283 (2pi)), looping
+  x in [-6.283 (-2pi), 6.283 (2pi)]: periodic with period 6.283 (2pi): two periods
+  y in [-1.1, 1.1]: the values
+  frames over t in [0, 6.283]
+  sin(x - t): 1201 samples, values in [-1, 1]
+  animation: 640x440, 30 frames at 12 fps (2.5 s), 188226 bytes
+  (nofile: GIF checksum 0717b617)

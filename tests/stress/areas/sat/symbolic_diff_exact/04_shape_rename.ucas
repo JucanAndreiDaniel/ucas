@@ -1,0 +1,11 @@
+# SHAPE REDUCTION: a verified variable renaming (swap x <-> y) of a true
+# identity must receive the identical oracle verdict. It does: ucas rejects
+# BOTH with the SAME fabricated counterexample (399.2 vs 399.2), confirming
+# the bug is shape-invariant and a single proof could be reused for both.
+base(x: real, y: real) = (x + y) ^ 2
+basec(x: real, y: real) = x ^ 2 + 2 * x * y + y ^ 2
+equiv base basec
+swapped(x: real, y: real) = (y + x) ^ 2
+swappedc(x: real, y: real) = y * y + 2 * y * x + x * x
+equiv swapped swappedc
+expand (y + x) ^ 2 - (y * y + 2 * y * x + x * x)

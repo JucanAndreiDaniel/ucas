@@ -1,0 +1,26 @@
+# Dependency-aware mutation (Mansur/STORM): swap x<->y in BOTH f and g;
+# the fusion relation must survive the coherent rename.
+mf_comm_add(x: u8, y: u8) = (y + x)
+mg_comm_add(x: u8, y: u8) = (x + y)
+equiv mf_comm_add mg_comm_add
+error mg_comm_add ~ mf_comm_add
+mf_comm_mul(x: u8, y: u8) = (y * x)
+mg_comm_mul(x: u8, y: u8) = (x * y)
+equiv mf_comm_mul mg_comm_mul
+error mg_comm_mul ~ mf_comm_mul
+mf_comm_and(x: u8, y: u8) = (y & x)
+mg_comm_and(x: u8, y: u8) = (x & y)
+equiv mf_comm_and mg_comm_and
+error mg_comm_and ~ mf_comm_and
+mf_comm_or(x: u8, y: u8) = (y | x)
+mg_comm_or(x: u8, y: u8) = (x | y)
+equiv mf_comm_or mg_comm_or
+error mg_comm_or ~ mf_comm_or
+mf_comm_xor(x: u8, y: u8) = (y xor x)
+mg_comm_xor(x: u8, y: u8) = (x xor y)
+equiv mf_comm_xor mg_comm_xor
+error mg_comm_xor ~ mf_comm_xor
+mf_comm_add16(x: u16, y: u16) = (y + x)
+mg_comm_add16(x: u16, y: u16) = (x + y)
+equiv mf_comm_add16 mg_comm_add16
+error mg_comm_add16 ~ mf_comm_add16

@@ -1,0 +1,49 @@
+> c0(a: u1) = 0
+> c1(a: u3) = 1
+> id6(a: u6) = a
+> gates c0
+gates for c0: 1 input bit -> 1 output bit (1 constant), basis c
+  minimal: cost 0, 0 steps (no program of cost <= -1 exists; 0 candidates searched)
+  checked: the program reproduces every output bit on all 2 care inputs
+  r0 = 0
+> gates c1
+gates for c1: 3 input bits -> 1 output bit (1 constant), basis c
+  minimal: cost 0, 0 steps (no program of cost <= -1 exists; 0 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  r0 = 1
+> gates id6
+gates for id6: 6 input bits -> 6 output bits, basis c
+  minimal: cost 0, 0 steps (no program of cost <= -1 exists; 0 candidates searched)
+  checked: the program reproduces every output bit on all 64 care inputs
+  r5 = a5
+  r4 = a4
+  r3 = a3
+  r2 = a2
+  r1 = a1
+  r0 = a0
+> gates x
+10_degenerate.ucas:9:8: error: gates needs bit-sized parameters (uN, iN, bool); x is real
+    gates x
+           ^
+> w() = 1
+> gates w
+10_degenerate.ucas:11:8: error: gates needs bit-sized parameters (uN, iN, bool); w is real
+    gates w
+           ^
+> u(z: u2 in 5..3) = z
+10_degenerate.ucas:12:16: error: empty range 5..3: the low end is above the high end
+    u(z: u2 in 5..3) = z
+                   ^
+> gates u
+10_degenerate.ucas:13:8: error: gates needs bit-sized parameters (uN, iN, bool); u is real
+    gates u
+           ^
+> f(x: u8 in 0..15) = x*x
+> find f -1
+find 1: 1 point, computing in u8, costs from gt1030
+  cost 0   1                                        constant
+  [searched every term up to cost 12: 8 distinct columns; 'more' continues]
+> cost f model nosuch
+10_degenerate.ucas:16:14: error: unknown model
+    cost f model nosuch
+                 ^

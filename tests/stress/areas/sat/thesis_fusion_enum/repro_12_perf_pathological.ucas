@@ -1,0 +1,19 @@
+# PerfFuzz-style: products-under-xor chains. Find new SAT give-up boundaries.
+pf_p1(x: u32, y: u32, z: u32) = ((x*y)*z) ^ 5
+pg_p1(x: u32, y: u32, z: u32) = ((y*x)*z) ^ 5
+equiv pf_p1 pg_p1
+pf_p2(x: u32, y: u32, z: u32) = ((x*y)^5)*z
+pg_p2(x: u32, y: u32, z: u32) = ((y*x)^5)*z
+equiv pf_p2 pg_p2
+pf_p3(x: u32, y: u32, z: u32) = ((x*y)*(y*z)) ^ 0x5a
+pg_p3(x: u32, y: u32, z: u32) = ((y*x)*(z*y)) ^ 0x5a
+equiv pf_p3 pg_p3
+pf_p4(x: u64, y: u64, z: u64) = (x*y) ^ 5
+pg_p4(x: u64, y: u64, z: u64) = (y*x) ^ 5
+equiv pf_p4 pg_p4
+pf_p5(x: u16, y: u16, z: u16) = ((x*y)*z)^5
+pg_p5(x: u16, y: u16, z: u16) = ((z*y)*x)^5
+equiv pf_p5 pg_p5
+pf_p6(x: u32, y: u32, z: u32) = ((x + (y*3)) * (z + 7)) ^ 0xff
+pg_p6(x: u32, y: u32, z: u32) = ((z*3 + x) * (7 + y)) ^ 0xff
+equiv pf_p6 pg_p6

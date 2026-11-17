@@ -1,0 +1,11 @@
+# controls: exhaustive ranges on u16/i16 are exact (spike, match, table, negation, square).
+spk16(x: u16) = x == 12345 ? 60000 : 0
+range spk16
+neg(x: i16) = -x
+range neg
+sq(x: i16) = x*x
+range sq
+tab(x: u8 in 0..15) = [10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160][x]
+range tab
+mch(x: u8 in 0..15) = match x { 0..3 => 100, 4..7 => 5, 8 => 999, _ => 0 }
+range mch

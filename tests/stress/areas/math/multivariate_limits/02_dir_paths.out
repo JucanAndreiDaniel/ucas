@@ -1,0 +1,46 @@
+> f(x,y) = (x^2-y^2)/(x^2+y^2)
+> limit f(x,0) x->0
+limit of x^2/x^2 as x -> 0:
+  0/0: L'Hôpital: lim (2x)/(2x) = lim 1
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 1, 1, 1, 1, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> limit f(x,x) x->0
+limit of 0/(x^2 + x^2) as x -> 0:
+  0/0: L'Hôpital: lim (0)/(4x) = lim 0
+  = 0 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0, 0, 0, 0, 0, 0
+    extrapolated (Richardson): 0 (estimated error 0): agrees
+> limit f(x,2*x) x->0
+limit of (x^2 - (2x)^2)/(x^2 + (2x)^2) as x -> 0:
+  0/0: L'Hôpital: lim (-6x)/(10x) = lim -0.6
+  = -3/5 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -0.6, -0.6, -0.6, -0.6, -0.6, -0.6
+    extrapolated (Richardson): -0.6 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.6, -0.6, -0.6, -0.6, -0.6, -0.6
+    extrapolated (Richardson): -0.6 (estimated error 0): agrees
+> limit f(x,x^2) x->0
+limit of (x^2 - (x^2)^2)/(x^2 + (x^2)^2) as x -> 0:
+  0/0: L'Hôpital: lim (2x - 4x^3)/(2x + 4x^3) = lim (2x - 4x^3)/(2x + 4x^3)
+  0/0: L'Hôpital: lim (2 - 12x^2)/(12x^2 + 2) = lim (2 - 12x^2)/(12x^2 + 2)
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.9801980198, 0.9999218781, 0.9999996948, 0.9999999988, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.9801980198, 0.9999218781, 0.9999996948, 0.9999999988, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> limit f(x,1/x) x->0
+limit of (x^2 - (1/x)^2)/(x^2 + (1/x)^2) as x -> 0:
+  1/x -> inf (the numerator -> 1, x -> 0+)
+  inf/inf: L'Hôpital: lim (2/x^3 + 2x)/(-2/x^3 + 2x) = lim 2/(x^3*(-2/x^3 + 2x)) + 2x/(-2/x^3 + 2x)
+  -2/x^3 -> -inf (the numerator -> -2, x^3 -> 0+)
+  0*inf: x^3*-2/x^3 + 2x = (-2/x^3 + 2x)/(1/x^3)
+  inf/inf: L'Hôpital: lim (6x^2/x^6 + 2)/(-3x^2/x^6) = lim -2 - 2x^4/3
+  = -1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -0.99980002, -0.9999999969, -1, -1, -1, -1
+    extrapolated (Richardson): -1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.99980002, -0.9999999969, -1, -1, -1, -1
+    extrapolated (Richardson): -1 (estimated error 0): agrees

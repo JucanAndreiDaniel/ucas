@@ -1,0 +1,114 @@
+> fadd(x: f32, y: f32) = x + y
+> ffma(x: f32, y: f32, z: f32) = x*y + z
+> fdiv(x: f32, y: f32) = x / y
+> fsqrt(x: f32) = sqrt(x)
+> ftrans(x: f32) = sin(x)
+> d64(x: f64) = x * 2.5
+> conv(x: u32) = f32(x)
+> cost fadd model gt1030
+cost of fadd under gt1030: 1 (1 operations, shared subterms counted once)
+  fadd             1 x 1     = 1
+> cost fadd model ga104
+cost of fadd under ga104: 1 (1 operations, shared subterms counted once)
+  fadd             1 x 1     = 1
+> cost fadd model rdna2
+cost of fadd under rdna2: 1 (1 operations, shared subterms counted once)
+  fadd             1 x 1     = 1
+> cost fadd model mali_g715
+cost of fadd under mali_g715: 1 (1 operations, shared subterms counted once)
+  fadd             1 x 1     = 1
+> cost fadd model zen4
+cost of fadd under zen4: 3 (1 operations, shared subterms counted once)
+  fadd             1 x 3     = 3
+> cost fadd model skl
+cost of fadd under skl: 4 (1 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+> cost fadd model x86v4
+cost of fadd under x86v4: 4 (1 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+> cost ffma model gt1030
+cost of ffma under gt1030: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)
+> cost ffma model ga104
+cost of ffma under ga104: 0.99 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 0.99  = 0.99  (a*b + c, contracted: one rounding; saves 1)
+> cost ffma model rdna2
+cost of ffma under rdna2: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    ffma             1 x 1     = 1  (a*b + c, contracted: one rounding; saves 1)
+> cost ffma model zen4
+cost of ffma under zen4: 6 (2 operations, shared subterms counted once)
+  fadd             1 x 3     = 3
+  fmul             1 x 3     = 3
+> cost ffma model skl
+cost of ffma under skl: 8 (2 operations, shared subterms counted once)
+  fadd             1 x 4     = 4
+  fmul             1 x 4     = 4
+> cost fdiv model gt1030
+cost of fdiv under gt1030: 3 (1 operations, shared subterms counted once)
+  fdiv             1 x 3     = 3
+> cost fdiv model ga104
+cost of fdiv under ga104: 5.85 (1 operations, shared subterms counted once)
+  fdiv             1 x 5.85  = 5.85
+> cost fdiv model zen4
+cost of fdiv under zen4: 10 (1 operations, shared subterms counted once)
+  fdiv             1 x 10    = 10
+> cost fdiv model skl
+cost of fdiv under skl: 11 (1 operations, shared subterms counted once)
+  fdiv             1 x 11    = 11
+> cost fsqrt model gt1030
+cost of fsqrt under gt1030: 4 (1 operations, shared subterms counted once)
+  fsqrt            1 x 4     = 4
+> cost fsqrt model ga104
+cost of fsqrt under ga104: 6.79 (1 operations, shared subterms counted once)
+  fsqrt            1 x 6.79  = 6.79
+> cost fsqrt model zen4
+cost of fsqrt under zen4: 15 (1 operations, shared subterms counted once)
+  fsqrt            1 x 15    = 15
+> cost fsqrt model skl
+cost of fsqrt under skl: 12 (1 operations, shared subterms counted once)
+  fsqrt            1 x 12    = 12
+> cost ftrans model gt1030
+cost of ftrans under gt1030: 4 (1 operations, shared subterms counted once)
+  ftrans           1 x 4     = 4
+> cost ftrans model rdna2
+cost of ftrans under rdna2: 4 (1 operations, shared subterms counted once)
+  ftrans           1 x 4     = 4
+> cost ftrans model zen4
+cost of ftrans under zen4: 18 (1 operations, shared subterms counted once)
+  ftrans           1 x 18    = 18
+> cost ftrans model skl
+cost of ftrans under skl: 20 (1 operations, shared subterms counted once)
+  ftrans           1 x 20    = 20
+> cost d64 model gt1030
+cost of d64 under gt1030: 32.375 (1 operations, shared subterms counted once)
+  fmul             1 x 32.375 = 32.375
+> cost d64 model ga104
+cost of d64 under ga104: 61.0632 (1 operations, shared subterms counted once)
+  fmul             1 x 61.0632 = 61.0632
+> cost d64 model vangogh
+cost of d64 under vangogh: 15.96 (1 operations, shared subterms counted once)
+  fmul             1 x 15.96 = 15.96
+> cost d64 model mali_g715
+cost of d64 under mali_g715: 1.01 (1 operations, shared subterms counted once)
+  fmul             1 x 1.01  = 1.01
+> cost d64 model zen4
+cost of d64 under zen4: 3 (1 operations, shared subterms counted once)
+  fmul             1 x 3     = 3
+> cost d64 model skl
+cost of d64 under skl: 4 (1 operations, shared subterms counted once)
+  fmul             1 x 4     = 4
+> cost conv model gt1030
+cost of conv under gt1030: 3 (1 operations, shared subterms counted once)
+  conv             1 x 3     = 3
+> cost conv model mali_g715
+cost of conv under mali_g715: 1.28 (1 operations, shared subterms counted once)
+  conv             1 x 1.28  = 1.28
+> cost conv model zen4
+cost of conv under zen4: 4 (1 operations, shared subterms counted once)
+  conv             1 x 4     = 4
+> cost conv model skl
+cost of conv under skl: 5 (1 operations, shared subterms counted once)
+  conv             1 x 5     = 5

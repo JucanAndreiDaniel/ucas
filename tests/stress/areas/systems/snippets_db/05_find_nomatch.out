@@ -1,0 +1,23 @@
+> n1(a: u32, b: u32) = (((a ^ b) << 1) | ((a ^ b) >> 31)) ^ 0xffffffff
+  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+> find n1 1 snippets
+find n1: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 3 has its values (78812 programs of 2 inputs, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> n2(a: u32, b: u32) = ((a * b) ^ (a + b)) & 0x55555555
+> find n2 1 snippets
+find n2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: no program up to cost 3 has its values (78812 programs of 2 inputs, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> n3(a: u32, b: u32, c: u32, d: u32) = a + b + c + d
+> find n3 1 snippets
+find n3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  snippet database: none in this session for 4 inputs of 32 bits under gt1030, and no snippets/gt1030_4x32.snip (`make snippets` grows those snippets/grow.ucas lists)
+  cost 3   a + (b + (c + d))                        exact (sampled)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> find n3 1
+find n3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  cost 3   a + (b + (c + d))                        exact (sampled)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

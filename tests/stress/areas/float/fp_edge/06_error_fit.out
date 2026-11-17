@@ -1,0 +1,37 @@
+> rsqrt(x: f32 in 0.01..100) = 1/sqrt(x)
+> guess(x: f32, K: u32) = asfloat(K - (asuint(x) >> 1))
+> fit guess ~ rsqrt
+fit guess to rsqrt (max relative error, 4096 sample points):
+  K = 1597465581  (0x5f3763ed)
+  objective 0.0342066
+  asfloat(1597465581 - (asuint(x) >> 1))
+  max abs error 0.341896 at x=0.0100000007
+  max rel error 0.0342164 (3.42%) at x=59.6959572
+  mean rel error 0.0231791 over 65536 points
+  max 564234 ulp
+> quake(x: f32 in 0.01..100) = y * (1.5f - 0.5f*x*y*y) where y = asfloat(0x5f3759df - (asuint(x) >> 1))
+> error quake ~ rsqrt
+error of quake against rsqrt:
+  max abs error 0.0174789 at x=0.0100000007
+  max rel error 0.00175224 (0.175%) at x=14.9190588
+  mean rel error 0.000943339 over 65536 points
+  max 28402 ulp
+  rounding, first order in u = 2^-24: 5 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  2.18e-07 (3.66 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 6.83 u here (it gains from about 16 operations of similar weight on)
+    expected    5.88e-08 (0.987 u): the root mean square if they are independent and uniform in [-u, u]
+    for 5 operations of equal weight: gamma_5 = 5 u / (1 - 5 u) = 2.98e-07, gamma~_5(4) = 4 sqrt(5) u = 5.33e-07
+> clang(x: f32) = y * (1.5f - 0.5f*x*y*y) where y = asfloat(0x5f375a86 - (asuint(x) >> 1))
+> error clang ~ rsqrt
+error of clang against rsqrt:
+  max abs error 0.0174952 at x=0.0100000007
+  max rel error 0.00175129 (0.175%) at x=41.2134705
+  mean rel error 0.00094391 over 65536 points
+  max 28384 ulp
+  rounding, first order in u = 2^-24: 5 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4088 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  2.98e-07 (5 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 8.94 u here (it gains from about 16 operations of similar weight on)
+    expected    7.69e-08 (1.29 u): the root mean square if they are independent and uniform in [-u, u]
+    for 5 operations of equal weight: gamma_5 = 5 u / (1 - 5 u) = 2.98e-07, gamma~_5(4) = 4 sqrt(5) u = 5.33e-07

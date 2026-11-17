@@ -1,0 +1,15 @@
+parse match x { 0 => 1, 1 => 2, _ => 3 }
+parse match x { 0 => 1, 0 => 2, _ => 3 }
+parse match x { 0..5 => 1, 3..9 => 2, _ => 3 }
+parse match x { 0..5 => 1, 6..9 => 2, _ => 3 }
+parse match x { 0 => 1, 1 | 2 => 5, 3..9 => 7, _ => 9 }
+parse match x { _ => 0, 1 => 2 }
+parse match x { 1 => 2 }
+parse switch x { 0: 1, 1: 2, default: 3 }
+parse match x { 0 -> 1, 1 -> 2, _ -> 3 }
+parse match x { 0 => 1, }
+parse match x { default => 1 }
+parse match x { -1 => 1, 0 => 0, 1 => 1, _ => 2 }
+parse { x if x >= 0, -x otherwise }
+parse { 1 if x > 5, 2 if x > 0, 0 otherwise }
+range match(x: u8) { 0..3 => x, 4..7 => 7-x, _ => 0 }

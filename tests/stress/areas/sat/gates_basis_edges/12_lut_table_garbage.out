@@ -1,0 +1,21 @@
+> basis g1 { t(x, y) = lut 255 }
+12_lut_table_garbage.ucas:2:26: error: expected a gate: name(x, y) = expr
+    basis g1 { t(x, y) = lut 255 }
+                             ^
+> basis g2 { t(x, y) = lut 0xe8 }
+12_lut_table_garbage.ucas:3:26: error: expected a gate: name(x, y) = expr
+    basis g2 { t(x, y) = lut 0xe8 }
+                             ^
+> f(a: u1, b: u1) = a & b
+> gates f basis g1
+gates for f: 2 input bits -> 1 output bit, basis g1
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = t(a, b, 0x08)                 = (b & a)
+  r0 = t0
+> gates f basis g2
+gates for f: 2 input bits -> 1 output bit, basis g2
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = t(a, b, 0x08)                 = (b & a)
+  r0 = t0

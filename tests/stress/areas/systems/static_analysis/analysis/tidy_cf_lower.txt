@@ -1,0 +1,988 @@
+/home/andrew/Code/ucas/src/cf_lower.c:49:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   43 | 
+   44 | #define CF_UNROLL 66
+   45 | #define CF_MAXNODES 400000
+   46 | #define CF_INLINE 4
+   47 | 
+   48 | struct lctx {
+   49 |         nid brk, cont;          /* conditions collected (bool) */
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:60:2: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   38 |         uint8_t *set;
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:64:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   64 |         uint32_t nbase;         /* N.n at the start */
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:67:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+   67 |         struct sbuf closed;     /* loops summed in closed form */
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:114:9: warning: no header providing "mk_bin" is directly included [misc-include-cleaner]
+  114 |         return mk_bin(O_LAND, a, b);
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:114:16: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  114 |         return mk_bin(O_LAND, a, b);
+      |                       ^
+/home/andrew/Code/ucas/src/cf_lower.c:130:16: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  130 |         return mk_bin(O_LOR, a, b);
+      |                       ^
+/home/andrew/Code/ucas/src/cf_lower.c:140:9: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  140 |         return mk_un(O_LNOT, a);
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:140:15: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+  140 |         return mk_un(O_LNOT, a);
+      |                      ^
+/home/andrew/Code/ucas/src/cf_lower.c:152:9: warning: no header providing "mk_sel" is directly included [misc-include-cleaner]
+  152 |         return mk_sel(c, a, b);
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:155:8: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  155 | static ty_t
+      |        ^
+/home/andrew/Code/ucas/src/cf_lower.c:177:6: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  177 |         if (TYK(N.ty[x]) == K_FLOAT && ct_is_int(to) &&
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:177:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:177:10: warning: no header providing "N" is directly included [misc-include-cleaner]
+  177 |         if (TYK(N.ty[x]) == K_FLOAT && ct_is_int(to) &&
+      |                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:177:22: warning: no header providing "K_FLOAT" is directly included [misc-include-cleaner]
+  177 |         if (TYK(N.ty[x]) == K_FLOAT && ct_is_int(to) &&
+      |                             ^
+/home/andrew/Code/ucas/src/cf_lower.c:182:21: warning: no header providing "TY_BOOL" is directly included [misc-include-cleaner]
+  182 |                 return N.ty[x] == TY_BOOL ? x : mk_bool(x);
+      |                                   ^
+/home/andrew/Code/ucas/src/cf_lower.c:182:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:182:35: warning: no header providing "mk_bool" is directly included [misc-include-cleaner]
+  182 |                 return N.ty[x] == TY_BOOL ? x : mk_bool(x);
+      |                                                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:184:9: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  184 |         return mk_cast(t, x);
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:197:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |         if (TYK(N.ty[x]) != K_FLOAT || CT.kind[ct_unqual(to)] == CT_BOOL ||
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:204:11: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  204 |                 int w = TYW(t);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_lower.c:204:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:205:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  205 |                 double lo = TYK(t) == K_SINT ? -ldexp(1, w - 1) - 1 : -1;
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:205:25: warning: no header providing "K_SINT" is directly included [misc-include-cleaner]
+  205 |                 double lo = TYK(t) == K_SINT ? -ldexp(1, w - 1) - 1 : -1;
+      |                                       ^
+/home/andrew/Code/ucas/src/cf_lower.c:206:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  206 |                 double hi = TYK(t) == K_SINT ? ldexp(1, w - 1) : ldexp(1, w);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:207:20: warning: no header providing "TY_F64" is directly included [misc-include-cleaner]
+  207 |                 nid xd = mk_cast(TY_F64, x), ok;
+      |                                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:207:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:208:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  208 |                 if (TYK(t) == K_SINT && w == 64)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:209:21: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  209 |                         ok = band(mk_bin(O_GE, xd, mk_cast(TY_F64, mk_const_r(lo + 1))),
+      |                                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:209:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  209 |                         ok = band(mk_bin(O_GE, xd, mk_cast(TY_F64, mk_const_r(lo + 1))),
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:209:47: warning: no header providing "mk_const_r" is directly included [misc-include-cleaner]
+  209 |                         ok = band(mk_bin(O_GE, xd, mk_cast(TY_F64, mk_const_r(lo + 1))),
+      |                                                                    ^
+/home/andrew/Code/ucas/src/cf_lower.c:210:15: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  210 |                             mk_bin(O_LT, xd, mk_cast(TY_F64, mk_const_r(hi))));
+      |                                    ^
+/home/andrew/Code/ucas/src/cf_lower.c:210:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  210 |                             mk_bin(O_LT, xd, mk_cast(TY_F64, mk_const_r(hi))));
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:212:21: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  212 |                         ok = band(mk_bin(O_GT, xd, mk_cast(TY_F64, mk_const_r(lo))),
+      |                                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:212:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  212 |                         ok = band(mk_bin(O_GT, xd, mk_cast(TY_F64, mk_const_r(lo))),
+      |                                                            ^
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:213:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  213 |                             mk_bin(O_LT, xd, mk_cast(TY_F64, mk_const_r(hi))));
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:102:16: note: expanded from macro 'TY_F64'
+  102 | #define TY_F64 TY(K_FLOAT, 64)
+      |                ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:220:20: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  220 | kint(uint32_t cty, int64_t v, uint32_t at)
+      |                    ^
+/home/andrew/Code/ucas/src/cf_lower.c:224:9: warning: no header providing "mk_const_i" is directly included [misc-include-cleaner]
+  224 |         return mk_const_i(t, int_norm(t, v));
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:224:23: warning: no header providing "int_norm" is directly included [misc-include-cleaner]
+  224 |         return mk_const_i(t, int_norm(t, v));
+      |                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:250:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  250 |             !(CT.qual[SU.ty[s]] & CQ_VOLATILE);
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/cfront.h:287:21: note: expanded from macro 'CQ_VOLATILE'
+  287 | #define CQ_VOLATILE 2
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:282:18: warning: no header providing "mk_var" is directly included [misc-include-cleaner]
+  282 |         L.leafnode[k] = mk_var((uint32_t)k, sym_intern(text, strlen(text)), t);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_lower.c:282:38: warning: no header providing "sym_intern" is directly included [misc-include-cleaner]
+  282 |         L.leafnode[k] = mk_var((uint32_t)k, sym_intern(text, strlen(text)), t);
+      |                                             ^
+/home/andrew/Code/ucas/src/cf_lower.c:294:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |             !(CT.qual[CT.base[ty]] & CQ_CONST) || SU.kind[s] != CS_GLOBAL ||
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/cfront.h:286:18: note: expanded from macro 'CQ_CONST'
+  286 | #define CQ_CONST 1
+      |                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:295:47: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  295 |             d == 0 || AU.kind[d] != CA_DECL || (init = AU.a[d]) == 0 ||
+      |                                                 ~~~~~^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:295:47: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cf_lower.c:295:47: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_lower.c:320:9: warning: no header providing "mk_table" is directly included [misc-include-cleaner]
+  320 |         return mk_table(el, (uint32_t)CT.count[ty]);
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:411:21: warning: no header providing "TY" is directly included [misc-include-cleaner]
+  411 |                 return mk_const_i(TY(K_SINT, 64), 0);
+      |                                   ^
+/home/andrew/Code/ucas/src/cf_lower.c:411:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:415:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  415 |         return mk_cast(TYK(N.ty[i]) == K_UINT || N.ty[i] == TY_BOOL ?
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:415:33: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  415 |         return mk_cast(TYK(N.ty[i]) == K_UINT || N.ty[i] == TY_BOOL ?
+      |                                        ^
+/home/andrew/Code/ucas/src/cf_lower.c:415:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  415 |         return mk_cast(TYK(N.ty[i]) == K_UINT || N.ty[i] == TY_BOOL ?
+      |                                                             ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:416:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  416 |             TY(K_UINT, 64) : TY(K_SINT, 64), i);
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:416:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  416 |             TY(K_UINT, 64) : TY(K_SINT, 64), i);
+      |                              ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:483:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  483 |         if (CT.qual[AU.ty[lv]] & CQ_VOLATILE)
+      |                                ~ ^
+/home/andrew/Code/ucas/src/cfront.h:287:21: note: expanded from macro 'CQ_VOLATILE'
+  287 | #define CQ_VOLATILE 2
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:505:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  505 |         if (CT.qual[ty] & CQ_VOLATILE)
+      |                         ~ ^
+/home/andrew/Code/ucas/src/cfront.h:287:21: note: expanded from macro 'CQ_VOLATILE'
+  287 | #define CQ_VOLATILE 2
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:517:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  517 |                                 if (TYK(N.ty[i]) == K_UINT || TYK(N.ty[i]) == K_BOOL)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:517:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  517 |                                 if (TYK(N.ty[i]) == K_UINT || TYK(N.ty[i]) == K_BOOL)
+      |                                                               ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:517:51: warning: no header providing "K_BOOL" is directly included [misc-include-cleaner]
+  517 |                                 if (TYK(N.ty[i]) == K_UINT || TYK(N.ty[i]) == K_BOOL)
+      |                                                                               ^
+/home/andrew/Code/ucas/src/cf_lower.c:518:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  518 |                                         i = mk_cast(TY(K_UINT, 64), i);
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:520:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  520 |                                         i = mk_cast(TY(K_SINT, 64), i);
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:521:12: warning: no header providing "mk_index" is directly included [misc-include-cleaner]
+  521 |                                 return mk_index(tab, i);
+      |                                        ^
+/home/andrew/Code/ucas/src/cf_lower.c:546:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  546 |         if (CT.qual[ty] & CQ_VOLATILE)
+      |                         ~ ^
+/home/andrew/Code/ucas/src/cfront.h:287:21: note: expanded from macro 'CQ_VOLATILE'
+  287 | #define CQ_VOLATILE 2
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:548:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  548 |         if (SU.kind[s] == CS_GLOBAL && (CT.qual[ty] & CQ_CONST) &&
+      |                                                     ~ ^
+/home/andrew/Code/ucas/src/cfront.h:286:18: note: expanded from macro 'CQ_CONST'
+  286 | #define CQ_CONST 1
+      |                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:559:10: warning: no header providing "mk_undef" is directly included [misc-include-cleaner]
+  559 |                 return mk_undef(uty(ty, n));    /* uninitialised */
+      |                        ^
+/home/andrew/Code/ucas/src/cf_lower.c:564:36: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  564 |         snprintf(text, sizeof text, "%s", sym_str(SU.name[s]));
+      |                                           ^
+/home/andrew/Code/ucas/src/cf_lower.c:613:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  613 |         int w = TYW(t);
+      |                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:615:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  615 |         if (TYK(t) != K_SINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:618:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  618 |                 ty_t w64 = TY(K_SINT, 64);
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:622:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  622 |                     -((int64_t)1 << (w - 1)))), mk_bin(O_LE, r, mk_const_i(w64,
+      |                       ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/cf_lower.c:622:42: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  622 |                     -((int64_t)1 << (w - 1)))), mk_bin(O_LE, r, mk_const_i(w64,
+      |                                                        ^
+/home/andrew/Code/ucas/src/cf_lower.c:623:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  623 |                     ((int64_t)1 << (w - 1)) - 1)));
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/cf_lower.c:625:12: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  625 |         if (op == O_ADD || op == O_SUB) {
+      |                   ^
+/home/andrew/Code/ucas/src/cf_lower.c:625:27: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  625 |         if (op == O_ADD || op == O_SUB) {
+      |                                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:628:15: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  628 |                         x = mk_bin(O_AND, mk_bin(O_XOR, a, r), mk_bin(O_XOR, b, r));
+      |                                    ^
+/home/andrew/Code/ucas/src/cf_lower.c:628:29: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  628 |                         x = mk_bin(O_AND, mk_bin(O_XOR, a, r), mk_bin(O_XOR, b, r));
+      |                                                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:640:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  640 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:640:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/cf_lower.c:643:19: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  643 |         case '*': return O_MUL;
+      |                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:644:19: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  644 |         case '/': return O_DIV;
+      |                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:645:19: warning: no header providing "O_MOD" is directly included [misc-include-cleaner]
+  645 |         case '%': return O_MOD;
+      |                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:647:19: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  647 |         case '|': return O_OR;
+      |                          ^
+/home/andrew/Code/ucas/src/cf_lower.c:649:22: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  649 |         case CO_SHL: return O_SHL;
+      |                             ^
+/home/andrew/Code/ucas/src/cf_lower.c:650:22: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  650 |         case CO_SHR: return O_SHR;
+      |                             ^
+/home/andrew/Code/ucas/src/cf_lower.c:655:21: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  655 |         case CO_EQ: return O_EQ;
+      |                            ^
+/home/andrew/Code/ucas/src/cf_lower.c:656:21: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  656 |         case CO_NE: return O_NE;
+      |                            ^
+/home/andrew/Code/ucas/src/cf_lower.c:676:6: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  676 |         if (opinfo[op].fl & OF_CMP) {
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:676:22: warning: no header providing "OF_CMP" is directly included [misc-include-cleaner]
+  676 |         if (opinfo[op].fl & OF_CMP) {
+      |                             ^
+/home/andrew/Code/ucas/src/cf_lower.c:676:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  676 |         if (opinfo[op].fl & OF_CMP) {
+      |                           ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:680:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  680 |                 return mk_cast(TY(K_SINT, 32), mk_bin(op, a, b));
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:687:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  687 |         if (L.ub && (op == O_DIV || op == O_MOD) && TYK(N.ty[a]) == K_SINT) {
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:689:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  689 |                 int w = TYW(t);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:690:36: warning: no header providing "INT64_MIN" is directly included [misc-include-cleaner]
+  690 |                 nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
+      |                                                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:690:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  690 |                 nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
+      |                                                                ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/cf_lower.c:703:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  703 |         return N.ty[v] == TY_BOOL ? v : mk_bool(v);
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:715:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  715 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:739:16: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  739 |                 return mk_un(O_NEG, a);
+      |                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:741:16: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  741 |                 return mk_un(O_NOT, conv(ex(AU.a[n], g), ty, n));
+      |                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:743:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  743 |                 return mk_cast(TY(K_SINT, 32), bnot(truth(AU.a[n], g)));
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:754:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  754 |                 return mk_cast(TY(K_SINT, 32), AU.kind[n] == CA_LAND ?
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:840:14: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+  840 |         saved_env = xmalloc(SU.n * sizeof *saved_env);
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:851:13: warning: Assigned value is uninitialized [clang-analyzer-core.uninitialized.Assign]
+  851 |                 L.env[ps] = args[k];
+      |                           ^
+/home/andrew/Code/ucas/src/cf_lower.c:1279:6: note: Assuming the condition is false
+ 1279 |         if (setjmp(L.jb)) {
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1279:2: note: Taking false branch
+ 1279 |         if (setjmp(L.jb)) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1286:6: note: Assuming the condition is false
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1286:2: note: Taking false branch
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1288:9: note: Calling 'ex'
+ 1288 |         v->e = ex(e, T1);
+      |                ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:715:2: note: Control jumps to 'case CA_CALL:'  at line 797
+  715 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:798:10: note: Calling 'inline_call'
+  798 |                 return inline_call(n, g);
+      |                        ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:820:9: note: Assuming the condition is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:820:36: note: Left side of '&&' is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                                           ^
+/home/andrew/Code/ucas/src/cf_lower.c:822:6: note: Assuming the condition is false
+  822 |         if (AU.kind[callee] != CA_ID)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:822:2: note: Taking false branch
+  822 |         if (AU.kind[callee] != CA_ID)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Left side of '||' is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:31: note: Assuming 'fn' is not equal to 0
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                      ^~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Left side of '||' is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:42: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:2: note: Taking false branch
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:829:6: note: Assuming field 'depth' is < CF_INLINE
+  829 |         if (L.depth >= CF_INLINE)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:829:2: note: Taking false branch
+  829 |         if (L.depth >= CF_INLINE)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:831:6: note: Assuming the condition is false
+  831 |         if (AU.c[n] != AU.d[fn])
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:831:2: note: Taking false branch
+  831 |         if (AU.c[n] != AU.d[fn])
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:833:6: note: Assuming 'g' is equal to field 'alive'
+  833 |         if (g != L.alive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:833:2: note: Taking false branch
+  833 |         if (g != L.alive)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:835:14: note: Assuming the condition is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:835:26: note: Left side of '&&' is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:849:7: note: The value 0 is assigned to 'k'
+  849 |         for (k = 0; k < AU.c[n]; k++) {
+      |              ^~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:849:2: note: Loop condition is true.  Entering loop body
+  849 |         for (k = 0; k < AU.c[n]; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:851:13: note: Assigned value is uninitialized
+  851 |                 L.env[ps] = args[k];
+      |                           ^ ~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:855:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  855 |             ct_to_ucas(CT.base[SU.ty[s]]) : TY(K_SINT, 32));
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:891:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  891 |                 if ((CT.qual[ty] & CQ_CONST) || (CT.kind[ty] == CT_ARRAY &&
+      |                                  ~ ^
+/home/andrew/Code/ucas/src/cfront.h:286:18: note: expanded from macro 'CQ_CONST'
+  286 | #define CQ_CONST 1
+      |                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:892:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  892 |                     (CT.qual[CT.base[ty]] & CQ_CONST)))
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/cfront.h:286:18: note: expanded from macro 'CQ_CONST'
+  286 | #define CQ_CONST 1
+      |                  ^
+/home/andrew/Code/ucas/src/cf_lower.c:1036:22: warning: Out of bound access to memory preceding 'L.lc' [clang-analyzer-security.ArrayBound]
+ 1036 |                 L.lc[j].cont = bor(L.lc[j].cont, lc->cont);
+      |                                    ^
+/home/andrew/Code/ucas/src/cf_lower.c:1279:6: note: Assuming the condition is false
+ 1279 |         if (setjmp(L.jb)) {
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1279:2: note: Taking false branch
+ 1279 |         if (setjmp(L.jb)) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1286:6: note: Assuming the condition is false
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1286:2: note: Taking false branch
+ 1286 |         if (!ct_is_lowered(u->A.ty[e]))
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1288:9: note: Calling 'ex'
+ 1288 |         v->e = ex(e, T1);
+      |                ^~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:715:2: note: Control jumps to 'case CA_CALL:'  at line 797
+  715 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:798:10: note: Calling 'inline_call'
+  798 |                 return inline_call(n, g);
+      |                        ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:820:9: note: Assuming the condition is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:820:36: note: Left side of '&&' is false
+  820 |         while (AU.kind[callee] == CA_CAST && AU.iv[callee] == 1)
+      |                                           ^
+/home/andrew/Code/ucas/src/cf_lower.c:822:6: note: Assuming the condition is false
+  822 |         if (AU.kind[callee] != CA_ID)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:822:2: note: Taking false branch
+  822 |         if (AU.kind[callee] != CA_ID)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Left side of '||' is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:31: note: Assuming 'fn' is not equal to 0
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                      ^~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:826:6: note: Left side of '||' is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:81:12: note: expanded from macro 'SU'
+   81 | #define SU (L.u->S)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:42: note: Assuming the condition is false
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |                                                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:826:2: note: Taking false branch
+  826 |         if (SU.kind[s] != CS_FUNC || fn == 0 || AU.kind[fn] != CA_FUNC)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:829:6: note: Assuming field 'depth' is < CF_INLINE
+  829 |         if (L.depth >= CF_INLINE)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:829:2: note: Taking false branch
+  829 |         if (L.depth >= CF_INLINE)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:831:6: note: Assuming the condition is false
+  831 |         if (AU.c[n] != AU.d[fn])
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:831:2: note: Taking false branch
+  831 |         if (AU.c[n] != AU.d[fn])
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:833:6: note: Assuming 'g' is equal to field 'alive'
+  833 |         if (g != L.alive)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:833:2: note: Taking false branch
+  833 |         if (g != L.alive)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:835:14: note: Assuming the condition is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                     ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:835:26: note: Left side of '&&' is false
+  835 |         for (k = 0; k < AU.c[n] && k < 64; k++) {
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:849:2: note: Loop condition is false. Execution continues on line 854
+  849 |         for (k = 0; k < AU.c[n]; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:854:19: note: Assuming the condition is false
+  854 |         L.ret = mk_undef(ct_to_ucas(CT.base[SU.ty[s]]) ?
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:854:19: note: '?' condition is false
+/home/andrew/Code/ucas/src/cf_lower.c:859:2: note: Calling 'st'
+  859 |         st(AU.a[fn]);
+      |         ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1074:6: note: Assuming 'n' is not equal to 0
+ 1074 |         if (n == 0 || L.alive == F0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1074:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/cf_lower.c:1074:16: note: Assuming 'F0' is not equal to field 'alive'
+ 1074 |         if (n == 0 || L.alive == F0)
+      |                       ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1074:2: note: Taking false branch
+ 1074 |         if (n == 0 || L.alive == F0)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1077:2: note: Control jumps to 'case CA_SWITCH:'  at line 1139
+ 1077 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1142:3: note: Calling 'switch_body'
+ 1142 |                 switch_body(AU.b[n], v, vt, n);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:988:6: note: Assuming the condition is true
+  988 |         if (AU.kind[body] == CA_BLOCK) {
+      |             ^
+/home/andrew/Code/ucas/src/cf_lower.c:80:12: note: expanded from macro 'AU'
+   80 | #define AU (L.u->A)
+      |            ^
+/home/andrew/Code/ucas/src/cf_lower.c:988:2: note: Taking true branch
+  988 |         if (AU.kind[body] == CA_BLOCK) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:997:14: note: Assuming 'k' is >= 'cnt'
+  997 |         for (k = 0; k < cnt; k++) {
+      |                     ^~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:997:2: note: Loop condition is false. Execution continues on line 1008
+  997 |         for (k = 0; k < cnt; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1013:2: note: Loop condition is false. Execution continues on line 1023
+ 1013 |         for (k = 0; k < cnt; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1027:7: note: 'has_default' is 0
+ 1027 |         if (!has_default)
+      |              ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1027:2: note: Taking true branch
+ 1027 |         if (!has_default)
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1030:6: note: Assuming 'F0' is not equal to field 'cont'
+ 1030 |         if (lc->cont != F0) {
+      |             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1030:2: note: Taking true branch
+ 1030 |         if (lc->cont != F0) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1032:23: note: Assuming 'j' is < 0
+ 1032 |                 for (j = L.nlc - 1; j >= 0 && L.lc[j].isswitch; j--)
+      |                                     ^~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1032:30: note: Left side of '&&' is false
+ 1032 |                 for (j = L.nlc - 1; j >= 0 && L.lc[j].isswitch; j--)
+      |                                            ^
+/home/andrew/Code/ucas/src/cf_lower.c:1034:7: note: 'j' is < 0
+ 1034 |                 if (j < 0)
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:1034:3: note: Taking true branch
+ 1034 |                 if (j < 0)
+      |                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:1036:22: note: Access of 'L.lc' at a negative index
+ 1036 |                 L.lc[j].cont = bor(L.lc[j].cont, lc->cont);
+      |                                    ^~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1047:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1047 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1077:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1077 |         switch (AU.kind[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1168:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1168 |         T1 = mk_const_i(TY_BOOL, 1);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1169:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1169 |         F0 = mk_const_i(TY_BOOL, 0);
+      |                         ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1171:10: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+ 1171 |         L.env = xcalloc(u->S.n + 1, sizeof *L.env);
+      |                 ^
+/home/andrew/Code/ucas/src/cf_lower.c:1191:48: warning: no header providing "func" is directly included [misc-include-cleaner]
+ 1191 | cf_value_func(const struct cf_value *v, struct func *f)
+      |                                                ^
+/home/andrew/Code/ucas/src/cf_lower.c:1196:12: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+ 1196 |         f->name = sym_cstr("cfront");
+      |                   ^
+/home/andrew/Code/ucas/src/cf_lower.c:1257:10: warning: no header providing "eqproof" is directly included [misc-include-cleaner]
+ 1257 |                 struct eqproof pr;
+      |                        ^
+/home/andrew/Code/ucas/src/cf_lower.c:1258:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1258 |                 nid ob = mk_cast(TY(K_UINT, 8), L.obl);
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1260:7: warning: no header providing "equiv_decide" is directly included [misc-include-cleaner]
+ 1260 |                 if (equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL, &pr) ||
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:1260:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1260 |                 if (equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL, &pr) ||
+      |                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1261:17: warning: no header providing "EQ_SAMPLED" is directly included [misc-include-cleaner]
+ 1261 |                     pr.how == EQ_SAMPLED) {
+      |                               ^
+/home/andrew/Code/ucas/src/cf_lower.c:1501:12: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1501 |         if ((step = step_of(A->c[lp], isym)) == 0) {
+      |              ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1501:12: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/cf_lower.c:1501:12: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/cf_lower.c:1536:9: warning: no header providing "has_slot" is directly included [misc-include-cleaner]
+   42 |                             (has_slot(l->hi, j) || has_slot(l->lo, j))) {
+      |                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:1594:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1594 |                         isr[j] = !isa[j] && (CT.qual[t] & CQ_RESTRICT) != 0;
+      |                                                         ~ ^
+/home/andrew/Code/ucas/src/cfront.h:288:21: note: expanded from macro 'CQ_RESTRICT'
+  288 | #define CQ_RESTRICT 4
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:1608:18: warning: no header providing "MAXST" is directly included [misc-include-cleaner]
+ 1608 |                 if (l->nred == MAXST) {
+      |                                ^
+/home/andrew/Code/ucas/src/cf_lower.c:1655:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+ 1655 |         switch (N.op[e]) {
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1667:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+ 1667 |         case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/cf_lower.c:1668:8: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+ 1668 |                 if (!TY_SIZED(N.ty[e]) || N.ty[e] == TY_BOOL || TYW(N.ty[e]) < w)
+      |                      ^
+/home/andrew/Code/ucas/src/cf_lower.c:1668:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1668:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1668 |                 if (!TY_SIZED(N.ty[e]) || N.ty[e] == TY_BOOL || TYW(N.ty[e]) < w)
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:97:17: note: expanded from macro 'TY_BOOL'
+   97 | #define TY_BOOL TY(K_BOOL, 1)
+      |                 ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1668:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1668 |                 if (!TY_SIZED(N.ty[e]) || N.ty[e] == TY_BOOL || TYW(N.ty[e]) < w)
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1670:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1670 |                 if (N.a[e] != iv && TYW(N.ty[N.a[e]]) < w)
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1683:16: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+ 1683 |         memcpy(saved, fail_jmp, sizeof saved);
+      |                       ^
+/home/andrew/Code/ucas/src/cf_lower.c:1684:2: warning: no header providing "note_mute" is directly included [misc-include-cleaner]
+ 1684 |         note_mute++;
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1686:7: warning: no header providing "xreplace" is directly included [misc-include-cleaner]
+ 1686 |                 r = xreplace(root, from, to);
+      |                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:1689:2: warning: no header providing "notes_drop" is directly included [misc-include-cleaner]
+ 1689 |         notes_drop();
+      |         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1729:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1729 |         ty_t u = TY(K_UINT, 64);
+      |                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1766:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1766 |         ty_t it, u64 = TY(K_UINT, 64);
+      |                        ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1890:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1890 |         gt = mk_bin(TYK(it) == K_SINT ? O_GT : O_GT, hv, lo);
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1890:32: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+ 1890 |         gt = mk_bin(TYK(it) == K_SINT ? O_GT : O_GT, hv, lo);
+      |                                       ^
+/home/andrew/Code/ucas/src/cf_lower.c:1890:39: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+ 1890 |         gt = mk_bin(TYK(it) == K_SINT ? O_GT : O_GT, hv, lo);
+      |                                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:1891:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1891 |         T = mk_sel(gt, mk_bin(O_SUB, mk_cast(u64, mk_cast(TY(TYK(it), 64), hv)),
+      |                                                           ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1891:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1891 |         T = mk_sel(gt, mk_bin(O_SUB, mk_cast(u64, mk_cast(TY(TYK(it), 64), hv)),
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1892:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1892 |             mk_cast(u64, mk_cast(TY(TYK(it), 64), lo))), mk_const_i(u64, 0));
+      |                                  ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1892:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1892 |             mk_cast(u64, mk_cast(TY(TYK(it), 64), lo))), mk_const_i(u64, 0));
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1913:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1913 |                         ty_t pt = uty(at, n), u64t = TY(K_UINT, 64);
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1915:9: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+ 1915 |                         if (!is_const(K) || !TY_SIZED(pt) || TYW(pt) > 64)
+      |                              ^
+/home/andrew/Code/ucas/src/cf_lower.c:1915:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1915 |                         if (!is_const(K) || !TY_SIZED(pt) || TYW(pt) > 64)
+      |                                              ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1915:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1915 |                         if (!is_const(K) || !TY_SIZED(pt) || TYW(pt) > 64)
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1917:16: warning: no header providing "O_POW" is directly included [misc-include-cleaner]
+ 1917 |                         KT = mk_bin(O_POW, mk_const_i(u64t, N.ki[K]), T);
+      |                                     ^
+/home/andrew/Code/ucas/src/cf_lower.c:1920:4: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+ 1920 |                         sb_printf(&L.closed, "%s%s *= %lld (geometric)",
+      |                         ^
+/home/andrew/Code/ucas/src/cf_lower.c:1933:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1933 |                                 ty_t st = uty(at, n), u64t = TY(K_UINT, 64);
+      |                                                              ^
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/cf_lower.c:1937:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1937 |                                 if (!is_const(K) || !TY_SIZED(st) || TYW(st) > 64)
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/cf_lower.c:1937:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1937 |                                 if (!is_const(K) || !TY_SIZED(st) || TYW(st) > 64)
+      |                                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1939:26: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+ 1939 |                                 G = cf_geom_node(T, (uint64_t)N.ki[K], TYW(st), why,
+      |                                                      ^
+/home/andrew/Code/ucas/src/cf_lower.c:1939:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1939 |                                 G = cf_geom_node(T, (uint64_t)N.ki[K], TYW(st), why,
+      |                                                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1979:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1979 |                 w = TYW(N.ty[P]) < TYW(uty(at, n)) ? TYW(N.ty[P]) : TYW(uty(at, n));
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1979:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1979 |                 w = TYW(N.ty[P]) < TYW(uty(at, n)) ? TYW(N.ty[P]) : TYW(uty(at, n));
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1979:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1979 |                 w = TYW(N.ty[P]) < TYW(uty(at, n)) ? TYW(N.ty[P]) : TYW(uty(at, n));
+      |                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:1979:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1979 |                 w = TYW(N.ty[P]) < TYW(uty(at, n)) ? TYW(N.ty[P]) : TYW(uty(at, n));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/cf_lower.c:2011:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2011 |                                         int64_t cj = c * (((kk - jj) & 1) ? -1 : 1);
+      |                                                            ^~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

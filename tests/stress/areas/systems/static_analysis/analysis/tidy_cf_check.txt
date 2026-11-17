@@ -1,0 +1,97 @@
+/home/andrew/Code/ucas/src/cf_check.c:26:1: warning: included header types.h is not used directly [misc-include-cleaner]
+   26 | #include <sys/types.h>
+      | ^~~~~~~~~~~~~~~~~~~~~~
+   27 | #include <sys/stat.h>
+/home/andrew/Code/ucas/src/cf_check.c:27:1: warning: included header stat.h is not used directly [misc-include-cleaner]
+   27 | #include <sys/stat.h>
+      | ^~~~~~~~~~~~~~~~~~~~~
+   28 | 
+/home/andrew/Code/ucas/src/cf_check.c:33:1: warning: included header unistd.h is not used directly [misc-include-cleaner]
+   33 | #include <unistd.h>
+      | ^~~~~~~~~~~~~~~~~~~
+   34 | 
+/home/andrew/Code/ucas/src/cf_check.c:95:10: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+   36 |                 struct sbuf o = {0};
+      |                        ^
+/home/andrew/Code/ucas/src/cf_check.c:96:13: warning: no header providing "tool_run" is directly included [misc-include-cleaner]
+   96 |                 have_cc = tool_run(argv, &o) == 0;
+      |                           ^
+/home/andrew/Code/ucas/src/cf_check.c:106:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   26 |         uint32_t fn;
+      |         ^
+/home/andrew/Code/ucas/src/cf_check.c:131:12: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  131 |         t->name = sym_str(u->S.name[s]);
+      |                   ^
+/home/andrew/Code/ucas/src/cf_check.c:173:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  173 |                 sb_printf(b, "#define %s %s_%s\n", nm, pfx, nm);
+      |                 ^
+/home/andrew/Code/ucas/src/cf_check.c:187:5: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  187 |                                 sb_puts(&nm, ", ");
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_check.c:218:37: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  218 | assumed(const struct tfn *t, int j, int64_t *lo, int64_t *hi)
+      |                                     ^
+/home/andrew/Code/ucas/src/cf_check.c:328:4: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  328 |                         sb_clear(&proto);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_check.c:363:9: warning: either cast from 'int64_t' (aka 'long') to 'unsigned long long' is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+  363 |                                     (unsigned long long)(ahi - alo + 1));
+      |                                     ^
+/home/andrew/Code/ucas/src/cf_check.c:367:4: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  367 |                         switch (t->kind[j]) {
+      |                         ^
+/home/andrew/Code/ucas/src/cf_check.c:511:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  511 |                 if ((t->feat & CF_F(k)) && !strstr(o.p, cf_feat_macro(k))) {
+      |                                ^
+/home/andrew/Code/ucas/src/cfront.h:46:26: note: expanded from macro 'CF_F'
+   46 | #define CF_F(x) (1ULL << (x))
+      |                       ~~ ^~~
+/home/andrew/Code/ucas/src/cf_check.c:561:5: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  561 |                                 sb_putc(out, p[i]);
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_check.c:651:9: warning: 'al' is confusable with 'a1' [misc-confusable-identifiers]
+  651 |                 char *al[] = {"cc", "-o", p_bin, oh, o0, o1, NULL};
+      |                       ^
+/home/andrew/Code/ucas/src/cf_check.c:646:9: note: other declaration found here
+  646 |                 char *a1[] = {"cc", "-std=c99", "-O2", mflag, "-Wall", "-Wextra",
+      |                       ^
+/home/andrew/Code/ucas/src/cf_check.c:722:5: warning: 'sscanf' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+  722 |                                 sscanf(t, "TOTAL %ld %ld %ld", &n, &bad, &skip);
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_check.c:733:29: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  733 |                                     mflag, n, ntf, skip ? "" : "");
+      |                                                         ^
+/home/andrew/Code/ucas/src/cf_check.c:733:34: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  733 |                                     mflag, n, ntf, skip ? "" : "");
+      |                                                              ^
+/home/andrew/Code/ucas/src/cf_check.c:737:4: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+   36 |                         rep_obj("check");
+      |                         ^
+/home/andrew/Code/ucas/src/cf_check.c:738:4: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  738 |                         rep_int("calls", n);
+      |                         ^
+/home/andrew/Code/ucas/src/cf_check.c:742:4: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  742 |                         rep_end();
+      |                         ^
+/home/andrew/Code/ucas/src/cf_check.c:747:5: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+  747 |                                 rep_list("bench");
+      |                                 ^
+/home/andrew/Code/ucas/src/cf_check.c:754:13: warning: 'sscanf' used to convert a string to a floating-point value, but function will not report conversion errors; consider using 'strtod' instead [bugprone-unchecked-string-to-number-conversion]
+  754 |                                                 got = sscanf(q, "BENCHN %95s %lf %lf %d", nm, &c0,
+      |                                                       ^
+/home/andrew/Code/ucas/src/cf_check.c:757:13: warning: 'sscanf' used to convert a string to a floating-point value, but function will not report conversion errors; consider using 'strtod' instead [bugprone-unchecked-string-to-number-conversion]
+  757 |                                                 got = sscanf(q, "BENCH %95s %lf %lf", nm, &c0, &c1) ==
+      |                                                       ^
+/home/andrew/Code/ucas/src/cf_check.c:797:6: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  797 |                                         rep_str("function", br[b].fn);
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_check.c:798:6: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  798 |                                         rep_num("cycles_before", m0);
+      |                                         ^
+/home/andrew/Code/ucas/src/cf_check.c:865:5: warning: function 'cf_check_all' can be made static to enforce internal linkage [misc-use-internal-linkage]
+  865 | int cf_check_all(struct cf_unit *u, const char *orig, const char *opt,
+      |     ^
+      | static 
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

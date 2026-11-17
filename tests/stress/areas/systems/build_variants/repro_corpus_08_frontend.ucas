@@ -1,0 +1,29 @@
+# Batch 08: C/GLSL frontends, inline blocks (exact rewrites; diff = UB/miscompile).
+simplify this nofile
+```c
+unsigned f(unsigned x) { return (x * 8) / 4; }
+```
+simplify nofile
+```glsl
+uint g(uint x) { return x * 7u + 3u; }
+```
+SAT simplify
+```c
+unsigned h(unsigned x) { return (x & 15) * 3 + (x >> 4); }
+```
+c optimize nofile wrapv
+```c
+int clamp01(int x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
+```
+c lower nofile
+```c
+int sum4(int *p) { return p[0]+p[1]+p[2]+p[3]; }
+```
+simplify nofile, x in [0, 32)
+```glsl
+uint rot(uint x, uint n) { return (x >> n) | (x << ((32 - n) & 31)); }
+```
+simplify nofile
+```c
+float poly(float x) { return x*x*x + 2*x*x + 3*x + 4; }
+```

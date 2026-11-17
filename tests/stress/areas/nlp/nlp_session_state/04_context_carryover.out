@@ -1,0 +1,68 @@
+> what is the range of x squared for x from 0 to 3?
+  ucas: it(x in 0..3) = x^2
+  ucas: range it
+range of it -> int:
+  0..9
+  fits in u4
+  over all 4 points of the domain
+> what is it at 2?
+  ucas: it(2)
+4
+> let p of x be x cubed minus 3x
+  ucas: p(x) = x^3 - 3*x
+  ucas: show p
+p(x: real) = x^3 - 3x
+  -> real
+> what are the critical points of p?
+  ucas: crit p
+critical points of p:
+  p' = 3x^2 - 3
+  x ≈ -1: local maximum, p = 2
+  x ≈ 1: local minimum, p = -2
+  searched [-10, 10] (default; give x a range)
+> what is the derivative of p?
+  ucas: diff p
+d/dx p = 3x^2 - 3
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> what is the second derivative of p?
+  ucas: diff p 2
+d/dx p = 3x^2 - 3
+d²/dx² p = 6x
+  holds for every real x
+  check: each order matches central differences at 402 points (max relative difference 2e-15)
+> let y be 5
+  ucas: y = 5
+  ucas: show y
+y() = 5
+  -> int
+> what is y plus 1?
+  ucas: y + 1
+6
+> x is a byte
+  note: "byte" without signed or unsigned: read as unsigned, u8, not signed, i8 (say "unsigned byte", or "assume bytes are signed")
+  ok: from now on x is a byte
+> what is the range of x plus 1?
+  ucas: it(x: u8) = x + 1
+  ucas: range it
+range of it -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> assume q is a signed byte
+  ok: from now on q is a signed byte
+> what is the range of q?
+  ucas: it(q: i8) = q
+  ucas: range it
+range of it -> i8:
+  -128..127   (256 distinct values)
+  fits in i8
+  over all 256 points of the domain
+> forget q
+  ok: forgot q
+> what is the range of q plus 1?
+  ucas: it(q) = q + 1
+  ucas: range it
+range of it:
+  [-9, 11]   min at q ≈ -10, max at q ≈ 10
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points

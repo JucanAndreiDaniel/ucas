@@ -1,0 +1,7 @@
+> hf(x: u32 in 1..100) = asfloat(x) * f32(0.5)
+> qf(x: u32 in 1..100) = asfloat(x) * f32(0.25)
+> equiv hf qf noftz
+hf and qf differ at 99 points, e.g. x=2: 1.40129846e-45 vs 0
+> equiv hf qf ftz
+hf and qf are equal on the domain of hf (exhaustive)
+  every float operation flushed subnormals to zero (ftz)

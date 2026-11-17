@@ -1,0 +1,42 @@
+# Float / f64 / conversion expressions across GPU and x86 models.
+fadd(x: f32, y: f32) = x + y
+ffma(x: f32, y: f32, z: f32) = x*y + z
+fdiv(x: f32, y: f32) = x / y
+fsqrt(x: f32) = sqrt(x)
+ftrans(x: f32) = sin(x)
+d64(x: f64) = x * 2.5
+conv(x: u32) = f32(x)
+cost fadd model gt1030
+cost fadd model ga104
+cost fadd model rdna2
+cost fadd model mali_g715
+cost fadd model zen4
+cost fadd model skl
+cost fadd model x86v4
+cost ffma model gt1030
+cost ffma model ga104
+cost ffma model rdna2
+cost ffma model zen4
+cost ffma model skl
+cost fdiv model gt1030
+cost fdiv model ga104
+cost fdiv model zen4
+cost fdiv model skl
+cost fsqrt model gt1030
+cost fsqrt model ga104
+cost fsqrt model zen4
+cost fsqrt model skl
+cost ftrans model gt1030
+cost ftrans model rdna2
+cost ftrans model zen4
+cost ftrans model skl
+cost d64 model gt1030
+cost d64 model ga104
+cost d64 model vangogh
+cost d64 model mali_g715
+cost d64 model zen4
+cost d64 model skl
+cost conv model gt1030
+cost conv model mali_g715
+cost conv model zen4
+cost conv model skl

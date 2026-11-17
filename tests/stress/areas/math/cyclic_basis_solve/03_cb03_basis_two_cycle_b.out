@@ -1,0 +1,18 @@
+> basis a { not(x) = ~x }
+> basis b : a { andp(x, y) = x & y }
+> basis a : b { orp(x, y) = x | y }
+> maj(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+> gates maj basis b
+gates for maj: 3 input bits -> 1 output bit, basis b
+  minimal: cost 9, 9 steps (no program of cost <= 8 exists; 40189222 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = andp(a, b)              = a & b
+  t1 = not(t0)                   = ~t0
+  t2 = andp(a, c)              = a & c
+  t3 = not(t2)                   = ~t2
+  t4 = andp(b, c)              = b & c
+  t5 = not(t4)                   = ~t4
+  t6 = andp(t1, t3)              = t1 & t3
+  t7 = andp(t5, t6)              = t5 & t6
+  t8 = not(t7)                   = ~t7
+  r0 = t8

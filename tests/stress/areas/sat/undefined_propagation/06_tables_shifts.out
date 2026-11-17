@@ -1,0 +1,44 @@
+> f(x: u8) = [10,20,30][x]
+> domain f
+domain of f:
+  x: u8, 0..255
+  requires 0 <= x < 3  (table index)
+  defined at 3 of 256 points
+  defined for: 0..2
+  undefined e.g. at x=3; x=4; x=5; x=6
+  over all 256 points of the domain
+> range f
+range of f -> int:
+  10..30
+  fits in u5
+  undefined at 253 points
+  over all 256 points of the domain
+> g(x: u8 in 0..2) = [10,20,30][x]
+> domain g
+domain of g:
+  x: u8, 0..2
+  requires 0 <= x < 3  (table index)
+  defined at 3 of 3 points
+  over all 3 points of the domain
+> range g
+range of g -> int:
+  10..30
+  fits in u5
+  over all 3 points of the domain
+> h(x: u8) = 1 << x
+> domain h
+domain of h:
+  x: u8, 0..255
+  requires 0 <= x < 8  (shift amount; C UB otherwise)
+  defined at 8 of 256 points
+  defined for: 0..7
+  undefined e.g. at x=8; x=9; x=10; x=11
+  C undefined behaviour at 248 points, e.g. x=8
+  over all 256 points of the domain
+> range h
+range of h -> u8:
+  1..128   (8 distinct values)
+  values: 1..2, 4, 8, 16, 32, 64, 128
+  fits in u8
+  undefined at 248 points
+  over all 256 points of the domain

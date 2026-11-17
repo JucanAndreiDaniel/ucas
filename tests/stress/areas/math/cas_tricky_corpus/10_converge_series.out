@@ -1,0 +1,67 @@
+> converge (-1)^n/n
+sum(n, 1, inf, (-1)^n/n)
+  converges conditionally: alternating series test (|a_n| decreases to 0); not absolutely: |a_n| ~ C/n (p <= 1)
+  partial sums: S_10 = -0.6456349206, S_1000 = -0.6926474306
+> converge 1/n^4
+sum(n, 1, inf, 1/n^4)
+  converges absolutely: p-series 1/n^4 with p = 4 > 1
+  partial sums: S_10 = 1.082036583, S_1000 = 1.082323233
+> converge 1/(n*log(n)^2)
+sum(n, 2, inf, 1/(n*log(n)^2))
+  converges absolutely: integral test: int f = -1/log(n) has the finite limit 0 as n -> inf
+  partial sums: S_10 = 1.700396385, S_1000 = 1.96500938
+> converge (-1)^n*n/(n+1)
+sum(n, 0, inf, (-1)^n*n/(n + 1))
+  diverges: nth-term test: a_n does not tend to 0 (a_1000000 = 1)
+  partial sums: S_10 = -0.6456349206, S_1000 = -0.6926474306
+> converge n!/n^n
+sum(n, 0, inf, n!/n^n)
+  converges absolutely: ratio test: |a_(n+1)/a_n| -> 1/e < 1
+  partial sums: S_10 = 2.879264136, S_1000 = 2.879853862
+> converge n^n/n!
+sum(n, 0, inf, n^n/n!)
+  diverges: ratio test: |a_(n+1)/a_n| -> e > 1
+  partial sums: S_10 = 1757.138318, S_1000 = 6.717256583e+60
+> converge 1/n^(1+1/n)
+sum(n, 1, inf, 1/n^(1/n + 1))
+  diverges: comparison with the p-series sum 1/n (a_n ~ C/n, p <= 1)
+  partial sums: S_10 = 2.401095826, S_1000 = 6.664493015
+> converge 1/log(n)
+sum(n, 2, inf, 1/log(n))
+  diverges: nth-term test: a_n does not tend to 0 (a_1000000 = 0.07238)
+  partial sums: S_10 = 6.554970525, S_1000 = 177.5835442
+> converge 1/sqrt(n)
+sum(n, 1, inf, 1/sqrt(n))
+  diverges: comparison with the p-series sum 1/n^(1/2) (a_n ~ C/n^(1/2), p <= 1)
+  partial sums: S_10 = 5.020997899, S_1000 = 61.80100877
+> prod(n,1,inf,1+1/n^2)
+prod(n, 1, inf, 1/n^2 + 1)
+  converges: the factors are 1 + O(1/n^2) (sum |a_n - 1| converges)
+  = sinh(pi)/pi
+  method: the factors as (n - a_i)/(n - b_i): prod Gamma(1 - b_i)/Gamma(1 - a_i)
+  numeric: 3.67607791008984 (partial products to 4096, Richardson in 1/N twice; estimated error 4.4e-07)
+  check: agree (difference 2.9e-10)
+> prod(n,2,inf,1-1/n^2)
+prod(n, 2, inf, 1 - 1/n^2)
+  converges: the factors are 1 + O(1/n^2) (sum |a_n - 1| converges)
+  = 1/2
+  method: the factors as (n - a_i)/(n - b_i): prod Gamma(2 - b_i)/Gamma(2 - a_i)
+  numeric: 0.500000000058105 (partial products to 4097, Richardson in 1/N twice; estimated error 6e-08)
+  check: agree (difference 5.8e-11)
+> prod(n,1,inf,n/(n+1))
+prod(n, 1, inf, n/(n + 1))
+  diverges: the factors are 1 + -1/n + O(1/n^2) and sum -1/n diverges
+> sum(n,1,inf,1/(n*(n+1)))
+sum(n, 1, inf, 1/(n*(n + 1)))
+  converges absolutely: limit comparison with the p-series sum 1/n^2 (p = 2 > 1): a_n n^2 -> 1
+  = 1
+  method: partial fractions; zeta(k), digamma at integers
+  numeric: 0.9999999999999998 (the first 128 terms plus an Euler-Maclaurin tail (integral + 3 corrections); estimated error 1e-16)
+  check: the closed form and the numeric value agree (difference 2.2e-16)
+> sum(n,1,inf,1/(4*n^2-1))
+sum(n, 1, inf, 1/(4n^2 - 1))
+  converges absolutely: limit comparison with the p-series sum 1/n^2 (p = 2 > 1): a_n n^2 -> 1/4
+  = 1/2
+  method: partial fractions; zeta(k), digamma at integers
+  numeric: 0.4999999999999996 (the first 128 terms plus an Euler-Maclaurin tail (integral + 3 corrections); estimated error 1.7e-16)
+  check: the closed form and the numeric value agree (difference 3.9e-16)

@@ -1,0 +1,245 @@
+src/kscript.c:958:8: warning: 2nd function call argument is an uninitialized value [core.CallAndMessage]
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                             ^
+src/kscript.c:1118:6: note: Assuming 'loaded' is 0
+ 1118 |         if (loaded)
+      |             ^~~~~~
+src/kscript.c:1118:2: note: Taking false branch
+ 1118 |         if (loaded)
+      |         ^
+src/kscript.c:1125:2: note: Calling 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:123:2: note: Loop condition is true.  Entering loop body
+  123 |         while (*p) {
+      |         ^
+src/kscript.c:125:16: note: Assuming 'e' is non-null
+  125 |                 size_t len = e ? (size_t)(e - p) : strlen(p);
+      |                              ^
+src/kscript.c:125:16: note: '?' condition is true
+src/kscript.c:130:7: note: Assuming the condition is false
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:130:3: note: Taking false branch
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                 ^
+src/kscript.c:132:7: note: 'e' is non-null
+  132 |                 p = e ? e + 1 : p + len;
+      |                     ^
+src/kscript.c:132:7: note: '?' condition is true
+src/kscript.c:135:4: note: Loop condition is false. Execution continues on line 137
+  135 |                         while (isspace((unsigned char)*t))
+      |                         ^
+src/kscript.c:137:8: note: Assuming the condition is true
+  137 |                         if (!*t) {
+      |                             ^~~
+src/kscript.c:137:4: note: Taking true branch
+  137 |                         if (!*t) {
+      |                         ^
+src/kscript.c:139:5: note:  Execution continues on line 123
+  139 |                                 continue;
+      |                                 ^
+src/kscript.c:123:2: note: Loop condition is false. Execution continues on line 161
+  123 |         while (*p) {
+      |         ^
+src/kscript.c:161:10: note: Field 'n' is 0
+  161 |         if (cur.n) {
+      |                 ^
+src/kscript.c:161:2: note: Taking false branch
+  161 |         if (cur.n) {
+      |         ^
+src/kscript.c:1125:2: note: Returning from 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:1126:7: note: Calling 'run'
+ 1126 |         if (!run(&libsrc))
+      |              ^~~~~~~~~~~~
+src/kscript.c:944:2: note: 'phi' declared without an initial value
+  944 |         kt phi;
+      |         ^~~~~~
+src/kscript.c:946:17: note: Assuming field 'i' is < field 'n'
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                        ^~~~~~~~~~~
+src/kscript.c:946:17: note: Left side of '&&' is true
+src/kscript.c:946:32: note: Assuming field 'failed' is 0
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                                       ^~~~~~~~~~
+src/kscript.c:946:2: note: Loop condition is true.  Entering loop body
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |         ^
+src/kscript.c:949:3: note: Taking false branch
+  949 |                 if (!word(&s, kw, sizeof kw))
+      |                 ^
+src/kscript.c:951:7: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:7: note: Left side of '||' is false
+src/kscript.c:951:30: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                                            ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:7: note: Left side of '||' is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^
+src/kscript.c:952:7: note: Assuming the condition is false
+  952 |                     !strcmp(kw, "pred")) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:3: note: Taking false branch
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                 ^
+src/kscript.c:955:14: note: Assuming the condition is true
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                            ^~~~~~~~~~~~~~~~~~
+src/kscript.c:955:33: note: Left side of '||' is true
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                                               ^
+src/kscript.c:956:9: note: Calling 'statement'
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:916:2: note: Taking true branch
+  916 |         if (!word(&s, name, nn))
+      |         ^
+src/kscript.c:917:3: note: Returning without writing to '*phi'
+  917 |                 return serr(S, "expected a name");
+      |                 ^
+src/kscript.c:956:9: note: Returning from 'statement'
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:956:8: note: Assuming the condition is false
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:956:4: note: Taking false branch
+  956 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                         ^
+src/kscript.c:958:27: note: Assuming the condition is false
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                                                ^~~~~~~~~~~~~~~~~~
+src/kscript.c:958:27: note: '?' condition is false
+src/kscript.c:958:8: note: 2nd function call argument is an uninitialized value
+  958 |                         if (kax_add(name, phi, !strcmp(kw, "def") ? "definition" :
+      |                             ^             ~~~
+src/kscript.c:971:9: warning: 2nd function call argument is an uninitialized value [core.CallAndMessage]
+  971 |                         li = kl_add(name, phi, xstrdup(skipws(strchr(s, ':') + 1)),
+      |                              ^
+src/kscript.c:1118:6: note: Assuming 'loaded' is 0
+ 1118 |         if (loaded)
+      |             ^~~~~~
+src/kscript.c:1118:2: note: Taking false branch
+ 1118 |         if (loaded)
+      |         ^
+src/kscript.c:1125:2: note: Calling 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:123:2: note: Loop condition is true.  Entering loop body
+  123 |         while (*p) {
+      |         ^
+src/kscript.c:125:16: note: Assuming 'e' is non-null
+  125 |                 size_t len = e ? (size_t)(e - p) : strlen(p);
+      |                              ^
+src/kscript.c:125:16: note: '?' condition is true
+src/kscript.c:130:7: note: Assuming the condition is false
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:130:3: note: Taking false branch
+  130 |                 if ((h = strchr(ln, '#')) != NULL)
+      |                 ^
+src/kscript.c:132:7: note: 'e' is non-null
+  132 |                 p = e ? e + 1 : p + len;
+      |                     ^
+src/kscript.c:132:7: note: '?' condition is true
+src/kscript.c:135:4: note: Loop condition is false. Execution continues on line 137
+  135 |                         while (isspace((unsigned char)*t))
+      |                         ^
+src/kscript.c:137:8: note: Assuming the condition is true
+  137 |                         if (!*t) {
+      |                             ^~~
+src/kscript.c:137:4: note: Taking true branch
+  137 |                         if (!*t) {
+      |                         ^
+src/kscript.c:139:5: note:  Execution continues on line 123
+  139 |                                 continue;
+      |                                 ^
+src/kscript.c:123:2: note: Loop condition is false. Execution continues on line 161
+  123 |         while (*p) {
+      |         ^
+src/kscript.c:161:10: note: Field 'n' is 0
+  161 |         if (cur.n) {
+      |                 ^
+src/kscript.c:161:2: note: Taking false branch
+  161 |         if (cur.n) {
+      |         ^
+src/kscript.c:1125:2: note: Returning from 'split_lines'
+ 1125 |         split_lines(&libsrc, lib_text);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:1126:7: note: Calling 'run'
+ 1126 |         if (!run(&libsrc))
+      |              ^~~~~~~~~~~~
+src/kscript.c:944:2: note: 'phi' declared without an initial value
+  944 |         kt phi;
+      |         ^~~~~~
+src/kscript.c:946:17: note: Assuming field 'i' is < field 'n'
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                        ^~~~~~~~~~~
+src/kscript.c:946:17: note: Left side of '&&' is true
+src/kscript.c:946:32: note: Assuming field 'failed' is 0
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |                                       ^~~~~~~~~~
+src/kscript.c:946:2: note: Loop condition is true.  Entering loop body
+  946 |         for (S->i = 0; S->i < S->n && !S->failed; S->i++) {
+      |         ^
+src/kscript.c:949:3: note: Taking false branch
+  949 |                 if (!word(&s, kw, sizeof kw))
+      |                 ^
+src/kscript.c:951:7: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:7: note: Left side of '||' is false
+src/kscript.c:951:30: note: Assuming the condition is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                                            ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:7: note: Left side of '||' is false
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                     ^
+src/kscript.c:952:7: note: Assuming the condition is false
+  952 |                     !strcmp(kw, "pred")) {
+      |                     ^~~~~~~~~~~~~~~~~~~
+src/kscript.c:951:3: note: Taking false branch
+  951 |                 if (!strcmp(kw, "sort") || !strcmp(kw, "func") ||
+      |                 ^
+src/kscript.c:955:14: note: Assuming the condition is false
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                            ^~~~~~~~~~~~~~~~~~
+src/kscript.c:955:14: note: Left side of '||' is false
+src/kscript.c:955:36: note: Assuming the condition is false
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                                                  ^~~~~~~~~~~~~~~~~~~~
+src/kscript.c:955:10: note: Taking false branch
+  955 |                 } else if (!strcmp(kw, "def") || !strcmp(kw, "arith")) {
+      |                        ^
+src/kscript.c:963:14: note: Assuming the condition is true
+  963 |                 } else if (!strcmp(kw, "lemma") || !strcmp(kw, "theorem")) {
+      |                            ^~~~~~~~~~~~~~~~~~~~
+src/kscript.c:963:35: note: Left side of '||' is true
+  963 |                 } else if (!strcmp(kw, "lemma") || !strcmp(kw, "theorem")) {
+      |                                                 ^
+src/kscript.c:969:9: note: Calling 'statement'
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:916:2: note: Taking true branch
+  916 |         if (!word(&s, name, nn))
+      |         ^
+src/kscript.c:917:3: note: Returning without writing to '*phi'
+  917 |                 return serr(S, "expected a name");
+      |                 ^
+src/kscript.c:969:9: note: Returning from 'statement'
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:969:8: note: Assuming the condition is false
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/kscript.c:969:4: note: Taking false branch
+  969 |                         if (!statement(S, s, name, sizeof name, &phi))
+      |                         ^
+src/kscript.c:971:9: note: 2nd function call argument is an uninitialized value
+  971 |                         li = kl_add(name, phi, xstrdup(skipws(strchr(s, ':') + 1)),
+      |                              ^            ~~~
+2 warnings generated.

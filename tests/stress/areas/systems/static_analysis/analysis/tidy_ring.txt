@@ -1,0 +1,752 @@
+/home/andrew/Code/ucas/src/ring.c:23:37: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   23 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                     ^
+/home/andrew/Code/ucas/src/ring.c:25:36: warning: no header providing "putchar" is directly included [misc-include-cleaner]
+   25 | #define putchar(c) (notes_flush(), putchar(c))
+      |                                    ^
+/home/andrew/Code/ucas/src/ring.c:41:2: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+   18 |         vsnprintf(buf, sizeof buf, fmt, ap);
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:236:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  236 |         char *b = buf[k++ & 7], t[48];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:254:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  254 |         char *b = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:256:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  256 |         if (v >> 64)
+      |               ~~ ^~
+/home/andrew/Code/ucas/src/ring.c:257:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  257 |                 snprintf(b, 48, "0x%llx%016llx", (unsigned long long)(u64)(v >> 64),
+      |                 ^
+/home/andrew/Code/ucas/src/ring.c:257:67: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                 snprintf(b, 48, "0x%llx%016llx", (unsigned long long)(u64)(v >> 64),
+      |                                                                              ~~ ^~
+/home/andrew/Code/ucas/src/ring.c:269:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  269 |         char *b = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:294:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  294 |                 if (rt[rti].big || rt[rti].v >> 127)
+      |                                              ~~ ^~~
+/home/andrew/Code/ucas/src/ring.c:341:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                              ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:341:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ring.c:341:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ring.c:343:6: warning: Division by zero [clang-analyzer-core.DivideZero]
+  343 |                         v /= w;
+      |                           ^
+/home/andrew/Code/ucas/src/ring.c:818:6: note: Assuming 'rti' is < 'rlim'
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:818:6: note: 'rti' is < 'rlim'
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |             ^~~
+/home/andrew/Code/ucas/src/ring.c:818:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ring.c:818:22: note: Assuming field 'k' is not equal to RK_ID
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |                             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:818:22: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/ring.c:818:2: note: Taking false branch
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:820:2: note: Taking true branch
+  820 |         if (at_sym('(')) {
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:823:21: note: Left side of '&&' is false
+  823 |                 if (!at_id("mod") && !at_id("modulo")) {
+      |                                   ^
+/home/andrew/Code/ucas/src/ring.c:829:13: note: Calling 'iexpr_sum'
+  829 |                         i128 v = iexpr_sum();
+      |                                  ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:356:11: note: Calling 'iexpr_term'
+  356 |         i128 v = iexpr_term();
+      |                  ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:336:2: note: Loop condition is true.  Entering loop body
+  336 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:337:3: note: Taking false branch
+  337 |                 if (acc_sym('*')) {
+      |                 ^
+/home/andrew/Code/ucas/src/ring.c:340:10: note: Taking true branch
+  340 |                 } else if (acc_sym('/')) {
+      |                        ^
+/home/andrew/Code/ucas/src/ring.c:341:13: note: Calling 'iexpr_unary'
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:324:2: note: Taking false branch
+  324 |         if (acc_sym('-'))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:326:2: note: Taking false branch
+  326 |         if (acc_sym('+'))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:328:2: note: Returning value
+  328 |         return iexpr_pow();
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:341:13: note: Returning from 'iexpr_unary'
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:341:9: note: Value assigned to 'w'
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                              ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:341:8: note: Assuming the condition is true
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:341:4: note: Taking true branch
+  341 |                         if ((w = iexpr_unary()) == 0)
+      |                         ^
+/home/andrew/Code/ucas/src/ring.c:343:6: note: Division by zero
+  343 |                         v /= w;
+      |                         ~~^~~~
+/home/andrew/Code/ucas/src/ring.c:345:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                              ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:345:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ring.c:345:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ring.c:347:6: warning: Division by zero [clang-analyzer-core.DivideZero]
+  347 |                         v %= w;
+      |                           ^
+/home/andrew/Code/ucas/src/ring.c:818:6: note: Assuming 'rti' is < 'rlim'
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:818:6: note: 'rti' is < 'rlim'
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |             ^~~
+/home/andrew/Code/ucas/src/ring.c:818:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ring.c:818:22: note: Assuming field 'k' is not equal to RK_ID
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |                             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:818:22: note: Left side of '&&' is true
+/home/andrew/Code/ucas/src/ring.c:818:2: note: Taking false branch
+  818 |         if (rti >= rlim || (rt[rti].k != RK_ID && !at_sym('(')))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:820:2: note: Taking true branch
+  820 |         if (at_sym('(')) {
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:823:21: note: Left side of '&&' is false
+  823 |                 if (!at_id("mod") && !at_id("modulo")) {
+      |                                   ^
+/home/andrew/Code/ucas/src/ring.c:829:13: note: Calling 'iexpr_sum'
+  829 |                         i128 v = iexpr_sum();
+      |                                  ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:356:11: note: Calling 'iexpr_term'
+  356 |         i128 v = iexpr_term();
+      |                  ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:336:2: note: Loop condition is true.  Entering loop body
+  336 |         for (;;) {
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:337:3: note: Taking false branch
+  337 |                 if (acc_sym('*')) {
+      |                 ^
+/home/andrew/Code/ucas/src/ring.c:340:10: note: Taking false branch
+  340 |                 } else if (acc_sym('/')) {
+      |                        ^
+/home/andrew/Code/ucas/src/ring.c:344:10: note: Taking true branch
+  344 |                 } else if (acc_sym('%')) {
+      |                        ^
+/home/andrew/Code/ucas/src/ring.c:345:13: note: Calling 'iexpr_unary'
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:324:2: note: Taking false branch
+  324 |         if (acc_sym('-'))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:326:2: note: Taking false branch
+  326 |         if (acc_sym('+'))
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:328:2: note: Returning value
+  328 |         return iexpr_pow();
+      |         ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:345:13: note: Returning from 'iexpr_unary'
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                                  ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:345:9: note: Value assigned to 'w'
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                              ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:345:8: note: Assuming the condition is true
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:345:4: note: Taking true branch
+  345 |                         if ((w = iexpr_unary()) == 0)
+      |                         ^
+/home/andrew/Code/ucas/src/ring.c:347:6: note: Division by zero
+  347 |                         v %= w;
+      |                         ~~^~~~
+/home/andrew/Code/ucas/src/ring.c:378:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  378 |         if (n >> 64)
+      |             ^ ~~
+/home/andrew/Code/ucas/src/ring.c:397:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  397 |         char *b = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:455:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  455 |         struct sbuf *s = &b[k++ & 3];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:499:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  499 |         struct sbuf *s = &b[k++ & 7];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/ring.c:542:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   18 |         int64_t d;        /* Z[sqrt d] (Z[i]: -1) */
+      |         ^
+/home/andrew/Code/ucas/src/ring.c:564:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  564 |         {"crc64", 64, ((u128)1 << 64) | 0x42f0e1eba9ea3693ULL, "CRC-64 (ECMA-182)"},
+      |                                ~~ ^~
+/home/andrew/Code/ucas/src/ring.c:590:45: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  590 |         if (rti < rlim && rt[rti].k == RK_ID && (k = named_index(rt[rti].s)) >= 0) {
+      |                                                  ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring.c:590:45: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ring.c:590:45: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ring.c:597:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  597 |                         f[i] = (u64)(named_mod[k].code >> i & 1);
+      |                                                        ~~ ^
+/home/andrew/Code/ucas/src/ring.c:597:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  597 |                         f[i] = (u64)(named_mod[k].code >> i & 1);
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/ring.c:643:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  643 |         lim = n < 64 ? ((u64)1 << 62) : ~(u64)0;
+      |                                ~~ ^~
+/home/andrew/Code/ucas/src/ring.c:741:3: warning: repeated branch body in conditional chain [bugprone-branch-clone]
+  741 |                 d = w + 2;
+      |                 ^
+/home/andrew/Code/ucas/src/ring.c:741:12: note: end of the original
+  741 |                 d = w + 2;
+      |                          ^
+/home/andrew/Code/ucas/src/ring.c:744:3: note: clone 1 starts here
+  744 |                 d = w + 2;
+      |                 ^
+/home/andrew/Code/ucas/src/ring.c:830:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  830 |                         if (v < 1 || (v >> 64))
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/ring.c:906:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  906 |                 if (v < 1 || (v >> 64))
+      |                               ^ ~~
+/home/andrew/Code/ucas/src/ring.c:928:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  928 |                         if (v == ((i128)1 << 64)) {
+      |                                   ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring.c:952:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  952 |                         if (v < 2 || (v >> 64))
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/ring.c:972:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  972 |                         if (v < 2 || (v >> 64))
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/ring_cmd.inc:92:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+   92 |                 if ((i = sub_word()) >= 0) {
+      |                      ~~^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring_cmd.inc:92:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ring_cmd.inc:92:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ring_cmd.inc:175:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  175 |                                 if (n < 2 || (n >> 64))
+      |                                               ^ ~~
+/home/andrew/Code/ucas/src/ring_cmd.inc:181:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  181 |                         if (n < 1 || (n >> 64))
+      |                                       ^ ~~
+/home/andrew/Code/ucas/src/ring_cmd.inc:198:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  198 |         switch (c) {
+      |         ^
+/home/andrew/Code/ucas/src/ring_cmd.inc:198:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/ring_cmd.inc:253:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  253 |                                 if (s.R.qm1 < (1u << 22)) {
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:218:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  218 |                 u64 m, cnt = (u64)1 << f.k;
+      |                                     ~~ ^~~
+/home/andrew/Code/ucas/src/ring_gf.inc:224:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  224 |                                 nt_crt(r, mm, (m >> i & 1) ? 1 % pe : 0, pe, &r, &mm);
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_gf.inc:224:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  224 |                                 nt_crt(r, mm, (m >> i & 1) ? 1 % pe : 0, pe, &r, &mm);
+      |                                                       ~ ^
+/home/andrew/Code/ucas/src/ring_gf.inc:239:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  239 |                 for (d = 1; d <= n && d <= (1u << 26); d++)
+      |                                                ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:362:18: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  362 |                     s->automod ? "" : "",
+      |                                ^
+/home/andrew/Code/ucas/src/ring_gf.inc:362:23: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  362 |                     s->automod ? "" : "",
+      |                                     ^
+/home/andrew/Code/ucas/src/ring_gf.inc:363:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  363 |                     U(((u64)1 << s->R.deg) | r_pack(&s->R, s->R.f)));
+      |                                  ^
+/home/andrew/Code/ucas/src/ring.c:278:36: note: expanded from macro 'U'
+  278 | #define U(v) ((unsigned long long)(v))
+      |                                    ^
+/home/andrew/Code/ucas/src/ring_gf.inc:453:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  453 |                                                 u |= p == one;
+      |                                                 ^ ~~
+/home/andrew/Code/ucas/src/ring_gf.inc:454:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  454 |                                                 z |= p == 0;
+      |                                                 ^ ~~
+/home/andrew/Code/ucas/src/ring_gf.inc:542:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  542 |         if (sub == SUB_GEN && q1 <= (1u << 20)) {
+      |                                         ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:574:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  574 |         if (sub == SUB_FROB && q1 <= (1u << 16)) {
+      |                                          ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:719:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  719 |                                 if (lb >> j & 1)
+      |                                        ~~ ^
+/home/andrew/Code/ucas/src/ring_gf.inc:719:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  719 |                                 if (lb >> j & 1)
+      |                                             ~ ^
+/home/andrew/Code/ucas/src/ring_gf.inc:720:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  720 |                                         p ^= (u128)la << j;
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/ring_gf.inc:792:27: warning: function 'strcmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+  792 |                 if (rt[i].k == RK_ID && strcmp(rt[i].s, "x"))
+      |                                         ^                   
+      |                                                              != 0
+/home/andrew/Code/ucas/src/ring_gf.inc:842:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  842 |                         if (t > (1u << 16))
+      |                                     ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:847:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  847 |         if (cnt > (1u << 16))
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:860:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  860 |                                 g.c[j] = q > ((u128)1 << 64) ? v : (u64)(v % (u64)q);
+      |                                                       ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:939:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  939 |                     "= %s\n", qn - 1 < ((u128)1 << 64) ? fac_text((u64)(qn - 1)) :
+      |                                                    ^
+/home/andrew/Code/ucas/src/ring_gf.inc:943:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  943 |                 if (o <= (1u << 22)) {
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:1063:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1063 |                 if (R->qm1 < (1u << 20)) {
+      |                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:1072:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1072 |         if (R->qm1 >= (1u << 22))
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:1116:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1116 |         if (o <= (1u << 22)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_gf.inc:1137:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1137 |                         ok &= !rp_eq(&h, &one);
+      |                         ^~ ~~
+/home/andrew/Code/ucas/src/ring_gf.inc:1418:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1418 |                                 if (tot > (1u << 20))
+      |                                               ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:10:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   10 |                 *q = ((u128)1 << k) / d;
+      |                               ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:11:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   11 |                 *r = ((u128)1 << k) % d;
+      |                               ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:25:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   25 |         return (u64)(((u128)a * b) >> w);
+      |                                    ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:33:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   33 |         v &= ((u64)1 << w) - 1;
+      |                      ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:34:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   34 |         if (v >> (w - 1))
+      |               ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:35:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   35 |                 return (int64_t)(v | ~(((u64)1 << w) - 1));
+      |                                                ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:43:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   43 |         u64 mask = w == 64 ? ~(u64)0 : (((u64)1 << w) - 1), t;
+      |                                                 ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:46:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   46 |                 return mulhi(x, m, w) >> s;
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:48:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   48 |         return ((((x - t) & mask) >> 1) + t) >> (s - 1);
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:48:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   48 |         return ((((x - t) & mask) >> 1) + t) >> (s - 1);
+      |                                              ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:55:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   55 |         int64_t t = (int64_t)(p >> w);
+      |                               ^ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:60:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   60 |         return sext((u64)((t >> (s - 1)) + (x < 0 ? 1 : 0)), w);
+      |                            ^ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:78:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   78 |             (u128)d >= ((u128)1 << wp))
+      |                                 ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:85:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   85 |                 if (e <= ((u128)1 << s))
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:93:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   93 |                 *addo = (m >> w) != 0;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:94:59: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   94 |                 *mo = *addo ? (w == 64 ? (u64)m : (u64)(m - ((u128)1 << w))) :
+      |                                                                      ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:97:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   97 |                 *addo = m >= ((u128)1 << (w - 1));
+      |                                       ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:122:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                     (TYK(t) == K_UINT || TYK(t) == K_SINT)) {
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:122:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  122 |                     (TYK(t) == K_UINT || TYK(t) == K_SINT)) {
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:123:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  123 |                         w = TYW(t);
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:124:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  124 |                         sign = TYK(t) == K_SINT;
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:174:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  174 |         if (!sign && (u128)d >= ((u128)1 << w)) {
+      |                                          ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:197:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |                         if (s < 128 && e <= ((u128)1 << s))
+      |                                                      ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:201:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  201 |                     U(d), u128s(m), u128x(m), ilog2u((u64)(m >> 1)) + 2 > 0 &&
+      |                                                                 ^
+/home/andrew/Code/ucas/src/ring_misc.inc:202:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  202 |                     (m >> 64) == 0 ? ilog2u((u64)m) + 1 : 65, s);
+      |                           ^
+/home/andrew/Code/ucas/src/ring_misc.inc:217:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  217 |                         add = (m >> w) != 0;
+      |                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:229:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  229 |                                 lo = w == 64 ? (u64)m : (u64)(m - ((u128)1 << w));
+      |                                                                            ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:248:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  248 |                         add = m >= ((u128)1 << (w - 1));
+      |                                             ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:260:64: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  260 |                 u64 n = 0, bad = 0, x, top = w == 64 ? ~(u64)0 : (((u64)1 << w) - 1);
+      |                                                                           ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:278:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  278 |                                 for (kk = 0; kk < (1u << 20); kk++) {
+      |                                                       ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:279:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  279 |                                         st ^= st << 13;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:280:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  280 |                                         st ^= st >> 7;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:281:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  281 |                                         st ^= st << 17;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:287:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  287 |                         int64_t lo = w == 64 ? INT64_MIN : -((int64_t)1 << (w - 1));
+      |                                                              ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:288:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  288 |                         int64_t hi = w == 64 ? INT64_MAX : ((int64_t)1 << (w - 1)) - 1;
+      |                                                             ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:309:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  309 |                                 for (kk = 0; kk < (1u << 20); kk++) {
+      |                                                       ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:310:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  310 |                                         st ^= st << 13;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:311:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  311 |                                         st ^= st >> 7;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:312:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  312 |                                         st ^= st << 17;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:353:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  353 |                 if (e & 1) {
+      |                       ~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:358:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  358 |                 e >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:399:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  399 |                         if (k < n && ty_parse(buf + k, n - k, &t) && TYK(t) == K_UINT &&
+      |                                                                      ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:401:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  401 |                                 w = TYW(t);
+      |                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:407:10: warning: Although the value stored to 'n' is used in the enclosing expression, the value is never actually read from 'n' [clang-analyzer-deadcode.DeadStores]
+  407 |                                         buf[n -= 2] = 0;
+      |                                             ^    ~
+/home/andrew/Code/ucas/src/ring_misc.inc:407:10: note: Although the value stored to 'n' is used in the enclosing expression, the value is never actually read from 'n'
+  407 |                                         buf[n -= 2] = 0;
+      |                                             ^    ~
+/home/andrew/Code/ucas/src/ring_misc.inc:409:10: warning: Although the value stored to 'n' is used in the enclosing expression, the value is never actually read from 'n' [clang-analyzer-deadcode.DeadStores]
+  409 |                                         buf[n -= 3] = 0;
+      |                                             ^    ~
+/home/andrew/Code/ucas/src/ring_misc.inc:409:10: note: Although the value stored to 'n' is used in the enclosing expression, the value is never actually read from 'n'
+  409 |                                         buf[n -= 3] = 0;
+      |                                             ^    ~
+/home/andrew/Code/ucas/src/ring_misc.inc:474:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  474 |         if (TYK(f->p[0].ty) != K_UINT && TYK(f->p[0].ty) != K_SINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:474:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  474 |         if (TYK(f->p[0].ty) != K_UINT && TYK(f->p[0].ty) != K_SINT)
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:476:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         if (TYK(N.ty[f->body]) != K_UINT && TYK(N.ty[f->body]) != K_SINT)
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:476:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  476 |         if (TYK(N.ty[f->body]) != K_UINT && TYK(N.ty[f->body]) != K_SINT)
+      |                                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:478:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  478 |         w = TYW(f->p[0].ty);
+      |             ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:480:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  480 |                 int wo = TYW(N.ty[f->body]);
+      |                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:485:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  485 |         mask = w == 64 ? ~(u64)0 : (((u64)1 << w) - 1);
+      |                                             ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:490:2: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  490 |         ii[slot * CH] = 0;
+      |         ^
+/home/andrew/Code/ucas/src/ring_misc.inc:490:5: note: make conversion explicit to silence this warning
+    1 |         ii[slot * CH] = 0;
+      |            ^~~~~~~~~
+      |            (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ring_misc.inc:490:5: note: perform multiplication in a wider type
+  490 |         ii[slot * CH] = 0;
+      |            ^~~~
+      |            (ptrdiff_t)
+/home/andrew/Code/ucas/src/ring_misc.inc:492:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  492 |                 ii[slot * CH + 1 + j] = (int64_t)((u64)1 << j);
+      |                                                          ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:501:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  501 |                         RM(&M, i, j) = col[j] >> i & 1;
+      |                                               ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:501:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  501 |                         RM(&M, i, j) = col[j] >> i & 1;
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:513:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  513 |                                         st ^= st << 13;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:514:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  514 |                                         st ^= st >> 7;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:515:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  515 |                                         st ^= st << 17;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:526:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  526 |                                         if (v >> j & 1)
+      |                                               ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:526:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  526 |                                         if (v >> j & 1)
+      |                                                    ~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:586:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |                                                 msk |= (u64)1 << i;
+      |                                                               ~~ ^
+/home/andrew/Code/ucas/src/ring_misc.inc:592:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                                 full = dlt >= 0 ? (mask << dlt) & mask : mask >> -dlt;
+      |                                                         ~~ ^~~
+/home/andrew/Code/ucas/src/ring_misc.inc:592:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                                 full = dlt >= 0 ? (mask << dlt) & mask : mask >> -dlt;
+      |                                                                               ~~ ^~~~
+/home/andrew/Code/ucas/src/ring_misc.inc:709:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  709 |         if (v > ((i128)1 << 100) || v < -((i128)1 << 100))
+      |                  ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:709:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  709 |         if (v > ((i128)1 << 100) || v < -((i128)1 << 100))
+      |                                           ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:780:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  780 |         char *s = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring_misc.inc:831:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  831 |                 if (rt[rti].big || rt[rti].v >> 90)
+      |                                              ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:988:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  988 |                         if (p2 > ((i128)1 << 60) || q2 > ((i128)1 << 60))
+      |                                   ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:988:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  988 |                         if (p2 > ((i128)1 << 60) || q2 > ((i128)1 << 60))
+      |                                                           ^~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:1009:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1009 |         if (n >> 63)
+      |             ^ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:1181:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1181 |         char *b = buf[k++ & 7];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring_misc.inc:1226:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1226 |         struct sbuf *s = &b[k++ & 3];
+      |                             ^~~ ~
+/home/andrew/Code/ucas/src/ring_misc.inc:1395:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1395 |                 if (rt[rti].big || (rt[rti].v >> 62))
+      |                                               ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:1514:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1514 |                         if (v > ((int64_t)1 << 40) || v < -((int64_t)1 << 40))
+      |                                  ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:1514:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1514 |                         if (v > ((int64_t)1 << 40) || v < -((int64_t)1 << 40))
+      |                                                             ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:1558:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1558 |                 if (a0 > (1u << 20) || an > (1u << 20))
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:1558:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1558 |                 if (a0 > (1u << 20) || an > (1u << 20))
+      |                                                 ~~ ^~
+/home/andrew/Code/ucas/src/ring_misc.inc:1641:4: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1641 |                         allowed[d] &= can[d];
+      |                         ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/ring_misc.inc:1690:5: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1690 |                                 nz |= v.c[j].n != 0;
+      |                                 ^~ ~~
+/home/andrew/Code/ucas/src/ring_zn.inc:28:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   28 |         if (t->big || (t->v >> 64))
+      |                             ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:188:10: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  188 |             (nk = named_index(rt[rti].s)) >= 0) {
+      |              ~~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring_zn.inc:188:10: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/ring_zn.inc:188:10: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/ring_zn.inc:192:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  192 |                         p->c[i] = (u64)(named_mod[nk].code >> i & 1);
+      |                                                            ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:192:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  192 |                         p->c[i] = (u64)(named_mod[nk].code >> i & 1);
+      |                                                                 ~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:204:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  204 |                 for (i = 0; v; i++, v >>= 1) {
+      |                                       ~~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:207:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  207 |                         p->c[i] = (u64)(v & 1);
+      |                                           ~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:305:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  305 |         if (e >> 64)
+      |             ^ ~~
+/home/andrew/Code/ucas/src/ring_zn.inc:394:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  394 |         char *b = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring_zn.inc:437:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  437 |         u64 mask = w == 64 ? ~(u64)0 : (((u64)1 << w) - 1), x = 0, n = 0;
+      |                                                 ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:457:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  457 |                                         st ^= st << 13;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:458:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  458 |                                         st ^= st >> 7;
+      |                                                  ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:459:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  459 |                                         st ^= st << 17;
+      |                                                  ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:493:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  493 |         u128 mask = k == 128 ? ~(u128)0 : (((u128)1 << k) - 1), x, y;
+      |                                                     ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:497:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  497 |         if (!(x & 1)) {
+      |                 ~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:499:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  499 |                 while (!(x >> z & 1) && z < k)
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:499:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  499 |                 while (!(x >> z & 1) && z < k)
+      |                                 ~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:503:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  503 |                     k == 128 && z == 0 ? 1 : ((u128)1 << (k - z)) & mask), k);
+      |                                                          ^
+/home/andrew/Code/ucas/src/ring.c:23:44: note: expanded from macro 'printf'
+   23 | #define printf(...) (notes_flush(), printf(__VA_ARGS__))
+      |                                            ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/ring_zn.inc:646:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  646 |         u128 mask = k == 128 ? ~(u128)0 : (((u128)1 << k) - 1), a = (u128)a0 &
+      |                                                     ~~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:650:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  650 |         if (!(a & 1)) {
+      |                 ~ ^
+/home/andrew/Code/ucas/src/ring_zn.inc:700:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  700 |         if (o <= (1u << 22)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:721:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  721 |         if (v < 1 || (v >> 64))
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/ring_zn.inc:741:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  741 |                 if (n <= (1u << 24)) {
+      |                              ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:758:24: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  758 |                         printf(" %s%llu", i ? "" : "", U(e == 1 ? 1 : e == 2 ? 2 :
+      |                                             ^
+/home/andrew/Code/ucas/src/ring_zn.inc:767:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  767 |         if (n <= (1u << 14)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:794:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  794 |         if (v < 1 || (v >> 64))
+      |                       ^ ~~
+/home/andrew/Code/ucas/src/ring_zn.inc:799:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  799 |         if (v > 2 && !(f.k == 1 && f.e[0] == 1) && (v & 1) && nt_lambda((u64)v) &&
+      |                                                     ^ ~
+/home/andrew/Code/ucas/src/ring_zn.inc:827:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  827 |         if (n0 < 3 || !(n0 & 1) || (n0 >> 64))
+      |                         ^~ ~
+/home/andrew/Code/ucas/src/ring_zn.inc:827:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  827 |         if (n0 < 3 || !(n0 & 1) || (n0 >> 64))
+      |                                     ^~ ~~
+/home/andrew/Code/ucas/src/ring_zn.inc:835:3: warning: Value stored to 'legendre' is never read [clang-analyzer-deadcode.DeadStores]
+  835 |                 legendre = 0;
+      |                 ^          ~
+/home/andrew/Code/ucas/src/ring_zn.inc:835:3: note: Value stored to 'legendre' is never read
+  835 |                 legendre = 0;
+      |                 ^          ~
+/home/andrew/Code/ucas/src/ring_zn.inc:908:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  908 |         else if (n <= (1u << 22))
+      |                           ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:913:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  913 |         if (n <= (1u << 22)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:931:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  931 |         if (n > (1u << 24))
+      |                     ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:995:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  995 |                 if (ph <= (1u << 20)) {
+      |                               ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:1011:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1011 |         if (nt_order(g, n) == ph && ph <= (1u << 22)) {
+      |                                               ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:1116:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1116 |                 m = l >> 64 ? 0 : (u64)l;
+      |                       ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:1183:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1183 |         if (m <= (1u << 22)) {
+      |                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:1208:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1208 |                         if (pe > (1u << 22))
+      |                                      ~~ ^~
+/home/andrew/Code/ucas/src/ring_zn.inc:1265:38: warning: function 'strcasecmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1265 |                 if (rt[i].k == RK_ID && !var[0] && strcasecmp(rt[i].s, "mod") &&
+      |                                                    ^
+      |                                                                               != 0
+/home/andrew/Code/ucas/src/ring_zn.inc:1266:7: warning: function 'strcasecmp' is called without explicitly comparing result [bugprone-suspicious-string-compare]
+ 1266 |                     strcasecmp(rt[i].s, "modulo") && strlen(rt[i].s) <= 2)
+      |                     ^
+      |                                                   != 0
+/home/andrew/Code/ucas/src/ring_zn.inc:1311:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1311 |         char *s = buf[k++ & 3];
+      |                       ^~~ ~
+/home/andrew/Code/ucas/src/ring_zn.inc:1435:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1435 |                 if (acc.m <= (1u << 22) && acc.m > 0) {
+      |                                  ~~ ^~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

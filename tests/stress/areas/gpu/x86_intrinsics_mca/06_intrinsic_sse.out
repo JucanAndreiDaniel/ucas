@@ -1,0 +1,76 @@
+> intrinsic _mm_add_epi32
+__m128i _mm_add_epi32(__m128i a, __m128i b)
+  needs: sse2
+  class: vpaddd (paddb/w/d/q psub pand pandn por pxor)
+  semantics (each lane i of 4): a + b
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a0 + b0
+    r3 = a3 + b3
+  cost       lat   rtp uops  ports
+  skl          1  0.33    1  p015
+  skx          1  0.33    1  p015
+  glc          1  0.33    1  p015
+  rpl          1  0.33    1  p015
+  zen2         1  0.25    1  FP0 FP1 FP2 FP3
+  zen4         1  0.25    1  FP0 FP1 FP2 FP3
+  x86v2        1  0.33    1  p015
+  x86v3        1  0.33    1  p015
+  x86v4        1  0.33    1  p015
+> intrinsic _mm_maddubs_epi16
+__m128i _mm_maddubs_epi16(__m128i a, __m128i b)
+  needs: ssse3
+  class: vpmullw (pmullw pmulhw pmulhuw pmulhrsw pmuludq pmuldq pmaddwd pmaddubsw)
+  semantics (each lane i of 8): sat(int(a[2*i]) * int(b[2*i]) + int(a[2*i+1]) * int(b[2*i+1]))
+  lanes (operand lanes named a0, b3 ...):
+    r0 = i16(min(max(int(a0)*int(b0) + int(a1)*int(b1), -32768), 32767))
+    r7 = i16(min(max(int(a14)*int(b14) + int(a15)*int(b15), -32768), 32767))
+  cost       lat   rtp uops  ports
+  skl          5   0.5    1  p01
+  skx          5   0.5    1  p01
+  glc          5   0.5    1  p01
+  rpl          5   0.5    1  p01
+  zen2         3   0.5    1  FP0 FP3
+  zen4         3   0.5    1  FP0 FP3
+  x86v2        5   0.5    1  p01
+  x86v3        5   0.5    1  p01
+  x86v4        5   0.5    1  p01
+> intrinsic _mm_shuffle_epi8
+__m128i _mm_shuffle_epi8(__m128i a, __m128i b)
+  needs: ssse3
+  class: vpshufb (pshufb pshufd pshuflw punpck palignr pack pslldq shufps unpcklps pblendw insertps movhlps)
+  semantics (each lane i of 16): b < 0 ? 0 : a[(i - i % 16) + (b & 15)]
+  lanes (operand lanes named a0, b3 ...):
+    r0 = b0 < 0 ? 0 : [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15][b0 & 15]
+    r15 = b15 < 0 ? 0 : [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15][b15 & 15]
+  cost       lat   rtp uops  ports
+  skl          1     1    1  p5
+  skx          1     1    1  p5
+  glc          1   0.5    1  p15
+  rpl          1   0.5    1  p15
+  zen2         1   0.5    1  FP1 FP2
+  zen4         1   0.5    1  FP1 FP2
+  x86v2        1     1    1  p5
+  x86v3        1     1    1  p5
+  x86v4        1     1    1  p5
+> intrinsic _mm_cvtsi32_si128
+__m128i _mm_cvtsi32_si128(int a)
+  needs: sse2
+  class: movd x,r (movd/movq xmm, r)
+  semantics (each lane i of 4): i == 0 ? a : 0
+  lanes (operand lanes named a0, b3 ...):
+    r0 = a
+    r3 = 0
+  cost       lat   rtp uops  ports
+  skl          2     1    1  p5
+  skx          2     1    1  p5
+  glc          3     1    1  p5
+  rpl          3     1    1  p5
+  zen2         3     1    1  FP45
+  zen4         3     1    1  FP45
+  x86v2        3     1    1  p5
+  x86v3        3     1    1  p5
+  x86v4        3     1    1  p5
+> intrinsic _mm_pause
+06_intrinsic_sse.ucas:5:20: error: unknown intrinsic _mm_pause
+    intrinsic _mm_pause
+                       ^

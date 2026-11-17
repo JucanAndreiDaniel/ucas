@@ -1,0 +1,10 @@
+{"jsonrpc": "2.0", "id": 0, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "stress", "version": "1"}}}
+{"jsonrpc": "2.0", "method": "notifications/initialized"}
+{"jsonrpc": "2.0", "id": 1, "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "basis zz { t(x, y) = lut cost 256 }\nbasis one { inv(x) = ~x }"}}}
+{"jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": {"name": "session", "arguments": {"op": "define", "args": {"name": "maj2", "params": [{"name": "a", "type": "bool"}, {"name": "b", "type": "bool"}, {"name": "c", "type": "bool"}], "body": "a & b | a & c | b & c"}}}}
+{"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "gates", "args": {"f": "maj2", "basis": "zz"}}}}
+{"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "gates", "args": {"f": "maj2", "basis": "one"}}}}
+{"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "gates", "args": {"f": "maj2", "basis": "nosuch"}}}}
+{"jsonrpc": "2.0", "id": 6, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "cost", "args": {"f": "(x: u32) = x*x+1", "model": "gt1030"}}}}
+{"jsonrpc": "2.0", "id": 7, "method": "tools/call", "params": {"name": "analyze", "arguments": {"op": "find", "args": {"f": "(x: u8 in 0..15) = x*x", "n": 2}}}}
+{"jsonrpc": "2.0", "id": 8, "method": "tools/call", "params": {"name": "ucas", "arguments": {"source": "f(x: u8 in 0..15) = x*x\nfind f 2 snippets"}}}

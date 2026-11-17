@@ -1,0 +1,28 @@
+src/fuse.c:79:9: warning: Value stored to 'n' during its initialization is never read [deadcode.DeadStores]
+   79 |         int i, n = nfz;
+      |                ^   ~~~
+src/fuse.c:79:9: note: Value stored to 'n' during its initialization is never read
+   79 |         int i, n = nfz;
+      |                ^   ~~~
+src/fuse.c:1519:8: warning: Array access (from variable 'mark') results in a null pointer dereference [core.NullDereference]
+ 1519 |                 if (!mark[roots[i]]) {
+      |                      ^
+src/fuse.c:1493:9: note: Calling 'fuse_roots_cost'
+ 1493 |         return fuse_roots_cost(m, &root, 1);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/fuse.c:1500:2: note: 'mark' initialized to a null pointer value
+ 1500 |         static uint8_t *mark;
+      |         ^~~~~~~~~~~~~~~~~~~~
+src/fuse.c:1509:6: note: Assuming 'cap' is >= field 'n'
+ 1509 |         if (cap < N.n) {
+      |             ^~~~~~~~~
+src/fuse.c:1509:2: note: Taking false branch
+ 1509 |         if (cap < N.n) {
+      |         ^
+src/fuse.c:1518:2: note: Loop condition is true.  Entering loop body
+ 1518 |         for (i = 0; i < nroots; i++)
+      |         ^
+src/fuse.c:1519:8: note: Array access (from variable 'mark') results in a null pointer dereference
+ 1519 |                 if (!mark[roots[i]]) {
+      |                      ^~~~
+2 warnings generated.

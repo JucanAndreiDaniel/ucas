@@ -1,0 +1,1265 @@
+/home/andrew/Code/ucas/src/ode.c:30:16: warning: function 'pde_find' can be made static to enforce internal linkage [misc-use-internal-linkage]
+   30 | struct pdeent *pde_find(uint32_t name);
+      |                ^
+      | static 
+/home/andrew/Code/ucas/src/ode.c:30:25: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   26 | #include <stdlib.h>
+   27 | #include <string.h>
+   28 | 
+   29 | struct pdeent;
+   30 | struct pdeent *pde_find(uint32_t name);
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:54:12: warning: no header providing "xmalloc" is directly included [misc-include-cleaner]
+   23 |         char *r = xmalloc(n);
+      |                   ^
+/home/andrew/Code/ucas/src/ode.c:71:4: warning: no header providing "fail" is directly included [misc-include-cleaner]
+   71 |                         fail("too many differential equations");
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:115:1: warning: function 'ode_rhs' can be made static to enforce internal linkage [misc-use-internal-linkage]
+  114 | const char *
+      | static 
+  115 | ode_rhs(uint32_t var, int *order)
+      | ^
+/home/andrew/Code/ucas/src/ode.c:130:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+  130 |         nid F[MAXS];
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:139:29: warning: no header providing "TY_REAL" is directly included [misc-include-cleaner]
+  139 |         return var_of(0, S->tname, TY_REAL);
+      |                                    ^
+/home/andrew/Code/ucas/src/ode.c:139:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:145:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  145 |         return var_of(1 + i, S->name[i], TY_REAL);
+      |                                          ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:159:9: warning: no header providing "plan" is directly included [misc-include-cleaner]
+  159 |         struct plan p;
+      |                ^
+/home/andrew/Code/ucas/src/ode.c:160:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  160 |         int64_t *in_i;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:167:2: warning: no header providing "plan_build" is directly included [misc-include-cleaner]
+  167 |         plan_build(&E->p, roots, (uint32_t)n, 0);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:168:12: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  168 |         E->in_i = xcalloc((size_t)NSLOT * CH, sizeof *E->in_i);
+      |                   ^
+/home/andrew/Code/ucas/src/ode.c:168:36: warning: no header providing "CH" is directly included [misc-include-cleaner]
+  168 |         E->in_i = xcalloc((size_t)NSLOT * CH, sizeof *E->in_i);
+      |                                           ^
+/home/andrew/Code/ucas/src/ode.c:175:2: warning: no header providing "plan_free" is directly included [misc-include-cleaner]
+  175 |         plan_free(&E->p);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:188:2: warning: no header providing "plan_run" is directly included [misc-include-cleaner]
+  188 |         plan_run(&E->p, 1, E->in_i, E->in_r);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:191:12: warning: no header providing "NOTOK" is directly included [misc-include-cleaner]
+  191 |                 if (l == NOTOK) {
+      |                          ^
+/home/andrew/Code/ucas/src/ode.c:195:12: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  195 |                 out[i] = TY_FP(E->p.ty[l]) ? COLR(&E->p, l)[0] :
+      |                          ^
+/home/andrew/Code/ucas/src/ode.c:195:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ode.c:195:32: warning: no header providing "COLR" is directly included [misc-include-cleaner]
+  195 |                 out[i] = TY_FP(E->p.ty[l]) ? COLR(&E->p, l)[0] :
+      |                                              ^
+/home/andrew/Code/ucas/src/ode.c:196:15: warning: no header providing "COLI" is directly included [misc-include-cleaner]
+  196 |                     (double)COLI(&E->p, l)[0];
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:197:8: warning: no header providing "COLF" is directly included [misc-include-cleaner]
+  197 |                 if ((COLF(&E->p, l)[0] & F_UNDEF) || !isfinite(out[i]))
+      |                      ^
+/home/andrew/Code/ucas/src/ode.c:197:28: warning: no header providing "F_UNDEF" is directly included [misc-include-cleaner]
+  197 |                 if ((COLF(&E->p, l)[0] & F_UNDEF) || !isfinite(out[i]))
+      |                                          ^
+/home/andrew/Code/ucas/src/ode.c:197:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  197 |                 if ((COLF(&E->p, l)[0] & F_UNDEF) || !isfinite(out[i]))
+      |                                        ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:257:4: warning: The first element of the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^         ~~
+/home/andrew/Code/ucas/src/ode.c:257:4: note: Other elements might also be undefined
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:219:25: note: 'yn' declared without an initial value
+  219 |             k7[MAXS], y[MAXS], yn[MAXS], t = t0, h = *hint, dir = t1 > t0 ? 1 : -1;
+      |                                ^~
+/home/andrew/Code/ucas/src/ode.c:219:60: note: Assuming 't1' is <= 't0'
+  219 |             k7[MAXS], y[MAXS], yn[MAXS], t = t0, h = *hint, dir = t1 > t0 ? 1 : -1;
+      |                                                                   ^~~~~~~
+/home/andrew/Code/ucas/src/ode.c:219:60: note: '?' condition is false
+/home/andrew/Code/ucas/src/ode.c:222:6: note: Assuming 't1' is not equal to 't0'
+  222 |         if (t1 == t0)
+      |             ^~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:222:2: note: Taking false branch
+  222 |         if (t1 == t0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:224:6: note: Assuming 'h' is > 0
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:224:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:224:16: note: Assuming the condition is false
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |                       ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:224:2: note: Taking false branch
+  224 |         if (h <= 0 || h > fabs(t1 - t0))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:226:6: note: Assuming the condition is false
+  226 |         if (!ev_run(E, t, z, n, k1, n))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:226:2: note: Taking false branch
+  226 |         if (!ev_run(E, t, z, n, k1, n))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:228:2: note: Loop condition is true.  Entering loop body
+  228 |         while (dir * (t1 - t) > 0) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:230:3: note: Taking false branch
+  230 |                 if (++it > 2000000)
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:232:7: note: Assuming the condition is false
+  232 |                 if (h > fabs(t1 - t))
+      |                     ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:232:3: note: Taking false branch
+  232 |                 if (h > fabs(t1 - t))
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:237:3: note: Assuming 'i' is >= 'n'
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^~~~~
+/home/andrew/Code/ucas/src/ode.c:237:3: note: Loop condition is false. Execution continues on line 237
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+/home/andrew/Code/ucas/src/ode.c:237:3: note: Assuming the condition is false
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:237:3: note: Taking false branch
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:237:3: note: Loop condition is false.  Exiting loop
+  237 |                 STAGE(k2, c2, a21 * k1[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:238:3: note: 'i' is >= 'n'
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+/home/andrew/Code/ucas/src/ode.c:238:3: note: Loop condition is false. Execution continues on line 238
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+/home/andrew/Code/ucas/src/ode.c:238:3: note: Assuming the condition is false
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:238:3: note: Taking false branch
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:238:3: note: Loop condition is false.  Exiting loop
+  238 |                 STAGE(k3, c3, a31 * k1[i] + a32 * k2[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:239:3: note: 'i' is >= 'n'
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+/home/andrew/Code/ucas/src/ode.c:239:3: note: Loop condition is false. Execution continues on line 239
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+/home/andrew/Code/ucas/src/ode.c:239:3: note: Assuming the condition is false
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:239:3: note: Taking false branch
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:239:3: note: Loop condition is false.  Exiting loop
+  239 |                 STAGE(k4, c4, a41 * k1[i] + a42 * k2[i] + a43 * k3[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:240:3: note: 'i' is >= 'n'
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+/home/andrew/Code/ucas/src/ode.c:240:3: note: Loop condition is false. Execution continues on line 240
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+/home/andrew/Code/ucas/src/ode.c:240:3: note: Assuming the condition is false
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:240:3: note: Taking false branch
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:240:3: note: Loop condition is false.  Exiting loop
+  240 |                 STAGE(k5, c5, a51 * k1[i] + a52 * k2[i] + a53 * k3[i] + a54 * k4[i]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:241:3: note: 'i' is >= 'n'
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:44: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                            ^
+/home/andrew/Code/ucas/src/ode.c:241:3: note: Loop condition is false. Execution continues on line 241
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:32: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                                ^
+/home/andrew/Code/ucas/src/ode.c:241:3: note: Assuming the condition is false
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:6: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:241:3: note: Taking false branch
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:236:2: note: expanded from macro 'STAGE'
+  236 |         if (!ev_run(E, t + (c) * hh, y, n, K, n)) return 0; } while (0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:241:3: note: Loop condition is false.  Exiting loop
+  241 |                 STAGE(k6, 1, a61 * k1[i] + a62 * k2[i] + a63 * k3[i] + a64 * k4[i] +
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:235:27: note: expanded from macro 'STAGE'
+  235 | #define STAGE(K, c, expr) do { for (i = 0; i < n; i++) y[i] = z[i] + hh * (expr); \
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:244:15: note: 'i' is >= 'n'
+  244 |                 for (i = 0; i < n; i++)
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:244:3: note: Loop condition is false. Execution continues on line 247
+  244 |                 for (i = 0; i < n; i++)
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:247:7: note: Assuming the condition is false
+  247 |                 if (!ev_run(E, t + hh, yn, n, k7, n))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:247:3: note: Taking false branch
+  247 |                 if (!ev_run(E, t + hh, yn, n, k7, n))
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:249:15: note: 'i' is >= 'n'
+  249 |                 for (i = 0; i < n; i++) {
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:249:3: note: Loop condition is false. Execution continues on line 255
+  249 |                 for (i = 0; i < n; i++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:255:7: note: Assuming 'err' is <= 1
+  255 |                 if (err <= 1) {
+      |                     ^~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:255:3: note: Taking true branch
+  255 |                 if (err <= 1) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:257:4: note: The first element of the 2nd argument is undefined
+  257 |                         memcpy(z, yn, (size_t)n * sizeof *z);
+      |                         ^         ~~
+/home/andrew/Code/ucas/src/ode.c:300:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+  300 |         if (N.op[X] != O_EXP && N.op[X] != O_SIN && N.op[X] != O_COS)
+      |             ^
+/home/andrew/Code/ucas/src/ode.c:300:17: warning: no header providing "O_EXP" is directly included [misc-include-cleaner]
+  300 |         if (N.op[X] != O_EXP && N.op[X] != O_SIN && N.op[X] != O_COS)
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:300:37: warning: no header providing "O_SIN" is directly included [misc-include-cleaner]
+  300 |         if (N.op[X] != O_EXP && N.op[X] != O_SIN && N.op[X] != O_COS)
+      |                                            ^
+/home/andrew/Code/ucas/src/ode.c:300:57: warning: no header providing "O_COS" is directly included [misc-include-cleaner]
+  300 |         if (N.op[X] != O_EXP && N.op[X] != O_SIN && N.op[X] != O_COS)
+      |                                                                ^
+/home/andrew/Code/ucas/src/ode.c:322:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  322 |         switch (N.op[g]) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:323:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  323 |         case O_ADD:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:324:7: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  324 |         case O_SUB:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:326:7: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  326 |         case O_NEG:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:327:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  327 |         case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:329:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  329 |         case O_DIV:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:333:7: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  333 |         case O_MUL:
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:387:7: warning: no header providing "mk_un" is directly included [misc-include-cleaner]
+  387 |                 t = mk_un(O_EXP, MUL(KR(f->a), tau));
+      |                     ^
+/home/andrew/Code/ucas/src/ode.c:403:10: warning: no header providing "mk_cast" is directly included [misc-include-cleaner]
+  403 |                 return mk_cast(TY_REAL, q_node(r));
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:403:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  403 |                 return mk_cast(TY_REAL, q_node(r));
+      |                                ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:408:18: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  408 | print_eig(struct sbuf *b, const struct root *r, int nr)
+      |                  ^
+/home/andrew/Code/ucas/src/ode.c:413:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  413 |                 sb_printf(b, "%s%.10g", j ? ", " : "", r[j].re + 0.0);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:449:8: warning: no header providing "const_is" is directly included [misc-include-cleaner]
+  449 |                 if (!const_is(g[i], 0))
+      |                      ^
+/home/andrew/Code/ucas/src/ode.c:466:2: warning: no header providing "sb_puts" is directly included [misc-include-cleaner]
+  466 |         sb_puts(info, "eigenvalues ");
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:555:3: warning: The last accessed element (at index 14) in the 2nd argument is undefined [clang-analyzer-unix.cstring.UninitializedRead]
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^         ~
+/home/andrew/Code/ucas/src/ode.c:555:3: note: Other elements might also be undefined
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:430:39: note: 'w' declared without an initial value
+  430 |         double A[MAXS * MAXS], cp[MAXS + 1], w[MAXS], L;
+      |                                              ^
+/home/andrew/Code/ucas/src/ode.c:438:14: note: Assuming 'i' is < 'n'
+  438 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/ode.c:438:2: note: Loop condition is true.  Entering loop body
+  438 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:438:14: note: Assuming 'i' is >= 'n'
+  438 |         for (i = 0; i < n; i++)
+      |                     ^~~~~
+/home/andrew/Code/ucas/src/ode.c:438:2: note: Loop condition is false. Execution continues on line 440
+  438 |         for (i = 0; i < n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:440:2: note: Loop condition is true.  Entering loop body
+  440 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:442:7: note: 'n' is <= MAXST
+  442 |                 if (n > MAXST)
+      |                     ^
+/home/andrew/Code/ucas/src/ode.c:442:3: note: Taking false branch
+  442 |                 if (n > MAXST)
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:444:7: note: Assuming the condition is false
+  444 |                 if (!linear_form(S->F[i], slot, n, row, &g[i]))
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:444:3: note: Taking false branch
+  444 |                 if (!linear_form(S->F[i], slot, n, row, &g[i]))
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:446:3: note: Loop condition is true.  Entering loop body
+  446 |                 for (l = 0; l < n; l++)
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:446:3: note: Loop condition is false. Execution continues on line 448
+/home/andrew/Code/ucas/src/ode.c:449:7: note: Assuming the condition is false
+  449 |                 if (!const_is(g[i], 0))
+      |                     ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:449:3: note: Taking false branch
+  449 |                 if (!const_is(g[i], 0))
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:440:2: note: Loop condition is false. Execution continues on line 452
+  440 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:454:14: note: Assuming 'j' is < 'nr'
+  454 |         for (j = 0; j < nr; j++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:454:2: note: Loop condition is true.  Entering loop body
+  454 |         for (j = 0; j < nr; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:456:15: note: Assuming 'p' is < field 'mult'
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:456:3: note: Loop condition is true.  Entering loop body
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:457:14: note: Assuming field 'im' is equal to 0
+  457 |                         if (nb + (rt[j].im != 0 ? 2 : 1) > MAXS)
+      |                                   ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:457:14: note: '?' condition is false
+/home/andrew/Code/ucas/src/ode.c:457:4: note: Taking false branch
+  457 |                         if (nb + (rt[j].im != 0 ? 2 : 1) > MAXS)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:460:8: note: Assuming field 'im' is equal to 0
+  460 |                         if (rt[j].im != 0)
+      |                             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:460:4: note: Taking false branch
+  460 |                         if (rt[j].im != 0)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:456:15: note: Assuming 'p' is >= field 'mult'
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                             ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:456:3: note: Loop condition is false. Execution continues on line 454
+  456 |                 for (p = 0; p < rt[j].mult; p++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:454:14: note: Assuming 'j' is >= 'nr'
+  454 |         for (j = 0; j < nr; j++) {
+      |                     ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:454:2: note: Loop condition is false. Execution continues on line 464
+  454 |         for (j = 0; j < nr; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:464:6: note: 'nb' is equal to 'n'
+  464 |         if (nb != n)
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:464:2: note: Taking false branch
+  464 |         if (nb != n)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:468:6: note: Assuming 't1' is <= field 't0'
+  468 |         L = t1 > S->t0 ? t1 - S->t0 : 1;
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:468:6: note: '?' condition is false
+/home/andrew/Code/ucas/src/ode.c:470:7: note: 'gzero' is 1
+  470 |         if (!gzero) {
+      |              ^~~~~
+/home/andrew/Code/ucas/src/ode.c:470:2: note: Taking false branch
+  470 |         if (!gzero) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:540:2: note: Loop condition is true.  Entering loop body
+  540 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:542:7: note: 'cz' is null
+  542 |                 if (cz) {
+      |                     ^~
+/home/andrew/Code/ucas/src/ode.c:542:3: note: Taking false branch
+  542 |                 if (cz) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:540:2: note: Loop condition is false. Execution continues on line 551
+  540 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:551:8: note: Assuming field 't0' is equal to 0
+  551 |         tau = S->t0 == 0 ? tvar(S) : SUB(tvar(S), KR(S->t0));
+      |               ^~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:551:8: note: '?' condition is true
+/home/andrew/Code/ucas/src/ode.c:552:2: note: Loop condition is true.  Entering loop body
+  552 |         for (i = 0; i < n; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:555:3: note: The last accessed element (at index 14) in the 2nd argument is undefined
+  555 |                 memcpy(v, w, sizeof v);
+      |                 ^         ~
+/home/andrew/Code/ucas/src/ode.c:604:3: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+   26 |                 jmp_buf saved;
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:608:17: warning: no header providing "fail_jmp" is directly included [misc-include-cleaner]
+  608 |                 memcpy(saved, fail_jmp, sizeof saved);
+      |                               ^
+/home/andrew/Code/ucas/src/ode.c:609:7: warning: no header providing "setjmp" is directly included [misc-include-cleaner]
+  609 |                 if (setjmp(fail_jmp)) {
+      |                     ^
+/home/andrew/Code/ucas/src/ode.c:611:4: warning: no header providing "notes_drop" is directly included [misc-include-cleaner]
+  611 |                         notes_drop();
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:615:15: warning: no header providing "diff_node" is directly included [misc-include-cleaner]
+  615 |                         R[i] = SUB(diff_node(Z[i], 0), subst(S->F[i], map, NSLOT));
+      |                                    ^
+/home/andrew/Code/ucas/src/ode.c:615:35: warning: no header providing "subst" is directly included [misc-include-cleaner]
+  615 |                         R[i] = SUB(diff_node(Z[i], 0), subst(S->F[i], map, NSLOT));
+      |                                                        ^
+/home/andrew/Code/ucas/src/ode.c:676:18: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  676 |         const char *s = sym_str(base);
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:679:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   26 |         snprintf(buf, sizeof buf - 8, "%s", s);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:681:3: warning: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+  681 |                 strcat(buf, "'");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:681:3: note: Call to function 'strcat' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcat'. CWE-119
+  681 |                 strcat(buf, "'");
+      |                 ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:682:9: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+  682 |         return sym_cstr(buf);
+      |                ^
+/home/andrew/Code/ucas/src/ode.c:694:10: warning: no header providing "sym_intern" is directly included [misc-include-cleaner]
+  694 |         *base = sym_intern(s, n);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:700:9: warning: no header providing "func" is directly included [misc-include-cleaner]
+  700 |         struct func fn;
+      |                ^
+/home/andrew/Code/ucas/src/ode.c:706:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  706 |         v = calc_parse_text(src, &fn, TY_REAL);
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:709:2: warning: Undefined or garbage value returned to caller [clang-analyzer-core.uninitialized.UndefReturn]
+  709 |         return d;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:826:6: note: Assuming the condition is false
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:826:2: note: Taking false branch
+  826 |         if (pde_find(var)) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:830:6: note: Assuming the condition is false
+  830 |         if (!eq_find(var))
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:830:2: note: Taking false branch
+  830 |         if (!eq_find(var))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:837:2: note: Loop condition is true.  Entering loop body
+  837 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:842:15: note: Assuming 'j' is >= field 'np'
+  842 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:842:3: note: Loop condition is false. Execution continues on line 837
+  842 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:837:2: note: Loop condition is false. Execution continues on line 859
+  837 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:859:2: note: Loop condition is true.  Entering loop body
+  859 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:862:15: note: Assuming 'k' is >= field 'order'
+  862 |                 for (k = 0; k < q->order; k++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:862:3: note: Loop condition is false. Execution continues on line 859
+  862 |                 for (k = 0; k < q->order; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:859:2: note: Loop condition is false. Execution continues on line 869
+  859 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:869:2: note: Loop condition is true.  Entering loop body
+  869 |         for (i = 0; i < nv; i++)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:870:15: note: 'j' is >= field 'np'
+  870 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:870:3: note: Loop condition is false. Execution continues on line 869
+  870 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:869:2: note: Loop condition is false. Execution continues on line 889
+  869 |         for (i = 0; i < nv; i++)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:889:9: note: Field 'tname' is 0
+  889 |         if (!S.tname)
+      |                ^
+/home/andrew/Code/ucas/src/ode.c:889:2: note: Taking true branch
+  889 |         if (!S.tname)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:892:2: note: Loop condition is true.  Entering loop body
+  892 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:895:15: note: 'j' is >= field 'np'
+  895 |                 for (j = 0; j < fns[i].np; j++) {
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:895:3: note: Loop condition is false. Execution continues on line 904
+  895 |                 for (j = 0; j < fns[i].np; j++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:904:15: note: Assuming the condition is false
+  904 |                 for (k = 0; k + 1 < q->order; k++)
+      |                             ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:904:3: note: Loop condition is false. Execution continues on line 907
+  904 |                 for (k = 0; k + 1 < q->order; k++)
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:892:2: note: Loop condition is false. Execution continues on line 910
+  892 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:910:2: note: Loop condition is true.  Entering loop body
+  910 |         for (i = 0; i < nv; i++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:912:15: note: Assuming 'k' is < field 'order'
+  912 |                 for (k = 0; k < q->order; k++) {
+      |                             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:912:3: note: Loop condition is true.  Entering loop body
+  912 |                 for (k = 0; k < q->order; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:914:16: note: Assuming 'z' is >= 'nics'
+  914 |                         for (z = 0; z < nics; z++)
+      |                                     ^~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:914:4: note: Loop condition is false. Execution continues on line 917
+  914 |                         for (z = 0; z < nics; z++)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:917:8: note: Assuming 'z' is not equal to 'nics'
+  917 |                         if (z == nics)
+      |                             ^~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:917:4: note: Taking false branch
+  917 |                         if (z == nics)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:921:17: note: Calling 'parse_const'
+  921 |                                 double t0 = parse_const(ics[z].t0);
+      |                                             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:702:2: note: 'd' declared without an initial value
+  702 |         double d;
+      |         ^~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:707:6: note: Assuming field 'np' is not equal to 0
+  707 |         if (fn.np || !num_of(v, &d))
+      |             ^~~~~
+/home/andrew/Code/ucas/src/ode.c:707:12: note: Left side of '||' is true
+  707 |         if (fn.np || !num_of(v, &d))
+      |                   ^
+/home/andrew/Code/ucas/src/ode.c:709:2: note: Undefined or garbage value returned to caller
+  709 |         return d;
+      |         ^      ~
+/home/andrew/Code/ucas/src/ode.c:718:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  718 |         printf("      %-12s %s(%s)\n", sym_str(S->tname), sym_str(S->name[which]),
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:720:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+   23 |         rep_str("function", sym_str(S->name[which]));
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:721:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+  721 |         rep_list("table");
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:728:3: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  728 |                 rep_num(NULL, ts[k]);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:730:3: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  730 |                 rep_end();
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:748:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+  748 |         rep_begin("dsolve");
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:752:2: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  752 |         rep_bool("symbolic", sym);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:754:55: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  754 |                 printf("  linear with constant coefficients: %s\n", sb_str(&info));
+      |                                                                     ^
+/home/andrew/Code/ucas/src/ode.c:756:3: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+  756 |                 rep_obj("solution");
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:758:4: warning: no header providing "rep_expr" is directly included [misc-include-cleaner]
+  758 |                         rep_expr(sym_str(S->name[i]), Z[i]);
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:760:3: warning: no header providing "rep_check" is directly included [misc-include-cleaner]
+  760 |                 rep_check("residual", 201, res, 1, "satisfies the equations and "
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:765:28: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  765 |                                     sym_str(S->tname), node_str(Z[i]));
+      |                                                        ^
+/home/andrew/Code/ucas/src/ode.c:782:36: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  782 |                 for (k = 0; k <= steps && !isnan(num[k * S->n]); k++)
+      |                                                  ^
+/home/andrew/Code/ucas/src/ode.c:782:40: note: make conversion explicit to silence this warning
+  782 |                 for (k = 0; k <= steps && !isnan(num[k * S->n]); k++)
+      |                                                      ^
+      |                                                      (ptrdiff_t)(
+/usr/include/math.h:1148:37: note: expanded from macro 'isnan'
+ 1148 | #  define isnan(x) __builtin_isnan (x)
+      |                                     ^
+/home/andrew/Code/ucas/src/ode.c:782:40: note: perform multiplication in a wider type
+  782 |                 for (k = 0; k <= steps && !isnan(num[k * S->n]); k++)
+      |                                                      ^
+      |                                                      (ptrdiff_t)
+/usr/include/math.h:1148:37: note: expanded from macro 'isnan'
+ 1148 | #  define isnan(x) __builtin_isnan (x)
+      |                                     ^
+/home/andrew/Code/ucas/src/ode.c:841:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  841 |                 rhs[i] = calc_parse_text(q->rhs, &fns[i], TY_REAL);
+      |                                                           ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:894:11: warning: no header providing "MAXP" is directly included [misc-include-cleaner]
+  894 |                 nid map[MAXP];
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:906:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  906 |                 S.F[base_st[i] + q->order - 1] = mk_cast(TY_REAL,
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:963:9: warning: no header providing "diter" is directly included [misc-include-cleaner]
+  963 |         struct diter d;
+      |                ^
+/home/andrew/Code/ucas/src/ode.c:971:2: warning: no header providing "diter_init" is directly included [misc-include-cleaner]
+  971 |         diter_init(&d, f, 4096, 101, 4096);
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:972:15: warning: no header providing "diter_next" is directly included [misc-include-cleaner]
+  972 |         while ((np = diter_next(&d, ai, ar)) != 0)
+      |                      ^
+/home/andrew/Code/ucas/src/ode.c:1003:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1003 |         *ok = !(COLF(p, loc)[lane] & F_UNDEF);
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:732:17: note: expanded from macro 'F_UNDEF'
+  732 | #define F_UNDEF 1  /* outside the operation's domain */
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:1004:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1004 |         return TY_FP(p->ty[loc]) ? COLR(p, loc)[lane] :
+      |                ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ode.c:1050:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1050 |         nid X = var_of(s, d->name, TY_REAL), g, F, d1, d3, Lr, Hr, Iv, E[3];
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1056:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |                                    ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1059:13: warning: no header providing "O_LOG" is directly included [misc-include-cleaner]
+ 1059 |                 g = mk_un(O_LOG, g);
+      |                           ^
+/home/andrew/Code/ucas/src/ode.c:1069:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1069 |         Lr = mk_cast(TY_REAL, lo);
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1070:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1070 |         Hr = mk_cast(TY_REAL, hi);
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1075:13: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^
+/home/andrew/Code/ucas/src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^             ~~~
+/home/andrew/Code/ucas/src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1072:7: note: 'a' declared without an initial value
+ 1072 |                 nid a, b;
+      |                     ^
+/home/andrew/Code/ucas/src/ode.c:1073:3: note: Calling 'guarded_subst'
+ 1073 |                 guarded_subst(F, s, Hr, &a);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1073:3: note: Returning from 'guarded_subst'
+ 1073 |                 guarded_subst(F, s, Hr, &a);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1075:13: note: 2nd function call argument is an uninitialized value
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^
+/home/andrew/Code/ucas/src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^             ~~~
+/home/andrew/Code/ucas/src/ode.c:1075:13: warning: 3rd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^
+/home/andrew/Code/ucas/src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^                  ~~~
+/home/andrew/Code/ucas/src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1072:10: note: 'b' declared without an initial value
+ 1072 |                 nid a, b;
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:1074:3: note: Calling 'guarded_subst'
+ 1074 |                 guarded_subst(F, s, Lr, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1074:3: note: Returning from 'guarded_subst'
+ 1074 |                 guarded_subst(F, s, Lr, &b);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1075:13: note: 3rd function call argument is an uninitialized value
+ 1075 |                 Iv = tidy(SUB(a, b));
+      |                           ^
+/home/andrew/Code/ucas/src/calc.h:83:19: note: expanded from macro 'SUB'
+   83 | #define SUB(a, b) mk_bin(O_SUB, (a), (b))
+      |                   ^                  ~~~
+/home/andrew/Code/ucas/src/ode.c:1079:22: warning: 2nd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                                    ^
+/home/andrew/Code/ucas/src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+/home/andrew/Code/ucas/src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+/home/andrew/Code/ucas/src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1051:42: note: 'gl' declared without an initial value
+ 1051 |         nid lo = N.a[n], hi = N.b[n], roots[5], gl, gh;
+      |                                                 ^~
+/home/andrew/Code/ucas/src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1076:3: note: Calling 'guarded_subst'
+ 1076 |                 guarded_subst(g, s, Lr, &gl);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1076:3: note: Returning from 'guarded_subst'
+ 1076 |                 guarded_subst(g, s, Lr, &gl);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1079:22: note: 2nd function call argument is an uninitialized value
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                                    ^
+/home/andrew/Code/ucas/src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+/home/andrew/Code/ucas/src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+/home/andrew/Code/ucas/src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/ode.c:1079:22: warning: 3rd function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                                    ^
+/home/andrew/Code/ucas/src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+/home/andrew/Code/ucas/src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+/home/andrew/Code/ucas/src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/ode.c:1049:29: note: Assuming field 'orig' is not equal to LO_PROD
+ 1049 |         int s = d->islot, isprod = d->orig == LO_PROD, k, np, ok;
+      |                                    ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1051:46: note: 'gh' declared without an initial value
+ 1051 |         nid lo = N.a[n], hi = N.b[n], roots[5], gl, gh;
+      |                                                     ^~
+/home/andrew/Code/ucas/src/ode.c:1056:2: note: Taking false branch
+ 1056 |         if (!guarded_subst(mk_cast(TY_REAL, d->aux), s, X, &g))
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1058:6: note: 'isprod' is 0
+ 1058 |         if (isprod)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/ode.c:1058:2: note: Taking false branch
+ 1058 |         if (isprod)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Assuming 'F' is not equal to 0
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/ode.c:1061:2: note: Taking false branch
+ 1061 |         if (!F || !guarded_diff(g, s, &d1) || !guarded_diff(d1, s, &d3) ||
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1077:3: note: Calling 'guarded_subst'
+ 1077 |                 guarded_subst(g, s, Hr, &gh);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1036:6: note: Assuming the condition is false
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1036:2: note: Taking false branch
+ 1036 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1042:2: note: Returning without writing to '*r'
+ 1042 |         return ok;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1077:3: note: Returning from 'guarded_subst'
+ 1077 |                 guarded_subst(g, s, Hr, &gh);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1079:22: note: 3rd function call argument is an uninitialized value
+ 1079 |                 E[1] = ADD(Iv, DIV(ADD(gl, gh), KR(2)));
+      |                                    ^
+/home/andrew/Code/ucas/src/calc.h:82:19: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                   ^
+/home/andrew/Code/ucas/src/calc.h:85:34: note: expanded from macro 'DIV'
+   85 | #define DIV(a, b) mk_bin(O_DIV, (a), (b))
+      |                                  ^
+/home/andrew/Code/ucas/src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/ode.c:1120:3: warning: no header providing "fmt_point" is directly included [misc-include-cleaner]
+ 1120 |                 fmt_point(&b, f, in_i, in_r, (uint32_t)k);
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:1169:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1169 |                 if (!TY_FP(d->sty[j]))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ode.c:1181:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1181 |         eta = var_of(es, sym_cstr("h"), TY_REAL);
+      |                                         ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1199:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1199 |                 if (node_slots(g) & ((1ULL << MAXP) - 1)) {
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/ucas.h:22:14: note: expanded from macro 'MAXP'
+   22 | #define MAXP 8           /* parameters per function */
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:1211:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1211 |                 S.F[j] = tidy(mk_cast(TY_REAL, subst(D[j], map, NSLOT)));
+      |                                       ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1221:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1221 |         T = ADD(SUB(N.b[n], N.a[n]), KI(1));
+      |                                      ^
+/home/andrew/Code/ucas/src/calc.h:80:26: note: expanded from macro 'KI'
+   80 | #define KI(v) mk_const_i(TY_LIT, (int64_t)(v))
+      |                          ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:96:16: note: expanded from macro 'TY_LIT'
+   96 | #define TY_LIT TY(K_LIT, 64)
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^          ~
+/home/andrew/Code/ucas/src/calc.h:82:39: note: expanded from macro 'ADD'
+   82 | #define ADD(a, b) mk_bin(O_ADD, (a), (b))
+      |                                       ^
+/home/andrew/Code/ucas/src/ode.c:1284:46: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 1284 | find_loops(nid e, nid *out, int *n, int max, uint8_t *seen)
+      |                                              ^
+/home/andrew/Code/ucas/src/ode.c:1291:17: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+ 1291 |         if (N.op[e] == O_LOOP) {
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:1297:17: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+ 1297 |         if (N.op[e] == O_TABLE) {
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:1302:17: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+ 1302 |         if (N.op[e] == O_CONST || N.op[e] == O_VAR)
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:1302:39: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+ 1302 |         if (N.op[e] == O_CONST || N.op[e] == O_VAR)
+      |                                              ^
+/home/andrew/Code/ucas/src/ode.c:1395:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1395 |                         out[i + k] = TY_FP(N.ty[e]) ? COLR(&p, p.root[0])[k] :
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/ode.c:1648:15: warning: either cast from 'int' to 'size_t' (aka 'unsigned long') is ineffective, or there is loss of precision before the conversion [bugprone-misplaced-widening-cast]
+ 1648 |         g0 = xcalloc((size_t)(Q + 1), sizeof *g0);
+      |                      ^
+/home/andrew/Code/ucas/src/ode.c:1667:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1667 |                                 sw = (q == 0 || q == Q) ? 1 : (q & 1) ? 4 : 2;
+      |                                                                ^ ~
+/home/andrew/Code/ucas/src/ode.c:1716:7: warning: Access to field 'pd' results in a dereference of a null pointer (loaded from variable 'E') [clang-analyzer-core.NullDereference]
+ 1716 |         pd = E->pd;
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:826:6: note: Assuming the condition is true
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:826:2: note: Taking true branch
+  826 |         if (pde_find(var)) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:827:3: note: Calling 'cmd_pde'
+  827 |                 cmd_pde(var, bn, steps);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1706:2: note: 'E' initialized here
+ 1706 |         struct pdeent *E = pde_find(name);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1714:6: note: Assuming 'E' is null
+ 1714 |         if (!E)
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1714:2: note: Taking true branch
+ 1714 |         if (!E)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1716:7: note: Access to field 'pd' results in a dereference of a null pointer (loaded from variable 'E')
+ 1716 |         pd = E->pd;
+      |              ^
+/home/andrew/Code/ucas/src/ode.c:1723:10: warning: 'ul' is confusable with 'u1' [misc-confusable-identifiers]
+ 1723 |                 size_t ul = strlen(us);
+      |                        ^
+/home/andrew/Code/ucas/src/ode.c:1711:10: note: other declaration found here
+ 1711 |         double *u1, *u2, dt, dt2, maxd = 0, *xo, *so;
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:1743:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1743 |                 map[j] = var_of(slot, pn, TY_REAL);
+      |                                           ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1745:15: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1745 |         r2 = mk_cast(TY_REAL, subst(pd.rhs, map, pd.rf.np));
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:99:17: note: expanded from macro 'TY_REAL'
+   99 | #define TY_REAL TY(K_REAL, 64)
+      |                 ^~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:93:26: note: expanded from macro 'TY'
+   93 | #define TY(k, w) ((ty_t)(((k) << 8) | (w)))
+      |                          ^~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ode.c:1752:8: warning: 1st function call argument is an uninitialized value [clang-analyzer-core.CallAndMessage]
+ 1752 |                         d = tidy(d);
+      |                             ^
+/home/andrew/Code/ucas/src/ode.c:826:6: note: Assuming the condition is true
+  826 |         if (pde_find(var)) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:826:2: note: Taking true branch
+  826 |         if (pde_find(var)) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:827:3: note: Calling 'cmd_pde'
+  827 |                 cmd_pde(var, bn, steps);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1709:21: note: 'd' declared without an initial value
+ 1709 |         nid map[MAXP], r2, d;
+      |                            ^
+/home/andrew/Code/ucas/src/ode.c:1714:6: note: Assuming 'E' is non-null
+ 1714 |         if (!E)
+      |             ^~
+/home/andrew/Code/ucas/src/ode.c:1714:2: note: Taking false branch
+ 1714 |         if (!E)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1717:6: note: Assuming 'tend' is 0
+ 1717 |         if (tend)
+      |             ^~~~
+/home/andrew/Code/ucas/src/ode.c:1717:2: note: Taking false branch
+ 1717 |         if (tend)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1720:14: note: Assuming 'j' is >= field 'np'
+ 1720 |         for (j = 0; j < pd.rf.np; j++) {
+      |                     ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1720:2: note: Loop condition is false. Execution continues on line 1745
+ 1720 |         for (j = 0; j < pd.rf.np; j++) {
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1749:3: note: Loop condition is true.  Entering loop body
+ 1749 |                 for (k = 2; k <= 5; k++) {
+      |                 ^
+/home/andrew/Code/ucas/src/ode.c:1750:9: note: Calling 'guarded_diff'
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1017:6: note: Assuming the condition is false
+ 1017 |         if (setjmp(fail_jmp) == 0)
+      |             ^
+/usr/include/setjmp.h:53:21: note: expanded from macro 'setjmp'
+   53 | #define setjmp(env)     _setjmp (env)
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1017:2: note: Taking false branch
+ 1017 |         if (setjmp(fail_jmp) == 0)
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1023:2: note: Returning without writing to '*r'
+ 1023 |         return ok;
+      |         ^
+/home/andrew/Code/ucas/src/ode.c:1750:9: note: Returning from 'guarded_diff'
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                              ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/ode.c:1750:4: note: Taking true branch
+ 1750 |                         if (!guarded_diff(r2, k, &d))
+      |                         ^
+/home/andrew/Code/ucas/src/ode.c:1752:8: note: 1st function call argument is an uninitialized value
+ 1752 |                         d = tidy(d);
+      |                             ^    ~
+/home/andrew/Code/ucas/src/ode.c:1791:34: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1791 |                 maxd = fmax(maxd, fabs(u1[j] - u2[2 * j]));
+      |                                                ^
+/home/andrew/Code/ucas/src/ode.c:1791:37: note: make conversion explicit to silence this warning
+   26 |                 maxd = fmax(maxd, fabs(u1[j] - u2[2 * j]));
+      |                                                   ^~~~~
+      |                                                   (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ode.c:1791:37: note: perform multiplication in a wider type
+ 1791 |                 maxd = fmax(maxd, fabs(u1[j] - u2[2 * j]));
+      |                                                   ^
+      |                                                   (ptrdiff_t)
+/home/andrew/Code/ucas/src/ode.c:1803:31: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1803 |                         md = fmax(md, fabs(so[j] - u2[2 * j]));
+      |                                                    ^
+/home/andrew/Code/ucas/src/ode.c:1803:34: note: make conversion explicit to silence this warning
+ 1803 |                         md = fmax(md, fabs(so[j] - u2[2 * j]));
+      |                                                       ^~~~~
+      |                                                       (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ode.c:1803:34: note: perform multiplication in a wider type
+ 1803 |                         md = fmax(md, fabs(so[j] - u2[2 * j]));
+      |                                                       ^
+      |                                                       (ptrdiff_t)
+/home/andrew/Code/ucas/src/ode.c:1816:42: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+ 1816 |                 printf("      %-10.4g %.8g\n", xo[jj], u2[2 * jj]);
+      |                                                        ^
+/home/andrew/Code/ucas/src/ode.c:1816:45: note: make conversion explicit to silence this warning
+ 1816 |                 printf("      %-10.4g %.8g\n", xo[jj], u2[2 * jj]);
+      |                                                           ^~~~~~
+      |                                                           (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/ode.c:1816:45: note: perform multiplication in a wider type
+ 1816 |                 printf("      %-10.4g %.8g\n", xo[jj], u2[2 * jj]);
+      |                                                           ^
+      |                                                           (ptrdiff_t)
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

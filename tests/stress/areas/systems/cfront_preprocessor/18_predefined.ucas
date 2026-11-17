@@ -1,0 +1,25 @@
+c lower nofile
+```c
+
+int q1(int x){
+#if defined(__ucas_cfront__) && defined(__STDC__)
+ return x+1;
+#else
+ return x+2;
+#endif
+}
+int q2(int x){
+#ifdef __x86_64__
+ return x+3;
+#else
+ return x+4;
+#endif
+}
+int q3(int x){
+#if __SIZEOF_INT__ == 4 && __CHAR_BIT__ == 8
+ return x+5;
+#else
+ return x+6;
+#endif
+}
+```

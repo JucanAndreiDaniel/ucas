@@ -1,0 +1,13 @@
+> f(x: u32) = bfe(x, 8, 8)
+> g(x: u32) = (x >> 8) & 255
+> f2(x: u32) = (bfe(x, 8, 8)) * 1
+> g2(x: u32) = ((x >> 8) & 255) * 1
+> f1(x: u32) = (bfe(x, 8, 8)) * 1
+> equiv f g
+f and g are equal on the domain of f (proved by SAT: 33 AIG nodes, 0 conflicts)
+> equiv f2 g2
+f2 and g2 are equal on the domain of f2 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> equiv f1 g
+f1 and g are equal on the domain of f1 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> equiv f f2
+f and f2 are equal on the domain of f (proved by SAT: 33 AIG nodes, 0 conflicts)

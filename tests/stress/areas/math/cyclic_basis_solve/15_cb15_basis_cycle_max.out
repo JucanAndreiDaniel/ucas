@@ -1,0 +1,24 @@
+> basis a { not(x) = ~x }
+> basis b : a { andp(x, y) = x & y }
+> basis a : b { orp(x, y) = x | y }
+> f(a: bool, b: bool, c: bool) = a & b | a & c | b & c
+> gates f basis a max 3
+gates for f: 3 input bits -> 1 output bit, basis a
+  exact search stopped (cost limit at cost 3); Shannon decomposition instead:
+  cost 4, 4 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = andp(a, b)              = a & b
+  t1 = orp(a, b)               = a | b
+  t2 = andp(c, t1)              = c & t1
+  t3 = orp(t0, t2)               = t0 | t2
+  r0 = t3
+> gates f basis a max 6 nodes 20
+gates for f: 3 input bits -> 1 output bit, basis a
+  exact search stopped (node budget at cost 2); Shannon decomposition instead:
+  cost 4, 4 steps (an upper bound, not proved minimal)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = andp(a, b)              = a & b
+  t1 = orp(a, b)               = a | b
+  t2 = andp(c, t1)              = c & t1
+  t3 = orp(t0, t2)               = t0 | t2
+  r0 = t3

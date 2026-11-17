@@ -1,0 +1,52 @@
+> approx sin(x) in 0..0.7853981 degree 5 as f32 list 2
+  note: sin(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx sin(x) on [0, 0.785398126] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 0.785398126]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    1.58e-06     1.59e-06     1.51e-06     
+  rational fits (num/den degree: minimax, Pade; max rel error):
+    1/2 0.00097 (0.00717) 3/2 1.67e-06 (5.41e-05) 1/4 1.62e-05 (0.000463) 5/2 2.32e-09 (3.08e-07)
+    3/4 7.39e-09 (9.38e-07) 1/6 2.65e-07 (2.92e-05) 5/4 4.4e-12 (2.3e-09) 3/6 3.16e-11 (1.59e-08) 5/6 8.57e-15 (1.78e-11)
+  piecewise (2 pieces split at 0.392699063, max rel error): 1: 0.0129 2: 0.0032 3: 1.26e-05 4: 1.54e-06 5: 4.31e-09
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131065 f32 in [0, 0.785398126]; ulp against the exact value (naive rounding in parentheses)
+  an f32 x/y is measured at both ends of Vulkan's 2.5 ulp for it (a GPU's division)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  25.1 ulp (25.6)          1.91e-06      1.34e-06      4    at x=0.252619326
+      x*P(x^2): fma(x*s, fma(0.00816328265, s, -0.166633904), x) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 1.33, probable no better (under 16 operations), expected 0.588; `error ap1 ~ F` says what each means
+  2   rational  5/2   horner+fma  5.31 ulp                 4.16e-07      2.39e-07      8    at x=0.523598731
+      x*P(x^2)/Q(x^2): x*fma(fma(0.00431663869, s, -0.142560899), s, 1.0)/fma(0.0241058897, s, 1.0) where s = x*x
+  6 more: 'approx more [n]'
+> approx more 2
+  3   rational  5/4   horner+fma  4.4 ulp (4.4)            4.13e-07      2.29e-07      9    at x=0.522747874
+      x*P(x^2)/Q(x^2): x*fma(fma(0.0032931224, s, -0.133667916), s, 1.0)/fma(fma(0.000459584524, s, 0.0329987481), s, 1.0) where s = x*x
+  4   rational  5/2   horner+rcp  2.24 ulp                 1.65e-07      1.05e-07      12   at x=0.250198483
+      x*P(x^2)/Q(x^2): x*fma(fma(-q0, den, fma(fma(0.00431663869, s, -0.142560899), s, 1.0)), rc, q0) where s = x*x, den = fma(0.0241058897, s, 1.0), rc = 1.0/den, q0 = fma(fma(0.00431663869, s, -0.142560899), s, 1.0)*rc
+  4 more
+> approx sin(x) in -pi/2..pi/2 degree 5..9 norational nosplit noreduce list 1
+approx sin(x) on [-1.57079637, 1.57079637] as f32, fma
+  checked: sin(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1.57079637]
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    0.000134     0.000135     0.000108     
+    7    1.17e-06     1.18e-06     9.39e-07     
+    9    6.65e-09     6.68e-09     5.31e-09     
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 131102 f32 in [-1.57079637, 1.57079637]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  1.82e+03 ulp             0.000122      0.000108      4    at x=-1.16394172e-10
+      x*P(x^2): x*fma(fma(0.00760290353, s, -0.165960118), s, 0.999891818) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 3.07, probable no better (under 16 operations), expected 0.926; `error ap1 ~ F` says what each means
+  4 more: 'approx more [n]'
+> approx more 2
+  2   minimax   7     horner+fma  17.1 ulp (17.1)          1.86e-06      1.02e-06      5    at x=-1.5704608
+      x*P(x^2): x*fma(fma(fma(-0.000184881399, s, 0.00831189938), s, -0.16665554), s, 0.999999046) where s = x*x
+  3   minimax   9     horner+fma  1.53 ulp (1.66)          9.1e-08       9.09e-08      6    at x=-1.5408833
+      x*P(x^2): fma(x*s, fma(fma(fma(2.60609568e-06, s, -0.000198097769), s, 0.00833306927), s, -0.166666597), x) where s = x*x
+  2 more

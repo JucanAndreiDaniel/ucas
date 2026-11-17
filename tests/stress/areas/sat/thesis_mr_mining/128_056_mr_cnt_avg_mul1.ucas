@@ -1,0 +1,11 @@
+# MR mined from tests/counter:avg,low
+# meaning-preserving rewrite: mul1
+f(a: u8, b: u8) = (a + b)/2
+g(a: u8, b: u8) = (a & b) + ((a xor b) >> 1)
+f2(a: u8, b: u8) = ((a + b)/2) * 1
+g2(a: u8, b: u8) = ((a & b) + ((a xor b) >> 1)) * 1
+f1(a: u8, b: u8) = ((a + b)/2) * 1
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

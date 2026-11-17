@@ -1,0 +1,467 @@
+src/astcblk.c:637:40: warning: The left operand of '*' is a garbage value [core.UndefinedBinaryOperatorResult]
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+src/astcblk.c:551:6: note: Assuming the condition is false
+  551 |         if ((mode & 0x1ff) == 0x1fc) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:551:2: note: Taking false branch
+  551 |         if ((mode & 0x1ff) == 0x1fc) {
+      |         ^
+src/astcblk.c:568:7: note: Calling 'mode_of'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:478:6: note: Left side of '||' is false
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |             ^
+src/astcblk.c:478:33: note: Assuming the condition is false
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |                                        ^~~~~~~~~~~~~~~~
+src/astcblk.c:478:2: note: Taking false branch
+  478 |         if ((mode & 0x1ff) == 0x1fc || (mode & 15) == 0)
+      |         ^
+src/astcblk.c:480:2: note: Value assigned to 'D', which participates in a condition later
+  480 |         *D = (int)(mode >> 10) & 1;
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:482:6: note: Assuming the condition is false
+  482 |         if (mode & 3) {
+      |             ^~~~~~~~
+src/astcblk.c:482:2: note: Taking false branch
+  482 |         if (mode & 3) {
+      |         ^
+src/astcblk.c:499:3: note: Control jumps to 'case 1:'  at line 501
+  499 |                 switch (B) {
+      |                 ^
+src/astcblk.c:501:32: note:  Execution continues on line 518
+  501 |                 case 1: *W = A + 2; *H = 12; break;
+      |                                              ^
+src/astcblk.c:518:9: note: Assuming the condition is true
+  518 |         return *r >= 2;
+      |                ^~~~~~~
+src/astcblk.c:568:7: note: Returning from 'mode_of'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:568:6: note: Left side of '||' is false
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |             ^
+src/astcblk.c:568:45: note: Assuming 'W' is <= 'bw'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |                                                    ^~~~~~
+src/astcblk.c:568:6: note: Left side of '||' is false
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |             ^
+src/astcblk.c:568:55: note: Assuming 'H' is <= 'bh'
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |                                                              ^~~~~~
+src/astcblk.c:568:2: note: Taking false branch
+  568 |         if (!mode_of(mode, &W, &H, &D, &Hp, &r) || W > bw || H > bh)
+      |         ^
+src/astcblk.c:571:16: note: Assuming 'D' is 0
+  571 |         nw = W * H * (D ? 2 : 1);
+      |                       ^
+src/astcblk.c:571:16: note: '?' condition is false
+src/astcblk.c:574:6: note: Assuming 'nw' is <= 64
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^~~~~~~
+src/astcblk.c:574:6: note: Left side of '||' is false
+src/astcblk.c:574:17: note: Assuming 'wbits' is >= 24
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                        ^~~~~~~~~~
+src/astcblk.c:574:6: note: Left side of '||' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^
+src/astcblk.c:574:31: note: Assuming 'wbits' is <= 96
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                      ^~~~~~~~~~
+src/astcblk.c:574:6: note: Left side of '||' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |             ^
+src/astcblk.c:574:46: note: 'D' is 0
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                                     ^
+src/astcblk.c:574:48: note: Left side of '&&' is false
+  574 |         if (nw > 64 || wbits < 24 || wbits > 96 || (D && parts == 4))
+      |                                                       ^
+src/astcblk.c:577:6: note: Assuming 'parts' is not equal to 1
+  577 |         if (parts == 1) {
+      |             ^~~~~~~~~~
+src/astcblk.c:577:2: note: Taking false branch
+  577 |         if (parts == 1) {
+      |         ^
+src/astcblk.c:583:7: note: Assuming the condition is true
+  583 |                 if ((f & 3) == 0) {
+      |                     ^~~~~~~~~~~~
+src/astcblk.c:583:3: note: Taking true branch
+  583 |                 if ((f & 3) == 0) {
+      |                 ^
+src/astcblk.c:584:16: note: Assuming 'i' is >= 'parts'
+  584 |                         for (i = 0; i < parts; i++)
+      |                                     ^~~~~~~~~
+src/astcblk.c:584:4: note: Loop condition is false. Execution continues on line 596
+  584 |                         for (i = 0; i < parts; i++)
+      |                         ^
+src/astcblk.c:596:6: note: 'D' is 0
+  596 |         if (D) {
+      |             ^
+src/astcblk.c:596:2: note: Taking false branch
+  596 |         if (D) {
+      |         ^
+src/astcblk.c:600:14: note: 'i' is >= 'parts'
+  600 |         for (i = 0; i < parts; i++)
+      |                     ^
+src/astcblk.c:600:2: note: Loop condition is false. Execution continues on line 602
+  600 |         for (i = 0; i < parts; i++)
+      |         ^
+src/astcblk.c:603:6: note: 'ncv' is <= 18
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |             ^~~
+src/astcblk.c:603:6: note: Left side of '||' is false
+src/astcblk.c:603:18: note: Assuming the condition is false
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:603:2: note: Taking false branch
+  603 |         if (ncv > 18 || cbits < (13 * ncv + 4) / 5)
+      |         ^
+src/astcblk.c:605:16: note: 'qi' is >= 0
+  605 |         for (qi = 20; qi >= 0 && bise_bits(&crange[qi], ncv) > cbits; qi--)
+      |                       ^~
+src/astcblk.c:605:16: note: Left side of '&&' is true
+src/astcblk.c:605:2: note: Loop condition is false. Execution continues on line 607
+  605 |         for (qi = 20; qi >= 0 && bise_bits(&crange[qi], ncv) > cbits; qi--)
+      |         ^
+src/astcblk.c:607:6: note: 'qi' is >= 4
+  607 |         if (qi < 4)
+      |             ^~
+src/astcblk.c:607:2: note: Taking false branch
+  607 |         if (qi < 4)
+      |         ^
+src/astcblk.c:614:2: note: Loop condition is false. Execution continues on line 616
+  614 |         for (i = 0; i < ncv; i++)
+      |         ^
+src/astcblk.c:616:21: note: 'i' is >= 'parts'
+  616 |         for (i = 0, k = 0; i < parts; i++) {
+      |                            ^
+src/astcblk.c:616:2: note: Loop condition is false. Execution continues on line 622
+  616 |         for (i = 0, k = 0; i < parts; i++) {
+      |         ^
+src/astcblk.c:626:14: note: Assuming 'i' is >= 'nw'
+  626 |         for (i = 0; i < nw; i++)
+      |                     ^~~~~~
+src/astcblk.c:626:2: note: Loop condition is false. Execution continues on line 628
+  626 |         for (i = 0; i < nw; i++)
+      |         ^
+src/astcblk.c:628:14: note: 'j' is < 'bh'
+  628 |         for (j = 0; j < bh; j++)
+      |                     ^
+src/astcblk.c:628:2: note: Loop condition is true.  Entering loop body
+  628 |         for (j = 0; j < bh; j++)
+      |         ^
+src/astcblk.c:629:15: note: Assuming 'i' is < 'bw'
+  629 |                 for (i = 0; i < bw; i++) {
+      |                             ^~~~~~
+src/astcblk.c:629:3: note: Loop condition is true.  Entering loop body
+  629 |                 for (i = 0; i < bw; i++) {
+      |                 ^
+src/astcblk.c:633:23: note: 'D' is 0
+  633 |                         for (pl = 0; pl < (D ? 2 : 1); pl++) {
+      |                                            ^
+src/astcblk.c:633:23: note: '?' condition is false
+src/astcblk.c:633:4: note: Loop condition is true.  Entering loop body
+  633 |                         for (pl = 0; pl < (D ? 2 : 1); pl++) {
+      |                         ^
+src/astcblk.c:635:5: note: Loop condition is true.  Entering loop body
+  635 |                                 for (q = 0; q < 4; q++)
+      |                                 ^
+src/astcblk.c:636:6: note: Taking true branch
+  636 |                                         if (pt[q] >= 0)
+      |                                         ^
+src/astcblk.c:637:23: note: 'D' is 0
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                                 ^
+src/astcblk.c:637:23: note: '?' condition is false
+src/astcblk.c:637:40: note: The left operand of '*' is a garbage value
+  637 |                                                 s += w[pt[q] * (D ? 2 : 1) + pl] * f[q];
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~ ^
+src/astcblk.c:1243:3: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 1243 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1239:10: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1224:2: note: Calling 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:918:14: note: Assuming 'k' is >= 'nl'
+  918 |         for (k = 0; k < nl; k++) {
+      |                     ^~~~~~
+src/astcblk.c:918:2: note: Loop condition is false. Execution continues on line 1224
+  918 |         for (k = 0; k < nl; k++) {
+      |         ^
+src/astcblk.c:1224:2: note: Returning from 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1226:14: note: Assuming 'k' is < field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is true.  Entering loop body
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1227:13: note: Assuming field 'parts' is equal to 1
+ 1227 |                 part[k] = L->parts == 1 ? 0 : astcb_partition(L->seed, k % P->bw,
+      |                           ^~~~~~~~~~~~~
+src/astcblk.c:1227:13: note: '?' condition is true
+src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+src/astcblk.c:1231:3: note: Loop condition is true.  Entering loop body
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+src/astcblk.c:1234:20: note: Calling 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+src/astcblk.c:938:9: note: 'b' initialized to 0
+  938 |         int i, b = 0;
+      |                ^
+src/astcblk.c:940:2: note: Loop condition is false. Execution continues on line 943
+  940 |         for (i = 1; i < L->n; i++)
+      |         ^
+src/astcblk.c:943:2: note: Returning zero (loaded from 'b')
+  943 |         return b;
+      |         ^~~~~~~~
+src/astcblk.c:1234:20: note: Returning from 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+src/astcblk.c:1234:4: note: Assigning 0
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+src/astcblk.c:1243:3: note: Loop condition is true.  Entering loop body
+ 1243 |                 ENDS();
+      |                 ^
+src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+src/astcblk.c:1243:3: note: Assigned value is uninitialized
+ 1243 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1239:10: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                               ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1243:3: warning: Array subscript is undefined [core.uninitialized.ArraySubscript]
+ 1243 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1239:12: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                                 ^    ~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1226:14: note: Assuming 'k' is < field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is true.  Entering loop body
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1227:13: note: Assuming field 'parts' is not equal to 1
+ 1227 |                 part[k] = L->parts == 1 ? 0 : astcb_partition(L->seed, k % P->bw,
+      |                           ^~~~~~~~~~~~~
+src/astcblk.c:1227:13: note: '?' condition is false
+src/astcblk.c:1228:28: note: Assuming the condition is false
+ 1228 |                     k / P->bw, L->parts, P->bw * P->bh < 31);
+      |                                          ^~~~~~~~~~~~~~~~~~
+src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+src/astcblk.c:1231:15: note: 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^
+src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+src/astcblk.c:1243:3: note: Loop condition is true.  Entering loop body
+ 1243 |                 ENDS();
+      |                 ^
+src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+src/astcblk.c:1243:3: note: Array subscript is undefined
+ 1243 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1239:12: note: expanded from macro 'ENDS'
+ 1239 |                         ea[k] = lc.u[ends[part[k]][t][0]]; \
+      |                                 ^    ~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1279:20: warning: Assigned value is uninitialized [core.uninitialized.Assign]
+ 1279 |                         L->cv[L->ncv++] = lc.v[ends[p][t][0]];
+      |                                         ^ ~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1224:2: note: Calling 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:918:14: note: Assuming 'k' is >= 'nl'
+  918 |         for (k = 0; k < nl; k++) {
+      |                     ^~~~~~
+src/astcblk.c:918:2: note: Loop condition is false. Execution continues on line 1224
+  918 |         for (k = 0; k < nl; k++) {
+      |         ^
+src/astcblk.c:1224:2: note: Returning from 'lvl_of'
+ 1224 |         lvl_of(&lc, &crange[L->qi], 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1229:14: note: Assuming 't' is < field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+src/astcblk.c:1229:2: note: Loop condition is true.  Entering loop body
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+src/astcblk.c:1231:15: note: Assuming 'p' is < field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+src/astcblk.c:1231:3: note: Loop condition is true.  Entering loop body
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+src/astcblk.c:1234:20: note: Calling 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+src/astcblk.c:938:9: note: 'b' initialized to 0
+  938 |         int i, b = 0;
+      |                ^
+src/astcblk.c:940:2: note: Loop condition is false. Execution continues on line 943
+  940 |         for (i = 1; i < L->n; i++)
+      |         ^
+src/astcblk.c:943:2: note: Returning zero (loaded from 'b')
+  943 |         return b;
+      |         ^~~~~~~~
+src/astcblk.c:1234:20: note: Returning from 'lvl_near'
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                                         ^~~~~~~~~~~~~~~~~
+src/astcblk.c:1234:4: note: Assigning 0
+ 1234 |                         ends[p][t][0] = lvl_near(&lc, lo);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1231:15: note: Assuming 'p' is >= field 'parts'
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                             ^~~~~~~~~~~~
+src/astcblk.c:1231:3: note: Loop condition is false. Execution continues on line 1243
+ 1231 |                 for (p = 0; p < L->parts; p++) {
+      |                 ^
+src/astcblk.c:1243:3: note: 'k' is >= field 'n'
+ 1243 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+src/astcblk.c:1243:3: note: Loop condition is false. Execution continues on line 1243
+src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+src/astcblk.c:1243:3: note: Loop condition is false.  Exiting loop
+src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+src/astcblk.c:1245:15: note: Assuming 'polish' is 0
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                             ^~~~~~
+src/astcblk.c:1245:22: note: Left side of '&&' is false
+ 1245 |                 for (p = 0; polish && p < L->parts; p++) {
+      |                                    ^
+src/astcblk.c:1267:3: note: 'k' is >= field 'n'
+ 1267 |                 ENDS();
+      |                 ^~~~~~
+src/astcblk.c:1238:15: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                             ^
+src/astcblk.c:1267:3: note: Loop condition is false. Execution continues on line 1267
+src/astcblk.c:1238:3: note: expanded from macro 'ENDS'
+ 1238 |                 for (k = 0; k < P->n; k++) { \
+      |                 ^
+src/astcblk.c:1267:3: note: Loop condition is false.  Exiting loop
+src/astcblk.c:1237:16: note: expanded from macro 'ENDS'
+ 1237 | #define ENDS() do { \
+      |                ^
+src/astcblk.c:1270:7: note: Assuming 'pb.mx' is <= 'sc.mx'
+ 1270 |                 if (pb.mx > sc.mx)
+      |                     ^~~~~~~~~~~~~
+src/astcblk.c:1270:3: note: Taking false branch
+ 1270 |                 if (pb.mx > sc.mx)
+      |                 ^
+src/astcblk.c:1229:14: note: Assuming 't' is >= field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+src/astcblk.c:1229:2: note: Loop condition is false. Execution continues on line 1276
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+src/astcblk.c:1277:2: note: Loop condition is true.  Entering loop body
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |         ^
+src/astcblk.c:1278:3: note: Loop condition is true.  Entering loop body
+ 1278 |                 for (t = 0; t < P->nt; t++) {
+      |                 ^
+src/astcblk.c:1279:20: note: Assigned value is uninitialized
+ 1279 |                         L->cv[L->ncv++] = lc.v[ends[p][t][0]];
+      |                                         ^ ~~~~~~~~~~~~~~~~~~~
+src/astcblk.c:1285:36: warning: Array subscript is undefined [core.uninitialized.ArraySubscript]
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                         ^    ~~~~~~~~
+src/astcblk.c:1226:14: note: Assuming 'k' is >= field 'n'
+ 1226 |         for (k = 0; k < P->n; k++)
+      |                     ^~~~~~~~
+src/astcblk.c:1226:2: note: Loop condition is false. Execution continues on line 1229
+ 1226 |         for (k = 0; k < P->n; k++)
+      |         ^
+src/astcblk.c:1229:14: note: Assuming 't' is >= field 'nt'
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |                     ^~~~~~~~~
+src/astcblk.c:1229:2: note: Loop condition is false. Execution continues on line 1276
+ 1229 |         for (t = 0; t < P->nt; t++) {
+      |         ^
+src/astcblk.c:1277:14: note: Assuming 'p' is >= field 'parts'
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |                     ^~~~~~~~~~~~
+src/astcblk.c:1277:2: note: Loop condition is false. Execution continues on line 1282
+ 1277 |         for (p = 0; p < L->parts; p++)
+      |         ^
+src/astcblk.c:1282:25: note: Assuming field 'D' is 0
+ 1282 |         L->nw = g->W * g->H * (L->D ? 2 : 1);
+      |                                ^~~~
+src/astcblk.c:1282:25: note: '?' condition is false
+src/astcblk.c:1283:7: note: The value 0 is assigned to 'k'
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |              ^~~~~
+src/astcblk.c:1283:14: note: Assuming the condition is true
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |                     ^~~~~~~~~~~~~~~
+src/astcblk.c:1283:2: note: Loop condition is true.  Entering loop body
+ 1283 |         for (k = 0; k < g->W * g->H; k++)
+      |         ^
+src/astcblk.c:1284:23: note: Field 'D' is 0
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                     ^
+src/astcblk.c:1284:20: note: '?' condition is false
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                                  ^
+src/astcblk.c:1284:3: note: Loop condition is true.  Entering loop body
+ 1284 |                 for (t = 0; t < (L->D ? 2 : 1); t++)
+      |                 ^
+src/astcblk.c:1285:36: note: Array subscript is undefined
+ 1285 |                         L->wv[k * (L->D ? 2 : 1) + t] = lw.v[gi[t][k]];
+      |                                                         ^    ~~~~~~~~
+5 warnings generated.

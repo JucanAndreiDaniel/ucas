@@ -1,0 +1,28 @@
+> theorem o01: forall x:int: (x + 2147483647)^2 = x^2 + 4294967294*x + 4611686014132420609
+theorem o01: forall x:int: (x + 2147483647)^2 = x^2 + 4294967294*x + 4611686014132420609
+> prove o01
+o01: proved automatically (4 kernel inferences); independent re-check: ok
+> theorem o02: forall x:int: (x + 1000000000)^2 = x^2 + 2000000000*x + 1000000000000000000
+theorem o02: forall x:int: (x + 1000000000)^2 = x^2 + 2000000000*x + 1000000000000000000
+> prove o02
+o02: proved automatically (4 kernel inferences); independent re-check: ok
+> theorem o03: forall x:int: (x + 4294967296)^2 = x^2 + 8589934592*x + 0
+theorem o03: forall x:int: (x + 4294967296)^2 = x^2 + 8589934592*x + 0
+> prove o03
+06_overflow.ucas:8:7: error: integer overflow in a proof (coefficients beyond 64 bits)
+    prove o03
+          ^
+> theorem o04: forall x:int: 9223372036854775800 > x
+06_overflow.ucas:10:9: error: 
+    theorem o04: forall x:int: 9223372036854775800 > x
+            ^
+> prove o04
+06_overflow.ucas:11:7: error: no theorem o04 (state it with: theorem o04: ...)
+    prove o04
+          ^
+> theorem o05: forall x:int: 9000000000000000000 > x
+theorem o05: forall x:int: x < 9000000000000000000
+> prove o05
+o05: NOT proved
+  automation: could not prove forall x:int: x < 9000000000000000000
+  no counterexample among the standard spaces (S^1 S^2 RP^2 T^2 RP^3 L(4;1) L(9;1) RP^4), p, n, r <= 4

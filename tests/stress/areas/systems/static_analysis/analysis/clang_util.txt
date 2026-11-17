@@ -1,0 +1,126 @@
+src/util.c:82:14: warning: Addition of a null pointer (via field 'p') and a probably nonzero integer value (via field 'n') may result in undefined behavior [core.NullPointerArithm]
+   82 |         memcpy(b->p + b->n, s, n + 1);
+      |                     ^
+src/util.c:315:6: note: Assuming 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~~~~~
+src/util.c:315:2: note: Taking false branch
+  315 |         if (note_mute > 0)
+      |         ^
+src/util.c:321:25: note: Assuming 'len' is >= 0
+  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+      |                                ^~~~~~~
+src/util.c:321:25: note: '?' condition is false
+src/util.c:327:6: note: Assuming 'rep_on' is 0
+  327 |         if (rep_on)
+      |             ^~~~~~
+src/util.c:327:2: note: Taking false branch
+  327 |         if (rep_on)
+      |         ^
+src/util.c:329:2: note: Value assigned to 'notes.p'
+  329 |         sb_printf(&line, "  note: %s\n", sb_str(&t));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:330:6: note: Assuming field 'p' is equal to NULL
+  330 |         if (notes.p == NULL || strstr(notes.p, line.p) == NULL)
+      |             ^~~~~~~~~~~~~~~
+src/util.c:330:22: note: Left side of '||' is true
+  330 |         if (notes.p == NULL || strstr(notes.p, line.p) == NULL)
+      |                             ^
+src/util.c:331:3: note: Calling 'sb_puts'
+  331 |                 sb_puts(&notes, line.p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:81:2: note: Calling 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:59:6: note: Assuming the condition is true
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:59:2: note: Taking true branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+src/util.c:60:3: note: Returning without writing to 'b->p'
+   60 |                 return;
+      |                 ^
+src/util.c:81:2: note: Returning from 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:82:14: note: Addition of a null pointer (via field 'p') and a probably nonzero integer value (via field 'n') may result in undefined behavior
+   82 |         memcpy(b->p + b->n, s, n + 1);
+      |                   ~ ^    ~
+src/util.c:116:29: warning: Array access (via field 'p') results in a null pointer dereference [core.NullDereference]
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                                           ^
+src/util.c:315:6: note: Assuming 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~~~~~
+src/util.c:315:2: note: Taking false branch
+  315 |         if (note_mute > 0)
+      |         ^
+src/util.c:321:25: note: Assuming 'len' is < 0
+  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+      |                                ^~~~~~~
+src/util.c:321:25: note: '?' condition is true
+src/util.c:325:2: note: Calling 'sb_puts'
+  325 |         sb_puts(&t, tmp);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:81:2: note: Calling 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:59:2: note: Taking false branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+src/util.c:61:9: note: Field 'cap' is equal to 0
+   61 |         if (b->cap == 0)
+      |                ^
+src/util.c:61:2: note: Taking true branch
+   61 |         if (b->cap == 0)
+      |         ^
+src/util.c:63:9: note: Assuming the condition is false
+   63 |         while (b->n + extra + 1 > b->cap)
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:63:2: note: Loop condition is false. Execution continues on line 65
+   63 |         while (b->n + extra + 1 > b->cap)
+      |         ^
+src/util.c:81:2: note: Returning from 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:325:2: note: Returning from 'sb_puts'
+  325 |         sb_puts(&t, tmp);
+      |         ^~~~~~~~~~~~~~~~
+src/util.c:326:2: note: Value assigned to 't.p'
+  326 |         cap_text(&t, 0, NOTE_CAP);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:327:6: note: Assuming 'rep_on' is not equal to 0
+  327 |         if (rep_on)
+      |             ^~~~~~
+src/util.c:327:2: note: Taking true branch
+  327 |         if (rep_on)
+      |         ^
+src/util.c:328:17: note: Calling 'sb_str'
+  328 |                 rep_note_hook(sb_str(&t));      /* a guess: an ambiguity in JSON mode */
+      |                               ^~~~~~~~~~
+src/util.c:115:6: note: Assuming field 'p' is equal to NULL
+  115 |         if (b->p == NULL)
+      |             ^~~~~~~~~~~~
+src/util.c:115:2: note: Taking true branch
+  115 |         if (b->p == NULL)
+      |         ^
+src/util.c:116:3: note: Calling 'sb_reserve'
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                 ^~~~~~~~~~~~~~~~
+src/util.c:59:6: note: Assuming the condition is true
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/util.c:59:2: note: Taking true branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+src/util.c:60:3: note: Returning without writing to 'b->p'
+   60 |                 return;
+      |                 ^
+src/util.c:116:3: note: Returning from 'sb_reserve'
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                 ^~~~~~~~~~~~~~~~
+src/util.c:116:29: note: Array access (via field 'p') results in a null pointer dereference
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                                      ~    ^
+2 warnings generated.

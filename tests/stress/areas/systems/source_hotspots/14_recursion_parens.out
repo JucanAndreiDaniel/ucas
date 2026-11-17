@@ -1,0 +1,15 @@
+  note: the ```glsl block was compiled to SPIR-V with glslangValidator
+  f50: called from a compute shader's main(), its arguments read from a buffer
+  f200: called from a compute shader's main(), its arguments read from a buffer
+  f1000: called from a compute shader's main(), its arguments read from a buffer
+  f2000: called from a compute shader's main(), its arguments read from a buffer
+  optimized with spirv-opt -O (what follows is beyond that)
+> spvsimplify nofile
+simplify: 81 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+function level: not run (the GLSL parser left main out: f200 (line 2: expressions and statements nest more than the 96 deep glslc takes); f1000 (line 3: expressions and statements nest more than the 96 deep glslc takes); f2000 (line 4: expressions and statements nest more than the 96 deep glslc takes); main (line 10014: no function 'f200' is declared))
+> show 1+1
+_() = 2
+  -> int

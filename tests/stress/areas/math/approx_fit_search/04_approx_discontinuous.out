@@ -1,0 +1,72 @@
+> approx sign(x) in -1..1 degree 5 as f32 norational nosplit noreduce list 2
+approx sign(x) on [-1, 1] as f32, fma
+  checked: sign(x) is odd (f(-x) = -f(x) at 64 points): fitting x*P(x^2) on [0, 1]
+  metric: relative error
+  fits in real arithmetic (max relative error of x*P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    5    0.999        -            1            
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130931 f32 in [-1, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  8.39e+06 ulp             1             1             4    at x=-6.51764763e-18
+      x*P(x^2): x*fma(fma(18.7673759, s, -25.2816601), s, 8.51428032) where s = x*x
+      rounding of ap1, first order, 4 operations, relative, in u = 2^-24: worst case 1.79e+03, probable no better (under 16 operations), expected 984; `error ap1 ~ F` says what each means
+> approx (x>0?1:0) in -1..1 degree 5 as f32 norational nosplit noreduce list 2
+  note: x > 0 ? 1 : 0 has special points at the interval's ends (at x = -1 it is 0, at x = 1 a maximum): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx x > 0 ? 1 : 0 on [-1, 1] as f32, fma
+  checked: zero at x = 0 is not simple (f(x)/(x - c) is unbounded): no factor
+  metric: absolute error (a zero that a polynomial factor cannot match)
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    5    0.499        -            0.502        
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130899 f32 in [-1, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  0.502 abs                inf           0.502         5    at x=0.821560979
+      P(x): fma(fma(fma(fma(fma(9.35105038, x, -0.0162936319), x, -12.6095295), x, 0.0105710048), x, 4.25052977), x, 0.498886853)
+      rounding of ap1, first order, 5 operations, relative, in u = 2^-24: worst case 812, probable no better (under 16 operations), expected 394; `error ap1 ~ F` says what each means
+  2   minimax   5     estrin+fma  0.502 abs                inf           0.502         7    at x=0.821622014
+      P(x): fma(fma(9.35105038, x, -0.0162936319), x4, fma(fma(-12.6095295, x, 0.0105710048), x2, fma(4.25052977, x, 0.498886853))) where x2 = x*x, x4 = x2*x2
+> approx floor(x) in 0..1 degree 5 as f32 list 1
+  note: floor(x) has special points at the interval's ends (at x = 0 it is 0): near a zero, relative error is unbounded unless the zero is exact; keep them exact (costs some error elsewhere)? not by default: say `keep endpoints` to keep them
+approx floor(x) on [0, 1] as f32, fma
+  checked: zero at x = 0 is not simple (f(x)/(x - c) is unbounded): no factor
+  metric: absolute error (a zero that a polynomial factor cannot match)
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    5    1            -            0.5          
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130809 f32 in [0, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   5     horner+fma  0.5 abs                  inf           0.5           5    at x=0.904524326
+      P(x): fma(fma(fma(fma(fma(256.0, x, -640.0), x, 560.0), x, -200.0), x, 25.0), x, -0.5)
+      rounding of ap1, first order, 5 operations, relative, in u = 2^-24: worst case 8.1e+03, probable no better (under 16 operations), expected 2.89e+03; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]' (dominated or worse)
+> approx abs(x) in -1..1 degree 4 as f32 list 1
+approx abs(x) on [-1, 1] as f32, fma
+  checked: abs(x) is even (f(-x) = f(x) at 64 points): fitting P(x^2) on [0, 1]
+  metric: relative error
+  fits in real arithmetic (max relative error of P(x^2)):
+    deg  cheb interp  cheb econ    minimax
+    4    658          -            0.999        
+    (stopped: the error shrinks too slowly; a range reduction or a split fits better)
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130931 f32 in [-1, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   4     horner+fma  1.93e+25 ulp             inf           0.119         3    at x=2.34860299e-38
+      P(x^2): fma(fma(-1.23760426, s, 2.16580749), s, -2.71050543e-20) where s = x*x
+      rounding of ap1, first order, 3 operations, relative, in u = 2^-24: worst case 275, probable no better (under 16 operations), expected 112; `error ap1 ~ F` says what each means
+> approx sqrt(x) in -1..1 degree 4 as f32 norational nosplit noreduce list 2
+approx sqrt(x) on [-1, 1] as f32, fma
+  checked: zero at x = 0 is not simple (f(x)/(x - c) is unbounded): no factor
+  metric: absolute error (a zero that a polynomial factor cannot match)
+  checked: the target equals sqrt(x) at 33 points: range reductions and identities for sqrt apply
+  fits in real arithmetic (max absolute error of P(x)):
+    deg  cheb interp  cheb econ    minimax
+    4    -            -            -            
+  candidates ranked by max abs and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130899 f32 in [-1, 1]; absolute error: the target reaches 0 here, where relative error and ulp are unbounded
+  #   kind      deg   form        error (naive)            max rel       max abs       cost

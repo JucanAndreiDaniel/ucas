@@ -1,0 +1,13 @@
+> f(a: u32, b: u32) = mulhi(a, b)
+> g(a: u32, b: u32) = u32((u64(a) * u64(b)) >> 32)
+> f2(a: u32, b: u32) = (mulhi(a, b)) + 0
+> g2(a: u32, b: u32) = (u32((u64(a) * u64(b)) >> 32)) + 0
+> f1(a: u32, b: u32) = (mulhi(a, b)) + 0
+> equiv f g
+f and g are equal on the domain of f (proved by SAT: 9857 AIG nodes, 0 conflicts)
+> equiv f2 g2
+f2 and g2 are equal on the domain of f2 (proved by SAT: 9857 AIG nodes, 0 conflicts)
+> equiv f1 g
+f1 and g are equal on the domain of f1 (proved by SAT: 9857 AIG nodes, 0 conflicts)
+> equiv f f2
+f and f2 are equal on the domain of f (proved by SAT: 9857 AIG nodes, 0 conflicts)

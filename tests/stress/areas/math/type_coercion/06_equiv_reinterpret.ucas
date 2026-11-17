@@ -1,0 +1,23 @@
+# WRONG: equiv treats u8 identity and i8 reinterpretation as equal.
+fneg(x: i8) = x + u8(0)
+gneg(x: i8) = x
+show fneg
+show gneg
+equiv fneg gneg
+equiv gneg fneg
+const255(x: i8 in -1..-1) = 255
+constm1(x: i8 in -1..-1) = -1
+show const255
+show constm1
+equiv fneg const255
+equiv fneg constm1
+equiv gneg const255
+equiv gneg constm1
+a(x: u8) = x
+b(x: u8) = i8(x)
+show a
+show b
+range a
+range b
+equiv a b
+equiv b a

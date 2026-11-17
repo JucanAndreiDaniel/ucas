@@ -1,0 +1,528 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/zint.c:25:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   19 | #include <stdlib.h>
+   20 | #include <string.h>
+   21 | 
+   22 | /* ---- the arena ---- */
+   23 | 
+   24 | static struct {
+   25 |         uint64_t n, cap;
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:26:2: warning: no header providing "int8_t" is directly included [misc-include-cleaner]
+   26 |         int8_t *sg;
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:27:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   27 |         uint32_t *len;
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:36:10: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+   36 | mk_small(int64_t v)
+      |          ^
+/home/andrew/Code/ucas/src/zint.c:38:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   38 |         return (zint)((uint64_t)v << 1);
+      |                                   ~~ ^
+/home/andrew/Code/ucas/src/zint.c:44:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   44 |         return h >> 1;
+      |                ^ ~~
+/home/andrew/Code/ucas/src/zint.c:50:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   50 |         return (uint64_t)h >> 1;
+      |                            ~~ ^
+/home/andrew/Code/ucas/src/zint.c:64:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   64 |         if (Z_IS_SMALL(h)) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:70:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   70 |                 v->buf[1] = (uint32_t)(m >> 32);
+      |                                          ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:75:11: warning: 'signed char' to 'int' conversion; consider casting to 'unsigned char' first. [bugprone-signed-char-misuse]
+   75 |                 v->sg = Z.sg[i];
+      |                         ^
+/home/andrew/Code/ucas/src/zint.c:92:51: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   92 |                 uint64_t m = d[0] | (n == 2 ? (uint64_t)d[1] << 32 : 0);
+      |                                                              ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:93:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   93 |                 if (m < (uint64_t)Z_SMALL_LIM)
+      |                                   ^
+/home/andrew/Code/ucas/src/absalg.h:71:22: note: expanded from macro 'Z_SMALL_LIM'
+   71 | #define Z_SMALL_LIM ((int64_t)1 << 61)   /* inline: |v| < Z_SMALL_LIM */
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/zint.c:107:10: warning: no header providing "UINT32_MAX" is directly included [misc-include-cleaner]
+  107 |         if (n > UINT32_MAX)
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:153:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                     ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:153:33: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                             ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:153:33: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/zint.c:153:33: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/zint.c:161:3: warning: Null pointer passed to 1st parameter expecting 'nonnull' [clang-analyzer-core.NonNullParamChecker]
+  161 |                 memcpy(tmp + tn, Z.limb + Z.off[i], Z.len[i] * sizeof *tmp);
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:1376:2: note: Taking false branch
+ 1376 |         if (!z_parse(s, &n, &e))
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1380:10: note: Assuming the condition is false
+ 1380 |                 while (*t == ' ')
+      |                        ^~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:1380:3: note: Loop condition is false. Execution continues on line 1382
+ 1380 |                 while (*t == ' ')
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:1382:7: note: Assuming the condition is true
+ 1382 |                 if (*t == '/') {
+      |                     ^~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:1382:3: note: Taking true branch
+ 1382 |                 if (*t == '/') {
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:1385:4: note: Taking true branch
+ 1385 |                         if (z_parse(t + 1, &dd, &e2)) {
+      |                         ^
+/home/andrew/Code/ucas/src/zint.c:1391:6: note: Assuming 'd' is not equal to 0
+ 1391 |         if (d == 0)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/zint.c:1391:2: note: Taking false branch
+ 1391 |         if (d == 0)
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1393:9: note: Calling 'zq_make'
+ 1393 |         *out = zq_make(n, d);
+      |                ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:1270:6: note: 'd' is not equal to 0
+ 1270 |         if (d == 0)
+      |             ^
+/home/andrew/Code/ucas/src/zint.c:1270:2: note: Taking false branch
+ 1270 |         if (d == 0)
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1272:6: note: Assuming the condition is false
+ 1272 |         if (z_sign(d) < 0) {
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:1272:2: note: Taking false branch
+ 1272 |         if (z_sign(d) < 0) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1276:6: note: Assuming 'n' is not equal to 0
+ 1276 |         if (n == 0) {
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/zint.c:1276:2: note: Taking false branch
+ 1276 |         if (n == 0) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1281:2: note: Taking false branch
+ 1281 |         if (z_is_one(d)) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:1286:6: note: Calling 'z_gcd'
+ 1286 |         g = z_gcd(n, d);
+      |             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:812:20: note: Left side of '&&' is false
+  812 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                           ^
+/home/andrew/Code/ucas/src/zint.c:825:9: note: 'b' is not equal to 0
+  825 |         while (b != 0) {
+      |                ^
+/home/andrew/Code/ucas/src/zint.c:825:2: note: Loop condition is true.  Entering loop body
+  825 |         while (b != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:826:21: note: Left side of '&&' is false
+  826 |                 if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                                   ^
+/home/andrew/Code/ucas/src/zint.c:825:9: note: Assuming 'b' is equal to 0
+  825 |         while (b != 0) {
+      |                ^~~~~~
+/home/andrew/Code/ucas/src/zint.c:825:2: note: Loop condition is false. Execution continues on line 834
+  825 |         while (b != 0) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:834:2: note: Calling 'z_release_keep'
+  834 |         z_release_keep(m, &a, 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:140:2: note: 'tmp' initialized to a null pointer value
+  140 |         static uint32_t *tmp;
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:147:6: note: 'n' is > 'tocap'
+  147 |         if (n > tocap) {
+      |             ^
+/home/andrew/Code/ucas/src/zint.c:147:2: note: Taking true branch
+  147 |         if (n > tocap) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:151:2: note: Loop condition is true.  Entering loop body
+  151 |         for (k = 0; k < n; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:153:7: note: Left side of '||' is false
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                     ^
+/home/andrew/Code/ucas/src/absalg.h:72:23: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                       ^
+/home/andrew/Code/ucas/src/zint.c:153:30: note: Assuming the condition is false
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:153:3: note: Taking false branch
+  153 |                 if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:155:7: note: Assuming the condition is false
+  155 |                 if (tn + Z.len[i] > tcap) {
+      |                     ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:155:3: note: Taking false branch
+  155 |                 if (tn + Z.len[i] > tcap) {
+      |                 ^
+/home/andrew/Code/ucas/src/zint.c:161:3: note: Null pointer passed to 1st parameter expecting 'nonnull'
+  161 |                 memcpy(tmp + tn, Z.limb + Z.off[i], Z.len[i] * sizeof *tmp);
+      |                 ^      ~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:176:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  176 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:176:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  176 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:176:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/zint.c:176:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/zint.c:184:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:184:32: warning: Although the value stored to 'i' is used in the enclosing expression, the value is never actually read from 'i' [clang-analyzer-deadcode.DeadStores]
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ^   ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:184:32: note: Although the value stored to 'i' is used in the enclosing expression, the value is never actually read from 'i'
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ^   ~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:184:34: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  184 |                         if (Z_IS_SMALL(keep[k]) || (i = zidx(keep[k])) < m.n)
+      |                                                     ~~^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:184:34: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/zint.c:184:34: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/zint.c:256:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  256 |                 c >>= 32;
+      |                   ~~~ ^~
+/home/andrew/Code/ucas/src/zint.c:292:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  292 |                         c >>= 32;
+      |                           ~~~ ^~
+/home/andrew/Code/ucas/src/zint.c:307:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  307 |                 x <<= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/zint.c:321:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  321 |                 uint64_t t = (r << 32) | u[i];
+      |                                 ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:336:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  336 |         const uint64_t b = (uint64_t)1 << 32;
+      |                                        ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:345:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  345 |                 vn[i] = (uint32_t)(((uint64_t)v[i] << s) |
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/zint.c:346:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  346 |                     ((uint64_t)v[i - 1] >> (32 - s)));
+      |                                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:347:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  347 |         vn[0] = (uint32_t)((uint64_t)v[0] << s);
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/zint.c:348:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  348 |         un[m] = (uint32_t)((uint64_t)u[m - 1] >> (32 - s));
+      |                                               ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:350:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  350 |                 un[i] = (uint32_t)(((uint64_t)u[i] << s) |
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/zint.c:351:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  351 |                     ((uint64_t)u[i - 1] >> (32 - s)));
+      |                                         ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:352:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  352 |         un[0] = (uint32_t)((uint64_t)u[0] << s);
+      |                                           ~~ ^
+/home/andrew/Code/ucas/src/zint.c:354:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  354 |                 uint64_t num = ((uint64_t)un[j + n] << 32) | un[j + n - 1];
+      |                                                     ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:357:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  357 |                 while (qhat >= b || qhat * vn[n - 2] > ((rhat << 32) |
+      |                                                               ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:369:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  369 |                         k = (int64_t)(p >> 32) - (t >> 32);
+      |                                         ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:369:30: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  369 |                         k = (int64_t)(p >> 32) - (t >> 32);
+      |                                                   ^ ~~
+/home/andrew/Code/ucas/src/zint.c:380:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  380 |                                 c >>= 32;
+      |                                   ~~~ ^~
+/home/andrew/Code/ucas/src/zint.c:386:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  386 |                 r[i] = (uint32_t)(((uint64_t)un[i] >> s) |
+      |                                                    ~~ ^
+/home/andrew/Code/ucas/src/zint.c:387:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  387 |                     ((uint64_t)un[i + 1] << (32 - s)));
+      |                                          ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/zint.c:388:47: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  388 |         r[n - 1] = (uint32_t)((uint64_t)un[n - 1] >> s);
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/zint.c:396:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  396 |         if (SMALL_OK(v))
+      |             ^
+/home/andrew/Code/ucas/src/zint.c:33:29: note: expanded from macro 'SMALL_OK'
+   33 | #define SMALL_OK(v) ((v) > -Z_SMALL_LIM && (v) < Z_SMALL_LIM)
+      |                             ^~~~~~~~~~~
+/home/andrew/Code/ucas/src/absalg.h:71:22: note: expanded from macro 'Z_SMALL_LIM'
+   71 | #define Z_SMALL_LIM ((int64_t)1 << 61)   /* inline: |v| < Z_SMALL_LIM */
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/zint.c:402:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  402 |                 d[1] = (uint32_t)(m >> 32);
+      |                                     ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:412:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  412 |         if (v < (uint64_t)Z_SMALL_LIM)
+      |                           ^
+/home/andrew/Code/ucas/src/absalg.h:71:22: note: expanded from macro 'Z_SMALL_LIM'
+   71 | #define Z_SMALL_LIM ((int64_t)1 << 61)   /* inline: |v| < Z_SMALL_LIM */
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/zint.c:415:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  415 |         d[1] = (uint32_t)(v >> 32);
+      |                             ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:420:13: warning: no header providing "i128" is directly included [misc-include-cleaner]
+   17 | z_from_i128(i128 v)
+      |             ^
+/home/andrew/Code/ucas/src/zint.c:422:2: warning: no header providing "u128" is directly included [misc-include-cleaner]
+  422 |         u128 m;
+      |         ^
+/home/andrew/Code/ucas/src/zint.c:426:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  426 |         if (v > -(i128)Z_SMALL_LIM && v < (i128)Z_SMALL_LIM)
+      |                        ^
+/home/andrew/Code/ucas/src/absalg.h:71:22: note: expanded from macro 'Z_SMALL_LIM'
+   71 | #define Z_SMALL_LIM ((int64_t)1 << 61)   /* inline: |v| < Z_SMALL_LIM */
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/zint.c:426:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  426 |         if (v > -(i128)Z_SMALL_LIM && v < (i128)Z_SMALL_LIM)
+      |                                                 ^
+/home/andrew/Code/ucas/src/absalg.h:71:22: note: expanded from macro 'Z_SMALL_LIM'
+   71 | #define Z_SMALL_LIM ((int64_t)1 << 61)   /* inline: |v| < Z_SMALL_LIM */
+      |                      ^~~~~~~~~~ ~~
+/home/andrew/Code/ucas/src/zint.c:431:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |                 m >>= 32;
+      |                   ~~~ ^~
+/home/andrew/Code/ucas/src/zint.c:445:61: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  445 |         *m = (n > 0 ? v->d[0] : 0) | (n > 1 ? (uint64_t)v->d[1] << 32 : 0);
+      |                                                                 ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:455:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  455 |         if (Z_IS_SMALL(a))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:460:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  460 |         return v.sg < 0 ? m <= (uint64_t)1 << 63 : m < (uint64_t)1 << 63;
+      |                                            ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:460:64: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  460 |         return v.sg < 0 ? m <= (uint64_t)1 << 63 : m < (uint64_t)1 << 63;
+      |                                                                    ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:469:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  469 |         if (Z_IS_SMALL(a))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:479:18: warning: no header providing "u64" is directly included [misc-include-cleaner]
+  479 | z_to_u64(zint a, u64 *out)
+      |                  ^
+/home/andrew/Code/ucas/src/zint.c:484:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  484 |         if (Z_IS_SMALL(a)) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:502:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  502 |         if (Z_IS_SMALL(a))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:513:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  513 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:513:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  513 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:536:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  536 |         if (Z_IS_SMALL(a) || Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:536:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  536 |         if (Z_IS_SMALL(a) || Z_IS_SMALL(b))
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:594:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  594 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:594:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  594 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:602:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:602:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  602 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:612:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  612 |         if (Z_IS_SMALL(a))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:634:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:634:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  634 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:648:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  648 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:648:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  648 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                                ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:648:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  648 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                                                 ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:656:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:656:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                                ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:656:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  656 |         if (Z_IS_SMALL(acc) && Z_IS_SMALL(a) && Z_IS_SMALL(b))
+      |                                                 ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:670:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  670 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:670:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  670 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:760:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b) && b != 0) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:760:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  760 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b) && b != 0) {
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:812:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:812:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  812 |         if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                              ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:826:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  826 |                 if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                     ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:826:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  826 |                 if (Z_IS_SMALL(a) && Z_IS_SMALL(b)) {
+      |                                      ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:890:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  890 |                 if (e & 1)
+      |                       ~ ^
+/home/andrew/Code/ucas/src/zint.c:892:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  892 |                 e >>= 1;
+      |                   ~~~ ^
+/home/andrew/Code/ucas/src/zint.c:915:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  915 |                 if ((v.d[i / 32] >> (i % 32)) & 1)
+      |                                               ~ ^
+/home/andrew/Code/ucas/src/zint.c:967:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  967 |                 r = ((r << 32) | v.d[i]) % m;
+      |                         ~~ ^~
+/home/andrew/Code/ucas/src/zint.c:1001:10: warning: no header providing "nt_isprime" is directly included [misc-include-cleaner]
+ 1001 |                 return nt_isprime(u);
+      |                        ^
+/home/andrew/Code/ucas/src/zint.c:1032:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1032 |         const long lim = 1L << 21;
+      |                          ^~ ~~
+/home/andrew/Code/ucas/src/zint.c:1107:11: warning: no header providing "nt_fac" is directly included [misc-include-cleaner]
+ 1107 |                         struct nt_fac F;
+      |                                ^
+/home/andrew/Code/ucas/src/zint.c:1108:4: warning: no header providing "nt_factor" is directly included [misc-include-cleaner]
+ 1108 |                         nt_factor(u, &F);
+      |                         ^
+/home/andrew/Code/ucas/src/zint.c:1214:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1214 |         if (Z_IS_SMALL(a)) {
+      |             ^
+/home/andrew/Code/ucas/src/absalg.h:72:25: note: expanded from macro 'Z_IS_SMALL'
+   72 | #define Z_IS_SMALL(h) (((h) & 1) == 0)
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/zint.c:1243:6: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1243 |         k = (k + 1) & 7;
+      |             ^~~~~~~ ~
+/home/andrew/Code/ucas/src/zint.c:1246:2: warning: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119 [clang-analyzer-security.insecureAPI.strcpy]
+ 1246 |         strcpy(r, s);
+      |         ^~~~~~
+/home/andrew/Code/ucas/src/zint.c:1246:2: note: Call to function 'strcpy' is insecure as it does not provide bounding of the memory buffer. Replace unbounded copy functions with analogous functions that support length arguments such as 'strlcpy'. CWE-119
+ 1246 |         strcpy(r, s);
+      |         ^~~~~~

@@ -1,0 +1,16 @@
+> f1(x: i8) = x
+> g1(x: i8 in -5..5) = x
+> equiv f1 ~ g1
+f1 and g1 are equal on the domain of f1 (exhaustive)
+> f2(x: u8, y: u8) = x + y
+> g2(x: u8, y: u8) = x + y where y < 4
+> equiv f2 ~ g2
+f2 and g2 are equal on the domain of f2 (exhaustive)
+> f3(x: u32) = x
+> g3(x: u32 in {0, 4000000000}) = x
+> equiv f3 ~ g3
+f3 and g3 are equal on the domain of f3 (proved by SAT: 33 AIG nodes, 0 conflicts)
+> f4(x: u32 in 0..100000000) = x where x < 10000000
+> g4(x: u32 in 0..100000000) = x where x < 5000000
+> equiv f4 ~ g4
+f4 and g4 are equal on the domain of f4 (proved by SAT: 115 AIG nodes, 0 conflicts)

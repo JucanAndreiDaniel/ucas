@@ -1,0 +1,71 @@
+> f1(x: u8 in -10..10) = x
+> range f1
+range of f1 -> u8:
+  0..10   (11 distinct values)
+  values: 0..10
+  fits in u4
+  over all 11 points of the domain
+> f2(x: i8 in 0..255) = x
+> range f2
+range of f2 -> i8:
+  0..127   (128 distinct values)
+  fits in u7
+  over all 128 points of the domain
+> f3(x: u8 in 0..1000) = x
+> range f3
+range of f3 -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> f4(x: i8 in 200..300) = x
+> range f4
+range of f4 -> i8:
+  empty (undefined everywhere)
+  over all 0 points of the domain
+> r1(x: u8 in 250..255) = x + i8(10)
+  note: mixing u8 and i8: computed as u8
+> range r1
+range of r1 -> u8:
+  4..9   (6 distinct values)
+  values: 4..9
+  fits in u4
+  over all 6 points of the domain
+> r2(x: i8 in 120..127) = x + u8(10)
+  note: mixing i8 and u8: computed as u8
+> range r2
+range of r2 -> u8:
+  130..137   (8 distinct values)
+  values: 130..137
+  fits in u8
+  over all 8 points of the domain
+> r3(x: i8 in -128..-1) = x + u8(0)
+  note: mixing i8 and u8: computed as u8
+> range r3
+range of r3 -> u8:
+  128..255   (128 distinct values)
+  fits in u8
+  over all 128 points of the domain
+> u64big(x: u64 in 0..100) = x + 18446744073709551615
+> range u64big
+range of u64big -> u64:
+  0..18446744073709551615
+  fits in u64
+  over all 101 points of the domain
+> i64big(x: i64 in 0..100) = x - 9223372036854775807
+> range i64big
+range of i64big -> i64:
+  -9223372036854775807..-9223372036854775707
+  fits in i64
+  over all 101 points of the domain
+> range x: u1
+range of x -> u1:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  over all 2 points of the domain
+> range x: i1
+range of x -> i1:
+  -1..0   (2 distinct values)
+  values: -1..0
+  fits in i2
+  over all 2 points of the domain

@@ -1,0 +1,468 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/x86mca.c:41:5: warning: no header providing "int32_t" is directly included [misc-include-cleaner]
+   36 | #include <stdlib.h>
+   37 | #include <string.h>
+   38 | 
+   39 | void
+   40 | mblock_add(struct mblock *b, int cls, int vw, const char *text,
+   41 |     int32_t d0, int32_t d1, int32_t d2)
+      |     ^
+/home/andrew/Code/ucas/src/x86mca.c:46:12: warning: no header providing "newcap" is directly included [misc-include-cleaner]
+   32 | #include "x86.h"
+   33 | #include "calc.h"
+   34 | 
+   35 | #include <math.h>
+   36 | #include <stdlib.h>
+   37 | #include <string.h>
+   38 | 
+   39 | void
+   40 | mblock_add(struct mblock *b, int cls, int vw, const char *text,
+   41 |     int32_t d0, int32_t d1, int32_t d2)
+   42 | {
+   43 |         struct mins *m;
+   44 | 
+   45 |         if (b->n == b->cap) {
+   46 |                 b->cap = newcap(b->cap, b->n + 1);
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:47:11: warning: no header providing "xrealloc" is directly included [misc-include-cleaner]
+   47 |                 b->in = xrealloc(b->in, b->cap * sizeof *b->in);
+      |                         ^
+/home/andrew/Code/ucas/src/x86mca.c:51:12: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+   51 |         m->cls = (uint8_t)cls;
+      |                   ^
+/home/andrew/Code/ucas/src/x86mca.c:56:2: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+   36 |         snprintf(m->text, sizeof m->text, "%s", text ? text : xc_name[cls]);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:60:8: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+   60 | popc16(uint16_t m)
+      |        ^
+/home/andrew/Code/ucas/src/x86mca.c:64:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+   64 |         for (; m; m &= m - 1)
+      |                     ~~ ^~~~~
+/home/andrew/Code/ucas/src/x86mca.c:99:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+   99 |         uint32_t i;
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:113:10: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  113 |                                         if ((c->ports >> p) & 1) {
+      |                                             ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/x86mca.c:113:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  113 |                                         if ((c->ports >> p) & 1) {
+      |                                                       ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:125:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  125 |                                         if (((c->ports >> p) & 1) &&
+      |                                              ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/x86mca.c:125:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  125 |                                         if (((c->ports >> p) & 1) &&
+      |                                                        ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:144:14: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  144 |         double *t = xcalloc((size_t)n * iters, sizeof *t), best = 0, r;
+      |                     ^
+/home/andrew/Code/ucas/src/x86mca.c:268:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  268 |                                         if (((c->ports >> p) & 1) && pfree[p] <= cyc &&
+      |                                              ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/x86mca.c:268:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  268 |                                         if (((c->ports >> p) & 1) && pfree[p] <= cyc &&
+      |                                                        ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:276:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  276 |                                                 if ((c->ports >> p) & 1)
+      |                                                     ^~~~~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/x86mca.c:276:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  276 |                                                 if ((c->ports >> p) & 1)
+      |                                                               ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:338:9: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  338 |         struct sbuf pb = {0};
+      |                ^
+/home/andrew/Code/ucas/src/x86mca.c:342:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+  342 |         printf("  %s: %u instruction%s, %g uops\n", title, b->n,
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:346:2: warning: no header providing "rep_obj" is directly included [misc-include-cleaner]
+   32 |         rep_obj(NULL);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:347:2: warning: no header providing "rep_str" is directly included [misc-include-cleaner]
+  347 |         rep_str("block", title);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:348:2: warning: no header providing "rep_bool" is directly included [misc-include-cleaner]
+  348 |         rep_bool("loop", b->loop);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:349:2: warning: no header providing "rep_list" is directly included [misc-include-cleaner]
+  349 |         rep_list("instructions");
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:355:3: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  355 |                 sb_clear(&pb);
+      |                 ^
+/home/andrew/Code/ucas/src/x86mca.c:365:49: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  365 |                             (double)c->lat, (double)c->rtp, c->uops, sb_str(&pb),
+      |                                                                      ^
+/home/andrew/Code/ucas/src/x86mca.c:373:4: warning: no header providing "rep_num" is directly included [misc-include-cleaner]
+  373 |                         rep_num("latency", c->lat);
+      |                         ^
+/home/andrew/Code/ucas/src/x86mca.c:375:4: warning: no header providing "rep_int" is directly included [misc-include-cleaner]
+  375 |                         rep_int("uops", c->uops);
+      |                         ^
+/home/andrew/Code/ucas/src/x86mca.c:379:3: warning: no header providing "rep_end" is directly included [misc-include-cleaner]
+  379 |                 rep_end();
+      |                 ^
+/home/andrew/Code/ucas/src/x86mca.c:415:2: warning: no header providing "nid" is directly included [misc-include-cleaner]
+  415 |         nid *key;               /* memo: node -> code */
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:419:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  419 |         uint64_t bound;         /* loop: slots bound by the loop */
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:431:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  431 |         return (uarchs[ua].feat & XB(f)) != 0;
+      |                                   ^
+/home/andrew/Code/ucas/src/x86.h:30:24: note: expanded from macro 'XB'
+   30 | #define XB(f) (1ULL << (f))
+      |                     ~~ ^~~
+/home/andrew/Code/ucas/src/x86mca.c:442:2: warning: no header providing "print_node" is directly included [misc-include-cleaner]
+  442 |         print_node(&b, n, NULL);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:443:2: warning: no header providing "cap_text" is directly included [misc-include-cleaner]
+  443 |         cap_text(&b, 0, 30);
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:453:10: warning: no header providing "opinfo" is directly included [misc-include-cleaner]
+  453 |         return (opinfo[N.op[n]].fl & OF_CMP) != 0;
+      |                 ^
+/home/andrew/Code/ucas/src/x86mca.c:453:17: warning: no header providing "N" is directly included [misc-include-cleaner]
+  453 |         return (opinfo[N.op[n]].fl & OF_CMP) != 0;
+      |                        ^
+/home/andrew/Code/ucas/src/x86mca.c:453:31: warning: no header providing "OF_CMP" is directly included [misc-include-cleaner]
+  453 |         return (opinfo[N.op[n]].fl & OF_CMP) != 0;
+      |                                      ^
+/home/andrew/Code/ucas/src/x86mca.c:453:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  453 |         return (opinfo[N.op[n]].fl & OF_CMP) != 0;
+      |                                    ~ ^
+/home/andrew/Code/ucas/src/ucas.h:258:16: note: expanded from macro 'OF_CMP'
+  258 | #define OF_CMP 8
+      |                ^
+/home/andrew/Code/ucas/src/x86mca.c:460:2: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  460 |         ty_t t = N.ty[n], ta = N.a[n] ? N.ty[N.a[n]] : 0;
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:461:11: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  461 |         int fp = TY_FP(t), w = TY_SIZED(t) ? TYW(t) : 64;
+      |                  ^
+/home/andrew/Code/ucas/src/x86mca.c:461:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:461:25: warning: no header providing "TY_SIZED" is directly included [misc-include-cleaner]
+  461 |         int fp = TY_FP(t), w = TY_SIZED(t) ? TYW(t) : 64;
+      |                                ^
+/home/andrew/Code/ucas/src/x86mca.c:461:25: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:461:39: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  461 |         int fp = TY_FP(t), w = TY_SIZED(t) ? TYW(t) : 64;
+      |                                              ^
+/home/andrew/Code/ucas/src/x86mca.c:461:39: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:464:2: warning: potential uncovered code path; add a default label [bugprone-unhandled-code-paths]
+  464 |         switch (op) {
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:464:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+/home/andrew/Code/ucas/src/x86mca.c:465:7: warning: no header providing "O_CONST" is directly included [misc-include-cleaner]
+  465 |         case O_CONST: case O_UNDEF: case O_TABLE:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:465:21: warning: no header providing "O_UNDEF" is directly included [misc-include-cleaner]
+  465 |         case O_CONST: case O_UNDEF: case O_TABLE:
+      |                            ^
+/home/andrew/Code/ucas/src/x86mca.c:465:35: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  465 |         case O_CONST: case O_UNDEF: case O_TABLE:
+      |                                          ^
+/home/andrew/Code/ucas/src/x86mca.c:467:7: warning: no header providing "O_VAR" is directly included [misc-include-cleaner]
+  467 |         case O_VAR: {
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:469:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  469 |                 if (L->bound && ((L->bound >> s) & 1)) {
+      |                                            ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:469:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  469 |                 if (L->bound && ((L->bound >> s) & 1)) {
+      |                                                  ~ ^
+/home/andrew/Code/ucas/src/x86mca.c:478:7: warning: no header providing "O_LOOP" is directly included [misc-include-cleaner]
+  478 |         case O_LOOP:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:481:7: warning: no header providing "O_INDEX" is directly included [misc-include-cleaner]
+  481 |         case O_INDEX:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:484:7: warning: no header providing "O_SEL" is directly included [misc-include-cleaner]
+  484 |         case O_SEL:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:508:7: warning: no header providing "O_ADD" is directly included [misc-include-cleaner]
+  508 |         case O_ADD: case O_SUB:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:508:19: warning: no header providing "O_SUB" is directly included [misc-include-cleaner]
+  508 |         case O_ADD: case O_SUB:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:510:7: warning: no header providing "O_NEG" is directly included [misc-include-cleaner]
+  510 |         case O_NEG:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:512:7: warning: no header providing "O_AND" is directly included [misc-include-cleaner]
+  512 |         case O_AND: case O_OR: case O_XOR: case O_NOT: case O_LNOT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:512:19: warning: no header providing "O_OR" is directly included [misc-include-cleaner]
+  512 |         case O_AND: case O_OR: case O_XOR: case O_NOT: case O_LNOT:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:512:30: warning: no header providing "O_XOR" is directly included [misc-include-cleaner]
+  512 |         case O_AND: case O_OR: case O_XOR: case O_NOT: case O_LNOT:
+      |                                     ^
+/home/andrew/Code/ucas/src/x86mca.c:512:42: warning: no header providing "O_NOT" is directly included [misc-include-cleaner]
+  512 |         case O_AND: case O_OR: case O_XOR: case O_NOT: case O_LNOT:
+      |                                                 ^
+/home/andrew/Code/ucas/src/x86mca.c:512:54: warning: no header providing "O_LNOT" is directly included [misc-include-cleaner]
+  512 |         case O_AND: case O_OR: case O_XOR: case O_NOT: case O_LNOT:
+      |                                                             ^
+/home/andrew/Code/ucas/src/x86mca.c:513:7: warning: no header providing "O_LAND" is directly included [misc-include-cleaner]
+  513 |         case O_LAND: case O_LOR:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:513:20: warning: no header providing "O_LOR" is directly included [misc-include-cleaner]
+  513 |         case O_LAND: case O_LOR:
+      |                           ^
+/home/andrew/Code/ucas/src/x86mca.c:515:7: warning: no header providing "O_MUL" is directly included [misc-include-cleaner]
+  515 |         case O_MUL:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:518:7: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  518 |                 if (is_const(N.a[n]) && N.ki[N.a[n]] > 0 &&
+      |                     ^
+/home/andrew/Code/ucas/src/x86mca.c:519:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  519 |                     !(N.ki[N.a[n]] & (N.ki[N.a[n]] - 1)))
+      |                       ^~~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/x86mca.c:525:7: warning: no header providing "O_FMA" is directly included [misc-include-cleaner]
+  525 |         case O_FMA:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:527:7: warning: no header providing "O_DIV" is directly included [misc-include-cleaner]
+  527 |         case O_DIV: case O_MOD:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:527:19: warning: no header providing "O_MOD" is directly included [misc-include-cleaner]
+  527 |         case O_DIV: case O_MOD:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:529:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  529 |                         return emit(L, TYW(t) == 64 ? XC_VFDIVD : XC_VFDIVS, n, a, b,
+      |                                        ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:532:4: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+  532 |                         int64_t k = N.ki[N.b[n]];
+      |                         ^
+/home/andrew/Code/ucas/src/x86mca.c:533:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  533 |                         if (k > 0 && !(k & (k - 1)) && TYK(t) == K_UINT)
+      |                                        ^ ~
+/home/andrew/Code/ucas/src/x86mca.c:533:35: warning: no header providing "TYK" is directly included [misc-include-cleaner]
+  533 |                         if (k > 0 && !(k & (k - 1)) && TYK(t) == K_UINT)
+      |                                                        ^
+/home/andrew/Code/ucas/src/x86mca.c:533:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:533:45: warning: no header providing "K_UINT" is directly included [misc-include-cleaner]
+  533 |                         if (k > 0 && !(k & (k - 1)) && TYK(t) == K_UINT)
+      |                                                                  ^
+/home/andrew/Code/ucas/src/x86mca.c:538:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  538 |                         if (TYK(t) != K_UINT)
+      |                             ^
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:547:7: warning: no header providing "O_SHL" is directly included [misc-include-cleaner]
+  547 |         case O_SHL: case O_SHR:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:547:19: warning: no header providing "O_SHR" is directly included [misc-include-cleaner]
+  547 |         case O_SHL: case O_SHR:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:552:7: warning: no header providing "O_EQ" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:552:18: warning: no header providing "O_NE" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |                         ^
+/home/andrew/Code/ucas/src/x86mca.c:552:29: warning: no header providing "O_LT" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |                                    ^
+/home/andrew/Code/ucas/src/x86mca.c:552:40: warning: no header providing "O_LE" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |                                               ^
+/home/andrew/Code/ucas/src/x86mca.c:552:51: warning: no header providing "O_GT" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |                                                          ^
+/home/andrew/Code/ucas/src/x86mca.c:552:62: warning: no header providing "O_GE" is directly included [misc-include-cleaner]
+  552 |         case O_EQ: case O_NE: case O_LT: case O_LE: case O_GT: case O_GE:
+      |                                                                     ^
+/home/andrew/Code/ucas/src/x86mca.c:553:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  553 |                 x = emit(L, ta && TY_FP(ta) ? XC_VFCMP : XC_ALU, n, a, b, -1);
+      |                                   ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:556:7: warning: no header providing "O_MIN" is directly included [misc-include-cleaner]
+  556 |         case O_MIN: case O_MAX:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:556:19: warning: no header providing "O_MAX" is directly included [misc-include-cleaner]
+  556 |         case O_MIN: case O_MAX:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:561:7: warning: no header providing "O_ABS" is directly included [misc-include-cleaner]
+  561 |         case O_ABS:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:566:7: warning: no header providing "O_SIGN" is directly included [misc-include-cleaner]
+  566 |         case O_SIGN:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:570:7: warning: no header providing "O_CLZ" is directly included [misc-include-cleaner]
+  570 |         case O_CLZ: case O_CTZ: case O_POPCNT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:570:19: warning: no header providing "O_CTZ" is directly included [misc-include-cleaner]
+  570 |         case O_CLZ: case O_CTZ: case O_POPCNT:
+      |                          ^
+/home/andrew/Code/ucas/src/x86mca.c:570:31: warning: no header providing "O_POPCNT" is directly included [misc-include-cleaner]
+  570 |         case O_CLZ: case O_CTZ: case O_POPCNT:
+      |                                      ^
+/home/andrew/Code/ucas/src/x86mca.c:576:7: warning: no header providing "O_CAST" is directly included [misc-include-cleaner]
+  576 |         case O_CAST:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:577:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  577 |                 if (fp && ta && TY_FP(ta))
+      |                                 ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:581:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  581 |                 if (ta && TY_FP(ta))
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:583:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                 if (ta && TY_SIZED(ta) && TY_SIZED(t) && TYW(t) > TYW(ta) &&
+      |                           ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:583:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                 if (ta && TY_SIZED(ta) && TY_SIZED(t) && TYW(t) > TYW(ta) &&
+      |                                           ^
+/home/andrew/Code/ucas/src/ucas.h:105:22: note: expanded from macro 'TY_SIZED'
+  105 | #define TY_SIZED(t) (TYK(t) == K_UINT || TYK(t) == K_SINT || TYK(t) == K_BOOL)
+      |                      ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/x86mca.c:583:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                 if (ta && TY_SIZED(ta) && TY_SIZED(t) && TYW(t) > TYW(ta) &&
+      |                                                          ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:583:53: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  583 |                 if (ta && TY_SIZED(ta) && TY_SIZED(t) && TYW(t) > TYW(ta) &&
+      |                                                                   ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:584:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  584 |                     TYW(ta) > 1)
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:587:7: warning: no header providing "O_ASUINT" is directly included [misc-include-cleaner]
+  587 |         case O_ASUINT: case O_ASINT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:587:22: warning: no header providing "O_ASINT" is directly included [misc-include-cleaner]
+  587 |         case O_ASUINT: case O_ASINT:
+      |                             ^
+/home/andrew/Code/ucas/src/x86mca.c:589:7: warning: no header providing "O_ASFLOAT" is directly included [misc-include-cleaner]
+  589 |         case O_ASFLOAT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:591:7: warning: no header providing "O_SQRT" is directly included [misc-include-cleaner]
+  591 |         case O_SQRT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:592:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  592 |                 return emit(L, fp && TYW(t) == 64 ? XC_VFSQRTD : XC_VFSQRTS, n, a,
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/x86mca.c:594:7: warning: no header providing "O_ISQRT" is directly included [misc-include-cleaner]
+  594 |         case O_ISQRT:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:598:7: warning: no header providing "O_FLOOR" is directly included [misc-include-cleaner]
+  598 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:598:21: warning: no header providing "O_CEIL" is directly included [misc-include-cleaner]
+  598 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |                            ^
+/home/andrew/Code/ucas/src/x86mca.c:598:34: warning: no header providing "O_ROUNDEVEN" is directly included [misc-include-cleaner]
+  598 |         case O_FLOOR: case O_CEIL: case O_ROUNDEVEN:
+      |                                         ^
+/home/andrew/Code/ucas/src/x86mca.c:600:7: warning: no header providing "O_BARRIER" is directly included [misc-include-cleaner]
+  600 |         case O_BARRIER:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:602:7: warning: no header providing "O_ATOMIC" is directly included [misc-include-cleaner]
+  602 |         case O_ATOMIC:
+      |              ^
+/home/andrew/Code/ucas/src/x86mca.c:605:23: warning: no header providing "OF_REALFN" is directly included [misc-include-cleaner]
+  605 |                 if (opinfo[op].fl & OF_REALFN)
+      |                                     ^
+/home/andrew/Code/ucas/src/x86mca.c:605:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  605 |                 if (opinfo[op].fl & OF_REALFN)
+      |                                   ~ ^
+/home/andrew/Code/ucas/src/ucas.h:257:19: note: expanded from macro 'OF_REALFN'
+  257 | #define OF_REALFN 4   /* operand promoted to real */
+      |                   ^
+/home/andrew/Code/ucas/src/x86mca.c:619:34: warning: conditional operator with identical true and false expressions [bugprone-branch-clone]
+  619 |                 return lower(L->outer, n) >= 0 ? -1 : -1;   /* hoisted: ready */
+      |                                                ^
+/home/andrew/Code/ucas/src/x86mca.c:619:39: warning: 'true' and 'false' expressions are equivalent [misc-redundant-expression]
+  619 |                 return lower(L->outer, n) >= 0 ? -1 : -1;   /* hoisted: ready */
+      |                                                     ^
+/home/andrew/Code/ucas/src/x86mca.c:659:2: warning: switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  659 |         switch (N.op[n]) {
+      |         ^
+/home/andrew/Code/ucas/src/x86mca.c:666:11: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  666 |                         if ((r = first_loop(N.lst[N.a[n] + j], seen)) != 0)
+      |                              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/x86mca.c:666:11: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/x86mca.c:666:11: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/x86mca.c:670:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  670 |         if ((r = first_loop(N.a[n], seen)) != 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/x86mca.c:670:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/x86mca.c:670:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/x86mca.c:672:9: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+  672 |         if ((r = first_loop(N.b[n], seen)) != 0)
+      |              ~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/x86mca.c:672:9: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/x86mca.c:672:9: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/x86mca.c:707:18: warning: no header providing "func" is directly included [misc-include-cleaner]
+  707 | x86_lower(struct func *f, int ua, struct mblock *outer, struct mblock *loop,
+      |                  ^
+/home/andrew/Code/ucas/src/x86mca.c:792:32: warning: no header providing "shared_str" is directly included [misc-include-cleaner]
+  792 |         const char *fname = f->anon ? shared_str(f->body, 80) : sym_str(f->name);
+      |                                       ^
+/home/andrew/Code/ucas/src/x86mca.c:792:58: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  792 |         const char *fname = f->anon ? shared_str(f->body, 80) : sym_str(f->name);
+      |                                                                 ^
+/home/andrew/Code/ucas/src/x86mca.c:797:2: warning: no header providing "rep_begin" is directly included [misc-include-cleaner]
+  797 |         rep_begin("mca");
+      |         ^

@@ -1,0 +1,19 @@
+# wrap / domain / range on match and where-constrained functions.
+m1(x: i8) = match x { 0 => 1, 1 | 2 => 5, 3..9 => 7, _ => 9 }
+domain m1
+range m1
+wrap m1
+p1(x: u8) = { x if x < 3, 100 otherwise }
+domain p1
+range p1
+wrap p1
+w1(x: i8, y: i8) = x + y where y > x
+domain w1
+range w1
+wrap w1
+w2(x: u16 in 0..31, n: u16 in 0..5) = x << n where x < 1 << n
+domain w2
+range w2
+c1(x: i8) = x > 0 ? x - 1 : 0
+wrap c1
+domain c1

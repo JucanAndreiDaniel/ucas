@@ -1,0 +1,22 @@
+# 2^63 and u64 literal edges (the crashing INT64_MIN / -1 is in FINDINGS.md, not here).
+a = 9223372036854775808
+show a
+b = -9223372036854775808
+show b
+c = -9223372036854775809
+show c
+d = 0x8000000000000000
+show d
+e = 18446744073709551615
+show e
+f = 18446744073709551616
+show f
+coerce8(x: i8) = x + 200
+wrap coerce8
+coerceu8(x: u8) = x - 300
+wrap coerceu8
+bigu(x: u64) = 0xFFFFFFFFFFFFFFFF
+range bigu
+wrap bigu
+minlit(x: i64) = x + -9223372036854775808
+wrap minlit

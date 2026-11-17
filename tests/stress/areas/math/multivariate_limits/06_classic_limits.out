@@ -1,0 +1,52 @@
+> limit sin(x)/x x->0
+limit of sin(x)/x as x -> 0:
+  0/0: L'Hôpital: lim (cos(x))/(1) = lim cos(x)
+  = 1 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.9983341665, 0.9999934896, 0.9999999746, 0.9999999999, 1, 1
+    extrapolated (Richardson): 1 (estimated error 0): agrees
+> limit (1+x)^(1/x) x->0
+limit of (x + 1)^(1/x) as x -> 0:
+  (x + 1)^(1/x) = exp((1/x)*log(x + 1))
+  0/0: L'Hôpital: lim (1/(x + 1))/(1) = lim 1/(x + 1)
+  = 2.718281828 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 2.867971991, 2.726825418, 2.718812933, 2.718315011, 2.718283902, 2.718281893
+    extrapolated (Richardson): 2.71828182846 (estimated error 1e-16): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 2.59374246, 2.709835576, 2.717751104, 2.718248647, 2.718279755, 2.718281764
+    extrapolated (Richardson): 2.71828182846 (estimated error 3e-16): agrees
+> limit (x^2-1)/(x-1) x->1
+limit of (x^2 - 1)/(x - 1) as x -> 1:
+  0/0: L'Hôpital: lim (2x)/(1) = lim 2x
+  = 2 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 1.9, 1.99375, 1.999609375, 1.999975586, 1.999998474, 1.999999952
+    extrapolated (Richardson): 2 (estimated error 0): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 2.1, 2.00625, 2.000390625, 2.000024414, 2.000001526, 2.000000048
+    extrapolated (Richardson): 2 (estimated error 7e-17): agrees
+> limit (exp(x)-1-x)/x^2 x->0
+limit of (exp(x) - 1 - x)/x^2 as x -> 0:
+  0/0: L'Hôpital: lim (exp(x) - 1)/(2x) = lim (exp(x) - 1)/(2x)
+  0/0: L'Hôpital: lim (exp(x))/(2) = lim exp(x)/2
+  = 1/2 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): 0.4837418036, 0.4989599589, 0.4999349022, 0.499995931, 0.4999997467, 0.5000066757
+    extrapolated (Richardson): 0.5 (estimated error 4e-14): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): 0.5170918076, 0.5010432963, 0.5000651105, 0.500004069, 0.5000002775, 0.4999923706
+    extrapolated (Richardson): 0.5 (estimated error 2e-14): agrees
+> limit x*sin(1/x) x->0
+limit of x*sin(1/x) as x -> 0:
+  1/x -> inf (the numerator -> 1, x -> 0+)
+  1/x -> inf: sin(1/x) keeps oscillating between -1 and 1
+  squeeze: x -> 0 times a bounded factor
+  = 0 (from both sides)
+  numeric from the left (a - h, h = 0.1*2^-k, k = 0..21): -0.05440211109, 0.001371407865, 0.0001514012217, -2.073123128e-06, -1.492192327e-06, 2.088386152e-08
+    extrapolated (Richardson): 8.80983672472e-07 (estimated error 1e-08)
+    the values approach 0 (|f - L| = 2e-08 at the last point; not smooth enough to extrapolate): agrees
+  numeric from the right (a + h, h = 0.1*2^-k, k = 0..21): -0.05440211109, 0.001371407865, 0.0001514012217, -2.073123128e-06, -1.492192327e-06, 2.088386152e-08
+    extrapolated (Richardson): 8.80983672472e-07 (estimated error 1e-08)
+    the values approach 0 (|f - L| = 2e-08 at the last point; not smooth enough to extrapolate): agrees
+> limit log(x)/x x->inf
+limit of log(x)/x as x -> inf:
+  inf/inf: L'Hôpital: lim (1/x)/(1) = lim 1/x
+  = 0
+  numeric (x = 10*2^k, k = 0..21): 0.2302585093, 0.03171983635, 0.003065532241, 0.0002592859194, 2.043600461e-05, 8.0388431e-07
+    extrapolated (Richardson): 3.33120838344e-08 (estimated error 3e-08): agrees

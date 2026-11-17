@@ -1,0 +1,30 @@
+# Signed negative ranges, type boundaries and the 2^22 enumeration cap.
+s1(x: i8 in -8..7) = match x { -8 => 100, -7..-1 => 50, 0 => 0, 1..7 => 10 }
+s1e(x: i8 in -8..7) = x < -7 ? 100 : (x < 0 ? 50 : (x == 0 ? 0 : 10))
+equiv s1 ~ s1e
+range s1
+domain s1
+s2(x: i8 in -128..-1) = x*x
+range s2
+domain s2
+b0(x: u8 in 0..0) = x
+range b0
+domain b0
+b1(x: u8 in 255..255) = x
+range b1
+b2(x: i8 in -128..-128) = x
+range b2
+n1(x: i16 in -1000..-1) = -x
+range n1
+domain n1
+n2(x: i16 in -1000..1000) = x % 7
+range n2
+cap0(x: u32 in 0..4194303) = x*x
+range cap0
+equiv cap0 ~ x*x
+cap1(x: u32 in 0..4194304) = x*x
+range cap1
+equiv cap1 ~ x*x
+big63(x: i64 in -1000000..-1) = x + 1
+range big63
+domain big63

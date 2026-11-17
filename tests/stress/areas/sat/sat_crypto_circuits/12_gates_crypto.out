@@ -1,0 +1,33 @@
+> maj3(x: u1, y: u1, z: u1) = (x&y) xor (x&z) xor (y&z)
+> gates maj3
+gates for maj3: 3 input bits -> 1 output bit, basis c
+  minimal: cost 4, 4 steps (no program of cost <= 3 exists; 5499 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = and(x, y)               = x & y
+  t1 = or(x, y)                = x | y
+  t2 = and(z, t1)               = z & t1
+  t3 = or(t0, t2)                = t0 | t2
+  r0 = t3
+> ch3(x: u1, y: u1, z: u1) = (x&y) xor (~x & z)
+> gates ch3
+gates for ch3: 3 input bits -> 1 output bit, basis c
+  minimal: cost 3, 3 steps (no program of cost <= 2 exists; 2714 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = xor(y, z)               = y xor z
+  t1 = and(x, t0)               = x & t0
+  t2 = xor(z, t1)               = z xor t1
+  r0 = t2
+> gates ch3 basis a64sha
+gates for ch3: 3 input bits -> 1 output bit, basis a64sha
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 28 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = bsl(x, y, z)           = x & y | ~x & z
+  r0 = t0
+> xor3(x: u1, y: u1, z: u1) = x xor y xor z
+> gates xor3
+gates for xor3: 3 input bits -> 1 output bit, basis c
+  minimal: cost 2, 2 steps (no program of cost <= 1 exists; 141 candidates searched)
+  checked: the program reproduces every output bit on all 8 care inputs
+  t0 = xor(x, y)               = x xor y
+  t1 = xor(z, t0)               = z xor t0
+  r0 = t1

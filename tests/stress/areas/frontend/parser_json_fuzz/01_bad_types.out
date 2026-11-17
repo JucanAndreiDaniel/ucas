@@ -1,0 +1,39 @@
+> f(x: u0) = x
+01_bad_types.ucas:1:6: error: unknown type 'u0' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: u0) = x
+         ^
+> f(x: u65) = x
+01_bad_types.ucas:2:6: error: unknown type 'u65' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: u65) = x
+         ^
+> f(x: i0) = x
+01_bad_types.ucas:3:6: error: unknown type 'i0' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: i0) = x
+         ^
+> f(x: i65) = x
+01_bad_types.ucas:4:6: error: unknown type 'i65' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: i65) = x
+         ^
+> f(x: f128) = x
+01_bad_types.ucas:5:6: error: unknown type 'f128' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: f128) = x
+         ^
+> f(x: boolx) = x
+01_bad_types.ucas:6:6: error: unknown type 'boolx' (real, f16, f32, f64, int, bool, uN, iN)
+    f(x: boolx) = x
+         ^
+> f(x: u8 in 5..1) = x
+01_bad_types.ucas:7:16: error: empty range 5..1: the low end is above the high end
+    f(x: u8 in 5..1) = x
+                   ^
+> bigint 18446744073709551616
+18446744073709551616 = 18446744073709551616
+  bits: 65
+  how: exact arbitrary-precision integers (32-bit limbs; Knuth division)
+> f(x: u8, x: i8) = x
+> f(in: u8) = in
+> f(for: u8) = for
+> f(where: u8) = where
+01_bad_types.ucas:13:1: error: expected an expression
+    
+    ^

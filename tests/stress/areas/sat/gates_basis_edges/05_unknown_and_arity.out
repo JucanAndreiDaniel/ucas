@@ -1,0 +1,40 @@
+> basis u1 { g(x, y) = x & k }
+05_unknown_and_arity.ucas:2:26: error: 'k' is not defined
+    basis u1 { g(x, y) = x & k }
+                             ^
+> basis u2 { g(x, y) = foo(x, y) }
+05_unknown_and_arity.ucas:3:22: error: 'foo' is not defined
+    basis u2 { g(x, y) = foo(x, y) }
+                         ^
+> basis a0 { g() = 1 }
+05_unknown_and_arity.ucas:4:14: error: gates take 1 to 3 named inputs
+    basis a0 { g() = 1 }
+                 ^
+> basis a4 { g(p, q, r, s) = p }
+05_unknown_and_arity.ucas:5:23: error: gates take 1 to 3 named inputs
+    basis a4 { g(p, q, r, s) = p }
+                          ^
+> basis ok { g(x, y) = x & y }
+> f(a: u1, b: u1) = a & b
+> gates f basis u1
+05_unknown_and_arity.ucas:8:17: error: basis u1 has no gates
+    gates f basis u1
+                    ^
+> gates f basis u2
+05_unknown_and_arity.ucas:9:17: error: basis u2 has no gates
+    gates f basis u2
+                    ^
+> gates f basis a0
+05_unknown_and_arity.ucas:10:17: error: basis a0 has no gates
+    gates f basis a0
+                    ^
+> gates f basis a4
+05_unknown_and_arity.ucas:11:17: error: basis a4 has no gates
+    gates f basis a4
+                    ^
+> gates f basis ok
+gates for f: 2 input bits -> 1 output bit, basis ok
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = g(a, b)                 = a & b
+  r0 = t0

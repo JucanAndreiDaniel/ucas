@@ -1,0 +1,24 @@
+# FTZ mode sensitivity: pairs that differ only when subnormals are flushed.
+
+# x + 0 is the IEEE identity; ftz flushes the subnormal operand of the add.
+add0f(x: u32) = asfloat(x) + f32(0)
+add0g(x: u32) = asfloat(x)
+equiv add0f add0g noftz
+equiv add0f add0g ftz
+
+# fma(x,1,0) = x under IEEE, but ftz flushes the subnormal operand.
+fma1f(x: u32) = fma(asfloat(x), f32(1), f32(0))
+fma1g(x: u32) = asfloat(x)
+equiv fma1f fma1g noftz
+equiv fma1f fma1g ftz
+
+# "is subnormal-or-zero" vs "is zero": collapse to equal once flushed.
+subtf(x: u32) = abs(asfloat(x)) < f32(2^(-126)) ? f32(1) : f32(0)
+subtg(x: u32) = asfloat(x) == f32(0) ? f32(1) : f32(0)
+equiv subtf subtg noftz
+equiv subtf subtg ftz
+
+# control: x*1 is folded to x (no op to flush) -> equal under both.
+mul1f(x: u32) = asfloat(x) * f32(1)
+equiv mul1f add0g noftz
+equiv mul1f add0g ftz

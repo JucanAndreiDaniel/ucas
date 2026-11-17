@@ -1,0 +1,18 @@
+# Fusion pairs (Semantic Fusion / YinYang): one generator tree,
+# two provably-equal emitters. equiv must prove equal; error ~0.
+f_dist_mul_add(x: u8, y: u8, z: u8) = (x * (y + z))
+g_dist_mul_add(x: u8, y: u8, z: u8) = ((x * y) + (x * z))
+equiv f_dist_mul_add g_dist_mul_add
+error g_dist_mul_add ~ f_dist_mul_add
+f_dist_and_or(x: u8, y: u8, z: u8) = (x & (y | z))
+g_dist_and_or(x: u8, y: u8, z: u8) = ((x & y) | (x & z))
+equiv f_dist_and_or g_dist_and_or
+error g_dist_and_or ~ f_dist_and_or
+f_dist_or_and(x: u8, y: u8, z: u8) = (x | (y & z))
+g_dist_or_and(x: u8, y: u8, z: u8) = ((x | y) & (x | z))
+equiv f_dist_or_and g_dist_or_and
+error g_dist_or_and ~ f_dist_or_and
+f_dist_sub_dist(x: u8, y: u8, z: u8) = ((x - y) * z)
+g_dist_sub_dist(x: u8, y: u8, z: u8) = ((x * z) - (y * z))
+equiv f_dist_sub_dist g_dist_sub_dist
+error g_dist_sub_dist ~ f_dist_sub_dist

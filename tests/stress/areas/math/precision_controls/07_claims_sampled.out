@@ -1,0 +1,30 @@
+> r1(x: u16) = x&255
+> range r1
+range of r1 -> u16:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 65536 points of the domain
+> r2(x: f32 in 0..1) = x*x
+> range r2
+range of r2 -> f32:
+  [0, 1]
+  sampled 65536 points (domain has 1065353217 points); not exhaustive
+> r3(x: real in 0..1) = x^2
+> range r3
+range of r3:
+  [0, 1]   min at x ≈ 0, max at x ≈ 1
+  grid of 20001 points over [0, 1], extrema refined at critical points
+> r5(x: i8) = abs(x)
+> range r5
+range of r5 -> i8:
+  -128..127   (129 distinct values)
+  fits in i8
+  over all 256 points of the domain
+> e5(x: real in 0..1) = (x+1)^2
+> e6(x: real in 0..1) = x^2+2*x+1
+> equiv e5 e6
+e5 and e6 differ at 525 points, e.g. x=0.001: 1.002 vs 1.002
+> e9(x: f64 in 0..1) = x/3
+> e10(x: f64 in 0..1) = x*(1/3)
+> equiv e9 e10
+e9 and e10 differ at 21878 points of the sample, e.g. x=1.908416840634311e-130: 6.3613894687810369e-131 vs 6.3613894687810359e-131

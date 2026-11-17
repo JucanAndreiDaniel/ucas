@@ -1,0 +1,22 @@
+> y' = -1e8*y
+> y(0)=1
+> dsolve y from 0 to 1 steps 4
+y' = -1e8*y, y(0) = 1
+  linear with constant coefficients: eigenvalues -100000000
+  y(t) = exp(-100000000*t)
+  check: satisfies the equations at 201 points of [0, 1] (max relative residual 0) and the initial values
+  numeric: the solution stops before 1 (blow-up, or the right side is undefined)
+      t            y(t)
+      0            1
+> z' = -1e7*z
+> z(0)=1
+> dsolve z from 0 to 0.00001 steps 2
+z' = -1e7*z, z(0) = 1
+  linear with constant coefficients: eigenvalues -10000000
+  z(t) = exp(-10000000*t)
+  check: satisfies the equations at 201 points of [0, 1e-05] (max relative residual 0) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 278 steps) agrees with it to 2.1e-13
+      t            z(t)
+      0            1
+      5e-06        1.928749848e-22
+      1e-05        3.720075976e-44

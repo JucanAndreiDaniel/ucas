@@ -1,0 +1,46 @@
+> parse 0 < x < 10
+((0 < x) && (x < 10))
+  note: chained comparison read as a conjunction
+> parse 1 < 2 < 3 < 4
+1
+  note: chained comparison read as a conjunction
+> parse a < b <= c != d >= e > f
+(((((a < b) && (b <= c)) && (c != d)) && (d >= e)) && (e > f))
+  note: chained comparison read as a conjunction
+> parse x == y == z
+((x == y) && (y == z))
+  note: chained comparison read as a conjunction
+> parse 1 < x < 3 ? x : 0
+(((1 < x) && (x < 3)) ? x : 0)
+  note: chained comparison read as a conjunction
+> parse a < b < c ? 1 : 2
+(((a < b) && (b < c)) ? 1 : 2)
+  note: chained comparison read as a conjunction
+> parse 0 = x < 10
+((x == 0) && (x < 10))
+  note: '=' inside an expression read as '=='
+  note: chained comparison read as a conjunction
+> parse a < b = c
+((a < b) && (b == c))
+  note: '=' inside an expression read as '=='
+  note: chained comparison read as a conjunction
+> parse (0 < x) && (x < 10)
+((0 < x) && (x < 10))
+> parse 0 < x
+(0 < x)
+> f(x: u8) = 0 < x < 5
+  note: chained comparison read as a conjunction
+> show f
+f(x: u8) = 0 < x && x < 5
+  -> bool
+> range f
+range of f -> bool:
+  0..1   (2 distinct values)
+  values: 0..1
+  fits in u1
+  over all 256 points of the domain
+> g(x: u8) = x == 1 < 3
+  note: chained comparison read as a conjunction
+> show g
+g(x: u8) = x == 1
+  -> bool

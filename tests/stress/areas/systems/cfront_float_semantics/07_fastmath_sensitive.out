@@ -1,0 +1,24 @@
+> c optimize nofile budget 3
+c optimize: 10 functions, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  f_zero_mul (line 1): no cheaper form: lowered: 1 inputs, cost 4.0
+  f_zero_div (line 2): no cheaper form: lowered: 1 inputs, cost 11.0
+  f_self_div (line 3): no cheaper form: lowered: 1 inputs, cost 11.0
+  f_mul_one (line 4): no cheaper form: lowered: 1 inputs, cost 0.0
+  f_add_zero (line 5): no cheaper form: lowered: 1 inputs, cost 4.0
+  f_sub_self (line 6): no cheaper form: lowered: 1 inputs, cost 4.0
+  f_assoc (line 7): no cheaper form: lowered: 3 inputs, cost 8.0
+  f_assoc2 (line 8): no cheaper form: lowered: 3 inputs, cost 8.0
+  d_mul_pow2 (line 9): no cheaper form: lowered: 1 inputs, cost 4.0
+  f_negzero_mul (line 10): no cheaper form: lowered: 1 inputs, cost 4.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  float f_zero_mul(float a){return a*0.0f;}
+  float f_zero_div(float a){return 0.0f/a;}
+  float f_self_div(float a){return a/a;}
+  float f_mul_one(float a){return a*1.0f;}
+  float f_add_zero(float a){return a+0.0f;}
+  float f_sub_self(float a){return a-a;}
+  float f_assoc(float a,float b,float c){return (a+b)+c;}
+  float f_assoc2(float a,float b,float c){return a+(b+c);}
+  double d_mul_pow2(double a){return a*4.0;}
+  float f_negzero_mul(float a){return a*-0.0f;}

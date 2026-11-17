@@ -1,0 +1,43 @@
+> f(x: u32) = x*7 + 11
+> model nan_cost : gt1030 { imul: abc }
+> cost f model nan_cost
+cost of f under nan_cost: 0 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 0     = 0  (a*b + c; saves 1)
+> model inf_cost : gt1030 { imul: inf }
+> cost f model inf_cost
+cost of f under inf_cost: 0 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 0     = 0  (a*b + c; saves 1)
+> model neg_cost : gt1030 { imul: -5 }
+10_bad_model_values.ucas:8:34: error: expected a cost class
+    model neg_cost : gt1030 { imul: -5 }
+                                     ^
+> cost f model neg_cost
+cost of f under neg_cost: 0 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 0     = 0  (a*b + c; saves 1)
+> model plus_cost : gt1030 { imul: +3 }
+10_bad_model_values.ucas:10:35: error: expected a cost class
+    model plus_cost : gt1030 { imul: +3 }
+                                      ^
+> cost f model plus_cost
+cost of f under plus_cost: 0 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    imad             1 x 0     = 0  (a*b + c; saves 1)
+> model phantom : nosuch_parent { imul: 5 }
+10_bad_model_values.ucas:12:17: error: unknown model
+    model phantom : nosuch_parent { imul: 5 }
+                    ^
+> cost f model phantom
+cost of f under phantom: 2 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 1     = 1
+> use phantom
+cost model: phantom
+> cost f
+cost of f under phantom: 2 (2 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+  imul             1 x 1     = 1
+> cost totally_undefined_function
+cost of totally_undefined_function under phantom: 0 (0 operations, shared subterms counted once)

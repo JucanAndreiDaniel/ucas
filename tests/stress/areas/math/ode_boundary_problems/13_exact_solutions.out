@@ -1,0 +1,44 @@
+> a' = a
+> a(0)=1
+> dsolve a from 0 to 2 steps 4
+a' = a, a(0) = 1
+  linear with constant coefficients: eigenvalues 1
+  a(t) = exp(t)
+  check: satisfies the equations at 201 points of [0, 2] (max relative residual 0) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 57 steps) agrees with it to 2.9e-10
+      t            a(t)
+      0            1
+      0.5          1.648721271
+      1            2.718281828
+      1.5          4.48168907
+      2            7.389056099
+> b'' = b
+> b(0)=0
+> b'(0)=1
+> dsolve b from 0 to 2 steps 4
+b'' = b, b(0) = 0, b'(0) = 1
+  linear with constant coefficients: eigenvalues -1, 1
+  b(t) = 0.5exp(t) - 0.5exp(-t)
+  b'(t) = 0.5exp(-t) + 0.5exp(t)
+  check: satisfies the equations at 201 points of [0, 2] (max relative residual 0) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 63 steps) agrees with it to 9.1e-11
+      t            b(t)
+      0            0
+      0.5          0.5210953055
+      1            1.175201194
+      1.5          2.129279455
+      2            3.626860408
+> c' = -2*c + exp(t)
+> c(0)=0
+> dsolve c from 0 to 2 steps 4
+c' = -2*c + exp(t), c(0) = 0
+  linear with constant coefficients: eigenvalues -2; forcing by undetermined coefficients
+  c(t) = 0.3333333333exp(t) - 0.3333333333exp(-2*t)
+  check: satisfies the equations at 201 points of [0, 2] (max relative residual 3.8e-16) and the initial values
+  numeric (Dormand-Prince 5(4), adaptive, 83 steps) agrees with it to 3.6e-11
+      t            c(t)
+      0            0
+      0.5          0.4269472765
+      1            0.8609821817
+      1.5          1.477300667
+      2            2.456913487

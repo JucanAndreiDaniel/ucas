@@ -1,0 +1,33 @@
+> q(x: u32) = (x * 3 + 7) / 13 + popcnt(x)
+> cost q model skl
+cost of q under skl: 13 (5 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  imul             1 x 3     = 3
+  idivk            1 x 5     = 5
+  bitcnt           1 x 3     = 3
+> cost q model zen2
+cost of q under zen2: 10 (5 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  imul             1 x 3     = 3
+  idivk            1 x 4     = 4
+  bitcnt           1 x 1     = 1
+> cost q model zen4
+cost of q under zen4: 11 (5 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  imul             1 x 3     = 3
+  idivk            1 x 5     = 5
+  bitcnt           1 x 1     = 1
+> cost q model x86v4
+cost of q under x86v4: 13 (5 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  imul             1 x 3     = 3
+  idivk            1 x 5     = 5
+  bitcnt           1 x 3     = 3
+> use zen4
+cost model: zen4
+> cost q
+cost of q under zen4: 11 (5 operations, shared subterms counted once)
+  iadd             2 x 1     = 2
+  imul             1 x 3     = 3
+  idivk            1 x 5     = 5
+  bitcnt           1 x 1     = 1

@@ -1,0 +1,197 @@
+[
+ {
+  "name": "rules_infer",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "find.c",
+  "sym": "cmd_rules_infer",
+  "inline": "rules infer inputs 2 width 8 cost 4 seconds 1\n"
+ },
+ {
+  "name": "sat_selftest",
+  "cmd": [
+   "@BIN",
+   "--sat-selftest"
+  ],
+  "src": "sat.c",
+  "sym": "sat_selftest",
+  "timeout": 60
+ },
+ {
+  "name": "nlp_show_help",
+  "cmd": [
+   "@BIN",
+   "--mcp"
+  ],
+  "src": "nlp.c",
+  "sym": "show_help",
+  "inline": "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-06-18\",\"capabilities\":{},\"clientInfo\":{\"name\":\"p\",\"version\":\"1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}\n{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":{\"name\":\"english\",\"arguments\":{\"text\":\"what can you do\"}}}\n",
+  "mode": "mcp"
+ },
+ {
+  "name": "reset_selfexec",
+  "cmd": [
+   "@BIN",
+   "--json",
+   "--files",
+   "none"
+  ],
+  "src": "jsonmode.c",
+  "sym": "self_exec",
+  "inline": "{\"cmd\":\"state\"}\n{\"cmd\":\"reset\"}\n{\"cmd\":\"state\"}\n",
+  "mode": "json"
+ },
+ {
+  "name": "find_saturate",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "egraph.c",
+  "sym": "egraph_best",
+  "inline": "f(x: u8 in 0..15) = x+x\nfind f 1 saturate\n"
+ },
+ {
+  "name": "scheme_more",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "scheme.c",
+  "sym": "kahan_scheme",
+  "inline": "p(n: int in 1..200) = { s: f32 = 0; for i in 1..n { s += f32(1)/f32(i*i) }; s }\nscheme p more\n"
+ },
+ {
+  "name": "texenc_astc",
+  "cmd": [
+   "@BIN",
+   "@ROOT/tests/stress/afl_coverage_fuzz/seeds/texastc.ucas"
+  ],
+  "src": "astcblk.c",
+  "sym": "astcb_encode"
+ },
+ {
+  "name": "crit_float",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "analyze.c",
+  "sym": "crit_int_real",
+  "inline": "f(x: int in 0..8) = x*x/3.0\ncrit f\n"
+ },
+ {
+  "name": "texenc_bc7",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "bc7blk.c",
+  "sym": "bc7_encode(",
+  "inline": "Q = [100,40,10,40,10,40,10,40,10,40,10,40,10,40,10,40]\ntexenc Q bc7\n"
+ },
+ {
+  "name": "texenc_etc2",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "etc2blk.c",
+  "sym": "etc2_encode_r(",
+  "inline": "Q = [100,40,10,40,10,40,10,40,10,40,10,40,10,40,10,40]\ntexenc Q etc2\n"
+ },
+ {
+  "name": "ec_binary",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "ecb2.c",
+  "sym": "b2_count_koblitz",
+  "inline": "ecb2 K-163 mul 3\n"
+ },
+ {
+  "name": "nlp_animate",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "nlp.c",
+  "sym": "nlp_translate",
+  "inline": "animate exec of best found approximation of x*x\n",
+  "timeout": 30
+ },
+ {
+  "name": "closed_mod",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "closed.c",
+  "sym": "floordiv",
+  "inline": "f(n: int in 0..20) = sum(k, 0, n, k mod 3)\nclosed f\n"
+ },
+ {
+  "name": "glsl_emit",
+  "cmd": [
+   "@BIN",
+   "--mcp"
+  ],
+  "src": "emit.c",
+  "sym": "rvalue(Glslc",
+  "inline": "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-06-18\",\"capabilities\":{},\"clientInfo\":{\"name\":\"p\",\"version\":\"1\"}}}\n{\"jsonrpc\":\"2.0\",\"method\":\"notifications/initialized\"}\n{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":{\"name\":\"spirv_simplify\",\"arguments\":{\"code\":\"#version 450\\nlayout(location=0) out vec4 o;\\nvoid main(){ o = vec4(1.0); }\",\"lang\":\"glsl\",\"nofile\":true}}}\n",
+  "mode": "mcp"
+ },
+ {
+  "name": "ecm_factor",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "ecm.c",
+  "sym": "ecm_",
+  "inline": "ecm 8051\n"
+ },
+ {
+  "name": "eccm_cm",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "ecff_cm.inc",
+  "sym": "cm_build(",
+  "inline": "eccm D = -3 bits 20\n"
+ },
+ {
+  "name": "ecpp_cert",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "ecpp.c",
+  "sym": "ecpp_",
+  "inline": "ecpp 170141183460469231731687303715884105727\n"
+ },
+ {
+  "name": "xform_iz",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "xform.c",
+  "sym": "iz_symbolic",
+  "inline": "iztrans e^(a/z)\n"
+ },
+ {
+  "name": "props_zeros_numeric",
+  "cmd": [
+   "@BIN",
+   "@IN"
+  ],
+  "src": "props.c",
+  "sym": "fn_zeros",
+  "inline": "zeros sin x on [-3, 3]\n"
+ }
+]

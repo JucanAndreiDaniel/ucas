@@ -1,0 +1,151 @@
+src/memk.c:432:47: warning: Division by zero [core.DivideZero]
+  432 |                     (long long)r->stride, (long long)(banks / g), warp,
+      |                                                             ^
+src/memk.c:1164:6: note: Assuming the condition is false
+ 1164 |         if (!cmdp_word(p, w, sizeof w))
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:1164:2: note: Taking false branch
+ 1164 |         if (!cmdp_word(p, w, sizeof w))
+      |         ^
+src/memk.c:1166:7: note: Assuming the condition is false
+ 1166 |         if ((strcmp(w, "banks") != 0 && strcmp(w, "intatomic") != 0) ||
+      |              ^~~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:1166:31: note: Left side of '&&' is false
+ 1166 |         if ((strcmp(w, "banks") != 0 && strcmp(w, "intatomic") != 0) ||
+      |                                      ^
+src/memk.c:1167:6: note: Assuming the condition is false
+ 1167 |             func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:1166:2: note: Taking false branch
+ 1166 |         if ((strcmp(w, "banks") != 0 && strcmp(w, "intatomic") != 0) ||
+      |         ^
+src/memk.c:1171:6: note: Assuming the condition is true
+ 1171 |         if (!strcmp(w, "banks")) {
+      |             ^~~~~~~~~~~~~~~~~~~
+src/memk.c:1171:2: note: Taking true branch
+ 1171 |         if (!strcmp(w, "banks")) {
+      |         ^
+src/memk.c:1179:8: note: 'nf' is not equal to MAXACC
+ 1179 |                         if (nf == MAXACC)
+      |                             ^~
+src/memk.c:1179:4: note: Taking false branch
+ 1179 |                         if (nf == MAXACC)
+      |                         ^
+src/memk.c:1182:8: note: Assuming the condition is false
+ 1182 |                         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w)))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:1182:34: note: Left side of '&&' is false
+ 1182 |                         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w)))
+      |                                                       ^
+src/memk.c:1189:8: note: Assuming field 'anon' is not equal to 0
+ 1189 |                         if (f->anon) {
+      |                             ^~~~~~~
+src/memk.c:1189:4: note: Taking true branch
+ 1189 |                         if (f->anon) {
+      |                         ^
+src/memk.c:1176:3: note: Loop condition is false.  Exiting loop
+ 1176 |                 do {
+      |                 ^
+src/memk.c:1202:10: note: Assuming the condition is false
+ 1202 |                 while (!cmdp_eos(p)) {
+      |                        ^~~~~~~~~~~~
+src/memk.c:1202:3: note: Loop condition is false. Execution continues on line 1219
+ 1202 |                 while (!cmdp_eos(p)) {
+      |                 ^
+src/memk.c:1219:3: note: Loop condition is true.  Entering loop body
+ 1219 |                 for (k = 0; k < nf; k++)
+      |                 ^
+src/memk.c:1220:8: note: Assuming the condition is true
+ 1220 |                         if (TY_FP(N.ty[func_find(names[k])->body]))
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~~~~~~~~~~~
+src/ucas.h:94:16: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                ^
+src/memk.c:1220:8: note: Left side of '||' is true
+src/ucas.h:103:36: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                                    ^
+src/memk.c:1219:3: note: Loop condition is false. Execution continues on line 1223
+ 1219 |                 for (k = 0; k < nf; k++)
+      |                 ^
+src/memk.c:1224:3: note: Calling 'memk_banks'
+ 1224 |                 memk_banks(names, nf, size, elem, 0, 0, m, NULL);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:458:2: note: Loop condition is true.  Entering loop body
+  458 |         for (k = 0; k < nf; k++)
+      |         ^
+src/memk.c:458:2: note: Loop condition is false. Execution continues on line 460
+src/memk.c:462:6: note: Assuming 'banks' is >= 1
+  462 |         if (banks < 1 || warp < 1) {
+      |             ^~~~~~~~~
+src/memk.c:462:6: note: Left side of '||' is false
+src/memk.c:462:19: note: Assuming 'warp' is >= 1
+  462 |         if (banks < 1 || warp < 1) {
+      |                          ^~~~~~~~
+src/memk.c:462:2: note: Taking false branch
+  462 |         if (banks < 1 || warp < 1) {
+      |         ^
+src/memk.c:474:2: note: Loop condition is true.  Entering loop body
+  474 |         for (k = 0; k < nf; k++) {
+      |         ^
+src/memk.c:478:25: note: Assuming field 'anon' is not equal to 0
+  478 |                 printf("  %s = %s\n", f->anon ? "index" : sym_str(f->name),
+      |                                       ^~~~~~~
+src/memk.c:478:25: note: '?' condition is true
+src/memk.c:480:7: note: Assuming 'rc' is >= 0
+  480 |                 if (rc < 0) {
+      |                     ^~~~~~
+src/memk.c:480:3: note: Taking false branch
+  480 |                 if (rc < 0) {
+      |                 ^
+src/memk.c:487:4: note: Calling 'degree_text'
+  487 |                         degree_text(&r0[k], banks, warp, same, tb, sizeof tb);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/memk.c:424:2: note: 'g' initialized here
+  424 |         int64_t g = gcd64(r->stride, banks);
+      |         ^~~~~~~~~
+src/memk.c:425:14: note: Assuming 'g' is 0
+  425 |         int64_t d = g ? ((int64_t)warp * g + banks - 1) / banks : 1;
+      |                     ^
+src/memk.c:425:14: note: '?' condition is false
+src/memk.c:427:6: note: Assuming field 'affine' is not equal to 0
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |             ^~~~~~~~~
+src/memk.c:427:6: note: Left side of '&&' is true
+src/memk.c:427:19: note: Assuming field 'exact' is not equal to 0
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |                          ^~~~~~~~
+src/memk.c:427:6: note: Left side of '&&' is true
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |             ^
+src/memk.c:427:31: note: Assuming field 'stride' is not equal to 0
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |                                      ^~~~~~~~~~~~~~
+src/memk.c:427:6: note: Left side of '&&' is true
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |             ^
+src/memk.c:427:49: note: Assuming 'same' is not equal to 0
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |                                                        ^~~~
+src/memk.c:427:6: note: Left side of '&&' is true
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |             ^
+src/memk.c:427:57: note: Assuming 'd' is equal to field 'degree'
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |                                                                ^~~~~~~~~~~~~~
+src/memk.c:427:2: note: Taking true branch
+  427 |         if (r->affine && r->exact && r->stride != 0 && same && d == r->degree)
+      |         ^
+src/memk.c:432:47: note: Division by zero
+  432 |                     (long long)r->stride, (long long)(banks / g), warp,
+      |                                                       ~~~~~~^~~
+src/memk.c:978:3: warning: Value stored to 's' is never read [deadcode.DeadStores]
+  978 |                 s = -g;
+      |                 ^   ~~
+src/memk.c:978:3: note: Value stored to 's' is never read
+  978 |                 s = -g;
+      |                 ^   ~~
+2 warnings generated.

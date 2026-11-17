@@ -1,0 +1,60 @@
+> f(x) = x^2 + 2x + 1
+> what is f of 2?
+  ucas: f(2)
+9
+> what is its range?
+  ucas: range f
+range of f:
+  [0, 121]   min at x ≈ -1, max at x ≈ 10
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points
+> g(x: u8) = x + 1
+> what is the range of g?
+  ucas: range g
+range of g -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 256 points of the domain
+> does g overflow?
+  ucas: wrap g
+wrap analysis of g:
+  x + 1   (u8)
+      nuw fails: unsigned wrap at 1 points, e.g. x=255
+      nsw fails: signed wrap at 1 points, e.g. x=127
+  end to end: differs from the mathematical result at 1 points, e.g. x=255
+      exact for: 0..254
+  over all 256 points of the domain
+> avg(a: u8, b: u8) = (a + b) / 2
+> does avg overflow?
+  ucas: wrap avg
+wrap analysis of avg:
+  a + b   (u8)
+      nuw fails: unsigned wrap at 32640 points, e.g. a=255, b=1
+      nsw fails: signed wrap at 16384 points, e.g. a=127, b=1
+  end to end: differs from the mathematical result at 32640 points, e.g. a=255, b=1
+  over all 65536 points of the domain
+> is avg commutative?
+  note: commutative: avg(a, b) = avg(b, a) everywhere?
+  ucas: lhs(a: u8, b: u8) = avg(a, b)
+  ucas: rhs(a: u8, b: u8) = avg(b, a)
+  ucas: equiv lhs rhs
+lhs and rhs are equal on the domain of lhs (exhaustive)
+> what is f of g of 2?
+  ucas: f(g(2))
+16
+> let h of x be x squared
+  ucas: h(x) = x^2
+  ucas: show h
+h(x: real) = x^2
+  -> real
+> what is h of 3?
+  ucas: h(3)
+9
+> h(x) = x^3
+> what is h of 3?
+  ucas: h(3)
+27
+> what is its range?
+  ucas: range h
+range of h:
+  [-1000, 1000]   min at x ≈ -10, max at x ≈ 10
+  grid of 20001 points over [-10, 10] (default; give x a range), extrema refined at critical points

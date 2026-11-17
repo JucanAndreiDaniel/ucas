@@ -1,0 +1,25 @@
+> p(x:u16)=asfloat(x)
+> LG(x:u16)=asuint(log(p(x)))
+> SQ(x:u16)=asuint(sqrt(p(x)))
+> EX(x:u16)=asuint(exp(p(x)))
+> LG(0x0000)
+_() = asuint(log(0))
+  -> u16
+> LG(0x8000)
+_() = asuint(log(-0))
+  -> u16
+> LG(0xbc00)
+_() = asuint(log(-1))
+  -> u16
+> LG(0xfc00)
+_() = asuint(log(-inf))
+  -> u16
+> SQ(0xbc00)
+_() = asuint(sqrt(-1))
+  -> u16
+> SQ(0xfc00)
+_() = asuint(sqrt(-inf))
+  -> u16
+> EX(0x7bff)
+_() = asuint(exp(65504))
+  -> u16

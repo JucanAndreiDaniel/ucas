@@ -1,0 +1,13 @@
+# Clean wrap analysis on narrow types (no u64 high-bit issue).
+a(x: u8) = x + 1
+wrap a
+b(x: u8) = x << 2
+wrap b
+c(x: u16) = x * 3
+wrap c
+d(x: u8, n: u8 in 0..7) = x << n
+wrap d
+e(x: u16) = ~x
+wrap e
+f(x: u16) = u8(x)
+wrap f

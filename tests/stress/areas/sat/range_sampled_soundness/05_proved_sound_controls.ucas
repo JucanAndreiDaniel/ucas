@@ -1,0 +1,10 @@
+# controls: sound-bound and proved-bound lines are correct on these.
+# hi: proved bound 0..65535 with witnesses x=MAX->65535, x=0->0 (both attain).
+# mon10: proved bound 0..3221225470, witness x=MAX attains.
+# clip: headline 0..1000 correct, sound bound loose but sound.
+hi(x: u32) = x >> 16
+range hi
+mon10(x: u32) = x / 2 + x / 4
+range mon10
+clip(x: i32) = x < 0 ? 0 : (x > 1000 ? 1000 : x)
+range clip

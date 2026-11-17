@@ -1,0 +1,43 @@
+> ush(x: u1) = x >> 1
+> table ush
+  x=0  ->  undefined
+  x=1  ->  undefined
+> uaa(x: u1, y: u1) = x && y
+> table uaa
+  x=0, y=0  ->  0
+  x=1, y=0  ->  0
+  x=0, y=1  ->  0
+  x=1, y=1  ->  1
+> uoo(x: u1, y: u1) = x || y
+> table uoo
+  x=0, y=0  ->  0
+  x=1, y=0  ->  1
+  x=0, y=1  ->  1
+  x=1, y=1  ->  1
+> unn(x: u1) = not x
+> table unn
+  x=0  ->  1
+  x=1  ->  0
+> ube(x: u1, y: u1) = x != y
+> table ube
+  x=0, y=0  ->  0
+  x=1, y=0  ->  1
+  x=0, y=1  ->  1
+  x=1, y=1  ->  0
+> cb(x: bool) = 0 <= x <= 1
+  note: chained comparison read as a conjunction
+> table cb
+  x=0  ->  1
+  x=1  ->  1
+> cu(x: u1) = 0 <= x <= 1
+  note: chained comparison read as a conjunction
+> table cu
+  x=0  ->  1
+  x=1  ->  1
+> cm(x: u1, y: bool) = x <= y <= 1
+  note: chained comparison read as a conjunction
+> table cm
+  x=0, y=0  ->  1
+  x=1, y=0  ->  0
+  x=0, y=1  ->  1
+  x=1, y=1  ->  1

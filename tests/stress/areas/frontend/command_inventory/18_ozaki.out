@@ -1,0 +1,50 @@
+> model ozdear : gt1030 { fadd: 8, fmul: 8, conv: 1 }
+> use ozdear
+cost model: ozdear
+> g(a: f32 in -1..1, b: f32 in -1..1, c: f32 in -1..1, d: f32 in -1..1) = a*b + c*d
+> ozaki g tol 1e-3
+ozaki g under ozdear: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 99, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 99, error at most 0.06299
+  as written: cost 16; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(16384a), t2 = i32(16384b), t3 = i32(163… (22 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> within tol, but not cheaper under ozdear (99 against 16)
+> ozaki g tol 1e-5
+ozaki g under ozdear: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 99, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 99, error at most 0.06299
+  as written: cost 16; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(16384a), t2 = i32(16384b), t3 = i32(163… (22 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> not taken: its error bound 0.0002451 is past tol 1e-05 (more slices, more bits: slices N)
+> ozaki g slices 3 tol 1e-5
+ozaki g under ozdear: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 3 slices: factors of 24 bits (|k| <= 2^23), 5 weights each inside i32: cost 159, error at most 2.891e-06
+  lanes of  4 bits, 3 slices: factors of 12 bits (|k| <= 2^11), 5 weights each inside i32: cost 159, error at most 0.003911
+  as written: cost 16; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 5.68434189e-14f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 1.45519152e-11f32((t1 & 0xff)*t8 + t7*(t2 & 0xff) + (t3 & 0xff)*t6 + t5*(t4 & 0xff)) + 3.7252903e-09f32((t1 & 0xff)*(t2 >> 0x10) + t7*t8 + (t1 >> 0x10)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 0x10) + t5*t6 + (t3 >> 0x10)*(t4 & 0xff)) + … (332 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 6.111e-07, within the bound 2.891e-06 (sampled, not a proof)
+  -> within tol, but not cheaper under ozdear (159 against 16)
+> ozaki g model gt1030
+ozaki g under gt1030: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 2 slices: factors of 16 bits (|k| <= 2^15), 3 weights each inside i32: cost 64, error at most 0.0002451
+  lanes of  4 bits, 2 slices: factors of 8 bits (|k| <= 2^7), 3 weights each inside i32: cost 64, error at most 0.06299
+  as written: cost 2; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.7252903e-09f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 9.53674316e-07f32((t1 & 0xff)*(t2 >> 8) + (t1 >> 8)*(t2 & 0xff) + (t3 & 0xff)*(t4 >> 8) + (t3 >> 8)*(t4 & 0xff)) + 0.000244140625f32((t1 >> 8)*(t2 >> 8) + (t3 >> 8)*(t4 >> 8)) where t1 = i32(16384a), t2 = i32(16384b), t3 = i32(163… (22 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 0.0001776, within the bound 0.0002451 (sampled, not a proof)
+  -> an approximation: give tol T, the error allowed, to take it
+> h(a: f16 in -1..1, b: f16 in -1..1, c: f16 in -1..1, d: f16 in -1..1) = f32(a)*f32(b) + f32(c)*f32(d)
+> ozaki h model ozdear slices 4
+ozaki h under ozdear: a float sum of 2 products as integer dot products, each factor scaled to an integer by a power of two from its range
+  lanes of  8 bits, 4 slices: factors of 31 bits (|k| <= 2^30), 7 weights each inside i32: cost 235, error at most 2.951e-06
+  lanes of  4 bits, 4 slices: factors of 16 bits (|k| <= 2^15), 7 weights each inside i32: cost 235, error at most 0.0002478
+  as written: cost 20; its f32 sum within about 2.384e-07 of the exact (gamma_2 sum |x y|)
+  best: 3.46944695e-18f32((t1 & 0xff)*(t2 & 0xff) + (t3 & 0xff)*(t4 & 0xff)) + 8.8817842e-16f32((t1 & 0xff)*t8 + t7*(t2 & 0xff) + (t3 & 0xff)*t6 + t5*(t4 & 0xff)) + 2.27373675e-13f32((t1 & 0xff)*t12 + t7*t8 + t11*(t2 & 0xff) + (t3 & 0xff)*t10 + t5*t6 + t9*(t4 & 0xff)) + 5.82076609e-11f32((t1 & 0xff)*(t2 >> … (695 more characters)
+    the integer sum (dot.c):    proved: the integer sum's dots by identity; the rest is the derivation above
+  check: 4096 random points, the largest error 5.96e-08, within the bound 2.951e-06 (sampled, not a proof)
+  -> an approximation: give tol T, the error allowed, to take it

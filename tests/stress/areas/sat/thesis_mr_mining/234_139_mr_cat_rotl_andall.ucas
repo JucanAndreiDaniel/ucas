@@ -1,0 +1,11 @@
+# MR mined from tests/catalogue:ro1,ro2
+# meaning-preserving rewrite: andall
+f(x: u32, k: u32) = funl(x, x, k)
+g(x: u32, k: u32) = k == 0 ? x : (x << k) | (x >> (32 - k))
+f2(x: u32, k: u32) = (funl(x, x, k)) & 4294967295
+g2(x: u32, k: u32) = (k == 0 ? x : (x << k) | (x >> (32 - k))) & 4294967295
+f1(x: u32, k: u32) = (funl(x, x, k)) & 4294967295
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

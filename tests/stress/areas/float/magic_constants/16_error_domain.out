@@ -1,0 +1,49 @@
+> nw(x: f32) = asfloat(0x5f3759df - (asuint(x) >> 1)) where x >= 1 && x <= 2
+> nr(x: f32 in 1..2) = asfloat(0x5f3759df - (asuint(x) >> 1))
+> tw(x: f32) = 1/sqrt(x) where x >= 1 && x <= 2
+> domain nw
+domain of nw:
+  x: f32 (every finite value)
+  where x >= 1 && x <= 2
+  no conditions: total on its parameter types
+  defined at 122 of 122 points
+  sampled 122 points (domain has 4278190079 points); not exhaustive
+> domain nr
+domain of nr:
+  x: f32
+  no conditions: total on its parameter types
+  defined at 65536 of 65536 points
+  sampled 65536 points (domain has 8388609 points); not exhaustive
+> error nw ~ 1/sqrt(x)
+error of nw against 1/sqrt(x):
+  max abs error 0.169721 at x=0.04
+  max rel error 0.0342885 (3.43%) at x=3.74
+  mean rel error 0.0236166 over 500 points
+  max 566817 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 8 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]
+> error nr ~ 1/sqrt(x)
+error of nr against 1/sqrt(x):
+  max abs error 0.169721 at x=0.04
+  max rel error 0.0342885 (3.43%) at x=3.74
+  mean rel error 0.0236166 over 500 points
+  max 566817 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 4096 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]
+> error nw ~ tw
+error of nw against tw:
+  max abs error 0.0333617 at x=1.0016973
+  max rel error 0.03339 (3.34%) at x=1.0016973
+  mean rel error 0.021539 over 122 points
+  max 559716 ulp
+  rounding, first order in u = 2^-24: 0 rounded operations, each taken as correctly rounded; relative to the value, the largest over 8 inputs
+    bit casts: 2, exact: integers are, and a float whose bits are read carries no rounding error
+    worst case  0 (0 u): every error at its bound and aligned, u sum |c_i|
+    probable    no better than the worst case: 4 u sqrt(sum c_i^2) is 0 u here (it gains from about 16 operations of similar weight on)
+    expected    0 (0 u): the root mean square if they are independent and uniform in [-u, u]

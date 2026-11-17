@@ -1,0 +1,448 @@
+src/util.c: In function ‘sb_puts’:
+src/util.c:79:20: warning: use of NULL ‘s’ where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+   79 |         size_t n = strlen(s);
+      |                    ^~~~~~~~~
+  ‘note’: events 1-4
+    │
+    │  308 | note(const char *fmt, ...)
+    │      | ^~~~
+    │      | |
+    │      | (1) entry to ‘note’
+    │......
+    │  315 |         if (note_mute > 0)
+    │      |            ~
+    │      |            |
+    │      |            (2) following ‘false’ branch... ─>─┐
+    │      |                                               │
+    │      |                                               │
+    │      |┌──────────────────────────────────────────────┘
+    │  316 |│                return;
+    │  317 |│        va_start(ap, fmt);
+    │      |│        ~~~~~~~~
+    │      |│        |
+    │      |└───────>(3) ...to here
+    │......
+    │  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+    │      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |               |
+    │      |               (4) calling ‘xmalloc’ from ‘note’
+    │
+    └──> ‘xmalloc’: events 5-6
+           │
+           │    8 | xmalloc(size_t n)
+           │      | ^~~~~~~
+           │      | |
+           │      | (5) entry to ‘xmalloc’
+           │    9 | {
+           │   10 |         void *p = malloc(n ? n : 1);
+           │      |                   ~~~~~~~~~~~~~~~~~
+           │      |                   |
+           │      |                   (6) following ‘true’ branch (when ‘n != 0’)... ─>─┐
+           │      |                                                                     │
+           │
+         ‘xmalloc’: events 7-9
+           │
+           │      |                                                                     │
+           │      |┌────────────────────────────────────────────────────────────────────┘
+           │   10 |│        void *p = malloc(n ? n : 1);
+           │      |│                  ^~~~~~~~~~~~~~~~~
+           │      |│                  |
+           │      |└─────────────────>(7) ...to here
+           │   11 | 
+           │   12 |         if (p == NULL) {
+           │      |            ~       
+           │      |            |
+           │      |            (8) following ‘false’ branch (when ‘p’ is non-NULL)... ─>─┐
+           │      |                                                                      │
+           │......
+           │      |                                                                      │
+           │      |┌─────────────────────────────────────────────────────────────────────┘
+           │   16 |│        return p;
+           │      |│               ~   
+           │      |│               |
+           │      |└──────────────>(9) ...to here
+           │
+    <──────┘
+    │
+  ‘note’: events 10-11
+    │
+    │  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+    │      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |               |
+    │      |               (10) returning to ‘note’ from ‘xmalloc’
+    │......
+    │  325 |         sb_puts(&t, tmp);
+    │      |         ~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (11) calling ‘sb_puts’ from ‘note’
+    │
+    └──> ‘sb_puts’: events 12-13
+           │
+           │   77 | sb_puts(struct sbuf *b, const char *s)
+           │      | ^~~~~~~
+           │      | |
+           │      | (12) entry to ‘sb_puts’
+           │......
+           │   81 |         sb_reserve(b, n);
+           │      |         ~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (13) calling ‘sb_reserve’ from ‘sb_puts’
+           │
+           └──> ‘sb_reserve’: events 14-16
+                  │
+                  │   57 | sb_reserve(struct sbuf *b, size_t extra)
+                  │      | ^~~~~~~~~~
+                  │      | |
+                  │      | (14) entry to ‘sb_reserve’
+                  │   58 | {
+                  │   59 |         if (b->n + extra + 1 <= b->cap)
+                  │      |            ~
+                  │      |            |
+                  │      |            (15) following ‘false’ branch... ─>─┐
+                  │      |                                                │
+                  │      |                                                │
+                  │      |┌───────────────────────────────────────────────┘
+                  │   60 |│                return;
+                  │   61 |│        if (b->cap == 0)
+                  │      |│            ~~~~~~
+                  │      |│             |
+                  │      |└────────────>(16) ...to here
+                  │
+                ‘sb_reserve’: events 17-20
+                  │
+                  │   61 |         if (b->cap == 0)
+                  │      |            ^
+                  │      |            |
+                  │      |            (17) following ‘true’ branch... ─>─┐
+                  │      |                                               │
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │   62 |│                b->cap = 64;
+                  │      |│                ~~~~~~~~~~~
+                  │      |│                       |
+                  │      |└──────────────────────>(18) ...to here
+                  │......
+                  │   65 |         b->p = xrealloc(b->p, b->cap);
+                  │      |                ~~~~~~~~~~~~~~~~~~~~~~
+                  │      |                |         |
+                  │      |                |         (19) using NULL here
+                  │      |                (20) calling ‘xrealloc’ from ‘sb_reserve’
+                  │
+                  └──> ‘xrealloc’: events 21-24
+                         │
+                         │   32 | xrealloc(void *p, size_t n)
+                         │      | ^~~~~~~~
+                         │      | |
+                         │      | (21) entry to ‘xrealloc’
+                         │   33 | {
+                         │   34 |         p = realloc(p, n ? n : 1);
+                         │      |             ~~~~~~~~~~~~~~~~~~~~~
+                         │      |             |
+                         │      |             (22) when ‘realloc’ succeeds, moving buffer
+                         │   35 |         if (p == NULL) {
+                         │      |            ~
+                         │      |            |
+                         │      |            (23) following ‘false’ branch (when ‘p’ is non-NULL)... ─>─┐
+                         │      |                                                                       │
+                         │......
+                         │      |                                                                       │
+                         │      |┌──────────────────────────────────────────────────────────────────────┘
+                         │   39 |│        return p;
+                         │      |│               ~
+                         │      |│               |
+                         │      |└──────────────>(24) ...to here
+                         │
+                  <──────┘
+                  │
+                ‘sb_reserve’: event 25
+                  │
+                  │   65 |         b->p = xrealloc(b->p, b->cap);
+                  │      |                ^~~~~~~~~~~~~~~~~~~~~~
+                  │      |                |
+                  │      |                (25) returning to ‘sb_reserve’ from ‘xrealloc’
+                  │
+           <──────┘
+           │
+         ‘sb_puts’: event 26
+           │
+           │   81 |         sb_reserve(b, n);
+           │      |         ^~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (26) returning to ‘sb_puts’ from ‘sb_reserve’
+           │
+    <──────┘
+    │
+  ‘note’: events 27-30
+    │
+    │  325 |         sb_puts(&t, tmp);
+    │      |         ^~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (27) returning to ‘note’ from ‘sb_puts’
+    │  326 |         cap_text(&t, 0, NOTE_CAP);
+    │  327 |         if (rep_on)
+    │      |            ~
+    │      |            |
+    │      |            (28) following ‘false’ branch... ─>─┐
+    │      |                                                │
+    │      |                                                │
+    │      |┌───────────────────────────────────────────────┘
+    │  328 |│                rep_note_hook(sb_str(&t));      /* a guess: an ambiguity in JSON mode */
+    │  329 |│        sb_printf(&line, "  note: %s\n", sb_str(&t));
+    │      |│        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |│        |
+    │      |└───────>(29) ...to here
+    │      |         (30) calling ‘sb_str’ from ‘note’
+    │
+    └──> ‘sb_str’: events 31-33
+           │
+           │  113 | sb_str(struct sbuf *b)
+           │      | ^~~~~~
+           │      | |
+           │      | (31) entry to ‘sb_str’
+           │  114 | {
+           │  115 |         if (b->p == NULL)
+           │      |            ~
+           │      |            |
+           │      |            (32) following ‘false’ branch... ─>─┐
+           │      |                                                │
+           │      |                                                │
+           │      |┌───────────────────────────────────────────────┘
+           │  116 |│                sb_reserve(b, 0), b->p[0] = 0;
+           │  117 |│        return b->p;
+           │      |│               ~~~~
+           │      |│                |
+           │      |└───────────────>(33) ...to here
+           │
+    <──────┘
+    │
+  ‘note’: events 34-35
+    │
+    │  329 |         sb_printf(&line, "  note: %s\n", sb_str(&t));
+    │      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (34) returning to ‘note’ from ‘sb_str’
+    │      |         (35) calling ‘sb_printf’ from ‘note’
+    │
+    └──> ‘sb_printf’: events 36-39
+           │
+           │   87 | sb_printf(struct sbuf *b, const char *fmt, ...)
+           │      | ^~~~~~~~~
+           │      | |
+           │      | (36) entry to ‘sb_printf’
+           │......
+           │   95 |         if (n < 0)
+           │      |            ~
+           │      |            |
+           │      |            (37) following ‘false’ branch (when ‘n >= 0’)... ─>─┐
+           │      |                                                                │
+           │      |                                                                │
+           │      |┌───────────────────────────────────────────────────────────────┘
+           │   96 |│                return;
+           │   97 |│        sb_reserve(b, (size_t)n);
+           │      |│        ~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |│        |
+           │      |└───────>(38) ...to here
+           │      |         (39) calling ‘sb_reserve’ from ‘sb_printf’
+           │
+           └──> ‘sb_reserve’: events 40-42
+                  │
+                  │   57 | sb_reserve(struct sbuf *b, size_t extra)
+                  │      | ^~~~~~~~~~
+                  │      | |
+                  │      | (40) entry to ‘sb_reserve’
+                  │   58 | {
+                  │   59 |         if (b->n + extra + 1 <= b->cap)
+                  │      |            ~
+                  │      |            |
+                  │      |            (41) following ‘true’ branch... ─>─┐
+                  │      |                                               │
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │   60 |│                return;
+                  │      |│                ~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(42) ...to here
+                  │
+           <──────┘
+           │
+         ‘sb_printf’: events 43-44
+           │
+           │   97 |         sb_reserve(b, (size_t)n);
+           │      |         ^~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (43) returning to ‘sb_printf’ from ‘sb_reserve’
+           │   98 |         va_start(ap, fmt);
+           │   99 |         vsnprintf(b->p + b->n, (size_t)n + 1, fmt, ap);
+           │      |                   ~~~~
+           │      |                    |
+           │      |                    (44) using NULL here
+           │
+    <──────┘
+    │
+  ‘note’: events 45-48
+    │
+    │  329 |         sb_printf(&line, "  note: %s\n", sb_str(&t));
+    │      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (45) returning to ‘note’ from ‘sb_printf’
+    │  330 |         if (notes.p == NULL || strstr(notes.p, line.p) == NULL)
+    │      |            ~
+    │      |            |
+    │      |            (46) following ‘true’ branch... ─>─┐
+    │      |                                               │
+    │      |                                               │
+    │      |┌──────────────────────────────────────────────┘
+    │  331 |│                sb_puts(&notes, line.p);
+    │      |│                                ~~~~~~
+    │      |│                                    |
+    │      |└───────────────────────────────────>(47) ...to here
+    │      |                                     (48) using NULL here
+    │
+  ‘note’: event 49
+    │
+    │  331 |                 sb_puts(&notes, line.p);
+    │      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+    │      |                 |
+    │      |                 (49) calling ‘sb_puts’ from ‘note’
+    │
+    └──> ‘sb_puts’: events 50-51
+           │
+           │   77 | sb_puts(struct sbuf *b, const char *s)
+           │      | ^~~~~~~
+           │      | |
+           │      | (50) entry to ‘sb_puts’
+           │   78 | {
+           │   79 |         size_t n = strlen(s);
+           │      |                    ~~~~~~~~~
+           │      |                    |
+           │      |                    (51) ⚠️  argument 1 (‘s’) NULL where non-null expected
+           │
+In file included from src/util.c:5:
+/usr/include/string.h:439:15: note: argument 1 of ‘strlen’ must be non-null
+  439 | extern size_t strlen (const char *__s)
+      |               ^~~~~~
+src/util.c:82:9: warning: use of NULL where non-null expected [CWE-476] [-Wanalyzer-null-argument]
+   82 |         memcpy(b->p + b->n, s, n + 1);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ‘note’: events 1-4
+    │
+    │  308 | note(const char *fmt, ...)
+    │      | ^~~~
+    │      | |
+    │      | (1) entry to ‘note’
+    │......
+    │  315 |         if (note_mute > 0)
+    │      |            ~
+    │      |            |
+    │      |            (2) following ‘false’ branch... ─>─┐
+    │      |                                               │
+    │      |                                               │
+    │      |┌──────────────────────────────────────────────┘
+    │  316 |│                return;
+    │  317 |│        va_start(ap, fmt);
+    │      |│        ~~~~~~~~
+    │      |│        |
+    │      |└───────>(3) ...to here
+    │......
+    │  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+    │      |               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |               |
+    │      |               (4) calling ‘xmalloc’ from ‘note’
+    │
+    └──> ‘xmalloc’: events 5-6
+           │
+           │    8 | xmalloc(size_t n)
+           │      | ^~~~~~~
+           │      | |
+           │      | (5) entry to ‘xmalloc’
+           │    9 | {
+           │   10 |         void *p = malloc(n ? n : 1);
+           │      |                   ~~~~~~~~~~~~~~~~~
+           │      |                   |
+           │      |                   (6) following ‘true’ branch (when ‘n != 0’)... ─>─┐
+           │      |                                                                     │
+           │
+         ‘xmalloc’: events 7-9
+           │
+           │      |                                                                     │
+           │      |┌────────────────────────────────────────────────────────────────────┘
+           │   10 |│        void *p = malloc(n ? n : 1);
+           │      |│                  ^~~~~~~~~~~~~~~~~
+           │      |│                  |
+           │      |└─────────────────>(7) ...to here
+           │   11 | 
+           │   12 |         if (p == NULL) {
+           │      |            ~       
+           │      |            |
+           │      |            (8) following ‘false’ branch (when ‘p’ is non-NULL)... ─>─┐
+           │      |                                                                      │
+           │......
+           │      |                                                                      │
+           │      |┌─────────────────────────────────────────────────────────────────────┘
+           │   16 |│        return p;
+           │      |│               ~   
+           │      |│               |
+           │      |└──────────────>(9) ...to here
+           │
+    <──────┘
+    │
+  ‘note’: events 10-11
+    │
+    │  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+    │      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |               |
+    │      |               (10) returning to ‘note’ from ‘xmalloc’
+    │......
+    │  325 |         sb_puts(&t, tmp);
+    │      |         ~~~~~~~~~~~~~~~~
+    │      |         |
+    │      |         (11) calling ‘sb_puts’ from ‘note’
+    │
+    └──> ‘sb_puts’: events 12-13
+           │
+           │   77 | sb_puts(struct sbuf *b, const char *s)
+           │      | ^~~~~~~
+           │      | |
+           │      | (12) entry to ‘sb_puts’
+           │......
+           │   81 |         sb_reserve(b, n);
+           │      |         ~~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (13) calling ‘sb_reserve’ from ‘sb_puts’
+           │
+           └──> ‘sb_reserve’: events 14-16
+                  │
+                  │   57 | sb_reserve(struct sbuf *b, size_t extra)
+                  │      | ^~~~~~~~~~
+                  │      | |
+                  │      | (14) entry to ‘sb_reserve’
+                  │   58 | {
+                  │   59 |         if (b->n + extra + 1 <= b->cap)
+                  │      |            ~
+                  │      |            |
+                  │      |            (15) following ‘true’ branch... ─>─┐
+                  │      |                                               │
+                  │      |                                               │
+                  │      |┌──────────────────────────────────────────────┘
+                  │   60 |│                return;
+                  │      |│                ~~~~~~
+                  │      |│                |
+                  │      |└───────────────>(16) ...to here
+                  │
+           <──────┘
+           │
+         ‘sb_puts’: events 17-19
+           │
+           │   81 |         sb_reserve(b, n);
+           │      |         ^~~~~~~~~~~~~~~~
+           │      |         |
+           │      |         (17) returning to ‘sb_puts’ from ‘sb_reserve’
+           │   82 |         memcpy(b->p + b->n, s, n + 1);
+           │      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |         |       |
+           │      |         |       (18) using NULL here
+           │      |         (19) ⚠️  argument 1 (‘*b.p + *b.n’) NULL where non-null expected
+           │
+/usr/include/string.h:47:14: note: argument 1 of ‘memcpy’ must be non-null
+   47 | extern void *memcpy (void *__restrict __dest, const void *__restrict __src,
+      |              ^~~~~~

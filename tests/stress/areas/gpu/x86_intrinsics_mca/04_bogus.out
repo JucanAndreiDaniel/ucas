@@ -1,0 +1,20 @@
+> model bogus
+04_bogus.ucas:2:1: error: expected '{', found 'model'
+    model skylake-x
+    ^
+> mca q on bogus
+04_bogus.ucas:3:15: error: unknown x86 µarch 'bogus' (skl skx glc rpl zen4 x86v2 x86v3 x86v4)
+    mca q on bogus
+                  ^
+> cost q model bogus
+cost of q under bogus: 0 (0 operations, shared subterms counted once)
+> use bogus
+cost model: bogus
+> intrinsic _mm_foo on bogus
+04_bogus.ucas:6:27: error: unknown x86 µarch 'bogus' (skl skx glc rpl zen4 x86v2 x86v3 x86v4)
+    intrinsic _mm_foo on bogus
+                              ^
+> intrinsics foobar on bogus
+04_bogus.ucas:7:27: error: unknown x86 µarch 'bogus' (skl skx glc rpl zen4 x86v2 x86v3 x86v4)
+    intrinsics foobar on bogus
+                              ^

@@ -1,0 +1,23 @@
+> d0(x: u8) = popcount(x & 0xb5) & 1
+> d0b(x: u8) = ((x&1) xor ((x>>2)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>7)&1)) & 1
+> equiv d0 d0b
+d0 and d0b are equal on the domain of d0 (exhaustive)
+> d1(x: u8) = popcount(x & 0x6d) & 1
+> lin(x: u8) = (d0(x) << 1) | d1(x)
+> linxor(x: u8, y: u8) = lin(x xor y)
+> linadd(x: u8, y: u8) = lin(x) xor lin(y)
+> equiv linxor linadd
+linxor and linadd are equal on the domain of linxor (exhaustive)
+> range lin
+range of lin -> u8:
+  0..3   (4 distinct values)
+  values: 0..3
+  fits in u2
+  over all 256 points of the domain
+> kernel(x: u8) = d0(x) == 0 ? 1 : 0 where (x & 0x4a) == 0
+  note: bitwise operators bind tighter than comparisons here (unlike C): read as ((popcount((x & 181)) & 1) == 0)
+> range kernel
+range of kernel -> int:
+  0..1
+  fits in u1
+  over all 32 points of the domain

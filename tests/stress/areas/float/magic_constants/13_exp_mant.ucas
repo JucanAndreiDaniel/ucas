@@ -1,0 +1,11 @@
+eb(x: f32) = (asuint(x) >> 23) & 0xff
+mb(x: f32) = asuint(x) & 0x7fffff
+sb(x: f32) = asuint(x) >> 31
+range eb
+range mb
+range sb
+table eb
+table mb
+recon(x: f32) = asfloat((asuint(x) & 0x807fffff) | 0x3f800000)
+range recon
+equiv recon ~ recon

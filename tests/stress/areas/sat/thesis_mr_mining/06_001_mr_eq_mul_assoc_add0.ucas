@@ -1,0 +1,11 @@
+# MR mined from tests/equivalg:t,y,w,x
+# meaning-preserving rewrite: add0
+f(x: u4, y: u4, z: u4, t: u4) = y*t*z + x*t
+g(x: u4, y: u4, z: u4, t: u4) = (y*z + x)*t
+f2(x: u4, y: u4, z: u4, t: u4) = (y*t*z + x*t) + 0
+g2(x: u4, y: u4, z: u4, t: u4) = ((y*z + x)*t) + 0
+f1(x: u4, y: u4, z: u4, t: u4) = (y*t*z + x*t) + 0
+equiv f g
+equiv f2 g2
+equiv f1 g
+equiv f f2

@@ -1,0 +1,115 @@
+> addc(x: u32) = x + 11
+> mulc(x: u32) = x * 7
+> divc(x: u32) = x / 7
+> divv(x: u32, y: u32) = x / y
+> remv(x: u32, y: u32) = x % y
+> shl(x: u32) = x << 3
+> logic(x: u32, y: u32) = (x & y) | (x xor y)
+> select(x: u32, y: u32) = x < y ? x : y
+> cost addc model gt1030
+cost of addc under gt1030: 1 (1 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+> cost addc model zen4
+cost of addc under zen4: 1 (1 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+> cost addc model skl
+cost of addc under skl: 1 (1 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+> cost addc model glc
+cost of addc under glc: 1 (1 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+> cost addc model x86v4
+cost of addc under x86v4: 1 (1 operations, shared subterms counted once)
+  iadd             1 x 1     = 1
+> cost mulc model gt1030
+cost of mulc under gt1030: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3
+> cost mulc model zen4
+cost of mulc under zen4: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3
+> cost mulc model skl
+cost of mulc under skl: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3
+> cost mulc model glc
+cost of mulc under glc: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3
+> cost mulc model x86v4
+cost of mulc under x86v4: 3 (1 operations, shared subterms counted once)
+  imul             1 x 3     = 3
+> cost divc model gt1030
+cost of divc under gt1030: 8.75 (1 operations, shared subterms counted once)
+  idivk            1 x 8.75  = 8.75
+> cost divc model zen4
+cost of divc under zen4: 5 (1 operations, shared subterms counted once)
+  idivk            1 x 5     = 5
+> cost divc model skl
+cost of divc under skl: 5 (1 operations, shared subterms counted once)
+  idivk            1 x 5     = 5
+> cost divc model glc
+cost of divc under glc: 5 (1 operations, shared subterms counted once)
+  idivk            1 x 5     = 5
+> cost divv model gt1030
+cost of divv under gt1030: 28.5 (1 operations, shared subterms counted once)
+  idiv             1 x 28.5  = 28.5
+> cost divv model zen4
+cost of divv under zen4: 14 (1 operations, shared subterms counted once)
+  idiv             1 x 14    = 14
+> cost divv model skl
+cost of divv under skl: 36 (1 operations, shared subterms counted once)
+  idiv             1 x 36    = 36
+> cost divv model glc
+cost of divv under glc: 15 (1 operations, shared subterms counted once)
+  idiv             1 x 15    = 15
+> cost remv model gt1030
+cost of remv under gt1030: 32.25 (1 operations, shared subterms counted once)
+  irem             1 x 32.25 = 32.25
+> cost remv model zen4
+cost of remv under zen4: 14 (1 operations, shared subterms counted once)
+  irem             1 x 14    = 14
+> cost remv model skl
+cost of remv under skl: 36 (1 operations, shared subterms counted once)
+  irem             1 x 36    = 36
+> cost shl model gt1030
+cost of shl under gt1030: 2 (1 operations, shared subterms counted once)
+  shift            1 x 2     = 2
+> cost shl model zen4
+cost of shl under zen4: 1 (1 operations, shared subterms counted once)
+  shift            1 x 1     = 1
+> cost shl model skl
+cost of shl under skl: 1 (1 operations, shared subterms counted once)
+  shift            1 x 1     = 1
+> cost logic model gt1030
+cost of logic under gt1030: 1 (3 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    lop3             1 x 1     = 1  (bitwise logic of up to 3 inputs; saves 2)
+> cost logic model zen4
+cost of logic under zen4: 3 (3 operations, shared subterms counted once)
+  logic            3 x 1     = 3
+> cost logic model skl
+cost of logic under skl: 3 (3 operations, shared subterms counted once)
+  logic            3 x 1     = 3
+> cost select model gt1030
+cost of select under gt1030: 4 (2 operations, shared subterms counted once)
+  cmp              1 x 2.375 = 2.375
+  select           1 x 1.625 = 1.625
+  ?: on x < y  (arms cost 0 and 0)
+      select: +1.625   uniform branch: +6.25   divergent branch: +20.625
+      expected branch: +20.625   (P(true) = 0.4966 over a sample of 4096 points; 32 independent lanes split with probability 1 - p^32 - (1 - p)^32 = 1)
+      -> select (condition varies per invocation; mark parameters 'uniform' if it does not)
+  estimate with the best form per ?: : 4
+> cost select model zen4
+cost of select under zen4: 2 (2 operations, shared subterms counted once)
+  cmp              1 x 1     = 1
+  select           1 x 1     = 1
+  ?: on x < y  (arms cost 0 and 0)
+      select: +1   uniform branch: +1   divergent branch: +7.5
+      -> select (condition varies per invocation; mark parameters 'uniform' if it does not)
+  estimate with the best form per ?: : 2
+> cost select model skl
+cost of select under skl: 2 (2 operations, shared subterms counted once)
+  cmp              1 x 1     = 1
+  select           1 x 1     = 1
+  ?: on x < y  (arms cost 0 and 0)
+      select: +1   uniform branch: +1   divergent branch: +9
+      -> select (condition varies per invocation; mark parameters 'uniform' if it does not)
+  estimate with the best form per ?: : 2

@@ -1,0 +1,61 @@
+> is x + y commutative for u8 x and y?
+  note: commutative: it(x, y) = it(y, x) everywhere?
+  ucas: it(x: u8, y: u8) = x + y
+  ucas: lhs(x: u8, y: u8) = it(x, y)
+  ucas: rhs(x: u8, y: u8) = it(y, x)
+  ucas: equiv lhs rhs
+lhs and rhs are equal on the domain of lhs (exhaustive)
+> is x injective for u8 x?
+  ucas: it(x: u8) = x
+  ucas: injective it
+injective it:
+  injective: yes (one-to-one)
+  proved, exhaustive over all 256 points
+> is x surjective for u8 x?
+  ucas: it(x: u8) = x
+  ucas: surjective it
+surjective it:
+  surjective onto its type u8 (0..255): yes
+  256 distinct values (proved, exhaustive over all 256 points)
+> is x bijective for u8 x?
+  ucas: it(x: u8) = x
+  ucas: bijective it
+bijective it:
+  injective: yes (one-to-one)
+  proved, exhaustive over all 256 points
+  surjective onto its type u8 (0..255): yes
+  256 distinct values (proved, exhaustive over all 256 points)
+  bijective: yes
+> is x odd for u8 x?
+  note: "odd": read as an odd function, f(-x) = -f(x), not an odd number for every input (say "an odd function" or "always odd")
+  ucas: it(x: u8) = x
+  ucas: parity it
+parity of it:
+  odd: f(-x) = -f(x)
+  proved, exhaustive, with -x and -f(x) in u8 arithmetic (two's complement: -x is 2^w - x)
+> is x even for u8 x?
+  note: "even": read as an even function, f(-x) = f(x), not an even number for every input (say "an odd function" or "always odd")
+  ucas: it(x: u8) = x
+  ucas: parity it
+parity of it:
+  odd: f(-x) = -f(x)
+  proved, exhaustive, with -x and -f(x) in u8 arithmetic (two's complement: -x is 2^w - x)
+> is x always odd for u8 x?
+  note: "odd": read as an odd function, f(-x) = -f(x), not an odd number for every input (say "an odd function" or "always odd")
+  ucas: it(x: u8) = x
+  ucas: parity it
+parity of it:
+  odd: f(-x) = -f(x)
+  proved, exhaustive, with -x and -f(x) in u8 arithmetic (two's complement: -x is 2^w - x)
+> is x + 1 monotonic for u8 x?
+  ucas: it(x: u8) = x + 1
+  ucas: monotonic it
+monotonic it:
+  not monotonic on 0..255
+  maximal intervals of monotonicity:
+    x in 0..254: increasing
+    x in 254..255: decreasing
+  witness: x = 0 < x = 1 but f(0) = 1 < f(1) = 2 (not decreasing)
+  witness: x = 254 < x = 255 but f(254) = 255 > f(255) = 0 (not increasing)
+  note: without wrapping (as int) it is strictly increasing; the machine type wraps: f(254) = 255, f(255) = 0
+  proved, exhaustive over all 256 points (forward difference f(x+1) - f(x))

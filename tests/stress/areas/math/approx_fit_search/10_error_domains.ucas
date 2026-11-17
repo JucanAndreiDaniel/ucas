@@ -1,0 +1,11 @@
+# Incompatible target/source domains.  error/fit sample the TARGET's
+# default domain and ignore the approximation's declared domain (FINDINGS).
+f(x: f32 in 0..1) = x*x
+error f ~ sin
+g(x: f32 in 0..1) = x*x + 0.5
+error g ~ f
+q(x: f32 in 0..1) = x*x
+error q ~ q
+f32u(x: f32 in 0..1) = x*x
+u8f(x: u8)=x*x
+error u8f ~ f32u

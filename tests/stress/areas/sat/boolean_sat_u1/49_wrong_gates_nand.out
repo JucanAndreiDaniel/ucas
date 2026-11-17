@@ -1,0 +1,33 @@
+> notb(a: bool) = !a
+> andb(a: bool, b: bool) = a & b
+> orb(a: bool, b: bool) = a | b
+> nandb(a: bool, b: bool) = ~(a & b)
+> notnand(a: bool) = ~(a & a)
+> andnand(a: bool, b: bool) = ~(~(a & b) & ~(a & b))
+> equiv notb ~ notnand
+notb and notnand are equal on the domain of notb (exhaustive)
+> equiv andb ~ andnand
+andb and andnand are equal on the domain of andb (exhaustive)
+> gates notb basis nand
+gates for notb: 1 input bit -> 1 output bit, basis nand
+  exact search stopped (cost limit at cost 12); Shannon decomposition instead:
+  no program found for output 0 (basis not complete, or more than 244 steps)
+> gates andb basis nand
+gates for andb: 2 input bits -> 1 output bit, basis nand
+  exact search stopped (cost limit at cost 12); Shannon decomposition instead:
+  no program found for output 0 (basis not complete, or more than 244 steps)
+> gates orb basis nand
+gates for orb: 2 input bits -> 1 output bit, basis nand
+  minimal: cost 4, 4 steps (no program of cost <= 3 exists; 30 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = nand(a, b)              = ~(a & b)
+  t1 = nand(a, t0)              = ~(a & t0)
+  t2 = nand(b, t1)              = ~(b & t1)
+  t3 = nand(t1, t2)              = ~(t1 & t2)
+  r0 = t3
+> gates nandb basis nand
+gates for nandb: 2 input bits -> 1 output bit, basis nand
+  minimal: cost 1, 1 step (no program of cost <= 0 exists; 1 candidates searched)
+  checked: the program reproduces every output bit on all 4 care inputs
+  t0 = nand(a, b)              = ~(a & b)
+  r0 = t0

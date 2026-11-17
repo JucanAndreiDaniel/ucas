@@ -1,0 +1,105 @@
+> spvsimplify nofile float
+  input %x: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 1 rewrite of float instructions applied, each with a derivation (no sampling)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under gt1030 (each component counted; step = compare + select, mix = subtract + fma): 3 -> 1 (-66.7%)
+  rewrites, the largest savings first:
+    %a = OpFDiv %float %x %float_3_0
+      -> %a = OpFMul %float %x %ucas_float_3eaaaaab
+      (divide by a constant as a multiply; -2)
+      proof: within the original's Vulkan precision (derived), not bit-exact
+        k = fl(1/3) = 0.33333334; k*d = 1 + delta with delta = 2.98e-08 (k*d is exact in double)
+          x*k = (x/d)(1 + delta), so |fl(x*k) - x/d| <= ulp/2 + |x/d| |delta| < (0.5 + 2^24 |delta|) ulp = 1 ulp (|v| < 2^24 ulp(v); subnormal results alike)
+          x/d correctly rounded is within 0.5 ulp, and both are floats: they differ by at most 1 ulp
+          Vulkan OpFDiv: 2.5 ulp (for |y| in [2^-126, 2^126]); the multiply is correctly rounded: 1 <= 2.5, so it is within the precision the division already had
+        not bit-exact: x = 3.0000005: / 3 gives 1.0000001, * 0.33333334 gives 1.0000002 (the quotient within |delta| of a rounding midpoint)
+        bound against the reference: 1 ulp
+  (nofile: simplified.spvasm, 484 bytes, checksum cbe6c86a)
+> spvsimplify nofile float exact
+  input %x: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 1 rewrite of float instructions applied, each with a derivation (no sampling)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under gt1030 (each component counted; step = compare + select, mix = subtract + fma): 3 -> 1 (-66.7%)
+  mode: bit-exact only
+  rewrites, the largest savings first:
+    %a = OpFDiv %float %x %float_2_0
+      -> %a = OpFMul %float %x %ucas_float_3f000000
+      (divide by a constant as a multiply; -2)
+      proof: bit-exact (derived)
+        k = fl(1/2) = 0.5; k*d = 1 + delta with delta = 0 (k*d is exact in double)
+          delta = 0: x*k and x/d are the same real number, rounded once: bit-exact for every x
+  (nofile: simplified.spvasm, 476 bytes, checksum e2cb4811)
+> spvsimplify nofile float ulp 2
+  input %x: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 1 rewrite of float instructions applied, each with a derivation (no sampling)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under gt1030 (each component counted; step = compare + select, mix = subtract + fma): 3 -> 1 (-66.7%)
+  mode: within 2 ulp of the reference
+  rewrites, the largest savings first:
+    %a = OpFDiv %float %x %float_3_0
+      -> %a = OpFMul %float %x %ucas_float_3eaaaaab
+      (divide by a constant as a multiply; -2)
+      proof: within the original's Vulkan precision (derived), not bit-exact
+        k = fl(1/3) = 0.33333334; k*d = 1 + delta with delta = 2.98e-08 (k*d is exact in double)
+          x*k = (x/d)(1 + delta), so |fl(x*k) - x/d| <= ulp/2 + |x/d| |delta| < (0.5 + 2^24 |delta|) ulp = 1 ulp (|v| < 2^24 ulp(v); subnormal results alike)
+          x/d correctly rounded is within 0.5 ulp, and both are floats: they differ by at most 1 ulp
+          Vulkan OpFDiv: 2.5 ulp (for |y| in [2^-126, 2^126]); the multiply is correctly rounded: 1 <= 2.5, so it is within the precision the division already had
+        not bit-exact: x = 3.0000005: / 3 gives 1.0000001, * 0.33333334 gives 1.0000002 (the quotient within |delta| of a rounding midpoint)
+        bound against the reference: 1 ulp
+  (nofile: simplified.spvasm, 484 bytes, checksum cbe6c86a)
+> spvsimplify nofile float ulp 0
+  input %x: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 15 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 0 rewrites of float instructions applied, each with a derivation (no sampling)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under gt1030 (each component counted; step = compare + select, mix = subtract + fma): 3 -> 3 (+0.0%)
+  mode: within 0 ulp of the reference
+  nothing applied: no cheaper float form could be proved
+  not applied:
+    %a = OpFDiv %float %x %float_3_0   (divide by a constant as a multiply)
+        its bound (1 ulp) exceeds 0 ulp
+> spvsimplify nofile float
+  input %c: float
+  output %out: float (stored to; its values are listed after the run)
+simplify: 16 SPIR-V instructions, 0 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  integer arithmetic cost under gt1030 (each instruction once): 0 -> 0
+  nothing to rewrite: no cheaper form of an integer instruction could be proved
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+float simplify: 0 rewrites of float instructions applied, each with a derivation (no sampling)
+  assuming c in [0.1, 10] (each component; no NaN)
+  reference: IEEE binary32, round to nearest even; pow, exp2, log2 correctly rounded (long double, then f32); NaN payloads ignored, -0 and +0 distinct; GLSL's undefined results (pow of x < 0, log2 of x <= 0 ...) may become anything
+  float cost under gt1030 (each component counted; step = compare + select, mix = subtract + fma): 8 -> 8 (+0.0%)
+  nothing applied: no cheaper float form could be proved
+  approximations (cheaper, not applied: say `approx ulp N` to allow one):
+    pow ~ degree-2 minimax polynomial, cost 3 (-5): relative error < 0.00299 (50335 ulp), beyond the original's precision
+    pow ~ degree-3 minimax polynomial, cost 4 (-4): relative error < 0.00419 (70592 ulp), beyond the original's precision
+    pow ~ degree-4 minimax polynomial, cost 5 (-3): relative error < 0.00539 (90896 ulp), beyond the original's precision
+    pow ~ degree-5 minimax polynomial, cost 6 (-2): relative error < 0.00659 (111249 ulp), beyond the original's precision
+    pow ~ degree-6 minimax polynomial, cost 7 (-1): relative error < 0.00779 (131651 ulp), beyond the original's precision
+        relative minimax of q^2 on [0.1, 10] (remez.c), t = q - 5.0625, coefficients rounded to f32, Horner with fma:
+          real error certified on 4096 geometric pieces (|E| <= |E(m)| + |E'(m)| h/2 + max|E''| h^2/8, E'' bounded by sum i(i-1)|a_i| T^(i-2) + |y(y-1)| q^(y-2)): 6.33e-07 relative
+          plus rounding (gamma_12 = 12 u/(1 - 12 u) times sum |a_i||t|^i; fl(q - c) exact by Sterbenz for q in [c/2, 2c]): 0.00779 relative in all, the worst near q = 0.1001
+          against pow's allowance on each piece (log2's error times y through exp2, plus exp2's 3 + 2|t| ulp, the lower bounds): exceeds it (an approximation)
+        P(t) = fma(fma(fma(fma(fma(fma(6.00485667e-22, t, 1.51195338e-21), t, -3.48991152e-20), t, -9.01480043e-20), t, 1), t, 10.125), t, 25.6289062), t = q - 5.0625
+  not applied:
+    %a = OpExtInst %float %glsl Pow %c %float_2_0   (pow as exp2(y * log2 x))
+        not cheaper under gt1030

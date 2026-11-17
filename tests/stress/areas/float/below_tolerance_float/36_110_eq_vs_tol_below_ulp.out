@@ -1,0 +1,11 @@
+> f_eq_vs_tol_below_ulp(x: f32 in 0..1) = x == f32(0.5) ? f32(1) : f32(0)
+> g_eq_vs_tol_below_ulp(x: f32 in 0..1) = abs(x - f32(0.5)) <= f32(1e-8) ? f32(1) : f32(0)
+> equiv f_eq_vs_tol_below_ulp g_eq_vs_tol_below_ulp
+f_eq_vs_tol_below_ulp and g_eq_vs_tol_below_ulp are equal on the domain of f_eq_vs_tol_below_ulp (proved by SAT: 6801 AIG nodes, 186 conflicts)
+> error g_eq_vs_tol_below_ulp ~ f_eq_vs_tol_below_ulp
+error of g_eq_vs_tol_below_ulp against f_eq_vs_tol_below_ulp:
+  max abs error 0 at -
+  max rel error 0 (0%) at -
+  mean rel error 0 over 65536 points
+  max 0 ulp
+  rounding: not analysed (no input of the sample gives a finite, non-zero value)

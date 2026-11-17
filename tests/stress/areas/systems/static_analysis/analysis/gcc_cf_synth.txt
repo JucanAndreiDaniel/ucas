@@ -1,0 +1,145 @@
+src/cf_synth.c: In function ‘apply’:
+src/cf_synth.c:177:38: warning: use of uninitialized value ‘*<unknown>’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+  177 |                         o.v[k] = args[k];
+      |                                  ~~~~^~~
+  ‘cf_synth_sem’: events 1-2
+    │
+    │  965 | cf_synth_sem(const struct cf_synth_prog *p, const nid *in16, nid *out16)
+    │      | ^~~~~~~~~~~~
+    │      | |
+    │      | (1) entry to ‘cf_synth_sem’
+    │......
+    │  979 |         if (!run(p, &in, hv, hb, 0, &out))
+    │      |              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    │      |              |
+    │      |              (2) calling ‘run’ from ‘cf_synth_sem’
+    │
+    └──> ‘run’: events 3-7
+           │
+           │  236 | run(const struct cf_synth_prog *p, const struct v16 *in, const nid *hv,
+           │      | ^~~
+           │      | |
+           │      | (3) entry to ‘run’
+           │......
+           │  242 |         for (s = 0; s < p->n; s++) {
+           │      |                     ~~~~~~~~
+           │      |                       |
+           │      |                       (5) following ‘true’ branch... ─>─┐
+           │      |                                                         │
+           │      |                                                         │
+           │      |┌────────────────────────────────────────────────────────┘
+           │  243 |│                const struct cf_synth_step *st = &p->s[s];
+           │      |│                                            ~~
+           │      |│                                            |
+           │      |└───────────────────────────────────────────>(6) ...to here
+           │  244 |                 const struct v16 *a = st->a < 0 ? in : &val[st->a];
+           │      |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |                                                      |
+           │      |                                                      (7) following ‘true’ branch... ─>─┐
+           │      |                                                                                        │
+           │      |                                                                                        │
+           │      |┌───────────────────────────────────────────────────────────────────────────────────────┘
+           │  245 |│                const struct v16 *args[4];
+           │      |│                                  ~~~~
+           │      |│                                  |
+           │      |│                                  (4) region created on stack here
+           │
+         ‘run’: events 8-11
+           │
+           │  244 |                 const struct v16 *a = st->a < 0 ? in : &val[st->a];
+           │      |                                   ^
+           │      |                                   |
+           │      |└─────────────────────────────────>(8) ...to here
+           │......
+           │  249 |                 switch (st->tpl) {
+           │      |                 ~~~~~~             
+           │      |                 |
+           │      |                 (9) following ‘case 8 ... 12:’ branch... ─>─┐
+           │      |                                                             │
+           │......
+           │      |                                                             │
+           │      |┌────────────────────────────────────────────────────────────┘
+           │  311 |│                case TP_SRLI16:
+           │      |│                ~~~~               
+           │      |│                |
+           │      |└───────────────>(10) ...to here
+           │......
+           │  317 |                         if (!apply(T[st->tpl].name, args, st->k, r))
+           │      |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           │      |                              |
+           │      |                              (11) calling ‘apply’ from ‘run’
+           │
+           └──> ‘apply’: events 12-16
+                  │
+                  │  166 | apply(const char *name, const struct v16 *const *args, int64_t imm,
+                  │      | ^~~~~
+                  │      | |
+                  │      | (12) entry to ‘apply’
+                  │......
+                  │  172 |         if (id < 0)
+                  │      |            ~
+                  │      |            |
+                  │      |            (13) following ‘false’ branch (when ‘id >= 0’)... ─>─┐
+                  │      |                                                                 │
+                  │      |                                                                 │
+                  │      |┌────────────────────────────────────────────────────────────────┘
+                  │  173 |│                return 0;
+                  │  174 |│        memset(&o, 0, sizeof o);
+                  │      |│        ~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |│        |
+                  │      |└───────>(14) ...to here
+                  │  175 |         for (k = 0; k < xi_nops(id) && k < 4; k++)
+                  │      |                     ~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |                                     |
+                  │      |                                     (15) following ‘true’ branch... ─>─┐
+                  │      |                                                                        │
+                  │      |                                                                        │
+                  │      |┌───────────────────────────────────────────────────────────────────────┘
+                  │  176 |│                if (xi_okind(id, k) == 'v') {
+                  │      |│                    ~~~~~~~~~~~~~~~
+                  │      |│                    |
+                  │      |└───────────────────>(16) ...to here
+                  │
+                ‘apply’: events 17-19
+                  │
+                  │  175 |         for (k = 0; k < xi_nops(id) && k < 4; k++)
+                  │      |                     ~~~~~~~~~~~~~~~~~~~~~~~~
+                  │      |                                     |
+                  │      |                                     (19) following ‘true’ branch... ─>─┐
+                  │      |                                                                        │
+                  │      |                                                                        │
+                  │      |┌───────────────────────────────────────────────────────────────────────┘
+                  │  176 |│                if (xi_okind(id, k) == 'v') {
+                  │      |│                   ^
+                  │      |│                   |
+                  │      |│                   (17) following ‘true’ branch... ─>─┐
+                  │      |│                                                      │
+                  │      |│                                                      │
+                  │      |┌──────────────────────────────────────────────────────┘
+                  │  177 |│                        o.v[k] = args[k];
+                  │      |│                                     ~
+                  │      |│                                     |
+                  │      |└────────────────────────────────────>(18) ...to here
+                  │
+                ‘apply’: event 20
+                  │
+                  │  176 |                 if (xi_okind(id, k) == 'v') {
+                  │      |                     ^~~~~~~~~~~~~~~
+                  │      |                     |
+                  │      |└───────────────────>(20) ...to here
+                  │
+                ‘apply’: events 21-23
+                  │
+                  │  176 |                 if (xi_okind(id, k) == 'v') {
+                  │      |                    ^
+                  │      |                    |
+                  │      |                    (21) following ‘true’ branch... ─>─┐
+                  │      |                                                       │
+                  │      |                                                       │
+                  │      |┌──────────────────────────────────────────────────────┘
+                  │  177 |│                        o.v[k] = args[k];
+                  │      |│                                 ~~~~~~~
+                  │      |│                                     |
+                  │      |└────────────────────────────────────>(22) ...to here
+                  │      |                                      (23) ⚠️  use of uninitialized value ‘*<unknown>’ here
+                  │

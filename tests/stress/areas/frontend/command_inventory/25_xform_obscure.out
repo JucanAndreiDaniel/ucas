@@ -1,0 +1,81 @@
+> fseries exp(x)
+Fourier series of e^x on [-pi, pi] (period 2pi):
+  f(x) ~ a0/2 + sum_{n>=1} a_n cos(n*x) + b_n sin(n*x)
+  a_n = 1/pi int f(x) cos(n*x) dx over the period, b_n likewise with sin
+  a0 = 7.352155821
+  a_n: no closed form recognised; a_1..a_4 = -3.67607791, 1.470431164, -0.7352155821, 0.4324797542
+  b_n: no closed form recognised; b_1..b_4 = 3.67607791, -2.940862328, 2.205646746, -1.729919017
+  f(x) ~ 3.67607791 - 3.67607791cos(x) + 3.67607791sin(x) + 1.470431164cos(2x) - 2.940862328sin(2x) - 0.7352155821cos(3x) + 2.205646746sin(3x) + 0.4324797542cos(4x) - 1.729919017sin(4x) - 0.2827752239cos(5x) + 1.413876119sin(5x) + ...
+  partial sums S_N: ||f - S_N||/||f|| = 0.337 (N = 5), 0.114 (N = 48)
+  converges to f where f is continuous, and to the midpoint of the jump where it jumps:
+    at x = pi it jumps by -23.09747871: S_N -> 11.59195328
+  Gibbs: near x = pi, S_48 overshoots by 0.6825 = 3.0% of the jump (at x = 3.081); the overshoot tends to 8.95% of the jump and does not shrink as N grows
+> fseries x
+Fourier series of x on [-pi, pi] (period 2pi):
+  f(x) ~ a0/2 + sum_{n>=1} a_n cos(n*x) + b_n sin(n*x)
+  a_n = 1/pi int f(x) cos(n*x) dx over the period, b_n likewise with sin
+  a0 = 0
+  a_n = 0 (f is odd)
+  b_n = -2(-1)^n/n
+  check: the closed forms equal the numeric coefficients (Gauss-Legendre, 5120 nodes) for n = 1..48
+  f(x) ~ 2sin(x) - sin(2x) + 2sin(3x)/3 - sin(4x)/2 + 2sin(5x)/5 + ...
+  partial sums S_N: ||f - S_N||/||f|| = 0.332 (N = 5), 0.112 (N = 48)
+  converges to f where f is continuous, and to the midpoint of the jump where it jumps:
+    at x = pi it jumps by -2pi: S_N -> 0
+  Gibbs: near x = pi, S_48 overshoots by 0.4979 = 7.9% of the jump (at x = 3.077); the overshoot tends to 8.95% of the jump and does not shrink as N grows
+> dtft [1, 1, 1]
+DTFT of 3 values: X(w) = sum_n x[n] e^(-iwn)
+  X(w) = cos(w) + 1 + cos(2w) + i*(-sin(w) - sin(2w))
+  w        |X|          arg
+  0        3            0
+  pi/4     2.41421      -0.785398
+  pi/2     1            -1.5708
+  3pi/4    0.414214     0.785398
+  pi       1            0
+  periodic in w with period 2pi; the DFT samples it at w = 2pi k/N
+> dtft 0.5^n
+DTFT of (1/2)^n: X(e^(iw)) = X(z) at z = e^(iw)
+  X(z) = 2z/(2z - 1)
+  w        |X|          arg
+  0        2            0
+  pi/4     1.3572       -0.500474
+  pi/2     0.894427     -0.463648
+  3pi/4    0.714813     -0.255495
+  pi       0.666667     0
+> genfunc n^2
+  G(x) = sum_{n>=0} a_n x^n = (x + x^2)/(1 - 3x + 3x^2 - x^3)    for |x| < 1
+  check: sum_n a_n x^n at x = 1/2 is 6, G = 6 (difference 8.9e-16)
+> genfunc 1/n!
+  G(x) = sum_{n>=0} a_n x^n = e^x    for every x
+  check: sum_n a_n x^n at x = 1/2 is 1.64872127070013, G = 1.64872127070013 (difference 4.4e-16)
+> ogf fibonacci
+fibonacci: a[n+2] = a[n+1] + a[n], a[0] = 0, a[1] = 1
+  a[n] = sqrt(5)*((1 + sqrt(5))/2)^n/5 - sqrt(5)*((1 - sqrt(5))/2)^n/5
+  G(x) = sum_{n>=0} a_n x^n = x/(1 - x - x^2)    for |x| < (-1 + sqrt(5))/2
+  check: sum_n a_n x^n at x = (-1 + sqrt(5))/4 is 0.518927630227216, G = 0.518927630227215 (difference 1.1e-16)
+> egf n^2
+  E(x) = sum_{n>=0} a_n x^n/n! = (x + x^2)*e^x
+  check: the series at x = 1/4 and 1/2 matches E (max relative difference 5.6e-17)
+> coeffs x^3 + 2x + 1
+power series of x^3 + 2x + 1 about x = 0
+  Taylor coefficients c_0..c_7: 1, 2, 0, 1, 0, 0, 0, 0
+  no general term recognised (the library: exp, sin, cos, sinh, cosh, log, atan, atanh, geometric, binomial)
+> coeffs sin(x)
+power series of sin(x) about x = 0
+  Taylor coefficients c_0..c_7: 0, 1, 0, -1/6, 0, 1/120, 0, -0.0001984126984
+  = sum_{k>=0} (-1)^k/(2k + 1)! * x^(2k + 1)
+  radius of convergence inf
+> asymptotic sum(k, 1, n, 1/k)
+sum(k, 1, n, 1/k) ~ log(n) + gamma + 1/(2n) - 1/(12n^2) + 1/(120n^4) + ...
+  Euler-Maclaurin: int f + C + f(n)/2 + B2/2! f'(n) + B4/4! f'''(n), B2 = 1/6, B4 = -1/30
+  the constant C = 0.577215664901532 = gamma
+  check: n = 10: sum 2.92896825397, expansion off by 3.9e-09; n = 100: sum 5.18737751764, expansion off by 2.7e-15; n = 1000: sum 7.48547086055, expansion off by 0
+> dft [1, 2, 3, 4]
+DFT of 4 values (X[k] = sum_n x[n] e^(-2 pi i k n/N); radix-2 FFT, N log2 N operations)
+  k    X[k]                         |.|            arg
+  0    10                           10             0
+  1    -2 + 2i                      2sqrt(2)       3pi/4
+  2    -2                           2              pi
+  3    -2 - 2i                      2sqrt(2)       -3pi/4
+  check: the inverse transform gives the input back (max difference 0); Parseval: sum |x|^2 = 30, sum |X|^2/N = 30
+  bin k is the frequency k/N cycles per sample; k > N/2 are the negative frequencies k - N

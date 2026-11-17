@@ -1,0 +1,29 @@
+# Batch 10: adversarial extremes (NaN/inf/subnormal/overflow/shifts/div0).
+z1(x: f32 in -1..1) = 1/x
+wrap z1
+z2(x: f32 in -1..1) = sqrt(x)
+wrap z2
+z3(x: f32 in 0..0) = x/x
+wrap z3
+z4(x: f32 in -1e30..1e30) = x*x
+range z4
+z5(x: f32 in -1e-40..1e-40) = x*1e40
+wrap z5
+z6(x: f64 in -1..1) = sin(1/x)
+range z6
+s1(x: u8) = x << 9
+wrap s1
+s2(x: i8 in -128..127) = x >> 7
+wrap s2
+s3(x: u32) = x / 0
+wrap s3
+s4(x: u32 in 1..5) = 0xffffffff / x
+range s4
+s5(x: i16 in -32768..32767) = x * x
+wrap s5
+s6(x: u64) = x * 6364136223846793005 + 1442695040888963407
+wrap s6
+e1(x: f32 in 0..1) = (x*1e30)*1e30 - (x*1e30)*1e30
+range e1
+e2(x: f32 in 1..2) = (x + 1e-8) - x
+wrap e2

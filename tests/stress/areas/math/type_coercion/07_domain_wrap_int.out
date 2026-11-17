@@ -1,0 +1,71 @@
+> ovf(x: int in 0..10) = x + 9223372036854775807
+> domain ovf
+domain of ovf:
+  x: int, 0..10
+  no conditions: total on its parameter types
+  defined at 1 of 11 points
+  defined for: 0
+  undefined e.g. at x=1; x=2; x=3; x=4
+  over all 11 points of the domain
+> wrap ovf
+wrap analysis of ovf:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  over all 11 points of the domain
+> range ovf
+range of ovf -> int:
+  9223372036854775807..9223372036854775807
+  fits in u63
+  undefined at 10 points
+  over all 11 points of the domain
+> u8ovf(x: u8 in 250..255) = x + 10
+> wrap u8ovf
+wrap analysis of u8ovf:
+  x + 10   (u8)
+      nuw fails: unsigned wrap at 6 points, e.g. x=250
+      nsw holds
+  end to end: differs from the mathematical result at 6 points, e.g. x=250
+  over all 6 points of the domain
+> range u8ovf
+range of u8ovf -> u8:
+  4..9   (6 distinct values)
+  values: 4..9
+  fits in u4
+  over all 6 points of the domain
+> i8neg(x: i8 in -128..-1) = -x
+> range i8neg
+range of i8neg -> i8:
+  -128..127   (128 distinct values)
+  fits in i8
+  over all 128 points of the domain
+> wrap i8neg
+wrap analysis of i8neg:
+  -x   (i8)
+      nuw fails: unsigned wrap at 128 points, e.g. x=-128
+      nsw fails: signed wrap at 1 points, e.g. x=-128  <- UB in C; a compiler assumes it cannot happen
+  end to end: differs from the mathematical result at 1 points, e.g. x=-128
+      exact for: -127..-1
+  over all 128 points of the domain
+> mix8(x: i8, y: u8) = x + y
+  note: mixing i8 and u8: computed as u8
+> domain mix8
+domain of mix8:
+  x: i8, -128..127
+  y: u8, 0..255
+  no conditions: total on its parameter types
+  defined at 65536 of 65536 points
+  over all 65536 points of the domain
+> wrap mix8
+wrap analysis of mix8:
+  u8(x)   (u8)
+      truncates at 32768 points, e.g. x=-128, y=0
+  u8(x) + y   (u8)
+      nuw fails: unsigned wrap at 32640 points, e.g. x=-1, y=1
+      nsw fails: signed wrap at 16384 points, e.g. x=127, y=1
+  end to end: differs from the mathematical result at 16384 points, e.g. x=-128, y=0
+  over all 65536 points of the domain
+> range mix8
+range of mix8 -> u8:
+  0..255   (256 distinct values)
+  fits in u8
+  over all 65536 points of the domain

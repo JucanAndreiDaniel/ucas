@@ -1,0 +1,59 @@
+> d7(x: u32) = x / 7
+> wrap d7
+wrap analysis of d7:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> range d7
+range of d7 -> u32:
+  0..613566756
+  fits in u30
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..613566756
+  proved bound (monotonicity, exact algebra): 0..613566756
+  the sample reaches both ends: the range is exactly 0..613566756 (proved)
+    max: d7 is nondecreasing in x, so take x = 4294967295:
+      613566756
+    min: d7 is nondecreasing in x, so take x = 0:
+      0
+> m7(x: u32) = x % 7
+> range m7
+range of m7 -> u32:
+  0..6
+  fits in u3
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+  sound bound (intervals): 0..6
+> dv(a: u16, b: u16) = a / b
+> domain dv
+domain of dv:
+  a: u16, 0..65535
+  b: u16, 0..65535
+  requires b != 0  (in a/b)
+  defined at 65533 of 65536 points
+  undefined e.g. at a=65535, b=0; a=65534, b=0; a=1, b=0
+  C undefined behaviour at 3 points, e.g. a=65535, b=0
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> wrap dv
+wrap analysis of dv:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> mv(a: u16, b: u16) = a % b
+> domain mv
+domain of mv:
+  a: u16, 0..65535
+  b: u16, 0..65535
+  requires b != 0  (in a % b)
+  defined at 65533 of 65536 points
+  undefined e.g. at a=65535, b=0; a=65534, b=0; a=1, b=0
+  C undefined behaviour at 3 points, e.g. a=65535, b=0
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> wrap mv
+wrap analysis of mv:
+  no wrapping or rounding operations
+  end to end: equals the mathematical (unbounded) result everywhere
+  sampled 65536 points (domain has 4294967296 points); not exhaustive
+> dshift(x: u32) = x / 8
+> shift8(x: u32) = x >> 3
+> equiv dshift shift8
+dshift and shift8 are equal on the domain of dshift (proved by SAT: 33 AIG nodes, 0 conflicts)

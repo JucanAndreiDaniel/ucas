@@ -1,0 +1,16 @@
+> a(x: u32) = x + y
+13_mca_freevar.ucas:1:17: error: 'y' is not defined
+    a(x: u32) = x + y
+                    ^
+> mca a on skl
+mca of a on skl (skylake)
+> a2(x: u32) = x + 1
+> mca a2 on skl
+mca of a2 on skl (skylake)
+  straight-line code: 1 instruction, 1 uops
+     #  instruction                     lat   rtp uops  ports     inputs
+     0  add       x + 1                   1  0.25    1  p0156     
+    (inputs: instruction numbers; ' = from the previous iteration)
+  port pressure: p0 0.25 p1 0.25 p5 0.25 p6 0.25
+  bounds: critical path 1.00, ports 0.25 (p0), front end 0.25 (1 uops / 4)
+  simulated: 1.00 cycles, limited by the critical path

@@ -1,0 +1,14 @@
+model xmad : gt1030 { mul16: 1
+  fuse xmad(a: u16, b: u16, c: int) = a * b + c : mul16
+  fuse mul16(a: u16, b: u16) = a * b : mul16 }
+m1(a: u32 in 0..60000, b: u32 in 0..60000, c: u32) = a * b + c
+cost m1 model xmad
+model sat : gt1030 { fuse fsat(a: float) = min(max(a, 0.0), 1.0) : 0 on fadd fmul }
+s1(x: f32, y: f32, z: f32) = min(max(x * y + z, 0.0), 1.0)
+cost s1 model sat
+model sgf : gt1030 {
+  fuse bfly(v: any, lane: lane, k: const) = sg_shuffle(v, lane xor k) : sg_shuffle }
+xr(x: u32 uniform, lane: u32 in 0..31) = sg_shuffle_xor(x + lane, 1)
+cost xr model sgf
+xa(x: f32 uniform, y: f32, lane: u32 in 0..31) = sg_shuffle_xor(x * f32(lane), 1) + y
+cost xa model rdna2

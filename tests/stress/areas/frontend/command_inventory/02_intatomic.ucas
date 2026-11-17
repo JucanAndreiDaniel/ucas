@@ -1,0 +1,8 @@
+# intatomic: a float atomic add as an integer one (memk.c) — NO existing stress area
+f(x: f32 in 0..1) = x * 0.5
+intatomic f
+g(x: u32 in 0..255) = f32(x) * 0.5
+intatomic g count 100
+h(x: f32 in -1..1) = x + 1.0
+intatomic h tol 1e-3
+intatomic h tol 1e-3 global

@@ -1,0 +1,920 @@
+/home/andrew/Code/ucas/src/texenc.c:69:1: warning: included header calc.h is not used directly [misc-include-cleaner]
+   69 | #include "calc.h"
+      | ^~~~~~~~~~~~~~~~~
+   70 | #include "report.h"
+/home/andrew/Code/ucas/src/texenc.c:105:2: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+   75 |         uint64_t bits = 0;
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:110:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  110 |                 bits |= (uint64_t)b[2 + i] << (8 * i);
+      |                                            ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:112:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  112 |                 out[i] = pal[bits >> (3 * i) & 7];
+      |                                   ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:112:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  112 |                 out[i] = pal[bits >> (3 * i) & 7];
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/texenc.c:163:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  163 |                 bits |= (uint64_t)bsel[i] << (3 * i);
+      |                                           ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:165:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  165 |                 out[2 + i] = (unsigned char)(bits >> (8 * i));
+      |                                                   ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:179:12: warning: no header providing "nid" is directly included [misc-include-cleaner]
+   71 | texenc_bc4(nid tab, int W, struct texenc *e)
+      |            ^
+/home/andrew/Code/ucas/src/texenc.c:181:2: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+  181 |         uint32_t j, n;
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:185:6: warning: no header providing "N" is directly included [misc-include-cleaner]
+  185 |         if (N.op[tab] != O_TABLE || N.b[tab] == 0)
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:185:19: warning: no header providing "O_TABLE" is directly included [misc-include-cleaner]
+  185 |         if (N.op[tab] != O_TABLE || N.b[tab] == 0)
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:191:8: warning: no header providing "is_const" is directly included [misc-include-cleaner]
+  191 |                 if (!is_const(x))
+      |                      ^
+/home/andrew/Code/ucas/src/texenc.c:193:7: warning: no header providing "TY_FP" is directly included [misc-include-cleaner]
+  193 |                 v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                     ^
+/home/andrew/Code/ucas/src/texenc.c:193:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:194:8: warning: no header providing "TY_ISINT" is directly included [misc-include-cleaner]
+  194 |                 if (!TY_ISINT(N.ty[x]) || v > 255)
+      |                      ^
+/home/andrew/Code/ucas/src/texenc.c:194:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:205:14: warning: no header providing "xcalloc" is directly included [misc-include-cleaner]
+  205 |         e->target = xcalloc(n, sizeof *e->target);
+      |                     ^
+/home/andrew/Code/ucas/src/texenc.c:210:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  210 |                 double v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:220:33: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  220 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                      ^
+/home/andrew/Code/ucas/src/texenc.c:220:44: note: make conversion explicit to silence this warning
+   75 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~
+      |                                                                 (ptrdiff_t)(         )
+/home/andrew/Code/ucas/src/texenc.c:220:44: note: perform multiplication in a wider type
+  220 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                                 ^
+      |                                                                 (ptrdiff_t)
+/home/andrew/Code/ucas/src/texenc.c:222:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  222 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                   ^ ~
+/home/andrew/Code/ucas/src/texenc.c:222:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  222 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                         ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:230:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  230 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                   ^ ~
+/home/andrew/Code/ucas/src/texenc.c:230:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  230 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                         ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:246:41: warning: no header providing "sbuf" is directly included [misc-include-cleaner]
+  246 | pr_block(const unsigned char *q, struct sbuf *b)
+      |                                         ^
+/home/andrew/Code/ucas/src/texenc.c:252:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  252 |                 bits |= (uint64_t)q[2 + i] << (8 * i);
+      |                                            ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:253:2: warning: no header providing "printf" is directly included [misc-include-cleaner]
+   75 |         printf("endpoints %d, %d (%s), selectors", q[0], q[1], q[0] > q[1] ?
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:255:2: warning: no header providing "sb_clear" is directly included [misc-include-cleaner]
+  255 |         sb_clear(b);
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:257:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                 printf(" %d", (int)(bits >> (3 * i) & 7));
+      |                                          ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:257:41: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  257 |                 printf(" %d", (int)(bits >> (3 * i) & 7));
+      |                                                     ~ ^
+/home/andrew/Code/ucas/src/texenc.c:258:3: warning: no header providing "sb_printf" is directly included [misc-include-cleaner]
+  258 |                 sb_printf(b, "%s%d", i ? " " : "", (int)(bits >> (3 * i) & 7));
+      |                 ^
+/home/andrew/Code/ucas/src/texenc.c:258:52: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |                 sb_printf(b, "%s%d", i ? " " : "", (int)(bits >> (3 * i) & 7));
+      |                                                               ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:258:62: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  258 |                 sb_printf(b, "%s%d", i ? " " : "", (int)(bits >> (3 * i) & 7));
+      |                                                                          ~ ^
+/home/andrew/Code/ucas/src/texenc.c:262:23: warning: no header providing "sb_str" is directly included [misc-include-cleaner]
+  262 |         rep_str("selectors", sb_str(b));
+      |                              ^
+/home/andrew/Code/ucas/src/texenc.c:273:2: warning: no header providing "sb_putc" is directly included [misc-include-cleaner]
+  273 |         sb_putc(b, '[');
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:302:26: warning: no header providing "func" is directly included [misc-include-cleaner]
+  302 | cmd_texenc5(const struct func *f, const struct func *g, int W, double tol,
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:313:7: warning: no header providing "sym_str" is directly included [misc-include-cleaner]
+  313 |                     sym_str(fs[c]->name);
+      |                     ^
+/home/andrew/Code/ucas/src/texenc.c:315:4: warning: no header providing "fail" is directly included [misc-include-cleaner]
+  315 |                         fail("texenc takes tables [t0, t1, ...] (or their names), not "
+      |                         ^
+/home/andrew/Code/ucas/src/texenc.c:316:28: warning: no header providing "node_str" is directly included [misc-include-cleaner]
+  316 |                             "%s", fs[c]->anon ? node_str(fs[c]->body) :
+      |                                                 ^
+/home/andrew/Code/ucas/src/texenc.c:339:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  339 |         rep_int("bytes", nb * 16);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:339:19: note: make conversion explicit to silence this warning
+  339 |         rep_int("bytes", nb * 16);
+      |                          ^~~~~~~
+      |                          (long long)( )
+/home/andrew/Code/ucas/src/texenc.c:339:19: note: perform multiplication in a wider type
+  339 |         rep_int("bytes", nb * 16);
+      |                          ^~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:354:13: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  354 |                         pr_block(e[c].bytes + 8 * k, &b);
+      |                                  ^
+/home/andrew/Code/ucas/src/texenc.c:354:26: note: make conversion explicit to silence this warning
+  354 |                         pr_block(e[c].bytes + 8 * k, &b);
+      |                                               ^~~~~
+      |                                               (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/texenc.c:354:26: note: perform multiplication in a wider type
+  354 |                         pr_block(e[c].bytes + 8 * k, &b);
+      |                                               ^
+      |                                               (ptrdiff_t)
+/home/andrew/Code/ucas/src/texenc.c:373:3: warning: no header providing "snprintf" is directly included [misc-include-cleaner]
+  373 |                 snprintf(pre, sizeof pre, "%s: ", ch[c]);
+      |                 ^
+/home/andrew/Code/ucas/src/texenc.c:402:17: warning: no header providing "TYW" is directly included [misc-include-cleaner]
+  402 |         stored = n * ((TYW(N.ty[N.lst[N.a[tab]]]) + 7) / 8);
+      |                        ^
+/home/andrew/Code/ucas/src/texenc.c:402:17: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/texenc.c:403:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  403 |         for (k = -1, w = natw; k <= 12; w = 4 << ++k) {
+      |                                             ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:429:2: warning: no header providing "ty_t" is directly included [misc-include-cleaner]
+  429 |         ty_t t;
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:439:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  439 |             "SIGNED_R11_EAC", W, bytes, n * ((TYW(t) + 7) / 8), ty_str(t),
+      |                                               ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/texenc.c:439:58: warning: no header providing "ty_str" is directly included [misc-include-cleaner]
+  439 |             "SIGNED_R11_EAC", W, bytes, n * ((TYW(t) + 7) / 8), ty_str(t),
+      |                                                                 ^
+/home/andrew/Code/ucas/src/texenc.c:448:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  448 |         rep_int("bytes_as_stored", (long long)n * ((TYW(t) + 7) / 8));
+      |                                                     ^
+/home/andrew/Code/ucas/src/ucas.h:95:21: note: expanded from macro 'TYW'
+   95 | #define TYW(t) ((t)&0xff)
+      |                    ~^~~~
+/home/andrew/Code/ucas/src/texenc.c:475:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  475 |         rep_int("bytes", nb * 8);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:475:19: note: make conversion explicit to silence this warning
+  475 |         rep_int("bytes", nb * 8);
+      |                          ^~~~~~
+      |                          (long long)( )
+/home/andrew/Code/ucas/src/texenc.c:475:19: note: perform multiplication in a wider type
+  475 |         rep_int("bytes", nb * 8);
+      |                          ^~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:483:28: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  483 |                 const unsigned char *q = e.bytes + 8 * k;
+      |                                          ^
+/home/andrew/Code/ucas/src/texenc.c:483:38: note: make conversion explicit to silence this warning
+  483 |                 const unsigned char *q = e.bytes + 8 * k;
+      |                                                    ^~~~~
+      |                                                    (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/texenc.c:483:38: note: perform multiplication in a wider type
+  483 |                 const unsigned char *q = e.bytes + 8 * k;
+      |                                                    ^
+      |                                                    (ptrdiff_t)
+/home/andrew/Code/ucas/src/texenc.c:486:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  486 |                         bits |= (uint64_t)q[2 + i] << (8 * i);
+      |                                                    ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:492:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  492 |                         printf(" %d", (int)(bits >> (3 * i) & 7));
+      |                                                  ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:492:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  492 |                         printf(" %d", (int)(bits >> (3 * i) & 7));
+      |                                                             ~ ^
+/home/andrew/Code/ucas/src/texenc.c:493:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  493 |                         sb_printf(&b, "%s%d", i ? " " : "", (int)(bits >> (3 * i) & 7));
+      |                                                                        ~~ ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:493:64: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  493 |                         sb_printf(&b, "%s%d", i ? " " : "", (int)(bits >> (3 * i) & 7));
+      |                                                                                   ~ ^
+/home/andrew/Code/ucas/src/texenc.c:528:31: warning: Array access (via field 'target') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  528 |                     "tried\n", e.err, e.at, e.target[e.at], e.dec[e.at]);
+      |                                             ^
+/home/andrew/Code/ucas/src/texenc.c:2005:6: note: Assuming the condition is false
+ 2005 |         if (!cmdp_word(p, w, sizeof w) || strcmp(w, "texenc") != 0 ||
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2005:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/texenc.c:2005:36: note: Assuming the condition is false
+ 2005 |         if (!cmdp_word(p, w, sizeof w) || strcmp(w, "texenc") != 0 ||
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2005:6: note: Left side of '||' is false
+ 2005 |         if (!cmdp_word(p, w, sizeof w) || strcmp(w, "texenc") != 0 ||
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:2006:6: note: Assuming the condition is false
+ 2006 |             func_find(sym_cstr(w))) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2005:2: note: Taking false branch
+ 2005 |         if (!cmdp_word(p, w, sizeof w) || strcmp(w, "texenc") != 0 ||
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2011:6: note: Assuming the condition is false
+ 2011 |         if (cmdp_tok(p, T_COMMA))
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2011:2: note: Taking false branch
+ 2011 |         if (cmdp_tok(p, T_COMMA))
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2013:6: note: Assuming the condition is false
+ 2013 |         if (cmdp_kw(p, "astc")) {
+      |             ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2013:2: note: Taking false branch
+ 2013 |         if (cmdp_kw(p, "astc")) {
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2022:13: note: Assuming the condition is false
+ 2022 |         } else if (cmdp_kw(p, "eac"))
+      |                    ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2022:9: note: Taking false branch
+ 2022 |         } else if (cmdp_kw(p, "eac"))
+      |                ^
+/home/andrew/Code/ucas/src/texenc.c:2024:11: note: Assuming the condition is false
+ 2024 |         else if (cmdp_kw(p, "etc2")) {
+      |                  ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2024:7: note: Taking false branch
+ 2024 |         else if (cmdp_kw(p, "etc2")) {
+      |              ^
+/home/andrew/Code/ucas/src/texenc.c:2027:13: note: Assuming the condition is false
+ 2027 |         } else if (cmdp_kw(p, "bc7")) {
+      |                    ^~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2027:9: note: Taking false branch
+ 2027 |         } else if (cmdp_kw(p, "bc7")) {
+      |                ^
+/home/andrew/Code/ucas/src/texenc.c:2030:13: note: Assuming the condition is false
+ 2030 |         } else if (cmdp_kw(p, "bc6h"))
+      |                    ^~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2030:9: note: Taking false branch
+ 2030 |         } else if (cmdp_kw(p, "bc6h"))
+      |                ^
+/home/andrew/Code/ucas/src/texenc.c:2032:9: note: Assuming the condition is false
+ 2032 |         while (!cmdp_eos(p)) {
+      |                ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2032:2: note: Loop condition is false. Execution continues on line 2048
+ 2032 |         while (!cmdp_eos(p)) {
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2049:6: note: 'bc6h' is 0
+ 2049 |         if (bc6h) {
+      |             ^~~~
+/home/andrew/Code/ucas/src/texenc.c:2049:2: note: Taking false branch
+ 2049 |         if (bc6h) {
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2053:13: note: 'bc7' is 0
+ 2053 |         } else if (bc7)
+      |                    ^~~
+/home/andrew/Code/ucas/src/texenc.c:2053:9: note: Taking false branch
+ 2053 |         } else if (bc7)
+      |                ^
+/home/andrew/Code/ucas/src/texenc.c:2055:11: note: 'etc2' is 0
+ 2055 |         else if (etc2)
+      |                  ^~~~
+/home/andrew/Code/ucas/src/texenc.c:2055:7: note: Taking false branch
+ 2055 |         else if (etc2)
+      |              ^
+/home/andrew/Code/ucas/src/texenc.c:2057:11: note: 'eac' is 0
+ 2057 |         else if (eac)
+      |                  ^~~
+/home/andrew/Code/ucas/src/texenc.c:2057:7: note: Taking false branch
+ 2057 |         else if (eac)
+      |              ^
+/home/andrew/Code/ucas/src/texenc.c:2059:11: note: 'astc' is 0
+ 2059 |         else if (astc)
+      |                  ^~~~
+/home/andrew/Code/ucas/src/texenc.c:2059:7: note: Taking false branch
+ 2059 |         else if (astc)
+      |              ^
+/home/andrew/Code/ucas/src/texenc.c:2061:11: note: 'g' is null
+ 2061 |         else if (g)
+      |                  ^
+/home/andrew/Code/ucas/src/texenc.c:2061:7: note: Taking false branch
+ 2061 |         else if (g)
+      |              ^
+/home/andrew/Code/ucas/src/texenc.c:2064:3: note: Calling 'cmd_texenc'
+ 2064 |                 cmd_texenc(f, (int)W, tol, has_tol);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:456:19: note: Assuming field 'anon' is not equal to 0
+  456 |         const char *fn = f->anon ? "the table" : sym_str(f->name);
+      |                          ^~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:456:19: note: '?' condition is true
+/home/andrew/Code/ucas/src/texenc.c:460:6: note: Assuming field 'np' is equal to 0
+  460 |         if (f->np != 0 || N.op[f->body] != O_TABLE)
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:460:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/texenc.c:460:20: note: Assuming the condition is false
+  460 |         if (f->np != 0 || N.op[f->body] != O_TABLE)
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:460:2: note: Taking false branch
+  460 |         if (f->np != 0 || N.op[f->body] != O_TABLE)
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:463:6: note: 'W' is >= 1
+  463 |         if (W < 1 || W > 4096)
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:463:6: note: Left side of '||' is false
+/home/andrew/Code/ucas/src/texenc.c:463:15: note: 'W' is <= 4096
+  463 |         if (W < 1 || W > 4096)
+      |                      ^
+/home/andrew/Code/ucas/src/texenc.c:463:2: note: Taking false branch
+  463 |         if (W < 1 || W > 4096)
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:465:7: note: Calling 'texenc_bc4'
+  465 |         if (!texenc_bc4(f->body, W, &e))
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:184:2: note: Null pointer value stored to 'e.target'
+  184 |         memset(e, 0, sizeof *e);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:185:6: note: Assuming the condition is true
+  185 |         if (N.op[tab] != O_TABLE || N.b[tab] == 0)
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:185:27: note: Left side of '||' is true
+  185 |         if (N.op[tab] != O_TABLE || N.b[tab] == 0)
+      |                                  ^
+/home/andrew/Code/ucas/src/texenc.c:465:7: note: Returning from 'texenc_bc4'
+  465 |         if (!texenc_bc4(f->body, W, &e))
+      |              ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:465:2: note: Taking true branch
+  465 |         if (!texenc_bc4(f->body, W, &e))
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:478:8: note: Field 'n' is not equal to 1
+  478 |             e.n == 1 ? "y" : "ies", e.W, e.W, e.H, nb, nb == 1 ? "" : "s",
+      |               ^
+/home/andrew/Code/ucas/src/texenc.c:478:6: note: '?' condition is false
+  478 |             e.n == 1 ? "y" : "ies", e.W, e.W, e.H, nb, nb == 1 ? "" : "s",
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:478:49: note: 'nb' is not equal to 1
+  478 |             e.n == 1 ? "y" : "ies", e.W, e.W, e.H, nb, nb == 1 ? "" : "s",
+      |                                                        ^~
+/home/andrew/Code/ucas/src/texenc.c:478:49: note: '?' condition is false
+/home/andrew/Code/ucas/src/texenc.c:479:42: note: Field 'isint' is 0
+  479 |             nb * 8, e.W * e.H, 4 * e.W * e.H, e.isint ? "; whole numbers k are "
+      |                                                 ^
+/home/andrew/Code/ucas/src/texenc.c:479:40: note: '?' condition is false
+  479 |             nb * 8, e.W * e.H, 4 * e.W * e.H, e.isint ? "; whole numbers k are "
+      |                                               ^
+/home/andrew/Code/ucas/src/texenc.c:482:2: note: Loop condition is false. Execution continues on line 511
+  482 |         for (k = 0; k < nb; k++) {
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:514:2: note: Loop condition is false. Execution continues on line 516
+  514 |         for (i = 0; i < e.n; i++)
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:521:6: note: Assuming field 'err' is not equal to 0
+  521 |         if (e.err == 0)
+      |             ^~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:521:2: note: Taking false branch
+  521 |         if (e.err == 0)
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:528:31: note: Array access (via field 'target') results in a null pointer dereference
+  528 |                     "tried\n", e.err, e.at, e.target[e.at], e.dec[e.at]);
+      |                                             ^ ~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:570:12: warning: 'signed char' to 'int' conversion; consider casting to 'unsigned char' first. [bugprone-signed-char-misuse]
+  570 |         int mod = eac_mods[tab & 15][sel & 7], v;
+      |                   ^
+/home/andrew/Code/ucas/src/texenc.c:570:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  570 |         int mod = eac_mods[tab & 15][sel & 7], v;
+      |                            ^~~ ~
+/home/andrew/Code/ucas/src/texenc.c:570:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  570 |         int mod = eac_mods[tab & 15][sel & 7], v;
+      |                                      ^~~ ~
+/home/andrew/Code/ucas/src/texenc.c:586:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |         return eac_mods[tab & 15][sel & 7];
+      |                         ^~~ ~
+/home/andrew/Code/ucas/src/texenc.c:586:28: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  586 |         return eac_mods[tab & 15][sel & 7];
+      |                                   ^~~ ~
+/home/andrew/Code/ucas/src/texenc.c:596:13: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |         a = sgn ? (a << 5) + (a >> 5) : (a << 5) + (a >> 6);
+      |                    ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:596:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |         a = sgn ? (a << 5) + (a >> 5) : (a << 5) + (a >> 6);
+      |                               ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:596:35: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |         a = sgn ? (a << 5) + (a >> 5) : (a << 5) + (a >> 6);
+      |                                          ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:596:46: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  596 |         a = sgn ? (a << 5) + (a >> 5) : (a << 5) + (a >> 6);
+      |                                                     ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:607:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  607 |                 w = w << 8 | b[i];
+      |                       ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:609:37: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  609 |                 v[i] = eac_value(b[0], (int)(w >> 52 & 15), (int)(w >> 48 & 15),
+      |                                                ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:609:42: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  609 |                 v[i] = eac_value(b[0], (int)(w >> 52 & 15), (int)(w >> 48 & 15),
+      |                                                      ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:609:58: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  609 |                 v[i] = eac_value(b[0], (int)(w >> 52 & 15), (int)(w >> 48 & 15),
+      |                                                                     ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:609:63: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  609 |                 v[i] = eac_value(b[0], (int)(w >> 52 & 15), (int)(w >> 48 & 15),
+      |                                                                           ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:610:18: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  610 |                     (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7), sgn);
+      |                             ~~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:610:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  610 |                     (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7), sgn);
+      |                                                ^ ~
+/home/andrew/Code/ucas/src/texenc.c:610:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  610 |                     (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7), sgn);
+      |                                                          ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:610:56: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  610 |                     (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7), sgn);
+      |                                                                    ~ ^
+/home/andrew/Code/ucas/src/texenc.c:628:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  628 |                                         pal[k] = eac_read(eac_value(b & 255, mul, tab, k,
+      |                                                                     ^ ~
+/home/andrew/Code/ucas/src/texenc.c:651:11: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  651 |                                         bb = b & 255;
+      |                                              ^ ~
+/home/andrew/Code/ucas/src/texenc.c:657:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |         w = (uint64_t)bb << 56 | (uint64_t)bm << 52 | (uint64_t)bt << 48;
+      |                          ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:657:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |         w = (uint64_t)bb << 56 | (uint64_t)bm << 52 | (uint64_t)bt << 48;
+      |                                               ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:657:64: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  657 |         w = (uint64_t)bb << 56 | (uint64_t)bm << 52 | (uint64_t)bt << 48;
+      |                                                                    ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:659:29: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  659 |                 w |= (uint64_t)bsel[i] << (45 - 3 * (4 * (i & 3) + (i >> 2)));
+      |                                        ~~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:659:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  659 |                 w |= (uint64_t)bsel[i] << (45 - 3 * (4 * (i & 3) + (i >> 2)));
+      |                                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:659:55: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  659 |                 w |= (uint64_t)bsel[i] << (45 - 3 * (4 * (i & 3) + (i >> 2)));
+      |                                                                     ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:661:33: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  661 |                 out[i] = (unsigned char)(w >> (56 - 8 * i));
+      |                                            ~~ ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:680:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  680 |                 v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:685:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  685 |                 if (!TY_ISINT(N.ty[x]))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:690:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  690 |                 double v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:717:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  717 |                 if (!TY_ISINT(N.ty[N.lst[N.a[tab] + j]]))
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:724:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  724 |                 double v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:731:33: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  731 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                      ^
+/home/andrew/Code/ucas/src/texenc.c:731:44: note: make conversion explicit to silence this warning
+  731 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                                 ^~~~~~~~~~~~~~~~~~~~~
+      |                                                                 (ptrdiff_t)(         )
+/home/andrew/Code/ucas/src/texenc.c:731:44: note: perform multiplication in a wider type
+  731 |                         unsigned char care[16], *b = e->bytes + 8 * (by * e->bw + bx);
+      |                                                                 ^
+      |                                                                 (ptrdiff_t)
+/home/andrew/Code/ucas/src/texenc.c:734:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                   ^ ~
+/home/andrew/Code/ucas/src/texenc.c:734:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  734 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                         ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:742:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  742 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                   ^ ~
+/home/andrew/Code/ucas/src/texenc.c:742:45: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  742 |                                 int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                         ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:773:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  773 |                                         v[k] = eac_value(b & 255, mul, tab, k,
+      |                                                          ^ ~
+/home/andrew/Code/ucas/src/texenc.c:787:20: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                                 w = (uint64_t)(b & 255) << 56 |
+      |                                                ^ ~
+/home/andrew/Code/ucas/src/texenc.c:787:32: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  787 |                                 w = (uint64_t)(b & 255) << 56 |
+      |                                                         ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:788:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  788 |                                     (uint64_t)mul << 52 | (uint64_t)tab << 48;
+      |                                                   ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:788:48: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  788 |                                     (uint64_t)mul << 52 | (uint64_t)tab << 48;
+      |                                                                         ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:790:31: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  790 |                                         w |= (uint64_t)sel[i] << (45 - 3 *
+      |                                                               ~~ ^~~~~~~~~
+  791 |                                             (4 * (i & 3) + (i >> 2)));
+      |                                             ~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:791:16: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  791 |                                             (4 * (i & 3) + (i >> 2)));
+      |                                                   ^ ~
+/home/andrew/Code/ucas/src/texenc.c:791:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  791 |                                             (4 * (i & 3) + (i >> 2)));
+      |                                                             ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:793:36: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  793 |                                         out[i] = (unsigned char)(w >> (56 -
+      |                                                                    ~~ ^~~~~
+  794 |                                             8 * i));
+      |                                             ~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:814:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  814 |                 if (!is_const(x) || !TY_ISINT(N.ty[x]))
+      |                                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:827:38: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  827 |         for (k = -1, w = natw; k <= 12; w = 4 << ++k) {
+      |                                             ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:841:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  841 |                                         int x = bx * 4 + (i & 3);
+      |                                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:842:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  842 |                                         int y = by * 4 + (i >> 2);
+      |                                                           ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:911:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+  911 |         rep_int("bytes", nb * 8 * nt);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:911:19: note: make conversion explicit to silence this warning
+  911 |         rep_int("bytes", nb * 8 * nt);
+      |                          ^~~~~~~~~~~
+      |                          (long long)( )
+/home/andrew/Code/ucas/src/texenc.c:911:19: note: perform multiplication in a wider type
+  911 |         rep_int("bytes", nb * 8 * nt);
+      |                          ^~~~~~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:931:29: warning: result of multiplication in type 'int' is used as a pointer offset after an implicit widening conversion to type 'ptrdiff_t' [bugprone-implicit-widening-of-multiplication-result]
+  931 |                         const unsigned char *q = e[c].bytes + 8 * k;
+      |                                                  ^
+/home/andrew/Code/ucas/src/texenc.c:931:42: note: make conversion explicit to silence this warning
+  931 |                         const unsigned char *q = e[c].bytes + 8 * k;
+      |                                                               ^~~~~
+      |                                                               (ptrdiff_t)( )
+/home/andrew/Code/ucas/src/texenc.c:931:42: note: perform multiplication in a wider type
+  931 |                         const unsigned char *q = e[c].bytes + 8 * k;
+      |                                                               ^
+      |                                                               (ptrdiff_t)
+/home/andrew/Code/ucas/src/texenc.c:935:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  935 |                                 w = w << 8 | q[i];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:936:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  936 |                         mul = (int)(w >> 52 & 15);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:936:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  936 |                         mul = (int)(w >> 52 & 15);
+      |                                             ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:937:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  937 |                         tab = (int)(w >> 48 & 15);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:937:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  937 |                         tab = (int)(w >> 48 & 15);
+      |                                             ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:946:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  946 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7);
+      |                                                 ~~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:946:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  946 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7);
+      |                                                                    ^ ~
+/home/andrew/Code/ucas/src/texenc.c:946:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  946 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7);
+      |                                                                              ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:946:62: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  946 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) & 7);
+      |                                                                                        ~ ^
+/home/andrew/Code/ucas/src/texenc.c:1059:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1059 |                 v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1060:8: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1060 |                 if (!TY_ISINT(N.ty[x]) || v > 255)
+      |                      ^
+/home/andrew/Code/ucas/src/ucas.h:104:23: note: expanded from macro 'TY_ISINT'
+  104 | #define TY_ISINT(t) (!TY_FP(t))
+      |                       ^~~~~~~~
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1067:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1067 |                 double v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                            ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1090:2: warning: no header providing "uint16_t" is directly included [misc-include-cleaner]
+ 1090 |         uint16_t px[144 * 4], px2[144 * 4];
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:1134:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1134 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:1134:19: note: make conversion explicit to silence this warning
+ 1134 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~~~~~~
+      |                          (long long)(  )
+/home/andrew/Code/ucas/src/texenc.c:1134:19: note: perform multiplication in a wider type
+ 1134 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:1157:3: warning: no header providing "uint8_t" is directly included [misc-include-cleaner]
+ 1157 |                 uint8_t care[144], q[16];
+      |                 ^
+/home/andrew/Code/ucas/src/texenc.c:1186:49: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1186 |                                 alt[a] = (double)(float)((px2[4 * i + 3] >> 8) / 255.0);
+      |                                                                          ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1200:43: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1200 |                                 dec[c][a] = srgb && !c ? texenc_srgb8(C >> 8) :
+      |                                                                       ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1201:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1201 |                                     (double)(float)((C >> 8) / 255.0);
+      |                                                      ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1338:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1338 |                 w = w << 8 | q[i];
+      |                       ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1380:12: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1380 |                 int k = (i >> 2) + 4 * (i & 3);
+      |                          ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1380:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1380 |                 int k = (i >> 2) + 4 * (i & 3);
+      |                                         ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1381:23: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 int s = (int)((w >> (16 + k) & 1) << 1 | (w >> k & 1));
+      |                                  ~~ ^~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:1381:34: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 int s = (int)((w >> (16 + k) & 1) << 1 | (w >> k & 1));
+      |                                              ~ ^
+/home/andrew/Code/ucas/src/texenc.c:1381:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 int s = (int)((w >> (16 + k) & 1) << 1 | (w >> k & 1));
+      |                                                   ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1381:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 int s = (int)((w >> (16 + k) & 1) << 1 | (w >> k & 1));
+      |                                                             ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1381:54: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1381 |                 int s = (int)((w >> (16 + k) & 1) << 1 | (w >> k & 1));
+      |                                                                  ~ ^
+/home/andrew/Code/ucas/src/texenc.c:1441:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1441 |         rep_int("bytes", nbx * nby * 8 * nt);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:1441:19: note: make conversion explicit to silence this warning
+ 1441 |         rep_int("bytes", nbx * nby * 8 * nt);
+      |                          ^~~~~~~~~~~~~~~~~~
+      |                          (long long)(      )
+/home/andrew/Code/ucas/src/texenc.c:1441:19: note: perform multiplication in a wider type
+ 1441 |         rep_int("bytes", nbx * nby * 8 * nt);
+      |                          ^~~~~~~~~~~~~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:1463:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1463 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1463:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1463 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1478:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1478 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1478:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1478 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1513:14: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1513 |                                 w = w << 8 | q[i];
+      |                                       ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1514:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1514 |                         mul = (int)(w >> 52 & 15);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:1514:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1514 |                         mul = (int)(w >> 52 & 15);
+      |                                             ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:1515:21: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1515 |                         tab = (int)(w >> 48 & 15);
+      |                                       ~~ ^~
+/home/andrew/Code/ucas/src/texenc.c:1515:26: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1515 |                         tab = (int)(w >> 48 & 15);
+      |                                             ~ ^~
+/home/andrew/Code/ucas/src/texenc.c:1523:24: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1523 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) &
+      |                                                 ~~ ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:1523:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1523 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) &
+      |                                                                    ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1523:50: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1523 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) &
+      |                                                                              ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1524:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1523 |                                 int s = (int)(w >> (45 - 3 * (4 * (i & 3) + (i >> 2))) &
+      |                                                                                        ~
+ 1524 |                                     7);
+      |                                     ^
+/home/andrew/Code/ucas/src/texenc.c:1652:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1652 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:1652:19: note: make conversion explicit to silence this warning
+ 1652 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~~~~~~
+      |                          (long long)(  )
+/home/andrew/Code/ucas/src/texenc.c:1652:19: note: perform multiplication in a wider type
+ 1652 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:1675:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1675 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1675:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1675 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1685:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1685 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1685:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1685 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1734:27: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1734 |                 printf(" (%d weights)", 1 << in.ribits);
+      |                                         ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1858:7: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1858 |                 v = TY_FP(N.ty[x]) ? N.kr[x] : (double)N.ki[x];
+      |                     ^
+/home/andrew/Code/ucas/src/ucas.h:103:19: note: expanded from macro 'TY_FP'
+  103 | #define TY_FP(t) (TYK(t) == K_REAL || TYK(t) == K_FLOAT)
+      |                   ^~~~~~
+/home/andrew/Code/ucas/src/ucas.h:94:24: note: expanded from macro 'TYK'
+   94 | #define TYK(t) ((t) >> 8)
+      |                     ~~ ^
+/home/andrew/Code/ucas/src/texenc.c:1871:19: warning: performing an implicit widening conversion to type 'long long' of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
+ 1871 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:1871:19: note: make conversion explicit to silence this warning
+ 1871 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~~~~~~
+      |                          (long long)(  )
+/home/andrew/Code/ucas/src/texenc.c:1871:19: note: perform multiplication in a wider type
+ 1871 |         rep_int("bytes", nbx * nby * 16);
+      |                          ^~~~~~~~~
+      |                          (long long)
+/home/andrew/Code/ucas/src/texenc.c:1885:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1885 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1885:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1885 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1893:22: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1893 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                           ^ ~
+/home/andrew/Code/ucas/src/texenc.c:1893:44: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 1893 |                         int x = bx * 4 + (i & 3), y = by * 4 + (i >> 2);
+      |                                                                 ^ ~~
+/home/andrew/Code/ucas/src/texenc.c:1982:16: warning: no header providing "cmdp_pos" is directly included [misc-include-cleaner]
+ 1982 |         uint32_t at = cmdp_pos(p);
+      |                       ^
+/home/andrew/Code/ucas/src/texenc.c:1986:6: warning: no header providing "cmdp_word" is directly included [misc-include-cleaner]
+ 1986 |         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w))) != NULL &&
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:1986:38: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 1986 |         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w))) != NULL &&
+      |                                           ~~^~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:1986:38: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/texenc.c:1986:38: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/texenc.c:1986:40: warning: no header providing "func_find" is directly included [misc-include-cleaner]
+ 1986 |         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w))) != NULL &&
+      |                                               ^
+/home/andrew/Code/ucas/src/texenc.c:1986:50: warning: no header providing "sym_cstr" is directly included [misc-include-cleaner]
+ 1986 |         if (cmdp_word(p, w, sizeof w) && (f = func_find(sym_cstr(w))) != NULL &&
+      |                                                         ^
+/home/andrew/Code/ucas/src/texenc.c:1987:6: warning: no header providing "cmdp_at" is directly included [misc-include-cleaner]
+ 1987 |             cmdp_at(p, T_COMMA))
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:1987:17: warning: no header providing "T_COMMA" is directly included [misc-include-cleaner]
+ 1987 |             cmdp_at(p, T_COMMA))
+      |                        ^
+/home/andrew/Code/ucas/src/texenc.c:1989:2: warning: no header providing "cmdp_seek" is directly included [misc-include-cleaner]
+ 1989 |         cmdp_seek(p, at);
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:1990:9: warning: no header providing "cmdp_func" is directly included [misc-include-cleaner]
+ 1990 |         return cmdp_func(p, stop);
+      |                ^
+/home/andrew/Code/ucas/src/texenc.c:2003:2: warning: no header providing "int64_t" is directly included [misc-include-cleaner]
+ 2003 |         int64_t W = 4, bw = 0, bh = 0;
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2011:6: warning: no header providing "cmdp_tok" is directly included [misc-include-cleaner]
+ 2011 |         if (cmdp_tok(p, T_COMMA))
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:2013:6: warning: no header providing "cmdp_kw" is directly included [misc-include-cleaner]
+ 2013 |         if (cmdp_kw(p, "astc")) {
+      |             ^
+/home/andrew/Code/ucas/src/texenc.c:2016:8: warning: no header providing "cmdp_int" is directly included [misc-include-cleaner]
+ 2016 |                 if (!cmdp_int(p, &bw) || !cmdp_word(p, w, sizeof w) || w[0] != 'x' ||
+      |                      ^
+/home/andrew/Code/ucas/src/texenc.c:2017:19: warning: an assignment within an 'if' condition is bug-prone [bugprone-assignment-in-if-condition]
+ 2017 |                     (w[1] ? (bh = atoi(w + 1)) <= 0 : !cmdp_int(p, &bh)))
+      |                              ~~~^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/texenc.c:2017:19: note: if it should be an assignment, move it out of the 'if' condition
+/home/andrew/Code/ucas/src/texenc.c:2017:19: note: if it is meant to be an equality check, change '=' to '=='
+/home/andrew/Code/ucas/src/texenc.c:2017:21: warning: 'atoi' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 2017 |                     (w[1] ? (bh = atoi(w + 1)) <= 0 : !cmdp_int(p, &bh)))
+      |                                   ^
+/home/andrew/Code/ucas/src/texenc.c:2032:10: warning: no header providing "cmdp_eos" is directly included [misc-include-cleaner]
+ 2032 |         while (!cmdp_eos(p)) {
+      |                 ^
+/home/andrew/Code/ucas/src/texenc.c:2037:10: warning: no header providing "cmdp_number" is directly included [misc-include-cleaner]
+ 2037 |                         tol = cmdp_number(p, stop);
+      |                               ^
+/home/andrew/Code/ucas/src/texenc.c:2043:4: warning: no header providing "cmdp_fail_here" is directly included [misc-include-cleaner]
+ 2043 |                         cmdp_fail_here(p);
+      |                         ^
+/home/andrew/Code/ucas/src/texenc.c:2048:2: warning: no header providing "notes_flush" is directly included [misc-include-cleaner]
+ 2048 |         notes_flush();
+      |         ^
+/home/andrew/Code/ucas/src/texenc.c:2125:12: warning: 'sscanf' used to convert a string to an integer value, but function will not report conversion errors; consider using 'strtol' instead [bugprone-unchecked-string-to-number-conversion]
+ 2125 |                 else if (sscanf(w, "%dx%d", &a, &b) == 2 && a > 0 && b > 0 &&
+      |                          ^
+/home/andrew/Code/ucas/src/texenc.c:2125:12: warning: no header providing "sscanf" is directly included [misc-include-cleaner]
+/home/andrew/Code/ucas/src/texenc.c:2162:40: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+ 2162 |                 for (k = 0; k < n && line[i + k] && (line[i + k] | 32) == w[k]; k++)
+      |                                                      ^~~~~~~~~~~ ~
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~

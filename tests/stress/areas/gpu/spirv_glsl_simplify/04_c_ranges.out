@@ -1,0 +1,51 @@
+> spvsimplify nofile assume x 0 100
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 1 rewrite proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  assuming x in [0, 100] (every load of it)
+  integer arithmetic cost under gt1030 (each instruction once): 2 -> 0 (-100.0%)
+  by kind:
+       1  always this value                             -2
+  rewrites:
+    %a = OpExtInst %uint %glsl UClamp %x %uint_200 %uint_255
+      ->  200   (always this value; -2)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 461 bytes, checksum 9b45b01d)
+> spvsimplify nofile assume x 0 4
+  input %x: uint
+  output %out: uint (stored to; its values are listed after the run)
+simplify: 17 SPIR-V instructions, 2 rewrites proved by SAT (bit-precise: equal for every input), 0 dead instructions removed
+  assuming x in [0, 4] (every load of it)
+  integer arithmetic cost under gt1030 (each instruction once): 4 -> 0 (-100.0%)
+  by kind:
+       1  always this value                             -2.375
+       1  equals its operand                            -1.625
+  rewrites:
+    %c = OpULessThan %bool %x %uint_8
+      ->  true   (always this value; -2.375)
+    %k = OpSelect %uint %c %x %uint_8
+      ->  %x   (equals its operand; -1.625)
+  proved; the operands' definitions were expanded up to 16 levels, the rest (loads, loop phis, spec constants) are free inputs
+  (nofile: simplified.spvasm, 397 bytes, checksum 6846ffb5)
+  note: the code is C: optimised by the C frontend (c optimize)
+> c optimize nofile
+c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 7.0 -> 6.0 cycles
+  engines: find 1
+  f (line 1): drops % 256
+    proof: sat (proved by SAT: 179 AIG nodes, 0 conflicts); cost 7.0 -> 6.0
+    engine: find; search: find: drops % 256, verified below like every candidate
+    before: { return (x * 8u) / 4u + (x & 255u) % 256u; }
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  unsigned f(unsigned x){
+  	return (unsigned int)((uint32_t)((uint32_t)(((uint32_t)((uint32_t)(((uint32_t)((uint32_t)(((uint32_t)8u)) * (uint32_t)((x))))) / (uint32_t)(((uint32_t)4u))))) + (uint32_t)(((uint32_t)((uint32_t)((x)) & (uint32_t)(((uint32_t)255u)))))));
+  }
+  note: the code is C: optimised by the C frontend (c optimize)
+> c optimize assume n 1 31 nofile
+c optimize: 1 function, 0 rewrites proved (0 exhaustive, 0 by SAT) for x86-64-v3
+  shr (line 1): no cheaper form: lowered: 2 inputs, cost 2.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  unsigned shr(unsigned x, unsigned n){ return (x << n) >> n; }

@@ -1,0 +1,20 @@
+# Machine-typed simplify: clean cases and a LIMIT (bitwise ops unsupported).
+f1(x: u8) = x + 1 - 1
+f2(x: u8) = 2*x + 3*x
+f3(x: u8) = ~(~x)
+f4(x: u8) = x xor x
+f5(x: u8) = x | 0
+f6(x: f32) = x + 0
+f7(x: i8) = x + (-x)
+simplify f1
+simplify f2
+simplify f3
+simplify f4
+simplify f5
+simplify f6
+simplify f7
+# LIMIT: simplify refuses bitwise shift / ~ / & even on integer types
+f8(x: u8) = x << 1
+f9(x: u8) = x & 255
+simplify f8
+simplify f9

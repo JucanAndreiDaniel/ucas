@@ -1,0 +1,74 @@
+src/cf_cmd.c: In function ‘cfront_line’:
+src/cf_cmd.c:680:17: warning: use of uninitialized value ‘src’ [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+  680 |                 cmd_lower(src, file, &o);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+  ‘cfront_line’: events 1-6
+  646 |         char *src, *w;
+      |               ^~~
+      |               |
+      |               (1) region created on stack here
+      |               (2) capacity: 8 bytes
+......
+  656 |         if (!strncmp(w, "targets", 7)) {
+      |            ~   
+      |            |
+      |            (3) following ‘false’ branch... ─>─┐
+      |                                               │
+......
+      |                                               │
+      |┌──────────────────────────────────────────────┘
+  660 |│        if (!strncmp(w, "lower", 5)) {
+      |│             ~~~~~~~~~~~~~~~~~~~~~~
+      |│             |
+      |└────────────>(4) ...to here
+......
+  667 |         if (!parse_opts(w, &o, file, sizeof file, &lower))
+      |            ~   
+      |            |
+      |            (5) following ‘false’ branch... ─>─┐
+      |                                               │
+      |                                               │
+      |┌──────────────────────────────────────────────┘
+  668 |│                return 1;
+  669 |│        if (file[0]) {
+      |│            ~~~~~~~
+      |│                |
+      |└───────────────>(6) ...to here
+  ‘cfront_line’: events 7-8
+  669 |         if (file[0]) {
+      |            ^
+      |            |
+      |            (7) following ‘false’ branch... ─>─┐
+      |                                               │
+......
+      |                                               │
+      |┌──────────────────────────────────────────────┘
+  673 |│        } else if (code_block) {
+      |│                   ~~~~~~~~~~
+      |│                   |
+      |└──────────────────>(8) ...to here
+  ‘cfront_line’: events 9-13
+  673 |         } else if (code_block) {
+      |                   ^
+      |                   |
+      |                   (9) following ‘false’ branch... ─>─┐
+      |                                                      │
+......
+      |                                                      │
+      |┌─────────────────────────────────────────────────────┘
+  678 |│                fail("c: a FILE or a ```c block");
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(10) ...to here
+  679 |         if (lower)
+      |            ~       
+      |            |
+      |            (11) following ‘true’ branch... ─>─┐
+      |                                               │
+      |                                               │
+      |┌──────────────────────────────────────────────┘
+  680 |│                cmd_lower(src, file, &o);
+      |│                ~~~~~~~~~~~~~~~~~~~~~~~~
+      |│                |
+      |└───────────────>(12) ...to here
+      |                 (13) ⚠️  use of uninitialized value ‘src’ here

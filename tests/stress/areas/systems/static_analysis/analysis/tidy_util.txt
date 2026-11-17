@@ -1,0 +1,191 @@
+/home/andrew/Code/ucas/src/ucas.h:571:19: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  571 | enum { FC_FTZ32 = 1 << 7 };     /* (the order of fc_word) */
+      |                   ^ ~~
+/home/andrew/Code/ucas/src/util.c:13:3: warning: no header providing "fputs" is directly included [misc-include-cleaner]
+    4 | #include <stdlib.h>
+    5 | #include <string.h>
+    6 | 
+    7 | void *
+    8 | xmalloc(size_t n)
+    9 | {
+   10 |         void *p = malloc(n ? n : 1);
+   11 | 
+   12 |         if (p == NULL) {
+   13 |                 fputs("ucas: out of memory\n", stderr);
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:34:6: warning: 'p' may be set to null if 'realloc' fails, which may result in a leak of the original buffer [bugprone-suspicious-realloc-usage]
+   34 |         p = realloc(p, n ? n : 1);
+      |         ~   ^       ~
+/home/andrew/Code/ucas/src/util.c:42:1: warning: no header providing "uint32_t" is directly included [misc-include-cleaner]
+    4 | uint32_t
+      | ^
+/home/andrew/Code/ucas/src/util.c:82:14: warning: Addition of a null pointer (via field 'p') and a probably nonzero integer value (via field 'n') may result in undefined behavior [clang-analyzer-core.NullPointerArithm]
+   82 |         memcpy(b->p + b->n, s, n + 1);
+      |                     ^
+/home/andrew/Code/ucas/src/util.c:315:6: note: Assuming 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:315:6: note: 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:315:2: note: Taking false branch
+  315 |         if (note_mute > 0)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:321:25: note: Assuming 'len' is >= 0
+  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/util.c:321:25: note: '?' condition is false
+/home/andrew/Code/ucas/src/util.c:327:6: note: Assuming 'rep_on' is 0
+  327 |         if (rep_on)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/util.c:327:2: note: Taking false branch
+  327 |         if (rep_on)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:329:2: note: Value assigned to 'notes.p'
+  329 |         sb_printf(&line, "  note: %s\n", sb_str(&t));
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:330:6: note: Assuming field 'p' is equal to NULL
+  330 |         if (notes.p == NULL || strstr(notes.p, line.p) == NULL)
+      |             ^~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:330:22: note: Left side of '||' is true
+  330 |         if (notes.p == NULL || strstr(notes.p, line.p) == NULL)
+      |                             ^
+/home/andrew/Code/ucas/src/util.c:331:3: note: Calling 'sb_puts'
+  331 |                 sb_puts(&notes, line.p);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:81:2: note: Calling 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:59:6: note: Assuming the condition is true
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:59:2: note: Taking true branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:60:3: note: Returning without writing to 'b->p'
+   60 |                 return;
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:81:2: note: Returning from 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:82:14: note: Addition of a null pointer (via field 'p') and a probably nonzero integer value (via field 'n') may result in undefined behavior
+   82 |         memcpy(b->p + b->n, s, n + 1);
+      |                   ~ ^    ~
+/home/andrew/Code/ucas/src/util.c:92:2: warning: no header providing "va_start" is directly included [misc-include-cleaner]
+    4 |         va_start(ap, fmt);
+      |         ^
+/home/andrew/Code/ucas/src/util.c:93:6: warning: no header providing "vsnprintf" is directly included [misc-include-cleaner]
+   93 |         n = vsnprintf(NULL, 0, fmt, ap);
+      |             ^
+/home/andrew/Code/ucas/src/util.c:94:2: warning: no header providing "va_end" is directly included [misc-include-cleaner]
+   94 |         va_end(ap);
+      |         ^
+/home/andrew/Code/ucas/src/util.c:116:29: warning: Array access (via field 'p') results in a null pointer dereference [clang-analyzer-core.NullDereference]
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                                           ^
+/home/andrew/Code/ucas/src/util.c:315:6: note: Assuming 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:315:6: note: 'note_mute' is <= 0
+  315 |         if (note_mute > 0)
+      |             ^~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:315:2: note: Taking false branch
+  315 |         if (note_mute > 0)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:321:25: note: Assuming 'len' is < 0
+  321 |         tmp = xmalloc((size_t)(len < 0 ? 0 : len) + 1);
+      |                                ^~~~~~~
+/home/andrew/Code/ucas/src/util.c:321:25: note: '?' condition is true
+/home/andrew/Code/ucas/src/util.c:325:2: note: Calling 'sb_puts'
+  325 |         sb_puts(&t, tmp);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:81:2: note: Calling 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:59:2: note: Taking false branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:61:9: note: Field 'cap' is equal to 0
+   61 |         if (b->cap == 0)
+      |                ^
+/home/andrew/Code/ucas/src/util.c:61:2: note: Taking true branch
+   61 |         if (b->cap == 0)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:63:9: note: Assuming the condition is false
+   63 |         while (b->n + extra + 1 > b->cap)
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:63:2: note: Loop condition is false. Execution continues on line 65
+   63 |         while (b->n + extra + 1 > b->cap)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:81:2: note: Returning from 'sb_reserve'
+   81 |         sb_reserve(b, n);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:325:2: note: Returning from 'sb_puts'
+  325 |         sb_puts(&t, tmp);
+      |         ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:326:2: note: Value assigned to 't.p'
+  326 |         cap_text(&t, 0, NOTE_CAP);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:327:6: note: Assuming 'rep_on' is not equal to 0
+  327 |         if (rep_on)
+      |             ^~~~~~
+/home/andrew/Code/ucas/src/util.c:327:2: note: Taking true branch
+  327 |         if (rep_on)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:328:17: note: Calling 'sb_str'
+  328 |                 rep_note_hook(sb_str(&t));      /* a guess: an ambiguity in JSON mode */
+      |                               ^~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:115:6: note: Assuming field 'p' is equal to NULL
+  115 |         if (b->p == NULL)
+      |             ^~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:115:2: note: Taking true branch
+  115 |         if (b->p == NULL)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:116:3: note: Calling 'sb_reserve'
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                 ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:59:6: note: Assuming the condition is true
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:59:2: note: Taking true branch
+   59 |         if (b->n + extra + 1 <= b->cap)
+      |         ^
+/home/andrew/Code/ucas/src/util.c:60:3: note: Returning without writing to 'b->p'
+   60 |                 return;
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:116:3: note: Returning from 'sb_reserve'
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                 ^~~~~~~~~~~~~~~~
+/home/andrew/Code/ucas/src/util.c:116:29: note: Array access (via field 'p') results in a null pointer dereference
+  116 |                 sb_reserve(b, 0), b->p[0] = 0;
+      |                                      ~    ^
+/home/andrew/Code/ucas/src/util.c:170:10: warning: multilevel pointer conversion from 'void *' to 'char **', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  170 |                 syms = xrealloc(syms, symcap * sizeof *syms);
+      |                        ^
+/home/andrew/Code/ucas/src/util.c:170:19: warning: multilevel pointer conversion from 'char **' to 'void *', please use explicit cast [bugprone-multi-level-implicit-pointer-conversion]
+  170 |                 syms = xrealloc(syms, symcap * sizeof *syms);
+      |                                 ^
+/home/andrew/Code/ucas/src/util.c:193:1: warning: no header providing "jmp_buf" is directly included [misc-include-cleaner]
+    4 | jmp_buf fail_jmp;
+      | ^
+/home/andrew/Code/ucas/src/util.c:275:3: warning: no header providing "longjmp" is directly included [misc-include-cleaner]
+  275 |                 longjmp(fail_jmp, 1);
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:281:6: warning: no header providing "rep_on" is directly included [misc-include-cleaner]
+    2 |         if (rep_on) {
+      |             ^
+/home/andrew/Code/ucas/src/util.c:284:3: warning: no header providing "rep_fail" is directly included [misc-include-cleaner]
+  284 |                 rep_fail(tmp, line, col);
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:318:2: warning: no header providing "va_copy" is directly included [misc-include-cleaner]
+  318 |         va_copy(ap2, ap);
+      |         ^
+/home/andrew/Code/ucas/src/util.c:328:3: warning: no header providing "rep_note_hook" is directly included [misc-include-cleaner]
+  328 |                 rep_note_hook(sb_str(&t));      /* a guess: an ambiguity in JSON mode */
+      |                 ^
+/home/andrew/Code/ucas/src/util.c:352:8: warning: no header providing "uint64_t" is directly included [misc-include-cleaner]
+  352 | ilog2u(uint64_t v)
+      |        ^
+/home/andrew/Code/ucas/src/util.c:357:9: warning: use of a signed integer operand with a binary bitwise operator [bugprone-signed-bitwise]
+  357 |                 v >>= 1;
+      |                   ~~~ ^

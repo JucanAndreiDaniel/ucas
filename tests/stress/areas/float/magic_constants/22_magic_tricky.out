@@ -1,0 +1,202 @@
+> magic 7 u32
+x / 7 for unsigned x: u32
+  m = ceil(2^35 / 7) = 4908534053 (0x124924925, 33 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*7 = 2^35 + e with e = 3 <= 2^3.  Write x = q*7 + r, 0 <= r < 7.  Then x*m/2^35 = x/7 + x*e/(7*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/7: it cannot carry r/7 <= 6/7 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x24924925 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x24924925); q = (t + ((x - t) >> 1)) >> 2;
+    in ucas: (u32((u64(x) * 0x24924925) >> 32) + ((x - u32((u64(x) * 0x24924925) >> 32)) >> 1)) >> 2
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 7 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 7 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 9 u32
+x / 9 for unsigned x: u32
+  m = ceil(2^33 / 9) = 954437177 (0x38e38e39, 30 bits), shift s = 1
+  q = floor(x * m / 2^33)
+  proof (Granlund-Montgomery): m*9 = 2^33 + e with e = 1 <= 2^1.  Write x = q*9 + r, 0 <= r < 9.  Then x*m/2^33 = x/9 + x*e/(9*2^33), and x*e/2^33 < 1 because |x| < 2^32, so the extra term is below 1/9: it cannot carry r/9 <= 8/9 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x38e38e39) >> 33);
+    in ucas: u32((u64(x) * 0x38e38e39) >> 33)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 9 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 9 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 11 u32
+x / 11 for unsigned x: u32
+  m = ceil(2^35 / 11) = 3123612579 (0xba2e8ba3, 32 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*11 = 2^35 + e with e = 1 <= 2^3.  Write x = q*11 + r, 0 <= r < 11.  Then x*m/2^35 = x/11 + x*e/(11*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/11: it cannot carry r/11 <= 10/11 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0xba2e8ba3) >> 35);
+    in ucas: u32((u64(x) * 0xba2e8ba3) >> 35)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 11 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 11 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 13 u32
+x / 13 for unsigned x: u32
+  m = ceil(2^34 / 13) = 1321528399 (0x4ec4ec4f, 31 bits), shift s = 2
+  q = floor(x * m / 2^34)
+  proof (Granlund-Montgomery): m*13 = 2^34 + e with e = 3 <= 2^2.  Write x = q*13 + r, 0 <= r < 13.  Then x*m/2^34 = x/13 + x*e/(13*2^34), and x*e/2^34 < 1 because |x| < 2^32, so the extra term is below 1/13: it cannot carry r/13 <= 12/13 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x4ec4ec4f) >> 34);
+    in ucas: u32((u64(x) * 0x4ec4ec4f) >> 34)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 13 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 13 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 25 u32
+x / 25 for unsigned x: u32
+  m = ceil(2^35 / 25) = 1374389535 (0x51eb851f, 31 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*25 = 2^35 + e with e = 7 <= 2^3.  Write x = q*25 + r, 0 <= r < 25.  Then x*m/2^35 = x/25 + x*e/(25*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/25: it cannot carry r/25 <= 24/25 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x51eb851f) >> 35);
+    in ucas: u32((u64(x) * 0x51eb851f) >> 35)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 25 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 25 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 33 u32
+x / 33 for unsigned x: u32
+  m = ceil(2^35 / 33) = 1041204193 (0x3e0f83e1, 30 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*33 = 2^35 + e with e = 1 <= 2^3.  Write x = q*33 + r, 0 <= r < 33.  Then x*m/2^35 = x/33 + x*e/(33*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/33: it cannot carry r/33 <= 32/33 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x3e0f83e1) >> 35);
+    in ucas: u32((u64(x) * 0x3e0f83e1) >> 35)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 33 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 33 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 49 u32
+x / 49 for unsigned x: u32
+  m = ceil(2^36 / 49) = 1402438301 (0x5397829d, 31 bits), shift s = 4
+  q = floor(x * m / 2^36)
+  proof (Granlund-Montgomery): m*49 = 2^36 + e with e = 13 <= 2^4.  Write x = q*49 + r, 0 <= r < 49.  Then x*m/2^36 = x/49 + x*e/(49*2^36), and x*e/2^36 < 1 because |x| < 2^32, so the extra term is below 1/49: it cannot carry r/49 <= 48/49 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x5397829d) >> 36);
+    in ucas: u32((u64(x) * 0x5397829d) >> 36)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 49 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 49 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 64 u32
+x / 64 for unsigned x: u32
+  q = x >> 6 (a power of two)
+> magic 65 u32
+x / 65 for unsigned x: u32
+  m = ceil(2^38 / 65) = 4228890877 (0xfc0fc0fd, 32 bits), shift s = 6
+  q = floor(x * m / 2^38)
+  proof (Granlund-Montgomery): m*65 = 2^38 + e with e = 61 <= 2^6.  Write x = q*65 + r, 0 <= r < 65.  Then x*m/2^38 = x/65 + x*e/(65*2^38), and x*e/2^38 < 1 because |x| < 2^32, so the extra term is below 1/65: it cannot carry r/65 <= 64/65 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0xfc0fc0fd) >> 38);
+    in ucas: u32((u64(x) * 0xfc0fc0fd) >> 38)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 65 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 65 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 127 u32
+x / 127 for unsigned x: u32
+  m = ceil(2^39 / 127) = 4328785937 (0x102040811, 33 bits), shift s = 7
+  q = floor(x * m / 2^39)
+  proof (Granlund-Montgomery): m*127 = 2^39 + e with e = 111 <= 2^7.  Write x = q*127 + r, 0 <= r < 127.  Then x*m/2^39 = x/127 + x*e/(127*2^39), and x*e/2^39 < 1 because |x| < 2^32, so the extra term is below 1/127: it cannot carry r/127 <= 126/127 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x2040811 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x2040811); q = (t + ((x - t) >> 1)) >> 6;
+    in ucas: (u32((u64(x) * 0x2040811) >> 32) + ((x - u32((u64(x) * 0x2040811) >> 32)) >> 1)) >> 6
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 127 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 127 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 128 u32
+x / 128 for unsigned x: u32
+  q = x >> 7 (a power of two)
+> magic 129 u32
+x / 129 for unsigned x: u32
+  m = ceil(2^35 / 129) = 266354561 (0xfe03f81, 28 bits), shift s = 3
+  q = floor(x * m / 2^35)
+  proof (Granlund-Montgomery): m*129 = 2^35 + e with e = 1 <= 2^3.  Write x = q*129 + r, 0 <= r < 129.  Then x*m/2^35 = x/129 + x*e/(129*2^35), and x*e/2^35 < 1 because |x| < 2^32, so the extra term is below 1/129: it cannot carry r/129 <= 128/129 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0xfe03f81) >> 35);
+    in ucas: u32((u64(x) * 0xfe03f81) >> 35)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 129 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 129 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 255 u32
+x / 255 for unsigned x: u32
+  m = ceil(2^39 / 255) = 2155905153 (0x80808081, 32 bits), shift s = 7
+  q = floor(x * m / 2^39)
+  proof (Granlund-Montgomery): m*255 = 2^39 + e with e = 127 <= 2^7.  Write x = q*255 + r, 0 <= r < 255.  Then x*m/2^39 = x/255 + x*e/(255*2^39), and x*e/2^39 < 1 because |x| < 2^32, so the extra term is below 1/255: it cannot carry r/255 <= 254/255 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x80808081) >> 39);
+    in ucas: u32((u64(x) * 0x80808081) >> 39)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 255 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 255 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 256 u32
+x / 256 for unsigned x: u32
+  q = x >> 8 (a power of two)
+> magic 511 u32
+x / 511 for unsigned x: u32
+  m = ceil(2^41 / 511) = 4303372321 (0x100804021, 33 bits), shift s = 9
+  q = floor(x * m / 2^41)
+  proof (Granlund-Montgomery): m*511 = 2^41 + e with e = 479 <= 2^9.  Write x = q*511 + r, 0 <= r < 511.  Then x*m/2^41 = x/511 + x*e/(511*2^41), and x*e/2^41 < 1 because |x| < 2^32, so the extra term is below 1/511: it cannot carry r/511 <= 510/511 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x804021 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x804021); q = (t + ((x - t) >> 1)) >> 8;
+    in ucas: (u32((u64(x) * 0x804021) >> 32) + ((x - u32((u64(x) * 0x804021) >> 32)) >> 1)) >> 8
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 511 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 511 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 512 u32
+x / 512 for unsigned x: u32
+  q = x >> 9 (a power of two)
+> magic 513 u32
+x / 513 for unsigned x: u32
+  m = ceil(2^41 / 513) = 4286595041 (0xff803fe1, 32 bits), shift s = 9
+  q = floor(x * m / 2^41)
+  proof (Granlund-Montgomery): m*513 = 2^41 + e with e = 481 <= 2^9.  Write x = q*513 + r, 0 <= r < 513.  Then x*m/2^41 = x/513 + x*e/(513*2^41), and x*e/2^41 < 1 because |x| < 2^32, so the extra term is below 1/513: it cannot carry r/513 <= 512/513 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0xff803fe1) >> 41);
+    in ucas: u32((u64(x) * 0xff803fe1) >> 41)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 513 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 513 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 641 u32
+x / 641 for unsigned x: u32
+  m = ceil(2^32 / 641) = 6700417 (0x663d81, 23 bits), shift s = 0
+  q = floor(x * m / 2^32)
+  proof (Granlund-Montgomery): m*641 = 2^32 + e with e = 1 <= 2^0.  Write x = q*641 + r, 0 <= r < 641.  Then x*m/2^32 = x/641 + x*e/(641*2^32), and x*e/2^32 < 1 because |x| < 2^32, so the extra term is below 1/641: it cannot carry r/641 <= 640/641 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x663d81) >> 32);
+    in ucas: u32((u64(x) * 0x663d81) >> 32)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 641 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 641 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 642 u32
+x / 642 for unsigned x: u32
+  m = ceil(2^41 / 642) = 3425269869 (0xcc29786d, 32 bits), shift s = 9
+  q = floor(x * m / 2^41)
+  proof (Granlund-Montgomery): m*642 = 2^41 + e with e = 346 <= 2^9.  Write x = q*642 + r, 0 <= r < 642.  Then x*m/2^41 = x/642 + x*e/(642*2^41), and x*e/2^41 < 1 because |x| < 2^32, so the extra term is below 1/642: it cannot carry r/642 <= 641/642 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0xcc29786d) >> 41);
+    in ucas: u32((u64(x) * 0xcc29786d) >> 41)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 642 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 642 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 997 u32
+x / 997 for unsigned x: u32
+  m = ceil(2^42 / 997) = 4411280353 (0x106eecbe1, 33 bits), shift s = 10
+  q = floor(x * m / 2^42)
+  proof (Granlund-Montgomery): m*997 = 2^42 + e with e = 837 <= 2^10.  Write x = q*997 + r, 0 <= r < 997.  Then x*m/2^42 = x/997 + x*e/(997*2^42), and x*e/2^42 < 1 because |x| < 2^32, so the extra term is below 1/997: it cannot carry r/997 <= 996/997 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x6eecbe1 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x6eecbe1); q = (t + ((x - t) >> 1)) >> 9;
+    in ucas: (u32((u64(x) * 0x6eecbe1) >> 32) + ((x - u32((u64(x) * 0x6eecbe1) >> 32)) >> 1)) >> 9
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 997 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 997 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 998 u32
+x / 998 for unsigned x: u32
+  m = ceil(2^39 / 998) = 550857529 (0x20d56b39, 30 bits), shift s = 7
+  q = floor(x * m / 2^39)
+  proof (Granlund-Montgomery): m*998 = 2^39 + e with e = 54 <= 2^7.  Write x = q*998 + r, 0 <= r < 998.  Then x*m/2^39 = x/998 + x*e/(998*2^39), and x*e/2^39 < 1 because |x| < 2^32, so the extra term is below 1/998: it cannot carry r/998 <= 997/998 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x20d56b39) >> 39);
+    in ucas: u32((u64(x) * 0x20d56b39) >> 39)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 998 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 998 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 999 u32
+x / 999 for unsigned x: u32
+  m = ceil(2^42 / 999) = 4402448961 (0x106680a41, 33 bits), shift s = 10
+  q = floor(x * m / 2^42)
+  proof (Granlund-Montgomery): m*999 = 2^42 + e with e = 935 <= 2^10.  Write x = q*999 + r, 0 <= r < 999.  Then x*m/2^42 = x/999 + x*e/(999*2^42), and x*e/2^42 < 1 because |x| < 2^32, so the extra term is below 1/999: it cannot carry r/999 <= 998/999 past the next integer
+  m has 33 bits, one more than u32: the usual sequence uses m - 2^32 = 0x6680a41 and an add that cannot overflow:
+    C:    t = mulhi(x, 0x6680a41); q = (t + ((x - t) >> 1)) >> 9;
+    in ucas: (u32((u64(x) * 0x6680a41) >> 32) + ((x - u32((u64(x) * 0x6680a41) >> 32)) >> 1)) >> 9
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 999 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 999 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
+> magic 1000 u32
+x / 1000 for unsigned x: u32
+  m = ceil(2^38 / 1000) = 274877907 (0x10624dd3, 29 bits), shift s = 6
+  q = floor(x * m / 2^38)
+  proof (Granlund-Montgomery): m*1000 = 2^38 + e with e = 56 <= 2^6.  Write x = q*1000 + r, 0 <= r < 1000.  Then x*m/2^38 = x/1000 + x*e/(1000*2^38), and x*e/2^38 < 1 because |x| < 2^32, so the extra term is below 1/1000: it cannot carry r/1000 <= 999/1000 past the next integer
+  m fits u32:
+    C:    q = (uint32_t)(((uint64_t)x * 0x10624dd3) >> 38);
+    in ucas: u32((u64(x) * 0x10624dd3) >> 38)
+  check: the ucas form above, run by ucas's evaluator in u32, equals x / 1000 for the 256 smallest and largest x and 65536 random x (66048 inputs)
+  check: the sequence above, emulated in 32-bit arithmetic, equals x / 1000 (C's truncating division) for the ends of the range, both sides of the multiples of d near 0 and near the top, and 2^20 random inputs (1073152 inputs)
