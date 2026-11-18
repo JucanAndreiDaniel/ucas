@@ -578,6 +578,15 @@ prove(const struct cf_value *v, nid cand, struct proof *pf)
 	cf_value_func(v, &f);
 	pf->kind = CF_PROOF_NONE;
 	pf->text[0] = 0;
+	/* An empty domain (e.g. an always-out-of-range float-to-int cast)
+	 * refines vacuously: proving a rewrite there says nothing about what
+	 * the original does on any real input, and the emitted C would not
+	 * match clang.  Do not claim a proof in that case. */
+	if (f.where && const_is(f.where, 0)) {
+		snprintf(pf->text, sizeof pf->text,
+		    "undefined everywhere (empty domain)");
+		return 0;
+	}
 	if (!quick_ok(&f, cand)) {
 		snprintf(pf->text, sizeof pf->text, "differs on a sample");
 		return 0;
@@ -720,7 +729,7 @@ eval_line(const struct cf_value *v, nid e, int k, int64_t lo, int64_t hi,
 	struct plan p;
 	int64_t *in_i = xcalloc((size_t)MAXP * CH, sizeof *in_i);
 	double *in_r = xcalloc((size_t)MAXP * CH, sizeof *in_r);
-	int64_t x = lo;
+	int64_t x = lo, x0;
 	uint32_t i, np, loc;
 	ty_t t = ct_to_ucas(v->leaf[k].cty);
 
@@ -729,19 +738,27 @@ eval_line(const struct cf_value *v, nid e, int k, int64_t lo, int64_t hi,
 	*undef = 0;
 	while (x <= hi) {
 		np = 0;
-		while (np < CH && x <= hi) {
+		x0 = x;
+		while (np < CH) {
 			in_i[(size_t)k * CH + np] = int_norm(t, x);
 			np++;
+			/* Stop before incrementing past hi: x++ at INT64_MAX
+			 * would wrap to INT64_MIN and make x - np + i - lo a
+			 * large negative index into the caller's out buffer. */
+			if (x == hi)
+				break;
 			x++;
 		}
 		plan_run(&p, np, in_i, in_r);
 		for (i = 0; i < np; i++) {
 			if (COLF(&p, loc)[i] & F_UNDEF) {
-				out[x - np + i - lo] = 0;
+				out[x0 - lo + i] = 0;
 				(*undef)++;
 			} else
-				out[x - np + i - lo] = COLI(&p, loc)[i];
+				out[x0 - lo + i] = COLI(&p, loc)[i];
 		}
+		if (x == hi)
+			break;
 	}
 	plan_free(&p);
 	free(in_i);
@@ -1014,7 +1031,7 @@ gen_table(const struct cf_value *v, nid e, struct cf_cands *cs)
 		hi = TYK(xt) == K_SINT ? 127 : (xt == TY_BOOL ? 1 : 255);
 	} else
 		return;
-	if (hi - lo > 255 || hi < lo)
+	if (hi < lo || (uint64_t)hi - (uint64_t)lo > 255)
 		return;
 	tab = xmalloc((size_t)(hi - lo + 1) * sizeof *tab);
 	eval_line(v, e, k, lo, hi, tab, &undef);

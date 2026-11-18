@@ -982,7 +982,18 @@ const_tok(int a, int b)
 	e = calc_parse_text(buf, &tmp, TY_REAL);
 	if (tmp.np || !is_const(e))
 		fail("plot: expected a number, found '%s'", buf);
-	return TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+	{
+		double v = TY_FP(N.ty[e]) ? N.kr[e] : (double)N.ki[e];
+
+		/* 'inf' parses as a constant while '-inf' and 'nan' do not.
+		 * Reject it here too, so every number the user supplies (a
+		 * range endpoint, an 'at' point, a tangent point, ...) is
+		 * finite; an infinite axis cannot be drawn or reported as
+		 * JSON (rep_num would emit null). */
+		if (!isfinite(v))
+			fail("plot: expected a number, found '%s'", buf);
+		return v;
+	}
 }
 
 /* the end of a value starting at i: before '..', ',' or an option */
@@ -2241,6 +2252,15 @@ vrange(double *v, int n, int haspole, int lg, double *lo, double *hi,
 	}
 	*lo = lg ? pow(10, mn) : mn;
 	*hi = lg ? pow(10, mx) : mx;
+	/* A span near DBL_MAX overflows in the 5% margin above (mx - mn
+	 * and the margin itself become +/-inf).  The sample extrema are
+	 * finite and known, so fall back to them rather than report an
+	 * infinite axis -- which would print "[-inf, inf]" and be null in
+	 * JSON.  Finite ranges never take these branches. */
+	if (!isfinite(*lo))
+		*lo = *vmin;
+	if (!isfinite(*hi))
+		*hi = *vmax;
 	free(s);
 	return clipped;
 }
@@ -2280,7 +2300,14 @@ undef_runs(struct ev *e, const double *base, int sx, const double *xs,
 			l = a == 0 ? xs[0] : bisect1(e, base, sx, xs[a - 1], xs[a], 1);
 			r = b == n - 1 ? xs[n - 1] : bisect1(e, base, sx, xs[b], xs[b + 1],
 			    1);
-			if (a == b && a > 0 && b < n - 1)
+			/* On a window that spans the whole finite range the sample
+			 * spacing overflows, so xs[] (and bisection) can be +/-inf
+			 * or NaN.  Such a pair is not an interval: say so instead
+			 * of printing garbage like "[-nan, inf]". */
+			if (!isfinite(l) || !isfinite(r) || l > r)
+				sb_printf(&SUM, "%s all samples undefined", runs ? "," :
+				    "   ");
+			else if (a == b && a > 0 && b < n - 1)
 				sb_printf(&SUM, "%s %s ≈ %s", runs ? "," : "    undefined at",
 				    vn, g4(l));
 			else
@@ -4228,6 +4255,31 @@ finish_gif(struct gif *g, int W, int H, int nfr, int fps)
 	free(g->prev);
 }
 
+/* MCP and --json carry files inline as base64 and drop an image whose
+ * base64 passes 4 MiB.  Base64 is 4/3 of the GIF's bytes, so the GIF itself
+ * must stay under 3 MiB.  As for the chat bot (anim.c), re-render an
+ * animation at half the frame rate -- and half the fps, so it plays for the
+ * same time -- rather than return no image at all.  Called after drawing a
+ * pass and before gif_begin of the next one: sum0 is the summary's length
+ * before the pass, so a retry does not duplicate its lines. */
+static int
+gif_shrink(struct gif *g, int *nfr, int *fps, size_t sum0)
+{
+	if (!rep_small_files || g->out.n <= (3u << 20) || *nfr <= 2)
+		return 0;
+	printf("  note: at %d frames the GIF is %zu bytes, over the inline "
+	    "image limit: rendering at %d frames\n", *nfr, g->out.n, *nfr / 2);
+	*nfr /= 2;
+	if (*fps > 1)
+		*fps /= 2;
+	gif_end(g);		/* finalise this pass, then throw it away */
+	free(g->out.p);
+	SUM.n = sum0;
+	if (SUM.p)
+		SUM.p[sum0] = 0;
+	return 1;
+}
+
 static void
 join_labels(char *t, size_t n)
 {
@@ -4671,18 +4723,25 @@ plot_2d(uint32_t av)
 		snprintf(title + strlen(title), sizeof title - strlen(title),
 		    " near %s = %s", sym_str(xn), g4(O.at[0]));
 	cv_open(W, H);
-	gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
-	for (f = 0; f < an.n; f++) {
-		memset(C.px, P_BG, (size_t)W * H);
-		first_frame = f == 0;
-		if (av) {
-			set_fix(av, anim_val(&an, f));
-			snprintf(tt, sizeof tt, "%s   (%s = %s)", title, sym_str(av),
-			    g4(anim_val(&an, f)));
-		} else
-			snprintf(tt, sizeof tt, "%s", title);
-		chart2d(&A, 0, 0, W, H, tt, sym_str(xn), sym_str(yn));
-		gif_frame(&g, C.px, an.n > 1 ? delay_cs(f, an.fps) : 0);
+	{
+		size_t sum0 = SUM.n;
+		for (;;) {
+			gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
+			for (f = 0; f < an.n; f++) {
+				memset(C.px, P_BG, (size_t)W * H);
+				first_frame = f == 0;
+				if (av) {
+					set_fix(av, anim_val(&an, f));
+					snprintf(tt, sizeof tt, "%s   (%s = %s)", title,
+					    sym_str(av), g4(anim_val(&an, f)));
+				} else
+					snprintf(tt, sizeof tt, "%s", title);
+				chart2d(&A, 0, 0, W, H, tt, sym_str(xn), sym_str(yn));
+				gif_frame(&g, C.px, an.n > 1 ? delay_cs(f, an.fps) : 0);
+			}
+			if (!gif_shrink(&g, &an.n, &an.fps, sum0))
+				break;
+		}
 	}
 	cv_close();
 	if (av)
@@ -4823,32 +4882,44 @@ plot_surf(int si)
 		fps = O.fps > 0 ? O.fps : 12;
 		if (nfr < 2)
 			nfr = 2;
-		if (nfr > 180)
-			nfr = 180;
+		/* 180 frames of 560x440 take ~11.6 s to render and build an
+		 * ~8.6 MB GIF, past an 8 s client budget.  120 frames render
+		 * in ~6.9 s; keep the same up-front cap as a response guard. */
+		if (nfr > 120)
+			nfr = 120;
 		W = 560;
 		H = 440;
 	}
 	cv_open(W, H);
-	gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
-	for (f = 0; f < nfr; f++) {
-		if (view == V_SURF || view == V_WIRE)
-			surf_frame(si, &B, (-55 + 360.0 * f / nfr) * DEG, W, H, title,
-			    view == V_WIRE, &und, &clip);
-		else
-			heat_frame(si, &A, B.lo[2], B.hi[2], view, W, H, title, xn, yn,
-			    zn, 1, &und);
-		gif_frame(&g, C.px, nfr > 1 ? delay_cs(f, fps) : 0);
-		if (f == 0) {
-			if (view == V_SURF || view == V_WIRE) {
-				sb_printf(&SUM, "  %dx%d grid", G3 + 1, G3 + 1);
-				if (und)
-					sb_printf(&SUM, ", undefined at %d points", und);
-				if (clip)
-					sb_printf(&SUM, ", %d points outside the %s range "
-					    "(holes)", clip, zn);
-				sb_printf(&SUM, "\n");
-			} else if (und)
-				sb_printf(&SUM, "  undefined on %d pixels (grey)\n", und);
+	{
+		size_t sum0 = SUM.n;
+		for (;;) {
+			gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
+			for (f = 0; f < nfr; f++) {
+				if (view == V_SURF || view == V_WIRE)
+					surf_frame(si, &B, (-55 + 360.0 * f / nfr) * DEG, W, H,
+					    title, view == V_WIRE, &und, &clip);
+				else
+					heat_frame(si, &A, B.lo[2], B.hi[2], view, W, H, title,
+					    xn, yn, zn, 1, &und);
+				gif_frame(&g, C.px, nfr > 1 ? delay_cs(f, fps) : 0);
+				if (f == 0) {
+					if (view == V_SURF || view == V_WIRE) {
+						sb_printf(&SUM, "  %dx%d grid", G3 + 1, G3 + 1);
+						if (und)
+							sb_printf(&SUM, ", undefined at %d points",
+							    und);
+						if (clip)
+							sb_printf(&SUM, ", %d points outside the "
+							    "%s range (holes)", clip, zn);
+						sb_printf(&SUM, "\n");
+					} else if (und)
+						sb_printf(&SUM, "  undefined on %d pixels "
+						    "(grey)\n", und);
+				}
+			}
+			if (!gif_shrink(&g, &nfr, &fps, sum0))
+				break;
 		}
 	}
 	cv_close();
@@ -5051,62 +5122,72 @@ plot_nd(int si)
 		H = 460;
 	}
 	cv_open(W, H);
-	gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
-	for (fr = 0; fr < an.n; fr++) {
-		if (as >= 0)
-			s->fix[0][as] = anim_val(&an, fr);
-		if (as >= 0)
-			snprintf(tt, sizeof tt, "%s   (%s = %s)", title,
-			    sym_str(f->p[as].name), g4(s->fix[0][as]));
-		else
-			snprintf(tt, sizeof tt, "%s", title);
-		if (ps < 0) {
-			if (view == V_SURF || view == V_WIRE) {
-				struct box3 B;
-				B.lo[0] = A.lo[0];
-				B.hi[0] = A.hi[0];
-				B.lo[1] = A.lo[1];
-				B.hi[1] = A.hi[1];
-				B.lo[2] = zlo;
-				B.hi[2] = zhi;
-				B.name[0] = xn;
-				B.name[1] = yn;
-				B.name[2] = "f";
-				surf_frame(si, &B, -55 * DEG, W, H, tt, view == V_WIRE, &und,
-				    NULL);
-			} else
-				heat_frame(si, &A, zlo, zhi, view, W, H, tt, xn, yn, "f",
-				    an.n > 1 ? 2 : 1, &und);
-		} else {
-			int pi, pw = (W - 90) / 3, ph = (H - 34) / 3;
-			memset(C.px, P_BG, (size_t)W * H);
-			for (pi = 0; pi < 9; pi++) {
-				struct ax2 P = A;
-				int px0 = 4 + (pi % 3) * pw, py0 = 30 + (pi / 3) * ph;
-				char pt[64];
-				s->fix[0][ps] = plo + (phi - plo) * pi / 8;
-				layout2(&P, px0, py0, pw, ph, 0, 1);
-				P.L = px0 + 46;
-				cv_clip(P.L + 1, P.T + 1, P.R - 1, P.B - 1);
-				heat_into(s, si, &P, zlo, zhi, view, 2, NULL);
-				cv_clip(0, 0, W - 1, H - 1);
-				axes2(&P, pi / 3 == 2 ? xn : NULL, NULL, 1, pi / 3 == 2,
-				    pi % 3 == 0);
-				{
-					char pf[24];
-					snprintf(pt, sizeof pt, "%s = %s", sym_str(f->p[ps].name),
-					    pi_frac(s->fix[0][ps], pf, sizeof pf) ? pf :
-					    g4(s->fix[0][ps]));
+	{
+		size_t sum0 = SUM.n;
+		for (;;) {
+			gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
+			for (fr = 0; fr < an.n; fr++) {
+				if (as >= 0)
+					s->fix[0][as] = anim_val(&an, fr);
+				if (as >= 0)
+					snprintf(tt, sizeof tt, "%s   (%s = %s)", title,
+					    sym_str(f->p[as].name), g4(s->fix[0][as]));
+				else
+					snprintf(tt, sizeof tt, "%s", title);
+				if (ps < 0) {
+					if (view == V_SURF || view == V_WIRE) {
+						struct box3 B;
+						B.lo[0] = A.lo[0];
+						B.hi[0] = A.hi[0];
+						B.lo[1] = A.lo[1];
+						B.hi[1] = A.hi[1];
+						B.lo[2] = zlo;
+						B.hi[2] = zhi;
+						B.name[0] = xn;
+						B.name[1] = yn;
+						B.name[2] = "f";
+						surf_frame(si, &B, -55 * DEG, W, H, tt,
+						    view == V_WIRE, &und, NULL);
+					} else
+						heat_frame(si, &A, zlo, zhi, view, W, H, tt,
+						    xn, yn, "f", an.n > 1 ? 2 : 1, &und);
+				} else {
+					int pi, pw = (W - 90) / 3, ph = (H - 34) / 3;
+					memset(C.px, P_BG, (size_t)W * H);
+					for (pi = 0; pi < 9; pi++) {
+						struct ax2 P = A;
+						int px0 = 4 + (pi % 3) * pw, py0 = 30 + (pi / 3) * ph;
+						char pt[64];
+						s->fix[0][ps] = plo + (phi - plo) * pi / 8;
+						layout2(&P, px0, py0, pw, ph, 0, 1);
+						P.L = px0 + 46;
+						cv_clip(P.L + 1, P.T + 1, P.R - 1, P.B - 1);
+						heat_into(s, si, &P, zlo, zhi, view, 2, NULL);
+						cv_clip(0, 0, W - 1, H - 1);
+						axes2(&P, pi / 3 == 2 ? xn : NULL, NULL, 1,
+						    pi / 3 == 2, pi % 3 == 0);
+						{
+							char pf[24];
+							snprintf(pt, sizeof pt, "%s = %s",
+							    sym_str(f->p[ps].name),
+							    pi_frac(s->fix[0][ps], pf, sizeof pf) ?
+							    pf : g4(s->fix[0][ps]));
+						}
+						text((P.L + P.R) / 2 - textw(pt) / 2, P.T - 12,
+						    pt, P_TEXT);
+						if (pi % 3 == 0)
+							text(px0 + 2, (P.T + P.B) / 2 - 5, yn,
+							    P_TEXT);
+					}
+					colorbar(W - 70, 60, H - 60, zlo, zhi,
+					    view == V_CONTOUR ? 5 : 4, "f");
+					title_at(W / 2, 8, tt, W - 20);
 				}
-				text((P.L + P.R) / 2 - textw(pt) / 2, P.T - 12, pt, P_TEXT);
-				if (pi % 3 == 0)
-					text(px0 + 2, (P.T + P.B) / 2 - 5, yn, P_TEXT);
+				gif_frame(&g, C.px, an.n > 1 ? delay_cs(fr, an.fps) : 0);
 			}
-			colorbar(W - 70, 60, H - 60, zlo, zhi, view == V_CONTOUR ? 5 : 4,
-			    "f");
-			title_at(W / 2, 8, tt, W - 20);
+			if (!gif_shrink(&g, &an.n, &an.fps, sum0))
+				break;
 		}
-		gif_frame(&g, C.px, an.n > 1 ? delay_cs(fr, an.fps) : 0);
 	}
 	cv_close();
 	if (as >= 0)
@@ -5175,20 +5256,27 @@ plot_space(void)
 		nfr = O.frames > 0 ? O.frames : 36;
 	}
 	cv_open(W, H);
-	gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
-	for (fr = 0; fr < nfr; fr++) {
-		struct v3 V;
-		memset(C.px, P_BG, (size_t)W * H);
-		V.az = (-55 + 360.0 * fr / nfr) * DEG;
-		V.el = 24 * DEG;
-		V.h = 0.75;
-		v3_fit(&V, 46, 36, W - 40, H - 34);
-		cv_clip(0, 0, W - 1, H - 1);
-		panes(&V, &B, 1);
-		for (k = 0; k < O.ns; k++)
-			space_curve(&O.s[k], &V, &B);
-		title_at(W / 2, 8, title, W - 20);
-		gif_frame(&g, C.px, nfr > 1 ? delay_cs(fr, fps) : 0);
+	{
+		size_t sum0 = SUM.n;
+		for (;;) {
+			gif_begin(&g, W, H, (const unsigned char (*)[3])pal, NPAL);
+			for (fr = 0; fr < nfr; fr++) {
+				struct v3 V;
+				memset(C.px, P_BG, (size_t)W * H);
+				V.az = (-55 + 360.0 * fr / nfr) * DEG;
+				V.el = 24 * DEG;
+				V.h = 0.75;
+				v3_fit(&V, 46, 36, W - 40, H - 34);
+				cv_clip(0, 0, W - 1, H - 1);
+				panes(&V, &B, 1);
+				for (k = 0; k < O.ns; k++)
+					space_curve(&O.s[k], &V, &B);
+				title_at(W / 2, 8, title, W - 20);
+				gif_frame(&g, C.px, nfr > 1 ? delay_cs(fr, fps) : 0);
+			}
+			if (!gif_shrink(&g, &nfr, &fps, sum0))
+				break;
+		}
 	}
 	cv_close();
 	finish_gif(&g, W, H, nfr, fps);

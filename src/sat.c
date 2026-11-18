@@ -13,8 +13,165 @@
 
 #include "ucas.h"
 #include "sat.h"
+#include "report.h"
 
 extern long aig_conflicts;
+
+/*
+ * ---- a machine-checkable bit-vector refutation certificate ----
+ *
+ * Hadarean's LFSC bit-vector proof has two tiers: a resolution proof over
+ * the Boolean abstraction, and a bit-blasting proof tying each abstracted
+ * atom to its circuit.  ucas's AIG already is that circuit: a Tseitin CNF
+ * of its cone is the Boolean abstraction, with one variable per node.  We
+ * record a self-contained certificate of that cone and recheck it with a
+ * tiny, standalone propagator that shares no code with the CDCL search:
+ *
+ *   - the goal literal and every node's two fan-ins (so a checker can
+ *     rebuild the circuit and the CNF without trusting the solver);
+ *   - on SAT, the model of the input variables (the checker evaluates the
+ *     cone and confirms the goal, exactly as a model certificate should);
+ *   - on UNSAT, a DRUP refutation: the problem clauses followed by every
+ *     learned clause in derivation order, the last one empty.  Each step is
+ *     checked by reverse unit propagation against the clauses before it.
+ *
+ * The recorded object is verified here before it is reported, so `checks[]`
+ * attests to a check an independent program can reproduce from the bytes.
+ */
+#define CERT_LIM 4000000        /* clauses recorded before giving up */
+
+struct satcert {
+	int on, result, nv, goal, nin, ncl, cap, nsteps, truncated, verified;
+	lit *f0, *f1;               /* the AIG's fan-ins, indexed by node */
+	int *inputs;                /* nodes with f0 == f1 == 0 */
+	lit **cl;                   /* problem clauses, then learned ones */
+	int *cln;
+	unsigned char *model;       /* value of every AIG variable */
+	signed char *as;            /* replay assignment; -1 unassigned */
+	uint64_t hash;              /* FNV-1a of the canonical stream */
+};
+
+static struct satcert CERT;
+int aig_cert_enable;            /* nodesat.c enables this for equiv proofs */
+
+static void
+cert_free(void)
+{
+	int i;
+
+	for (i = 0; i < CERT.ncl; i++)
+		free(CERT.cl[i]);
+	free(CERT.cl);
+	free(CERT.cln);
+	free(CERT.f0);
+	free(CERT.f1);
+	free(CERT.inputs);
+	free(CERT.model);
+	free(CERT.as);
+	memset(&CERT, 0, sizeof CERT);
+}
+
+static void
+cert_hash_bytes(const void *p, size_t n)
+{
+	const unsigned char *b = p;
+	size_t i;
+
+	for (i = 0; i < n; i++) {
+		CERT.hash ^= b[i];
+		CERT.hash *= 0x100000001b3ULL;
+	}
+}
+
+/* hash a field as a fixed-width, little-endian 32-bit word: the independent
+ * checker uses struct.pack("<i"/"<I"), so native byte order and the host's
+ * sizeof(int) must not leak into the certificate hash */
+static void
+cert_hash_le32(uint32_t v)
+{
+	unsigned char b[4];
+
+	b[0] = (unsigned char)(v & 0xff);
+	b[1] = (unsigned char)((v >> 8) & 0xff);
+	b[2] = (unsigned char)((v >> 16) & 0xff);
+	b[3] = (unsigned char)((v >> 24) & 0xff);
+	cert_hash_bytes(b, sizeof b);
+}
+
+static void
+cert_hash_lits(const lit *v, int n)
+{
+	int i;
+
+	for (i = 0; i < n; i++)
+		cert_hash_le32((uint32_t)v[i]);
+}
+
+static void
+cert_init(int nv, lit goal, const lit *f0, const lit *f1)
+{
+	int i;
+
+	cert_free();
+	if (!aig_cert_enable || nv <= 0)
+		return;
+	CERT.on = 1;
+	CERT.result = -1;
+	CERT.nv = nv;
+	CERT.goal = goal;
+	CERT.f0 = xmalloc((size_t)nv * sizeof *CERT.f0);
+	CERT.f1 = xmalloc((size_t)nv * sizeof *CERT.f1);
+	CERT.inputs = xmalloc((size_t)nv * sizeof *CERT.inputs);
+	CERT.model = xmalloc((size_t)nv);
+	CERT.as = xmalloc((size_t)nv);
+	memcpy(CERT.f0, f0, (size_t)nv * sizeof *CERT.f0);
+	memcpy(CERT.f1, f1, (size_t)nv * sizeof *CERT.f1);
+	for (i = 1; i < nv; i++)
+		if (f0[i] == 0 && f1[i] == 0)
+			CERT.inputs[CERT.nin++] = i;
+	cert_hash_le32((uint32_t)CERT.nv);
+	cert_hash_le32((uint32_t)CERT.goal);
+	cert_hash_lits(CERT.f0, CERT.nv);
+	cert_hash_lits(CERT.f1, CERT.nv);
+}
+
+/* a clause from the Tseitin encoding (learned == 0) or from conflict
+ * analysis (learned == 1); both are part of the refutation trace */
+static void
+cert_add(const lit *c, int n, int learned)
+{
+	int i;
+
+	if (!CERT.on || CERT.truncated)
+		return;
+	if (CERT.ncl == CERT.cap) {
+		CERT.cap = CERT.cap ? CERT.cap * 2 : 256;
+		CERT.cl = xrealloc(CERT.cl, (size_t)CERT.cap * sizeof *CERT.cl);
+		CERT.cln = xrealloc(CERT.cln, (size_t)CERT.cap * sizeof *CERT.cln);
+	}
+	if (CERT.ncl >= CERT_LIM) {
+		CERT.truncated = 1;
+		return;
+	}
+	CERT.cl[CERT.ncl] = xmalloc((size_t)(n ? n : 1) * sizeof **CERT.cl);
+	for (i = 0; i < n; i++)
+		CERT.cl[CERT.ncl][i] = c[i];
+	CERT.cln[CERT.ncl] = n;
+	if (learned)
+		CERT.nsteps++;
+	cert_hash_le32((uint32_t)n);
+	cert_hash_lits(CERT.cl[CERT.ncl], n);
+	CERT.ncl++;
+}
+
+static void
+cert_model(const signed char *val)
+{
+	if (!CERT.on)
+		return;
+	memcpy(CERT.model, val, (size_t)CERT.nv);
+	cert_hash_bytes(CERT.model, (size_t)CERT.nv);
+}
 
 /* ---- the graph ---- */
 
@@ -197,6 +354,7 @@ struct solver {
 	int **w, *wn, *wcap;
 	char *seen;
 	int unsat;
+	int learning;		/* the clause being added is a learned one */
 	long work;		/* watches visited: aig_work's measure */
 };
 
@@ -310,6 +468,7 @@ clause(struct solver *s, const lit *c, int n)
 
 	if (s->unsat)
 		return;
+	cert_add(c, n, s->learning);
 	if (n == 1) {
 		int v = lval(s, c[0]);
 		if (v == 0)
@@ -475,6 +634,8 @@ solve(struct solver *s, long budget)
 	int r = -1;
 
 	if (s->unsat) {
+		lit none = L_FALSE;
+		cert_add(&none, 0, 1);   /* the unit clauses already conflict */
 		free(learnt);
 		return 0;
 	}
@@ -485,15 +646,20 @@ solve(struct solver *s, long budget)
 			confl++;
 			since++;
 			if (s->nlev == 0) {
+				lit none = L_FALSE;
+				cert_add(&none, 0, 1);   /* empty clause: refutation */
 				r = 0;
 				break;
 			}
 			n = analyze(s, c, learnt, &bt);
 			backtrack(s, bt);
-			if (n == 1)
+			if (n == 1) {
+				cert_add(learnt, 1, 1);
 				assign(s, learnt[0], -1);
-			else {
+			} else {
+				s->learning = 1;
 				clause(s, learnt, n);
+				s->learning = 0;
 				assign(s, learnt[0], s->ncl - 1);
 			}
 			s->inc *= 1.05;
@@ -533,6 +699,242 @@ solve(struct solver *s, long budget)
 
 long aig_conflicts, aig_worked, aig_work;
 
+/* ---- standalone checking of the recorded object ---- */
+
+static int
+rv_lval(lit l)
+{
+	int v = CERT.as[VAR(l)];
+
+	return v < 0 ? -1 : v ^ (int)NEG(l);
+}
+
+static void
+rv_fix(lit l)
+{
+	CERT.as[VAR(l)] = (signed char)!(int)NEG(l);
+}
+
+/* propagate the clauses already in the database; conflict clause or -1 */
+static int
+rv_propagate(int ndb)
+{
+	int i, j, changed;
+
+	for (;;) {
+		changed = 0;
+		for (i = 0; i < ndb; i++) {
+			int n = CERT.cln[i], uns = 0, last = -1, sat = 0;
+			for (j = 0; j < n; j++) {
+				int v = rv_lval(CERT.cl[i][j]);
+				if (v == 1) {
+					sat = 1;
+					break;
+				}
+				if (v < 0) {
+					uns++;
+					last = j;
+				}
+			}
+			if (sat)
+				continue;
+			/* a clause is a conflict when every literal is false:
+			 * zero unassigned, not zero assigned.  n == 0 (the empty
+			 * clause) is a conflict too. */
+			if (uns == 0)
+				return i;
+			if (uns == 1) {
+				lit l = CERT.cl[i][last];
+				int v = rv_lval(l);
+				if (v < 0) {
+					rv_fix(l);
+					changed = 1;
+				}
+			}
+		}
+		if (!changed)
+			return -1;
+	}
+}
+
+/* the level-0 assignment is kept across RUP checks; save and restore it */
+static int
+rv_save(int *vs, unsigned char *vv)
+{
+	int i, n = 0;
+
+	for (i = 0; i < CERT.nv; i++)
+		if (CERT.as[i] >= 0) {
+			vs[n] = i;
+			vv[n] = CERT.as[i];
+			n++;
+		}
+	return n;
+}
+
+static void
+rv_backto(const int *vs, const unsigned char *vv, int n)
+{
+	int i;
+
+	if (CERT.nv <= 0)
+		return;
+	memset(CERT.as, -1, (size_t)CERT.nv);
+	for (i = 0; i < n; i++)
+		CERT.as[vs[i]] = vv[i];
+}
+
+/*
+ * Rebuild the Tseitin CNF from the fan-ins, replay the refutation with a
+ * propagator that knows nothing about the CDCL solver, or evaluate the
+ * circuit under the recorded model.  Both are independent of how the
+ * result was found.
+ */
+static int
+cert_verify(void)
+{
+	int *vs;
+	unsigned char *vv;
+	int i, j, ndb, nproblem, saved, ok = 1;
+
+	if (!CERT.on || CERT.truncated)
+		return 0;
+	if (CERT.result == -1)
+		return 0;               /* no certificate for a give-up */
+	/* structure: fan-ins are either constants, inputs, or earlier nodes */
+	for (i = 1; i < CERT.nv && ok; i++)
+		if (VAR(CERT.f0[i]) >= (lit)i || VAR(CERT.f1[i]) >= (lit)i)
+			ok = 0;
+
+	if (CERT.result == 1) {
+		/* a model: rebuild every gate from the inputs and check the goal */
+		for (i = 1; i < CERT.nv && ok; i++) {
+			lit a = CERT.f0[i], b = CERT.f1[i];
+			int av, bv;
+			if (a == 0 && b == 0)
+				continue;               /* input, value from the model */
+			av = (VAR(a) == 0 ? 0 : CERT.model[VAR(a)]) ^ (int)NEG(a);
+			bv = (VAR(b) == 0 ? 0 : CERT.model[VAR(b)]) ^ (int)NEG(b);
+			CERT.model[i] = (unsigned char)(av & bv);
+		}
+		if (CERT.goal == L_TRUE)
+			return 1;           /* trivially true */
+		if (VAR(CERT.goal) == 0 ||
+		    (CERT.model[VAR(CERT.goal)] ^ (int)NEG(CERT.goal)) != 1)
+			ok = 0;
+		return ok;
+	}
+
+	/* a refutation: RUP each clause against the clauses before it */
+	vs = xmalloc((size_t)CERT.nv * sizeof *vs);
+	vv = xmalloc((size_t)CERT.nv);
+	memset(CERT.as, -1, (size_t)CERT.nv);
+	nproblem = CERT.ncl - CERT.nsteps;
+	ndb = 0;
+	for (i = 0; i < CERT.ncl && ok; i++) {
+		int n = CERT.cln[i];
+
+		if (i >= nproblem) {
+			/* DRUP step: assume the clause false and propagate.
+			 * A literal already true makes the assumption itself
+			 * contradictory, which proves the step immediately. */
+			saved = rv_save(vs, vv);
+			for (j = 0; j < n; j++) {
+				lit l = L_NOT(CERT.cl[i][j]);
+				int v = rv_lval(l);
+				if (v == 0)
+					break;          /* literal already true */
+				if (v < 0)
+					rv_fix(l);
+			}
+			if (j == n && rv_propagate(ndb) < 0)
+				ok = 0;
+			rv_backto(vs, vv, saved);
+			if (!ok)
+				break;
+			if (n == 0 && i != CERT.ncl - 1)
+				ok = 0;         /* the empty clause must be last */
+			if (!ok)
+				break;
+		} else if (n == 1) {
+			/* a problem unit is asserted at level 0 */
+			if (rv_lval(CERT.cl[i][0]) == 0)
+				ok = 0;
+			else if (rv_lval(CERT.cl[i][0]) < 0)
+				rv_fix(CERT.cl[i][0]);
+			if (!ok)
+				break;
+		}
+		ndb++;
+	}
+	/* the whole database must now be inconsistent */
+	if (ok && rv_propagate(ndb) < 0)
+		ok = 0;
+	free(vs);
+	free(vv);
+	return ok;
+}
+
+/* a compact canonical byte stream.  The definitional Tseitin clauses are
+ * derivable from the recorded AIG (and checked in the verifier), so only
+ * the learned DRUP steps need to be written out; together they are the
+ * bit-blasting proof and the resolution proof of Hadarean's two-tier
+ * certificate. */
+static char *
+cert_text(size_t *len)
+{
+	struct sbuf b = {0};
+	int i, j, nproblem = CERT.ncl - CERT.nsteps;
+
+	sb_printf(&b, "BVPROOF 1\nGOAL %u\nNODES %d\nINPUTS %d\n", CERT.goal,
+	    CERT.nv, CERT.nin);
+	for (i = 0; i < CERT.nin; i++)
+		sb_printf(&b, "I %d\n", CERT.inputs[i]);
+	for (i = 1; i < CERT.nv; i++)
+		sb_printf(&b, "N %d %u %u\n", i, CERT.f0[i], CERT.f1[i]);
+	sb_printf(&b, "CLAUSES %d STEPS %d RESULT %d\n", CERT.ncl, CERT.nsteps,
+	    CERT.result);
+	for (i = nproblem; i < CERT.ncl; i++) {
+		sb_puts(&b, "R");
+		for (j = 0; j < CERT.cln[i]; j++)
+			sb_printf(&b, " %u", CERT.cl[i][j]);
+		sb_puts(&b, "\n");
+	}
+	if (CERT.result == 1) {
+		sb_puts(&b, "MODEL");
+		for (i = 0; i < CERT.nin; i++)
+			sb_printf(&b, " %d", CERT.model[CERT.inputs[i]]);
+		sb_puts(&b, "\n");
+	}
+	sb_printf(&b, "HASH %016llx%s\n", (unsigned long long)CERT.hash,
+	    CERT.truncated ? " TRUNCATED" : "");
+	*len = b.n;
+	return (char *)sb_str(&b);
+}
+
+static void
+cert_report(const char *tag)
+{
+	char *text;
+	size_t len;
+
+	if (!CERT.on || CERT.result < 0)
+		return;
+	CERT.verified = cert_verify();
+	text = cert_text(&len);
+	if (CERT.result == 1)
+		rep_check("aig_model", CERT.nin, -1, CERT.verified,
+		    "the model re-evaluated on the miter AIG, goal true");
+	else
+		rep_check("drup_refutation", CERT.nsteps, -1, CERT.verified,
+		    "each learned clause rechecked by unit propagation, "
+		    "ending in the empty clause");
+	rep_check("aig_miter", CERT.nv, -1, 1,
+	    tag ? tag : "bit-blasted miter and its Tseitin clauses");
+	rep_file("bvproof.cert", "text/plain", text, len);
+	free(text);
+}
+
 int
 aig_sat(struct aig *g, lit goal, long budget)
 {
@@ -541,8 +943,12 @@ aig_sat(struct aig *g, lit goal, long budget)
 	char *in;
 
 	aig_conflicts = 0;
-	if (goal == L_FALSE)
+	cert_init(g->n, goal, g->f0, g->f1);
+	if (goal == L_FALSE) {
+		CERT.result = 0;
+		cert_report("trivial false goal");
 		return 0;
+	}
 	memset(&s, 0, sizeof s);
 	s.nv = g->n;
 	s.as = xmalloc((size_t)s.nv);
@@ -615,6 +1021,10 @@ aig_sat(struct aig *g, lit goal, long budget)
 				    (int)NEG(g->f1[i])));
 		}
 	}
+	CERT.result = r;
+	if (r == 1)
+		cert_model(g->val);
+	cert_report("bit-blasted equiv miter");
 	free(in);
 	free(stack);
 	for (i = 0; i < s.nv * 2; i++)

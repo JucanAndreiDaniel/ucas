@@ -568,15 +568,41 @@ infer_use(const struct sins *I, int k, char *ty, size_t n, int *ptr)
 		return;
 	}
 	if (strstr(op, "Equal") || strstr(op, "Less") || strstr(op, "Greater")) {
-		/* a comparison: the other operand's type, else by the opcode */
-		int other = k == 2 ? 3 : 2, j;
-		if (other < I->nop)
+		/* a comparison: the other operand's type, else by the opcode.
+		 * The opcode only fixes signedness (U/S/F), not width: inferring
+		 * 32 bits from OpULessThan when the other operand is %ulong_8
+		 * proves on the wrong domain. */
+		int other = k == 1 ? 2 : 1, j;
+		if (other < I->nop) {
+			const char *on = I->opnd[other];
+			/* a value defined by an instruction: its result type */
 			for (j = 0; j < V.nin; j++)
 				if (V.in[j].res >= 0 && V.in[j].nop > 0 &&
-				    !strcmp(V.id[V.in[j].res].name, I->opnd[other])) {
+				    !strcmp(V.id[V.in[j].res].name, on)) {
 					snprintf(ty, n, "%s", V.in[j].opnd[0]);
 					return;
 				}
+			/* a glslang-named constant (%ulong_8, %long_n1, ...) or a
+			 * scalar type name carries its type in the name itself;
+			 * such constants are not instructions, so the loop above
+			 * cannot see them. */
+			if (on && on[0] == '%') {
+				const char *u = strchr(on + 1, '_'), *d;
+				char tbuf[48];
+				if (u != NULL) {
+					snprintf(tbuf, sizeof tbuf, "%.*s",
+					    (int)(u - on), on);
+					if (is_scalar_name(tbuf + 1, &d)) {
+						snprintf(ty, n, "%s", tbuf);
+						return;
+					}
+				}
+				if (is_scalar_name(on + 1, &d)) {
+					snprintf(ty, n, "%s", on);
+					return;
+				}
+			}
+		}
 		fl = op[2] == 'F';
 		snprintf(ty, n, fl ? "%%float" : op[2] == 'U' ? "%%uint" : "%%int");
 		return;
@@ -15641,9 +15667,29 @@ spirv_simplify(const char *src, double budget, int nofile)
 		}
 		rep_end();
 	}
-	if (nlog)
-		rep_proof("sat", "each rewrite bit-blasted and proved equal for "
-		    "every input (refinement)");
+	if (nlog) {
+		int nal = 0;
+		/* The rewrites do not all carry the same proof: the derived
+		 * ones (idrw, lane maps, subgroup counts) hold only where the
+		 * assumptions or the derivation's stated conditions do, and
+		 * dot products/algebra have their own certificates.  Claiming
+		 * "sat, for every input" at the response level would assert a
+		 * domain those rewrites do not have. */
+		for (i = 0; i < nlog; i++)
+			nal += rl[i].algebra;
+		if (nal + ndotrw + nidlog + nsglog + nlplog == 0)
+			rep_proof("sat", "each rewrite bit-blasted and proved equal "
+			    "for every input (refinement)");
+		else
+			rep_proof("derivation", "each rewrite carries its own proof "
+			    "and domain: algebra rewrites are unconditional ring "
+			    "identities modulo 2^w (checked by proof and random "
+			    "sampling, not SAT); derived rewrites (identities, "
+			    "lane maps, subgroup counts) hold only where their "
+			    "stated assumptions do (see holds_where); the rest "
+			    "are bit-blasted and proved equal for every input "
+			    "(refinement)");
+	}
 	if (ntriv) {
 		/* the headline: beyond spirv-opt -O and a driver's back end */
 		double b2 = before - tgain;

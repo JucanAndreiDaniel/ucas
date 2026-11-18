@@ -556,8 +556,11 @@ core_sample(struct core *k)
 
 	free(k->sx);
 	free(k->sy);
-	k->sx = xmalloc(sizeof *k->sx * (2 * m + 8));
-	k->sy = xmalloc(sizeof *k->sy * (2 * m + 8));
+	/* m Chebyshev points, m float keys and up to AMAXK exact points all
+	 * land here before the finite/in-range filter; without AMAXK slots the
+	 * last few writes run past the array and corrupt the heap. */
+	k->sx = xmalloc(sizeof *k->sx * (2 * m + AMAXK + 8));
+	k->sy = xmalloc(sizeof *k->sy * (2 * m + AMAXK + 8));
 	for (i = 0; i < m; i++) {
 		ld z = -cosl(PI_L * i / (m - 1));
 		k->sx[n++] = rnd(k->w, a + (z + 1) * (b - a) / 2);
@@ -3351,6 +3354,13 @@ approx_more(int n)
 		printf("no more candidates\n");
 		return;
 	}
+	/* never let A.shown + n wrap past the end (or back below zero):
+	 * that would corrupt A.shown and the next 'more' would index A.cd
+	 * with a negative offset */
+	if (n < 0)
+		n = 0;
+	if (n > A.nc - A.shown)
+		n = A.nc - A.shown;
 	rep_begin("approx");
 	rep_list("candidates");
 	print_rows(A.shown, A.shown + n);
@@ -3617,7 +3627,14 @@ cmd_approx(struct P *p)
 	double lo = 0, hi = 0;
 
 	if (cmdp_kw(p, "more")) {
-		int n = cmdp_at(p, T_NUM) ? (int)cmdp_number(p, NULL) : 5;
+		int n = 5;
+		if (cmdp_at(p, T_NUM)) {
+			double v = cmdp_number(p, NULL);
+			if (!(v >= 0))
+				fail("approx more: n must be a non-negative count");
+			/* keep the cast in range: a later A.shown + n must not wrap */
+			n = v > 1000000 ? 1000000 : (int)v;
+		}
 		if (!cmdp_eos(p))
 			fail("expected: approx more [n]");
 		notes_flush();

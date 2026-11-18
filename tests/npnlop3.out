@@ -6,14 +6,10 @@ npn: the 65536 functions of 4 inputs fall in 222 classes; minimum networks of 3-
   3 tables: 91 classes
   each proved minimal: 222 of 222
 > g(a: u32, b: u32, c: u32, d: u32) = ((a ^ b) & (c ^ d)) | (a & ~c & d)
-  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+  note: "^" between integers, next to bitwise operators: read as power, not xor (bitwise exclusive or) (write xor or ** to say which)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > find g 1
 find g: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
-  rewrites the model prices lower (each derived, with what it holds under):
-  cost 2   ((a | b) xor a & (c & b)) & (c xor d)    the bitwise function of 4 values as 2 tables of 3 inputs (its NPN class's minimum network) (derived; checked by SAT)
-      holds where every bit: and, or, xor and not act on each bit alone
-      bit for bit the value is a function of the bits of a, b, c, d = a, b, c, d, truth table 0x0e60 (bit a | b << 1 | c << 2 | d << 3)
-      no single table gives it, two do, by gates' exact search over tables of 3 inputs on its class's least table; the tables here are that network with the inputs renamed and the negations folded in, and read back on all 16 rows
   nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > m(a: u32, b: u32, c: u32, d: u32) = (a & b) | (a & c) | (a & d) | (b & c) | (b & d) | (c & d)
@@ -37,6 +33,7 @@ find x: 1024 points (sampled; matches verified on the whole domain), computing i
   nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > f(a: u32, b: u32, c: u32, d: u32) = (a & b) ^ (c | d) ^ (a & d)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > find f 1
 find f: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
   nothing new up to cost 3 (term bank full)

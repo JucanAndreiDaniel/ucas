@@ -11,9 +11,22 @@
  *                             the lemmas and axioms it rests on (a tree),
  *                             kernel statistics; "kernel" lists the
  *                             theorem's own inferences
+ *   proof NAME ns|pac|cert    also print a proof certificate: a concise
+ *                             Nullstellensatz combination (cofactors a_i,
+ *                             f = sum a_i g_i), a PAC step proof, or both.
+ *                             Default output is unchanged; the certificate
+ *                             is emitted only when a mode is requested and
+ *                             the ring supports polynomial reasoning.
  *   check NAME                re-check with the independent checker
+ *   check NAME cert [broken N] re-check the certificate, localizing a bad
+ *                             step (N deliberately corrupts step N)
  *   axioms                    every axiom, with its kind
  *   lemmas                    the library's lemmas
+ *
+ * The certificate builder and its independent verifier live in kcheck.c.
+ * They follow Kaufmann & Biere (AMulet2, STTT 2023): PAC checks each step
+ * separately so an error is localized, while Nullstellensatz is one concise
+ * list of cofactors.  See /tmp/opencode/PAPER_PAC.md.
  */
 #include "ucas.h"
 #include "prove.h"
@@ -24,6 +37,18 @@
 #include <string.h>
 
 extern char ks_load_msg[];
+
+/* kcheck.c: PAC / Nullstellensatz certificates, with an independent checker */
+struct ucas_cert;
+struct ucas_cert *cert_build(kthm top, int *nall);
+void cert_free(struct ucas_cert *);
+void cert_emit(struct ucas_cert *, int mode, struct sbuf *o);
+int cert_check(struct ucas_cert *, int corrupt, char *msg, int n,
+    uint32_t *badstep);
+int cert_nalg(const struct ucas_cert *);
+int cert_supported(const struct ucas_cert *);
+/* cert_check() result codes, mirrored from kcheck.c */
+enum { CERT_UNCHECKABLE = -1, CERT_FAILED = 0, CERT_VERIFIED = 1 };
 
 static int
 user_find(const char *name)
@@ -389,12 +414,20 @@ cmd_prove(const char *rest)
 	if (th) {
 		index_lemmas();
 		k = kcheck(th, msg, sizeof msg, &steps);
+		if (!k) {
+			/* the prover produced a certificate that its own
+			 * checker rejects: do not store it or claim a proof */
+			printf("%s: proof failed recheck: %s\n", name, msg);
+			rep_bool("proved", 0);
+			rep_bool("rechecked", 0);
+			rep_str("reason", msg);
+			return;
+		}
 		klemmas[li].th = th;
 		printf("%s: proved automatically (%u kernel inferences); "
-		    "independent re-check: %s\n", name, total_inferences(th),
-		    k ? "ok" : msg);
+		    "independent re-check: ok\n", name, total_inferences(th));
 		rep_bool("proved", 1);
-		rep_bool("rechecked", k);
+		rep_bool("rechecked", 1);
 		return;
 	}
 	/* the library's theorem proofs, replayed on this statement */
@@ -412,13 +445,23 @@ cmd_prove(const char *rest)
 			if (th) {
 				index_lemmas();
 				k = kcheck(th, msg, sizeof msg, &steps);
+				if (!k) {
+					/* a replay whose certificate fails its own
+					 * re-check is not a proof: do not store it */
+					printf("%s: proof failed recheck (proof of %s): "
+					    "%s\n", name, sym_str(klemmas[i].name),
+					    msg);
+					rep_bool("proved", 0);
+					rep_bool("rechecked", 0);
+					rep_str("reason", msg);
+					return;
+				}
 				klemmas[li].th = th;
 				printf("%s: proved by the proof of %s (%u kernel "
-				    "inferences); independent re-check: %s\n", name,
-				    sym_str(klemmas[i].name), total_inferences(th),
-				    k ? "ok" : msg);
+				    "inferences); independent re-check: ok\n", name,
+				    sym_str(klemmas[i].name), total_inferences(th));
 				rep_bool("proved", 1);
-				rep_bool("rechecked", k);
+				rep_bool("rechecked", 1);
 				return;
 			}
 			printf("  the proof of %s does not apply: %s\n",
@@ -455,11 +498,11 @@ cmd_prove(const char *rest)
 static void
 cmd_proof(const char *rest)
 {
-	char name[64];
+	char name[64], mode[32] = "";
 	int li, r[8], nr, k, nax = 0, axused[512];
 	uint8_t *seen;
 
-	if (sscanf(rest, "%63s", name) != 1)
+	if (sscanf(rest, "%63s %31s", name, mode) < 1)
 		fail("proof NAME");
 	li = need(name);
 	if (!klemmas[li].th)
@@ -494,20 +537,102 @@ cmd_proof(const char *rest)
 		rep_str(NULL, sym_str(kaxioms[axused[k]].name));
 	}
 	rep_end();
+	/* Optional certificate.  The default proof output above is untouched,
+	 * so every existing golden stays byte-identical. */
+	if (*mode) {
+		int cmode = !strcmp(mode, "ns") ? 0 : !strcmp(mode, "pac") ? 1 :
+		    !strcmp(mode, "cert") ? 2 : !strcmp(mode, "kernel") ? 3 : -1;
+		if (cmode < 0)
+			fail("proof NAME [ns|pac|cert]");
+		if (cmode != 3) {	/* "kernel" keeps its old, quiet meaning */
+			struct ucas_cert *cert = cert_build(klemmas[li].th, NULL);
+			struct sbuf b = {0};
+			char msg[512];
+
+			cert_emit(cert, cmode, &b);
+			cert_check(cert, 0, msg, sizeof msg, NULL);
+			rep_list("certificate");
+			rep_obj(NULL);
+			rep_str("kind", cmode == 0 ? "nullstellensatz" :
+			    cmode == 1 ? "pac" : "both");
+			rep_str("text", b.p ? b.p : "");
+			rep_str("verification", msg);
+			rep_end();
+			rep_end();
+			printf("%s\n", b.p ? b.p : "");
+			printf("certificate: %s\n", msg);
+			free(b.p);
+			cert_free(cert);
+		}
+	}
 }
 
 static void
 cmd_check(const char *rest)
 {
-	char name[64], msg[512];
-	int li, ok;
-	uint32_t steps = 0;
+	char name[64], msg[512], mode[32] = "", word[32] = "", num[32] = "";
+	int li, ok, rc, corrupt = 0;
+	uint32_t steps = 0, bad = 0;
 
-	if (sscanf(rest, "%63s", name) != 1)
+	if (sscanf(rest, "%63s %31s %31s %31s", name, mode, word, num) < 1)
 		fail("check NAME");
 	li = need(name);
 	if (!klemmas[li].th)
 		fail("%s is not proved", name);
+	if (*mode) {
+		struct ucas_cert *cert;
+		char cmsg[512];
+		const char *status;
+		int nalg;
+
+		if (strcmp(mode, "cert"))
+			fail("check NAME [cert [broken N]]");
+		if (*word) {
+			if (strcmp(word, "broken") || !*num ||
+			    (corrupt = atoi(num)) < 1)
+				fail("check NAME cert broken N");
+		}
+		cert = cert_build(klemmas[li].th, NULL);
+		nalg = cert_nalg(cert);
+		/* A fault can only be injected into a step that exists: reject
+		 * out-of-range N here, never report a vacuous "verified". */
+		if (corrupt > nalg) {
+			cert_free(cert);
+			fail("check %s cert broken %d: out of range (the proof "
+			    "has only %d algebraic step(s))", name, corrupt, nalg);
+		}
+		rc = cert_check(cert, corrupt, cmsg, sizeof cmsg, &bad);
+		ok = rc == CERT_VERIFIED;
+		status = rc == CERT_VERIFIED ? "verified" :
+		    rc == CERT_FAILED ? "failed" :
+		    nalg == 0 ? "no_algebraic_steps" :
+		    !cert_supported(cert) ? "unsupported" : "not_checkable";
+		rep_begin("certcheck");
+		rep_str("name", name);
+		rep_bool("ok", ok);
+		rep_str("status", status);
+		rep_int("algebraic_steps", nalg);
+		rep_int("broken_step", corrupt);
+		rep_int("failed_step", (long long)bad);
+		rep_str("reason", cmsg);
+		rep_str("scope", "verifies only the polynomial identity of "
+		    "algebraic steps; not a full kernel recheck");
+		rep_end();
+		if (rc == CERT_UNCHECKABLE)
+			printf("%s: no checkable algebraic certificate\n", name);
+		else
+			printf("%s: certificate %s\n", name, ok ? "verified" : "FAILED");
+		printf("  %s\n", cmsg);
+		if (rc == CERT_FAILED)
+			printf("  at local step %u (PAC-style localization)\n", bad);
+		/* A certificate check is not a standalone soundness proof: it
+		 * re-derives only the polynomial identity of algebraic steps. */
+		printf("  scope: verifies only the polynomial identity of "
+		    "algebraic steps; not a full recheck of the kernel proof "
+		    "(premises and non-algebraic steps are trusted)\n");
+		cert_free(cert);
+		return;
+	}
 	ok = kcheck(klemmas[li].th, msg, sizeof msg, &steps);
 	rep_begin("check");
 	rep_str("name", name);
@@ -533,10 +658,17 @@ used_axioms(kthm top, uint8_t *used)
 		if (kthm_rule(th) == KR_AXIOM)
 			used[kthm_aux(th)] = 1;
 		if (kthm_rule(th) == KR_CONV) {
+			/* a conversion may use a declared homomorphism, but only
+			 * one the converted terms actually mention: mirror
+			 * deps_of() so `axioms NAME` and `proof NAME` agree on
+			 * the axioms a proof rests on. */
 			uint32_t s;
 			for (s = 1; s < nksyms; s++) {
 				kthm h = ksyms[s].homthm;
-				if (h && h < th && !mark[h]) {
+				if (h && h < th && !mark[h] &&
+				    (uses_sym(kthm_concl(th), s, 0) ||
+				     uses_sym(kthm_concl(kthm_prem(th, 0)), s,
+				     0))) {
 					mark[h] = 1;
 					st[ns++] = h;
 				}
@@ -671,7 +803,8 @@ prove_command(struct P *p)
 }
 
 /* nlp.c: "theorem NAME: ...", "prove NAME [using ...]", "proof NAME
- * [kernel]", "check NAME", "axioms", "lemmas" are statements */
+ * [kernel|ns|pac|cert]", "check NAME [cert [broken N]]", "axioms", "lemmas"
+ * are statements */
 int
 prove_is_cmd(const char *s, unsigned long n)
 {
@@ -709,6 +842,13 @@ prove_is_cmd(const char *s, unsigned long n)
 		return i < n && s[i] == ':';
 	if (i == n)
 		return 1;
-	return (c == 1 && !strncmp(s + i, "using ", 6)) ||
-	    (c == 2 && !strncmp(s + i, "kernel", 6));
+	if (c == 1)
+		return !strncmp(s + i, "using ", 6);
+	if (c == 2)	/* proof NAME [kernel|ns|pac|cert] */
+		return !strncmp(s + i, "kernel", 6) ||
+		    !strncmp(s + i, "ns", 2) || !strncmp(s + i, "pac", 3) ||
+		    !strncmp(s + i, "cert", 4);
+	if (c == 3)	/* check NAME [cert [broken N]] */
+		return !strncmp(s + i, "cert", 4);
+	return 0;
 }

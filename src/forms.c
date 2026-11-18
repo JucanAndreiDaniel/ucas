@@ -1986,8 +1986,13 @@ zpow(struct cz a, struct cz b)
 
 	if (zero(b.im) && int_of(b.re, &n) && llabs(n) <= 64)
 		return zipow(a, n, -1);
-	if (zero(a.im) && zero(b.im))
+	if (zero(a.im) && zero(b.im)) {
+		/* a negative real base to a non-integer power is complex:
+		 * its principal value is exp(b log a), not a real power */
+		if (known_neg(a.re) && !int_of(b.re, &n))
+			return zexp(zmul(b, zlog(a)));
 		return Z(mk_bin(O_POW, a.re, b.re), K(0));
+	}
 	if (zero(a.im) && is_const(a.re) && const_is(a.re, M_E))
 		return zexp(b);
 	if (zero(b.im) && is_const(b.re) && const_is(b.re, 0.5))

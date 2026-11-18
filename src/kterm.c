@@ -949,6 +949,8 @@ utf(const char *s, const char *u)
 	return !strncmp(s, u, strlen(u));
 }
 
+static kt perr(struct kp *p, const char *fmt, const char *a);
+
 static void
 next(struct kp *p)
 {
@@ -984,9 +986,17 @@ next(struct kp *p)
 	if (isdigit((unsigned char)s[i])) {
 		int64_t v = 0;
 		while (isdigit((unsigned char)s[i])) {
-			if (v > (INT64_MAX - 9) / 10)
-				p->failed = 1;
-			v = v * 10 + (s[i++] - '0');
+			int d = s[i++] - '0';
+			/* largest v with v * 10 + d still inside int64.  The old
+			 * bound (INT64_MAX - 9) / 10 rejected the valid literals
+			 * 2^63-8 .. 2^63-1, and set failed without ever writing a
+			 * diagnostic, giving a bare `error:`. */
+			if (v > (INT64_MAX - d) / 10) {
+				perr(p, "%s", "integer literal is too large: the "
+				    "largest is 9223372036854775807 (2^63 - 1)");
+				break;
+			}
+			v = v * 10 + d;
 		}
 		p->tk = PT_NUM;
 		p->num = v;

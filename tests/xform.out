@@ -27,7 +27,7 @@ L{sinh(2t)}(s) = 2/((s + 2)*(s - 2))
   region of convergence: Re(s) > 2
   one-sided: f(t) for t >= 0 (0 before)
   rules: sinh/cosh table
-  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 5/2, 7/2, 6: max relative difference 0
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 5/2, 7/2, 6: max relative difference 1.2e-16
 > laplace cosh(3t)
 L{cosh(3t)}(s) = s/((s + 3)*(s - 3))
   region of convergence: Re(s) > 3
@@ -77,12 +77,12 @@ L{t < 1 ? 1 : -1}(s) = (1/s - 2*e^(-s)/s + e^(-2s)/s)/(1 - e^(-2s))
   region of convergence: Re(s) > 0
   one-sided: f(t) for t >= 0 (0 before)
   rules: linearity, u(t - a) f(t - a) -> e^(-as) F(s), piecewise as steps, periodic: F(s) = F_T(s)/(1 - e^(-Ts))
-  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4: max relative difference 2.6e-16
+  check: matches int_0^inf f(t) e^(-st) dt (Gauss-Kronrod) at s = 1/2, 3/2, 4: max relative difference 3.4e-16
 > ilaplace 1/(s^2 + 1)
 L^-1{1/(s^2 + 1)}(t) = sin(t)
   poles: s = +-i
   for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 0 (right of every pole)
-  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.4e-16
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
 > ilaplace (s + 3)/((s + 1)*(s + 2))
 L^-1{(s + 3)/((s + 1)*(s + 2))}(t) = 2*e^(-t) - e^(-2t)
   poles: s = -1, -2
@@ -92,7 +92,7 @@ L^-1{(s + 3)/((s + 1)*(s + 2))}(t) = 2*e^(-t) - e^(-2t)
 L^-1{1/(s^2 + 2s + 5)}(t) = e^(-t)*sin(2t)/2
   poles: s = -1 +- 2i
   for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > -1 (right of every pole)
-  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 2.2e-16
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
 > ilaplace 1/(s + 1)^3
 L^-1{1/(s + 1)^3}(t) = t^2*e^(-t)/2
   poles: s = -1 (triple)
@@ -467,7 +467,7 @@ F{e^(-x)*u(x)}(w) = 1/(w^2 + 1) - i*w/(w^2 + 1)
 > fourier x e^(-x^2)
 F{x*e^(-x^2)}(w) = -i*sqrt(pi)*e^(-w^2/4)*w/2
   convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
-  check: matches the integral computed numerically at w = 1/2, 13/10, 27/10: max relative difference 7.4e-16
+  check: matches the integral computed numerically at w = 1/2, 13/10, 27/10: max relative difference 6.6e-16
 > fourier cos(3x) e^(-x^2)
 F{cos(3x)*e^(-x^2)}(w) = (sqrt(pi)*e^(-(w - 3)^2/4) + sqrt(pi)*e^(-(w + 3)^2/4))/2
   convention: F(w) = int f(x) e^(-iwx) dx over the real line (angular frequency; the inverse has 1/(2pi))
@@ -550,7 +550,7 @@ catalan: binom(2n, n)/(n + 1)
 fibonacci: a[n+2] = a[n+1] + a[n], a[0] = 0, a[1] = 1
   a[n] = sqrt(5)*((1 + sqrt(5))/2)^n/5 - sqrt(5)*((1 - sqrt(5))/2)^n/5
   E(x) = sum_{n>=0} a_n x^n/n! = sqrt(5)*e^((1 + sqrt(5))/2*x)/5 - sqrt(5)*e^(-(-1 + sqrt(5))/2*x)/5
-  check: the series at x = 1/4 and 1/2 matches E (max relative difference 0)
+  check: the series at x = 1/4 and 1/2 matches E (max relative difference 5.6e-17)
 > egf n
   E(x) = sum_{n>=0} a_n x^n/n! = x*e^x
   check: the series at x = 1/4 and 1/2 matches E (max relative difference 2.2e-16)
@@ -621,7 +621,7 @@ sum(n, 0, inf, 1/n!)
   = e
   method: e^u
   numeric: 2.718281828459046 (21 terms (the ratio of terms -> 0; Aitken's delta^2 agrees); estimated error 2.7e-16)
-  check: the closed form and the numeric value agree (difference 0)
+  check: the closed form and the numeric value agree (difference 4.4e-16)
 > sum(k in 1..inf, 2^k/k!)
 sum(k, 1, inf, 2^k/k!)
   converges absolutely: ratio test: |a_(k+1)/a_k| -> 0 < 1
@@ -759,7 +759,7 @@ L{t^2*e^(-t)}(s) = 2/(s + 1)^3
 L^-1{1/(s^2 + 1)}(t) = sin(t)
   poles: s = +-i
   for t >= 0 (0 before): the right-sided inverse, region of convergence Re(s) > 0 (right of every pole)
-  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.4e-16
+  check: transformed back (Gauss-Kronrod), it matches F at s = 1, 2, 7/2: max relative difference 1.8e-16
 > solve y'' + y = 0 with y(0) = 1, y'(0) = 0 using laplace
   ucas: laplace solve y'' + y = 0 with y(0) = 1, y'(0) = 0
 y'' + y = 0, y(0) = 1, y'(0) = 0

@@ -44,11 +44,14 @@
 #include "xform.h"
 #include "x86.h"
 #include "fuse.h"
+int node_aig_depth_check(nid root);	/* node.c: guard before bit-blasting */
+nid mk_const_r_decimal(double v);	/* node.c: decimal-literal constant */
 int homalg_command(struct P *p);	/* homalg.h */
 int ec_command(struct P *p);	/* ec.h (absalg.h names a parameter I) */
 
 #include <ctype.h>
 #include <errno.h>
+#include <limits.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,6 +91,10 @@ func_new(uint32_t name)
 /* ---- parser state ---- */
 
 #define MAXBIND 32
+/* Deeply nested expressions otherwise recurse until the C stack overflows
+ * (the parser in prefix/parse_expr and, for a built tree, the node.c tree
+ * walks).  One shared cap keeps the limit and the error text consistent. */
+#define EXPR_DEPTH_LIMIT 1600
 struct P {
 	struct toks *t;
 	uint32_t i;
@@ -95,6 +102,7 @@ struct P {
 	int autop;
 	ty_t autoty;
 	int abs_depth;
+	int expr_depth;   /* expression nesting, bounded to keep the stack safe */
 	int fnarg;
 	int top_jux;
 	int top_paren;    /* the last operand was parenthesized */
@@ -287,11 +295,33 @@ number(struct P *p)
 			if (buf[i] == '.' || buf[i] == 'e' || buf[i] == 'E')
 				isreal = 1;
 		if (isreal) {
-			double d = strtod(buf, NULL);
+			double d;
+			nid c;
+			errno = 0;
+			d = strtod(buf, NULL);
+			if (!isfinite(d))
+				fail("the real literal %.*s is too large: it "
+				    "overflows to infinity (the largest finite "
+				    "real is about 1.8e308)", (int)n, s);
+			if (d == 0.0 && errno == ERANGE) {
+				int nz = 0;
+				for (i = 0; i < j; i++)
+					if (buf[i] >= '1' && buf[i] <= '9')
+						nz = 1;
+				if (nz)
+					fail("the real literal %.*s is too small: "
+					    "it underflows to zero", (int)n, s);
+			}
 			adv(p);
+			/* Bake the provenance into the node at creation time.
+			 * O_CONST nodes are interned by flags as well as value,
+			 * so this decimal-literal node stays distinct from a
+			 * rational such as 1/3 (or a cast integer) that folds to
+			 * the same double; NF_DECIMAL cannot leak onto those. */
+			c = mk_const_r_decimal(d);
 			if (f32)
-				return mk_cast(TY_F32, mk_const_r(d));
-			return mk_const_r(d);
+				return mk_cast(TY_F32, c);
+			return c;
 		}
 		v = strtoull(buf, NULL, 10);
 	}
@@ -1467,10 +1497,37 @@ parse_piecewise(struct P *p)
 
 /* ---- expressions ---- */
 
+/* Table literals are the only prefix form with a large scratch array.  Keep
+ * it in a helper so its 4 KB does not sit in every recursive prefix() frame. */
+static nid
+parse_table(struct P *p)
+{
+	nid items[1024];
+	int n = 0, saved = p->abs_depth;
+
+	p->abs_depth = 0;
+	adv(p);
+	skip_nl(p);
+	if (pk(p) != T_RB) {
+		do {
+			skip_nl(p);
+			if (n == 1024)
+				fail("table too long");
+			items[n++] = parse_expr(p, 0);
+			skip_nl(p);
+		} while (accept(p, T_COMMA));
+	}
+	expect(p, T_RB);
+	p->abs_depth = saved;
+	if (n == 0)
+		fail("empty table");
+	return mk_table(items, (uint32_t)n);
+}
+
 static nid
 prefix(struct P *p)
 {
-	nid e, items[1024];
+	nid e;
 	int n, saved;
 
 	diag_tok = p->i;
@@ -1549,25 +1606,7 @@ prefix(struct P *p)
 		    "absolute values");
 		break;
 	case T_LB:
-		saved = p->abs_depth;
-		p->abs_depth = 0;
-		adv(p);
-		n = 0;
-		skip_nl(p);
-		if (pk(p) != T_RB) {
-			do {
-				skip_nl(p);
-				if (n == 1024)
-					fail("table too long");
-				items[n++] = parse_expr(p, 0);
-				skip_nl(p);
-			} while (accept(p, T_COMMA));
-		}
-		expect(p, T_RB);
-		p->abs_depth = saved;
-		if (n == 0)
-			fail("empty table");
-		return mk_table(items, (uint32_t)n);
+		return parse_table(p);
 	case T_LC:
 		if (cs_is_block(p))
 			return calc_block(p);
@@ -1654,10 +1693,16 @@ bitwise_context(struct P *p, uint32_t i)
 static nid
 parse_expr(struct P *p, int minbp)
 {
-	nid lhs = prefix(p), rhs, c, x;
-	int lastjux = p->top_jux, op, bp, chained = 0, prevcmp = 0;
-	int lparen = p->top_paren, rparen;
+	nid lhs, rhs, c, x;
+	int lastjux, op, bp, chained = 0, prevcmp = 0;
+	int lparen, rparen;
 	nid prevr = 0;
+
+	if (++p->expr_depth > EXPR_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", EXPR_DEPTH_LIMIT);
+	lhs = prefix(p);
+	lastjux = p->top_jux;
+	lparen = p->top_paren;
 
 	for (;;) {
 		diag_tok = p->i;
@@ -1798,8 +1843,18 @@ parse_expr(struct P *p, int minbp)
 			    bitwise_context(p, opat)) {
 				static const char *const xo[] = {
 				    "xor (bitwise exclusive or)", "power"};
+				/* Default to power, the documented meaning of "^",
+				 * just as when no bitwise operator is nearby.  With
+				 * the old default (xor) the same `1 ^ x` was read as
+				 * power in `f(x)=1^x` but as xor in
+				 * `g(x)=(1^x) xor 0`, so a value-preserving rewrite
+				 * changed the answer and equiv falsely reported a
+				 * difference (fuzz NLP-1).  The question is still
+				 * asked next to bitwise operators, and an explicit
+				 * assume.caret=xor still selects xor; only the
+				 * no-assume default is now context-independent. */
 				int k = nlp_ask_pref("caret", "\"^\" between integers, "
-				    "next to bitwise operators", xo, 2, 0,
+				    "next to bitwise operators", xo, 2, 1,
 				    "write xor or ** to say which");
 				if (nlp_asked)
 					fail_quiet();
@@ -1823,6 +1878,7 @@ parse_expr(struct P *p, int minbp)
 	}
 	p->top_jux = lastjux;
 	p->top_paren = lparen;
+	p->expr_depth--;
 	return lhs;
 }
 
@@ -2306,6 +2362,31 @@ cmd_func(struct P *p)
 	return f;
 }
 
+/*
+ * A bare name that stands alone as the argument to commands which take a
+ * named function (equiv, and the analysis commands show/table/range/wrap/
+ * domain) names a function, not the start of an anonymous expression
+ * ("x+0"): report an undefined one instead of letting cmd_func turn it into
+ * a free identity variable (which would make `equiv f nosuch` look equal to
+ * f, or `table nosuch` print a confident identity table).  Other commands
+ * legitimately take free variables (egf n, error two ~ x), so the strict
+ * check belongs here, not in cmd_func itself.
+ */
+static struct func *
+cmd_named_func(struct P *p)
+{
+	uint32_t at = p->i;
+
+	if (pk(p) == T_ID && func_find(tsym(p, at)) == NULL &&
+	    builtin(p, at) == NULL &&
+	    (at + 1 >= p->t->n || p->t->kind[at + 1] == T_NL ||
+	    p->t->kind[at + 1] == T_EOF || p->t->kind[at + 1] == T_TILDE ||
+	    word_in(p, at + 1, stopwords) || p->t->kind[at + 1] == T_ID ||
+	    p->t->kind[at + 1] == T_NUM))
+		fail("undefined function %s", sym_str(tsym(p, at)));
+	return cmd_func(p);
+}
+
 /* ---- prelude: bases and the cost model ---- */
 
 static const char prelude[] =
@@ -2763,7 +2844,7 @@ parse_basis(struct P *p)
 {
 	struct basis *b, *parent;
 	struct func tmp;
-	struct gate *g;
+	struct gate *g, ng;
 	uint32_t name;
 	int j;
 
@@ -2790,7 +2871,9 @@ parse_basis(struct P *p)
 			fail("expected a gate: name(x, y) = expr");
 		if (b->ng == MAXGATE)
 			fail("too many gates");
-		g = &b->g[b->ng];
+		/* Parse into a local gate: a failure part-way through this gate
+		 * must not leave a phantom (e.g. cost 0) in the basis. */
+		g = &ng;
 		memset(g, 0, sizeof *g);
 		memset(&tmp, 0, sizeof tmp);
 		g->name = tsym(p, p->i);
@@ -2822,22 +2905,39 @@ parse_basis(struct P *p)
 		}
 		g->cost = 1;
 		if (accept_kw(p, "cost")) {
-			nid c = number(p);
-			g->cost = (uint8_t)N.ki[c];
+			nid c;
+			if (pk(p) == T_MINUS)
+				fail("gate cost must be a non-negative integer");
+			c = number(p);
+			/* is_const() is also true for real literals, whose value
+			 * lives in kr[c] and whose ki[c] reads as 0; without the
+			 * TY_FP test a "cost 2.9" would silently become a
+			 * phantom cost-0 gate. */
+			if (!is_const(c) || TY_FP(N.ty[c]) || N.ki[c] < 0 ||
+			    N.ki[c] > INT32_MAX)
+				fail("gate cost must be a non-negative integer "
+				    "that fits in an int");
+			g->cost = (int)N.ki[c];
 		}
-		/* a gate of the same name replaces the inherited one */
-		for (j = 0; j < b->ng; j++)
-			if (b->g[j].name == g->name) {
-				b->g[j] = *g;
-				break;
-			}
-		if (g->lut)
-			b->ng += j == b->ng;
-		else if (j == b->ng) {
+		/* commit only once the whole gate parsed and validated */
+		if (g->lut) {
+			/* a gate of the same name replaces the inherited one */
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name) {
+					b->g[j] = *g;
+					break;
+				}
+			if (j == b->ng)
+				b->g[b->ng++] = *g;
+		} else {
 			basis_finish_gate(b, g);
-			b->ng++;
-		} else
-			basis_finish_gate(b, &b->g[j]);
+			for (j = 0; j < b->ng; j++)
+				if (b->g[j].name == g->name)
+					break;
+			b->g[j] = *g;
+			if (j == b->ng)
+				b->ng++;
+		}
 	}
 	expect_eos(p);
 }
@@ -3274,7 +3374,14 @@ opt_int(struct P *p, const char *kw, int dflt)
 {
 	if (accept_kw(p, kw)) {
 		nid v = number(p);
-		return (int)N.ki[v];
+		int64_t x = N.ki[v];
+		/* a u64 literal stores its bits in ki; a value above INT_MAX
+		 * would wrap when cast, and a negative one silently changes
+		 * the meaning of the option (e.g. an empty table). */
+		if (TY_FP(N.ty[v]) || x < 0 || (uint64_t)x > INT_MAX)
+			fail("%s: expected a non-negative integer of at most %d",
+			    kw, INT_MAX);
+		return (int)x;
 	}
 	return dflt;
 }
@@ -3592,6 +3699,23 @@ cmd_func_text(const char *src)
 	free(t);
 	free(q);
 	return f;
+}
+
+/* equiv_scan enumerates the whole parameter domain (run_open -> diter_init
+ * with maxexh == EXH) before it samples and falls through to the SAT/AIG
+ * path.  A function whose real domain fits that budget is compared
+ * exhaustively and never bit-blasts, however deep its body: the AIG depth
+ * guard must not reject it.  Build the very same iterator here so the
+ * decision includes declared `in`/`where` bounds: deriving the size from
+ * TYW alone would send a 2-point `x: u16 in 0..1` domain down the AIG path
+ * and wrongly refuse a deep-but-exhaustive comparison. */
+static int
+equiv_exhaustive(const struct func *f)
+{
+	struct diter d;
+
+	diter_init(&d, f, 1ULL << 22, 1001, 0);	/* maxexh = analyze.c:EXH */
+	return d.exhaustive;
 }
 
 /*
@@ -4070,7 +4194,20 @@ statement(struct P *p)
 				cmd_npn();
 				return;
 			}
-			f = cmd_func(p);
+			/* a negative result count is not a function expression:
+			 * reject it here before cmd_func reads "f - 1" as one. */
+			if (!strcmp(cmd, "find") && pk(p) == T_ID &&
+			    func_find(tsym(p, p->i)) && p->i + 2 < p->t->n &&
+			    p->t->kind[p->i + 1] == T_MINUS &&
+			    p->t->kind[p->i + 2] == T_NUM)
+				fail("find: the number of results must be from 0 to %d",
+				    INT_MAX);
+			if (!strcmp(cmd, "equiv") || !strcmp(cmd, "show") ||
+			    !strcmp(cmd, "table") || !strcmp(cmd, "range") ||
+			    !strcmp(cmd, "wrap") || !strcmp(cmd, "domain"))
+				f = cmd_named_func(p);
+			else
+				f = cmd_func(p);
 			if (!strcmp(cmd, "show")) {
 				expect_eos(p);
 				notes_flush();
@@ -4119,7 +4256,8 @@ statement(struct P *p)
 				int metric = 0, ftz = -1, nanbits = -1;
 				accept(p, T_TILDE);
 				accept_kw(p, "to");
-				g = cmd_func(p);
+				g = !strcmp(cmd, "equiv") ? cmd_named_func(p) :
+				    cmd_func(p);
 				while (!strcmp(cmd, "equiv")) {
 					if (accept_kw(p, "ftz"))
 						ftz = 1;
@@ -4142,9 +4280,20 @@ statement(struct P *p)
 				}
 				expect_eos(p);
 				notes_flush();
-				if (!strcmp(cmd, "equiv"))
+				if (!strcmp(cmd, "equiv")) {
+					/* A flat chain (x*x*... with 800 factors) parses
+					 * fine but bit-blasts recursively in nodesat.c
+					 * and overflows the stack.  Reject it up front,
+					 * but only when the comparison actually reaches
+					 * the AIG builder: small integer domains are
+					 * checked exhaustively and never bit-blast. */
+					if (!equiv_exhaustive(f) ||
+					    !equiv_exhaustive(g)) {
+						node_aig_depth_check(f->body);
+						node_aig_depth_check(g->body);
+					}
 					cmd_equiv(f, g, ftz, nanbits);
-				else if (!strcmp(cmd, "fit"))
+				} else if (!strcmp(cmd, "fit"))
 					cmd_fit(f, g, metric);
 				else
 					cmd_error(f, g);
@@ -4178,8 +4327,15 @@ statement(struct P *p)
 				int want = 5, maxc = 0, stoke, snip, saturate;
 				uint32_t fnm2 = f->name;
 				char sname[96] = "";
-				if (pk(p) == T_NUM)
-					want = (int)N.ki[number(p)];
+				if (pk(p) == T_NUM) {
+					nid v = number(p);
+					int64_t x = N.ki[v];
+					if (TY_FP(N.ty[v]) || x < 0 ||
+					    (uint64_t)x > INT_MAX)
+						fail("find: the number of results must "
+						    "be from 0 to %d", INT_MAX);
+					want = (int)x;
+				}
 				maxc = opt_int(p, "max", 0);
 				stoke = accept_kw(p, "stoke");	/* then the MCMC search */
 				saturate = accept_kw(p, "saturate");
@@ -4473,6 +4629,7 @@ run_source1(const char *src, const char *file, int echo)
 			p->xstop = NULL;
 			p->force_ty = 0;
 			p->abs_depth = 0;
+			p->expr_depth = 0;
 			p->fnarg = 0;
 			p->nb = 0;
 			p->fusepat = 0;

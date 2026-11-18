@@ -5128,6 +5128,46 @@ cmd_genfunc(char *text, int egf)
 
 /* ---- the command dispatcher ---- */
 
+/*
+ * cmd_lsolve wants its ODE and initial conditions as one comma-separated
+ * list.  On the CLI ';' is the global statement separator: cmdp_rest stops
+ * at it, so "laplace solve y' = -y; y(0) = 5" hands only the ODE to
+ * cmd_lsolve and the condition becomes a separate, silently ignored
+ * statement (jsonmode.c already rewrites ';' to ',' on the JSON/MCP side).
+ * Join ';'-continued statements back into the list; a real newline still
+ * ends the command.
+ */
+static char *
+lsolve_rest(struct P *p, char *text, size_t *cap)
+{
+	char part[4096];
+	uint32_t pos;
+	size_t len = strlen(text), npart;
+
+	while (cmdp_at(p, T_NL) && diag_toks != NULL) {
+		pos = cmdp_pos(p);
+		if (pos + 1 >= diag_toks->n ||
+		    diag_toks->src[diag_toks->off[pos]] != ';')
+			break;			/* a real end of line */
+		cmdp_seek(p, pos + 1);		/* skip just the ';' */
+		if (!cmdp_rest(p, part, sizeof part, NULL))
+			break;
+		npart = strlen(part);
+		if (npart == 0)
+			continue;
+		if (len + npart + 2 > *cap) {
+			size_t need = len + npart + 2;
+			while (*cap < need)
+				*cap *= 2;
+			text = xrealloc(text, *cap);
+		}
+		text[len++] = ',';
+		memcpy(text + len, part, npart + 1);
+		len += npart;
+	}
+	return text;
+}
+
 static const char *const xcmds[] = {"laplace", "ilaplace", "ztrans",
 	"iztrans", "zsolve", "tf", "fourier", "ifourier", "fseries", "dft",
 	"idft", "fft", "ifft", "dtft", "genfunc", "ogf", "egf", "converge",
@@ -5159,6 +5199,13 @@ xform_command(struct P *p)
 	text = xmalloc(cap);
 	if (!cmdp_rest(p, text, cap, NULL))
 		text[0] = 0;
+	{
+		const char *r = text;
+		while (*r == ' ')
+			r++;
+		if (!strcmp(w, "laplace") && !strncmp(r, "solve ", 6))
+			text = lsolve_rest(p, text, &cap);
+	}
 	xf_helpers();
 	notes_flush();
 	{	/* JSON: the kind, and the "label: value" lines as fields */

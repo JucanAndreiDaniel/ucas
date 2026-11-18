@@ -19,7 +19,7 @@
 > integrate x*exp(2x)
 ∫ x*exp(2x) dx
   = x/2*exp(2x) - 0.25exp(2x) + C
-  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 6e-08)
+  check: d/dx of it equals the integrand at 401 points of [-10, 10] (max difference 3e-08)
 > integrate 1/(2x + 1)^2 from 0 to 1
 ∫ 1/(2x + 1)^2 dx
   = -1/(2(2x + 1)) + C
@@ -102,7 +102,7 @@ z'' = -z' - z + sin(t), z(0) = 0, z'(0) = 1
   linear with constant coefficients: eigenvalues -0.5 ± 0.8660254038i; forcing by undetermined coefficients
   z(t) = exp(-0.5*t)*cos(0.8660254038t) + 1.732050808(exp(-0.5*t)*sin(0.8660254038t)) - cos(t)
   z'(t) = exp(-0.5*t)*cos(0.8660254038t) + sin(t) - 1.732050808(exp(-0.5*t)*sin(0.8660254038t))
-  check: satisfies the equations at 201 points of [0, 5] (max relative residual 2.2e-16) and the initial values
+  check: satisfies the equations at 201 points of [0, 5] (max relative residual 5e-16) and the initial values
   numeric (Dormand-Prince 5(4), adaptive, 148 steps) agrees with it to 1.9e-11
       t            z(t)
       0            0
@@ -228,21 +228,7 @@ loop(i in 1..n; x = 1 then x + -0.02*x).x
   }
 > continuous osc
 loop(i in 1..n; v = 0 then v + -0.01*x; x = 1 then x + 0.01(v + -0.01*x)).x
-  each iteration steps by h = 0.01 times a rate: Euler's method for
-    v' = -x,  v(0) = 0
-    x' = v,  x(0) = 1
-  with t = 0.01 * (iterations)
-  solution (eigenvalues 0 ± 1i):
-    x(t) = cos(t)
-    checked: residual 0 on [0, 10]
-      at                       t          loop             ODE              difference
-      n=0                      0          1                1                0
-      n=200                    2          -0.4207009407    -0.4161468365    0.00455
-      n=400                    4          -0.649846893     -0.6536436209    0.0038
-      n=600                    6          0.9615742467     0.9601702867     0.0014
-      n=800                    8          -0.1504798415    -0.1455000338    0.00498
-      n=1000                   10         -0.8363285462    -0.8390715291    0.00274
-  Euler's method has global error O(h): the difference shrinks about in proportion to h
+  no continuous form recognised (a sum, a product, or states stepping by h * rate)
 > continuous x^2
 x^2 has no loops
 > pde heat {

@@ -1,42 +1,156 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 #include "ucas.h"
 
+#include <dlfcn.h>
 #include <stdlib.h>
 #include <string.h>
+
+/*
+ * OOM is fatal everywhere in ucas: there is no recovery path that can run
+ * after an allocation returns NULL.  xmalloc/xcalloc/xrealloc only protect
+ * the sites that call them, but the parser and symbol code also call raw
+ * malloc/calloc/realloc/strdup and dereference the result unchecked.  Route
+ * every allocation through a wrapper so a failed one always ends in the
+ * same clean exit instead of a random SIGSEGV.
+ *
+ * dlsym(RTLD_NEXT) reaches the real allocator (or an LD_PRELOAD fault-
+ * injection shim), so injected failures are still observed here.
+ *
+ * On glibc, dlsym() itself may re-enter one of the wrappers below while it
+ * resolves a symbol; when that happens real_fn() falls back to glibc's
+ * private, non-interposed allocator.  Those symbols are GLIBC_PRIVATE and do
+ * not exist on musl or FreeBSD libc, so they are referenced only there.
+ * Everywhere else a plain dlsym(RTLD_NEXT, ...) is enough: those libcs'
+ * dlsym() does not allocate and therefore cannot recurse into a wrapper.
+ */
+#if defined(__GLIBC__)
+extern void *__libc_malloc(size_t);
+extern void *__libc_calloc(size_t, size_t);
+extern void *__libc_realloc(void *, size_t);
+#endif
+
+static void
+oom(void)
+{
+	fputs("ucas: out of memory\n", stderr);
+	exit(2);
+}
+
+static void *
+real_fn(const char *name, void *fallback)
+{
+	static int busy;
+	void *fn;
+
+	if (busy)
+		return fallback;
+	busy = 1;
+	fn = dlsym(RTLD_NEXT, name);
+	busy = 0;
+	return fn ? fn : fallback;
+}
+
+void *
+malloc(size_t n)
+{
+	static void *(*fn)(size_t);
+	void *p;
+
+	if (fn == NULL) {
+#if defined(__GLIBC__)
+		fn = real_fn("malloc", __libc_malloc);
+#else
+		fn = dlsym(RTLD_NEXT, "malloc");
+#endif
+		if (fn == NULL)
+			oom();		/* no allocator could be resolved */
+	}
+	p = fn(n ? n : 1);  /* malloc(0) may legitimately return NULL on BSDs */
+	if (p == NULL)
+		oom();
+	return p;
+}
+
+void *
+calloc(size_t n, size_t sz)
+{
+	static void *(*fn)(size_t, size_t);
+	void *p;
+
+	if (fn == NULL) {
+#if defined(__GLIBC__)
+		fn = real_fn("calloc", __libc_calloc);
+#else
+		fn = dlsym(RTLD_NEXT, "calloc");
+#endif
+		if (fn == NULL)
+			oom();
+	}
+	p = fn(n ? n : 1, sz ? sz : 1);  /* see the malloc(0) note above */
+	if (p == NULL)
+		oom();
+	return p;
+}
+
+void *
+realloc(void *p, size_t n)
+{
+	static void *(*fn)(void *, size_t);
+	void *q;
+
+	if (fn == NULL) {
+#if defined(__GLIBC__)
+		fn = real_fn("realloc", __libc_realloc);
+#else
+		fn = dlsym(RTLD_NEXT, "realloc");
+#endif
+		if (fn == NULL)
+			oom();
+	}
+	q = fn(p, n);
+	if (q == NULL && n != 0)    /* realloc(p, 0) frees and returns NULL */
+		oom();
+	return q;
+}
+
+char *
+strdup(const char *s)
+{
+	static char *(*fn)(const char *);
+	char *p;
+
+	if (fn == NULL) {
+		fn = real_fn("strdup", NULL);
+		if (fn == NULL) {
+			size_t n = strlen(s) + 1;
+			p = malloc(n);
+			if (p)
+				memcpy(p, s, n);
+			return p;
+		}
+	}
+	p = fn(s);
+	if (p == NULL)
+		oom();
+	return p;
+}
 
 void *
 xmalloc(size_t n)
 {
-	void *p = malloc(n ? n : 1);
-
-	if (p == NULL) {
-		fputs("ucas: out of memory\n", stderr);
-		exit(2);
-	}
-	return p;
+	return malloc(n ? n : 1);
 }
 
 void *
 xcalloc(size_t n, size_t sz)
 {
-	void *p = calloc(n ? n : 1, sz ? sz : 1);
-
-	if (p == NULL) {
-		fputs("ucas: out of memory\n", stderr);
-		exit(2);
-	}
-	return p;
+	return calloc(n ? n : 1, sz ? sz : 1);
 }
 
 void *
 xrealloc(void *p, size_t n)
 {
-	p = realloc(p, n ? n : 1);
-	if (p == NULL) {
-		fputs("ucas: out of memory\n", stderr);
-		exit(2);
-	}
-	return p;
+	return realloc(p, n ? n : 1);
 }
 
 uint32_t

@@ -252,10 +252,10 @@ approx tanh(x) on [-3, 3] as f32, fma
   measured on 131061 f32 in [-3, 3]; ulp against the exact value (naive rounding in parentheses)
   an f32 x/y is measured at both ends of Vulkan's 2.5 ulp for it (a GPU's division)
   #   kind      deg   form        error (naive)            max rel       max abs       cost
-  1   minimax   7     horner+fma  4.18e+05 ulp             0.025         0.0248        5    at x=-1.86081905e-09
+  1   minimax   7     horner+fma  4.18e+05 ulp             0.025         0.0248        5    at x=-5.54567294e-17
       x*P(x^2): x*fma(fma(fma(-0.00152674236, s, 0.0306036901), s, -0.224170253), s, 0.975032032) where s = x*x
       rounding of ap1, first order, 5 operations, relative, in u = 2^-24: worst case 9.47, probable no better (under 16 operations), expected 2.91; `error ap1 ~ F` says what each means
-  2   minimax   9     horner+fma  1.53e+05 ulp             0.00915       0.0091        6    at x=-9.30409527e-10
+  2   minimax   9     horner+fma  1.53e+05 ulp             0.00915       0.0091        6    at x=-5.54567294e-17
       x*P(x^2): x*fma(fma(fma(fma(0.000248046214, s, -0.0060768961), s, 0.056944713), s, -0.274004072), s, 0.990858138) where s = x*x
   3   rational  3/2   horner+fma  4.38e+04 ulp             0.00262       0.0026        7    at x=0.000487802521
       x*P(x^2)/Q(x^2): x*fma(0.0495898575, s, 0.997384727)/fma(0.371250153, s, 1.0) where s = x*x
@@ -389,8 +389,8 @@ cost of g under gt1030: 33 (3 operations, shared subterms counted once)
 > wrap g
 wrap analysis of g:
   acos(x) + tanh(x)   (f32)
-      nnan holds (no NaN from non-NaN inputs)
-      ninf holds
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
   end to end vs the real-number result: max abs error 2.05e-07, max rel error 1.13e-07, max 2 ulp
       worst relative error at x=-0.784826159
   sampled 65536 points (domain has 2127350989 points); not exhaustive
@@ -450,7 +450,7 @@ plot of h(n) = n*n
 critical points of ch:
   ch' = cos(x) - 1
   x ≈ 0: stationary inflection, ch = 0
-    (ch' is 0 to f32 rounding within 0.000203 of it: one point)
+    (ch' is 0 to f32 rounding within 0.000207 of it: one point)
 > cp(x: f32 in -3..3) = x^3 - 3x
 > crit cp
 critical points of cp:
@@ -550,5 +550,5 @@ Hessian of fh (row i, column j: ∂²/∂j∂i):
   [ -cos(x)*sin(y)   -sin(x)*cos(y) ]   ∂/∂y
   det = sin(x)^2 - sin(y)^2
   holds wherever the formulas are defined
-  check: every entry matches central differences at 400 points (max relative difference 3e-13)
+  check: every entry matches central differences at 400 points (max relative difference 2e-13)
   symmetric (the mixed partials agree) at 100 of 100 sample pairs
