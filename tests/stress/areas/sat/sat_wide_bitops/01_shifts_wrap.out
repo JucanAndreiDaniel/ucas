@@ -32,7 +32,7 @@ wrap analysis of s3:
   sampled 65536 points (domain has 137438953472 points); not exhaustive
 > range s3
 range of s3 -> u32:
-  0..4294967295
+  0..4294967295  (sampled min/max; not a sound bound)
   fits in u32
   sampled 65536 points (domain has 137438953472 points); not exhaustive
   sound bound (intervals): 0..4294967295
@@ -57,11 +57,11 @@ wrap analysis of s5:
   x << n   (u16)
       nuw fails: unsigned wrap at 16 points, e.g. x=16311, n=8
       nsw fails: signed wrap at 17 points, e.g. x=16311, n=8
-  end to end: differs from the mathematical result at 16 points, e.g. x=16311, n=8
+  end to end: differs from the mathematical result at 60 points, e.g. x=39696, n=38
   sampled 65536 points (domain has 4294967296 points); not exhaustive
 > range s5
 range of s5 -> u16:
-  0..65535   (21 distinct values)
+  0..65535   (21 distinct values)  (sampled min/max; not a sound bound)
   values: 0..2, 4, 8192, 9216, 10240, 16320, 18308, 19482, 20992, 21760, 26768, 29696, 35456, 37152, 41984, 46848, 49152, 65534..65535
   fits in u16
   undefined at 65513 points

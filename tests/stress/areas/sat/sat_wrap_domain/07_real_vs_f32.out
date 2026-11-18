@@ -14,14 +14,14 @@ range of sqrtreal:
 > domain sqrt32
 domain of sqrt32:
   x: f32 (every finite value)
-  no conditions: total on its parameter types
   defined at 65536 of 65536 points
+  no conditions: total on its parameter types
   sampled 65536 points (domain has 4278190079 points); not exhaustive
 > wrap sqrt32
 wrap analysis of sqrt32:
   sqrt(x)   (f32)
       nnan fails: NaN at 32786 points, e.g. x=-3.40282347e+38
-      ninf holds
+      ninf not proved: no inf in the sampled points only; sqrt of a negative value gives NaN
   end to end vs the real-number result: max abs error 5.5e+11, max rel error 5.91e-08, max 0 ulp (correctly rounded)
       worst relative error at x=7.38381344e+19
   sampled 65536 points (domain has 4278190079 points); not exhaustive
@@ -39,7 +39,7 @@ wrap analysis of sqrt16:
 wrap analysis of sqrt64:
   sqrt(x)   (f64)
       nnan fails: NaN at 32800 points, e.g. x=-1.7976931348623157e+308
-      ninf holds
+      ninf not proved: no inf in the sampled points only; sqrt of a negative value gives NaN
   end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
   sampled 65536 points (domain has 18437736874454810623 points); not exhaustive
 > divreal(x: real) = 1/x
@@ -55,13 +55,13 @@ domain of divreal:
 > domain div32
 domain of div32:
   x: f32 (every finite value)
-  no conditions: total on its parameter types
   defined at 65536 of 65536 points
+  no conditions: total on its parameter types
   sampled 65536 points (domain has 4278190079 points); not exhaustive
 > wrap div32
 wrap analysis of div32:
   1/x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only; a zero divisor gives inf (0/0 gives NaN)
       ninf fails: inf at 62 points, e.g. x=-2.00110185e-39
   end to end vs the real-number result: max abs error 1e+31, max rel error 2.31e-07, max 0 ulp (correctly rounded)
       worst relative error at x=3.3827023e+38
@@ -79,7 +79,7 @@ domain of logreal:
 wrap analysis of log32:
   log(x)   (f32)
       nnan fails: NaN at 32786 points, e.g. x=-3.40282347e+38
-      ninf holds
+      ninf not proved: no inf in the sampled points only; special operand values give NaN/inf
   end to end vs the real-number result: max abs error 3.81e-06, max rel error 5.92e-08, max 0 ulp (correctly rounded)
       worst relative error at x=1.03951527e-28
   sampled 65536 points (domain has 4278190079 points); not exhaustive

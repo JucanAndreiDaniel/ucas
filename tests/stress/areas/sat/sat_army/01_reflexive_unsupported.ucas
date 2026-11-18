@@ -1,0 +1,11 @@
+# Bug: equiv f f with an operation the SAT circuits cannot blast used to
+# degrade to "sampled, not proved; no SAT proof: ..." even though a node
+# refines itself on every domain.  All three below must be proved now.
+g64(a: u64, b: u64) = a ^ b
+equiv g64 g64
+h(x: f32) = x / x
+equiv h h nanbits
+i(x: f32) = sqrt(x)
+equiv i i noftz
+j(x: u32 in 0..1000) = 1 / x
+equiv j j

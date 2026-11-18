@@ -2,7 +2,7 @@
 > wrap ov
 wrap analysis of ov:
   x*x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only
       ninf fails: inf at 16456 points, e.g. x=-3.40282347e+38
   end to end vs the real-number result: max abs error 1.01e+31, max rel error 1, max 0 ulp (correctly rounded)
       worst relative error at x=-1.93719168e-23
@@ -12,10 +12,10 @@ wrap analysis of ov:
 > wrap uf
 wrap analysis of uf:
   x*x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only
       ninf fails: inf at 16456 points, e.g. x=-3.40282347e+38
   x*x*x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only
       ninf fails: inf at 5594 points, e.g. x=3.98976596e+18
   end to end vs the real-number result: max abs error 2.25e+31, max rel error 1, max 1 ulp
       worst relative error at x=-1.93719168e-23
@@ -25,7 +25,7 @@ wrap analysis of uf:
 > wrap sc
 wrap analysis of sc:
   3.39999995e+38x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only
       ninf fails: inf at 33041 points, e.g. x=-3.40282347e+38
   end to end vs the real-number result: max abs error 1.01e+31, max rel error 5.91e-08, max 0 ulp (correctly rounded)
       worst relative error at x=-1.05993131e-22
@@ -35,8 +35,8 @@ wrap analysis of sc:
 > wrap tiny
 wrap analysis of tiny:
   9.9999461e-41x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
-      ninf holds
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
   end to end vs the real-number result: max abs error 1.84e-09, max rel error 1, max 0 ulp (correctly rounded)
       worst relative error at x=-1.93719168e-23
   sampled 65536 points (domain has 4278190079 points); not exhaustive
@@ -54,7 +54,7 @@ wrap analysis of ov16:
 > wrap ov64
 wrap analysis of ov64:
   x*x   (f64)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only
       ninf fails: inf at 16278 points, e.g. x=-1.7976931348623157e+308
   end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
   sampled 65536 points (domain has 18437736874454810623 points); not exhaustive
@@ -62,20 +62,20 @@ wrap analysis of ov64:
 > wrap sub
 wrap analysis of sub:
   x + x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
-      ninf holds
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
   end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
   sampled 65536 points (domain has 457475263 points); not exhaustive
 > canc(x: f32 in 1..2) = x + 1e-8 - x
 > range canc
 range of canc -> f32:
-  [0, 0]
+  [0, 0]  (sampled min/max; not a sound bound)
   sampled 65536 points (domain has 8388609 points); not exhaustive
 > inf1(x: f32) = 1 / x
 > wrap inf1
 wrap analysis of inf1:
   1/x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
+      nnan not proved: no NaN in the sampled points only; a zero divisor gives inf (0/0 gives NaN)
       ninf fails: inf at 62 points, e.g. x=-2.00110185e-39
   end to end vs the real-number result: max abs error 1e+31, max rel error 2.31e-07, max 0 ulp (correctly rounded)
       worst relative error at x=3.3827023e+38
@@ -85,7 +85,7 @@ wrap analysis of inf1:
 > wrap zero
 wrap analysis of zero:
   x - x   (f32)
-      nnan holds (no NaN from non-NaN inputs)
-      ninf holds
+      nnan not proved: no NaN in the sampled points only
+      ninf not proved: no inf in the sampled points only
   end to end vs the real-number result: max abs error 0, max rel error 0, max 0 ulp (correctly rounded)
   sampled 65536 points (domain has 4278190079 points); not exhaustive

@@ -1,0 +1,10 @@
+> par8(x: u8) = popcount(x) & 1
+> parbits(x: u8) = (x&1) xor ((x>>1)&1) xor ((x>>2)&1) xor ((x>>3)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>6)&1) xor ((x>>7)&1)
+> equiv par8 parbits
+par8 and parbits are equal on the domain of par8 (exhaustive)
+> lt(x: u8) = ((x & 0x55) << 1) | ((x & 0xaa) >> 1)
+> equiv lt lt
+lt and lt are equal on the domain of lt (exhaustive)
+> bad(x: u8) = par8(x) + 1
+> equiv bad par8
+bad and par8 differ at 256 points, e.g. x=0: 1 vs 0
