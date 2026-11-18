@@ -1448,7 +1448,11 @@ rp_one(struct rpoly *p, rcoef c)
 	p->n = c ? 1 : 0;
 }
 
-/* the parameters the expression actually reads, mapped to 0 .. nv-1 */
+/* the parameters the expression actually reads, mapped to 0 .. nv-1.
+ * The node table is a DAG: visit each node once, not once per path to it. */
+static uint32_t *rp_seen;
+static uint32_t rp_seen_cap, rp_gen;
+
 static int
 rp_vars_rec(nid e, int slot[], int *pn, int np, int depth)
 {
@@ -1456,6 +1460,9 @@ rp_vars_rec(nid e, int slot[], int *pn, int np, int depth)
 
 	if (depth > 512 || !e)
 		return 0;
+	if (rp_seen[e] == rp_gen)
+		return 0;
+	rp_seen[e] = rp_gen;
 	if (N.op[e] == O_VAR) {
 		int s = (int)N.ki[e], k;
 		if (s < 0 || s >= np)
@@ -1481,6 +1488,17 @@ rp_vars(nid e, int slot[], int np)
 {
 	int n = 0;
 
+	if (rp_seen_cap <= e) {
+		uint32_t nc = (e + 1) * 2;
+		rp_seen = xrealloc(rp_seen, (size_t)nc * sizeof *rp_seen);
+		memset(rp_seen + rp_seen_cap, 0,
+		    (size_t)(nc - rp_seen_cap) * sizeof *rp_seen);
+		rp_seen_cap = nc;
+	}
+	if (++rp_gen == 0) {
+		memset(rp_seen, 0, (size_t)rp_seen_cap * sizeof *rp_seen);
+		rp_gen = 1;
+	}
 	if (rp_vars_rec(e, slot, &n, np, 0))
 		return -1;
 	return n;
