@@ -137,14 +137,33 @@ struct cl {
 
 static int cbad;	/* overflow */
 
+/* Use the exact same bound as knorm.c's cadd()/cmul(): a coefficient must
+ * fit in [-INT64_MAX, INT64_MAX], checked with __int128 so no precision is
+ * lost near the 64-bit edge.  The old long-double 9.2e18 guard rejected
+ * coefficients in (9.2e18, INT64_MAX] that knorm.c accepts, so a proof the
+ * prover built could be rejected by its own independent re-check. */
 static long long
-ov(long double v)
+ovadd(long long a, long long b)
 {
-	if (v > 9.2e18L || v < -9.2e18L) {
+	__int128 r = (__int128)a + b;
+
+	if (r > INT64_MAX || r < -INT64_MAX) {
 		cbad = 1;
 		return 0;
 	}
-	return (long long)v;
+	return (long long)r;
+}
+
+static long long
+ovmul(long long a, long long b)
+{
+	__int128 r = (__int128)a * b;
+
+	if (r > INT64_MAX || r < -INT64_MAX) {
+		cbad = 1;
+		return 0;
+	}
+	return (long long)r;
 }
 
 static char *
@@ -171,7 +190,7 @@ cp_norm(struct cp *p)
 	qsort(p->t, (size_t)p->n, sizeof *p->t, cmcmp);
 	for (i = 0; i < p->n; i++) {
 		if (k && !strcmp(p->t[k - 1].m, p->t[i].m)) {
-			p->t[k - 1].c = ov((long double)p->t[k - 1].c + p->t[i].c);
+			p->t[k - 1].c = ovadd(p->t[k - 1].c, p->t[i].c);
 			free(p->t[i].m);
 		} else
 			p->t[k++] = p->t[i];
@@ -250,7 +269,7 @@ cp_mul(const struct cp *a, const struct cp *b)
 	for (i = 0; i < a->n; i++)
 		for (j = 0; j < b->n; j++) {
 			char *m = mono_mul(a->t[i].m, b->t[j].m);
-			cp_add1(&r, m, ov((long double)a->t[i].c * b->t[j].c));
+			cp_add1(&r, m, ovmul(a->t[i].c, b->t[j].c));
 			free(m);
 		}
 	cp_norm(&r);
@@ -263,7 +282,7 @@ cp_addto(struct cp *r, const struct cp *b, long long s)
 	int i;
 
 	for (i = 0; i < b->n; i++)
-		cp_add1(r, b->t[i].m, ov((long double)b->t[i].c * s));
+		cp_add1(r, b->t[i].m, ovmul(b->t[i].c, s));
 	cp_norm(r);
 }
 
@@ -1126,4 +1145,424 @@ kcheck(kthm top, char *msg, int n, uint32_t *nsteps)
 		*nsteps = cnt;
 	snprintf(msg, (size_t)n, "%u inferences re-checked", cnt);
 	return 1;
+}
+
+/* ---- PAC / Nullstellensatz certificates ---------------------------------
+ *
+ * Kaufmann & Biere (STTT 2023, AMulet2) distinguish two algebraic proof
+ * formats.  PAC is a sequence of small steps, each checked on its own, so a
+ * bad step is localized; Nullstellensatz is one concise list of cofactors
+ * a_i with f = sum a_i g_i, where a single wrong cofactor ruins the whole
+ * check.  Their LPAC sits between the two.  Here a kernel proof already
+ * carries the cofactors: every KR_LIN inference is a Nullstellensatz
+ * combination (premise relations g_i, kernel args a_i) and every KR_CONV
+ * inference is a ring normalization.  We expose those steps in either
+ * format and re-check them with the canonical arithmetic above, which is
+ * independent of knorm.c.  A deliberately corrupted cofactor is reported
+ * with its step number, the way PAC localizes an error.
+ */
+
+enum { CERT_OTHER, CERT_LIN, CERT_RING };
+
+struct cert_step {
+	int kind;		/* CERT_LIN | CERT_RING | CERT_OTHER */
+	int rule;		/* kernel rule id */
+	int supported;		/* all terms in the integer polynomial ring */
+	int injected;		/* fault injected by cert_check() */
+	uint32_t id;		/* kernel theorem id */
+	uint32_t alg;		/* 1-based algebraic step number */
+	uint32_t np;		/* premises / cofactors (kr_lin allows <= 64) */
+	kt f;			/* claimed relation */
+	kt g[64];		/* premise relations, materialized */
+	kt a[64];		/* cofactors */
+	int ge[64];		/* premise is an inequality */
+};
+
+struct ucas_cert {
+	struct cert_step *s;
+	int n;			/* all stored steps */
+	int nlin, nring;	/* algebraic steps */
+	int supported;
+};
+
+static struct cp
+cert_poly(kt t)
+{
+	struct cp r = {0};
+
+	/* the module's zero is a ring zero when read as a polynomial */
+	if (t == KNONE || KOP(t) == KO_ZERO)
+		return r;
+	return cpoly(t);
+}
+
+struct ucas_cert *
+cert_build(kthm top, int *nall)
+{
+	uint32_t cap = kthm_count(), ns = 0, i, th;
+	uint8_t *mark;
+	kthm *st;
+	struct ucas_cert *c = xcalloc(1, sizeof *c);
+	int n = 0, alloc = 0;
+
+	if (nall)
+		*nall = 0;
+	if (top == KNONE || top >= cap)
+		return c;
+	mark = xcalloc((size_t)cap, 1);
+	st = xmalloc((size_t)cap * sizeof *st);
+	st[ns++] = top;
+	mark[top] = 1;
+	while (ns) {	/* mark the whole proof DAG, premises first */
+		th = st[--ns];
+		for (i = 0; i < kthm_nprem(th); i++) {
+			kthm q = kthm_prem(th, i);
+			if (q && q < cap && !mark[q]) {
+				mark[q] = 1;
+				st[ns++] = q;
+			}
+		}
+	}
+	c->supported = 1;
+	for (th = 1; th < cap; th++) {
+		struct cert_step *s;
+		struct sbuf b = {0};
+		int r, j, k, nt = 0;
+		kt terms[130];
+
+		if (!mark[th])
+			continue;
+		r = kthm_rule(th);
+		if (nall)
+			(*nall)++;
+		if (n == alloc) {
+			alloc = alloc ? alloc * 2 : 16;
+			c->s = xrealloc(c->s, (size_t)alloc * sizeof *c->s);
+		}
+		s = &c->s[n++];
+		memset(s, 0, sizeof *s);
+		s->supported = 1;
+		s->rule = r;
+		s->id = th;
+		s->f = kthm_concl(th);
+		if (r != KR_LIN && r != KR_CONV) {
+			s->kind = CERT_OTHER;
+			continue;
+		}
+		/* a conversion is a ring-normalization step only when its
+		 * conclusion is an equation whose polynomial is zero; other
+		 * conversions are propositional/order scaffolding */
+		if (r == KR_CONV) {
+			int ge = 0;
+			kt f = relterm(kthm_concl(th), &ge);
+			struct cp p;
+
+			if (f == KNONE || ge) {
+				s->kind = CERT_OTHER;
+				continue;
+			}
+			p = cert_poly(f);
+			if (p.n) {
+				cp_free(&p);
+				s->kind = CERT_OTHER;
+				continue;
+			}
+			cp_free(&p);
+		}
+		s->kind = r == KR_LIN ? CERT_LIN : CERT_RING;
+		s->alg = (uint32_t)(c->nlin + c->nring + 1);
+		if (r == KR_LIN) {
+			uint32_t np = kthm_nprem(th);
+
+			c->nlin++;
+
+			for (j = 0; j < (int)np; j++) {
+				int ge = 0;
+				kt g = relterm(kthm_concl(kthm_prem(th,
+				    (uint32_t)j)), &ge);
+
+				if (g == KNONE) {
+					s->supported = 0;
+					break;
+				}
+				s->g[j] = g;
+				s->ge[j] = ge;
+				s->a[j] = kthm_arg(th, (uint32_t)j);
+				s->np++;
+			}
+		} else {
+			/* a conv establishes the relation by ring normalization;
+			 * its premise may be `true`, so only the conclusion is a
+			 * ring fact: the relation normalizes to zero. */
+			c->nring++;
+			s->np = 0;
+		}
+		/* the ring supports the certificate only if every term has a
+		 * canonical polynomial form (no opaque powers or operators) */
+		{
+			int ge = 0;
+			kt f = relterm(s->f, &ge);
+			terms[nt++] = f == KNONE ? s->f : f;
+		}
+		for (j = 0; j < (int)s->np; j++) {
+			terms[nt++] = s->g[j];
+			if (s->kind == CERT_LIN)
+				terms[nt++] = s->a[j];
+		}
+		for (k = 0; s->supported && k < nt; k++) {
+			struct cp p = cert_poly(terms[k]);
+
+			cp_str(&b, &p);
+			cp_free(&p);
+			if (strstr(b.p ? b.p : "", "W(") ||
+			    strstr(b.p ? b.p : "", "?"))
+				s->supported = 0;
+		}
+		free(b.p);
+		if (!s->supported)
+			c->supported = 0;
+	}
+	free(mark);
+	free(st);
+	c->n = n;
+	return c;
+}
+
+void
+cert_free(struct ucas_cert *c)
+{
+	if (!c)
+		return;
+	free(c->s);
+	free(c);
+}
+
+/* The checker has three outcomes, not two: a check that passed, a checked
+ * step that failed, and "there is nothing checkable / the request is bad".
+ * cmd_check() in prove_cmd.c mirrors these codes so it can print an honest
+ * status instead of a bogus failure at step 0. */
+enum { CERT_UNCHECKABLE = -1, CERT_FAILED = 0, CERT_VERIFIED = 1 };
+
+int
+cert_nalg(const struct ucas_cert *c)
+{
+	return c ? c->nlin + c->nring : 0;
+}
+
+int
+cert_supported(const struct ucas_cert *c)
+{
+	return c && c->supported;
+}
+
+static int
+cp_same(const struct cp *a, const struct cp *b)
+{
+	struct sbuf x = {0}, y = {0};
+	int r;
+
+	cp_str(&x, a);
+	cp_str(&y, b);
+	r = !strcmp(x.p ? x.p : "", y.p ? y.p : "");
+	free(x.p);
+	free(y.p);
+	return r;
+}
+
+/* Verify every algebraic step.  corrupt = 0 checks the proof as emitted;
+ * otherwise the 1-based algebraic step with that number is sabotaged and
+ * the checker must name it.  A request beyond the last algebraic step is an
+ * error, never a silent pass.  Returns CERT_VERIFIED only when every step
+ * checks, CERT_FAILED when a checked step fails (badstep names it), and
+ * CERT_UNCHECKABLE when there is nothing checkable or the request is invalid
+ * (msg says why, no step is named). */
+int
+cert_check(struct ucas_cert *c, int corrupt, char *msg, int n,
+    uint32_t *badstep)
+{
+	int i, alg = 0, j;
+
+	if (badstep)
+		*badstep = 0;
+	cbad = 0;	/* never inherit an overflow flag from a previous check */
+	if (!c || !c->nlin && !c->nring) {
+		snprintf(msg, (size_t)n, "no algebraic steps to check");
+		return CERT_UNCHECKABLE;
+	}
+	if (!c->supported) {
+		snprintf(msg, (size_t)n,
+		    "not supported: terms outside the integer polynomial ring");
+		return CERT_UNCHECKABLE;
+	}
+	for (i = 0; i < c->n; i++) {
+		struct cert_step *s = &c->s[i];
+		struct cp sum = {0}, p, q, r, target, one = {0};
+		struct sbuf got = {0}, want = {0};
+		char wbuf[96];
+		int ge = 0;
+		const char *why = NULL;
+
+		if (s->kind == CERT_OTHER)
+			continue;
+		alg++;
+		if (corrupt == alg) {
+			s->injected = 1;
+			if (s->kind == CERT_LIN && s->np)
+				s->a[0] = kt_add(s->a[0], kt_num(1));
+		}
+		target = cert_poly(relterm(s->f, &ge));
+		if (s->kind == CERT_RING) {
+			if (target.n)
+				why = "does not reduce to zero in the ring";
+			if (s->injected) {
+				cp_add1(&one, "", 1);
+				cp_addto(&target, &one, 1);
+				if (!why)
+					why = "normalization fault injected";
+			}
+		} else {
+			int anyge = 0;
+
+			/* relterm() maps s = 0 and 0 <= s to the same polynomial,
+			 * so a polynomial match alone cannot tell an equality
+			 * conclusion from an inequality one.  kr_lin() makes the
+			 * conclusion an inequality exactly when some premise is
+			 * one; reject a conclusion with the wrong relation kind. */
+			for (j = 0; j < (int)s->np; j++)
+				if (s->ge[j])
+					anyge = 1;
+			if (ge != anyge || KOP(s->f) != (anyge ? KO_LE : KO_EQ))
+				why = "conclusion relation does not match the premises";
+			for (j = 0; j < (int)s->np && !why; j++) {
+				p = cert_poly(s->a[j]);
+				q = cert_poly(s->g[j]);
+				if (s->ge[j]) {
+					int nonneg = p.n == 0 ||
+					    (p.n == 1 && !*p.t[0].m &&
+					    p.t[0].c >= 0);
+					if (!nonneg) {
+						snprintf(wbuf, sizeof wbuf,
+						    "cofactor a%d is not a nonnegative numeral "
+						    "(inequality premise)", j + 1);
+						why = wbuf;
+						cp_free(&p);
+						cp_free(&q);
+						break;
+					}
+				}
+				r = cp_mul(&p, &q);
+				cp_addto(&sum, &r, 1);
+				cp_free(&r);
+				cp_free(&p);
+				cp_free(&q);
+			}
+			if (!why && s->injected && !s->np)
+				cp_add1(&sum, "", 1);
+			if (!why && !cp_same(&sum, &target))
+				why = s->injected ?
+				    "cofactor a1 fault: combination no longer equals f" :
+				    "sum of cofactors differs from f";
+		}
+		if (cbad) {	/* overflowed arithmetic is not a verification */
+			cbad = 0;
+			cp_free(&sum);
+			cp_free(&target);
+			free(got.p);
+			free(want.p);
+			snprintf(msg, (size_t)n,
+			    "integer overflow while checking the certificate");
+			return CERT_UNCHECKABLE;
+		}
+		cp_str(&got, &sum);
+		cp_str(&want, &target);
+		if (why) {
+			char detail[256];
+			snprintf(detail, sizeof detail,
+			    "sum [%s], f [%s]", got.p ? got.p : "0",
+			    want.p ? want.p : "0");
+			snprintf(msg, (size_t)n,
+			    "step %u (%s): %s; %s", s->alg,
+			    s->kind == CERT_LIN ? "lin" : "ring", why, detail);
+			if (badstep)
+				*badstep = s->alg;
+			cp_free(&sum);
+			cp_free(&target);
+			free(got.p);
+			free(want.p);
+			return CERT_FAILED;
+		}
+		cp_free(&sum);
+		cp_free(&target);
+		free(got.p);
+		free(want.p);
+	}
+	/* No fault was injected: the requested step does not exist. */
+	if (corrupt > alg) {
+		snprintf(msg, (size_t)n,
+		    "broken step %d is out of range: the proof has only "
+		    "%d algebraic step(s)", corrupt, alg);
+		return CERT_UNCHECKABLE;
+	}
+	if (cbad) {	/* the last product may have overflowed */
+		cbad = 0;
+		snprintf(msg, (size_t)n,
+		    "integer overflow while checking the certificate");
+		return CERT_UNCHECKABLE;
+	}
+	snprintf(msg, (size_t)n,
+	    "%d algebraic step(s) verified (%d Nullstellensatz combination(s), "
+	    "%d ring normalization(s))", c->nlin + c->nring, c->nlin, c->nring);
+	return CERT_VERIFIED;
+}
+
+void
+cert_emit(struct ucas_cert *c, int mode, struct sbuf *o)
+{
+	char msg[512];
+	int ok = cert_check(c, 0, msg, sizeof msg, NULL);
+	int i, j;
+
+	if (mode == 0 || mode == 2) {
+		sb_puts(o, "Nullstellensatz certificate (a_i, f = sum a_i*g_i):\n");
+		if (!c->nlin && !c->nring) {
+			sb_puts(o, "  no algebraic steps in this proof\n");
+		} else if (!c->supported) {
+			sb_puts(o, "  not supported: terms outside the integer "
+			    "polynomial ring\n");
+		} else {
+			for (i = 0; i < c->n; i++) {
+				struct cert_step *s = &c->s[i];
+
+				if (s->kind == CERT_OTHER)
+					continue;
+				sb_printf(o, "  step %u [%s]\n", s->alg,
+				    s->kind == CERT_LIN ? "lin" : "ring");
+				if (s->kind == CERT_LIN) {
+					for (j = 0; j < (int)s->np; j++)
+						sb_printf(o, "    g%d = %s\n",
+						    j + 1, kt_str(s->g[j]));
+					for (j = 0; j < (int)s->np; j++)
+						sb_printf(o, "    a%d = %s\n",
+						    j + 1, kt_str(s->a[j]));
+				}
+				sb_printf(o, "    f  = %s\n", kt_str(s->f));
+			}
+			sb_printf(o, "  [%s] %s\n", ok ? "ok" : "FAILED", msg);
+		}
+	}
+	if (mode == 1 || mode == 2) {
+		sb_puts(o, "PAC step proof (one line per kernel inference):\n");
+		for (i = 0; i < c->n; i++) {
+			struct cert_step *s = &c->s[i];
+
+			sb_printf(o, "  step %u [%s]", s->id,
+			    kr_name[s->rule]);
+			if (s->kind == CERT_LIN) {
+				for (j = 0; j < (int)s->np; j++)
+					sb_printf(o, " a%d=%s", j + 1,
+					    kt_str(s->a[j]));
+			}
+			sb_printf(o, ": %s\n", kt_str(s->f));
+		}
+	}
 }

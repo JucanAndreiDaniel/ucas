@@ -564,5 +564,12 @@ pm_refute(kt phi, struct sbuf *out)
 	}
 	if (r && out->n >= 2)
 		out->p[out->n -= 2] = 0;
+	/* A closed statement (no leading foralls) has no assignment to
+	 * print: search() reaches eval() straight away and leaves out
+	 * empty.  An empty "counterexample:" is useless, so describe the
+	 * refutation instead. */
+	if (r && out->n == 0)
+		sb_puts(out, "the statement is false as written (no variables "
+		    "to assign)");
 	return r;
 }
