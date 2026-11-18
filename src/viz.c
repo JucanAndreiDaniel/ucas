@@ -741,23 +741,77 @@ struct integ {
 	nid F;
 };
 
+/* which end of a finite [a, b] makes e blow up: 1 = a, 2 = b */
+static int
+divergent_end(nid e, double a, double b)
+{
+	double d = 1e-9 * (b - a), va, vb;
+	int oa, ob;
+
+	va = eval_const_at(e, 0, a + d, &oa);
+	vb = eval_const_at(e, 0, b - d, &ob);
+	if (!oa && ob)
+		return 1;
+	if (oa && !ob)
+		return 2;
+	return fabs(va) >= fabs(vb) ? 1 : 2;
+}
+
 /* ∫ e from a to b, both ways; F is tried once per integrand */
 static void
 integrate(nid e, double a, double b, struct integ *I, int want_exact)
 {
 	memset(I, 0, sizeof *I);
 	I->good = gk_integrate(&R.f, e, 0, a, b, &I->v, &I->err, &I->nev);
-	if (!I->good) {
-		/*
-		 * sqrt(1 - x^2)' at 1: an end that is singular but integrable
-		 * gives the same value with the ends trimmed by 1e-6 and 1e-9 of
-		 * the interval; a divergent one or one inside does not
-		 */
+	/*
+	 * A singular-but-integrable end (sqrt(1-x^2)' at 1) gives the same
+	 * value with the ends trimmed by 1e-8 and 1e-12 of the interval; a
+	 * divergent end does not -- the value keeps growing as the trim
+	 * shrinks.  This test used to run only when gk_integrate() flagged an
+	 * undefined node, but for e.g. the arc integrand of log(x) or 1/sqrt(x)
+	 * at 0 every node is finite and the adaptive loop merely exhausts its
+	 * 200 iterations, returning a huge finite "good" value.  So run it
+	 * whenever the interval is finite and nonzero.
+	 */
+	if (isfinite(a) && isfinite(b) && b > a) {
 		double v6, v9, e6, e9, d6 = 1e-8 * (b - a), d9 = 1e-12 * (b - a);
 		int n6, n9, g6 = gk_integrate(&R.f, e, 0, a + d6, b - d6, &v6, &e6,
 		    &n6), g9 = gk_integrate(&R.f, e, 0, a + d9, b - d9, &v9, &e9,
 		    &n9);
-		if (g6 && g9 && fabs(v9 - v6) <= 1e-2 * fabs(v9) + 1e-12) {
+		if (g6 && g9 && isfinite(v6) && isfinite(v9) &&
+		    fabs(v9) > fabs(v6) &&
+		    fabs(v9 - v6) > 1e-2 * fabs(v9) + 1e-12) {
+			/* Growth between two trims alone cannot distinguish a
+			 * divergent x^-p (p >= 1) from an integrable cusp x^-p with
+			 * p < 1: for p close to 1 the tail (1e-4)^(1-p) is still a
+			 * percent or more, so a convergent arclength such as x^0.1
+			 * was wrongly called divergent.  Estimate the blow-up exponent
+			 * from the integrand near the end and require p >= 1. */
+			int end = divergent_end(e, a, b);
+			double c = end == 1 ? a : b, s = end == 1 ? 1 : -1;
+			double t1 = 1e-6 * (b - a), t2 = 1e-8 * (b - a), p = 0;
+			int o1, o2;
+			double u1 = eval_const_at(e, 0, c + s * t1, &o1);
+			double u2 = eval_const_at(e, 0, c + s * t2, &o2);
+			if (o1 && o2 && isfinite(u1) && isfinite(u2) &&
+			    u1 != 0 && u2 != 0)
+				p = log(fabs(u2) / fabs(u1)) / log(t1 / t2);
+			if (p >= 0.999) {
+				/* grows without bound as the trim shrinks: divergent */
+				I->diverge = end;
+				I->good = 0;
+			} else {
+				/* an improper but convergent integral: the finer trim
+				 * is the value, the trim difference its uncertainty */
+				I->good = 1;
+				I->trim = 1;
+				I->v = v9;
+				I->tdiff = fabs(v9 - v6);
+				I->err = e9 + I->tdiff;
+				I->nev = n6 + n9;
+			}
+		} else if (!I->good && g6 && g9 &&
+		    fabs(v9 - v6) <= 1e-2 * fabs(v9) + 1e-12) {
 			I->good = 1;
 			I->trim = 1;
 			I->v = v9;
@@ -862,9 +916,16 @@ print_integ(const char *indent, const struct integ *I, double a, double b,
 		printf("%sexact: F(%s) - F(%s) = %s%s\n", indent, btxt(b), btxt(a),
 		    full(I->ve), I->improper ? " (an improper integral: F's limit "
 		    "at the end where it is undefined)" : "");
-	else if (I->diverge)
-		printf("%sdiverges: F = %s grows without bound towards %s = %s\n",
-		    indent, node_str(I->F), xname(), btxt(I->diverge == 1 ? a : b));
+	else if (I->diverge) {
+		if (I->F)
+			printf("%sdiverges: F = %s grows without bound towards %s = %s\n",
+			    indent, node_str(I->F), xname(),
+			    btxt(I->diverge == 1 ? a : b));
+		else
+			printf("%sdiverges: the integrand grows without bound towards "
+			    "%s = %s: no finite value\n", indent, xname(),
+			    btxt(I->diverge == 1 ? a : b));
+	}
 	else if (I->F && !I->diverge)
 		printf("%s(the antiderivative is not defined across the interval: "
 		    "numeric only)\n", indent);
@@ -3011,8 +3072,13 @@ arclength_cmd(void)
 			printf("  (the chord from end to end: %s; the arc is never "
 			    "shorter)\n", pr_g4(hypot(x1 - x0, y1 - y0)));
 	}
-	printf("  arc length: %s\n", val_text(ival(&I), I.exact));
-	rep_val("arc_length", ival(&I), I.exact);
+	if (I.diverge) {
+		printf("  arc length: no finite arc length (the integral diverges)\n");
+		rep_null("arc_length");
+	} else {
+		printf("  arc length: %s\n", val_text(ival(&I), I.exact));
+		rep_val("arc_length", ival(&I), I.exact);
+	}
 }
 
 static void

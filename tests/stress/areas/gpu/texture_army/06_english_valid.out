@@ -1,0 +1,10 @@
+> R = [0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255]
+> compress R as ASTC 6x6
+  ucas: texenc R astc 6x6
+texenc R astc 6x6: 16 entries as ASTC 6x6, rows of 6 (6 x 3 texels): 1 block, 16 bytes (18 as R8_UNORM, 72 as R32_SFLOAT); whole numbers k are stored as k/255
+  block (0, 0): 6x6 weights of 4 levels in one plane, 3 partitions (seed 470: the closest to the entries' pattern, 1 texel off it), endpoints 148, 242, 67, 121, 0, 80 (luminance, 20 levels), bytes 08 d1 3a e0 95 48 30 00 00 00 00 00 5f 0a 37 29
+  decodes to [0, 0.101960786, 0.101960786, 0.20784314, 0.262745112, 0.313725501, 0.403921574, 0.474509805, 0.580392182, 0.580392182, 0.701960802, 0.701960802, 0.827450991, 0.827450991, 0.949019611, 0.949019611]
+  not exact: the closest block found is within 0.051 of the table (entry 15: 1 as 0.949019611)
+  in the default float16 decode mode a read is C/65536 toward zero (1 for 65535): within 0.0513 of the table
+  searched: every block mode the footprint has (a weight grid up to the block, each weight range, one plane), 1 to 4 partitions with the seeds whose partitions are closest to the entries' pattern, the endpoints near each partition's least and greatest entry, the weights by least squares through the infill and then a level at a time; not every encoding, so a closer block may exist where it is not exact.  Every block written is decoded again
+  a nearest or filtered read of the texture is that read of the decoded table; no model prices an ASTC read: not measured

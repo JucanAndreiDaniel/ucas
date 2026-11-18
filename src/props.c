@@ -2253,6 +2253,47 @@ snap_x(double c, double h)
 	return c;
 }
 
+/*
+ * Equality tests like `x == c ? ... : ...` put an isolated point of
+ * discontinuity at an arbitrary real c that a fixed grid will generally
+ * miss.  Collect the constant side of every comparison involving the
+ * parameter so those points can be classified explicitly.
+ */
+static void
+spike_points(nid e, struct func *f, int slot, double *out, int *n, int max)
+{
+	int op;
+
+	if (!e || !(N.fl[e] & NF_VAR) || N.op[e] == O_VAR ||
+	    N.op[e] == O_TABLE)
+		return;
+	op = N.op[e];
+	if ((op == O_EQ || op == O_NE) && (N.fl[e] & NF_VAR)) {
+		nid cn = 0;
+		if (N.a[e] && !(N.fl[N.a[e]] & NF_VAR))
+			cn = N.a[e];
+		else if (N.b[e] && !(N.fl[N.b[e]] & NF_VAR))
+			cn = N.b[e];
+		if (cn) {
+			struct ev ce;
+			double y;
+			int k;
+			ev_open(&ce, f, cn, slot, 0);
+			if (ev1(&ce, 0, &y) && isfinite(y)) {
+				for (k = 0; k < *n; k++)
+					if (fabs(out[k] - y) < 1e-12 * (1 + fabs(y)))
+						break;
+				if (k == *n && *n < max)
+					out[(*n)++] = y;
+			}
+			ev_close(&ce);
+		}
+	}
+	spike_points(N.a[e], f, slot, out, n, max);
+	spike_points(N.b[e], f, slot, out, n, max);
+	spike_points(N.c[e], f, slot, out, n, max);
+}
+
 static void
 disc_analyse(struct func *f, int s, struct disc *D)
 {
@@ -2294,12 +2335,57 @@ disc_analyse(struct func *f, int s, struct disc *D)
 	}
 	if (D->ndom > MAXDI)
 		D->ndom = MAXDI;
+	/* Overflow guard: the evaluator reports a float that overflows to
+	 * infinity as undefined (its value is 0 with F_UNDEF).  A run of such
+	 * samples next to an enormous finite value is not a domain hole: in
+	 * exact arithmetic f is defined there, only too large for a double.
+	 * Collapse that gap onto the genuine domain edge so we do not report a
+	 * spurious finite interval of undefinedness (e.g. exp(1/x) on (0, 1/ln
+	 * DBL_MAX)).
+	 *
+	 * A genuine pole of high multiplicity is different: f really is huge
+	 * just outside the singularity, and both refined ends of the gap are
+	 * overflow thresholds rather than the singularity itself (1/x^50 blows
+	 * up at 0 but def_edge lands at +-6.8e-7, where 1/x^50 crosses DBL_MAX).
+	 * When both bracketing samples are huge the gap straddles such a pole;
+	 * locate the singularity halfway between the two thresholds and move
+	 * *both* ends there, or we report the overflow threshold as the pole. */
+	for (i = 0; i + 1 < (uint32_t)D->ndom; i++) {
+		int l = -1, r = -1, j, hl, hr;
+		for (j = 0; j < (int)g.n; j++) {
+			if (g.ok[j] && g.x[j] <= D->db[i])
+				l = j;
+			if (g.ok[j] && g.x[j] >= D->da[i + 1]) {
+				r = j;
+				break;
+			}
+		}
+		hl = l >= 0 && fabs(g.y[l]) > 1e100;
+		hr = r >= 0 && fabs(g.y[r]) > 1e100;
+		if (hl && hr) {
+			double c = snap_x(0.5 * (D->db[i] + D->da[i + 1]), h);
+			D->db[i] = c;
+			D->da[i + 1] = c;
+		} else if (hl || hr) {
+			/* one-sided float overflow: the other end is the true edge */
+			D->da[i + 1] = D->db[i];
+		}
+	}
 	/* gaps between defined intervals and the domain's inner ends */
 	for (i = 0; i < (uint32_t)D->ndom; i++) {
 		if (D->da[i] > lo)
 			disc_classify(&e, D, D->da[i], scale);
 		if (D->db[i] < hi)
 			disc_classify(&e, D, D->db[i], scale);
+	}
+	/* isolated discontinuities at off-grid comparison constants */
+	if (!D->elementary) {
+		double cp[32];
+		int nc = 0, k;
+		spike_points(f->body, f, s, cp, &nc, 32);
+		for (k = 0; k < nc; k++)
+			if (cp[k] > lo && cp[k] < hi)
+				disc_classify(&e, D, cp[k], scale);
 	}
 	/* jumps between grid points */
 	for (i = 1; i + 1 < g.n; i++) {
@@ -4626,6 +4712,56 @@ factored(const struct rpoly *P, const char *x, struct sbuf *sb)
 	}
 }
 
+/*
+ * Does the expression e *appear* zero at sampled points of f's parameters?
+ * This is a fixed-size random sample with an absolute tolerance, not an
+ * identity proof: a tiny non-zero amplitude (e.g. 1e-10*sin(1000*x)) also
+ * passes.  Callers must therefore label the result [sampled], never [proved].
+ *
+ * npoly_of()/const_is() only fold syntactic zeros, so a leading coefficient
+ * such as (y*1+1*y)-2*y survives as a symbolic zero and inflates the degree.
+ * A body that is identically zero (e.g. sin^2+cos^2-1) would likewise be
+ * dressed up by the raw-syntax classifier as a transcendental function with
+ * fabricated period/monotonicity/zeros.  Detect both by evaluation.
+ */
+static int
+expr_is_zero(struct func *f, nid e)
+{
+	struct ev ev;
+	double v[MAXP], y;
+	int j, k;
+
+	if (!e)
+		return 0;
+	ev_open(&ev, f, e, 0, 0);
+	for (k = 0; k < 16; k++) {
+		for (j = 0; j < f->np; j++)
+			v[j] = urand(-3, 3);
+		if (!evm(&ev, v, &y) || !isfinite(y) || fabs(y) > 1e-8)
+			break;
+	}
+	ev_close(&ev);
+	return k == 16;
+}
+
+/*
+ * Should a leading coefficient be trimmed when reporting a polynomial's
+ * degree?  npoly_of() already removed syntactic zeros.  For a numeric
+ * constant, only an exact zero counts: treating a small-but-real coefficient
+ * such as 1e-10 as zero would report the wrong degree.  A symbolic
+ * expression that is identically zero (a syntactic zero npoly_of() could not
+ * fold) still needs the sampled test above.
+ */
+static int
+coef_is_zero(struct func *f, nid e)
+{
+	double v;
+
+	if (num_of(e, &v))
+		return v == 0;
+	return expr_is_zero(f, e);
+}
+
 static void
 identify_func(struct func *f)
 {
@@ -4641,12 +4777,20 @@ identify_func(struct func *f)
 	if (f->np > 1) {
 		int j, poly = 1;
 		struct sbuf sb = {0};
+		if (expr_is_zero(f, f->body)) {
+			printf("  a function of %d variables: appears constant "
+			    "(identically zero at sampled points) [sampled]\n",
+			    f->np);
+			return;
+		}
 		for (j = 0; j < f->np; j++) {
 			struct npoly P;
-			if (npoly_of(f->body, j, &P, 12))
-				sb_printf(&sb, "%sdegree %d in %s", j ? ", " : "", P.deg,
-				    vname(f, j));
-			else
+			if (npoly_of(f->body, j, &P, 12)) {
+				while (P.deg > 0 && coef_is_zero(f, P.c[P.deg]))
+					P.deg--;
+				sb_printf(&sb, "%sdegree %d in %s", j ? ", " : "",
+				    P.deg, vname(f, j));
+			} else
 				poly = 0;
 		}
 		printf("  a function of %d variables%s%s%s\n", f->np, poly ?
@@ -4710,6 +4854,21 @@ identify_func(struct func *f)
 		struct asy A;
 		struct rngres R;
 		const char *xs = x;
+		/* sin^2+cos^2-1 and friends are identically zero: classifying by
+		 * raw syntax and then sampling FP noise yields fabricated periods,
+		 * monotonicity intervals and zeros.  Report them as the constants
+		 * they appear to be, before any of that analysis runs.  The test is
+		 * a fixed-size sample, so these claims are [sampled], not [proved];
+		 * exact/symbolic zeros are handled honestly by the polynomial path
+		 * below (which uses exact coefficients). */
+		if (!ispoly && !israt && expr_is_zero(f, f->body)) {
+			printf("  appears constant (identically zero at sampled "
+			    "points) [sampled]\n");
+			printf("  periodic: constant [sampled]\n");
+			printf("  monotonic: constant [sampled]\n");
+			printf("  zeros: everywhere [sampled]\n");
+			return;
+		}
 		if (ispoly) {
 			struct sbuf sb = {0};
 			printf("  polynomial of degree %d (%s), leading coefficient %s\n",

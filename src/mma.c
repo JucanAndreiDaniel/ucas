@@ -6,7 +6,12 @@
  * subgroups and no matrix unit.
  *
  *   mma [m16n8k16 | m16n8k8] [f32 | f16] [model M] [all] [validate]
- *       [nofile] [seed N]
+ *       [nofile] [seed N] [seconds N]
+ *
+ * Both searches run to completion by default (fully deterministic result).
+ * Pass `seconds N` to cap a search by wall clock; when a search is cut short
+ * it says so, rather than reporting the best plan as if the search had
+ * finished.
  *
  * Nothing here names a strategy.  A dataflow is a choice of where each
  * product is formed and how its operands get there:
@@ -45,12 +50,14 @@
  * bound checked (a secondary check, sampled).
  */
 #include <math.h>
+#include <setjmp.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "ucas.h"
@@ -60,6 +67,41 @@
 
 void deliver_file(const char *name, const char *type, const char *data,
     size_t n, int nofile);	/* anim.c */
+
+/* The search is a bounded hunt, not an unbounded proof: a full run is tens of
+ * seconds, far past a normal client's timeout.  A default wall-clock deadline
+ * cuts it short honestly (see MMA_BUDGET_S and mma_run) instead of leaving the
+ * caller waiting, or reporting "no dataflow" as if the search had finished. */
+/* The default is an unbounded, fully deterministic search: a wall-clock cut
+ * makes the result depend on machine speed (sometimes full, sometimes cut),
+ * which breaks reproducibility and can hide a cheaper dataflow.  Clients that
+ * need a deadline pass `seconds N` (or the protocol-level `timeout_s`). */
+#define MMA_BUDGET_S	0.0
+#define MMA_BUDGET_MAX	120.0
+
+static jmp_buf mma_deadline_jmp;
+static struct timespec mma_deadline_end;
+static int mma_deadline_set, mma_stopped;
+static double mma_budget_s = MMA_BUDGET_S;
+
+/* Abort the current search when its wall-clock budget is up.  Called both
+ * per plan (keep) and from the blocked search's inner loops, which can do a
+ * lot of expensive reduction work before a plan reaches keep(). */
+static void
+mma_check_deadline(void)
+{
+	struct timespec now;
+
+	if (!mma_deadline_set)
+		return;
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	if (now.tv_sec > mma_deadline_end.tv_sec ||
+	    (now.tv_sec == mma_deadline_end.tv_sec &&
+	    now.tv_nsec >= mma_deadline_end.tv_nsec)) {
+		mma_stopped = 1;
+		longjmp(mma_deadline_jmp, 1);
+	}
+}
 
 #define ML 32		/* the lanes of a warp */
 #define MAXI 2048	/* a plan's instructions */
@@ -1040,6 +1082,9 @@ red_plan(const struct shape *s, struct red *R, const int *order, int nord,
 	int nkey = s->M * s->N, k, l, sl, st, i, live[MAXS];
 	int bm = -1;
 
+	/* Every expensive search path goes through here; without this check
+	 * a long run of reductions can overrun the deadline by seconds. */
+	mma_check_deadline();
 	memset(hold, 0, sizeof hold);
 	for (sl = 0; sl < R->ns; sl++)
 		for (l = 0; l < ML; l++) {
@@ -1883,6 +1928,7 @@ keep(const struct mplan *p)
 	struct mplan **slot;
 
 	tried++;
+	mma_check_deadline();
 	if (p->bad || !isfinite(p->cost))
 		return;
 	{
@@ -2245,6 +2291,7 @@ search_block(const struct shape *s, const struct model *m, struct bld *b)
 	for (t = 0; t < ntop; t++) {
 		int kl[5], nkl = 0, rcb[16], nrc = 0, ch[5], bm, ord[5], nord, Q[5];
 		int nkb = 0, found, tries, nz;
+		mma_check_deadline();
 		B = top[t];
 		isp_init(s, &B, &I);
 		while (1 << nkb < s->M * s->N)
@@ -2258,6 +2305,7 @@ search_block(const struct shape *s, const struct model *m, struct bld *b)
 		/* the skew: each k lane bit xors one row or column slot bit in */
 		memset(ch, 0, sizeof ch);
 		for (;;) {
+			mma_check_deadline();
 			memset(B.sk, 0, sizeof B.sk);
 			nz = 0;
 			for (i = 0; i < nkl; i++) {
@@ -2807,27 +2855,51 @@ mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
 	char fname[48], file[64], base[16];
 	double worst, per;
 
-	double single = 0;
+	volatile double single = 0;
+	volatile int single_done = 0;
 
 	snprintf(base, sizeof base, "m16n8k%d", k16 ? 16 : 8);
-	if (tm * tn * tk > 1) {
-		/* the HMMAs one at a time, each the best alone */
-		shape_build(&S, k16, f32, 1, 1, 1);
-		search(&S, m);
-		single = INFINITY;
-		for (f = 0; f < F_N; f++)
-			for (ta = 0; ta < T_N; ta++)
-				for (tb = 0; tb < T_N; tb++)
-					if (best[f][ta][tb] && best[f][ta][tb]->cost < single)
-						single = best[f][ta][tb]->cost;
+	/* The search is cut by a wall-clock deadline rather than left to run
+	 * for tens of seconds.  seconds 0 asks for the full, unbounded hunt. */
+	mma_stopped = 0;
+	mma_deadline_set = mma_budget_s > 0;
+	if (mma_deadline_set) {
+		clock_gettime(CLOCK_MONOTONIC, &mma_deadline_end);
+		mma_deadline_end.tv_sec += (time_t)mma_budget_s;
+		mma_deadline_end.tv_nsec +=
+		    (long)((mma_budget_s - (double)(time_t)mma_budget_s) * 1e9);
+		if (mma_deadline_end.tv_nsec >= 1000000000L) {
+			mma_deadline_end.tv_sec++;
+			mma_deadline_end.tv_nsec -= 1000000000L;
+		}
 	}
-	shape_build(&S, k16, f32, tm, tn, tk);
-	txt_shape = &S;
-	if (!avail(m, C_SG_SHUF) && !(isfinite(price(m, C_LOAD_SHARED)) &&
-	    isfinite(price(m, C_STORE_SHARED))))
-		fail("mma: %s has neither subgroup shuffles (sg_shuffle) nor "
-		    "shared memory to move the fragments with", sym_str(m->name));
-	search(&S, m);
+	if (setjmp(mma_deadline_jmp) == 0) {
+		if (tm * tn * tk > 1) {
+			/* the HMMAs one at a time, each the best alone */
+			shape_build(&S, k16, f32, 1, 1, 1);
+			search(&S, m);
+			single_done = 1;
+			single = INFINITY;
+			for (f = 0; f < F_N; f++)
+				for (ta = 0; ta < T_N; ta++)
+					for (tb = 0; tb < T_N; tb++)
+						if (best[f][ta][tb] &&
+						    best[f][ta][tb]->cost < single)
+							single = best[f][ta][tb]->cost;
+		}
+		shape_build(&S, k16, f32, tm, tn, tk);
+		txt_shape = &S;
+		if (!avail(m, C_SG_SHUF) && !(isfinite(price(m, C_LOAD_SHARED)) &&
+		    isfinite(price(m, C_STORE_SHARED))))
+			fail("mma: %s has neither subgroup shuffles (sg_shuffle) nor "
+			    "shared memory to move the fragments with", sym_str(m->name));
+		search(&S, m);
+	}
+	mma_deadline_set = 0;
+	/* Cut during the first (single-HMMA) search of a tile: report the
+	 * single HMMA we actually searched, not a tile we never got to. */
+	if (mma_stopped && tm * tn * tk > 1 && !single_done)
+		tm = tn = tk = 1;
 	for (f = 0; f < F_N; f++)
 		for (ta = 0; ta < T_N; ta++)
 			for (tb = 0; tb < T_N; tb++)
@@ -2852,8 +2924,17 @@ mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
 	per = tm * tn * tk;
 	printf("mma %s: D = A B + C on a warp's fragments as PTX's "
 	    "mma.sync.aligned.%s.row.col lays them out, f16 A and B, %s C and "
-	    "D, 32 lanes, under %s (%ld dataflows tried)\n", S.name, base,
-	    f32 ? "f32" : "f16", sym_str(m->name), tried);
+	    "D, 32 lanes, under %s (", S.name, base, f32 ? "f32" : "f16",
+	    sym_str(m->name));
+	if (mma_stopped)
+		printf("search budget exhausted after %g s", mma_budget_s);
+	else
+		printf("%ld dataflows tried", tried);
+	printf(")\n");
+	if (mma_stopped)
+		printf("  the search was cut by its %g s budget: showing the best "
+		    "dataflow found so far, not a proved absence of a cheaper one"
+		    "\n", mma_budget_s);
 	if (per > 1)
 		printf("  a tile of %d x %d x %d HMMAs (%s): %s; the costs are the "
 		    "tile's, each HMMA's a %gth of them\n", tm, tn, tk, base,
@@ -2865,7 +2946,10 @@ mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
 	rep_str("shape", S.name);
 	rep_str("accumulator", f32 ? "f32" : "f16");
 	rep_str("model", sym_str(m->name));
-	rep_int("tried", tried);
+	if (mma_stopped)
+		rep_str("search", "budget exhausted");
+	else
+		rep_int("tried", tried);
 	printf("  each of D's %d elements is a sum of %d products of f16 and its "
 	    "C\n", S.M * S.N, nterm);
 	rep_list("dataflows");
@@ -3022,13 +3106,26 @@ mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
 	rep_str("glsl", sb_str(&g));
 	deliver_file(file, "text/plain", sb_str(&g), g.n, nofile);
 	/* what measuring the wide shared accesses could change */
-	if (!(avail(m, C_LDS_X2) && avail(m, C_LDS_X4) && avail(m, C_STS_X2) &&
+	if (!mma_stopped &&
+	    !(avail(m, C_LDS_X2) && avail(m, C_LDS_X4) && avail(m, C_STS_X2) &&
 	    avail(m, C_STS_X4)) && isfinite(price(m, C_LOAD_SHARED))) {
 		double chosen = p->cost, wb = INFINITY;
 		struct mplan *w = NULL;
-		whatif_vec = 1;
-		search(&S, m);
+		/* This is a second, full search.  Run it under the same absolute
+		 * deadline as the first; if that budget runs out, skip the
+		 * speculation rather than hold the caller for another 6 s. */
+		mma_deadline_set = mma_budget_s > 0;
+		if (setjmp(mma_deadline_jmp) == 0) {
+			whatif_vec = 1;
+			search(&S, m);
+		}
 		whatif_vec = 0;
+		mma_deadline_set = 0;
+		if (mma_stopped) {
+			printf("  the optional what-if comparison was cut by the "
+			    "search budget; the chosen dataflow above is unaffected\n");
+			goto done;
+		}
 		for (f = 0; f < F_N; f++)
 			for (ta = 0; ta < T_N; ta++)
 				for (tb = 0; tb < T_N; tb++)
@@ -3047,6 +3144,7 @@ mma_run(int k16, int f32, int tm, int tn, int tk, const struct model *m,
 			rep_num("whatif_wide_cost", wb);
 		}
 	}
+done:
 	free(why.p);
 	free(t.p);
 	free(g.p);
@@ -3070,6 +3168,7 @@ mma_command(struct P *p)
 		cmdp_seek(p, at);
 		return 0;
 	}
+	mma_budget_s = MMA_BUDGET_S;	/* per-command default */
 	while (!cmdp_eos(p)) {
 		if (cmdp_kw(p, "m16n8k16"))
 			k16 = 1;
@@ -3085,6 +3184,14 @@ mma_command(struct P *p)
 			val = 1;
 		else if (cmdp_kw(p, "nofile"))
 			nofile = 1;
+		else if (cmdp_kw(p, "seconds") || cmdp_kw(p, "budget")) {
+			double s = cmdp_number(p, NULL);
+			if (!isfinite(s) ||
+			    !(s == 0 || (s >= 0.5 && s <= MMA_BUDGET_MAX)))
+				fail("mma: seconds N, 0 or %g to %g", 0.5,
+				    MMA_BUDGET_MAX);
+			mma_budget_s = s;
+		}
 		else if (cmdp_kw(p, "chain")) {
 			if (!cmdp_int(p, &v) || v < 1 || v > MAXTILE)
 				fail("mma: chain N, 1 to %d HMMAs each one's D the next "
@@ -3123,7 +3230,8 @@ mma_command(struct P *p)
 		} else {
 			cmdp_fail_here(p);
 			fail("mma [m16n8k16 | m16n8k8] [f32 | f16] [chain N | tile TM TN "
-			    "TK] [model M] [all] [validate] [nofile] [seed N]");
+			    "TK] [model M] [all] [validate] [nofile] [seed N] "
+			    "[seconds N]");
 		}
 	}
 	notes_flush();
