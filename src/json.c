@@ -483,25 +483,73 @@ jv_parse(const char *s, char *err, size_t errn, size_t *pos)
 
 /* ---- writer ---- */
 
+/*
+ * The length of a well-formed UTF-8 character at p (within n bytes), or 0
+ * if the bytes there are not valid UTF-8.  Reject overlong forms, encoded
+ * surrogates and code points past U+10FFFF: a JSON string must be UTF-8,
+ * so any other byte is escaped on output rather than copied verbatim.
+ */
+static size_t
+utf8len(const unsigned char *p, size_t n)
+{
+	unsigned c = p[0];
+
+	if (c < 0x80)
+		return 1;
+	if (c >= 0xc2 && c <= 0xdf)
+		return n >= 2 && (p[1] & 0xc0) == 0x80 ? 2 : 0;
+	if (c >= 0xe0 && c <= 0xef) {
+		if (n < 3 || (p[1] & 0xc0) != 0x80 || (p[2] & 0xc0) != 0x80)
+			return 0;
+		if (c == 0xe0 && p[1] < 0xa0)   /* overlong */
+			return 0;
+		if (c == 0xed && p[1] >= 0xa0)  /* a surrogate */
+			return 0;
+		return 3;
+	}
+	if (c >= 0xf0 && c <= 0xf4) {
+		if (n < 4 || (p[1] & 0xc0) != 0x80 ||
+		    (p[2] & 0xc0) != 0x80 || (p[3] & 0xc0) != 0x80)
+			return 0;
+		if (c == 0xf0 && p[1] < 0x90)   /* overlong */
+			return 0;
+		if (c == 0xf4 && p[1] >= 0x90)  /* past U+10FFFF */
+			return 0;
+		return 4;
+	}
+	return 0;
+}
+
 void
 json_quoten(struct sbuf *b, const char *s, size_t n)
 {
-	size_t i;
+	size_t i, j, k;
 
 	sb_putc(b, '"');
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; ) {
 		unsigned char c = (unsigned char)s[i];
 		switch (c) {
-		case '"': sb_puts(b, "\\\""); break;
-		case '\\': sb_puts(b, "\\\\"); break;
-		case '\n': sb_puts(b, "\\n"); break;
-		case '\r': sb_puts(b, "\\r"); break;
-		case '\t': sb_puts(b, "\\t"); break;
+		case '"': sb_puts(b, "\\\""); i++; break;
+		case '\\': sb_puts(b, "\\\\"); i++; break;
+		case '\n': sb_puts(b, "\\n"); i++; break;
+		case '\r': sb_puts(b, "\\r"); i++; break;
+		case '\t': sb_puts(b, "\\t"); i++; break;
 		default:
-			if (c < 0x20 || c == 0x7f)
+			if (c < 0x20 || c == 0x7f) {
 				sb_printf(b, "\\u%04x", c);
-			else
-				sb_putc(b, c);
+				i++;
+			} else if (c >= 0x80 &&
+			    (k = utf8len((const unsigned char *)s + i,
+			    n - i)) == 0) {
+				/* not UTF-8: emit the byte as U+00XX */
+				sb_printf(b, "\\u%04x", c);
+				i++;
+			} else {
+				k = c < 0x80 ? 1 : k;
+				for (j = 0; j < k; j++)
+					sb_putc(b, s[i + j]);
+				i += k;
+			}
 		}
 	}
 	sb_putc(b, '"');

@@ -520,8 +520,9 @@ static const struct jcmd cmds[] = {
 	{"qr", "qr", 1, 0, "the quadratic residues mod n", {NUR("n", " %s",
 	    "n")}},
 	{"primroot", "primroot", 1, 0, "the smallest primitive root mod n, or "
-	    "whether a is one", {NUO("a", " %s", "a candidate (with modulus)"),
-	    NUO("n", " %s", "n (alone)"), RINGO(" in %s", "the ring"), RMOD}},
+	    "whether a is one", {NUO("n", " %s", "n (alone)"),
+	    NUO("a", " %s", "a candidate (with modulus)"),
+	    RINGO(" in %s", "the ring"), RMOD}},
 	{"dlog", "dlog", 1, 0, "the discrete logarithm", {TX("a", " %s",
 	    "the value"), TXO("base", " base %s", "the base (default a "
 	    "primitive root)"), RING(" in %s", "the ring"), RMOD}},
@@ -762,13 +763,13 @@ static const struct jcmd cmds[] = {
 	    "instruction-set features", {{NULL, 0, 0, NULL, NULL, NULL}}},
 	/* x86-64 (x86*.c, cfx86.c): cost models, mca, intrinsics */
 	{"x86_models", "x86 models", 1, 0, "the x86 µarch cost models (skl "
-	    "skx glc rpl zen4 x86v2 x86v3 x86v4)", {{NULL, 0, 0, NULL, NULL,
+	    "skx glc rpl zen2 zen4 x86v2 x86v3 x86v4)", {{NULL, 0, 0, NULL, NULL,
 	    NULL}}},
 	{"x86_model", "model", 1, 0, "one x86 µarch: features, ports, and per "
 	    "instruction class latency, reciprocal throughput, uops and ports "
 	    "at xmm/ymm/zmm (with where each number comes from)",
-	    {TX("name", " %s", "skl skx glc rpl zen4 x86v2 x86v3 x86v4, or an "
-	    "alias: skylake, znver4 ...")}},
+	    {TX("name", " %s", "skl skx glc rpl zen2 zen4 x86v2 x86v3 x86v4, or "
+	    "an alias: skylake, znver4 ...")}},
 	{"mca", "mca", 1, 0, "a cycle-level throughput estimate of a "
 	    "function's x86 code (critical path, port pressure, front end; no "
 	    "caches or mispredictions)", {F("f", " %s", "the function"),
@@ -1190,6 +1191,8 @@ struct req {
 	char err[600];
 	const char *ecode;
 	int nfunc;		/* function objects defined so far (it, that) */
+	int exprfn;		/* commands needing two functions (equiv, fit,
+				 * error): define a bare expression string first */
 };
 
 static int
@@ -1464,17 +1467,107 @@ render_params(struct req *r, struct sbuf *b, const struct jv *ps)
 	return 1;
 }
 
+/* a string the ucas grammar reads directly as a function: a name, or a
+ * typed application such as u32(x) (whose casts carry types we must keep) */
+static int
+fn_ref_ok(const char *s)
+{
+	const char *p, *q;
+
+	if (is_ident(s))
+		return 1;
+	for (p = s; *p == ' ' || *p == '\t'; p++)
+		;
+	if (isalpha((unsigned char)*p) || *p == '_') {
+		for (q = p; isalnum((unsigned char)*q) || *q == '_'; q++)
+			;
+		while (*q == ' ' || *q == '\t')
+			q++;
+		if (*q == '(')
+			return 1;
+	}
+	return 0;
+}
+
+/*
+ * equiv/fit/error take two functions, and a bare expression string is not
+ * something the ucas grammar reads as a function.  Define it first with its
+ * parameters inferred from its free variables ("ff = (x*y)^5"), as the parser
+ * does for an anonymous function.  Names and typed applications are passed
+ * through unchanged.
+ */
+static int
+render_expr_func(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s = v->s;
+	char nm[24];
+
+	if (!text_ok(r, what, s))
+		return 0;
+	if (fn_ref_ok(s))
+		return sb_puts(b, s), 1;
+	snprintf(nm, sizeof nm, "_eq%d", r->nfunc++ & 1);
+	sb_printf(&r->pre, "%s = %s\n", nm, s);
+	return sb_puts(b, nm), 1;
+}
+
+/*
+ * Does S have the form "name(params) = body" (a function definition written
+ * inline)?  Spliced into "mca <s> on X" the grammar reads the '(' as a product
+ * and the '=' as '==', inventing a comparison; such a string must be defined
+ * first and only its name passed to the command.  A comparison "f(...) == e"
+ * is not a definition (the two '=' characters rule it out).
+ */
+static int
+def_str_name(const char *s, char *nm, size_t nn)
+{
+	const char *p = s, *name, *end, *q;
+	int par = 0;
+
+	while (*p == ' ' || *p == '\t') p++;
+	name = p;
+	if (!(isalpha((unsigned char)*p) || *p == '_'))
+		return 0;
+	while (isalnum((unsigned char)*p) || *p == '_') p++;
+	end = p;
+	while (*p == ' ' || *p == '\t') p++;
+	if (*p != '(' || (size_t)(end - name) >= nn)
+		return 0;
+	for (q = p; *q; q++) {
+		if (*q == '(') par++;
+		else if (*q == ')' && --par == 0) { q++; break; }
+	}
+	if (par != 0) return 0;
+	while (*q == ' ' || *q == '\t') q++;
+	if (*q != '=' || q[1] == '=')
+		return 0;
+	memcpy(nm, name, (size_t)(end - name));
+	nm[end - name] = 0;
+	return 1;
+}
+
 /* a function argument; an object is defined first (as it, that, ...) */
 static int
 render_func(struct req *r, struct sbuf *b, const struct jv *v,
     const char *what)
 {
 	static const char *const names[] = {"it", "that", "it3", "it4"};
-	const struct jv *body, *ps;
+	const struct jv *body, *ps, *w;
 	const char *nm;
+	char inm[64];
+	int k;
 
-	if (v->t == J_STR)
-		return text_ok(r, what, v->s) && (sb_puts(b, v->s), 1);
+	if (v->t == J_STR) {
+		if (!text_ok(r, what, v->s))
+			return 0;
+		if (def_str_name(v->s, inm, sizeof inm)) {
+			sb_printf(&r->pre, "%s\n", v->s);
+			return sb_puts(b, inm), 1;
+		}
+		return r->exprfn ? render_expr_func(r, b, v, what) :
+		    sb_puts(b, v->s), 1;
+	}
 	if (v->t != J_OBJ || (body = jv_get(v, "body")) == NULL) {
 		if (v->t == J_OBJ && (jv_get(v, "op") || jv_get(v, "var") ||
 		    jv_get(v, "num") || jv_get(v, "expr")))
@@ -1493,8 +1586,43 @@ render_func(struct req *r, struct sbuf *b, const struct jv *v,
 	sb_puts(&r->pre, " = ");
 	if (!render_expr(r, &r->pre, body, what, 1))
 		return 0;
+	if ((w = jv_get(v, "where")) != NULL) {
+		if (w->t != J_ARR)
+			return bad(r, "bad_request", "%s.where: an array of strings",
+			    what);
+		for (k = 0; k < w->n; k++) {
+			if (w->v[k]->t != J_STR || !text_ok(r, what, w->v[k]->s))
+				return bad(r, "bad_request", "%s.where[%d]: a string",
+				    what, k);
+			sb_printf(&r->pre, "%s%s", k ? ", " : " where ", w->v[k]->s);
+		}
+	}
 	sb_putc(&r->pre, '\n');
 	sb_puts(b, nm);
+	return 1;
+}
+
+/*
+ * P_EXPRS is a comma-separated list of expressions (the ODE and its initial
+ * values for laplace_solve/zsolve).  A caller may pass one string with ';'
+ * between them; ';' is the global statement separator in ucas, so everything
+ * after the first one would be a separate statement and silently dropped.
+ * Write the list's own separator instead, leaving quoted text alone.
+ */
+static int
+render_exprs_str(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	const char *s;
+	int quote = 0;
+
+	if (!text_ok(r, what, v->s))
+		return 0;
+	for (s = v->s; *s; s++) {
+		if (*s == '"' && (s == v->s || s[-1] != '\\'))
+			quote = !quote;
+		sb_putc(b, !quote && *s == ';' ? ',' : *s);
+	}
 	return 1;
 }
 
@@ -1507,7 +1635,8 @@ render_list(struct req *r, struct sbuf *b, const struct jv *v,
 
 	if (v->t != J_ARR) {
 		if (p->type == P_EXPRS)
-			return render_expr(r, b, v, p->name, 1);
+			return v->t == J_STR ? render_exprs_str(r, b, v, p->name) :
+			    render_expr(r, b, v, p->name, 1);
 		if (v->t == J_STR && is_ident(v->s))
 			return sb_puts(b, v->s), 1;
 		return bad(r, "bad_request", "%s: an array", p->name);
@@ -2315,7 +2444,8 @@ static const char schema_defs[] =
 "that) and then named\", \"oneOf\": [{\"type\": \"string\"}, {\"type\": "
 "\"object\", \"required\": [\"body\"], \"properties\": {\"body\": "
 "{\"$ref\": \"#/$defs/expression\"}, \"params\": {\"$ref\": "
-"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}}, "
+"\"#/$defs/params\"}, \"name\": {\"$ref\": \"#/$defs/name\"}, "
+"\"where\": {\"type\": \"array\", \"items\": {\"type\": \"string\"}}}, "
 "\"additionalProperties\": false}, {\"$ref\": \"#/$defs/expression\"}]}}";
 
 static const char schema_response[] =
@@ -2509,6 +2639,38 @@ cmd_limit(struct req *r)
 	return 1;
 }
 
+/*
+ * Render a JSON integer bound exactly.  The double in jv.num rounds
+ * INT64_MAX up to 2^63, so casting it to long long wraps to INT64_MIN and
+ * corrupts the bound before spirv_assume() ever sees it.  The parser keeps
+ * the original token text in jv.s, so parse that instead; reject anything
+ * that is not an exact, in-range integer rather than silently wrapping.
+ */
+static int
+render_int64(struct req *r, struct sbuf *b, const struct jv *v,
+    const char *what)
+{
+	char *end;
+	long long q;
+
+	if (v->s) {
+		errno = 0;
+		q = strtoll(v->s, &end, 10);
+		if (errno == 0 && *end == '\0') {
+			sb_printf(b, "%lld", q);
+			return 1;
+		}
+	}
+	/* a token in floating form (1e3) or a value built in code: accept an
+	 * integral double that is exactly representable as an int64 */
+	if (!isfinite(v->num) || v->num != floor(v->num) ||
+	    v->num < -9223372036854775808.0 || v->num >= 9223372036854775808.0)
+		return bad(r, "bad_request", "%s: an integer in [INT64_MIN, "
+		    "INT64_MAX]", what);
+	sb_printf(b, "%lld", (long long)v->num);
+	return 1;
+}
+
 /* spirv_simplify given C (lang "c", or C by its content): c optimize */
 static int spirv_is_c;
 
@@ -2537,8 +2699,12 @@ cmd_spirv(struct req *r, const char **code)
 				    rg->v[0]->t != J_NUM || rg->v[1]->t != J_NUM)
 					return bad(r, "bad_request", "ranges: {\"name\": "
 					    "[lo, hi]} with integers");
-				sb_printf(&r->stmt, " assume %s %lld %lld", v->k[k],
-				    (long long)rg->v[0]->num, (long long)rg->v[1]->num);
+				sb_printf(&r->stmt, " assume %s ", v->k[k]);
+				if (!render_int64(r, &r->stmt, rg->v[0], "ranges lo"))
+					return 0;
+				sb_puts(&r->stmt, " ");
+				if (!render_int64(r, &r->stmt, rg->v[1], "ranges hi"))
+					return 0;
 			}
 		if ((v = jv_get(r->args, "nofile")) != NULL && v->t == J_TRUE)
 			sb_puts(&r->stmt, " nofile");
@@ -2564,8 +2730,12 @@ cmd_spirv(struct req *r, const char **code)
 			    rg->v[0]->t != J_NUM || rg->v[1]->t != J_NUM)
 				return bad(r, "bad_request", "ranges: {\"name\": [lo, "
 				    "hi]} with integers");
-			sb_printf(&r->stmt, " assume %s %lld %lld", v->k[k],
-			    (long long)rg->v[0]->num, (long long)rg->v[1]->num);
+			sb_printf(&r->stmt, " assume %s ", v->k[k]);
+			if (!render_int64(r, &r->stmt, rg->v[0], "ranges lo"))
+				return 0;
+			sb_puts(&r->stmt, " ");
+			if (!render_int64(r, &r->stmt, rg->v[1], "ranges hi"))
+				return 0;
 		}
 	if ((v = jv_get(r->args, "float_only")) != NULL && v->t == J_TRUE)
 		sb_puts(&r->stmt, " float");
@@ -2818,6 +2988,8 @@ handle(const struct jv *rq)
 		    "them)", cmd);
 		return error_response(id, cmd, "unknown_command", m);
 	}
+	r.exprfn = !strcmp(cmd, "equiv") || !strcmp(cmd, "fit") ||
+	    !strcmp(cmd, "error");
 	a = jv_get(rq, "args");
 	if (a && a->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "\"args\" is an "
@@ -2833,6 +3005,15 @@ handle(const struct jv *rq)
 		    !strcmp(v->s, "both") ? REP_FILES_WRITE | REP_FILES_BASE64 :
 		    !strcmp(v->s, "none") ? 0 : REP_FILES_WRITE;
 	defaults = (v = jv_get(a, "defaults")) != NULL && v->t == J_TRUE;
+	if (r.exprfn) {
+		/* Defining a bare expression infers its free variables exactly
+		 * as the CLI does; in JSON mode that guess is an ambiguity, so
+		 * take the default for these calls unless the client set one. */
+		const struct jv *fv = jv_get(a, "f"), *gv = jv_get(a, "g");
+		if ((fv && fv->t == J_STR && !fn_ref_ok(fv->s)) ||
+		    (gv && gv->t == J_STR && !fn_ref_ok(gv->s)))
+			defaults = 1;
+	}
 	if ((v = jv_get(a, "assume")) != NULL && v->t != J_OBJ)
 		return error_response(id, cmd, "bad_request", "args.assume is an "
 		    "object {key: reading}");
@@ -2971,6 +3152,15 @@ handle(const struct jv *rq)
 	text = cap_end();
 	text = rep_text_cap(text);
 	rep_text_fill(text);
+	/*
+	 * English "forget everything" drops nlp.c's preferences on its own,
+	 * but leaves definitions, JSON assumptions and the model/basis
+	 * registries behind.  Treat it as a full reset, answered first and
+	 * restarted afterwards just like cmd:reset.
+	 */
+	if (!strcmp(cmd, "english") && text &&
+	    strstr(text, "forgot every assumption"))
+		reset_wanted = 1;
 	pieces = rep_collect();
 	if (!strcmp(cmd, "schema"))
 		;
@@ -3145,6 +3335,21 @@ self_exec(void)
 	_exit(1);
 }
 
+/*
+ * Drop the whole session and rebuild a fresh one: user functions (including
+ * the auto-named it / that / _), both assumption stores, the active cost
+ * model and custom bases/models all live in registries with no in-process
+ * clear, so restarting with the same argv (the prelude rebuilds the
+ * defaults) is the only complete reset.  cmd:reset reaches this through
+ * reset_wanted in json_serve(); this entry point is for other frontends'
+ * reset paths, such as a fresh MCP initialize handshake.
+ */
+void
+json_reset_all(void)
+{
+	self_exec();
+}
+
 static int chained;
 
 /*
@@ -3181,78 +3386,261 @@ chain_start(void)
 	chained = 1;
 }
 
+/* Write all n bytes, or fail. */
+static int
+wr_all(int fd, const void *p, size_t n)
+{
+	const char *b = p;
+	while (n) {
+		ssize_t k = write(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
+/*
+ * Read exactly n bytes before an absolute CLOCK_MONOTONIC deadline.  poll()
+ * before every read: a worker that writes the length header and then stalls
+ * mid-body must not hold the parent past timeout_s.  0: all bytes read,
+ * -1: EOF/error (a corrupt reply), -2: the deadline passed (a timeout).
+ */
+static int
+rd_all_until(int fd, void *p, size_t n, const struct timespec *end)
+{
+	char *b = p;
+
+	while (n) {
+		struct timespec now;
+		struct pollfd pf;
+		double left;
+		ssize_t k;
+		int ms, pr;
+
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		left = (double)(end->tv_sec - now.tv_sec) +
+		    (double)(end->tv_nsec - now.tv_nsec) / 1e9;
+		if (left <= 0)
+			return -2;
+		ms = left > 2147483.0 ? 2147483647 : (int)(left * 1000) + 1;
+		pf.fd = fd;
+		pf.events = POLLIN;
+		pf.revents = 0;
+		pr = poll(&pf, 1, ms);
+		if (pr < 0) {
+			if (errno == EINTR)
+				continue;
+			return -1;
+		}
+		if (pr == 0)
+			return -2;
+		k = read(fd, b, n);
+		if (k < 0 && errno == EINTR)
+			continue;
+		if (k <= 0)
+			return -1;
+		b += k; n -= (size_t)k;
+	}
+	return 0;
+}
+
 /* 1: this process is the child that ran the request (the new server) */
 static int
 run_with_timeout(const struct jv *rq, double secs)
 {
-	int sp[2], st;
+	int sp[2], ap[2], st = 0;
 	pid_t pid;
 	struct pollfd pf;
-	struct timespec t0, t1;
+	struct timespec t0, t1, end;
 	char c;
 	struct jv *resp;
 	double left;
+	uint64_t rlen;
 
 	chain_start();
 	if (pipe(sp) != 0)
 		return -1;
+	/* The child becomes the next server as soon as it has handed us its
+	 * reply.  Without this acknowledgement it can write the *next*
+	 * request's reply before we have replayed this one, swapping ids. */
+	if (pipe(ap) != 0) {
+		close(sp[0]);
+		close(sp[1]);
+		return -1;
+	}
 	fflush(NULL);
 	pid = fork();
 	if (pid < 0) {
 		close(sp[0]);
 		close(sp[1]);
+		close(ap[0]);
+		close(ap[1]);
 		return -1;
 	}
 	if (pid == 0) {
+		/* Capture the reply in memory: the child must never write to
+		 * the shared stdout, or a late/partial write can desynchronise
+		 * the reply stream when the parent hits the deadline. */
+		char *rbuf = NULL; size_t rn = 0;
+		FILE *mem = open_memstream(&rbuf, &rn);
+		FILE *saved = jout;
 		close(sp[0]);
+		close(ap[1]);		/* we read the ack from ap[0] */
+		if (mem)
+			jout = mem;
 		resp = handle(rq);
 		respond(resp);
 		jv_free(resp);
-		(void)!write(sp[1], "k", 1);
+		fflush(NULL);
+		if (mem) {
+			fclose(mem);
+			jout = saved;
+		}
+		rlen = mem ? (uint64_t)rn : 0;
+		if (wr_all(sp[1], &rlen, sizeof rlen) == 0 &&
+		    (!mem || wr_all(sp[1], rbuf, rn) == 0))
+			(void)!wr_all(sp[1], "k", 1);
+		free(rbuf);
 		close(sp[1]);
+		/* Do not carry on as the server until the parent has replayed
+		 * this reply to stdout: otherwise the next request's reply can
+		 * overtake this one and the two get the wrong ids. */
+		{
+			char ack;
+			while (read(ap[0], &ack, 1) < 0 && errno == EINTR)
+				;
+		}
+		close(ap[0]);
 		if (reset_wanted && !oneshot)
 			self_exec();
 		return 1;
 	}
 	close(sp[1]);
+	close(ap[0]);		/* we write the ack to ap[1] */
 	clock_gettime(CLOCK_MONOTONIC, &t0);
+	/* Absolute deadline, shared by the poll loop and every reply read:
+	 * the header and body below must not extend the caller's timeout_s. */
+	end = t0;
+	end.tv_sec += (time_t)secs;
+	end.tv_nsec += (long)((secs - (double)(time_t)secs) * 1e9);
+	if (end.tv_nsec >= 1000000000L) {
+		end.tv_sec++;
+		end.tv_nsec -= 1000000000L;
+	}
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &t1);
 		left = secs - (t1.tv_sec - t0.tv_sec) -
 		    (t1.tv_nsec - t0.tv_nsec) / 1e9;
-		if (left <= 0) {
-			kill(pid, SIGKILL);
-			waitpid(pid, NULL, 0);
-			close(sp[0]);
-			{
-				char m[120];
-				snprintf(m, sizeof m, "timed out after %g s; the state "
-				    "is unchanged", secs);
-				resp = error_response(jv_get(rq, "id"),
-				    jv_gets(rq, "cmd"), "timeout", m);
-			}
-			respond(resp);
-			jv_free(resp);
-			return 0;
-		}
+		if (left <= 0)
+			goto timed_out;
 		pf.fd = sp[0];
 		pf.events = POLLIN;
 		if (poll(&pf, 1, (int)(left * 1000) + 1) <= 0)
 			continue;
-		if (read(sp[0], &c, 1) == 1)
-			_exit(0);   /* the child is the server now */
-		/* closed without the byte: it died */
-		waitpid(pid, &st, 0);
-		close(sp[0]);
 		{
+			/* reply from the child: [u64 length][bytes] then 'k'.
+			 * Only the parent writes to stdout: no partial or late
+			 * child writes can desynchronise the reply stream.
+			 *
+			 * Probe for one byte first.  A clean EOF here means the
+			 * worker died before writing any reply, which is an
+			 * evaluation crash (decoded below), not a corrupt reply.
+			 * A partial header/body, on the other hand, is a reply
+			 * that went wrong and must take the "corrupt" path. */
+			unsigned char first;
+			ssize_t g = read(sp[0], &first, 1);
+			if (g < 0 && errno == EINTR)
+				continue;
+			if (g == 1) {
+				char *rbuf = NULL;
+				int hr, br;
+				/* first byte of the u64 length, in memory order */
+				*(unsigned char *)&rlen = first;
+				hr = rd_all_until(sp[0], (char *)&rlen + 1,
+				    sizeof rlen - 1, &end);
+				if (hr == -2)
+					goto timed_out;
+				if (hr != 0 || rlen > (1ULL << 30) ||
+				    (rlen && (rbuf = malloc((size_t)rlen)) == NULL))
+					goto corrupt;
+				if (rlen) {
+					br = rd_all_until(sp[0], rbuf,
+					    (size_t)rlen, &end);
+					if (br == -2) {
+						free(rbuf);
+						goto timed_out;
+					}
+					if (br != 0) {
+						free(rbuf);
+						goto corrupt;
+					}
+					fwrite(rbuf, 1, (size_t)rlen, jout);
+					fflush(jout);
+					free(rbuf);
+				}
+				/* 'k' marker: the body is complete, so this byte is
+				 * immediate; still bound it by the same deadline. */
+				(void)rd_all_until(sp[0], &c, 1, &end);
+				/* Replay done: only now may the child become the server. */
+				(void)!wr_all(ap[1], "k", 1);
+				close(ap[1]);
+				_exit(0);   /* the child is the server now */
+			}
+			/* no byte: the worker died before replying, fall through */
+		}
+		/* closed without the byte: it died.  If waitpid fails there is
+		 * no status to decode: st is unwritten, so reporting a signal
+		 * number from it would be fabricated. */
+		{
+			pid_t w = waitpid(pid, &st, 0);
+			close(sp[0]);
+			close(ap[1]);
 			char m[120];
-			snprintf(m, sizeof m, "the evaluation crashed (%s %d); the "
-			    "state is unchanged", WIFSIGNALED(st) ? "signal" :
-			    "status", WIFSIGNALED(st) ? WTERMSIG(st) :
-			    WEXITSTATUS(st));
+			if (w > 0 && WIFSIGNALED(st))
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(signal %d); the state is unchanged",
+				    WTERMSIG(st));
+			else if (w > 0)
+				snprintf(m, sizeof m, "the evaluation crashed "
+				    "(status %d); the state is unchanged",
+				    WEXITSTATUS(st));
+			else
+				snprintf(m, sizeof m, "the evaluation crashed; "
+				    "the state is unchanged");
 			resp = error_response(jv_get(rq, "id"), jv_gets(rq, "cmd"),
 			    "internal", m);
 		}
+		respond(resp);
+		jv_free(resp);
+		return 0;
+	timed_out:
+		/* The worker passed timeout_s (either the poll loop or a reply
+		 * read): report the same honest timeout as a deadline expiry. */
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
+		close(sp[0]);
+		close(ap[1]);
+		{
+			char m[120];
+			snprintf(m, sizeof m, "timed out after %g s; the state "
+			    "is unchanged", secs);
+			resp = error_response(jv_get(rq, "id"),
+			    jv_gets(rq, "cmd"), "timeout", m);
+		}
+		respond(resp);
+		jv_free(resp);
+		return 0;
+	corrupt:
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
+		close(sp[0]);
+		close(ap[1]);
+		resp = error_response(jv_get(rq, "id"),
+		    jv_gets(rq, "cmd"), "internal",
+		    "worker reply was corrupt");
 		respond(resp);
 		jv_free(resp);
 		return 0;
@@ -3270,9 +3658,27 @@ json_serve(const struct jv *rq)
 
 	a = jv_get(rq, "args");
 	t = jv_get(a, "timeout_s");
-	if (t && t->t == J_NUM && t->num > 0) {
+	if (t) {
+		if (t->t != J_NUM || !(t->num > 0) || t->num > 86400) {
+			resp = error_response(jv_get(rq, "id"),
+			    jv_gets(rq, "cmd"), "bad_request",
+			    "timeout_s must be a number in (0, 86400]");
+			respond(resp);
+			jv_free(resp);
+			return;
+		}
 		if (run_with_timeout(rq, t->num) >= 0)
 			return;
+		/* A pipe/fork failure made it impossible to put a wall-clock
+		 * bound on this request.  Running it inline would silently
+		 * ignore caller's timeout_s, so say so instead. */
+		resp = error_response(jv_get(rq, "id"),
+		    jv_gets(rq, "cmd"), "internal",
+		    "cannot start a timeout worker (pipe or fork failed); "
+		    "the request was not run");
+		respond(resp);
+		jv_free(resp);
+		return;
 	}
 	resp = handle(rq);
 	respond(resp);
