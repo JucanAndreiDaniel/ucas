@@ -262,7 +262,7 @@ mcp-accept: ${PROG}
 STRESSDIR=	${.CURDIR}/tests/stress
 STRESSFIND=	find ${STRESSDIR}/areas -mindepth 3 -maxdepth 3 \( -name '*.ucas' -o -name '*.jsonl' \)
 STRESSENV=	UCAS_NO_TIMES=1 UCAS_SPIRV_CROSS=none
-STRESSLIST=	/tmp/ucas-stress-list.$$
+STRESSLIST=	/var/tmp/ucas-stress-list.$$$$
 
 stress-test: ${PROG}
 	@${STRESSFIND} | sort > ${STRESSLIST}; \

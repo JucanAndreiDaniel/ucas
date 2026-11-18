@@ -251,7 +251,8 @@ enum {
 #define IS_ASTC(op) ((op) >= O_ASTC_FIRST && (op) <= O_ASTC_LAST)
 #define IS_INST(op) ((op) >= O_BFE && (op) <= O_ASTC_LAST)
 /* built from all three operands by mk_op (the generic rebuilders) */
-#define IS_OP3(op) (IS_DOT(op) || IS_SG(op) || IS_INST(op))
+#define IS_OP3(op) (IS_DOT(op) || IS_SG(op) || IS_INST(op) || \
+	(op) == O_FMA || (op) == O_SEL)
 #define OF_COMM 1
 #define OF_INT 2      /* integer operands only */
 #define OF_REALFN 4   /* operand promoted to real */
@@ -276,6 +277,9 @@ extern const struct opinfo opinfo[O_NOPS];
 		      * in it: part of a value per lane */
 #define NF_LANEREAD 16 /* reads a parameter's value in another lane, which
 			* has no exact value here (sg_lane_copy) */
+#define NF_DECIMAL 64 /* constant came from a decimal literal (as written);
+			 * set only on the literal node, not on constants
+			 * folded from rational expressions such as 1/3 */
 #define NF_LANES 32  /* reads a `lanes` parameter in another lane: a free
 		      * word there, which only SAT gives a value (sg.c) */
 #define NF_INH (NF_VAR | NF_SG | NF_LANE | NF_LANEREAD | NF_LANES)
@@ -395,7 +399,8 @@ extern int nfuncs;
 #define MAXGATE 24
 struct gate {
 	uint32_t name;
-	uint8_t arity, tt, cost, symm; /* symm bit (i*3+j): args i,j interchangeable */
+	uint8_t arity, tt, symm; /* symm bit (i*3+j): args i,j interchangeable */
+	int cost;               /* declared gate cost; int so 256/65536 work */
 	uint8_t lut;    /* "= lut": any function of its inputs, the table per use
 			 * (vpternlog, LOP3) */
 	nid body;
