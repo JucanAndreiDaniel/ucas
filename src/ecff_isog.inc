@@ -288,7 +288,8 @@ cmd_ecdivpoly(void)
 {
 	struct px *f, psi;
 	nn nv;
-	int n, i, counts[600], top, nr;
+	int n, i, top, nr;
+	int *counts;
 	static char buf[100000];
 	u64 roots[64 * FW];
 
@@ -327,13 +328,22 @@ cmd_ecdivpoly(void)
 		px_copy(CF, &sq, &psi);
 		if (g.d > 0)
 			px_divmod(CF, &sq, NULL, &psi, &g);
-		top = px_ddf(CF, &sq, counts, 599);
+		counts = xcalloc((size_t)(sq.d + 2), sizeof(int));
+		top = px_ddf(CF, &sq, counts, sq.d);
 		{
 			size_t o = 0;
-			for (i = 1; i <= 599 && i <= (top > 0 ? top : 599); i++)
+			/* buf still holds the psi_n text from px_print() above; never
+			 * fall back to it when there is nothing to tabulate. */
+			buf[0] = '\0';
+			for (i = 1; i <= top; i++)
 				if (counts[i])
 					o += (size_t)snprintf(buf + o, sizeof buf - o, "%s%d of "
 					    "degree %d", o ? ", " : "", counts[i], i);
+			if (!o)
+				/* psi has a constant squarefree part (psi is inseparable,
+				 * e.g. when p divides n): nothing was tabulated */
+				snprintf(buf, sizeof buf,
+				    "none (squarefree part is constant)");
 			printf("  irreducible factors: %s\n", buf);
 		}
 		px_free(&g);
@@ -344,7 +354,7 @@ cmd_ecdivpoly(void)
 		/* every root x gives points (x, +-y) of order n over F_p or F_p^2 */
 		int full = psi.d > 0 && nr == psi.d;
 		int L = 1;
-		for (i = 1; i < 600; i++)
+		for (i = 1; i <= top; i++)
 			if (counts[i]) {
 				int g = L, b = i, t;
 				while (b) {
@@ -354,10 +364,11 @@ cmd_ecdivpoly(void)
 				}
 				L = L / g * i;
 			}
-		printf("  torsion field: the x-coordinates of E[%d] lie in F_p^%d (the "
-		    "lcm of the factor degrees)%s\n", n, L, full ?
+		printf("  torsion field: the x-coordinates of E[%d] lie in F_p^%d "
+		    "(the lcm of the factor degrees)%s\n", n, L, full ?
 		    " (all rational)" : "");
 	}
+	free(counts);
 	for (i = 0; i <= n + 2; i++)
 		px_free(&f[i]);
 	free(f);

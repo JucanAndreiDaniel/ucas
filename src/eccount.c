@@ -427,6 +427,15 @@ ec_match_bsgs(const struct ecp_curve *E, const nn *c, const nn *M, nn *N)
 		return 0;
 	nn_sub(&k1, &hi, &c0);
 	nn_divmod(&k1, NULL, &k1, M);
+	/* M can be larger than the whole Hasse interval (small p): the CRT
+	 * residue then already names one N, and no point test is needed --
+	 * M P is O for every P, so the baby-step giant-step below would only
+	 * spin on Q.inf and fail. */
+	if (nn_is_zero(&k1)) {
+		*N = c0;
+		ecsch_last.bsgs = 0;   /* no giant-step match was needed */
+		return 1;
+	}
 	nn_zero(&kk0);
 	for (it = 0; it < 20; it++) {
 		struct ecp_pt P, Q, T;

@@ -21,6 +21,31 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+/* A hard wall-clock budget keeps Buchberger and the polynomial Smith form
+ * from running for minutes on inputs whose intermediate expressions grow
+ * without bound (e.g. 4-variable quadratic systems in lex order, or dense
+ * 6x6 polynomial matrices).  Both become a documented LIMIT instead of a
+ * hang.  The default is a few seconds; UCAS_GB_LIMIT / UCAS_PM_LIMIT (in
+ * seconds) let the tests and callers raise or lower it. */
+static double
+cpu_limit(const char *env, double def)
+{
+	const char *s = getenv(env);
+	double v;
+
+	if (!s || !*s)
+		return def;
+	v = atof(s);
+	return v > 0 ? v : def;
+}
+
+static double
+cpu_seconds(clock_t t0)
+{
+	return (double)(clock() - t0) / CLOCKS_PER_SEC;
+}
 
 /* ---- coefficients ---- */
 
@@ -667,11 +692,19 @@ mpl_divide(const struct mring *R, const struct mpl *f, const struct mpl *g,
 {
 	struct mpl p, r, t;
 	uint32_t m[MPL_MAXV];
+	struct zq *linv;
 	int i, v;
 
 	memset(&p, 0, sizeof p);
 	memset(&r, 0, sizeof r);
 	memset(&t, 0, sizeof t);
+	/* The leading coefficient of a divisor never changes during this
+	 * division; inverting it once per divisor avoids a gcd (or a modular
+	 * inverse) on every single reduction step. */
+	linv = xcalloc((size_t)(k > 0 ? k : 1), sizeof *linv);
+	for (i = 0; i < k; i++)
+		if (g[i].n)
+			linv[i] = c_inv(R, coef(&g[i], 0));
 	copy_r(R, &p, f);
 	if (q)
 		for (i = 0; i < k; i++)
@@ -682,7 +715,7 @@ mpl_divide(const struct mring *R, const struct mpl *f, const struct mpl *g,
 			if (g[i].n && mono_divides(R->nv, EXP(&g[i], R, 0), lp))
 				break;
 		if (i < k) {
-			struct zq c = c_mul(R, coef(&p, 0), c_inv(R, coef(&g[i], 0)));
+			struct zq c = c_mul(R, coef(&p, 0), linv[i]);
 			for (v = 0; v < R->nv; v++)
 				m[v] = lp[v] - EXP(&g[i], R, 0)[v];
 			if (q) {
@@ -706,6 +739,7 @@ mpl_divide(const struct mring *R, const struct mpl *f, const struct mpl *g,
 	}
 	mpl_free(&p);
 	mpl_free(&t);
+	free(linv);
 	if (rem)
 		move(rem, &r);
 	else
@@ -854,6 +888,8 @@ mpl_groebner(const struct mring *R, const struct mpl *f, int k,
 	int *pi = NULL, *pj = NULL, np = 0, pcap = 0;
 	uint8_t *pend = NULL;
 	int pendcap = 0;
+	clock_t t0 = clock();
+	double budget = cpu_limit("UCAS_GB_LIMIT", 5.0);
 
 	memset(&w, 0, sizeof w);
 	memset(gb, 0, sizeof *gb);
@@ -892,14 +928,26 @@ mpl_groebner(const struct mring *R, const struct mpl *f, int k,
 	while (np > 0) {
 		uint32_t L[MPL_MAXV], mi[MPL_MAXV], mj[MPL_MAXV];
 		int best = 0, a, b, kk, coprime = 1, v, chain = 0;
-		/* the normal strategy: the smallest lcm first */
+		if (cpu_seconds(t0) > budget)
+			fail("Groebner basis: the computation grows too large: "
+			    "not done");
+		/* the normal strategy: the smallest lcm first.  For lex we
+		 * compare total degree first ("sugar"): a purely lexicographic
+		 * comparison would happily pick a pair whose lcm is w^100
+		 * (lexicographically tiny but of enormous degree), which makes
+		 * the degrees -- and the S-polynomials -- grow without bound. */
 		for (kk = 1; kk < np; kk++) {
 			uint32_t l1[MPL_MAXV], l2[MPL_MAXV];
+			int d1 = 0, d2 = 0, v2;
 			lcm_mono(R->nv, l1, EXP(&w.g[pi[kk]], R, 0),
 			    EXP(&w.g[pj[kk]], R, 0));
 			lcm_mono(R->nv, l2, EXP(&w.g[pi[best]], R, 0),
 			    EXP(&w.g[pj[best]], R, 0));
-			if (mono_cmp(R, l1, l2) < 0)
+			for (v2 = 0; v2 < R->nv; v2++) {
+				d1 += l1[v2];
+				d2 += l2[v2];
+			}
+			if (d1 < d2 || (d1 == d2 && mono_cmp(R, l1, l2) < 0))
 				best = kk;
 		}
 		a = pi[best];
@@ -1213,6 +1261,8 @@ prow_sub(const struct mring *R, struct pmat *m, int i, int k,
 	struct mpl t;
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	memset(&t, 0, sizeof t);
 	for (j = 0; j < m->c; j++) {
 		mpl_mul(R, &t, q, PM(m, k, j));
@@ -1228,6 +1278,8 @@ pcol_sub(const struct mring *R, struct pmat *m, int i, int k,
 	struct mpl t;
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	memset(&t, 0, sizeof t);
 	for (j = 0; j < m->r; j++) {
 		mpl_mul(R, &t, PM(m, j, k), q);
@@ -1241,6 +1293,8 @@ prow_swap(struct pmat *m, int a, int b)
 {
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	for (j = 0; j < m->c && a != b; j++) {
 		struct mpl t = *PM(m, a, j);
 		*PM(m, a, j) = *PM(m, b, j);
@@ -1253,6 +1307,8 @@ pcol_swap(struct pmat *m, int a, int b)
 {
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	for (j = 0; j < m->r && a != b; j++) {
 		struct mpl t = *PM(m, j, a);
 		*PM(m, j, a) = *PM(m, j, b);
@@ -1265,6 +1321,8 @@ prow_scale(const struct mring *R, struct pmat *m, int i, struct zq c)
 {
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	for (j = 0; j < m->c; j++)
 		mpl_scale(R, PM(m, i, j), PM(m, i, j), c);
 }
@@ -1274,6 +1332,8 @@ pcol_scale(const struct mring *R, struct pmat *m, int i, struct zq c)
 {
 	int j;
 
+	if (!m->a)	/* transform matrix not requested */
+		return;
 	for (j = 0; j < m->r; j++)
 		mpl_scale(R, PM(m, j, i), PM(m, j, i), c);
 }
@@ -1282,19 +1342,29 @@ int
 pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
     struct pmat *U, struct pmat *V)
 {
-	struct pmat d, u, v, ui, vi, chk, chk2;
+	struct pmat d = {0}, u = {0}, v = {0}, ui = {0}, vi = {0};
+	struct pmat chk = {0}, chk2 = {0};
 	struct mpl q, rem, mq;
 	int k, i, j, n = a->r < a->c ? a->r : a->c, rank = 0;
+	int track = U != NULL || V != NULL;
+	clock_t t0 = clock();
+	double budget = cpu_limit("UCAS_PM_LIMIT", 5.0);
 
 	if (R->nv != 1)
 		fail("internal: matrices over F[x] need one variable");
 	pm_init(&d, a->r, a->c);
 	for (i = 0; i < a->r * a->c; i++)
 		copy_r(R, &d.a[i], &a->a[i]);
-	pm_identity(R, &u, a->r);
-	pm_identity(R, &ui, a->r);
-	pm_identity(R, &v, a->c);
-	pm_identity(R, &vi, a->c);
+	/* only build and maintain the transforms (and their inverses) when a
+	 * caller asks for them; the Smith form of xI-M can be computed without
+	 * them, which is the common case (module invariants / characteristic
+	 * polynomial) */
+	if (track) {
+		pm_identity(R, &u, a->r);
+		pm_identity(R, &ui, a->r);
+		pm_identity(R, &v, a->c);
+		pm_identity(R, &vi, a->c);
+	}
 	memset(&q, 0, sizeof q);
 	memset(&rem, 0, sizeof rem);
 	memset(&mq, 0, sizeof mq);
@@ -1302,6 +1372,9 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 		int pi = -1, pj = -1;
 		for (;;) {
 			int dirty = 0;
+			if (cpu_seconds(t0) > budget)
+				fail("pmsnf: the polynomial coefficients grow too "
+				    "large: not done");
 			pi = pj = -1;
 			for (i = k; i < d.r; i++)
 				for (j = k; j < d.c; j++)
@@ -1352,7 +1425,10 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 				for (j = k + 1; j < d.c && !dirty; j++) {
 					if (!PM(&d, i, j)->n)
 						continue;
-					mpl_divide(R, PM(&d, i, j), PM(&d, k, k), 1, &q,
+					/* only the remainder is needed to test divisibility;
+					 * asking for the quotient would build a polynomial
+					 * that is immediately discarded */
+					mpl_divide(R, PM(&d, i, j), PM(&d, k, k), 1, NULL,
 					    &rem);
 					if (rem.n) {
 						/* row k += row i */
@@ -1388,31 +1464,31 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 	mpl_free(&rem);
 	mpl_free(&mq);
 	/* the certificate: U A V = D, U Ui = I, V Vi = I */
-	memset(&chk, 0, sizeof chk);
-	memset(&chk2, 0, sizeof chk2);
-	pm_mul(R, &chk, &u, a);
-	pm_mul(R, &chk2, &chk, &v);
-	for (i = 0; i < d.r * d.c; i++)
-		if (!mpl_eq(R, &chk2.a[i], &d.a[i]))
-			fail("internal: Smith form over F[x]: U A V != D");
-	pm_mul(R, &chk, &u, &ui);
-	for (i = 0; i < chk.r; i++)
-		for (j = 0; j < chk.c; j++)
-			if (PM(&chk, i, j)->n != (i == j) || (i == j &&
-			    (mpl_deg(R, PM(&chk, i, j)) != 0 || !c_is_one(coef(PM(&chk,
-			    i, j), 0)))))
-				fail("internal: Smith form over F[x]: U not invertible");
-	pm_mul(R, &chk, &v, &vi);
-	for (i = 0; i < chk.r; i++)
-		for (j = 0; j < chk.c; j++)
-			if (PM(&chk, i, j)->n != (i == j) || (i == j &&
-			    (mpl_deg(R, PM(&chk, i, j)) != 0 || !c_is_one(coef(PM(&chk,
-			    i, j), 0)))))
-				fail("internal: Smith form over F[x]: V not invertible");
-	pm_free(&chk);
-	pm_free(&chk2);
-	pm_free(&ui);
-	pm_free(&vi);
+	if (track) {
+		pm_mul(R, &chk, &u, a);
+		pm_mul(R, &chk2, &chk, &v);
+		for (i = 0; i < d.r * d.c; i++)
+			if (!mpl_eq(R, &chk2.a[i], &d.a[i]))
+				fail("internal: Smith form over F[x]: U A V != D");
+		pm_mul(R, &chk, &u, &ui);
+		for (i = 0; i < chk.r; i++)
+			for (j = 0; j < chk.c; j++)
+				if (PM(&chk, i, j)->n != (i == j) || (i == j &&
+				    (mpl_deg(R, PM(&chk, i, j)) != 0 ||
+				    !c_is_one(coef(PM(&chk, i, j), 0)))))
+					fail("internal: Smith form over F[x]: U not invertible");
+		pm_mul(R, &chk, &v, &vi);
+		for (i = 0; i < chk.r; i++)
+			for (j = 0; j < chk.c; j++)
+				if (PM(&chk, i, j)->n != (i == j) || (i == j &&
+				    (mpl_deg(R, PM(&chk, i, j)) != 0 ||
+				    !c_is_one(coef(PM(&chk, i, j), 0)))))
+					fail("internal: Smith form over F[x]: V not invertible");
+		pm_free(&chk);
+		pm_free(&chk2);
+		pm_free(&ui);
+		pm_free(&vi);
+	}
 	if (D) {
 		if (D->a)
 			pm_free(D);
@@ -1434,6 +1510,120 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 	return rank;
 }
 
+/*
+ * Minimal polynomial of a rational matrix over Q, as monic coefficients
+ * c[0..deg] (c[deg] = 1): m^deg + c[deg-1] m^(deg-1) + ... + c[0] I = 0.
+ * Found by reducing the flattened powers I, m, m^2, ... against an
+ * incremental echelon basis; the first dependent power gives the relation.
+ * Returns deg (>= 1 for a nonempty matrix); by Cayley-Hamilton deg <= n.
+ */
+static int
+qm_minpoly(const struct qmat *m, struct zq *c)
+{
+	int n = m->r, L = n * n, k, i, j, deg = 0, nb = 0;
+	struct qmat *pw;
+	struct zq **bas, **cmb;
+	int *piv;
+
+	pw = xcalloc((size_t)n + 1, sizeof *pw);
+	for (k = 0; k <= n; k++)
+		qm_init(&pw[k], n, n);
+	for (i = 0; i < n; i++)
+		qm_set(&pw[0], i, i, zq_int(Z_ONE));
+	for (i = 0; i < n; i++)
+		for (j = 0; j < n; j++)
+			qm_set(&pw[1], i, j, qm_get(m, i, j));
+	for (k = 2; k <= n; k++)
+		qm_mul(&pw[k], &pw[k - 1], m);
+	bas = xcalloc((size_t)n + 1, sizeof *bas);
+	cmb = xcalloc((size_t)n + 1, sizeof *cmb);
+	piv = xcalloc((size_t)L + 1, sizeof *piv);
+	for (i = 0; i < L; i++)
+		piv[i] = -1;
+	for (k = 0; k <= n; k++) {
+		struct zq *t = xcalloc((size_t)L, sizeof *t);
+		struct zq *a = xcalloc((size_t)n + 1, sizeof *a);
+		int pc = -1;
+
+		for (j = 0; j <= n; j++)
+			a[j] = zq_int(Z_ZERO);
+		a[k] = zq_int(Z_ONE);
+		for (i = 0; i < n; i++)
+			for (j = 0; j < n; j++)
+				t[i * n + j] = qm_get(&pw[k], i, j);
+		for (i = 0; i < nb; i++) {
+			struct zq f = t[piv[i]];
+			if (zq_is_zero(f))
+				continue;
+			for (j = 0; j < L; j++)
+				t[j] = zq_sub(t[j], zq_mul(f, bas[i][j]));
+			for (j = 0; j <= n; j++)
+				a[j] = zq_sub(a[j], zq_mul(f, cmb[i][j]));
+		}
+		for (j = 0; j < L; j++)
+			if (!zq_is_zero(t[j])) {
+				pc = j;
+				break;
+			}
+		if (pc < 0) {	/* first dependence: m^k = -sum_{j<k} a[j] m^j */
+			for (j = 0; j < k; j++)
+				c[j] = a[j];
+			c[k] = zq_int(Z_ONE);
+			deg = k;
+			free(t);
+			free(a);
+			break;
+		}
+		{
+			struct zq inv = zq_inv(t[pc]);
+			for (j = 0; j < L; j++)
+				t[j] = zq_mul(t[j], inv);
+			for (j = 0; j <= n; j++)
+				a[j] = zq_mul(a[j], inv);
+		}
+		bas[nb] = t;
+		cmb[nb] = a;
+		piv[nb] = pc;
+		nb++;
+	}
+	for (k = 0; k <= n; k++)
+		qm_free(&pw[k]);
+	free(pw);
+	for (k = 0; k < nb; k++) {
+		free(bas[k]);
+		free(cmb[k]);
+	}
+	free(bas);
+	free(cmb);
+	free(piv);
+	return deg;
+}
+
+/* build the monic polynomial with coefficients c[0..deg] (c[deg] = 1) */
+static void
+mpl_from_coeffs(const struct mring *R, struct mpl *f, const struct zq *c,
+    int deg)
+{
+	struct mpl x, xp, term;
+	int i;
+
+	memset(f, 0, sizeof *f);
+	memset(&x, 0, sizeof x);
+	mpl_var(R, &x, 0);
+	memset(&xp, 0, sizeof xp);
+	mpl_const(R, &xp, zq_int(Z_ONE));
+	for (i = 0; i <= deg; i++) {
+		memset(&term, 0, sizeof term);
+		mpl_const(R, &term, c[i]);
+		mpl_mul(R, &term, &term, &xp);
+		mpl_add(R, f, f, &term);
+		mpl_free(&term);
+		mpl_mul(R, &xp, &xp, &x);
+	}
+	mpl_free(&xp);
+	mpl_free(&x);
+}
+
 int
 pm_charmodule(const struct mring *R, const struct qmat *m, struct mpl *inv,
     int max)
@@ -1443,6 +1633,24 @@ pm_charmodule(const struct mring *R, const struct qmat *m, struct mpl *inv,
 
 	if (m->r != m->c)
 		fail("the matrix is %dx%d, not square", m->r, m->c);
+	/* Over Q: if the minimal polynomial has full degree n the matrix is
+	 * cyclic, its single invariant factor is the minimal (= characteristic)
+	 * polynomial, and the full Smith form is unnecessary.  This is the
+	 * common case and avoids exponential coefficient growth for n >= 10. */
+	if (R->p == 0 && n > 0) {
+		struct zq c[65];
+		int d;
+
+		if (n + 1 > (int)(sizeof c / sizeof c[0]))
+			fail("the matrix is too large");
+		d = qm_minpoly(m, c);
+		if (d == n) {
+			if (cnt >= max)
+				fail("too many invariant factors");
+			mpl_from_coeffs(R, &inv[0], c, d);
+			return 1;
+		}
+	}
 	pm_init(&A, n, n);
 	for (i = 0; i < n; i++)
 		for (j = 0; j < n; j++) {

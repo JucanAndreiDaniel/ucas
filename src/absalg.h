@@ -568,12 +568,13 @@ int cg_hom_check(const struct cgrp *G, const struct cgrp *H, const uint32_t *f,
 /* ================================================================== */
 
 #define MPL_MAXV 16
+#define MPL_NAMELEN 64           /* max variable-name length (incl. NUL) */
 enum { MPL_LEX, MPL_GRLEX, MPL_GREVLEX };
 struct mring {
 	int nv;
 	int order;
 	u64 p;                       /* 0: Q, else a prime */
-	char name[MPL_MAXV][16];     /* variable names, x0 > x1 > ... */
+	char name[MPL_MAXV][MPL_NAMELEN];  /* variable names, x0 > x1 > ... */
 };
 /* terms in decreasing monomial order, SoA: exponents (n * nv), then the
  * coefficient as num/den (over F_p: num in [0, p), den = 1) */

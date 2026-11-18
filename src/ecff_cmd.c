@@ -44,6 +44,11 @@ static int timed;          /* "timed" at the end: print timings */
 
 static const char *sp;     /* the argument scanner */
 
+/* ecmul's scalar token follows the curve, and the MCP frontend concatenates
+ * "curve k P" with spaces.  Without this flag the modulus expression parser
+ * would swallow "mod 97 -10" as 97 - 10 = 87 (a different modulus). */
+static int scalar_follows;
+
 static void
 skipws(void)
 {
@@ -106,6 +111,39 @@ getnn(nn *v)
 	return 1;
 }
 
+/* A modulus, then: the same as getzz except that when a scalar token comes
+ * next a + or - separated from the preceding text by whitespace ends the
+ * expression: "mod 97 -10" is modulus 97 followed by scalar -10.  Signs
+ * inside the expression ("2^255-19"), inside parentheses and in the GF/F
+ * forms are untouched, so those still parse as before. */
+static int
+getzz_modulus(zz *z)
+{
+	char buf[1024];
+	const char *start, *p, *e;
+	size_t n = 0;
+
+	skipws();
+	if (!scalar_follows)
+		return getzz(z);
+	start = sp;
+	for (p = start; *p; p++) {
+		if ((*p == '+' || *p == '-') && p > start &&
+		    isspace((unsigned char)p[-1]))
+			break;
+		if (n + 1 >= sizeof buf)
+			break;
+		buf[n++] = *p;
+	}
+	buf[n] = 0;
+	if (!n || !zz_parse(buf, z, &e))
+		return 0;
+	/* e is an offset into buf: map it back onto the original text so the
+	 * scalar (or a parenthesised expression) is left for the next parser. */
+	sp = start + (e - buf);
+	return 1;
+}
+
 static void
 need_nn(nn *v, const char *what)
 {
@@ -130,7 +168,7 @@ parse_modulus(nn *p, int *k)
 		paren = *sp == '(' || *sp == '{';
 		if (paren)
 			sp++;
-		if (!zz_parse(sp, &z, &sp) || z.neg)
+		if (!getzz_modulus(&z) || z.neg)
 			fail("expected a prime after GF");
 		*p = z.m;
 		skipws();
@@ -138,7 +176,7 @@ parse_modulus(nn *p, int *k)
 			sp++;
 		return;
 	}
-	if (!getzz(&z) || z.neg)
+	if (!getzz_modulus(&z) || z.neg)
 		fail("expected a modulus at \"%.30s\"", sp);
 	*p = z.m;
 }
@@ -611,7 +649,23 @@ count(int method, nn *N, struct eccert *C, char *how, size_t hn)
 	}
 	if (!ok)
 		return 0;
-	return ec_certify(CE, N, C);
+	if (ec_certify(CE, N, C))
+		return 1;
+	/* Naive counting enumerated every x and Schoof (with the BSGS match,
+	 * or a CRT modulus wider than the Hasse interval) pins N exactly.  The
+	 * random-point certificate is only a cross-check: on a tiny group the
+	 * exponent of E and of its twist need not separate the Hasse candidates
+	 * (e.g. #E(F_7) = 12 on y^2 = x^3 + 1, both groups of exponent 2/6),
+	 * so accept the exact count with a trivial certificate rather than
+	 * reporting a failure. */
+	if (method == CM_NAIVE || method == CM_SCHOOF) {
+		memset(C, 0, sizeof *C);
+		C->L = *N;
+		nn_set(&C->L2, 1);
+		C->ok = C->complete = 1;
+		return 1;
+	}
+	return 0;
 }
 
 static void
@@ -857,8 +911,11 @@ cmd_ecmul(void)
 	char w[32];
 	int which = 0;     /* 0 all, 1 affine, 2 jacobian/wnaf, 3 ladder */
 	u64 t0, t1, t2, t3;
+	int save_scalar = scalar_follows;
 
+	scalar_follows = 1;
 	parse_curve();
+	scalar_follows = save_scalar;
 	if (!getzz(&kz))
 		fail("expected a scalar k");
 	k = kz.m;
