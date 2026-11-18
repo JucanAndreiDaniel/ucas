@@ -566,6 +566,95 @@ struct proof {
 	char text[160];
 };
 
+/* proof memo: the same value/candidate pair is often offered by more than
+ * one generator (and again in a later round).  Re-deciding it repeats the
+ * sample and, worse, a full SAT call.  Key on the semantic node ids, which
+ * are unique for a node table; the target matters because cost gating and
+ * float handling differ. */
+struct pmentry {
+	nid e, cand;
+	unsigned dom;
+	const struct cf_target *t;
+	int res;
+	struct proof pf;
+};
+static struct pmentry *pmem;
+static int pmn, pmcap;
+/* a proof also depends on the domain: cf_value_func puts v->where and the
+ * leaves' assumed/call-site ranges into the function passed to SAT.  Hash
+ * those into the key so equal nodes under different domains never collide. */
+static unsigned
+pmdom(const struct cf_value *v)
+{
+	unsigned h = 2166136261u;
+	int k;
+
+	h = (h ^ (unsigned)v->where) * 16777619u;
+	h = (h ^ (unsigned)v->nleaf) * 16777619u;
+	for (k = 0; k < v->nleaf; k++) {
+		if (!v->leaf[k].ranged)
+			continue;
+		h = (h ^ (unsigned)(k + 1)) * 16777619u;
+		h = (h ^ (unsigned)v->leaf[k].lo) * 16777619u;
+		h = (h ^ (unsigned)((uint64_t)v->leaf[k].lo >> 32)) * 16777619u;
+		h = (h ^ (unsigned)v->leaf[k].hi) * 16777619u;
+		h = (h ^ (unsigned)((uint64_t)v->leaf[k].hi >> 32)) * 16777619u;
+	}
+	return h;
+}
+static unsigned
+pmhash(nid e, nid cand, unsigned dom)
+{
+	return (e * 1000003u + cand * 9176u + dom) & 0xffffffu;
+}
+static struct pmentry *
+pmlookup(nid e, nid cand, unsigned dom)
+{
+	unsigned h = pmhash(e, cand, dom);
+	int i;
+
+	if (!pmcap)
+		return NULL;
+	for (i = 0; i < 4; i++) {
+		struct pmentry *p = &pmem[(h + i) & (pmcap - 1)];
+		if (p->e == e && p->cand == cand && p->dom == dom &&
+		    p->t == R.o->t)
+			return p->e ? p : NULL;
+	}
+	return NULL;
+}
+static void
+pmstore(nid e, nid cand, unsigned dom, int res, const struct proof *pf)
+{
+	unsigned h;
+	int i;
+
+	if (pmcap == 0 || pmn * 10 >= pmcap * 7) {
+		int oc = pmcap, j;
+		pmcap = pmcap ? pmcap * 2 : 1024;
+		pmem = xrealloc(pmem, (size_t)pmcap * sizeof *pmem);
+		memset(pmem + oc, 0, (size_t)(pmcap - oc) * sizeof *pmem);
+		for (j = 0; j < oc; j++) {
+			struct pmentry q = pmem[j];
+			if (!q.e) continue;
+			memset(&pmem[j], 0, sizeof pmem[j]);
+			h = pmhash(q.e, q.cand, q.dom);
+			while (pmem[(h++) & (pmcap - 1)].e)
+				;
+			pmem[(h - 1) & (pmcap - 1)] = q;
+		}
+	}
+	h = pmhash(e, cand, dom);
+	while (pmem[h & (pmcap - 1)].e)
+		h++;
+	{
+		struct pmentry *p = &pmem[h & (pmcap - 1)];
+		p->e = e; p->cand = cand; p->dom = dom; p->t = R.o->t;
+		p->res = res; p->pf = *pf;
+		pmn++;
+	}
+}
+
 /* cand refines the value: on every input where it is defined */
 static int
 prove(const struct cf_value *v, nid cand, struct proof *pf)
@@ -573,11 +662,21 @@ prove(const struct cf_value *v, nid cand, struct proof *pf)
 	struct func f;
 	struct eqproof pr;
 	struct sbuf w = {0}, how = {0};
-	int bad;
+	struct pmentry *m;
+	unsigned dom = pmdom(v);
+	int bad, res;
 
 	cf_value_func(v, &f);
 	pf->kind = CF_PROOF_NONE;
 	pf->text[0] = 0;
+	/* A repeated (value, candidate, domain) triple is decided once:
+	 * generators and later rounds offer the same semantic nodes, and
+	 * re-running SAT for them is pure waste.  "Out of time" is never
+	 * cached. */
+	if ((m = pmlookup(v->e, cand, dom)) != 0) {
+		*pf = m->pf;
+		return m->res;
+	}
 	/* An empty domain (e.g. an always-out-of-range float-to-int cast)
 	 * refines vacuously: proving a rewrite there says nothing about what
 	 * the original does on any real input, and the emitted C would not
@@ -585,15 +684,17 @@ prove(const struct cf_value *v, nid cand, struct proof *pf)
 	if (f.where && const_is(f.where, 0)) {
 		snprintf(pf->text, sizeof pf->text,
 		    "undefined everywhere (empty domain)");
-		return 0;
+		res = 0;
+		goto done;
 	}
 	if (!quick_ok(&f, cand)) {
 		snprintf(pf->text, sizeof pf->text, "differs on a sample");
-		return 0;
+		res = 0;
+		goto done;
 	}
 	if (out_of_time()) {
 		snprintf(pf->text, sizeof pf->text, "out of time");
-		return 0;
+		return 0;	/* time dependent: deliberately not cached */
 	}
 	R.nproofs++;
 	bad = equiv_decide(&f, v->e, cand, &w, &pr);
@@ -612,8 +713,12 @@ prove(const struct cf_value *v, nid cand, struct proof *pf)
 	free(w.p);
 	free(how.p);
 	if (!bad && pf->kind == CF_PROOF_NONE)
-		return 2;	/* sampled: no difference, no proof */
-	return !bad && pf->kind != CF_PROOF_NONE;
+		res = 2;	/* sampled: no difference, no proof */
+	else
+		res = !bad && pf->kind != CF_PROOF_NONE;
+done:
+	pmstore(v->e, cand, dom, res, pf);
+	return res;
 }
 
 /* ---- rewriting helpers ---- */

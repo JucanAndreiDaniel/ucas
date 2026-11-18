@@ -95,10 +95,11 @@ eng_begin(int k)
 	}
 	if (!cf_engine_on(k))
 		return 0;
-	/* only find's search is cut by CPU time (its share of the total);
-	 * the synthesis is budgeted in sketches, gates in search nodes, the
-	 * analyses are bounded by the value's size: deterministic */
-	if (k == CF_ENG_FIND && eng_used[k] > eng_share(k) && eng_share(k) < 1e9)
+	/* find's enumerative levels and synth's CEGIS are the two engines
+	 * whose work is not bounded by the value's size: cut both by their
+	 * share of the CPU budget so eng_left()/budget keeps working. */
+	if ((k == CF_ENG_FIND || k == CF_ENG_SYNTH) &&
+	    eng_used[k] > eng_share(k) && eng_share(k) < 1e9)
 		return 0;
 	eng_cur = k;
 	eng_t0 = clock();
@@ -2676,6 +2677,24 @@ eng_gates(struct bx *B)
  * find: the enumerative search, the peephole drops, per-case fits
  * ================================================================ */
 
+static const char *x86_model_for(const struct cf_target *t);
+
+/* the model is chosen by the target's name: look it up once, not on every
+ * value (find is called once per expression and per round) */
+static struct model *cached_model;
+static const char *cached_model_key;
+static struct model *
+find_model_for(const struct cf_target *t)
+{
+	const char *key = x86_model_for(t);
+
+	if (cached_model && cached_model_key && !strcmp(cached_model_key, key))
+		return cached_model;
+	cached_model = model_find(sym_cstr(key));
+	cached_model_key = key;
+	return cached_model;
+}
+
 static const char *
 x86_model_for(const struct cf_target *t)
 {
@@ -2700,6 +2719,92 @@ x86_model_for(const struct cf_target *t)
 	return "x86v3";
 }
 
+/* find is deterministic for a given value and target and is by far the
+ * most expensive engine (enumerative levels, lperm/NPN forms).  The driver
+ * asks for the same value more than once (several rounds, several callers),
+ * so memoise the forms it returned instead of re-enumerating them. */
+struct fmentry {
+	nid e;
+	unsigned dom;
+	const struct cf_target *t;
+	int n;
+	nid out[8];
+	char why[8][96];
+};
+static struct fmentry *fmem;
+static int fmn, fmcap;
+/* find samples the value over its domain, so the leaves' ranges and the
+ * domain condition are part of the key, not just the expression node. */
+static unsigned
+fmdom(const struct cf_value *v)
+{
+	unsigned h = 2166136261u;
+	int k;
+
+	h = (h ^ (unsigned)v->where) * 16777619u;
+	h = (h ^ (unsigned)v->nleaf) * 16777619u;
+	for (k = 0; k < v->nleaf; k++) {
+		if (!v->leaf[k].ranged)
+			continue;
+		h = (h ^ (unsigned)(k + 1)) * 16777619u;
+		h = (h ^ (unsigned)v->leaf[k].lo) * 16777619u;
+		h = (h ^ (unsigned)((uint64_t)v->leaf[k].lo >> 32)) * 16777619u;
+		h = (h ^ (unsigned)v->leaf[k].hi) * 16777619u;
+		h = (h ^ (unsigned)((uint64_t)v->leaf[k].hi >> 32)) * 16777619u;
+	}
+	return h;
+}
+static unsigned
+fmhash(nid e, unsigned dom)
+{
+	return (e * 2654435761u + dom) & 0x3ffff;
+}
+static struct fmentry *
+fmlookup(nid e, unsigned dom, const struct cf_target *t)
+{
+	unsigned h = fmhash(e, dom);
+	int i;
+
+	if (!fmcap) return NULL;
+	for (i = 0; i < 4; i++) {
+		struct fmentry *p = &fmem[(h + i) & (fmcap - 1)];
+		if (p->e == e && p->dom == dom && p->t == t)
+			return p->e ? p : NULL;
+	}
+	return NULL;
+}
+static void
+fmstore(nid e, unsigned dom, const struct cf_target *t, int n,
+    const nid *out, const char (*why)[96])
+{
+	unsigned h;
+	int i;
+
+	if (!fmcap || fmn * 10 >= fmcap * 7) {
+		int oc = fmcap, j;
+		fmcap = fmcap ? fmcap * 2 : 512;
+		fmem = xrealloc(fmem, (size_t)fmcap * sizeof *fmem);
+		memset(fmem + oc, 0, (size_t)(fmcap - oc) * sizeof *fmem);
+		for (j = 0; j < oc; j++) {
+			struct fmentry q = fmem[j];
+			if (!q.e) continue;
+			memset(&fmem[j], 0, sizeof fmem[j]);
+			h = fmhash(q.e, q.dom);
+			while (fmem[h & (fmcap - 1)].e) h++;
+			fmem[h & (fmcap - 1)] = q;
+		}
+	}
+	h = fmhash(e, dom);
+	while (fmem[h & (fmcap - 1)].e) h++;
+	{
+		struct fmentry *p = &fmem[h & (fmcap - 1)];
+		p->e = e; p->dom = dom; p->t = t; p->n = n;
+		memcpy(p->out, out, (size_t)n * sizeof *out);
+		memcpy(p->why, why, (size_t)n * sizeof *why);
+		fmn++;
+	}
+}
+
 static void
 eng_find(struct bx *B)
 {
@@ -2710,6 +2815,9 @@ eng_find(struct bx *B)
 	struct func f = B->f;
 	double secs = eng_left();
 	uint64_t sl = node_slots(B->e);
+	struct fmentry *fm;
+	unsigned dom;
+	clock_t fc0;
 
 	if (secs <= 0 || !TY_SIZED(N.ty[B->e]) || N.ty[B->e] == TY_BOOL)
 		return;
@@ -2726,17 +2834,31 @@ eng_find(struct bx *B)
 			return;
 	if (__builtin_popcountll(sl) > 3 || B->nr > 40)
 		return;
-	if ((m = model_find(sym_cstr(x86_model_for(B->t)))) != NULL)
-		model_set_active(m);
-	else if (!old)
-		return;
-	/* find's enumerative levels are cut at the caller's remaining budget
-	 * share (eng_left()).  The old 60 s floor made a small `c optimize
-	 * budget 2` run for many seconds regardless of the requested budget:
-	 * pass the real share through, with only a small minimum so a tiny
-	 * share still lets find do useful work. */
-	n = find_cands(&f, 4, secs > 0.5 ? secs : 0.5, out, why, 8);
-	model_set_active(old);
+	dom = fmdom(B->v);
+	if ((fm = fmlookup(B->e, dom, B->t)) != NULL) {
+		/* the same value was searched already: reuse its forms */
+		n = fm->n;
+		memcpy(out, fm->out, (size_t)n * sizeof *out);
+		memcpy(why, fm->why, (size_t)n * sizeof *why);
+	} else {
+		if ((m = find_model_for(B->t)) != NULL)
+			model_set_active(m);
+		else if (!old)
+			return;
+		/* find's enumerative levels are cut at the caller's remaining
+		 * budget share (eng_left()).  The old 60 s floor made a small
+		 * `c optimize budget 2` run for many seconds regardless of the
+		 * requested budget: pass the real share through, with only a
+		 * small minimum so a tiny share still lets find do useful work. */
+		fc0 = clock();
+		n = find_cands(&f, 4, secs > 0.5 ? secs : 0.5, out, why, 8);
+		model_set_active(old);
+		/* only memoise a complete search: a run cut short by its time
+		 * share may have missed forms a later call would enumerate */
+		if ((double)(clock() - fc0) / CLOCKS_PER_SEC <
+		    (secs > 0.5 ? secs : 0.5) * 0.9)
+			fmstore(B->e, dom, B->t, n, out, (const char (*)[96])why);
+	}
 	if (cf_run_opts() && cf_run_opts()->trace)
 		printf("  trace:   find: %d forms\n", n);
 	for (k = 0; k < n; k++) {
@@ -2821,7 +2943,7 @@ eng_synth(struct bx *B)
 	double cur, mv, bound;
 	struct cf_synth_res R;
 	const struct cf_opts *o = cf_run_opts();
-	long steps = o && o->synth_steps > 0 ? o->synth_steps : 1000;
+	long steps = o && o->synth_steps > 0 ? o->synth_steps : 200;
 	nid in16[16], out16[16], x, sem = 0;
 	ty_t u64 = TY(K_UINT, 64);
 	struct sbuf code = {0}, txt = {0}, beat = {0};
