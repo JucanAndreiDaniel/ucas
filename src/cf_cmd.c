@@ -17,6 +17,34 @@
 
 #include "cfront.h"
 
+/* C undefinedness / unspecified order that cf_lower.c could not express as
+ * a domain condition: disclosed here so that neither c lower nor c optimize
+ * silently picks one evaluation order. */
+extern char cf_requires[32][200];
+extern int cf_nrequires;
+
+static void
+print_requires(void)
+{
+	int k;
+
+	for (k = 0; k < cf_nrequires; k++)
+		printf("  requires: %s\n", cf_requires[k]);
+}
+
+static void
+report_requires(void)
+{
+	int k;
+
+	if (!cf_nrequires)
+		return;
+	rep_list("requires");
+	for (k = 0; k < cf_nrequires; k++)
+		rep_str(NULL, cf_requires[k]);
+	rep_end();
+}
+
 int cf_check_all(struct cf_unit *u, const char *orig, const char *opt,
     const struct cf_opts *o, struct sbuf *rep, int bench,
     struct cf_result *r);
@@ -130,9 +158,15 @@ cmd_lower(const char *src, const char *path, const struct cf_opts *o)
 	struct cf_unit u;
 	int k;
 
+	cf_nrequires = 0;
 	if (!load(&u, src, path, o->t))
 		return;
 	rep_begin("c_lower");
+	/* c lower produces the generic closed form; only c optimize uses the
+	 * assumed range to specialise.  Say so instead of silently ignoring it. */
+	if (o->nassume)
+		printf("  note: c lower ignores assume; use c optimize to "
+		    "specialise to the assumed range\n");
 	rep_list("functions");
 	for (k = 0; k < u.nfn; k++) {
 		uint32_t fn = u.fns[k];
@@ -150,7 +184,11 @@ cmd_lower(const char *src, const char *path, const struct cf_opts *o)
 				    ty_str(ct_to_ucas(v.leaf[j].cty)));
 			printf(") = %s\n", shared_str(v.e, 1500));
 			rep_expr("value", v.e);
-			if (v.where && !is_const(v.where)) {
+			/* A constant-false condition means the function is UB on
+			 * its whole domain (e.g. (int)1e30 or x/0).  It used to be
+			 * hidden by !is_const(), so report it explicitly - both in
+			 * the text and in the structured "where" field. */
+			if (v.where) {
 				printf("    defined where (no C UB): %s\n",
 				    shared_str(v.where, 600));
 				rep_expr("where", v.where);
@@ -166,6 +204,8 @@ cmd_lower(const char *src, const char *path, const struct cf_opts *o)
 		rep_end();
 	}
 	rep_end();
+	print_requires();
+	report_requires();
 	cf_unit_free(&u);
 }
 
@@ -181,6 +221,7 @@ cfront_run(const char *src, const char *path, const struct cf_opts *o)
 	struct cf_opts oo = *o;
 
 	memset(nkind, 0, sizeof nkind);
+	cf_nrequires = 0;
 
 	if (o->bench && !o->vectorize && !o->vecstub) {
 		/*
@@ -290,6 +331,7 @@ cfront_run(const char *src, const char *path, const struct cf_opts *o)
 	if (!load(&u, src, path, o->t))
 		return;
 	cf_optimize(&u, o, &r);
+	print_requires();
 	if (o->check || o->bench)
 		checked = cf_check_all(&u, src, r.out.p, o, &rep, o->bench, &r);
 	for (k = 0; k < r.nrw; k++)
@@ -361,6 +403,7 @@ cfront_run(const char *src, const char *path, const struct cf_opts *o)
 			printf("\n");
 		}
 	}
+	report_requires();
 	rep_int("rewrites", napplied);
 	rep_int("exhaustive", nex);
 	rep_int("sat", nsat);

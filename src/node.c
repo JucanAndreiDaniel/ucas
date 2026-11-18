@@ -317,7 +317,7 @@ int_norm(ty_t t, int64_t v)
 /* ---- the store ---- */
 
 static uint32_t
-nhash(int op, ty_t t, nid a, nid b, nid c, int64_t ki, double kr)
+nhash(int op, ty_t t, nid a, nid b, nid c, int64_t ki, double kr, int fl)
 {
 	uint64_t h = 1469598103934665603ULL, r;
 
@@ -329,6 +329,12 @@ nhash(int op, ty_t t, nid a, nid b, nid c, int64_t ki, double kr)
 	h = (h ^ c) * 1099511628211ULL;
 	h = (h ^ (uint64_t)ki) * 1099511628211ULL;
 	h = (h ^ r) * 1099511628211ULL;
+	/* A constant's flags carry provenance (NF_DECIMAL) that must not be
+	 * merged away: a decimal literal and a rational folding to the same
+	 * double are different nodes.  Only O_CONST needs this; every other
+	 * op derives its flags from its operands, so its fl is redundant. */
+	if (op == O_CONST)
+		h = (h ^ (uint64_t)fl) * 1099511628211ULL;
 	return (uint32_t)(h ^ (h >> 32));
 }
 
@@ -342,7 +348,7 @@ ht_rehash(void)
 	N.ht = xcalloc(N.htcap, sizeof *N.ht);
 	for (i = 1; i < N.n; i++) {
 		j = nhash(N.op[i], N.ty[i], N.a[i], N.b[i], N.c[i], N.ki[i],
-		    N.kr[i]) & (N.htcap - 1);
+		    N.kr[i], N.fl[i]) & (N.htcap - 1);
 		while (N.ht[j])
 			j = (j + 1) & (N.htcap - 1);
 		N.ht[j] = i;
@@ -357,11 +363,12 @@ intern(int op, ty_t t, nid a, nid b, nid c, int64_t ki, double kr, int fl)
 
 	if ((N.n + 1) * 2 > N.htcap)
 		ht_rehash();
-	j = nhash(op, t, a, b, c, ki, kr) & (N.htcap - 1);
+	j = nhash(op, t, a, b, c, ki, kr, fl) & (N.htcap - 1);
 	while ((n = N.ht[j]) != 0) {
 		if (N.op[n] == op && N.ty[n] == t && N.a[n] == a &&
 		    N.b[n] == b && N.c[n] == c && N.ki[n] == ki &&
-		    memcmp(&N.kr[n], &kr, sizeof kr) == 0)
+		    memcmp(&N.kr[n], &kr, sizeof kr) == 0 &&
+		    (op != O_CONST || N.fl[n] == fl))
 			return n;
 		j = (j + 1) & (N.htcap - 1);
 	}
@@ -455,6 +462,16 @@ nid
 mk_const_r(double v)
 {
 	return intern(O_CONST, TY_REAL, 0, 0, 0, 0, v, 0);
+}
+
+nid
+mk_const_r_decimal(double v)
+{
+	/* A real constant written as a decimal literal.  fl is part of the
+	 * intern key for O_CONST, so this stays a distinct node from the same
+	 * double folded from a rational (fl = 0) or cast from an integer; the
+	 * provenance lives on the literal node, not on a shared value. */
+	return intern(O_CONST, TY_REAL, 0, 0, 0, 0, v, NF_DECIMAL);
 }
 
 nid
@@ -573,6 +590,29 @@ node(int op, ty_t t, nid a, nid b, nid c)
 }
 
 /* ---- implicit conversions ---- */
+
+/*
+ * The bool result of a comparison against a machine-typed (uN/iN) operand
+ * implicitly carries that operand's width.  Recover it here so arithmetic
+ * that mixes such a bool with a folded literal wraps to the declared machine
+ * type instead of being computed as an unbounded literal.  Returns 0 when the
+ * node is not such a comparison.
+ */
+static ty_t
+cmp_machine_ty(nid b)
+{
+	ty_t t;
+
+	if (TYK(N.ty[b]) != K_BOOL || !(opinfo[N.op[b]].fl & OF_CMP))
+		return 0;
+	t = N.a[b] ? N.ty[N.a[b]] : 0;
+	if (TYK(t) == K_UINT || TYK(t) == K_SINT)
+		return t;
+	t = N.b[b] ? N.ty[N.b[b]] : 0;
+	if (TYK(t) == K_UINT || TYK(t) == K_SINT)
+		return t;
+	return 0;
+}
 
 static ty_t
 common(ty_t x, ty_t y, int *mix)
@@ -786,6 +826,16 @@ mk_bin(int op, nid a, nid b)
 	int mix = 0;
 	nid r, x;
 
+	/*
+	 * fma has three operands.  A generic rebuild that misses it in IS_OP3
+	 * (closed.c's tidy, fpfold's replace, egraph, ...) reaches this binary
+	 * constructor with only two of them; building a node with a NULL third
+	 * operand makes the printer recurse on node 0 until the stack overflows.
+	 * fma itself is always built by mk_fma/mk_op, so any arrival here is a
+	 * lost operand: fail cleanly instead of crafting a malformed node.
+	 */
+	if (op == O_FMA)
+		fail("internal: fma lost its third operand in a generic rebuild");
 	if (IS_DOT(op))
 		return mk_dot(op, a, b, 0);
 	if (IS_SG(op))
@@ -850,6 +900,10 @@ mk_bin(int op, nid a, nid b)
 	default:
 		if (op == O_DIV && is_const(a) && is_const(b) &&
 		    TYK(ta) == K_LIT && TYK(tb) == K_LIT && N.ki[b] != 0 &&
+		    /* INT_MIN % -1 traps; its quotient is not representable
+		     * anyway.  Leave the pair alone so the evaluator flags the
+		     * division as UB instead of promoting to real here. */
+		    !(N.ki[a] == INT64_MIN && N.ki[b] == -1) &&
 		    N.ki[a] % N.ki[b] != 0) {
 			ta = tb = TY_REAL;
 			a = conv(a, TY_REAL);
@@ -860,8 +914,13 @@ mk_bin(int op, nid a, nid b)
 			t = TY_REAL;
 		if (t == TY_BOOL && !(opinfo[op].fl & OF_CMP) &&
 		    op != O_AND && op != O_OR && op != O_XOR &&
-		    op != O_MIN && op != O_MAX)
-			t = TY_LIT;
+		    op != O_MIN && op != O_MAX) {
+			ty_t bt = cmp_machine_ty(a);
+
+			if (!bt)
+				bt = cmp_machine_ty(b);
+			t = bt ? bt : TY_LIT;
+		}
 		if (mix)
 			note("mixing %s and %s: computed as %s", ty_str(ta),
 			    ty_str(tb), ty_str(t));
@@ -1365,6 +1424,11 @@ mk_index(nid tab, nid i)
 
 static nid *smemo;
 static uint32_t smemon;
+/* The depth of the subtree rewrite below.  Inlining a call can expand an
+ * expression exponentially (f(n) = f(n-1)(f(n-1)(x))), so rebuilt trees can
+ * be arbitrarily deep even though each parsed expression was shallow. */
+#define NODE_DEPTH_LIMIT 12000
+static int rebuild_depth;
 /* sg_lower: subgroup operations are spelled out over their lanes, and
  * what has none is left as it is */
 static int sg_lowering;
@@ -1383,6 +1447,8 @@ rebuild(nid n, const nid *map, int nmap)
 		return n;
 	if (smemo[n])
 		return smemo[n];
+	if (++rebuild_depth > NODE_DEPTH_LIMIT)
+		fail("expression nesting too deep (limit %d)", NODE_DEPTH_LIMIT);
 	switch (N.op[n]) {
 	case O_CONST:
 	case O_UNDEF:
@@ -1478,6 +1544,7 @@ rebuild(nid n, const nid *map, int nmap)
 			r = mk_bin(N.op[n], rebuild(N.a[n], map, nmap),
 			    rebuild(N.b[n], map, nmap));
 	}
+	rebuild_depth--;
 	smemo[n] = r;
 	return r;
 }
@@ -1487,10 +1554,16 @@ subst(nid root, const nid *map, int nmap)
 {
 	nid *saved = smemo, r;
 	uint32_t savedn = smemon;
+	int savedd = rebuild_depth;
 
+	/* rebuild is only entered through subst (and recursively from it),
+	 * so a rewrite starts at depth zero; fail() longjmps past the restore
+	 * but the next subst resets it again. */
+	rebuild_depth = 0;
 	smemon = N.n;
 	smemo = xcalloc(smemon, sizeof *smemo);
 	r = rebuild(root, map, nmap);
+	rebuild_depth = savedd;
 	free(smemo);
 	smemo = saved;
 	smemon = savedn;
@@ -1680,11 +1753,20 @@ static void
 pr(struct sbuf *b, nid n, int minp, const struct pctx *pc, int hex)
 {
 	long fp, fq;
-	int p = prec(n, pc), op = N.op[n], c = pc->mode != PM_UCAS;
+	int p, op, c = pc->mode != PM_UCAS;
 	int bits = pc->mode == PM_CBITS;
 	uint32_t i;
 	const char *s;
 
+	/* node 0 is the null node, not something with an op/operands to print.
+	 * Recursing on it (a malformed arity-3 node with a NULL operand) used to
+	 * overflow the stack; print a visible placeholder instead. */
+	if (n == 0) {
+		sb_puts(b, "undefined");
+		return;
+	}
+	p = prec(n, pc);
+	op = N.op[n];
 	if ((s = sh_name(pc, n)) != NULL) {
 		sb_puts(b, s);
 		return;
@@ -1941,6 +2023,86 @@ pr(struct sbuf *b, nid n, int minp, const struct pctx *pc, int hex)
 	}
 	if (p < minp)
 		sb_putc(b, ')');
+}
+
+/* Bit-blasting a node tree (nodesat.c: blast/blast1) recurses once per node
+ * with a large stack frame: a left-deep chain of ~786 operators overflows an
+ * 8 MB stack.  Expressions built that deep parse fine (the parser's
+ * EXPR_DEPTH_LIMIT only counts nesting, not a flat chain), so callers that
+ * are about to enter the AIG builder check the tree first and get a clean
+ * error instead of a SIGSEGV.  The walk below is bounded by the limit, so it
+ * cannot itself overflow, and memoises depths as node_slots() does so a
+ * shared DAG is visited only once. */
+#define AIG_DEPTH_LIMIT 512
+static uint16_t *ddep;
+static uint8_t *ddone;
+static uint32_t dcap;
+
+static uint16_t
+aig_depth(nid n, int limit, int depth)
+{
+	uint32_t j;
+	uint16_t d = 1, x;
+
+	if (n == 0 || n >= dcap)
+		return 0;
+	/* Check on entry, before descending into any child: the walk itself
+	 * must be bounded by limit, not just report an over-deep tree on the
+	 * way back out.  Without this the recursion below runs to the full
+	 * height of a flat chain before the post-order check fires, which is
+	 * exactly the stack overflow this guard exists to prevent. */
+	if (depth > limit)
+		fail("expression nesting too deep (limit %d)", limit);
+	if (ddone[n])
+		return ddep[n];
+	switch (N.op[n]) {
+	case O_CONST:
+	case O_UNDEF:
+	case O_VAR:
+		break;
+	case O_TABLE:
+		for (j = 0; j < N.b[n]; j++) {
+			x = aig_depth(N.lst[N.a[n] + j], limit, depth + 1);
+			if (x + 1 > d)
+				d = x + 1;
+		}
+		break;
+	default:
+		x = aig_depth(N.a[n], limit, depth + 1);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.b[n], limit, depth + 1);
+		if (x + 1 > d)
+			d = x + 1;
+		x = aig_depth(N.c[n], limit, depth + 1);
+		if (x + 1 > d)
+			d = x + 1;
+		break;
+	}
+	/* Keep the height check too: a memoised shared DAG can exceed the
+	 * limit in subtree height even though no single recursion path did. */
+	if (d > limit)
+		fail("expression nesting too deep (limit %d)", limit);
+	ddep[n] = d;
+	ddone[n] = 1;
+	return d;
+}
+
+int
+node_aig_depth_check(nid root)
+{
+	uint32_t c;
+
+	if (root == 0 || root >= N.n)
+		return 0;
+	if (N.n > dcap) {
+		c = newcap(dcap, N.n + 1);
+		ddep = xrealloc(ddep, c * sizeof *ddep);
+		ddone = xrealloc(ddone, c);
+		memset(ddone + dcap, 0, c - dcap);
+		dcap = c;
+	}
+	return aig_depth(root, AIG_DEPTH_LIMIT, 0);
 }
 
 /* does the expression use a bitwise operator?  (bounded walk) */

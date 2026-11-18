@@ -9,6 +9,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+ * One identifier longer than this makes symbol interning cost grow with the
+ * square of its length (the name is hashed once per use).  Real names are
+ * short; refuse a huge one with a clear error rather than hang the reader.
+ */
+#define MAX_IDENT 4096
+
 static const char *const names[T_NTOK] = {
 	"end of input", "end of line", "number", "identifier", "(", ")", "[",
 	"]", "{", "}", ",", ":", "?", "=", "==", "!=", "<", "<=", ">", ">=",
@@ -111,16 +118,31 @@ lex(struct toks *t, const char *src)
 			continue;
 		}
 		if (t->n > 0 && t->kind[t->n - 1] == T_ID && t->len[t->n - 1] == 4 &&
-		    !strncmp(src + t->off[t->n - 1], "file", 4) && c != '\n' &&
-		    c != ';' && c != '#' && c != 0) {
-			/* "input 1 file a/b.png": the path is one word */
+		    !strncmp(src + t->off[t->n - 1], "file", 4) &&
+		    (isalnum(c) || c == '/' || c == '.' || c == '_' || c == '~')) {
+			/*
+			 * "input 1 file a/b.png": the path is one word.  Only
+			 * take a word that can start a path: an operator after
+			 * `file` (file(x), file = 3, file / 2) is ordinary
+			 * syntax and must keep its own token, and a lone
+			 * character is left to the normal scanner.
+			 */
 			for (n = 0; s[i + n] && !isspace(s[i + n]) && s[i + n] != ';';
 			    n++)
 				;
-			push(t, T_ID, i, (uint32_t)n, fl);
-			i += (uint32_t)n;
-			fl = 0;
-			continue;
+			if (n > 1) {
+				if (n > MAX_IDENT) {
+					push(t, T_EOF, i, 1, fl);
+					diag_toks = t;
+					diag_tok = t->n - 1;
+					fail("identifier too long (over %d bytes)",
+					    MAX_IDENT);
+				}
+				push(t, T_ID, i, (uint32_t)n, fl);
+				i += (uint32_t)n;
+				fl = 0;
+				continue;
+			}
 		}
 		if (c == '#' && t->n > 0 && t->kind[t->n - 1] != T_NL) {
 			/* a colour after a word, "input 1 #ff8800": a word */
@@ -168,9 +190,31 @@ lex(struct toks *t, const char *src)
 		if (isdigit(c) || (c == '.' && isdigit(s[i + 1]))) {
 			if (c == '0' && (s[i + 1] == 'x' || s[i + 1] == 'X' ||
 			    s[i + 1] == 'b' || s[i + 1] == 'B')) {
+				int bin = s[i + 1] == 'b' || s[i + 1] == 'B';
 				i += 2;
 				while (isxdigit(s[i]) || s[i] == '_')
 					i++;
+				if (bin) {
+					uint32_t j;
+					/*
+					 * strtoull(base 2) stops at the first
+					 * non-binary digit, so 0b102 would be
+					 * silently read as 0b10 = 2.  Reject the
+					 * bad digit at its own position instead.
+					 */
+					for (j = st + 2; j < i; j++)
+						if (s[j] != '0' && s[j] != '1' &&
+						    s[j] != '_') {
+							push(t, T_EOF, j, 1, fl);
+							diag_toks = t;
+							diag_tok = t->n - 1;
+							fail("invalid digit '%c' in a "
+							    "binary literal (only 0 "
+							    "and 1 are allowed)",
+							    s[j] >= 32 && s[j] < 127 ?
+							    s[j] : '?');
+						}
+				}
 			} else {
 				while (isdigit(s[i]) || s[i] == '_')
 					i++;
@@ -200,6 +244,13 @@ lex(struct toks *t, const char *src)
 				i++;
 			while (s[i] == '\'')   /* calc: y' y'' (derivatives) */
 				i++;
+			if (i - st > MAX_IDENT) {
+				push(t, T_EOF, i, 1, fl);
+				diag_toks = t;
+				diag_tok = t->n - 1;
+				fail("identifier too long (over %d bytes)",
+				    MAX_IDENT);
+			}
 			push(t, T_ID, st, i - st, fl);
 		} else if ((c == 0xce && s[i + 1] == 0xa3) || (c == 0xe2 &&
 		    s[i + 1] == 0x88 && (s[i + 2] == 0x8f || s[i + 2] == 0xab))) {
