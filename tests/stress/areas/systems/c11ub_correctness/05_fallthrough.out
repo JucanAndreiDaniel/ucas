@@ -1,0 +1,8 @@
+> c lower nofile
+  f1(x: i32) = x != 0 ? 1 : undefined
+    defined where (no C UB): x != 0
+  f2(x: i32) = x == 0 ? 2 : x != 0 ? 1 : undefined
+  f3(x: i32) = x
+  v1: not lowered: line 7: the function does not return an integer or a float
+  f4(x: i32) = t1 == 0 && i32(x > 0) != 0 ? 1 : t1 != 0 ? -1 : undefined where t1 = i32(x < 0)
+    defined where (no C UB): !(i32(x < 0) == 0 && i32(x > 0) == 0)

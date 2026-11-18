@@ -1,0 +1,11 @@
+c lower nofile
+```c
+/* C11 6.9.1p12: reaching the } of a value-returning function is UB if the
+ * caller uses the result.  The fall-through path is excluded from the
+ * domain; a void function and a fully covered if/else add no condition. */
+int f1(int x){if(x) return 1;}
+int f2(int x){if(x) return 1; else return 2;}
+int f3(int x){return x;}
+void v1(int x){if(x) return;}
+int f4(int x){if(x<0) return -1; if(x>0) return 1;}
+```

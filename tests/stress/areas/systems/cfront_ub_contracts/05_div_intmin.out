@@ -4,11 +4,12 @@
   modm1(x: i32) = x % -1
     defined where (no C UB): x != -2147483648
   divmin(x: i32, y: i32) = x/y
-    defined where (no C UB): !(x == -2147483648 && y == -1)
+    defined where (no C UB): y != 0 && !(x == -2147483648 && y == -1)
   divl(x: i64, y: i64) = x/y
-    defined where (no C UB): !(x == -9223372036854775808 && y == -1)
+    defined where (no C UB): y != 0 && !(x == -9223372036854775808 && y == -1)
   divm1guard(x: i32) = i32(i64(x) == -2147483648) != 0 ? 0 : x/-1
     defined where (no C UB): i32(i64(x) == -2147483648) != 0 || x != -2147483648
   udiv(x: u32, y: u32) = x/y
+    defined where (no C UB): y != 0
   divm1c(x: i32) = x/-1
     defined where (no C UB): x != -2147483648

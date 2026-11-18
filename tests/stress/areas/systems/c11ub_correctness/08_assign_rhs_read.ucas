@@ -1,0 +1,15 @@
+c lower nofile
+```c
+/* C11 6.5p2: an assignment's RHS reads of *other* symbols are not sequenced
+ * with a sibling operand's write.  i++ + (j = i) is unsequenced UB (clang
+ * -Wunsequenced and gcc -Wsequence-point both warn) and must be refused;
+ * the lhs symbol's own read (i = i + 1) stays sequenced and is fine. */
+int bad1(int x){int i=0,j=0;return i++ + (j = i);}
+int bad2(int x){int i=0,j=0;return (j = i) + i++;}
+int bad3(int x){int i=0,j=0;return i++ + (j += i);}
+int bad4(int x){int i=0,j=0,k=0;return (j=i) + (k=i++);}
+/* controls: the lhs read is sequenced; no sibling writes i; comma
+ * sequences the two increments */
+int ok1(int x){int i=0;i=i+1;return i+x;}
+int ok2(int x){int i=0,j=0;return i + (j = i);}
+int ok3(int x){int i=0,j=0;return (i++, j++) + x;}

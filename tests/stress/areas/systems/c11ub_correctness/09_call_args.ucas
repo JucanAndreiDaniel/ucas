@@ -1,0 +1,11 @@
+c lower nofile
+```c
+/* C11 6.5.2.2p10: actual arguments are unsequenced.  Two side-effecting
+ * arguments on different objects are not UB but leave the order
+ * unspecified (6.5p3 requires note); on the same object it is 6.5p2 UB. */
+int g(int a,int b){return a+b;}
+int ord1(int x){int i=0,j=0;return g(i++, j++) + x;}
+int bad1(int x){int i=0;return g(i++, i++) + x;}
+/* controls: only one effect among the arguments, and none at all */
+int seq1(int x){int i=0,j=0;return g((i++,j++), x) + x;}
+int simple(int x){return g(x, x+1);}

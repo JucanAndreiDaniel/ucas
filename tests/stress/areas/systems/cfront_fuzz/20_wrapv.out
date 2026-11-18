@@ -2,7 +2,9 @@
   sadd(a: i32, b: i32) = a + b
   smul(a: i32, b: i32) = a*b
   shl(a: i32, n: i32) = a << n
+    defined where (no C UB): n >= 0 && n < 32
   divz(a: i32, b: i32) = a/b
+    defined where (no C UB): b != 0
 > c optimize nofile wrapv budget 3
 c optimize: 1 function, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
   estimated cost of the rewritten values on x86-64-v3: 4.8 -> 2.0 cycles

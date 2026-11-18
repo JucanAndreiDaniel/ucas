@@ -1,0 +1,15 @@
+c lower nofile
+```c
+/* C11 6.5p2: two unsequenced side effects on i, or a side effect and a
+ * value computation of i, are undefined.  The lowering must refuse rather
+ * than pick one evaluation order. */
+int bad1(int x){int i=0;return i++ + i++;}
+int bad2(int x){int i=0;i=i++;return i+x;}
+int bad3(int x){int i=0;return ++i + i++;}
+int bad4(int x){int i=0;return i + i++;}
+/* controls: one effect, a sequenced pair, and ordinary arithmetic */
+int ok1(int x){int i=0;i++;return i+x;}
+int ok2(int x){int i=0;i=i+1;return i+x;}
+int ok3(int x){int i=0;return (i++, i++) + x;}
+int ok4(int x){int i=0;return (i++, i+1) + x;}
+```
