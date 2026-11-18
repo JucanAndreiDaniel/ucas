@@ -1,0 +1,9 @@
+> animate exec %px = lane lanes 4 seed 1 nofile input 1 file a/b/no_such_xyz.png
+  input %px: uint, given
+exec of SPIR-V (11 instructions), entry %main, 4 lanes in lockstep, cost model gt1030
+  buffers start with random values (seed 1)
+  note: input 1 was given, but the shader has 0 image inputs
+  serial form:
+    %o = OpCopyObject %uint %px                                 0  t = 0..0  -> 0 1 2 3
+  time 0 for every lane; lanes busy 100% (0 lane-units idle: masked, or waiting for an atomic)
+  nothing to execute
