@@ -46,7 +46,7 @@ wrap analysis of shvar:
   x << n   (i8)
       nuw fails: unsigned wrap at 1411 points, e.g. x=-128, n=1
       nsw fails: signed wrap at 1538 points, e.g. x=-128, n=1  <- UB in C; a compiler assumes it cannot happen
-  end to end: differs from the mathematical result at 1538 points, e.g. x=-128, n=1
+  end to end: differs from the mathematical result at 2050 points, e.g. x=-128, n=1
   over all 3072 points of the domain
 > shvaru(x: i8, n: u8 in 0..8) = x >> n
 > domain shvaru
@@ -64,6 +64,7 @@ domain of shnegamount:
   x: i8, -128..127
   C assumes x << -1 does not overflow  (signed shift)
   defined at 0 of 256 points
+  empty domain: undefined at every point of the parameter types
   undefined e.g. at x=-128; x=-127; x=-126; x=-125
   C undefined behaviour at 256 points, e.g. x=-128
   over all 256 points of the domain
@@ -73,6 +74,7 @@ domain of shlarge:
   x: i8, -128..127
   C assumes x << 100 does not overflow  (signed shift)
   defined at 0 of 256 points
+  empty domain: undefined at every point of the parameter types
   undefined e.g. at x=-128; x=-127; x=-126; x=-125
   C undefined behaviour at 256 points, e.g. x=-128
   over all 256 points of the domain
@@ -91,5 +93,5 @@ wrap analysis of shu8:
   x << n   (u8)
       nuw fails: unsigned wrap at 1411 points, e.g. x=128, n=1
       nsw fails: signed wrap at 1538 points, e.g. x=64, n=1
-  end to end: differs from the mathematical result at 1538 points, e.g. x=128, n=1
+  end to end: differs from the mathematical result at 1794 points, e.g. x=128, n=1
   over all 2304 points of the domain

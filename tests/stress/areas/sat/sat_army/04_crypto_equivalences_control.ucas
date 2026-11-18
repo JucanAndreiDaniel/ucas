@@ -1,0 +1,9 @@
+# Control: crypto-style equivalences (XOR/AND networks, GF(2) parity) still
+# prove or refute correctly; the reflexive fix changes none of these.
+par8(x: u8) = popcount(x) & 1
+parbits(x: u8) = (x&1) xor ((x>>1)&1) xor ((x>>2)&1) xor ((x>>3)&1) xor ((x>>4)&1) xor ((x>>5)&1) xor ((x>>6)&1) xor ((x>>7)&1)
+equiv par8 parbits
+lt(x: u8) = ((x & 0x55) << 1) | ((x & 0xaa) >> 1)
+equiv lt lt
+bad(x: u8) = par8(x) + 1
+equiv bad par8

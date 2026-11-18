@@ -1,0 +1,10 @@
+# Control: a supported reflexive pair still builds a real circuit and reports
+# its actual node count; the shortcut must not mask a genuine difference.
+s(x: u32) = (x xor (x << 13)) xor ((x xor (x << 13)) >> 17)
+t(x: u32) = x xor (x << 13) xor ((x xor (x << 13)) >> 17)
+equiv s t
+u(x: u32) = t + 1
+equiv s u
+v(x: u32) = x * 3
+w(x: u32) = x + x + x
+equiv v w
