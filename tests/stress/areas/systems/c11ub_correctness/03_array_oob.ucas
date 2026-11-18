@@ -1,0 +1,12 @@
+c lower nofile
+```c
+/* C11 6.5.6p8: an array subscript outside [0, count) is UB even when the
+ * bytes appear to be accessible.  A static const table is the one memory
+ * object ucas's C subset lowers, so this is the reachable OOB category. */
+static const int tab[4] = {10, 20, 30, 40};
+int oobvar(int x){return tab[x];}
+int oobneg(int x){return tab[-1];}
+int oobhi(int x){return tab[4];}
+int oobexpr(int x){return tab[x+1];}
+int oobok(int x){return tab[2];}
+```

@@ -1,0 +1,29 @@
+c lower nofile
+```c
+// A // comment must observe translation-phase-2 backslash-newline splicing:
+// a spliced line is still part of the comment, so the following return is live.
+int w1(int x) {
+  // hidden \
+  return 111;
+  return 222;
+}
+// control: an ordinary comment ends at the newline
+int w2(int x) {
+  // hidden
+  return 111;
+  return 222;
+}
+// control: a backslash-newline outside a comment still joins the line
+int w3(int x) {
+  return 1 + \
+         2;
+}
+// a second splice inside the same comment
+int w4(int x) {
+  // first \
+  second \
+  third
+  return 111;
+  return 222;
+}
+```

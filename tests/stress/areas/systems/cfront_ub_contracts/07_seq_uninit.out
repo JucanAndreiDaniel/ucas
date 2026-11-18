@@ -1,18 +1,19 @@
 > c lower nofile
-  seq1(x: i32) = x
-    defined where (no C UB): i64(x) >= -2147483648 && i64(x) <= 2147483647
-  seq2(x: i32) = x + 1
-    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
-  seq3(x: i32) = x + 1
-    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
-  seq4(x: i32) = x + 2
-    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 2
-  seq5(x: i32) = x + 1
-    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
-  seq6(x: i32) = x + 1
-    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
+  seq1: not lowered: line 1: unsequenced access to i (C11 6.5p2)
+  seq2: not lowered: line 2: unsequenced access to i (C11 6.5p2)
+  seq3: not lowered: line 3: unsequenced access to i (C11 6.5p2)
+  seq4: not lowered: line 4: unsequenced access to i (C11 6.5p2)
+  seq5: not lowered: line 5: unsequenced access to i (C11 6.5p2)
+  seq6: not lowered: line 6: unsequenced access to i (C11 6.5p2)
   seq7(x: i32) = x + 1
     defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
   uninit1() = undefined
+    defined where (no C UB): 0
   uninit2(y: i32) = undefined
-    defined where (no C UB): undefined
+    defined where (no C UB): 0
+  requires: unsequenced access to 'i' (lines 1 and 1): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+  requires: unsequenced access to 'i' (lines 2 and 2): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+  requires: unsequenced access to 'i' (lines 3 and 3): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+  requires: unsequenced access to 'i' (lines 4 and 4): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+  requires: unsequenced access to 'i' (lines 5 and 5): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+  requires: unsequenced access to 'i' (lines 6 and 6): C11 6.5p2 makes this undefined; the evaluation order is not fixed

@@ -1,0 +1,11 @@
+c lower nofile
+```c
+/* Two side-effecting operands on *different* objects are not UB, but C11
+ * 6.5p3 leaves their order unspecified.  The value is lowered, with a
+ * requires note disclosing that no single order was chosen by the standard. */
+int ord1(int x){int a=0,b=0;return (a+=1) + (b+=2) + x;}
+int ord2(int x,int y){int a=0,b=0;return (a=a+1) + (b=b+2) + x + y;}
+/* controls: a comma sequence point and no side effects at all */
+int seq1(int x){int a=0,b=0;return (a++,b++) + x;}
+int simple(int x){return x+1;}
+```
