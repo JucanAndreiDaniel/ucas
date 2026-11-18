@@ -1,0 +1,5 @@
+# CRASH reproducer: 14 explicit exact points plus `keep endpoints` makes
+# A.nkeep = 16 (AMAXK).  core_sample() used to allocate only 2*m+8 slots for
+# m + m + A.nkeep writes, so the last 8 floats overflowed the heap.  With a
+# degree high enough for the constrained fit to succeed this segfaulted.
+approx sin(x) in 0..1 degree 20 nosym keep endpoints keep 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.11,0.12,0.13,0.14,0.15 as f32 norational nosplit noreduce list 1

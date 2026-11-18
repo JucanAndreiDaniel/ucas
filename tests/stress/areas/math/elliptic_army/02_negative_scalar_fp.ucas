@@ -1,0 +1,12 @@
+# WRONG-2 regression: an unparenthesised negative scalar after the modulus
+# was parsed as part of the modulus (mod 97 -10 -> mod 87).
+ecmul y^2 = x^3 + 2x + 3 mod 97 -10 (73, 83)
+ecmul y^2 = x^3 + 2x + 3 over F_97 -10 (73, 83)
+ecmul y^2 = x^3 + 2x + 3 mod GF(97) -10 (73, 83)
+ecmul [2, 3] mod 97 -10 (73, 83)
+ecmul y^2 = x^3 + 2x + 3 mod 97 (-10) (73, 83)
+# controls: positive scalar, named curve, spaced modulus expression
+ecmul y^2 = x^3 + 2x + 3 mod 97 10 (73, 83)
+ecmul y^2 = x^3 + 2x + 3 mod 97 -2 (73, 83)
+ecmul secp256k1 -3 G
+ecorder [5, 11] mod 2^61 - 1 using schoof
