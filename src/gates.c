@@ -21,6 +21,7 @@
  */
 #include "ucas.h"
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -164,6 +165,26 @@ static int
 symm(const struct gate *g, int i, int j)
 {
 	return (g->symm >> (i * 3 + j)) & 1;
+}
+
+/*
+ * Tying both inputs of a 2-input gate only helps when f(x,x) is a genuinely
+ * new value: NAND/NOR give NOT that way, which makes them functionally
+ * complete.  For AND/OR f(x,x)==x (already available) and for XOR & friends
+ * f(x,x) is a constant (pruned), so those ties are kept out to preserve the
+ * search's node counts and dedup behaviour.  Uses g->tt, set by
+ * basis_finish_gate for non-lut gates.
+ */
+static int
+tie2_useful(const struct gate *g)
+{
+	int f0 = g->tt & 1, f1 = (g->tt >> 3) & 1;
+
+	if (f0 == f1)			/* constant 0 or 1 */
+		return 0;
+	if (f0 == 0 && f1 == 1)		/* identity: f(x,x) == x */
+		return 0;
+	return 1;			/* f(x,x) == ~x */
 }
 
 static int
@@ -377,6 +398,7 @@ dfs(struct gs *s, int cost)
 		return 0;
 	for (gi = 0; gi < s->bs->ng; gi++) {
 		const struct gate *g = &s->bs->g[gi];
+		int allow_tie = g->arity == 2 && tie2_useful(g);
 		if (cost + g->cost > s->bound)
 			continue;
 		if (g->lut) {
@@ -399,7 +421,8 @@ dfs(struct gs *s, int cost)
 				continue;
 			}
 			for (b = 0; b < s->nval; b++) {
-				if (b == a || (symm(g, 0, 1) && b < a))
+				if ((symm(g, 0, 1) && b < a) ||
+				    (!allow_tie && b == a))
 					continue;
 				args[1] = (uint8_t)b;
 				if (g->arity == 2) {
@@ -777,7 +800,7 @@ gates_synth(const struct basis *bs, int nin, uint64_t tt, uint64_t care,
 	s->tg[0] = tt & s->care;
 	s->active[0] = 1;
 	s->ntg = 1;
-	s->mincost = 255;
+	s->mincost = INT_MAX;
 	for (gi = 0; gi < bs->ng; gi++)
 		if (bs->g[gi].cost < s->mincost)
 			s->mincost = bs->g[gi].cost;
@@ -944,7 +967,7 @@ cmd_gates(struct func *f, struct basis *bs, int maxcost, int emit)
 		outk[nout] = (int)k;
 		uniq[nout++] = t;
 	}
-	s->mincost = 255;
+	s->mincost = INT_MAX;
 	for (gi = 0; gi < bs->ng; gi++)
 		if (bs->g[gi].cost < s->mincost)
 			s->mincost = bs->g[gi].cost;
@@ -1033,6 +1056,12 @@ cmd_gates(struct func *f, struct basis *bs, int maxcost, int emit)
 		rep_bool("minimal", 0);
 		rep_int("cost", total);
 		rep_int("steps", s->bnstep);
+		/* The network is checked exhaustively on the care inputs below,
+		 * but its cost is only an upper bound.  Record what is actually
+		 * proved so consumers do not mistake this for a minimality proof. */
+		rep_proof("exhaustive", "Shannon decomposition: the emitted network "
+		    "reproduces every output bit on all care inputs (truth table); "
+		    "cost is an upper bound, not proved minimal");
 		for (o = 0; o < s->ntg; o++)
 			s->active[o] = 1;
 	}
