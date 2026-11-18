@@ -202,52 +202,6 @@ check_interval(const struct func *f, int s, double *lo, double *hi)
 /* catch a fail() from diff_node and friends: 0 if it failed */
 static nid simp(nid e, int agg);
 
-/*
- * tidy() (closed.c) rebuilds a three-operand node through mk_bin when the
- * op is missing from IS_OP3 -- as fma is -- which leaves its third operand
- * NULL and makes the printer recurse on node 0.  diff_node() itself handles
- * fma correctly, so a derivative tree containing one is already right: just
- * leave such a tree unsimplified rather than handing it to tidy().
- */
-static int
-has_fma(nid e)
-{
-	uint8_t *mark;
-	nid *st, g;
-	uint32_t sp = 0;
-	int found = 0;
-
-	if (e == 0 || e >= N.n)
-		return 0;
-	mark = xcalloc(N.n, 1);
-	st = xmalloc(N.n * sizeof *st);
-	st[sp++] = e;
-	mark[e] = 1;
-	while (sp && !found) {
-		g = st[--sp];
-		if (N.op[g] == O_FMA) {
-			found = 1;
-			break;
-		}
-		if (N.a[g] && N.a[g] < N.n && !mark[N.a[g]])
-			mark[N.a[g]] = 1, st[sp++] = N.a[g];
-		if (N.b[g] && N.b[g] < N.n && !mark[N.b[g]])
-			mark[N.b[g]] = 1, st[sp++] = N.b[g];
-		if (N.c[g] && N.c[g] < N.n && !mark[N.c[g]])
-			mark[N.c[g]] = 1, st[sp++] = N.c[g];
-	}
-	free(mark);
-	free(st);
-	return found;
-}
-
-/* simplify d only when it is safe to do so */
-static nid
-simp_diff(nid d)
-{
-	return has_fma(d) ? d : simp(d, 0);
-}
-
 static nid
 try_diff(nid e, int slot, int quiet)
 {
@@ -256,7 +210,7 @@ try_diff(nid e, int slot, int quiet)
 
 	memcpy(saved, fail_jmp, sizeof saved);
 	if (setjmp(fail_jmp) == 0)
-		d = simp_diff(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot));
+		d = simp(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot), 0);
 	memcpy(fail_jmp, saved, sizeof saved);
 	if (quiet)
 		notes_drop();
@@ -266,7 +220,7 @@ try_diff(nid e, int slot, int quiet)
 static nid
 dif(nid e, int slot)
 {
-	return simp_diff(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot));
+	return simp(diff_node(mk_cast(TY_REAL, e), (uint32_t)slot), 0);
 }
 
 /* ---- simplification of derivative and limit expressions ---- */
@@ -2882,12 +2836,11 @@ c2_taylor(struct func *f, int slot, double a, int n)
 	}
 	for (k = 0; k <= n; k++) {
 		nid v = subst(g[k], map, NSLOT);
-		if (!has_fma(v))
-			v = tidy(v);
+		v = tidy(v);
 		if (k)
 			fact *= k;
 		v = DIV(v, KR(fact));
-		c[k] = has_fma(v) ? v : tidy(v);
+		c[k] = tidy(v);
 		if (N.op[c[k]] == O_UNDEF) {
 			printf("no Taylor series of %s at %s = %s: the %d%s "
 			    "derivative is undefined there\n", fname2(f), x, fnum(a),

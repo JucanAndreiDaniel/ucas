@@ -15,7 +15,7 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `nan_subnormal_modes` — 9 goldens
 - `worst_case_rounding` — 28 goldens
 
-## frontend (25)
+## frontend (27)
 
 - `binary_source_unicode` — 14 goldens
 - `cli_args_fuzz` — 0 goldens
@@ -23,6 +23,8 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `concurrent_clients` — 2 goldens
 - `discord_bot` — 12 goldens
 - `env_locale_tty` — 6 goldens
+- `eval_army` — 4 goldens
+- `lexer_army` — 9 goldens
 - `mcp_api_fuzz` — 10 goldens
 - `mcp_codemode_schemas` — 11 goldens
 - `mcp_op_inventory` — 49 goldens
@@ -43,18 +45,23 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `timeout_s_systematic` — 3 goldens
 - `tool_abuse_files` — 7 goldens
 
-## gpu (5)
+## gpu (7)
 
 - `cost_cross_model` — 12 goldens
+- `mma_army` — 14 goldens
 - `plot_gif_resources` — 11 goldens
 - `spirv_glsl_simplify` — 6 goldens
 - `tex_domain_modules` — 9 goldens
+- `texture_army` — 8 goldens
 - `x86_intrinsics_mca` — 22 goldens
 
-## math (30)
+## math (40)
 
+- `algebra_army` — 9 goldens
 - `algebra_ring_ff` — 14 goldens
 - `algebra_system_solving` — 8 goldens
+- `analysis_army` — 4 goldens
+- `approx_army` — 8 goldens
 - `approx_fit_search` — 20 goldens
 - `bigint_extremes` — 15 goldens
 - `cas_tricky_corpus` — 12 goldens
@@ -62,13 +69,20 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `crit_classification` — 14 goldens
 - `cyclic_basis_solve` — 129 goldens
 - `det_linear_algebra` — 6 goldens
+- `ec_correctness` — 3 goldens
+- `elliptic_army` — 4 goldens
 - `elliptic_rank_generators` — 13 goldens
 - `external_oracle_diff` — 10 goldens
+- `fma_correctness` — 5 goldens
+- `highdegree_correctness` — 4 goldens
 - `hypercomplex_algebras` — 12 goldens
+- `hypercomplex_army` — 5 goldens
+- `ideal_correctness` — 8 goldens
 - `integer_division_semantics` — 9 goldens
 - `integer_factorization` — 19 goldens
 - `math_function_domain` — 24 goldens
 - `multivariate_limits` — 17 goldens
+- `ntheory_army` — 7 goldens
 - `number_theory_core` — 12 goldens
 - `numeric_arg_overflow` — 14 goldens
 - `ode_boundary_problems` — 24 goldens
@@ -100,7 +114,7 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `nlp_session_state` — 13 goldens
 - `thesis_nlp_noise_bias` — 7 goldens
 
-## sat (26)
+## sat (27)
 
 - `afl_coverage_fuzz` — 3 goldens
 - `aig_growth_patterns` — 12 goldens
@@ -117,6 +131,7 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `proof_kernel_axioms` — 7 goldens
 - `prove_symbolic` — 16 goldens
 - `range_sampled_soundness` — 7 goldens
+- `sat_army` — 4 goldens
 - `sat_crypto_circuits` — 19 goldens
 - `sat_hard_mult` — 15 goldens
 - `sat_ranges_where` — 8 goldens
@@ -129,18 +144,22 @@ Each count lists the paired goldens. Each pair has an input and a `.out` file.
 - `undefined_propagation` — 19 goldens
 - `witness_verification` — 9 goldens
 
-## systems (22)
+## systems (26)
 
 - `build_variants` — 0 goldens
 - `c_vectorize_loops` — 18 goldens
+- `cfront_army` — 5 goldens
 - `cfront_bench_timing` — 22 goldens
 - `cfront_float_semantics` — 19 goldens
 - `cfront_fuzz` — 30 goldens
 - `cfront_preprocessor` — 23 goldens
 - `cfront_ub_contracts` — 14 goldens
 - `coverage_gap_analysis` — 0 goldens
+- `deadline_correctness` — 4 goldens
 - `fault_injection` — 2 goldens
+- `kernel_army` — 3 goldens
 - `make_test_baseline` — 0 goldens
+- `proof_army` — 4 goldens
 - `resource_limits` — 17 goldens
 - `resource_limits_extended` — 4 goldens
 - `rng_stochastic` — 9 goldens

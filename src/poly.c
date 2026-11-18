@@ -19,6 +19,9 @@ int alg_ovf;
 
 /* ---- arena ---- */
 
+/* High-degree resultants build a large Sylvester matrix and its Bareiss
+ * intermediates, so allow more 4 MiB blocks before refusing. */
+#define NARBLK 256
 struct arblk {
 	char *p;
 	size_t n, used;
@@ -52,14 +55,14 @@ ar_alloc(size_t n)
 	if (n == 0)
 		n = 16;
 	if (nblk == 0) {
-		blk = xcalloc(64, sizeof *blk);
+		blk = xcalloc(NARBLK, sizeof *blk);
 		nblk = 1;
 		blk[0].n = (size_t)1 << 22;
 		blk[0].p = xmalloc(blk[0].n);
 	}
 	if (blk[cur].used + n > blk[cur].n) {
 		cur++;
-		if (cur == 64)
+		if (cur == NARBLK)
 			fail("algebra: out of memory (the expression is too large)");
 		if (cur == nblk) {
 			nblk++;
@@ -486,11 +489,11 @@ mp_mulmono(struct mp a, const struct mono *m)
 		r.t[i].c = qmul(a.t[i].c, m->c);
 		for (k = 0; k < AV; k++) {
 			int e = a.t[i].e[k] + m->e[k];
-			if (e > 255) {
+			if (e > MP_EMAX) {
 				alg_ovf = 1;
-				e = 255;
+				e = MP_EMAX;
 			}
-			r.t[i].e[k] = (uint8_t)e;
+			r.t[i].e[k] = (uint16_t)e;
 		}
 	}
 	r.n = a.n;
@@ -520,11 +523,11 @@ mp_mul(struct mp a, struct mp b)
 			m->c = qmul(a.t[i].c, b.t[j].c);
 			for (k = 0; k < AV; k++) {
 				int e = a.t[i].e[k] + b.t[j].e[k];
-				if (e > 255) {
+				if (e > MP_EMAX) {
 					alg_ovf = 1;
-					e = 255;
+					e = MP_EMAX;
 				}
-				m->e[k] = (uint8_t)e;
+				m->e[k] = (uint16_t)e;
 			}
 		}
 	qsort(r.t, (size_t)n, sizeof *r.t, mcmp_q);
@@ -667,7 +670,7 @@ mp_vpow(int v, int k)
 	struct mp r = mp_const(qi(1));
 
 	if (k > 0)
-		r.t[0].e[v] = (uint8_t)k;
+		r.t[0].e[v] = (uint16_t)k;
 	return r;
 }
 
@@ -856,6 +859,53 @@ mp_eval(struct mp a, const double *x)
 
 /* ---- resultants ---- */
 
+/* a monic; return a mod b for monic b (both univariate in v).  Because b is
+ * monic the leading term cancels exactly at every step, with no coefficient
+ * growth from pseudo-division. */
+static struct mp
+mp_mod_monic(struct mp a, struct mp b, int v)
+{
+	int db = mp_deg(b, v), dr;
+	struct mp r = a;
+
+	while (r.n && (dr = mp_deg(r, v)) >= db && !alg_ovf) {
+		struct mp lr = mp_lcv(r, v);
+		struct mp t = mp_mul(mp_mul(lr, mp_vpow(v, dr - db)), b);
+		r = mp_sub(r, t);
+	}
+	return r;
+}
+
+/* resultant of two monic univariate polynomials, via the Euclidean
+ * algorithm: Res(A,B) = (-1)^(degA*degB) lc(B)^(degA-deg r) Res(B, A mod B).
+ * Bareiss on a Sylvester matrix allocates O(n^3) arena memory and runs out at
+ * degree ~300; this stays small enough for degree 512 and beyond. */
+static struct mp
+res_monic(struct mp a, struct mp b, int v)
+{
+	int m = mp_deg(a, v), n = mp_deg(b, v), sg;
+	struct mp r, t;
+	aq c, lc;
+
+	if (n == 0)
+		return mp_pow(b, m);
+	r = mp_mod_monic(a, b, v);
+	if (alg_ovf || r.n == 0)
+		return mp_zero();
+	sg = (m * n) & 1;
+	if (mp_isconst(r, &c)) {
+		t = mp_pow(r, n);
+		return sg ? mp_neg(t) : t;
+	}
+	mp_isconst(mp_lcv(r, v), &lc);
+	t = mp_scale(r, qdiv(qi(1), lc));
+	t = res_monic(b, t, v);
+	if (alg_ovf)
+		return mp_zero();
+	t = mp_mul(t, mp_pow(mp_const(lc), n));
+	return sg ? mp_neg(t) : t;
+}
+
 struct mp
 mp_resultant(struct mp a, struct mp b, int v)
 {
@@ -868,6 +918,22 @@ mp_resultant(struct mp a, struct mp b, int v)
 		return mp_pow(a, db);
 	if (db == 0)
 		return mp_pow(b, da);
+	/* Truly univariate operands: use the Euclidean path.  Res(ca, db) =
+	 * lc(a)^db lc(b)^da Res(monic(a), monic(b)). */
+	if (!((mp_vars(a) | mp_vars(b)) & ~(1u << v))) {
+		struct mp la, lb, r;
+		aq ca, cb;
+
+		mp_isconst(mp_lcv(a, v), &ca);
+		mp_isconst(mp_lcv(b, v), &cb);
+		la = mp_scale(a, qdiv(qi(1), ca));
+		lb = mp_scale(b, qdiv(qi(1), cb));
+		r = res_monic(la, lb, v);
+		if (!alg_ovf)
+			r = mp_mul(r, mp_mul(mp_pow(mp_const(ca), db),
+			    mp_pow(mp_const(cb), da)));
+		return r;
+	}
 	n = da + db;
 	if (n > 2 * UD) {
 		alg_ovf = 1;
@@ -996,7 +1062,7 @@ mp_of_up(const struct up *a, int v)
 		if (a->c[k].n) {
 			memset(&r.t[r.n], 0, sizeof r.t[r.n]);
 			r.t[r.n].c = a->c[k];
-			r.t[r.n++].e[v] = (uint8_t)k;
+			r.t[r.n++].e[v] = (uint16_t)k;
 		}
 	return r;
 }
@@ -1328,8 +1394,8 @@ kronecker(const struct up *g, int k, struct up *h)
 		return -1;
 	/* points 0, 1, -1, 2, -2, ... where g != 0, few divisors first */
 	{
-		int64_t cand[40], cv[40];
-		int nc = 0, cnd[40];
+		int64_t cand[2 * UD + 8], cv[2 * UD + 8];
+		int nc = 0, cnd[2 * UD + 8];
 		for (i = 0; nc < 2 * k + 6 && i < 80; i++) {
 			int64_t x = (i & 1) ? (i + 1) / 2 : -(i / 2);
 			int64_t v = ipeval(A, d, x, &ok), tmp[512];
@@ -1562,7 +1628,7 @@ factor_sqf(const struct up *g0, struct up *f, int max, int *partial)
 int
 up_factor(const struct up *a, struct up *f, int *m, int max, int *partial)
 {
-	struct up s[UD];
+	struct up *s = ar_alloc((size_t)UD * sizeof *s);
 	int ns, i, n = 0, k, j;
 
 	*partial = 0;
@@ -1618,15 +1684,17 @@ is_homog(struct mp a)
 	return 1;
 }
 
-/* ---- univariate factorisation past UD (sparse mp, exponent <= 255) ----
- * struct up is capped at UD=40, so up_of_mp() rejects larger univariate
+/* ---- univariate factorisation past UD (sparse mp) ----
+ * struct up is capped at UD, so up_of_mp() rejects larger univariate
  * polynomials.  Do the square-free decomposition and the cheap factor
- * searches directly on the sparse mp (whose exponents are uint8_t), so a
- * reducible polynomial such as x^41-1 is not returned whole with a false
- * "irreducible over the rationals" claim.  If the search cannot finish, the
- * caller is told through *partial so the honest note is printed instead. */
+ * searches directly on the sparse mp (whose exponents are uint16_t), so a
+ * reducible polynomial is not returned whole with a false "irreducible over
+ * the rationals" claim.  If the search cannot finish, the caller is told
+ * through *partial so the honest note is printed instead. */
 
-#define HD 255
+/* Sparse-mp path degree cap: independent of UD so degrees above the dense
+ * struct up cap still factor without the false "irreducible" claim. */
+#define HD 512
 
 /* primitive integer coefficients of univariate a in v; 0 on overflow */
 static int
@@ -1768,7 +1836,7 @@ cyc_mp(int v, int k)
 		if (cyc_co[k][j]) {
 			memset(&r.t[r.n], 0, sizeof r.t[r.n]);
 			r.t[r.n].c = qi(cyc_co[k][j]);
-			r.t[r.n].e[v] = (uint8_t)j;
+			r.t[r.n].e[v] = (uint16_t)j;
 			r.n++;
 		}
 	return r;
@@ -1898,7 +1966,7 @@ factor_prim(struct mp a, int mult, struct mp *f, int *m, int n, int max,
 {
 	uint32_t vs = mp_vars(a);
 	int nv = __builtin_popcount(vs), v, w, i, k;
-	struct up u, uf[UD];
+	struct up u, *uf = ar_alloc((size_t)UD * sizeof *uf);
 	int um[UD], up_n, pp = 0;
 
 	if (nv == 0)
@@ -1943,8 +2011,8 @@ factor_prim(struct mp a, int mult, struct mp *f, int *m, int n, int max,
 			for (k = 0; k <= kk; k++)
 				if (uf[i].c[k].n) {
 					struct mp t = mp_const(uf[i].c[k]);
-					t.t[0].e[v] = (uint8_t)k;
-					t.t[0].e[w] = (uint8_t)(kk - k);
+					t.t[0].e[v] = (uint16_t)k;
+					t.t[0].e[w] = (uint16_t)(kk - k);
 					h = mp_add(h, t);
 				}
 			dsum += kk * um[i];
@@ -1978,7 +2046,7 @@ factor_rec(struct mp a, int mult, struct mp *f, int *m, int n, int max,
 		return n;
 	/* monomial content */
 	for (k = 0; k < AV; k++) {
-		int mn = 255;
+		int mn = MP_EMAX;
 		if (!(vs & (1u << k)))
 			continue;
 		for (i = 0; i < a.n; i++)
@@ -1986,7 +2054,7 @@ factor_rec(struct mp a, int mult, struct mp *f, int *m, int n, int max,
 				mn = a.t[i].e[k];
 		if (mn > 0) {
 			struct mp q, mo = mp_const(qi(1));
-			mo.t[0].e[k] = (uint8_t)mn;
+			mo.t[0].e[k] = (uint16_t)mn;
 			if (mp_divexact(a, mo, &q))
 				a = q;
 			n = factor_add(mp_atom(k), mult * mn, f, m, n, max);
@@ -2283,11 +2351,11 @@ conv(nid e, struct rf *r, struct mp *dall, int depth)
 		}
 		goto atom;
 	case O_POW:
-		/* A monomial exponent is stored in uint8_t, so integer powers up
-		 * to 255 are exact and belong in the polynomial.  Treating a
-		 * larger power (e.g. x^65) as an opaque atom loses the shared
-		 * variable and makes gcd/resultant/discriminant silently wrong. */
-		if (num_of(N.b[e], &v) && v == floor(v) && fabs(v) <= 255 &&
+		/* A monomial exponent is stored in uint16_t, so integer powers up
+		 * to MP_EMAX are exact and belong in the polynomial.  Treating a
+		 * larger power as an opaque atom loses the shared variable and
+		 * makes gcd/resultant/discriminant silently wrong. */
+		if (num_of(N.b[e], &v) && v == floor(v) && fabs(v) <= MP_EMAX &&
 		    !(num_of(N.a[e], &v) && v == M_E)) {
 			num_of(N.b[e], &v);
 			k = (int)v;
@@ -2480,7 +2548,7 @@ mp_node_in(struct mp a, int v)
 			t = c;
 			if (k) {
 				t = mp_copy(c);
-				t.t[0].e[v] = (uint8_t)k;
+				t.t[0].e[v] = (uint16_t)k;
 			}
 			tn = mp_node(t);
 			if (c.n == 1 && c.t[0].c.n < 0) {

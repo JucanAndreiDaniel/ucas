@@ -21,6 +21,31 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+/* A hard wall-clock budget keeps Buchberger and the polynomial Smith form
+ * from running for minutes on inputs whose intermediate expressions grow
+ * without bound (e.g. 4-variable quadratic systems in lex order, or dense
+ * 6x6 polynomial matrices).  Both become a documented LIMIT instead of a
+ * hang.  The default is a few seconds; UCAS_GB_LIMIT / UCAS_PM_LIMIT (in
+ * seconds) let the tests and callers raise or lower it. */
+static double
+cpu_limit(const char *env, double def)
+{
+	const char *s = getenv(env);
+	double v;
+
+	if (!s || !*s)
+		return def;
+	v = atof(s);
+	return v > 0 ? v : def;
+}
+
+static double
+cpu_seconds(clock_t t0)
+{
+	return (double)(clock() - t0) / CLOCKS_PER_SEC;
+}
 
 /* ---- coefficients ---- */
 
@@ -854,6 +879,8 @@ mpl_groebner(const struct mring *R, const struct mpl *f, int k,
 	int *pi = NULL, *pj = NULL, np = 0, pcap = 0;
 	uint8_t *pend = NULL;
 	int pendcap = 0;
+	clock_t t0 = clock();
+	double budget = cpu_limit("UCAS_GB_LIMIT", 5.0);
 
 	memset(&w, 0, sizeof w);
 	memset(gb, 0, sizeof *gb);
@@ -892,14 +919,26 @@ mpl_groebner(const struct mring *R, const struct mpl *f, int k,
 	while (np > 0) {
 		uint32_t L[MPL_MAXV], mi[MPL_MAXV], mj[MPL_MAXV];
 		int best = 0, a, b, kk, coprime = 1, v, chain = 0;
-		/* the normal strategy: the smallest lcm first */
+		if (cpu_seconds(t0) > budget)
+			fail("Groebner basis: the computation grows too large: "
+			    "not done");
+		/* the normal strategy: the smallest lcm first.  For lex we
+		 * compare total degree first ("sugar"): a purely lexicographic
+		 * comparison would happily pick a pair whose lcm is w^100
+		 * (lexicographically tiny but of enormous degree), which makes
+		 * the degrees -- and the S-polynomials -- grow without bound. */
 		for (kk = 1; kk < np; kk++) {
 			uint32_t l1[MPL_MAXV], l2[MPL_MAXV];
+			int d1 = 0, d2 = 0, v2;
 			lcm_mono(R->nv, l1, EXP(&w.g[pi[kk]], R, 0),
 			    EXP(&w.g[pj[kk]], R, 0));
 			lcm_mono(R->nv, l2, EXP(&w.g[pi[best]], R, 0),
 			    EXP(&w.g[pj[best]], R, 0));
-			if (mono_cmp(R, l1, l2) < 0)
+			for (v2 = 0; v2 < R->nv; v2++) {
+				d1 += l1[v2];
+				d2 += l2[v2];
+			}
+			if (d1 < d2 || (d1 == d2 && mono_cmp(R, l1, l2) < 0))
 				best = kk;
 		}
 		a = pi[best];
@@ -1299,6 +1338,8 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 	struct mpl q, rem, mq;
 	int k, i, j, n = a->r < a->c ? a->r : a->c, rank = 0;
 	int track = U != NULL || V != NULL;
+	clock_t t0 = clock();
+	double budget = cpu_limit("UCAS_PM_LIMIT", 5.0);
 
 	if (R->nv != 1)
 		fail("internal: matrices over F[x] need one variable");
@@ -1322,6 +1363,9 @@ pm_snf(const struct mring *R, const struct pmat *a, struct pmat *D,
 		int pi = -1, pj = -1;
 		for (;;) {
 			int dirty = 0;
+			if (cpu_seconds(t0) > budget)
+				fail("pmsnf: the polynomial coefficients grow too "
+				    "large: not done");
 			pi = pj = -1;
 			for (i = k; i < d.r; i++)
 				for (j = k; j < d.c; j++)

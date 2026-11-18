@@ -49,9 +49,12 @@ int atom_of(nid e);          /* index, adding it; -1 when full */
 int atom_find(nid e);
 
 /* ---- sparse multivariate polynomials ---- */
+/* A monomial exponent is a uint16_t: powers up to 65535 expand exactly, so
+ * gcd/factor/resultant do not mistake x^256 for an opaque atom. */
+#define MP_EMAX 65535u          /* largest exponent a mono.e[] slot can hold */
 struct mono {
 	aq c;
-	uint8_t e[AV];
+	uint16_t e[AV];
 };
 struct mp {
 	int n;
@@ -123,7 +126,7 @@ const char *mp_str(struct mp a);
 void rf_conds(struct mp dall, struct mp d, struct sbuf *out);
 
 /* ---- dense univariate polynomials over Q ---- */
-#define UD 40
+#define UD 256
 struct up {
 	int d;               /* degree; -1 for 0 */
 	aq c[UD + 1];

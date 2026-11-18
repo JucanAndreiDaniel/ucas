@@ -1,0 +1,193 @@
+> mma nofile
+mma m16n8k16: D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k16.row.col lays them out, f16 A and B, f32 C and D, 32 lanes, under gt1030 (8488 dataflows tried)
+  each of D's 128 elements is a sum of 16 products of f16 and its C
+   1. 306       A-stationary; B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, depth 6
+   2. 306       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, depth 6
+   3. 306       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, depth 6
+   4. 326       A-stationary; B: 16 shuffles; partial sums: 12 xor shuffles, depth 6
+   5. 326       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 16 shuffles; partial sums: 12 xor shuffles, depth 6
+   6. 326       blocked (a lane: 2 rows x 8 columns x 4 of k); B: 16 shuffles; partial sums: 12 xor shuffles, depth 6
+  (30 more: mma ... all)
+  B-stationary: none possible: no assignment of the partial sums to registers (a xor of the lane's bits) lets a butterfly send and read them from the same registers in every lane
+  reference, each word fetched from the lane that holds it: 401 (output-stationary; A: 16 shuffles; B: 16 shuffles, depth 16); the chosen is 1.31x cheaper
+  chosen: A-stationary; B: 32 shuffles (unpacked); partial sums: 12 xor shuffles, cost 306
+    44 exchanges, 0 loads and 0 stores of shared memory (bank conflicts at most 1-way), 0 barriers, 12 unpacks, 64 multiply-adds, 16 adds
+    8 shuffle indices, 12 integer operations
+  proof: the plan run on symbols in all 32 lanes gives every element of D as exactly its 16 products and its C, each once (exhaustive over the lanes)
+  bound: |D - (A B + C)| <= gamma_6 (sum_k |A_ik B_kj| + |C_ij|), gamma_6 = 6 u / (1 - 6 u) = 3.576e-07, u = 2^-24
+    a product of two f16 is exact in f32 (22 significant bits, exponents within f32's normals), so only the sums round: each term through at most 6 roundings
+  holds when: every lane of the warp active, the warp a subgroup of 32 or 32 aligned lanes of a larger one; the f32 sums round to nearest
+  check: 64 random sets of fragments in f32 against the exact sums: within the bound, the largest error 0.594 of the bound (sampled, not a proof)
+  GLSL (mma_m16n8k16_f32.glsl):
+    // D = A B + C on a warp's fragments as PTX's mma.sync.aligned.m16n8k16.row.col
+    // lays them out (f16 A and B, f32 C and D), for a GPU without a matrix unit.
+    // ucas mma m16n8k16 f32 under gt1030: A-stationary; B: 32 shuffles (unpacked); partial sums: 12 xor shuffles;
+    // cost 306 (each word fetched from its lane: 401).
+    // Proved over the 32 lanes: each element of D is its 16 products and C, each once;
+    // |D - (A B + C)| <= gamma_6 (sum_k |A_ik B_kj| + |C_ij|), u = 2^-24.
+    #extension GL_KHR_shader_subgroup_basic : require
+    #extension GL_KHR_shader_subgroup_shuffle : require
+    void mma_m16n8k16_f32(uint a[4], uint b[2], float c[4], out float d[4])
+    {
+    	uint lane = gl_SubgroupInvocationID & 31u;
+    	uint base = gl_SubgroupInvocationID & ~31u;
+    	uint v0 = a[0];
+    	float v1 = unpackHalf2x16(v0).x;
+    	uint v2 = b[0];
+    	float v3 = unpackHalf2x16(v2).x;
+    	uint i0 = base | ((lane & 3u) ^ ((lane & 3u) << 3u));
+    	float v4 = subgroupShuffle(v3, i0);
+    	float v5 = v1 * v4;
+    	float v6 = unpackHalf2x16(v0).y;
+    	float v7 = unpackHalf2x16(v2).y;
+    	float v8 = subgroupShuffle(v7, i0);
+    	float v9 = fma(v6, v8, v5);
+    	uint v10 = a[2];
+    	float v11 = unpackHalf2x16(v10).x;
+    	uint v12 = b[1];
+    	float v13 = unpackHalf2x16(v12).x;
+    	float v14 = subgroupShuffle(v13, i0);
+    	float v15 = fma(v11, v14, v9);
+    	float v16 = unpackHalf2x16(v10).y;
+    	float v17 = unpackHalf2x16(v12).y;
+    	float v18 = subgroupShuffle(v17, i0);
+    	float v19 = fma(v16, v18, v15);
+    	uint i1 = i0 ^ 4u;
+    	float v20 = subgroupShuffle(v3, i1);
+    	float v21 = v1 * v20;
+    	float v22 = subgroupShuffle(v7, i1);
+    	float v23 = fma(v6, v22, v21);
+    	float v24 = subgroupShuffle(v13, i1);
+    	float v25 = fma(v11, v24, v23);
+    	float v26 = subgroupShuffle(v17, i1);
+    	float v27 = fma(v16, v26, v25);
+    	uint i2 = i0 ^ 8u;
+    	float v28 = subgroupShuffle(v3, i2);
+    	float v29 = v1 * v28;
+    	float v30 = subgroupShuffle(v7, i2);
+    	float v31 = fma(v6, v30, v29);
+    	float v32 = subgroupShuffle(v13, i2);
+    	float v33 = fma(v11, v32, v31);
+    	float v34 = subgroupShuffle(v17, i2);
+    	float v35 = fma(v16, v34, v33);
+    	uint i3 = i0 ^ 12u;
+    	float v36 = subgroupShuffle(v3, i3);
+    	float v37 = v1 * v36;
+    	float v38 = subgroupShuffle(v7, i3);
+    	float v39 = fma(v6, v38, v37);
+    	float v40 = subgroupShuffle(v13, i3);
+    	float v41 = fma(v11, v40, v39);
+    	float v42 = subgroupShuffle(v17, i3);
+    	float v43 = fma(v16, v42, v41);
+    	uint i4 = i0 ^ 16u;
+    	float v44 = subgroupShuffle(v3, i4);
+    	float v45 = v1 * v44;
+    	float v46 = subgroupShuffle(v7, i4);
+    	float v47 = fma(v6, v46, v45);
+    	float v48 = subgroupShuffle(v13, i4);
+    	float v49 = fma(v11, v48, v47);
+    	float v50 = subgroupShuffle(v17, i4);
+    	float v51 = fma(v16, v50, v49);
+    	uint i5 = i0 ^ 20u;
+    	float v52 = subgroupShuffle(v3, i5);
+    	float v53 = v1 * v52;
+    	float v54 = subgroupShuffle(v7, i5);
+    	float v55 = fma(v6, v54, v53);
+    	float v56 = subgroupShuffle(v13, i5);
+    	float v57 = fma(v11, v56, v55);
+    	float v58 = subgroupShuffle(v17, i5);
+    	float v59 = fma(v16, v58, v57);
+    	uint i6 = i0 ^ 24u;
+    	float v60 = subgroupShuffle(v3, i6);
+    	float v61 = v1 * v60;
+    	float v62 = subgroupShuffle(v7, i6);
+    	float v63 = fma(v6, v62, v61);
+    	float v64 = subgroupShuffle(v13, i6);
+    	float v65 = fma(v11, v64, v63);
+    	float v66 = subgroupShuffle(v17, i6);
+    	float v67 = fma(v16, v66, v65);
+    	uint i7 = i0 ^ 28u;
+    	float v68 = subgroupShuffle(v3, i7);
+    	float v69 = v1 * v68;
+    	float v70 = subgroupShuffle(v7, i7);
+    	float v71 = fma(v6, v70, v69);
+    	float v72 = subgroupShuffle(v13, i7);
+    	float v73 = fma(v11, v72, v71);
+    	float v74 = subgroupShuffle(v17, i7);
+    	float v75 = fma(v16, v74, v73);
+    	uint v76 = a[1];
+    	float v77 = unpackHalf2x16(v76).x;
+    	float v78 = v77 * v4;
+    	float v79 = unpackHalf2x16(v76).y;
+    	float v80 = fma(v79, v8, v78);
+    	uint v81 = a[3];
+    	float v82 = unpackHalf2x16(v81).x;
+    	float v83 = fma(v82, v14, v80);
+    	float v84 = unpackHalf2x16(v81).y;
+    	float v85 = fma(v84, v18, v83);
+    	float v86 = v77 * v20;
+    	float v87 = fma(v79, v22, v86);
+    	float v88 = fma(v82, v24, v87);
+    	float v89 = fma(v84, v26, v88);
+    	float v90 = v77 * v28;
+    	float v91 = fma(v79, v30, v90);
+    	float v92 = fma(v82, v32, v91);
+    	float v93 = fma(v84, v34, v92);
+    	float v94 = v77 * v36;
+    	float v95 = fma(v79, v38, v94);
+    	float v96 = fma(v82, v40, v95);
+    	float v97 = fma(v84, v42, v96);
+    	float v98 = v77 * v44;
+    	float v99 = fma(v79, v46, v98);
+    	float v100 = fma(v82, v48, v99);
+    	float v101 = fma(v84, v50, v100);
+    	float v102 = v77 * v52;
+    	float v103 = fma(v79, v54, v102);
+    	float v104 = fma(v82, v56, v103);
+    	float v105 = fma(v84, v58, v104);
+    	float v106 = v77 * v60;
+    	float v107 = fma(v79, v62, v106);
+    	float v108 = fma(v82, v64, v107);
+    	float v109 = fma(v84, v66, v108);
+    	float v110 = v77 * v68;
+    	float v111 = fma(v79, v70, v110);
+    	float v112 = fma(v82, v72, v111);
+    	float v113 = fma(v84, v74, v112);
+    	float v114 = subgroupShuffleXor(v35, 1u);
+    	float v115 = v19 + v114;
+    	float v116 = subgroupShuffleXor(v43, 1u);
+    	float v117 = v27 + v116;
+    	float v118 = subgroupShuffleXor(v67, 1u);
+    	float v119 = v51 + v118;
+    	float v120 = subgroupShuffleXor(v75, 1u);
+    	float v121 = v59 + v120;
+    	float v122 = subgroupShuffleXor(v93, 1u);
+    	float v123 = v85 + v122;
+    	float v124 = subgroupShuffleXor(v97, 1u);
+    	float v125 = v89 + v124;
+    	float v126 = subgroupShuffleXor(v109, 1u);
+    	float v127 = v101 + v126;
+    	float v128 = subgroupShuffleXor(v113, 1u);
+    	float v129 = v105 + v128;
+    	float v130 = subgroupShuffleXor(v119, 2u);
+    	float v131 = v115 + v130;
+    	float v132 = subgroupShuffleXor(v121, 2u);
+    	float v133 = v117 + v132;
+    	float v134 = subgroupShuffleXor(v127, 2u);
+    	float v135 = v123 + v134;
+    	float v136 = subgroupShuffleXor(v129, 2u);
+    	float v137 = v125 + v136;
+    	float v138 = c[0];
+    	float v139 = v131 + v138;
+    	float v140 = c[1];
+    	float v141 = v133 + v140;
+    	float v142 = c[2];
+    	float v143 = v135 + v142;
+    	float v144 = c[3];
+    	float v145 = v137 + v144;
+    	d[0] = v139;
+    	d[1] = v141;
+    	d[2] = v143;
+    	d[3] = v145;
+    }
+  (nofile: mma_m16n8k16_f32.glsl, 5755 bytes, checksum cd105d26)

@@ -154,8 +154,6 @@ find s10: 1024 points (sampled; matches verified on the whole domain), computing
       the fma rounds f32(a) - 10 q0 = a % 10 once: an integer in [0, 10), an f32, so it does not round
       that remainder + 1.5*2^23 is an integer in [2^23, 2^24), where every integer is an f32: the add does not round
       its bits are 0x4B000000 + (that remainder + 2^22) = 0x4B400000 + that remainder (exponent field 150, the mantissa the integer less 2^23): subtracting 0x4B400000 leaves that remainder
-ifxdivk.ucas:22:11: error: internal: fma lost its third operand in a generic rebuild
-    find s10 1
-              ^
+  cost 9   asint(fma(floor(0.100000001*t1), -10, t1) + 12582912) - 1262485504 where t1 = asfloat(u32(a) | 0x4b000000) - 8388608 all of them: a % 10 as fma(-floor(f32(a) * 0.100000001), 10, f32(a)) on the f32 pipe, read back by the bits of 1.5*2^23, then the conversion f32(a) by the bits of 2^23 (derived)
   nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

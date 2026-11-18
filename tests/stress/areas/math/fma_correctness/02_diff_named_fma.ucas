@@ -1,0 +1,9 @@
+# diff F where F wraps an fma: the named-function path calls into the same
+# simplifier.  Both the plain fma and a function of it must differentiate and
+# simplify to the expected closed form.
+F(x) = fma(x,x,x)
+diff F
+G(x) = sin(fma(x,x,x))
+diff G
+H(x) = fma(x,x,x)^2
+diff H

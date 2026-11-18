@@ -251,7 +251,8 @@ enum {
 #define IS_ASTC(op) ((op) >= O_ASTC_FIRST && (op) <= O_ASTC_LAST)
 #define IS_INST(op) ((op) >= O_BFE && (op) <= O_ASTC_LAST)
 /* built from all three operands by mk_op (the generic rebuilders) */
-#define IS_OP3(op) (IS_DOT(op) || IS_SG(op) || IS_INST(op))
+#define IS_OP3(op) (IS_DOT(op) || IS_SG(op) || IS_INST(op) || \
+	(op) == O_FMA || (op) == O_SEL)
 #define OF_COMM 1
 #define OF_INT 2      /* integer operands only */
 #define OF_REALFN 4   /* operand promoted to real */

@@ -3402,13 +3402,42 @@ wr_all(int fd, const void *p, size_t n)
 	return 0;
 }
 
-/* Read exactly n bytes, or fail. */
+/*
+ * Read exactly n bytes before an absolute CLOCK_MONOTONIC deadline.  poll()
+ * before every read: a worker that writes the length header and then stalls
+ * mid-body must not hold the parent past timeout_s.  0: all bytes read,
+ * -1: EOF/error (a corrupt reply), -2: the deadline passed (a timeout).
+ */
 static int
-rd_all(int fd, void *p, size_t n)
+rd_all_until(int fd, void *p, size_t n, const struct timespec *end)
 {
 	char *b = p;
+
 	while (n) {
-		ssize_t k = read(fd, b, n);
+		struct timespec now;
+		struct pollfd pf;
+		double left;
+		ssize_t k;
+		int ms, pr;
+
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		left = (double)(end->tv_sec - now.tv_sec) +
+		    (double)(end->tv_nsec - now.tv_nsec) / 1e9;
+		if (left <= 0)
+			return -2;
+		ms = left > 2147483.0 ? 2147483647 : (int)(left * 1000) + 1;
+		pf.fd = fd;
+		pf.events = POLLIN;
+		pf.revents = 0;
+		pr = poll(&pf, 1, ms);
+		if (pr < 0) {
+			if (errno == EINTR)
+				continue;
+			return -1;
+		}
+		if (pr == 0)
+			return -2;
+		k = read(fd, b, n);
 		if (k < 0 && errno == EINTR)
 			continue;
 		if (k <= 0)
@@ -3425,7 +3454,7 @@ run_with_timeout(const struct jv *rq, double secs)
 	int sp[2], ap[2], st = 0;
 	pid_t pid;
 	struct pollfd pf;
-	struct timespec t0, t1;
+	struct timespec t0, t1, end;
 	char c;
 	struct jv *resp;
 	double left;
@@ -3492,26 +3521,21 @@ run_with_timeout(const struct jv *rq, double secs)
 	close(sp[1]);
 	close(ap[0]);		/* we write the ack to ap[1] */
 	clock_gettime(CLOCK_MONOTONIC, &t0);
+	/* Absolute deadline, shared by the poll loop and every reply read:
+	 * the header and body below must not extend the caller's timeout_s. */
+	end = t0;
+	end.tv_sec += (time_t)secs;
+	end.tv_nsec += (long)((secs - (double)(time_t)secs) * 1e9);
+	if (end.tv_nsec >= 1000000000L) {
+		end.tv_sec++;
+		end.tv_nsec -= 1000000000L;
+	}
 	for (;;) {
 		clock_gettime(CLOCK_MONOTONIC, &t1);
 		left = secs - (t1.tv_sec - t0.tv_sec) -
 		    (t1.tv_nsec - t0.tv_nsec) / 1e9;
-		if (left <= 0) {
-			kill(pid, SIGKILL);
-			waitpid(pid, NULL, 0);
-			close(sp[0]);
-			close(ap[1]);
-			{
-				char m[120];
-				snprintf(m, sizeof m, "timed out after %g s; the state "
-				    "is unchanged", secs);
-				resp = error_response(jv_get(rq, "id"),
-				    jv_gets(rq, "cmd"), "timeout", m);
-			}
-			respond(resp);
-			jv_free(resp);
-			return 0;
-		}
+		if (left <= 0)
+			goto timed_out;
 		pf.fd = sp[0];
 		pf.events = POLLIN;
 		if (poll(&pf, 1, (int)(left * 1000) + 1) <= 0)
@@ -3532,15 +3556,24 @@ run_with_timeout(const struct jv *rq, double secs)
 				continue;
 			if (g == 1) {
 				char *rbuf = NULL;
+				int hr, br;
 				/* first byte of the u64 length, in memory order */
 				*(unsigned char *)&rlen = first;
-				if (rd_all(sp[0], (char *)&rlen + 1,
-				    sizeof rlen - 1) != 0 ||
-				    rlen > (1ULL << 30) ||
+				hr = rd_all_until(sp[0], (char *)&rlen + 1,
+				    sizeof rlen - 1, &end);
+				if (hr == -2)
+					goto timed_out;
+				if (hr != 0 || rlen > (1ULL << 30) ||
 				    (rlen && (rbuf = malloc((size_t)rlen)) == NULL))
 					goto corrupt;
 				if (rlen) {
-					if (rd_all(sp[0], rbuf, (size_t)rlen) != 0) {
+					br = rd_all_until(sp[0], rbuf,
+					    (size_t)rlen, &end);
+					if (br == -2) {
+						free(rbuf);
+						goto timed_out;
+					}
+					if (br != 0) {
 						free(rbuf);
 						goto corrupt;
 					}
@@ -3548,7 +3581,9 @@ run_with_timeout(const struct jv *rq, double secs)
 					fflush(jout);
 					free(rbuf);
 				}
-				(void)read(sp[0], &c, 1);   /* 'k' */
+				/* 'k' marker: the body is complete, so this byte is
+				 * immediate; still bound it by the same deadline. */
+				(void)rd_all_until(sp[0], &c, 1, &end);
 				/* Replay done: only now may the child become the server. */
 				(void)!wr_all(ap[1], "k", 1);
 				close(ap[1]);
@@ -3577,6 +3612,23 @@ run_with_timeout(const struct jv *rq, double secs)
 				    "the state is unchanged");
 			resp = error_response(jv_get(rq, "id"), jv_gets(rq, "cmd"),
 			    "internal", m);
+		}
+		respond(resp);
+		jv_free(resp);
+		return 0;
+	timed_out:
+		/* The worker passed timeout_s (either the poll loop or a reply
+		 * read): report the same honest timeout as a deadline expiry. */
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
+		close(sp[0]);
+		close(ap[1]);
+		{
+			char m[120];
+			snprintf(m, sizeof m, "timed out after %g s; the state "
+			    "is unchanged", secs);
+			resp = error_response(jv_get(rq, "id"),
+			    jv_gets(rq, "cmd"), "timeout", m);
 		}
 		respond(resp);
 		jv_free(resp);

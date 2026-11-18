@@ -1,0 +1,6 @@
+# Taylor series with fma.  c2_taylor used to skip tidy() whenever an fma was
+# present (the c2_taylor workaround).  With fma in IS_OP3 the coefficients go
+# through tidy normally and must still agree with the long-double Taylor jet.
+taylor fma(x,x,x) x at 0 order 5
+taylor sin(fma(x,x,x)) x at 0 order 5
+taylor fma(x,y,z) x at 0 order 3
