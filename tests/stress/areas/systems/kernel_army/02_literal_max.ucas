@@ -1,0 +1,9 @@
+# kterm.c literal bound off-by-one: the literals 2^63-8 .. 2^63-1 are valid
+# int64 values and must parse in theorem statements.  A normal literal and
+# a proof are controls.
+theorem small: forall x:int: 5 > x -> x < 5
+prove small
+theorem near1: forall x:int: 9223372036854775800 > x -> x < 9223372036854775800
+prove near1
+theorem top: forall x:int: 9223372036854775807 > x -> x < 9223372036854775807
+prove top
