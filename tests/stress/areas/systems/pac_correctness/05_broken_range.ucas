@@ -1,0 +1,8 @@
+# F1 regression: a fault can only be injected into a step that exists.
+# broken 1 is in range and must localize; broken 2 / 99 on this one-step
+# proof are out of range and must be a clear error, never "verified".
+theorem brr1: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+prove brr1
+check brr1 cert broken 1
+check brr1 cert broken 2
+check brr1 cert broken 99

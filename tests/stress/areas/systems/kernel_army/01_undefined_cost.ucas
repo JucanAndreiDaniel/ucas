@@ -1,0 +1,8 @@
+# WRONG-2 fix: pricing a bare undefined identifier used to silently return
+# cost 0 (it was read as a free variable).  Now it is reported.  The first
+# two commands are controls: a defined function and a real expression must
+# still price normally.
+f(x: i32) = x + 1
+cost f
+cost x + 1
+cost totally_undefined_function

@@ -1,0 +1,48 @@
+> theorem pac1: forall x y:int: x <= y and y <= x -> x = y
+theorem pac1: forall x y:int: x <= y and y <= x -> x = y
+> prove pac1
+pac1: proved automatically (29 kernel inferences); independent re-check: ok
+> proof pac1 pac
+pac1: forall x y:int: x <= y and y <= x -> x = y
+route a: pac1
+  rests on:
+    pac1  (29 inferences; axioms: int_discrete le_antisym)
+axioms used:
+  int_discrete   [integer arithmetic] forall n:int: n <= 0 or 1 <= n
+  le_antisym     [integer arithmetic] forall a:int: 0 <= a and 0 <= -a -> a = 0
+PAC step proof (one line per kernel inference):
+  step 22434 [assume]: x'172 <= y'173 and y'173 <= x'172
+  step 22435 [and_elim1]: x'172 <= y'173
+  step 22436 [and_elim2]: y'173 <= x'172
+  step 22437 [axiom]: forall n:int: n <= 0 or 1 <= n
+  step 22438 [all_elim]: x'172 - y'173 + 1 <= 0 or 1 <= x'172 - y'173 + 1
+  step 22439 [assume]: x'172 - y'173 + 1 <= 0
+  step 22440 [lin] a1=1 a2=1: 0 <= 1*(x'172 - y'173) + 1*(0 - (x'172 - y'173 + 1))
+  step 22441 [conv]: false
+  step 22442 [false_elim]: 0 <= x'172 - y'173
+  step 22443 [assume]: 1 <= x'172 - y'173 + 1
+  step 22444 [conv]: 0 <= x'172 - y'173
+  step 22445 [or_elim]: 0 <= x'172 - y'173
+  step 22446 [axiom]: forall n:int: n <= 0 or 1 <= n
+  step 22447 [all_elim]: -x'172 + y'173 + 1 <= 0 or 1 <= -x'172 + y'173 + 1
+  step 22448 [assume]: -x'172 + y'173 + 1 <= 0
+  step 22449 [lin] a1=1 a2=1: 0 <= 1*(y'173 - x'172) + 1*(0 - (-x'172 + y'173 + 1))
+  step 22450 [conv]: false
+  step 22451 [false_elim]: 0 <= -(x'172 - y'173)
+  step 22452 [assume]: 1 <= -x'172 + y'173 + 1
+  step 22453 [conv]: 0 <= -(x'172 - y'173)
+  step 22454 [or_elim]: 0 <= -(x'172 - y'173)
+  step 22455 [axiom]: forall a:int: 0 <= a and 0 <= -a -> a = 0
+  step 22456 [all_elim]: 0 <= x'172 - y'173 and 0 <= -(x'172 - y'173) -> x'172 - y'173 = 0
+  step 22457 [and_intro]: 0 <= x'172 - y'173 and 0 <= -(x'172 - y'173)
+  step 22458 [imp_elim]: x'172 - y'173 = 0
+  step 22459 [conv]: x'172 = y'173
+  step 22460 [imp_intro]: x'172 <= y'173 and y'173 <= x'172 -> x'172 = y'173
+  step 22461 [all_intro]: forall y:int: x'172 <= y and y <= x'172 -> x'172 = y
+  step 22462 [all_intro]: forall x y:int: x <= y and y <= x -> x = y
+
+certificate: 2 algebraic step(s) verified (2 Nullstellensatz combination(s), 0 ring normalization(s))
+> check pac1 cert
+pac1: certificate verified
+  2 algebraic step(s) verified (2 Nullstellensatz combination(s), 0 ring normalization(s))
+  scope: verifies only the polynomial identity of algebraic steps; not a full recheck of the kernel proof (premises and non-algebraic steps are trusted)
