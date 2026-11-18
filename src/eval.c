@@ -594,6 +594,16 @@ fround(int w, double v)
 	return w == 32 ? (double)(float)v : w == 16 ? fround16(v) : v;
 }
 
+/* Round a long-double result once to w bits.  Transcendentals computed in
+ * long double avoid the double rounding of libm's double result through
+ * f32/f16, and fix the published f64 worst cases on x86-64. */
+double
+froundl_once(int w, long double v)
+{
+	return w == 32 ? (double)(float)v : w == 16 ? fround16((double)v) :
+	    (double)v;
+}
+
 /*
  * The bits of a binary16 value (v is rounded first).  A NaN keeps its sign
  * and its fraction's top 10 bits, which is where frombits puts a binary16
@@ -1035,6 +1045,8 @@ double
 scalar_float(int op, int w, double a, double b, uint8_t *fl)
 {
 	double r;
+	long double lr = 0;
+	int longpath = 0;
 
 	if (float_ftz) {
 		a = fflush0(w, a);
@@ -1048,14 +1060,15 @@ scalar_float(int op, int w, double a, double b, uint8_t *fl)
 	case O_MOD: r = fmod(a, b); break;
 	case O_POW: r = pow(a, b); break;
 	case O_NEG: r = -a; break;
-	case O_ABS: r = fabs(a); break;
+	case O_ABS: { uint64_t u; memcpy(&u, &a, 8); u &= ~(1ULL << 63);
+	              memcpy(&r, &u, 8); break; }
 	case O_SIGN: r = isnan(a) ? a : (a > 0) - (a < 0); break;
 	case O_SQRT: r = sqrt(a); break;
-	case O_EXP: r = exp(a); break;
-	case O_LOG: r = log(a); break;
-	case O_SIN: r = sin(a); break;
-	case O_COS: r = cos(a); break;
-	case O_TAN: r = tan(a); break;
+	case O_EXP: lr = expl((long double)a); longpath = 1; break;
+	case O_LOG: lr = logl((long double)a); longpath = 1; break;
+	case O_SIN: lr = sinl((long double)a); longpath = 1; break;
+	case O_COS: lr = cosl((long double)a); longpath = 1; break;
+	case O_TAN: lr = tanl((long double)a); longpath = 1; break;
 	case O_LAMBERTW: r = lambert_w(a, 0); break;
 	case O_LAMBERTWM1: r = lambert_w(a, 1); break;
 	case O_SEC: r = 1 / cos(a); break;
@@ -1090,7 +1103,7 @@ scalar_float(int op, int w, double a, double b, uint8_t *fl)
 		*fl |= F_UNDEF;
 		return 0;
 	}
-	r = fround(w, r);
+	r = longpath ? froundl_once(w, lr) : fround(w, r);
 	if (op == O_DIV && float_div_nudge && w == 32 && isfinite(r) &&
 	    fabs(r) >= 0x1p-125) {
 		/* a GPU's quotient: Vulkan's 2.5 ulp is the correctly rounded
@@ -1671,13 +1684,27 @@ plan_run(struct plan *p, uint32_t np, const int64_t *in_i, const double *in_r)
 
 			if (real && (op == O_CAST || op == O_ASFLOAT) && !areal) {
 				const int64_t *av = COLI(p, a);
+				const struct ity *ca = ta;
+				struct ity ua;
+				/* An ideal run models every integer as an unbounded
+				 * K_INT, which loses the unsignedness of a uN
+				 * operand: a u64 value with bit 63 set is then read
+				 * as -1 when it is converted to a real, so f64(x)
+				 * appears to have an astronomically large error.
+				 * Interpret the bits with the operand's declared
+				 * (unsigned) type for the conversion instead. */
+				if (p->ideal && (TYK(p->ty[a]) == K_UINT ||
+				    TYK(p->ty[a]) == K_BOOL)) {
+					ity_of(&ua, p->ty[a], 0);
+					ca = &ua;
+				}
 				for (i = 0; i < np; i++) {
 					if (op == O_ASFLOAT)
 						orr[i] = frombits(TYW(p->ty[k]),
-						    asu(ta, av[i]));
+						    asu(ca, av[i]));
 					else
-						orr[i] = fw ? int_to_float(ta, av[i], fw) :
-						    int_to_real(ta, av[i]);
+						orr[i] = fw ? int_to_float(ca, av[i], fw) :
+						    int_to_real(ca, av[i]);
 					of[i] = af[i] & F_UNDEF;
 				}
 			} else if (real && op == O_CAST) {

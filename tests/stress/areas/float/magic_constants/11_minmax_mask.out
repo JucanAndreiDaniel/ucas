@@ -1,13 +1,16 @@
 > mn(x: f32, y: f32) = asfloat(asuint(y) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) < asuint(y)))))
-  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+  note: "^" between integers, next to bitwise operators: read as power, not xor (bitwise exclusive or) (write xor or ** to say which)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > mx(x: f32, y: f32) = asfloat(asuint(x) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) > asuint(y)))))
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > rmin(x: f32, y: f32) = min(x, y)
 > rmax(x: f32, y: f32) = max(x, y)
 > equiv mn ~ rmin
-mn and rmin differ at 49275 points of the sample, e.g. x=-6.01408293e+33, y=-1.93719168e-23: -1.93719168e-23 vs -6.01408293e+33
+mn and rmin differ at 65536 points of the sample, e.g. x=-3.40282347e+38, y=-3.40282347e+38: 1.40129846e-45 vs -3.40282347e+38
 > equiv mx ~ rmax
-mx and rmax differ at 16259 points of the sample, e.g. x=1.09271443e-14, y=7.15300517e+24: 1.09271443e-14 vs 7.15300517e+24
+mx and rmax differ at 65536 points of the sample, e.g. x=-3.40282347e+38, y=-3.40282347e+38: 1.40129846e-45 vs -3.40282347e+38
 > mnp(x: f32 in 0..1e30, y: f32 in 0..1e30) = asfloat(asuint(y) ^ ((asuint(x) ^ asuint(y)) & -(u32(asuint(x) < asuint(y)))))
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > rminp(x: f32 in 0..1e30, y: f32 in 0..1e30) = min(x, y)
 > equiv mnp ~ rminp
-mnp and rminp are equal on the domain of mnp (proved by SAT: 6096 AIG nodes, 1887 conflicts)
+mnp and rminp differ at 65536 points of the sample, e.g. x=0, y=0: 1.40129846e-45 vs 0
