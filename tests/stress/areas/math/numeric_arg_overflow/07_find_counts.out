@@ -1,8 +1,8 @@
 > f(x: u8) = x*x
 > find f -1
-find 1: 1 point, computing in u8, costs from gt1030
-  cost 0   1                                        constant
-  [searched every term up to cost 12: 8 distinct columns; 'more' continues]
+07_find_counts.ucas:2:6: error: find: the number of results must be from 0 to 2147483647
+    find f -1
+         ^
 > find f 0
 find f: 256 points, computing in u8, costs from gt1030
   dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
@@ -59,16 +59,10 @@ find f: 256 points, computing in u8, costs from gt1030
   cost 7   [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 0, 33, 68, 105, 144, 185, 228, 17, 64, 113, 164, 217, 16, 73, 132, 193, 0, 65, 132, 201, 16, 89, 164, 241, 64, 145, 228, 57, 144, 233, 68, 161, 0, 97, 196, 41, 144, 249, 100, 209, 64, 177, 36, 153, 16, 137, 4, 129, 0, 129, 4, 137, 16… (827 more characters) lookup table (baseline)
   [searched every term up to cost 4: 65536 distinct columns, bank full; 'more' continues]
 > find f -2147483648
-find 0: 1 point, computing in u8, costs from gt1030
-  cost 0   0                                        constant
-  [searched every term up to cost 12: 8 distinct columns; 'more' continues]
+07_find_counts.ucas:8:6: error: find: the number of results must be from 0 to 2147483647
+    find f -2147483648
+         ^
 > find f 18446744073709551615
-find f: 256 points, computing in u8, costs from gt1030
-  dot products under gt1030 (sums of products laid into lanes; cost 3 as written):
-  cost 2   u8(udot4x8(x, x))
-           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: x * x
-           x in 0..255 (proved range)
-           udot4x8's sum is in 0..65025: it does not wrap
-           exhaustive
-  nothing new up to cost 1
-  [searched every term up to cost 1: 54 distinct columns; 'more' continues]
+07_find_counts.ucas:9:28: error: find: the number of results must be from 0 to 2147483647
+    find f 18446744073709551615
+                               ^

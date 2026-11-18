@@ -17,10 +17,18 @@ bug stays reproducible; they are not assertions that the behaviour is correct.
 | WRONG | 2 | `associator` reports non-associativity for quaternions (and for associative octonion subal… |
 | LIMIT | 1 | malformed `cd(N)` spellings are accepted and a standalone `cd(4)` is not algebra syntax |
 
+**Update (ARMY2):** WRONG-1 and WRONG-2 are now **FIXED** in `src/hyper.c`; the
+two bug goldens (`81_`, `82_`) were recaptured from the fixed binary and now
+record the corrected behaviour.  See `../hypercomplex_army/FINDINGS.md` for the
+fixes, two further bugs found and fixed, and regression/control goldens.
+
 ## Findings
 
 ### WRONG-1 — `associator` reports non-associativity for quaternions (and for associative octonion subalgebras) when only floating-point rounding is at fault
-**Severity:** WRONG
+**Severity:** WRONG — **FIXED** (ARMY2): `cmd_assoc` now uses `h_assoc()`, a
+component-wise relative test (`|r1[k]-r2[k]| <= 1e-9 * max(|r1[k]|,|r2[k]|) + 1e-12`)
+instead of the absolute `h_n2(r,d) < 1e-24`.  This also avoids the opposite
+failure (a genuine failure in a small component hidden by huge components).
 **Expected:** _not recorded_
 **Reproducer:**
 Reproducer (CLI, copy-pasteable from this directory):
@@ -61,7 +69,12 @@ with fractional coefficients print a mathematically-zero result as `0i + 0k` or
 `associator (1+i)/3, (1+j)/7, (1+k)/11`. Cosmetic, but it is the same missing relative scale.
 
 ### WRONG-2 — a numeric coefficient on an `e`-unit is parsed as scientific notation in isolation, but as `coef*eN` inside a hypercomplex expression
-**Severity:** WRONG
+**Severity:** WRONG — **FIXED** (ARMY2): `hy_scan()` now makes a bare `2e1`,
+`3e2` or `4e3` (coefficient > 1, unit index <= 3) force the octonion algebra,
+so `conj(1+2e1)`, `abs(1+2e1+3e2+4e3)` and `(1+2e1)^2` take the unit reading
+just as `(1+2e1)*(1+e2)` already did.  Canonical scientific forms (`1e3`,
+`2e10`, `2.0e1`) are unchanged.  A separate fix stops `hy_prep()` from turning
+`1e8` into a unit `e8` that does not exist in an octonion.
 _Original classification: `WRONG / NLP`._
 **Expected:** _not recorded_
 **Reproducer:**

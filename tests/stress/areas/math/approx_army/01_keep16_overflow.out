@@ -1,0 +1,16 @@
+> approx sin(x) in 0..1 degree 20 nosym keep endpoints keep 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.11,0.12,0.13,0.14,0.15 as f32 norational nosplit noreduce list 1
+approx sin(x) on [0, 1] as f32, fma
+  checked: simple zero at x = 0: fitting x*P(x), exact zero
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  exact at: x = 0 -> 0, x = 1 -> 0.841470985, x = 0.00999999978 -> 0.00999983311, x = 0.0199999996 -> 0.0199986662, x = 0.0299999993 -> 0.0299954995, x = 0.0399999991 -> 0.0399893333, x = 0.0500000007 -> 0.04997917, x = 0.0599999987 -> 0.0599640051, x = 0.0700000003 -> 0.0699428476, x = 0.0799999982 -> 0.0799146922, x = 0.0900000036 -> 0.0898785528, x = 0.109999999 -> 0.1097783, x = 0.119999997 -> 0.119712205, x = 0.129999995 -> 0.129634138, x = 0.140000001 -> 0.139543115, x = 0.150000006 -> 0.149438138
+  fits in real arithmetic (max relative error of x*P(x)):
+    deg  cheb interp  cheb econ    minimax      no exact pts
+    20   0.00567      -            4.91e-08     1.77e-19
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130823 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   20    horner+fma  49.4 ulp (92.7)          3.5e-06       2.94e-06      20   at x=0.998596191  exact pts NO  keep +27744909126761%
+      x*P(x): fma(x*x, fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(-1.85660172, x, 11.5286169), x, -31.4496613), x, 49.6596603), x, -50.4232216), x, 34.6874084), x, -16.6647072), x, 5.71158314), x, -1.42148781), x, 0.260584623), x, -0.0355354324), x, 0.00362496683), x, -0.00027578458), x, -0.00018283751), x, -6.43125929e-07), x, 0.00833335239), x, -3.82935933e-10), x, -0.166666687), x, -3.6691553e-14), x)
+      rounding of ap1, first order, 20 operations, relative, in u = 2^-24: worst case 120, probable no better (under 16 operations), expected 30.9; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]' (dominated or worse)

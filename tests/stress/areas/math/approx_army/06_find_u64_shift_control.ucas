@@ -1,0 +1,5 @@
+# Control for the find.c SIGFPE: a u64 variable shift with a range that makes
+# the sampled target column reach INT64_MIN.  The CLI find engine's holes()
+# solves affine templates over the same columns; it must not trap.
+f(x: u64 in 0..3, n: i32 in 60..63) = x << n
+find f 2

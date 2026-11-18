@@ -1,0 +1,10 @@
+# Derivatives of expressions that KEEP an fma node.  diff_node() itself has
+# always differentiated fma, but simplifying the result sends fma through the
+# generic rebuilders (tidy1/close).  With fma missing from IS_OP3 those rebuilt
+# a malformed two-operand fma; the workaround skipped simplification entirely.
+# Now fma is rebuilt with all three operands, so the derivative is fully
+# simplified and still prints correctly.
+diff sin(fma(x,x,x))
+diff fma(x,x,x)
+diff fma(x,y,z)
+diff exp(fma(x,x,x))
