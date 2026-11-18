@@ -1,0 +1,13 @@
+# NPN classes of the 4-input Boolean functions and their minimum networks
+# of 3-input tables (npn.c).  The tool reports 222 classes and that every
+# class's representative network was proved minimum.  A bitwise cone of
+# four leaves is rewritten as its class's network of LUT3 tables; the
+# rewrite gets a second opinion from SAT in find, and a model with no
+# table instruction must leave the cone alone.
+gates npn
+m(a: u32, b: u32, c: u32, d: u32) = (a & b) | (a & c) | (a & d) | (b & c) | (b & d) | (c & d)
+find m 1
+model nolut : gt1030 { nofuse lop3 }
+use nolut
+find m 1
+use gt1030

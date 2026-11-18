@@ -1,0 +1,29 @@
+> lperm [5,2,7,0,3,6,1,4][lane] lanes 8 model rdna2
+lperm: the lane map [5, 2, 7, 0, 3, 6, 1, 4][lane] over 8 lanes
+  map: 5 2 7 0 3 6 1 4
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor); lane xor 2 in the lanes of 0xf5 (sg_shuffle_xor); lane xor 1 in every lane (sg_shuffle_xor), cost 12 (not the cheapest)
+  one shuffle by the index: cost 10.875
+  chosen under rdna2: one shuffle by an index (sg_shuffle), cost 10.875
+> lperm (lane + 4) & 31 model rdna2
+lperm: the lane map lane + 4 & 0x1f over 32 lanes
+  map: 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 0 1 2 3
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0xf000f (sg_shuffle_xor); lane xor 8 where lane & 4 is 0 (sg_shuffle_xor); lane xor 4 in every lane (sg_shuffle_xor), cost 12 (not the cheapest)
+  one shuffle by the index: cost 6
+  chosen under rdna2: one shuffle by an index (sg_shuffle), cost 6
+> model dearshuf : rdna2 { sg_shuffle: 20 }
+> lperm [0,0,2,3,4,5,6,7][lane] lanes 8 model dearshuf
+lperm: the lane map [0, 0, 2, 3, 4, 5, 6, 7][lane] over 8 lanes
+  map: 0 0 2 3 4 5 6 7
+  not affine over F2, and it copies a lane to two: one shuffle by its index
+  one shuffle by the index: cost 26.875
+  chosen under dearshuf: one shuffle by an index (sg_shuffle), cost 26.875
+> lperm (lane * 5) & 31 model dearshuf
+lperm: the lane map 5lane & 0x1f over 32 lanes
+  map: 0 5 10 15 20 25 30 3 8 13 18 23 28 1 6 11 16 21 26 31 4 9 14 19 24 29 2 7 12 17 22 27
+  not affine over F2, a permutation of the lanes (an unread lane's source any the others leave): a Benes network
+  stages: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x52945294 (sg_shuffle_xor); lane xor 8 in the lanes of 0xc6c6c6c6 (sg_shuffle_xor); lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor), cost 17
+  one shuffle by the index: cost 25
+  chosen under dearshuf: 3 stages (a Benes network: the map is not affine): lane xor 16 in the lanes of 0x52945294 (sg_shuffle_xor); lane xor 8 in the lanes of 0xc6c6c6c6 (sg_shuffle_xor); lane xor 4 where lane & 1 is not 0 (sg_shuffle_xor), cost 17
+  proved: the stages composed lane by lane give the map on every one of the 32 lanes (lane l ends with the value of lane g_1(...g_n(l)), by the shuffle's and the select's definitions)

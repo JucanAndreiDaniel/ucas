@@ -1,0 +1,12 @@
+# Sums of products laid into the model's dot forms (dot.c search).  Each
+# rewrite is cheaper under the model and proved by SAT on the whole domain;
+# a model without the forms must leave the sum alone.
+p(x: u32, y: u32) = (x & 255)*(y & 255) + ((x >> 8) & 255)*((y >> 8) & 255) + ((x >> 16) & 255)*((y >> 16) & 255) + (x >> 24)*(y >> 24)
+find p 1
+use rdna2
+find p 1
+use gt1030
+model nodot : gt1030 { dot4x8: none, dot4x8sat: none }
+use nodot
+find p 1
+use gt1030

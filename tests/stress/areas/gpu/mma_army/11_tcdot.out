@@ -1,0 +1,24 @@
+> tcdot n 8 samples 256 seed 1
+tc_dot: a block FMA of 8 f16 products and an f32 c (Ampere's f16 HMMA with f32 accumulate, as modelled by arXiv 2512.07004)
+  semantics: products exact; aligned to E, the largest exponent among the products and c (at least -132), in a window of 24 fractional bits, each term truncated toward zero; one exact integer sum; normalised once and truncated to f32
+  bound (derived): |tc_dot - sum T| < 9 2^(E-24) + 2^-23 |S| <= 9 2^-24 max|T| + 2^-23 |sum T| + ..., T the 9 products and c, S the window's sum
+    each term loses less than one unit of the window, 2^(E-24), by its truncation (none for a term on the window's grid); the final truncation to 24 bits loses less than 2^-23 |S|; and 2^E <= max|T| where the largest term's significand is at least 1 (normal inputs)
+    relative to the largest term, not to sum |T|: with cancellation the result's own relative error is unbounded
+  checked on 256 random blocks (sampled, seed 1): the operation as written and an independent transcription agree on 256; the bound holds on 256, the error at most 0.533 of it
+  largest error relative to max|T|: 2.48e-07 (2^-24 = 5.96e-08); relative to |sum T|: 1.13e-06
+> tcdot n 8 cancel seed 3
+tc_dot: a block FMA of 8 f16 products and an f32 c (Ampere's f16 HMMA with f32 accumulate, as modelled by arXiv 2512.07004)
+  semantics: products exact; aligned to E, the largest exponent among the products and c (at least -132), in a window of 24 fractional bits, each term truncated toward zero; one exact integer sum; normalised once and truncated to f32
+  bound (derived): |tc_dot - sum T| < 9 2^(E-24) + 2^-23 |S| <= 9 2^-24 max|T| + 2^-23 |sum T| + ..., T the 9 products and c, S the window's sum
+    each term loses less than one unit of the window, 2^(E-24), by its truncation (none for a term on the window's grid); the final truncation to 24 bits loses less than 2^-23 |S|; and 2^E <= max|T| where the largest term's significand is at least 1 (normal inputs)
+    relative to the largest term, not to sum |T|: with cancellation the result's own relative error is unbounded
+  checked on 256 random blocks (sampled, seed 3, the first product cancelled by the last): the operation as written and an independent transcription agree on 256; the bound holds on 256, the error at most 0.405 of it
+  largest error relative to max|T|: 1.87e-07 (2^-24 = 5.96e-08); relative to |sum T|: 0.0808
+> tcdot n 16 samples 128 seed 9
+tc_dot: a block FMA of 16 f16 products and an f32 c (Ampere's f16 HMMA with f32 accumulate, as modelled by arXiv 2512.07004)
+  semantics: products exact; aligned to E, the largest exponent among the products and c (at least -132), in a window of 24 fractional bits, each term truncated toward zero; one exact integer sum; normalised once and truncated to f32
+  bound (derived): |tc_dot - sum T| < 17 2^(E-24) + 2^-23 |S| <= 17 2^-24 max|T| + 2^-23 |sum T| + ..., T the 17 products and c, S the window's sum
+    each term loses less than one unit of the window, 2^(E-24), by its truncation (none for a term on the window's grid); the final truncation to 24 bits loses less than 2^-23 |S|; and 2^E <= max|T| where the largest term's significand is at least 1 (normal inputs)
+    relative to the largest term, not to sum |T|: with cancellation the result's own relative error is unbounded
+  checked on 128 random blocks (sampled, seed 9): the operation as written and an independent transcription agree on 128; the bound holds on 128, the error at most 0.296 of it
+  largest error relative to max|T|: 1.69e-07 (2^-24 = 5.96e-08); relative to |sum T|: 1.7e-06

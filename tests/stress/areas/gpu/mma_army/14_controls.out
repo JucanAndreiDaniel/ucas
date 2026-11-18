@@ -1,0 +1,24 @@
+> ad1(x: u32 in 0..1023, y: u32 in 0..1023) = absdiff4x8(x, y)
+> ad2(x: u32 in 0..1023, y: u32 in 0..1023) = absdiff4x8(y, x)
+> equiv ad1 ad2
+ad1 and ad2 are equal on the domain of ad1 (exhaustive)
+> t1(x: f16) = tc_dot([x], [1.0], 0.0)
+> i1(x: f16) = f32(x)
+> equiv t1 i1
+t1 and i1 are equal on the domain of t1 (exhaustive)
+> sx(x: u32, y: i32 in -8..7) = i32(i8(x >> 8)) + y
+> find sx 1
+find sx: 1024 points (sampled; matches verified on the whole domain), computing in i32, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 4 as written):
+  cost 2   sudot4x8(x, 0x100) + y
+           sudot4x8 (4 x 8-bit lanes, signed x unsigned): lane 1: i32(i8(x >> 8)) * 1
+           i32(i8(x >> 8)) is bits 8..15 of x read signed: lane 1 as it is
+           the word's other lanes meet zero lanes
+           sudot4x8's sum is in -128..127: it does not wrap
+           proved by SAT: 252 AIG nodes, 0 conflicts
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> d(x: u32, y: u32) = udot4x8(x, y)
+> e(x: u32, y: u32) = (x & 255)*(y & 255) + ((x >> 8) & 255)*((y >> 8) & 255) + ((x >> 16) & 255)*((y >> 16) & 255) + (x >> 24)*(y >> 24)
+> equiv d e
+d and e are equal on the domain of d (proved by SAT: 2606 AIG nodes, 0 conflicts)
