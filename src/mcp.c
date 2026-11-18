@@ -26,6 +26,8 @@
 #include <string.h>
 #include <unistd.h>
 
+void json_reset_all(void);	/* jsonmode.c: fresh session on re-initialize */
+
 static const char *const versions[] = {"2025-06-18", "2025-03-26",
 	"2024-11-05", NULL};
 static char proto[16] = "2025-06-18";
@@ -257,6 +259,10 @@ cmd_index(const char *name)
 
 /* ---- JSON-RPC ---- */
 
+/* a JSON-RPC notification (no id) is being handled: JSON-RPC forbids a reply,
+ * but the call must still run and mutate the session (e.g. session/define). */
+static int notifying;
+
 static struct jv *
 copy(const struct jv *v)
 {
@@ -264,6 +270,8 @@ copy(const struct jv *v)
 	struct jv *r;
 	char err[64];
 
+	if (v == NULL)		/* a notification has no id */
+		return jv_new(J_NULL);
 	jv_write(&b, v);
 	r = jv_parse(b.p, err, sizeof err, NULL);
 	free(b.p);
@@ -274,8 +282,13 @@ static void
 send(struct jv *msg)
 {
 	struct sbuf b = {0};
-	FILE *o = json_out();
+	FILE *o;
 
+	if (notifying) {	/* notifications must not be answered */
+		jv_free(msg);
+		return;
+	}
+	o = json_out();
 	jv_write(&b, msg);
 	sb_putc(&b, '\n');
 	fputs(b.p, o);
@@ -766,8 +779,12 @@ initialize(const struct jv *id, const struct jv *params)
 {
 	const char *want = jv_gets(params, "protocolVersion");
 	struct jv *r = jv_new(J_OBJ), *cap = jv_new(J_OBJ), *t, *info;
-	int k;
+	int again, k;
 
+	/* the flag survives reset's re-exec, so every handshake after the
+	 * first on a process starts a genuinely fresh session */
+	again = getenv("UCAS_MCP_SESSION") != NULL;
+	setenv("UCAS_MCP_SESSION", "1", 1);
 	snprintf(proto, sizeof proto, "%s", versions[0]);
 	for (k = 0; want && versions[k]; k++)
 		if (!strcmp(versions[k], want))
@@ -796,6 +813,10 @@ initialize(const struct jv *id, const struct jv *params)
 	    "args.assume.KEY.  structuredContent holds the typed result, "
 	    "checks and proof."));
 	rpc_result(id, r);
+	/* a second handshake must not inherit the previous client's session:
+	 * no definitions, assumptions, models or bases leak through it. */
+	if (again)
+		json_reset_all();
 }
 
 static void
@@ -807,22 +828,32 @@ dispatch(const struct jv *msg)
 	    "jsonrpc");
 	int notif = id == NULL;
 
+	/* A message with no id is a notification: JSON-RPC forbids any reply,
+	 * including an error for a malformed one.  Set the suppress flag before
+	 * the invalid-request branch so a bad notification cannot emit an
+	 * unsolicited id:null reply and desync the reply stream.  Every exit
+	 * path below clears it (notifications that get dropped, invalid ones,
+	 * and completed calls alike). */
+	notifying = notif;
 	if (msg->t != J_OBJ || jr == NULL || strcmp(jr, "2.0") || method == NULL ||
 	    (id && id->t != J_STR && id->t != J_NUM)) {
 		if (msg->t == J_OBJ && method == NULL && (jv_get(msg, "result") ||
 		    jv_get(msg, "error")))
-			return;		/* a response to us: we send no requests */
+			goto out;	/* a response to us: we send no requests */
 		rpc_error(id && (id->t == J_STR || id->t == J_NUM) ? id : NULL,
 		    -32600, "invalid request");
-		return;
+		goto out;
 	}
 	if (params && params->t != J_OBJ) {
 		if (!notif)
 			rpc_error(id, -32602, "params must be an object");
-		return;
+		goto out;
 	}
-	if (notif)
-		return;		/* notifications/initialized, cancelled ... */
+	/* Drop only genuine notifications.  A tools/call without an id is a
+	 * notification too, but it still has to run: otherwise a session/define
+	 * sent without an id silently fails to register the definition. */
+	if (notif && strcmp(method, "tools/call"))
+		goto out;	/* notifications/initialized, cancelled ... */
 	if (!strcmp(method, "initialize"))
 		initialize(id, params);
 	else if (!strcmp(method, "ping"))
@@ -875,6 +906,8 @@ dispatch(const struct jv *msg)
 		snprintf(m, sizeof m, "method not found: %.100s", method);
 		rpc_error(id, -32601, m);
 	}
+out:
+	notifying = 0;
 }
 
 int
