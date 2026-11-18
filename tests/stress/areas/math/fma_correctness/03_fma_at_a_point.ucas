@@ -1,0 +1,14 @@
+# F'(a) at a point.  The at-a-point path (calc2_syntax.inc) calls
+# tidy(diff_node(...)) directly, bypassing the old has_fma/simp_diff workaround.
+# Before the IS_OP3 fix this failed with "internal: fma lost its third operand
+# in a generic rebuild"; now it returns a number even though the derivative
+# still contains an fma.
+F(x) = sin(fma(x,x,x))
+F'(1)
+G(x) = fma(x,x,x)^2
+G'(2)
+H(x) = fma(x,x,x)
+H'(1)
+K(x) = cos(fma(x,x,x))
+K''(1)
+K'''(1)

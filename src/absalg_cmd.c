@@ -74,6 +74,23 @@ split_commas(char *s, char **part, int max)
 	return n;
 }
 
+/* number of top-level comma-separated parts in s (for dynamic callers) */
+static int
+nparts(const char *s)
+{
+	int n = 1, depth = 0;
+
+	for (; *s; s++) {
+		if (*s == '[' || *s == '(')
+			depth++;
+		else if (*s == ']' || *s == ')')
+			depth--;
+		else if (*s == ',' && depth == 0)
+			n++;
+	}
+	return n;
+}
+
 /* the word w at top level in s (as a whole word): its position or NULL */
 static char *
 find_word(char *s, const char *w)
@@ -1109,12 +1126,14 @@ cmd_abelem(char *s)
 static void
 cmd_absub(char *s)
 {
-	char *part[64];
+	char **part;
 	int np, i, j, n;
 	struct fgab G, S, Q;
 	struct zmat gens;
 
-	np = split_commas(s, part, 64);
+	np = nparts(s);
+	part = xcalloc((size_t)np, sizeof *part);
+	np = split_commas(s, part, np);
 	if (np < 2)
 		fail("absub: G, x1, x2, ...");
 	need_group(&G, part[0], "absub");
@@ -1170,6 +1189,7 @@ have:
 	ab_free(&G);
 	ab_free(&S);
 	ab_free(&Q);
+	free(part);
 }
 
 static void
@@ -1840,7 +1860,7 @@ struct popts {
 	int order;
 	u64 p;
 	int nv;
-	char var[MPL_MAXV][16];
+	char var[MPL_MAXV][MPL_NAMELEN];
 };
 
 static int
@@ -1913,7 +1933,8 @@ read_popts(const char *t, struct popts *o)
 					break;
 				if (o->nv == MPL_MAXV)
 					fail("polynomials: at most %d variables", MPL_MAXV);
-				while ((isalnum((unsigned char)*p) || *p == '_') && n < 15)
+				while ((isalnum((unsigned char)*p) || *p == '_') &&
+				    n < MPL_NAMELEN - 1)
 					o->var[o->nv][n++] = *p++;
 				o->var[o->nv++][n] = 0;
 			}
@@ -1951,9 +1972,10 @@ popts(char *s, struct popts *o, const char *dflt_order)
 		/* collect identifiers */
 		for (p = s; *p;) {
 			if (isalpha((unsigned char)*p) || *p == '_') {
-				char w[16];
+				char w[MPL_NAMELEN];
 				int n = 0, i;
-				while ((isalnum((unsigned char)*p) || *p == '_') && n < 15)
+				while ((isalnum((unsigned char)*p) || *p == '_') &&
+				    n < MPL_NAMELEN - 1)
 					w[n++] = *p++;
 				while (isalnum((unsigned char)*p) || *p == '_')
 					p++;
@@ -1977,7 +1999,7 @@ popts(char *s, struct popts *o, const char *dflt_order)
 			for (i = 1; i < o->nv; i++)
 				for (j = i; j > 0 && strcmp(o->var[j - 1], o->var[j]) > 0;
 				    j--) {
-					char t[16];
+					char t[MPL_NAMELEN];
 					strcpy(t, o->var[j]);
 					strcpy(o->var[j], o->var[j - 1]);
 					strcpy(o->var[j - 1], t);
@@ -2021,16 +2043,20 @@ ring_desc(const struct mring *R)
 static int
 need_polys(const struct mring *R, char *s, struct mpl **out, const char *what)
 {
-	char *part[256];
-	int n = split_commas(s, part, 256), i;
-	struct mpl *f = xcalloc((size_t)n + 1, sizeof *f);
+	char **part;
+	int np = nparts(s), n, i;
+	struct mpl *f;
 
+	part = xcalloc((size_t)np, sizeof *part);
+	n = split_commas(s, part, np);
+	f = xcalloc((size_t)n + 1, sizeof *f);
 	for (i = 0; i < n; i++) {
 		const char *e;
 		if (!*part[i] || !mpl_parse(R, part[i], &f[i], &e) ||
 		    *trim((char *)e))
 			fail("%s: cannot read the polynomial \"%s\"", what, part[i]);
 	}
+	free(part);
 	*out = f;
 	return n;
 }
@@ -2260,7 +2286,7 @@ cmd_pmsnf(char *s)
 	struct popts o;
 	struct mring R;
 	struct pmat A, D, U, V;
-	char *rows[64], *body;
+	char **rows, *body;
 	int nr, nc = -1, i, j, rank;
 
 	s = popts(s, &o, "grevlex");
@@ -2275,14 +2301,20 @@ cmd_pmsnf(char *s)
 	if (body[0] != '[' || body[strlen(body) - 1] != ']')
 		fail("pmsnf: a matrix [[x, 1], [0, x^2]]");
 	body[strlen(body) - 1] = 0;
-	nr = split_commas(body + 1, rows, 64);
+	{
+		int ner = nparts(body + 1);
+		rows = xcalloc((size_t)ner, sizeof *rows);
+		nr = split_commas(body + 1, rows, ner);
+	}
 	for (i = 0; i < nr; i++) {
-		char *cells[64], *r = trim(rows[i]);
-		int c;
+		char **cells, *r = trim(rows[i]);
+		int c, nec;
 		if (r[0] != '[' || r[strlen(r) - 1] != ']')
 			fail("pmsnf: rows like [x, 1]");
 		r[strlen(r) - 1] = 0;
-		c = split_commas(r + 1, cells, 64);
+		nec = nparts(r + 1);
+		cells = xcalloc((size_t)nec, sizeof *cells);
+		c = split_commas(r + 1, cells, nec);
 		if (nc < 0) {
 			nc = c;
 			pm_init(&A, nr, nc);
@@ -2294,7 +2326,9 @@ cmd_pmsnf(char *s)
 			    *trim((char *)e))
 				fail("pmsnf: cannot read \"%s\"", cells[j]);
 		}
+		free(cells);
 	}
+	free(rows);
 	memset(&D, 0, sizeof D);
 	memset(&U, 0, sizeof U);
 	memset(&V, 0, sizeof V);

@@ -1,0 +1,15 @@
+> F(x) = fma(x,x,x)
+> diff F
+d/dx F = 2x + 1
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> G(x) = sin(fma(x,x,x))
+> diff G
+d/dx G = 2x*cos(fma(x, x, x)) + cos(fma(x, x, x))
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 4e-10)
+> H(x) = fma(x,x,x)^2
+> diff H
+d/dx H = 4x*fma(x, x, x) + 2fma(x, x, x)
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)

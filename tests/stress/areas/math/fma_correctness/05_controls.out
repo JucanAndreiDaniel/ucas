@@ -1,0 +1,33 @@
+> diff x^3 - 3x
+d/dx x^3 - 3x = 3x^2 - 3
+  holds for every real x
+  check: matches central differences at 201 points (max relative difference 2e-15)
+> diff x^4 + x^2*y + y^3 x y
+∂²/∂y∂x x^4 + x^2*y + y^3 = 2x
+  holds wherever the formula is defined
+  check: each order matches central differences at 200 points (max relative difference 3e-13)
+> F(x) = sin(x)
+> F'(1)
+F'(1) = 0.5403023059
+  from F' = cos(x)
+> F''(1)
+F''(1) = -0.8414709848
+  from F'' = -sin(x)
+> taylor sin(x) x at 0 order 5
+Maclaurin (Taylor at 0) series of sin(x) at x = 0, through order 5:
+  sin(x) = x - x^3/6 + x^5/120 + O(x^6)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 0 1 0 -1/6 0 1/120
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 1.98e-11 at x = 0 ± 1/10, 1.55e-13 at ± 1/20, 1.21e-15 at ± 1/40 (shrinks like h^7.0; expected >= 6)
+> parse fma(x,x,x)
+fma(x, x, x)
+> parse sin(fma(x,x,x))
+sin(fma(x, x, x))
+> simplify sin(fma(x,x,x))
+  ucas: trig sin(fma(x,x,x))
+  note: x is taken as real
+trig forms of sin(fma(x,x,x))
+  exponential (Euler): sin u = (e^(iu) - e^(-iu))/(2i)
+    = (exp(i*fma(x, x, x)) - exp(-i*fma(x, x, x)))/(2*i)
+    check: equal at 64 of 64 sample points
+  simplest: sin(fma(x,x,x))  (as given)
