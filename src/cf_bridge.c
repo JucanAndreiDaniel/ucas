@@ -2713,6 +2713,14 @@ eng_find(struct bx *B)
 
 	if (secs <= 0 || !TY_SIZED(N.ty[B->e]) || N.ty[B->e] == TY_BOOL)
 		return;
+	/* find.c's holes() fits y = a*t + b with (y[p]-y[0]) / (c[p]-c[0]).
+	 * In a signed 64-bit working width the sampled columns can hold
+	 * INT64_MIN and a step of -1, so that division is INT64_MIN / -1 and
+	 * raises SIGFPE (an overflow find.c does not guard).  Skip find for
+	 * signed 64-bit values: no rewrite from this engine is better than a
+	 * crash, and cfront's other engines still prove the rewrites. */
+	if (TYK(N.ty[B->e]) == K_SINT && TYW(N.ty[B->e]) == 64)
+		return;
 	for (k = 0; k < f.np; k++)
 		if (!TY_ISINT(f.p[k].ty))
 			return;
@@ -2722,9 +2730,12 @@ eng_find(struct bx *B)
 		model_set_active(m);
 	else if (!old)
 		return;
-	/* the depth is fixed (deterministic); the time only a safety cap
-	 * (find's share of ebudget), not reached on small values */
-	n = find_cands(&f, 4, secs > 60 ? secs : 60, out, why, 8);
+	/* find's enumerative levels are cut at the caller's remaining budget
+	 * share (eng_left()).  The old 60 s floor made a small `c optimize
+	 * budget 2` run for many seconds regardless of the requested budget:
+	 * pass the real share through, with only a small minimum so a tiny
+	 * share still lets find do useful work. */
+	n = find_cands(&f, 4, secs > 0.5 ? secs : 0.5, out, why, 8);
 	model_set_active(old);
 	if (cf_run_opts() && cf_run_opts()->trace)
 		printf("  trace:   find: %d forms\n", n);

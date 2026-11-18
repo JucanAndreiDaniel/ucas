@@ -7,9 +7,13 @@
  * functions are reachable through a wrapper), and a generated harness
  * calls both on edge and random inputs and compares the results and
  * every buffer passed by pointer.  The original is compiled with UBSan's
- * minimal runtime for signed overflow, shifts and division, whose
- * handlers the harness defines: an input on which the original has UB
- * is skipped (the rewrites are only claimed where C defines a value).
+ * minimal runtime for signed overflow, shifts, division and out-of-range
+ * float-to-integer casts, whose handlers the harness defines: an input on
+ * which the original has UB is skipped (the rewrites are only claimed where
+ * C defines a value).  Unsequenced accesses (C11 6.5p2), uninitialised
+ * locals and falling off the end of a value-returning function are rejected
+ * or turned into domain conditions by cf_lower.c instead; UBSan cannot see
+ * them, so they never reach this cross-check.
  *
  * Pointer parameters get 64-element buffers of random values (a `char *`
  * a NUL-terminated string); an integer parameter named n, len, count,
@@ -208,6 +212,7 @@ static const char *ub_handlers =
     "void __ubsan_handle_" x "_minimal_abort(void) { cf_ub = 1; }\n"
     H("add_overflow") H("sub_overflow") H("mul_overflow")
     H("negate_overflow") H("divrem_overflow") H("shift_out_of_bounds")
+    H("float_cast_overflow")
 #undef H
     ;
 
@@ -357,7 +362,8 @@ harness(struct sbuf *b, const struct tfn *tf, int ntf, int bench,
 			struct sbuf d = {0};
 			ct_str(&d, ct_unqual(t->pty[j]), "");
 			int64_t alo, ahi;
-			if (t->kind[j] == PK_INT && assumed(t, j, &alo, &ahi)) {
+			if ((t->kind[j] == PK_INT || t->kind[j] == PK_LEN) &&
+			    assumed(t, j, &alo, &ahi)) {
 				sb_printf(b, "\t\t\t%s a%d = (%s)(%lldll + (long long)(rnd() "
 				    "%% %lluull));\n", d.p, j, d.p, (long long)alo,
 				    (unsigned long long)(ahi - alo + 1));
@@ -641,7 +647,8 @@ check(struct cf_unit *u, const char *orig, const char *opt,
 	write_file(p_h, b.p);
 	{
 		char *a0[] = {"cc", "-std=c99", "-O2", mflag, "-w",
-		    "-fsanitize=signed-integer-overflow,shift,integer-divide-by-zero",
+		    "-fsanitize=signed-integer-overflow,shift,integer-divide-by-zero,"
+		    "float-cast-overflow",
 		    "-fsanitize-minimal-runtime", "-c", p_u0, "-o", o0, NULL};
 		char *a1[] = {"cc", "-std=c99", "-O2", mflag, "-Wall", "-Wextra",
 		    "-Wno-unused-function", "-Wno-unused-parameter", "-c", p_u1,

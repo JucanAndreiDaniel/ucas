@@ -25,6 +25,8 @@
  *   - x / 0, x % 0, shifts by a negative amount or the width or more,
  *     out-of-range table indices and reads of uninitialised locals are
  *     undefined nodes (C UB); INT_MIN / -1 is UB in C (a condition);
+ *     so are a negative left operand or an unrepresentable result of a
+ *     signed << (6.5.7p4), suppressed under wrapv;
  *   - >> of a negative value is arithmetic (implementation-defined;
  *     GCC and clang do this); char is signed.
  *
@@ -44,6 +46,16 @@
 #define CF_UNROLL 66
 #define CF_MAXNODES 400000
 #define CF_INLINE 4
+/* equiv_decide compares NSAMPLE (65536) points; a loop obligation whose
+ * expression is larger than this cannot be decided in reasonable time, so
+ * treat it as "may not terminate" instead of trying to prove it. */
+#define CF_OBL_NODES 4096
+/* node.c's has_bitwise (used whenever an expression is printed) walks
+ * root-to-leaf paths and has its own depth cutoff of 64.  A lowering-time
+ * "too deep to print" guard was tried here but rejected perfectly legal
+ * unrolled loops (which routinely reach a DAG depth of several hundred),
+ * so lowering no longer refuses a value on account of its depth: that
+ * concern belongs at the print boundary, not here. */
 
 struct lctx {
 	nid brk, cont;		/* conditions collected (bool) */
@@ -57,6 +69,7 @@ static struct {
 	int ub;
 	nid alive, where, obl, ret;
 	nid *env;		/* per symbol */
+	nid *init;		/* condition under which a local has a value */
 	uint8_t *set;
 	struct lctx lc[32];
 	int nlc;
@@ -79,6 +92,32 @@ static struct {
 
 #define AU (L.u->A)
 #define SU (L.u->S)
+
+/*
+ * C undefinedness and unspecified evaluation order that cannot be written as
+ * a condition over the values: for example two unsequenced accesses to one
+ * scalar (C11 6.5p2).  These are disclosed to the caller as "requires" notes
+ * (cf_cmd.c prints them, rep_note puts them in the JSON result) and the
+ * offending function is not lowered: c optimize therefore never claims a
+ * proof that silently fixes an order the C standard leaves open.
+ */
+char cf_requires[32][200];
+int cf_nrequires;
+
+static void
+cf_require(const char *text)
+{
+	int k;
+
+	for (k = 0; k < cf_nrequires; k++)
+		if (!strcmp(cf_requires[k], text))
+			return;
+	if (cf_nrequires == 32)
+		return;
+	snprintf(cf_requires[cf_nrequires], sizeof cf_requires[0], "%s", text);
+	cf_nrequires++;
+	rep_note("requires", text);
+}
 
 static void
 lfail(uint32_t at, const char *fmt, const char *a)
@@ -229,6 +268,98 @@ budget(void)
 {
 	if (N.n - L.nbase > CF_MAXNODES)
 		lfail(0, "the lowered program is too large%s", "");
+}
+
+/* the k-th child of a node.  O_TABLE nodes keep their (possibly many)
+ * entries in N.lst starting at N.a[]; every other node has three child
+ * slots N.a[]/N.b[]/N.c[].  Callers use dag_nchild() to bound k, so no
+ * fixed-size "gather all children" array is needed (tables can be far
+ * wider than three entries). */
+static nid
+dag_child(nid n, uint32_t k)
+{
+	if (N.op[n] == O_TABLE)
+		return k < N.b[n] ? N.lst[N.a[n] + k] : 0;
+	if (k == 0)
+		return N.a[n];
+	if (k == 1)
+		return N.b[n];
+	return k == 2 ? N.c[n] : 0;
+}
+
+/* number of children to visit for a node */
+static uint32_t
+dag_nchild(nid n)
+{
+	return N.op[n] == O_TABLE ? N.b[n] : 3;
+}
+
+/* maximum nesting depth of a DAG (children have smaller ids) */
+static int
+dag_depth(nid root)
+{
+	uint32_t *dep;
+	uint32_t i, j;
+	int d;
+
+	if (!root || root >= N.n)
+		return 0;
+	dep = calloc(N.n, sizeof *dep);
+	if (!dep)
+		return 0;
+	for (i = 1; i <= root; i++) {
+		uint32_t n = i, nc = dag_nchild(n);
+		int m = 0;
+		for (j = 0; j < nc; j++) {
+			nid c = dag_child(n, j);
+			if (c && c < N.n && (int)dep[c] > m)
+				m = (int)dep[c];
+		}
+		dep[n] = (uint32_t)(m + 1);
+	}
+	d = (int)dep[root];
+	free(dep);
+	return d;
+}
+
+/* number of distinct nodes in a DAG, counted up to a cap */
+static int
+dag_size(nid root, int cap)
+{
+	uint8_t *seen;
+	nid *st;
+	uint32_t top = 0, j;
+	int n = 0;
+
+	if (!root || root >= N.n)
+		return 0;
+	seen = calloc(N.n, 1);
+	st = malloc(sizeof(*st) * N.n);
+	if (!seen || !st) {
+		free(seen);
+		free(st);
+		return cap + 1;
+	}
+	seen[root] = 1;
+	st[top++] = root;
+	while (top) {
+		nid x = st[--top];
+		uint32_t nc;
+
+		if (++n > cap)
+			break;
+		nc = dag_nchild(x);
+		for (j = 0; j < nc; j++) {
+			nid y = dag_child(x, j);
+			if (y && y < N.n && !seen[y]) {
+				seen[y] = 1;
+				st[top++] = y;
+			}
+		}
+	}
+	free(seen);
+	free(st);
+	return n;
 }
 
 static void
@@ -518,6 +649,18 @@ load(uint32_t n, nid g)
 					i = mk_cast(TY(K_UINT, 64), i);
 				else
 					i = mk_cast(TY(K_SINT, 64), i);
+				/* C11 6.5.6p8: an array subscript outside [0, count)
+				 * is undefined, even though mk_index would just
+				 * hand back mk_undef.  Make it a domain condition
+				 * as with every other UB category. */
+				{
+					uint32_t aty = ct_unqual(SU.ty[(uint32_t)AU.iv[b]]);
+					int64_t cnt = CT.count[aty];
+					if (cnt >= 0)
+						add_cond(g, band(
+						    mk_bin(O_GE, i, mk_const_i(N.ty[i], 0)),
+						    mk_bin(O_LT, i, mk_const_i(N.ty[i], cnt))));
+				}
 				return mk_index(tab, i);
 			}
 		}
@@ -541,6 +684,15 @@ read_var(uint32_t n)
 	uint32_t s = (uint32_t)AU.iv[n], ty = SU.ty[s];
 	char text[96];
 
+	/* C11 6.3.2.1p2 (and CH2O's indeterminate-value rules): reading an
+	 * uninitialised automatic object is undefined.  The value below is
+	 * mk_undef; also make the paths on which no assignment reached this
+	 * object a domain condition, so c optimize cannot prove a rewrite
+	 * that silently relies on one particular garbage value.  Parameters
+	 * and globals (init == T1) add nothing; expression and loop mode are
+	 * over leaves, not over tracked locals. */
+	if (L.mode == 0 && SU.kind[s] == CS_LOCAL && is_local_scalar(s))
+		add_cond(L.alive, L.init[s]);
 	if (L.set[s])
 		return L.env[s];
 	if (CT.qual[ty] & CQ_VOLATILE)
@@ -602,6 +754,7 @@ write_var(uint32_t lv, nid v)
 		L.set[s] = 1;
 	}
 	L.env[s] = sel(L.alive, v, L.env[s]);
+	L.init[s] = bor(L.init[s], L.alive);
 	budget();
 }
 
@@ -668,9 +821,36 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 	if (CT.kind[ct_unqual(ta)] == CT_PTR || CT.kind[ct_unqual(tb)] == CT_PTR)
 		lfail(at, "pointer arithmetic%s", "");
 	if (op == O_SHL || op == O_SHR) {
+		ty_t aty;
+		int w;
 		rt = ct_promote(ta);
 		a = conv(a, rt, at);
 		b = conv(b, ct_promote(tb), at);
+		/* C99 6.5.7p3: a shift count that is negative or >= the
+		 * promoted left operand's width is undefined.  This stays UB
+		 * even under wrapv (which only makes signed overflow wrap). */
+		add_cond(g, band(mk_bin(O_GE, b, mk_const_i(N.ty[b], 0)),
+		    mk_bin(O_LT, b, mk_const_i(N.ty[b], TYW(N.ty[a])))));
+		aty = N.ty[a];
+		if (L.ub && op == O_SHL && TYK(aty) == K_SINT) {
+			/* C99 6.5.7p4: left-shifting a negative value, or a
+			 * value whose shifted result is not representable in
+			 * the promoted result type, is undefined -- as in
+			 * clang UBSan.  wrapv (L.ub == 0) suppresses it, just
+			 * as it suppresses signed +,-,* overflow.  With
+			 * 0 <= b < w already required, a*2^b fits iff
+			 * a <= max>>b; use that instead of computing the
+			 * (possibly overflowing) shift itself. */
+			int64_t mx;
+			nid mxsh;
+			w = TYW(aty);
+			mx = w >= 64 ? INT64_MAX :
+			    ((int64_t)1 << (w - 1)) - 1;
+			mxsh = mk_bin(O_SHR, mk_const_i(aty, mx),
+			    mk_cast(aty, b));
+			add_cond(g, band(mk_bin(O_GE, a, mk_const_i(aty, 0)),
+			    mk_bin(O_LE, a, mxsh)));
+		}
 		return mk_bin(op, a, b);
 	}
 	if (opinfo[op].fl & OF_CMP) {
@@ -684,15 +864,307 @@ arith(int cop, nid a, uint32_t ta, nid b, uint32_t tb, uint32_t at, nid g)
 	b = conv(b, rt, at);
 	if (L.ub && (op == O_ADD || op == O_SUB || op == O_MUL))
 		add_cond(g, no_overflow(op, a, b, rt));
-	if (L.ub && (op == O_DIV || op == O_MOD) && TYK(N.ty[a]) == K_SINT) {
+	if (op == O_DIV || op == O_MOD) {
 		ty_t t = N.ty[a];
-		int w = TYW(t);
-		nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
-		    (w - 1)));
-		add_cond(g, bnot(band(mk_bin(O_EQ, a, mn), mk_bin(O_EQ, b,
-		    mk_const_i(t, -1)))));
+		/* C99 6.5.5p5: division or remainder by zero is undefined for
+		 * every integer type (signed and unsigned).  Float division by
+		 * zero is NOT UB (it follows IEEE 754), so restrict this to
+		 * integers.  A constant zero divisor yields a constant-false
+		 * condition (undefined on the whole domain), which the reporting
+		 * layer renders explicitly. */
+		if (TY_ISINT(t))
+			add_cond(g, mk_bin(O_NE, b, mk_const_i(t, 0)));
+		if (L.ub && TYK(t) == K_SINT) {
+			int w = TYW(t);
+			nid mn = mk_const_i(t, w >= 64 ? INT64_MIN : -((int64_t)1 <<
+			    (w - 1)));
+			add_cond(g, bnot(band(mk_bin(O_EQ, a, mn), mk_bin(O_EQ, b,
+			    mk_const_i(t, -1)))));
+		}
 	}
 	return mk_bin(op, a, b);
+}
+
+/* ---- C11 6.5p2: unsequenced accesses to one scalar object -------------
+ *
+ * In most C binary operators the order of evaluating the operands is
+ * unspecified; 6.5p2 makes it undefined to have a side effect on a scalar
+ * object unsequenced with another side effect on, or a value computation of,
+ * the same object (i++ + i++, i = i++, ...).  The lowering below evaluates
+ * children in a fixed order, which would silently pick one of the orders C
+ * leaves open.  So before lowering a full expression we walk its AST and
+ * collect the accesses that share an unsequenced region; a sequence point
+ * (&&, ||, comma, ?:, the call boundary) starts a new region.  A conflict
+ * refuses the lowering (hence c optimize proves nothing for that function),
+ * and two effects on *different* objects in one region are disclosed as a
+ * requires note: their order is unspecified, not fixed by C.
+ */
+#define CF_MAXACC 256
+
+struct cf_acc {
+	uint32_t sym;
+	uint32_t at;
+	uint8_t wr;		/* 1: value computation, 2: side effect */
+};
+
+struct cf_accset {
+	struct cf_acc a[CF_MAXACC];
+	int n;
+};
+
+static void
+acc_add(struct cf_accset *s, uint32_t sym, uint8_t wr, uint32_t at)
+{
+	if (s->n < CF_MAXACC) {
+		s->a[s->n].sym = sym;
+		s->a[s->n].wr = wr;
+		s->a[s->n].at = at;
+		s->n++;
+	}
+}
+
+static int
+acc_sym(uint32_t n, uint32_t *sym)
+{
+	uint32_t s, ty;
+
+	if (n == 0 || AU.kind[n] != CA_ID)
+		return 0;
+	s = (uint32_t)AU.iv[n];
+	if (s == 0 || s > SU.n)
+		return 0;
+	ty = SU.ty[s];
+	if ((SU.kind[s] != CS_LOCAL && SU.kind[s] != CS_PARAM) ||
+	    !ct_is_lowered(ty) || (CT.qual[ty] & CQ_VOLATILE))
+		return 0;
+	*sym = s;
+	return 1;
+}
+
+static int
+acc_conflict(const struct cf_accset *a, const struct cf_accset *b,
+    uint32_t *sym, uint32_t *at1, uint32_t *at2)
+{
+	int i, j;
+
+	for (i = 0; i < a->n; i++)
+		for (j = 0; j < b->n; j++)
+			if (a->a[i].sym == b->a[j].sym &&
+			    (a->a[i].wr == 2 || b->a[j].wr == 2)) {
+				*sym = a->a[i].sym;
+				*at1 = a->a[i].at;
+				*at2 = b->a[j].at;
+				return 1;
+			}
+	return 0;
+}
+
+static void
+acc_merge(struct cf_accset *d, const struct cf_accset *s)
+{
+	int i;
+
+	for (i = 0; i < s->n; i++)
+		acc_add(d, s->a[i].sym, s->a[i].wr, s->a[i].at);
+}
+
+/* A value computation of the lhs symbol is sequenced before the assignment's
+ * own side effect, so i = i + 1 is fine.  Reads of *other* symbols are not
+ * sequenced with sibling operands of the enclosing full expression: keep
+ * them so acc_conflict can still detect a cross-symbol read/write conflict
+ * (e.g. i++ + (j = i)). */
+static void
+acc_drop_sym_reads(struct cf_accset *s, uint32_t sym)
+{
+	int i, k = 0;
+
+	for (i = 0; i < s->n; i++)
+		if (s->a[i].wr != 1 || s->a[i].sym != sym)
+			s->a[k++] = s->a[i];
+	s->n = k;
+}
+
+static void
+unseq_bad(uint32_t sym, uint32_t at1, uint32_t at2)
+{
+	char b[200];
+	unsigned l1 = at1 && at1 < AU.n ? L.u->tk.line[AU.t0[at1]] : 0;
+	unsigned l2 = at2 && at2 < AU.n ? L.u->tk.line[AU.t0[at2]] : 0;
+
+	snprintf(b, sizeof b, "unsequenced access to '%s' (lines %u and %u): "
+	    "C11 6.5p2 makes this undefined; the evaluation order is not fixed",
+	    sym_str(SU.name[sym]), l1, l2);
+	cf_require(b);
+	lfail(at1, "unsequenced access to %s (C11 6.5p2)",
+	    sym_str(SU.name[sym]));
+}
+
+static void
+unseq_order(uint32_t n)
+{
+	char b[200];
+	unsigned l = n && n < AU.n ? L.u->tk.line[AU.t0[n]] : 0;
+
+	snprintf(b, sizeof b, "unspecified evaluation order of two "
+	    "side-effecting operands (line %u, C11 6.5p3): the value may "
+	    "depend on an order C does not fix", l);
+	cf_require(b);
+}
+
+static void
+seq_scan(uint32_t n, struct cf_accset *out)
+{
+	struct cf_accset l, r, w;
+	uint32_t sym, at1, at2, ls, i;
+
+	if (n == 0)
+		return;
+	switch (AU.kind[n]) {
+	case CA_ID:
+		if (acc_sym(n, &sym))
+			acc_add(out, sym, 1, n);
+		return;
+	case CA_ASSIGN: {
+		uint32_t lhs = AU.a[n], rhs = AU.b[n];
+		int compound = AU.iv[n] != '=';
+
+		memset(&l, 0, sizeof l);
+		memset(&r, 0, sizeof r);
+		if (!acc_sym(lhs, &ls))
+			seq_scan(lhs, &l);	/* a[i] = ..., *p = ... */
+		seq_scan(rhs, &r);
+		if (acc_conflict(&l, &r, &sym, &at1, &at2))
+			unseq_bad(sym, at1, at2);
+		if (compound && acc_sym(lhs, &ls)) {
+			memset(&w, 0, sizeof w);
+			acc_add(&w, ls, 1, lhs);
+			if (acc_conflict(&w, &r, &sym, &at1, &at2))
+				unseq_bad(sym, at1, at2);
+		}
+		/* Only the lhs symbol's value computation is sequenced before
+		 * this assignment's write; reads of other symbols must survive
+		 * so a sibling operand's write can conflict with them. */
+		if (acc_sym(lhs, &ls))
+			acc_drop_sym_reads(&r, ls);
+		acc_merge(out, &l);
+		acc_merge(out, &r);
+		if (acc_sym(lhs, &ls)) {
+			memset(&w, 0, sizeof w);
+			acc_add(&w, ls, 2, n);
+			if (acc_conflict(out, &w, &sym, &at1, &at2))
+				unseq_bad(sym, at1, at2);
+			acc_merge(out, &w);
+		}
+		return;
+	}
+	case CA_PREINC: case CA_PREDEC: case CA_POSTINC: case CA_POSTDEC: {
+		uint32_t lhs = AU.a[n];
+
+		if (acc_sym(lhs, &ls)) {
+			/* the operand's read precedes this increment's write;
+			 * only the write reaches the enclosing expression */
+			memset(&w, 0, sizeof w);
+			acc_add(&w, ls, 2, n);
+			if (acc_conflict(out, &w, &sym, &at1, &at2))
+				unseq_bad(sym, at1, at2);
+			acc_merge(out, &w);
+			return;
+		}
+		/* lhs is not a tracked scalar (e.g. a[i], *p): there is no
+		 * symbol whose read is sequenced before a write of its own,
+		 * so keep the reads from the lvalue expression — a sibling
+		 * operand's write to one of them may still be unsequenced. */
+		memset(&l, 0, sizeof l);
+		seq_scan(lhs, &l);
+		acc_merge(out, &l);
+		return;
+	}
+	case CA_LAND: case CA_LOR: case CA_COMMA:
+		/* a sequence point separates the operands */
+		memset(&l, 0, sizeof l);
+		memset(&r, 0, sizeof r);
+		seq_scan(AU.a[n], &l);
+		seq_scan(AU.b[n], &r);
+		acc_merge(out, &l);
+		acc_merge(out, &r);
+		return;
+	case CA_COND: {
+		/* the condition precedes either arm; the arms are exclusive,
+		 * so their accesses never conflict with each other */
+		struct cf_accset c;
+
+		memset(&l, 0, sizeof l);
+		memset(&r, 0, sizeof r);
+		memset(&c, 0, sizeof c);
+		seq_scan(AU.a[n], &l);
+		seq_scan(AU.b[n], &r);
+		seq_scan(AU.c[n], &c);
+		acc_merge(out, &l);
+		acc_merge(out, &r);
+		acc_merge(out, &c);
+		return;
+	}
+	case CA_CALL: {
+		/* actual arguments are unsequenced relative to each other.
+		 * A called function's body is indeterminately sequenced with
+		 * the caller's other evaluations in C11, so it is not compared
+		 * here. */
+		struct cf_accset seen;
+		int nargs = AU.c[n] < 64 ? (int)AU.c[n] : 64;
+		int eff_prev = 0, any_conflict = 0;
+
+		memset(&seen, 0, sizeof seen);
+		for (i = 0; i < (uint32_t)nargs; i++) {
+			uint32_t arg = AU.lst[AU.b[n] + i];
+			int eff, conflict;
+
+			memset(&r, 0, sizeof r);
+			seq_scan(arg, &r);
+			conflict = acc_conflict(&seen, &r, &sym, &at1, &at2);
+			if (conflict) {
+				unseq_bad(sym, at1, at2);
+				any_conflict = 1;
+			}
+			eff = has_effect(arg);
+			/* two side-effecting arguments on different objects are
+			 * unsequenced (C11 6.5.2.2p10 / 6.5p3) but not UB; a
+			 * same-object conflict above is UB, not an order note */
+			if (eff && eff_prev && !any_conflict)
+				unseq_order(n);
+			if (eff)
+				eff_prev = 1;
+			acc_merge(&seen, &r);
+		}
+		acc_merge(out, &seen);
+		return;
+	}
+	default:
+		memset(&l, 0, sizeof l);
+		memset(&r, 0, sizeof r);
+		seq_scan(AU.a[n], &l);
+		seq_scan(AU.b[n], &r);
+		/* A same-object conflict is genuine 6.5p2 UB, not merely an
+		 * unspecified order: only disclose the order after ruling UB
+		 * out, so we never mislabel undefined behaviour. */
+		if (acc_conflict(&l, &r, &sym, &at1, &at2))
+			unseq_bad(sym, at1, at2);
+		else if (has_effect(AU.a[n]) && has_effect(AU.b[n]))
+			unseq_order(n);
+		acc_merge(out, &l);
+		acc_merge(out, &r);
+		return;
+	}
+}
+
+static void
+unseq_check(uint32_t n)
+{
+	struct cf_accset s;
+
+	if (n == 0)
+		return;
+	memset(&s, 0, sizeof s);
+	seq_scan(n, &s);
 }
 
 static nid
@@ -811,7 +1283,7 @@ static nid
 inline_call(uint32_t n, nid g)
 {
 	uint32_t callee = AU.a[n], s, fn, k;
-	nid args[64], saved_ret, saved_alive, *saved_env;
+	nid args[64], saved_ret, saved_alive, *saved_env, *saved_init;
 	uint8_t *saved_set;
 	struct lctx saved_lc[32];
 	int saved_nlc;
@@ -838,8 +1310,10 @@ inline_call(uint32_t n, nid g)
 	}
 	/* a fresh frame: the callee's symbols are its own */
 	saved_env = xmalloc(SU.n * sizeof *saved_env);
+	saved_init = xmalloc(SU.n * sizeof *saved_init);
 	saved_set = xmalloc(SU.n);
 	memcpy(saved_env, L.env, SU.n * sizeof *saved_env);
+	memcpy(saved_init, L.init, SU.n * sizeof *saved_init);
 	memcpy(saved_set, L.set, SU.n);
 	saved_ret = L.ret;
 	saved_alive = L.alive;
@@ -850,6 +1324,7 @@ inline_call(uint32_t n, nid g)
 		uint32_t ps = AU.lst[AU.c[fn] + k];
 		L.env[ps] = args[k];
 		L.set[ps] = 1;
+		L.init[ps] = T1;
 	}
 	L.ret = mk_undef(ct_to_ucas(CT.base[SU.ty[s]]) ?
 	    ct_to_ucas(CT.base[SU.ty[s]]) : TY(K_SINT, 32));
@@ -863,8 +1338,10 @@ inline_call(uint32_t n, nid g)
 		uint32_t rt = CT.base[SU.ty[s]];
 		/* the callee's parameters and locals are dead now */
 		memcpy(L.env, saved_env, SU.n * sizeof *saved_env);
+		memcpy(L.init, saved_init, SU.n * sizeof *saved_init);
 		memcpy(L.set, saved_set, SU.n);
 		free(saved_env);
+		free(saved_init);
 		free(saved_set);
 		L.ret = saved_ret;
 		L.alive = saved_alive;
@@ -909,8 +1386,10 @@ decl(uint32_t n)
 		nid v;
 		if (AU.kind[AU.a[n]] == CA_INIT)
 			lfail(n, "a braced initializer%s", "");
+		unseq_check(AU.a[n]);
 		v = convg(ex(AU.a[n], L.alive), ty, n, L.alive);
 		L.env[s] = sel(L.alive, v, L.env[s]);
+		L.init[s] = bor(L.init[s], L.alive);
 	} else
 		L.env[s] = sel(L.alive, mk_undef(uty(ty, n)), L.env[s]);
 }
@@ -927,6 +1406,7 @@ ret(uint32_t n)
 		L.alive = F0;
 		return;
 	}
+	unseq_check(AU.a[n]);
 	v = convg(ex(AU.a[n], L.alive), rt, n, L.alive);
 	L.ret = sel(L.alive, v, L.ret);
 	L.alive = F0;
@@ -943,6 +1423,11 @@ loop(uint32_t cond, uint32_t body, uint32_t step, int dofirst, uint32_t at)
 		lfail(at, "loops nested too deeply%s", "");
 	if (L.mode == 2)
 		lfail(at, "a nested loop%s", "");
+	/* the condition and the step are full expressions in C */
+	if (cond)
+		unseq_check(cond);
+	if (step)
+		unseq_check(step);
 	for (it = 0; it <= CF_UNROLL; it++) {
 		nid c;
 		if (L.alive == F0)
@@ -1086,10 +1571,14 @@ st(uint32_t n)
 		decl(n);
 		return;
 	case CA_EXPR:
+		unseq_check(AU.a[n]);
 		(void)ex(AU.a[n], L.alive);
 		return;
 	case CA_IF: {
-		nid c = truth(AU.a[n], L.alive), a0 = L.alive, at, ae;
+		nid c, a0, at, ae;
+		unseq_check(AU.a[n]);
+		c = truth(AU.a[n], L.alive);
+		a0 = L.alive;
 		if (has_label(AU.b[n]) || has_label(AU.c[n]))
 			lfail(n, "a case label inside an if%s", "");
 		L.alive = band(a0, c);
@@ -1137,8 +1626,11 @@ st(uint32_t n)
 		L.alive = F0;
 		return;
 	case CA_SWITCH: {
-		uint32_t vt = ct_promote(AU.ty[AU.a[n]]);
-		nid v = conv(ex(AU.a[n], L.alive), vt, n);
+		uint32_t vt;
+		nid v;
+		unseq_check(AU.a[n]);
+		vt = ct_promote(AU.ty[AU.a[n]]);
+		v = conv(ex(AU.a[n], L.alive), vt, n);
 		switch_body(AU.b[n], v, vt, n);
 		return;
 	}
@@ -1169,8 +1661,14 @@ lower_begin(struct cf_unit *u, struct cf_value *v, int mode, int ub)
 	F0 = mk_const_i(TY_BOOL, 0);
 	L.alive = T1;
 	L.env = xcalloc(u->S.n + 1, sizeof *L.env);
+	L.init = xcalloc(u->S.n + 1, sizeof *L.init);
 	L.set = xcalloc(u->S.n + 1, 1);
 	L.bodylocal = xcalloc(u->S.n + 1, 1);
+	/* parameters and globals have values; an automatic local does not
+	 * until an assignment (or its declaration's initializer) reaches it */
+	for (int s = 0; s <= (int)u->S.n; s++)
+		L.init[s] = (SU.kind[s] == CS_PARAM || SU.kind[s] == CS_GLOBAL ||
+		    SU.kind[s] == CS_FUNC) ? T1 : F0;
 }
 
 static void
@@ -1180,9 +1678,11 @@ lower_end(void)
 	memset(&L.closed, 0, sizeof L.closed);
 	L.closed_why[0] = 0;
 	free(L.env);
+	free(L.init);
 	free(L.set);
 	free(L.bodylocal);
 	L.env = NULL;
+	L.init = NULL;
 	L.set = NULL;
 	L.bodylocal = NULL;
 }
@@ -1244,6 +1744,11 @@ cf_lower_func(struct cf_unit *u, uint32_t fn, struct cf_value *v, int ub)
 	}
 	L.ret = mk_undef(uty(CT.base[ft], fn));
 	st(u->A.a[fn]);
+	/* C11 6.9.1p12: reaching the end of a value-returning function is
+	 * undefined (the value would be indeterminate).  Exclude those
+	 * paths from the domain instead of pretending they return a value. */
+	if (CT.kind[CT.base[ft]] != CT_VOID && L.alive != F0)
+		add_cond(T1, bnot(L.alive));
 	r = L.ret;
 	v->e = r;
 	v->where = L.where;
@@ -1257,8 +1762,13 @@ cf_lower_func(struct cf_unit *u, uint32_t fn, struct cf_value *v, int ub)
 		struct eqproof pr;
 		nid ob = mk_cast(TY(K_UINT, 8), L.obl);
 		cf_value_func(v, &f);
-		if (equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL, &pr) ||
-		    pr.how == EQ_SAMPLED) {
+		/* A deeply unrolled obligation (a nested loop with a whole-function
+		 * trip count, say) is far too big for the 65536-point comparison
+		 * equiv_decide runs.  It cannot be discharged cheaply, so report
+		 * the same "may run too long" failure as a counterexample. */
+		if (dag_size(ob, CF_OBL_NODES) > CF_OBL_NODES ||
+		    equiv_decide(&f, mk_const_i(TY(K_UINT, 8), 0), ob, NULL,
+		    &pr) || pr.how == EQ_SAMPLED) {
 			snprintf(L.why, sizeof L.why, "a loop that may run more "
 			    "than %d times", CF_UNROLL);
 			v->e = 0;
@@ -1285,8 +1795,14 @@ cf_lower_expr(struct cf_unit *u, uint32_t fn, uint32_t e, struct cf_value *v)
 	L.fnsym = (uint32_t)u->A.iv[fn];
 	if (!ct_is_lowered(u->A.ty[e]))
 		lfail(e, "not an integer or float expression%s", "");
+	unseq_check(e);
 	v->e = ex(e, T1);
-	v->where = 0;
+	/* Keep the expression's UB domain: an always-undefined expression
+	 * (e.g. an out-of-range float-to-int cast) must not be "proved" a
+	 * rewrite over an empty domain.  Signed overflow conditions are not
+	 * added here (ub is 0), but shift-count and float-to-int range checks
+	 * are unconditional and do show up in L.where. */
+	v->where = L.where;
 	lower_end();
 	return 1;
 }
@@ -1360,6 +1876,10 @@ cf_lower_iter(struct cf_unit *u, uint32_t fn, uint32_t lp, int with_step,
 		lfail(lp, "a label inside the loop%s", "");
 	if (cond && has_effect(cond))
 		lfail(cond, "a loop condition with a side effect%s", "");
+	if (cond)
+		unseq_check(cond);
+	if (step)
+		unseq_check(step);
 	it->cond = cond ? truth(cond, T1) : 0;
 	for (j = 0; j < it->nx; j++) {
 		if (has_effect(it->x[j]) || !ct_is_int(AU.ty[it->x[j]]))
