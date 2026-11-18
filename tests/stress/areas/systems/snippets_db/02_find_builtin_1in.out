@@ -7,15 +7,19 @@ find g1: 1024 points (sampled; matches verified on the whole domain), computing 
   cost 3   a - (-a - a)                             exact (proved by SAT)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > g2(a: u32) = a ^ (a >> 1)
-  note: "^" between integers, next to bitwise operators: read as xor (bitwise exclusive or), not power (write xor or ** to say which)
+  note: "^" between integers, next to bitwise operators: read as power, not xor (bitwise exclusive or) (write xor or ** to say which)
+  note: '^' is power; use 'xor' or '⊕' for exclusive or
 > find g2 3 snippets
 find g2: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
-  cost 3   a xor a >> 1                             the snippet database's program with these values (cost 3 under gt1030, where it was grown) (proved by SAT)
+  snippet database: no program up to cost 4 has its values (455881 programs of 1 input, 32 bits, grown under gt1030)
+  nothing new up to cost 3 (term bank full)
   [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
 > g3(a: u32) = -a
 > find g3 2 snippets
 find g3: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  word-level ring identity: no AIG built, no SAT search (1 parameter(s), polynomial normal form over Z agrees mod 2^32)
   cost 1   -a                                       the snippet database's program with these values (cost 1 under gt1030, where it was grown) (proved by SAT)
+  word-level ring identity: no AIG built, no SAT search (1 parameter(s), polynomial normal form over Z agrees mod 2^32)
   cost 2   a - (a + a)                              exact (proved by SAT)
   [searched every term up to cost 2: 1077 distinct columns; 'more' continues]
 > g4(a: u32) = a & 0xff

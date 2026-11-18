@@ -1,0 +1,8 @@
+# c optimize's find engine used to floor its CPU deadline at 60 s, so a
+# small budget did not bound it.  The bridge now passes eng_left() (with a
+# 0.5 s floor) to find_cands.  Timing is not part of a golden; this records
+# that the small-budget run still finishes with an honest, stable result.
+c optimize budget 2 nofile engines find
+```c
+int f(int x) { int i = x; return i++ * i++; }
+```

@@ -1,0 +1,24 @@
+c lower nofile
+```c
+#include <stdint.h>
+#define LIM 5
+#define TWICE(x) ((x)+(x))
+#if defined(LIM) && LIM > 3
+#define PICK 111
+#else
+#define PICK 222
+#endif
+int c1(int x){return TWICE(x);}
+int c2(int x){
+#if LIM == 5
+ return 111;
+#else
+ return 222;
+#endif
+}
+int c3(int x){return PICK;}
+// ordinary comments, strings and char literals must not be disturbed
+int c4(void){return sizeof("a//b/*c");}
+int c5(void){return '/';}
+int c6(int x){return x + LIM;}
+```

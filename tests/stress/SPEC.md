@@ -38,7 +38,7 @@ One invocation per golden type. Run from the area directory. The runner exports 
 
 ### Language boundary
 
-`bin/` holds POSIX shell only. `run.sh` checks goldens. It does not run area-local scripts. Area helpers are Python research tools. The runner treats them as manual tools, not tests.
+The `stress-test` and `stress-accept` targets in the top-level Makefile check goldens. There is no `bin/run.sh`. Area helpers are Python research tools. The runner treats them as manual tools, not tests.
 
 ## 3. Conventions (not checked)
 

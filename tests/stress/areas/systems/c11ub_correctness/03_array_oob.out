@@ -1,0 +1,10 @@
+> c lower nofile
+  oobvar(x: i32) = [10, 20, 30, 40][i64(x)]
+    defined where (no C UB): i64(x) >= 0 && i64(x) < 4
+  oobneg(x: i32) = undefined
+    defined where (no C UB): 0
+  oobhi(x: i32) = undefined
+    defined where (no C UB): 0
+  oobexpr(x: i32) = [10, 20, 30, 40][i64(x + 1)]
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 && (t2 >= 0 && t2 < 4) where t1 = i64(x) + 1, t2 = i64(x + 1)
+  oobok(x: i32) = 30

@@ -1,0 +1,42 @@
+> add8(a: u32, b: u32) = (((a & 255) + (b & 255)) & 255) | ((((a >> 8) & 255) + ((b >> 8) & 255)) & 255) << 8 | ((((a >> 16) & 255) + ((b >> 16) & 255)) & 255) << 16 | ((((a >> 24) & 255) + ((b >> 24) & 255)) & 255) << 24
+> find add8 1
+find add8: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  dropping operations of add8 (cost 35 as written; each checked on the whole domain):
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8 & 0xff) + (b >> 8 & 0xff) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18) & 0xff) << 24 drops & 255 (proved by SAT)
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8 & 0xff) + (b >> 8 & 0xff) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18) + (b >> 0x18 & 0xff) & 0xff) << 24 drops & 255 (proved by SAT)
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8 & 0xff) + (b >> 8 & 0xff) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18 & 0xff) & 0xff) << 24 drops & 255 (proved by SAT)
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8 & 0xff) + (b >> 8 & 0xff) & 0xff) << 8 | ((a >> 0x10) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18 & 0xff) & 0xff) << 24 drops & 255 (proved by SAT)
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8 & 0xff) + (b >> 8) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18 & 0xff) & 0xff) << 24 drops & 255 (proved by SAT)
+  cost 33  (a & 0xff) + (b & 0xff) & 0xff | ((a >> 8) + (b >> 8 & 0xff) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18 & 0xff) & 0xff) << 24 drops & 255 (proved by SAT)
+  ... 3 more single drops hold (not listed)
+  cost 23  a + b & 0xff | ((a >> 8) + (b >> 8) & 0xff) << 8 | ((a >> 0x10) + (b >> 0x10) & 0xff) << 16 | (a >> 0x18) + (b >> 0x18) << 24 all of them: drops & 255, then & 255, then & 255, then & 255, then & 255, then & 255, then & 255, then & 255, then & 255 (proved by SAT)
+  dot products under gt1030 (sums of products laid into lanes; cost 35 as written):
+  cost 31  (a & 0xff) + (b & 0xff) & 0xff | (udot4x8(a, 0x100) + udot4x8(b, 0x100) & 0xff) << 8 | ((a >> 0x10 & 0xff) + (b >> 0x10 & 0xff) & 0xff) << 16 | ((a >> 0x18 & 0xff) + (b >> 0x18 & 0xff) & 0xff) << 24
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 1: (a >> 8 & 0xff) * 1
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 1: (b >> 8 & 0xff) * 1
+           a >> 8 & 0xff is bits 8..15 of a: lane 1 as it is
+           the word's other lanes meet zero lanes
+           b >> 8 & 0xff is bits 8..15 of b: lane 1 as it is
+           the word's other lanes meet zero lanes
+           udot4x8's sum is in 0..255: it does not wrap; udot4x8's sum is in 0..255: it does not wrap
+           proved by SAT: 333 AIG nodes, 0 conflicts
+  packed lanes under gt1030 (every lane in one word-wide operation; cost 35 as written):
+  cost 5   (a & 0x7f7f7f7f) + (b & 0x7f7f7f7f) xor (a xor b) & 0x80808080
+           4 x 8-bit lanes, a + b in each: the lanes' top bits go apart, so no carry crosses a lane
+           checked by SAT
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> sub16(a: u32, b: u32) = (((a & 0xffff) - (b & 0xffff)) & 0xffff) | (((a >> 16) - (b >> 16)) & 0xffff) << 16
+> find sub16 1
+find sub16: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  dropping operations of sub16 (cost 12 as written; each checked on the whole domain):
+  cost 11  (a & 0xffff) - (b & 0xffff) & 0xffff | (a >> 0x10) - (b >> 0x10) << 16 drops & 65535 (proved by SAT)
+  cost 11  (a & 0xffff) - b & 0xffff | ((a >> 0x10) - (b >> 0x10) & 0xffff) << 16 drops & 65535 (proved by SAT)
+  cost 11  a - (b & 0xffff) & 0xffff | ((a >> 0x10) - (b >> 0x10) & 0xffff) << 16 drops & 65535 (proved by SAT)
+  cost 9   a - b & 0xffff | (a >> 0x10) - (b >> 0x10) << 16 all of them: drops & 65535, then & 65535, then & 65535 (proved by SAT)
+  packed lanes under gt1030 (every lane in one word-wide operation; cost 12 as written):
+  cost 5   (a | 0x80008000) - (b & 0x7fff7fff) xor ~(a xor b) & 0x80008000
+           2 x 16-bit lanes, a - b in each: the lanes' top bits go apart, so no carry crosses a lane
+           checked by SAT
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]

@@ -1,26 +1,25 @@
 > limit floor(x)/x x->inf
 limit of floor(x)/x as x -> inf:
-  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
-  = 0
+  inf/inf: a step function at infinity: use u + O(1): lim 1
+  = 1
   numeric (x = 10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
-    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+    extrapolated (Richardson): 1 (estimated error 0): agrees
 > limit ceil(x)/x x->inf
 limit of ceil(x)/x as x -> inf:
-  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
-  = 0
+  inf/inf: a step function at infinity: use u + O(1): lim 1
+  = 1
   numeric (x = 10*2^k, k = 0..21): 1, 1, 1, 1, 1, 1
-    extrapolated (Richardson): 1 (estimated error 0): DISAGREES with 0
+    extrapolated (Richardson): 1 (estimated error 0): agrees
 > limit floor(2*x)/x x->inf
 limit of floor(2x)/x as x -> inf:
-  inf/inf: L'Hôpital: lim (0)/(1) = lim 0
-  = 0
+  inf/inf: a step function at infinity: use u + O(1): lim 2
+  = 2
   numeric (x = 10*2^k, k = 0..21): 2, 2, 2, 2, 2, 2
-    extrapolated (Richardson): 2 (estimated error 0): DISAGREES with 0
+    extrapolated (Richardson): 2 (estimated error 0): agrees
 > limit (x-floor(x))/x x->inf
 limit of (x - floor(x))/x as x -> inf:
   inf - inf: x - floor(x) = (1/(floor(x)) - 1/(x))/(1/((x)*(floor(x))))
-  0/0: L'Hôpital: lim (1/x^2)/(-floor(x)/(x^2*floor(x)^2)) = lim -floor(x)
-  inf/inf: L'Hôpital: lim (1)/(1) = lim 1
-  = 1
+  0/0: a step function at infinity: use u + O(1): lim 0
+  = 0
   numeric (x = 10*2^k, k = 0..21): 0, 0, 0, 0, 0, 0
-    extrapolated (Richardson): 0 (estimated error 0): DISAGREES with 1
+    extrapolated (Richardson): 0 (estimated error 0): agrees

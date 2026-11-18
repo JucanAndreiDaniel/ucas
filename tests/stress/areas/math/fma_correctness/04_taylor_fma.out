@@ -1,0 +1,17 @@
+> taylor fma(x,x,x) x at 0 order 5
+Maclaurin (Taylor at 0) series of fma(x, x, x) at x = 0, through order 5:
+  fma(x, x, x) = x + x^2 + O(x^6)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 0 1 1 0 0 0
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 0 at x = 0 ± 1/10, 0 at ± 1/20, 0 at ± 1/40 (at rounding level)
+> taylor sin(fma(x,x,x)) x at 0 order 5
+Maclaurin (Taylor at 0) series of sin(fma(x, x, x)) at x = 0, through order 5:
+  sin(fma(x, x, x)) = x + x^2 - x^3/6 - x^4/2 - 59x^5/120 + O(x^6)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: 0 1 1 -1/6 -1/2 -59/120
+  check: the coefficients agree with Taylor-jet arithmetic (long double) to 0
+  check: |f - P| = 1.33e-07 at x = 0 ± 1/10, 2.01e-09 at ± 1/20, 3.1e-11 at ± 1/40 (shrinks like h^6.0; expected >= 6)
+> taylor fma(x,y,z) x at 0 order 3
+Maclaurin (Taylor at 0) series of fma(x, y, z) at x = 0, through order 3:
+  fma(x, y, z) = (fma(0, y, z)) + (y)*x + O(x^4)
+  as x -> 0; coefficients c_k = f^(k)(0)/k!: fma(0, y, z) y 0 0
+  (several variables: the coefficients are symbolic; checked through the derivatives only)

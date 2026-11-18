@@ -1,0 +1,50 @@
+> theorem both1: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+theorem both1: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+> prove both1
+both1: proved automatically (15 kernel inferences); independent re-check: ok
+> proof both1
+both1: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+route a: both1
+  rests on:
+    both1  (15 inferences; axioms: int_discrete)
+axioms used:
+  int_discrete   [integer arithmetic] forall n:int: n <= 0 or 1 <= n
+> proof both1 cert
+both1: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+route a: both1
+  rests on:
+    both1  (15 inferences; axioms: int_discrete)
+axioms used:
+  int_discrete   [integer arithmetic] forall n:int: n <= 0 or 1 <= n
+Nullstellensatz certificate (a_i, f = sum a_i*g_i):
+  step 1 [lin]
+    g1 = x'172 - 0
+    g2 = y'173 - 0
+    g3 = 0 - (x'172 + y'173 + 1)
+    a1 = 1
+    a2 = 1
+    a3 = 1
+    f  = 0 <= 1*(x'172 - 0) + 1*(y'173 - 0) + 1*(0 - (x'172 + y'173 + 1))
+  [ok] 1 algebraic step(s) verified (1 Nullstellensatz combination(s), 0 ring normalization(s))
+PAC step proof (one line per kernel inference):
+  step 22434 [assume]: 0 <= x'172 and 0 <= y'173
+  step 22435 [and_elim1]: 0 <= x'172
+  step 22436 [and_elim2]: 0 <= y'173
+  step 22437 [axiom]: forall n:int: n <= 0 or 1 <= n
+  step 22438 [all_elim]: x'172 + y'173 + 1 <= 0 or 1 <= x'172 + y'173 + 1
+  step 22439 [assume]: x'172 + y'173 + 1 <= 0
+  step 22440 [lin] a1=1 a2=1 a3=1: 0 <= 1*(x'172 - 0) + 1*(y'173 - 0) + 1*(0 - (x'172 + y'173 + 1))
+  step 22441 [conv]: false
+  step 22442 [false_elim]: 0 <= x'172 + y'173
+  step 22443 [assume]: 1 <= x'172 + y'173 + 1
+  step 22444 [conv]: 0 <= x'172 + y'173
+  step 22445 [or_elim]: 0 <= x'172 + y'173
+  step 22446 [imp_intro]: 0 <= x'172 and 0 <= y'173 -> 0 <= x'172 + y'173
+  step 22447 [all_intro]: forall y:int: 0 <= x'172 and 0 <= y -> 0 <= x'172 + y
+  step 22448 [all_intro]: forall x y:int: 0 <= x and 0 <= y -> 0 <= x + y
+
+certificate: 1 algebraic step(s) verified (1 Nullstellensatz combination(s), 0 ring normalization(s))
+> check both1 cert
+both1: certificate verified
+  1 algebraic step(s) verified (1 Nullstellensatz combination(s), 0 ring normalization(s))
+  scope: verifies only the polynomial identity of algebraic steps; not a full recheck of the kernel proof (premises and non-algebraic steps are trusted)

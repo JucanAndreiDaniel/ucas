@@ -1,0 +1,16 @@
+> approx sin(x) in 0..1 degree 20 nosym keep endpoints keep 0.01,0.02,0.03,0.04,0.05,0.06 as f32 norational nosplit noreduce list 1
+approx sin(x) on [0, 1] as f32, fma
+  checked: simple zero at x = 0: fitting x*P(x), exact zero
+  metric: relative error
+  checked: the target equals sin(x) at 33 points: range reductions and identities for sin apply
+  exact at: x = 0 -> 0, x = 1 -> 0.841470985, x = 0.00999999978 -> 0.00999983311, x = 0.0199999996 -> 0.0199986662, x = 0.0299999993 -> 0.0299954995, x = 0.0399999991 -> 0.0399893333, x = 0.0500000007 -> 0.04997917, x = 0.0599999987 -> 0.0599640051
+  fits in real arithmetic (max relative error of x*P(x)):
+    deg  cheb interp  cheb econ    minimax      no exact pts
+    20   1.08e-11     -            4.68e-18     1.77e-19
+  candidates ranked by max ulp and cost under gt1030 (sampled floats); defined as ap1..:
+  measured on 130815 f32 in [0, 1]; ulp against the exact value (naive rounding in parentheses)
+  #   kind      deg   form        error (naive)            max rel       max abs       cost
+  1   minimax   20    horner+fma  0.796 ulp (0.815)        6.45e-08      4.74e-08      20   at x=0.995574892  exact pts yes  keep +2541%
+      x*P(x): fma(x*x, fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(fma(3.12167884e-07, x, -2.89199193e-06), x, 1.23019699e-05), x, -3.18436396e-05), x, 5.60390363e-05), x, -7.09514497e-05), x, 6.67076602e-05), x, -4.73925502e-05), x, 2.56466301e-05), x, -1.06034913e-05), x, 3.30662465e-06), x, 1.98186103e-06), x, 1.33068127e-07), x, -0.000198429072), x, 1.39267164e-09), x, 0.0083333347), x, 2.7912245e-12), x, -0.166666672), x, 6.35927561e-16), x)
+      rounding of ap1, first order, 20 operations, relative, in u = 2^-24: worst case 1.59, probable no better (under 16 operations), expected 0.607; `error ap1 ~ F` says what each means
+  1 more: 'approx more [n]' (dominated or worse)

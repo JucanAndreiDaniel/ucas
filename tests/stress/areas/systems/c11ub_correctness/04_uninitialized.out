@@ -1,0 +1,11 @@
+> c lower nofile
+  u1(x: i32) = undefined
+    defined where (no C UB): 0
+  u2(x: i32) = x != 0 ? 1 : undefined
+    defined where (no C UB): x != 0
+  u3(x: i32) = x + 1
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 1
+  u4(x: i32) = x + 2
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x) + 2
+  u5(x: i32) = (x == 0 ? 2 : x != 0 ? 1 : undefined) + x
+    defined where (no C UB): t1 >= -2147483648 && t1 <= 2147483647 where t1 = i64(x == 0 ? 2 : x != 0 ? 1 : undefined) + i64(x)

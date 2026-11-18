@@ -1,0 +1,14 @@
+c lower nofile
+```c
+/* One expression carrying several newly-modeled UB categories at once,
+ * alongside the div/mod-by-zero and shift-count conditions of earlier
+ * waves: every one of them must appear in "defined where". */
+static const int tab[4] = {10, 20, 30, 40};
+int mix(int x,int y,int n){
+  return (x/y) + (x%y) + (x<<n) + tab[x] + (int)(double)y;
+}
+/* unsigned: shift count is still UB, signed overflow and INT_MIN/-1 are not */
+unsigned umix(unsigned x,unsigned n){return (x<<n) + (x>>n);}
+/* control: a fully defined body has no domain condition */
+int clean(int x,int y){return (x&y) + (x|y);}
+```

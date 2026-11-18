@@ -1,0 +1,24 @@
+> model xmad : gt1030 { mul16: 1
+    fuse xmad(a: u16, b: u16, c: int) = a * b + c : mul16
+    fuse mul16(a: u16, b: u16) = a * b : mul16 }
+> m1(a: u32 in 0..60000, b: u32 in 0..60000, c: u32) = a * b + c
+> cost m1 model xmad
+cost of m1 under xmad: 1 (2 operations, shared subterms counted once)
+  fused by the model (one instruction for several operations):
+    xmad             1 x 1     = 1  (a*b + c; saves 3)
+> m2(a: u32, b: u32, c: u32) = (a & 0xffff) * (b >> 16) + c
+> cost m2 model xmad
+cost of m2 under xmad: 4 (4 operations, shared subterms counted once)
+  logic            1 x 1     = 1
+  shift            1 x 2     = 2
+  fused by the model (one instruction for several operations):
+    xmad             1 x 1     = 1  (a*b + c; saves 3)
+> m6(a: u32 in 0..255, b: u32 in 0..255, c: u32) = a * b + c
+> use xmad
+cost model: xmad
+> find m6 1
+find m6: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from xmad
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> use gt1030
+cost model: gt1030

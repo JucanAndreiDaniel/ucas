@@ -1,0 +1,11 @@
+c lower nofile
+```c
+/* C11 6.3.2.1p2 / J.2: reading an uninitialised automatic object is UB.
+ * The domain condition excludes the paths on which no assignment reached
+ * the object; parameters, initialisers and complete assignments do not. */
+int u1(int x){int y; return y;}
+int u2(int x){int y; if(x) y=1; return y;}
+int u3(int x){int y=1; return y+x;}
+int u4(int x){int y; y=2; return y+x;}
+int u5(int x){int y; if(x) y=1; else y=2; return y+x;}
+```

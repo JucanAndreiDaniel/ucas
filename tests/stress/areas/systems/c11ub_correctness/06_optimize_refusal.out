@@ -1,0 +1,20 @@
+> c optimize nofile budget 5
+  requires: unsequenced access to 'i' (lines 4 and 4): C11 6.5p2 makes this undefined; the evaluation order is not fixed
+c optimize: 3 functions, 1 rewrite proved (0 exhaustive, 1 by SAT) for x86-64-v3
+  estimated cost of the rewritten values on x86-64-v3: 2.0 -> 0.0 cycles
+  fold (line 6): the value is x
+    proof: sat (proved by SAT: 979 AIG nodes, 118 conflicts); cost 2.0 -> 0.0
+    before: {return (x+1)-1;}
+  bad (line 4): not lowered: line 4: unsequenced access to i (C11 6.5p2)
+  good (line 5): no cheaper form: lowered: 1 inputs, cost 1.0
+optimised C:
+  /* optimised by ucas cfront for x86-64-v3 (x86-64-v3); every rewrite proved, see the report */
+  #include <stdint.h>
+  /* c optimize must not prove a rewrite that silently fixes an unsequenced
+   * evaluation order: bad is left untouched and reported as "not lowered",
+   * while the ordinary function below may still be rewritten. */
+  int bad(int x){int i=0;return i++ + i++ + x;}
+  int good(int x){int i=0;i=i+1;return i+x;}
+  int fold(int x){
+  	return (int)(x);
+  }

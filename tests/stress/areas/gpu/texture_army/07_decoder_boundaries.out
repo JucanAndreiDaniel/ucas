@@ -1,0 +1,49 @@
+> show astc_unquant(6, 0)
+_() = 0
+  -> u32
+> show astc_unquant(6, 5)
+_() = 153
+  -> u32
+> show astc_unquant(256, 255)
+_() = 255
+  -> u32
+> show astc_unquantw(2, 0)
+_() = 0
+  -> u32
+> show astc_unquantw(32, 31)
+_() = 64
+  -> u32
+> show astc_lerp(0, 255, 0)
+_() = 0
+  -> u32
+> show astc_lerp(0, 255, 64)
+_() = 65535
+  -> u32
+> show astc_lerp(255, 0, 64)
+_() = 0
+  -> u32
+> show astc_lerp(128, 128, 32)
+_() = 32896
+  -> u32
+> show astc_endpoint(2, 0x1234, 0)
+_() = 255
+  -> u32
+> show astc_endpoint(7, 0x1234, 1)
+_() = 0
+  -> u32
+> show astc_endpoint(15, 0x1234, 7)
+_() = 255
+  -> u32
+> wd(x: u8 in 0..3, y: u8 in 0..3) = astc_partition(61, x, y, 2)
+> od(x: u8 in 0..3, y: u8 in 0..3) = astc_partition(61, 2*u32(x), 2*u32(y), 2)
+> equiv wd od
+wd and od differ at 7 points, e.g. x=2, y=0: 1 vs 0
+> show astc_bilerp([0, 64, 64, 0], 2, 31, 31)
+_() = 0
+  -> u32
+> show astc_bilerp([0, 64, 64, 0], 2, 48, 48)
+_() = 0
+  -> u32
+> show astc_bilerp([0, 64, 64, 0], 2, 16, 16)
+_() = 0
+  -> u32

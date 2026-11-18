@@ -24,8 +24,9 @@ e() = 18446744073709551615
     f = 18446744073709551616
         ^
 > show f
-_(f: real) = f
-  -> real
+04_literal_edges.ucas:13:6: error: undefined function f
+    show f
+         ^
 > coerce8(x: i8) = x + 200
   note: literal 200 does not fit i8; it becomes -56
 > wrap coerce8
@@ -49,13 +50,13 @@ wrap analysis of coerceu8:
 > bigu(x: u64) = 0xFFFFFFFFFFFFFFFF
 > range bigu
 range of bigu -> u64:
-  18446744073709551615..18446744073709551615
+  18446744073709551615..18446744073709551615  (sampled min/max; not a sound bound)
   fits in u64
   sampled 65536 points (domain has 2^64 or more points); not exhaustive
 > wrap bigu
 wrap analysis of bigu:
   no wrapping or rounding operations
-  end to end: differs from the mathematical result at 65536 points, e.g. x=0
+  end to end: equals the mathematical (unbounded) result everywhere
   sampled 65536 points (domain has 2^64 or more points); not exhaustive
 > minlit(x: i64) = x + -9223372036854775808
 > wrap minlit
@@ -63,5 +64,5 @@ wrap analysis of minlit:
   x - -9223372036854775808   (i64)
       nuw fails: unsigned wrap at 32755 points, e.g. x=-9223372036854775808
       nsw fails: signed wrap at 32755 points, e.g. x=-9223372036854775808  <- UB in C; a compiler assumes it cannot happen
-  end to end: differs from the mathematical result at 0 points, e.g. 
+  end to end: differs from the mathematical result at 32755 points, e.g. x=-9223372036854775808
   sampled 65536 points (domain has 2^64 or more points); not exhaustive

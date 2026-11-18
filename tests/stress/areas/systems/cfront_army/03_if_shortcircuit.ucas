@@ -1,0 +1,55 @@
+c lower nofile
+```c
+// &&, || and ?: do not evaluate the operand whose value cannot affect the
+// result.  A division by zero on that dead side is not an error in C.
+int s1(int x){
+#if 1 || (1/0)
+ return 111;
+#else
+ return 222;
+#endif
+}
+int s2(int x){
+#if 0 && (1/0)
+ return 111;
+#else
+ return 222;
+#endif
+}
+int s3(int x){
+#if 1 ? 111 : (1/0)
+ return 111;
+#else
+ return 222;
+#endif
+}
+int s4(int x){
+#if 0 ? (1/0) : 222
+ return 111;
+#else
+ return 222;
+#endif
+}
+// controls: the evaluated side still checks division by zero
+int s5(int x){
+#if (3/2)==1 && (5%2)==1
+ return 111;
+#else
+ return 222;
+#endif
+}
+int s6(int x){
+#if 0 || 0
+ return 111;
+#else
+ return 222;
+#endif
+}
+int s7(int x){
+#if 1 && 2 && 3
+ return 111;
+#else
+ return 222;
+#endif
+}
+```
