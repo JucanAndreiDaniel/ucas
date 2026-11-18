@@ -2283,11 +2283,67 @@ cmd_radius(char *text)
 
 /* ---- power series of a function ---- */
 
+/*
+ * The syntax is "powerseries F [x] [at a]": a trailing bare name is the
+ * variable of expansion, not a factor to multiply by.  Strip it before
+ * xf_parse, which would otherwise read "exp(x) x" as exp(x)*x (and so emit
+ * the series of x*e^x).  This mirrors trail_vars() in xform.c.
+ */
+static void
+ps_trail_var(char *s, char *v, size_t vn)
+{
+	static const char *const unary[] = {"sin", "cos", "tan", "exp", "log",
+	    "ln", "sqrt", "abs", "sinh", "cosh", "tanh", "sec", "csc", "cot",
+	    "atan", "asin", "acos", "floor", "ceil", "sign", "arctan",
+	    "arcsin", "arccos", NULL};
+	size_t n = strlen(s), e = n, b, r, q;
+	char w[32];
+	int k, found;
+
+	while (e > 0 && s[e - 1] == ' ')
+		e--;
+	b = e;
+	while (b > 0 && (isalpha((unsigned char)s[b - 1]) ||
+	    (unsigned char)s[b - 1] >= 0x80))
+		b--;
+	if (b == e || b == 0 || s[b - 1] != ' ' || e - b >= sizeof w)
+		return;
+	snprintf(w, sizeof w, "%.*s", (int)(e - b), s + b);
+	r = b;
+	while (r > 0 && s[r - 1] == ' ')
+		r--;
+	if (r == 0 || !(isalnum((unsigned char)s[r - 1]) ||
+	    s[r - 1] == ')' || s[r - 1] == ']' || s[r - 1] == '!' ||
+	    (unsigned char)s[r - 1] >= 0x80))
+		return;
+	/* not the argument of a unary function: "sin x" is sin(x) */
+	q = r;
+	while (q > 0 && isalpha((unsigned char)s[q - 1]))
+		q--;
+	for (k = 0; unary[k]; k++)
+		if (!strcmp(unary[k], s + q) && strlen(unary[k]) == r - q)
+			return;
+	/* the name must already occur as an identifier in the expression */
+	found = 0;
+	for (k = 0; (size_t)k + strlen(w) <= r; k++)
+		if (!strncmp(s + k, w, strlen(w)) &&
+		    (k == 0 || !isalnum((unsigned char)s[k - 1])) &&
+		    !isalnum((unsigned char)s[k + strlen(w)])) {
+			found = 1;
+			break;
+		}
+	if (!found)
+		return;
+	snprintf(v, vn, "%s", w);
+	s[r] = 0;
+}
+
 static void
 cmd_powerseries(char *text)
 {
 	static const char *const opts[] = {"at", "about", "around", NULL};
-	char at[64] = "", *xname = NULL;
+	char at[64] = "", var[32] = "", *xname = NULL;
+	char ubuf[256], *us = ubuf;
 	struct func *f;
 	double a = 0, c[17];
 	int xs, m, nm = 0, ok;
@@ -2305,6 +2361,7 @@ cmd_powerseries(char *text)
 		}
 	}
 	(void)opts;
+	ps_trail_var(text, var, sizeof var);
 	f = xf_parse(text);
 	if (f->np != 1)
 		fail("powerseries: one variable, please");
@@ -2317,6 +2374,8 @@ cmd_powerseries(char *text)
 	}
 	x = xv(xs, xname);
 	u = a == 0 ? x : xsub(x, xk(a));
+	/* a shifted base must be parenthesised in the printed general term */
+	snprintf(ubuf, sizeof ubuf, a == 0 ? "%s" : "(%s)", xf_str(u));
 	printf("power series of %s about %s = %s\n", xf_str(f->body), xname,
 	    xf_num(a));
 	/* rational: exact coefficients from the poles */
@@ -2428,10 +2487,10 @@ taylor:
 		if (term) {
 			term = xmul(xmul(xk(L.K), xpow(xk(L.lam), mm)), term);
 			printf("  = sum_{m>=%d} c_m %s^m, c_m = %s\n", L.j + (L.e == L_MLOG),
-			    xf_str(u), xf_str(term));
+			    us, xf_str(term));
 		} else
 			printf("  = %s with u = %s %s\n", lib_name[L.e], xf_num(L.lam),
-			    xf_str(u));
+			    us);
 		printf("  matches %s: radius of convergence %s\n", lib_name[L.e],
 		    isinf(L.R) ? "inf" : xf_num(L.R));
 	} else {
@@ -2459,7 +2518,7 @@ taylor:
 			}
 			if (term && L.j == 0) {
 				nid t = xmul(xmul(xk(L.K), xpow(xk(L.lam), kk)), term);
-				printf("  = sum_{k>=0} %s * %s^(2k%s)\n", xf_str(t), xf_str(u),
+				printf("  = sum_{k>=0} %s * %s^(2k%s)\n", xf_str(t), us,
 				    odd ? " + 1" : "");
 				printf("  radius of convergence %s\n", isinf(L.R) ? "inf" :
 				    xf_num(sqrt(L.R)));

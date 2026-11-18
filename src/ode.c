@@ -35,17 +35,20 @@ struct pdeent *pde_find(uint32_t name);
 struct odeq {
 	uint32_t var;
 	int order;
+	int gen;                 /* definition generation (last definition wins) */
 	char *rhs;
 };
 struct odeic {
 	uint32_t var;
 	int order;
+	int gen;                 /* generation the condition was given in */
 	char *t0, *val;
 };
 static struct odeq eqs[MAXEQ];
 static int neqs;
 static struct odeic ics[4 * MAXEQ];
 static int nics;
+static int ode_gen;          /* bumped whenever an equation is (re)defined */
 
 static char *
 xstrdup(const char *s)
@@ -74,29 +77,24 @@ ode_equation(uint32_t var, int order, const char *rhs, uint32_t tok)
 		free(eqs[i].rhs);
 	eqs[i].var = var;
 	eqs[i].order = order;
+	eqs[i].gen = ++ode_gen;
 	eqs[i].rhs = xstrdup(rhs);
 }
 
 void
 ode_initial(uint32_t var, int order, const char *t0, const char *val)
 {
-	int i;
-
-	for (i = 0; i < nics; i++)
-		if (ics[i].var == var && ics[i].order == order)
-			break;
-	if (i == nics) {
-		if (nics == 4 * MAXEQ)
-			fail("too many initial values");
-		nics++;
-	} else {
-		free(ics[i].t0);
-		free(ics[i].val);
-	}
-	ics[i].var = var;
-	ics[i].order = order;
-	ics[i].t0 = xstrdup(t0);
-	ics[i].val = xstrdup(val);
+	/* Keep every condition, including repeats: cmd_dsolve checks that
+	 * repeated values for one (var, order) agree instead of the old silent
+	 * "last one wins" overwrite. */
+	if (nics == 4 * MAXEQ)
+		fail("too many initial values");
+	ics[nics].var = var;
+	ics[nics].order = order;
+	ics[nics].gen = ode_gen;
+	ics[nics].t0 = xstrdup(t0);
+	ics[nics].val = xstrdup(val);
+	nics++;
 }
 
 static struct odeq *
@@ -910,13 +908,36 @@ cmd_dsolve(uint32_t var, nid an, nid bn, int steps)
 	for (i = 0; i < nv; i++) {
 		struct odeq *q = eq_find(vars[i]);
 		for (k = 0; k < q->order; k++) {
-			int z;
-			for (z = 0; z < nics; z++)
-				if (ics[z].var == vars[i] && ics[z].order == k)
-					break;
-			if (z == nics)
+			int z = -1, z2;
+			/* the last condition given in the latest definition wins */
+			for (z2 = 0; z2 < nics; z2++)
+				if (ics[z2].var == vars[i] && ics[z2].order == k &&
+				    (z < 0 || ics[z2].gen >= ics[z].gen))
+					z = z2;
+			if (z < 0)
 				fail("missing initial value %s(t0) = ...",
 				    sym_str(primed(vars[i], k)));
+			/* two different values in that same generation contradict */
+			for (z2 = 0; z2 < nics; z2++)
+				if (z2 != z && ics[z2].var == vars[i] &&
+				    ics[z2].order == k && ics[z2].gen == ics[z].gen &&
+				    parse_const(ics[z2].t0) == parse_const(ics[z].t0) &&
+				    parse_const(ics[z2].val) != parse_const(ics[z].val)) {
+					char msg[256];
+					int d;
+					snprintf(msg, sizeof msg,
+					    "conflicting initial values for %s(%s): %g and %g",
+					    sym_str(primed(vars[i], k)), ics[z].t0,
+					    parse_const(ics[z].val), parse_const(ics[z2].val));
+					/* drop the rejected condition so a later dsolve is
+					 * not poisoned by this conflict */
+					free(ics[z2].t0);
+					free(ics[z2].val);
+					for (d = z2; d + 1 < nics; d++)
+						ics[d] = ics[d + 1];
+					nics--;
+					fail("%s", msg);
+				}
 			{
 				double t0 = parse_const(ics[z].t0);
 				if (tset && t0 != S.t0)
@@ -927,6 +948,40 @@ cmd_dsolve(uint32_t var, nid an, nid bn, int steps)
 			}
 			S.z0[base_st[i] + k] = parse_const(ics[z].val);
 		}
+	}
+	/* an initial value on a derivative the equations already determine is
+	 * over-specified; the old code silently dropped it while still claiming
+	 * the solution satisfies "the initial values" */
+	for (j = 0; j < nics; j++) {
+		int over = 0;
+		for (i = 0; i < nv; i++)
+			if (ics[j].var == vars[i] &&
+			    ics[j].gen == eq_find(vars[i])->gen &&
+			    ics[j].order >= eq_find(vars[i])->order)
+				over = 1;
+		if (!over)
+			continue;
+		/* a redundant value equal to what the equations force is harmless */
+		for (i = 0; i < nv; i++) {
+			struct odeq *q = eq_find(vars[i]);
+			nid map[NSLOT], e;
+			double v;
+			if (ics[j].var != vars[i] || ics[j].order != q->order)
+				continue;
+			memset(map, 0, sizeof map);
+			map[0] = KR(S.t0);
+			for (k = 0; k < S.n; k++)
+				map[1 + k] = KR(S.z0[k]);
+			e = subst(S.F[base_st[i] + q->order - 1], map, NSLOT);
+			if (num_of(tidy(e), &v) &&
+			    fabs(v - parse_const(ics[j].val)) <=
+			    1e-9 * (1 + fabs(v)))
+				over = 0;
+		}
+		if (over)
+			fail("initial value %s^(%d)(%s) is inconsistent with the "
+			    "equations (over-specified)", sym_str(ics[j].var),
+			    ics[j].order, ics[j].t0);
 	}
 	which = base_st[0];
 	if (an) {

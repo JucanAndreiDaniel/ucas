@@ -2835,10 +2835,12 @@ c2_taylor(struct func *f, int slot, double a, int n)
 		}
 	}
 	for (k = 0; k <= n; k++) {
-		nid v = tidy(subst(g[k], map, NSLOT));
+		nid v = subst(g[k], map, NSLOT);
+		v = tidy(v);
 		if (k)
 			fact *= k;
-		c[k] = tidy(DIV(v, KR(fact)));
+		v = DIV(v, KR(fact));
+		c[k] = tidy(v);
 		if (N.op[c[k]] == O_UNDEF) {
 			printf("no Taylor series of %s at %s = %s: the %d%s "
 			    "derivative is undefined there\n", fname2(f), x, fnum(a),
@@ -2849,6 +2851,33 @@ c2_taylor(struct func *f, int slot, double a, int n)
 			allnum = 0;
 		else
 			c[k] = KR(snap(cv[k]));
+	}
+	/* Repeated symbolic differentiation can overflow the simplifier's term
+	 * budget and lose terms at high order (the Taylor-jet check below then
+	 * flags it).  Taylor-jet arithmetic in long double is an independent
+	 * computation; when it disagrees and gives an exact small rational, use
+	 * that as the coefficient instead. */
+	{
+		struct lref rj;
+		ld jet[AMAXJ];
+		lr_open(&rj, f->body, 0);
+		if (n + 1 <= AMAXJ && lref_taylor(&rj, a, n + 1, jet)) {
+			for (k = 0; k <= n; k++) {
+				struct q q;
+				double jv = (double)jet[k], sv;
+				if (!(isfinite(jv) && isfinite(cv[k])))
+					continue;
+				if (fabs(jv - cv[k]) <= 1e-9 * fmax(1, fabs(cv[k])))
+					continue;
+				if (!q_from_double(jv, &q) || q.d > 1000 ||
+				    fabs(q_val(q) - jv) > 1e-12 * fmax(1, fabs(jv)))
+					continue;
+				sv = q_val(q);
+				cv[k] = sv;
+				c[k] = KR(sv);
+			}
+		}
+		lref_free(&rj);
 	}
 	{
 		/* the polynomial as text, ascending: x - x^3/6 + x^5/120 */
@@ -3324,14 +3353,74 @@ c2_limit_value(nid e, int slot, double a, int side, double *v)
 	return l.k == LV_PINF ? 2 : l.k == LV_NINF ? -2 : 0;
 }
 
+/* floor/ceil/roundeven are step functions: their derivative is 0 almost
+ * everywhere, so L'Hopital does not apply to them.  As |u| -> inf,
+ * floor(u) = u - {u} with {u} in [0, 1), so the bounded part vanishes from
+ * an inf/inf ratio: replace each step by its argument.  *found is set when
+ * a step was actually replaced. */
+static nid
+strip_steps(nid e, int *found)
+{
+	int op = N.op[e];
+	nid a = N.a[e], b = N.b[e], c = N.c[e];
+
+	if (op == O_CONST || op == O_VAR || op == O_UNDEF || op == O_TABLE)
+		return e;
+	if (op == O_FLOOR || op == O_CEIL || op == O_ROUNDEVEN) {
+		*found = 1;
+		return strip_steps(a, found);
+	}
+	/* only rebuild ops whose operands are all nodes */
+	switch (op) {
+	case O_ADD: case O_SUB: case O_MUL: case O_DIV: case O_POW:
+	case O_MOD: case O_ATAN2: case O_MIN: case O_MAX: case O_NEG:
+	case O_ABS: case O_SIGN: case O_SQRT: case O_EXP: case O_LOG:
+	case O_SIN: case O_COS: case O_TAN: case O_ASIN: case O_ACOS:
+	case O_ATAN: case O_SINH: case O_COSH: case O_TANH: case O_ASINH:
+	case O_ACOSH: case O_ATANH: case O_SEC: case O_CSC: case O_COT:
+	case O_LAMBERTW: case O_LAMBERTWM1: case O_CAST: case O_BARRIER:
+		break;
+	case O_SEL:
+		a = strip_steps(a, found);
+		b = strip_steps(b, found);
+		return mk_sel(a, b, strip_steps(c, found));
+	default:
+		return e;
+	}
+	if (a)
+		a = strip_steps(a, found);
+	if (b)
+		b = strip_steps(b, found);
+	if (c)
+		c = strip_steps(c, found);
+	if (a == N.a[e] && b == N.b[e] && c == N.c[e])
+		return e;
+	return mk_op(op, a, b, c);
+}
+
 /* N/D with both -> 0 or both -> inf: L'Hopital, bounded */
 static struct lv
 lhopital(nid Nn, nid Dn, struct lctx *c, const char *form)
 {
 	nid dn, dd;
+	int sf = 0;
 
 	if (c->lh >= 12)
 		return LK(LV_UNKNOWN);
+	/* At infinity, a step function in an inf/inf ratio is its argument to
+	 * leading order.  L'Hopital on its zero derivative is invalid (ucas's
+	 * own numeric check then flags DISAGREES), so take the stripped ratio
+	 * limit instead. */
+	if (isinf(c->a)) {
+		nid Ns = strip_steps(Nn, &sf);
+		nid Ds = strip_steps(Dn, &sf);
+		if (sf) {
+			nid q = simp(DIV(Ns, Ds), 1);
+			lstep(c, "%s: a step function at infinity: use u + O(1): lim %s",
+			    form, node_str(q));
+			return lim(q, c);
+		}
+	}
 	dn = try_diff(Nn, c->slot, 1);
 	dd = try_diff(Dn, c->slot, 1);
 	if (!dn || !dd)
@@ -4079,6 +4168,44 @@ struct side_res {
 	double est, err, last, earlier;
 };
 
+/* Replace a trig function whose argument lands on an exact zero at the limit
+ * point by the constant 0.  Double pi/2 is not exactly pi/2, so cos(pi/2)
+ * evaluates to ~6e-17; in a shifted reciprocal such as 1/(cos x + 1e-20)
+ * that residue makes the substituted value a spurious huge finite number
+ * (~1.6e16) instead of the true limit 1e20.  Bare reciprocal-trig poles
+ * (sec x, 1/cos(x)^2) are deliberately left alone: snapping them to 1/0
+ * loses the one-sided sign information, and the numeric-side override below
+ * already handles them.  Returns the rebuilt node and sets *changed. */
+static nid
+snap_trig_zeros(nid e, struct lctx *c, int *changed)
+{
+	nid a, b, d;
+	int op = N.op[e];
+	struct lv la;
+	double v, w;
+
+	if (!e || op == O_CONST || op == O_VAR || op == O_UNDEF ||
+	    op == O_TABLE || !(N.fl[e] & NF_VAR))
+		return e;
+	if (op == O_COS || op == O_SIN || op == O_TAN) {
+		la = lim(N.a[e], c);
+		if (la.k == LV_NUM) {
+			v = la.v;
+			w = op == O_COS ? (v - M_PI / 2) / M_PI : v / M_PI;
+			if (isfinite(w) && fabs(w - round(w)) < 1e-9) {
+				*changed = 1;
+				return KR(0);
+			}
+		}
+	}
+	a = N.a[e] ? snap_trig_zeros(N.a[e], c, changed) : 0;
+	b = N.b[e] ? snap_trig_zeros(N.b[e], c, changed) : 0;
+	d = N.c[e] ? snap_trig_zeros(N.c[e], c, changed) : 0;
+	if (a == N.a[e] && b == N.b[e] && d == N.c[e])
+		return e;
+	return mk_op(op, a, b, d);
+}
+
 static void
 limit_side(nid e, int slot, double a, int side, struct side_res *s)
 {
@@ -4096,6 +4223,35 @@ limit_side(nid e, int slot, double a, int side, struct side_res *s)
 	/* undefined symbolically yet defined numerically: not found */
 	if (s->l.k == LV_UNDEF && s->nk != LV_UNDEF)
 		s->l = LK(LV_UNKNOWN);
+	/* cos(pi/2), sin(pi), ... are ~1e-16 rather than exactly 0 in double.
+	 * Substituting that residue at a finite point makes a reciprocal look
+	 * like a large but finite limit (1/cos(pi/2) ~ 1.6e16).  When the
+	 * samples plainly grow without bound the point is usually a pole:
+	 * trust the numeric side over the spurious huge finite value.  But a
+	 * shifted trig denominator (1/(cos x + 1e-20)) is genuinely finite:
+	 * recompute with the trig zero snapped to exact 0 before overriding. */
+	if (s->l.k == LV_NUM && fabs(s->l.v) > 1e11 &&
+	    (s->nk == LV_PINF || s->nk == LV_NINF)) {
+		struct lctx c;
+		nid es;
+		int changed = 0, done = 0;
+
+		memset(&c, 0, sizeof c);
+		c.slot = slot;
+		c.a = a;
+		c.side = side;
+		c.log = &s->log;
+		es = snap_trig_zeros(e, &c, &changed);
+		if (changed) {
+			struct lv t = lim(es, &c);
+			if (t.k == LV_NUM && isfinite(t.v)) {
+				s->l = t;
+				done = 1;
+			}
+		}
+		if (!done)
+			s->l = LK(s->nk);
+	}
 }
 
 /* a limit's value as data: {"kind", "value", "text"} */
