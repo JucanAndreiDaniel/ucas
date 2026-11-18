@@ -1,0 +1,54 @@
+> p(x: u32, y: u32) = (x & 255)*(y & 255) + ((x >> 8) & 255)*((y >> 8) & 255) + ((x >> 16) & 255)*((y >> 16) & 255) + (x >> 24)*(y >> 24)
+> find p 1
+find p: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from gt1030
+  dot products under gt1030 (sums of products laid into lanes; cost 30 as written):
+  cost 1   udot4x8(x, y)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (x & 0xff) * (y & 0xff), lane 1: (x >> 8 & 0xff) * (y >> 8 & 0xff), lane 2: (x >> 0x10 & 0xff) * (y >> 0x10 & 0xff), lane 3: (x >> 0x18) * (y >> 0x18)
+           x & 0xff is bits 0..7 of x: lane 0 as it is
+           y & 0xff is bits 0..7 of y: lane 0 as it is
+           x >> 8 & 0xff is bits 8..15 of x: lane 1 as it is
+           y >> 8 & 0xff is bits 8..15 of y: lane 1 as it is
+           x >> 0x10 & 0xff is bits 16..23 of x: lane 2 as it is
+           y >> 0x10 & 0xff is bits 16..23 of y: lane 2 as it is
+           x >> 0x18 is bits 24..31 of x: lane 3 as it is
+           y >> 0x18 is bits 24..31 of y: lane 3 as it is
+           udot4x8's sum is in 0..260100: it does not wrap
+           proved by SAT: 2606 AIG nodes, 0 conflicts
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> use rdna2
+cost model: rdna2
+> find p 1
+find p: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from rdna2
+  rewrites the model prices lower (each derived, with what it holds under):
+  cost 25  u32(f32(x & 0xff)*f32(y & 0xff) + f32(x >> 8 & 0xff)*f32(y >> 8 & 0xff) + f32(x >> 0x10 & 0xff)*f32(y >> 0x10 & 0xff) + f32(x >> 0x18)*f32(y >> 0x18)) the integer arithmetic (x & 0xff)*(y & 0xff) + (x >> 8 & 0xff)*(y >> 8 & 0xff) + (x… (61 more characters) on f32 (derived; checked on a sample)
+      holds where every value in it is an integer in [0, 260100], inside (-2^24, 2^24) (interval arithmetic over the parameters' ranges)
+      f32 holds every integer below 2^24 in magnitude: each operand converts exactly, and each +, -, * has an exact result that is such an integer, so no operation rounds (a*b + c contracted into one fma rounds a*b + c once: the same integer)
+      the result converts back exactly: it is an integer inside u32
+  dot products under rdna2 (sums of products laid into lanes; cost 28 as written):
+  cost 1   udot4x8(x, y)
+           udot4x8 (4 x 8-bit lanes, unsigned): lane 0: (x & 0xff) * (y & 0xff), lane 1: (x >> 8 & 0xff) * (y >> 8 & 0xff), lane 2: (x >> 0x10 & 0xff) * (y >> 0x10 & 0xff), lane 3: (x >> 0x18) * (y >> 0x18)
+           x & 0xff is bits 0..7 of x: lane 0 as it is
+           y & 0xff is bits 0..7 of y: lane 0 as it is
+           x >> 8 & 0xff is bits 8..15 of x: lane 1 as it is
+           y >> 8 & 0xff is bits 8..15 of y: lane 1 as it is
+           x >> 0x10 & 0xff is bits 16..23 of x: lane 2 as it is
+           y >> 0x10 & 0xff is bits 16..23 of y: lane 2 as it is
+           x >> 0x18 is bits 24..31 of x: lane 3 as it is
+           y >> 0x18 is bits 24..31 of y: lane 3 as it is
+           udot4x8's sum is in 0..260100: it does not wrap
+           proved by SAT: 2606 AIG nodes, 0 conflicts
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> use gt1030
+cost model: gt1030
+> model nodot : gt1030 { dot4x8: none, dot4x8sat: none }
+> use nodot
+cost model: nodot
+> find p 1
+find p: 1024 points (sampled; matches verified on the whole domain), computing in u32, costs from nodot
+  dot products: nodot has no dot product forms (products of lane-sized factors are left as they are)
+  nothing new up to cost 3 (term bank full)
+  [searched every term up to cost 3: 16384 distinct columns, bank full; 'more' continues]
+> use gt1030
+cost model: gt1030

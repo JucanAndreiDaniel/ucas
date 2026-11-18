@@ -1,0 +1,7 @@
+# SWAR identities (swar.c): 4x8-bit and 2x16-bit add and subtract written
+# lane by lane, then found as one word-wide operation and proved on the
+# whole u32 domain.
+add8(a: u32, b: u32) = (((a & 255) + (b & 255)) & 255) | ((((a >> 8) & 255) + ((b >> 8) & 255)) & 255) << 8 | ((((a >> 16) & 255) + ((b >> 16) & 255)) & 255) << 16 | ((((a >> 24) & 255) + ((b >> 24) & 255)) & 255) << 24
+find add8 1
+sub16(a: u32, b: u32) = (((a & 0xffff) - (b & 0xffff)) & 0xffff) | (((a >> 16) - (b >> 16)) & 0xffff) << 16
+find sub16 1

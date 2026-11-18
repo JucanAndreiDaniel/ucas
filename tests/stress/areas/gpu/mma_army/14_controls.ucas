@@ -1,0 +1,15 @@
+# Controls: independent facts that must stay true.  Two identical byte
+# sums commute; a tc_dot of one product is its f32 conversion; a signed
+# field read of a byte equals its sign extension; the plain dot's low word
+# matches its lane-wise definition (all proved on the whole domain).
+ad1(x: u32 in 0..1023, y: u32 in 0..1023) = absdiff4x8(x, y)
+ad2(x: u32 in 0..1023, y: u32 in 0..1023) = absdiff4x8(y, x)
+equiv ad1 ad2
+t1(x: f16) = tc_dot([x], [1.0], 0.0)
+i1(x: f16) = f32(x)
+equiv t1 i1
+sx(x: u32, y: i32 in -8..7) = i32(i8(x >> 8)) + y
+find sx 1
+d(x: u32, y: u32) = udot4x8(x, y)
+e(x: u32, y: u32) = (x & 255)*(y & 255) + ((x >> 8) & 255)*((y >> 8) & 255) + ((x >> 16) & 255)*((y >> 16) & 255) + (x >> 24)*(y >> 24)
+equiv d e

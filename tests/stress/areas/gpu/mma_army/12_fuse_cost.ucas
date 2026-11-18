@@ -1,0 +1,14 @@
+# Fusions and the cheapest cover of an expression DAG (fuse.c).  A fusion
+# is inherited from a parent model, dropped with `none` and added anew;
+# multiply-add, LOP3, shifts and float contraction are all priced.
+imad(a: u32, b: u32, c: u32) = a * b + c
+cost imad
+lop3(a: u32, b: u32, c: u32, k: u32) = ((a & b) | (~a & c)) + k
+cost lop3
+fm(a: f32, b: f32, c: f32) = a * b + c
+cost fm
+model nolop : gt1030 { nofuse lop3, fuse andn(a: int, b: int) = a & ~b : logic }
+models
+cost lop3 model nolop
+model plain { iadd: 1, logic: 1, imul: 3 }
+cost imad model plain

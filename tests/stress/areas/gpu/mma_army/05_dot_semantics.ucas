@@ -1,0 +1,14 @@
+# Packed integer dot semantics (dot.c): unsigned, signed and signed x
+# unsigned lanes, the plain forms' low 32 bits and the saturating forms'
+# clamps, including 16-bit lanes that wrap in the plain form.
+show udot4x8(0x01020304, 0x01010101)
+show sdot4x8(0xff, 0xff)
+show sudot4x8(0xff, 0xff)
+show sudot4x8(0xff000001, 0x01000002)
+show sdot2x16(0x80008000, 0x80008000)
+show udot2x16(0xffffffff, 0xffffffff)
+show udot8x4(0x12345678, 0x11111111)
+show sdot8x4(0xf, 0xf)
+show udot4x8sat(0xffffffff, 0xffffffff, 0xfffffff0)
+show sdot4x8sat(0x80, 0x7f, -2147483600)
+show sudot2x16sat(0xffff, 0xffff, 5)

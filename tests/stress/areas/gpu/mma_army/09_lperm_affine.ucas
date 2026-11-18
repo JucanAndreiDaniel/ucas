@@ -1,0 +1,10 @@
+# Lane maps as xor exchange stages (lperm.c): an affine map is decomposed
+# into rank(I xor A) conditional exchanges, priced, and the stages are
+# composed on every lane to prove the map.  With no xor/quad class the
+# model falls back to one shuffle by the index.
+lperm lane xor (lane & 1) << 1
+lperm lane xor (lane & 1) << 1 model rdna2
+lperm lane & 28 model rdna2
+lperm (lane | 1) xor ((lane & 4) >> 1) model rdna2
+lperm (lane & 3) * 8 + (lane >> 2) model rdna2
+lperm (lane xor 1) lanes 64 model rdna2
