@@ -1,0 +1,59 @@
+> phi 1
+phi(1) = 1
+  how: 1 = 1; phi = product of p^(e-1) (p - 1): 1 (the empty product)
+  the order of the unit group (Z/1)*; lambda(1) = 1 is its exponent
+  check: counted the k in 1..1 with gcd(k, 1) = 1: 1
+> phi 12
+phi(12) = 4
+  how: 12 = 2^2 * 3; phi = product of p^(e-1) (p - 1): 2^1*1 * 2
+  the order of the unit group (Z/12)*; lambda(12) = 2 is its exponent
+  check: counted the k in 1..12 with gcd(k, 12) = 1: 4
+> carmichael 561
+lambda(561) = 80 (Carmichael: the least m with a^m = 1 for every unit a)
+  how: 561 = 3 * 11 * 17; lambda is the lcm of 2 (3^1), 10 (11^1), 16 (17^1)
+  lambda(2^e) = 2^(e-2) for e >= 3; lambda(p^e) = phi(p^e) otherwise; phi(561) = 320
+  check: the lcm of the orders of all units, by stepping through their powers: 80
+> legendre 2 7
+(2/7) = 1
+  a quadratic residue: x^2 = a has a solution
+  (4^2 = 2 mod 7)
+  how: quadratic reciprocity (the binary Jacobi algorithm)
+  check: Euler's criterion 2^((7-1)/2) = 1 mod 7
+> jacobi 2 15
+(2/15) = 1
+  how: quadratic reciprocity; the product of the Legendre symbols over 15 = 3 * 5
+  15 is composite: (a/n) = 1 does not make a a square mod n; here 2 is not a square mod 15
+> sqrtmod 2 7
+x^2 = 2 mod 7: x = 3, 4
+  how: p = 3 mod 4: x = a^((p+1)/4)
+  check: 3^2 = 2, 4^2 = 2 (mod 7); brute force over 0..6: 2 solutions
+> sqrtmod 1 16
+x^2 = 1 mod 16: x = 1, 7, 9, 15
+  how: 16 = 2^4: roots mod each prime (Tonelli-Shanks), lifted to the prime powers (Hensel), combined by CRT
+  check: 1^2 = 1, 7^2 = 1, 9^2 = 1, 15^2 = 1 (mod 16); brute force over 0..15: 4 solutions
+> inverse 3 mod 11
+3^-1 = 4 mod 11
+  how: extended Euclid: 4*3 - 1*11 = 1
+  check: 3 * 4 = 12 = 1*11 + 1
+> order 3 mod 7
+ord(3) = 6 mod 7
+  how: the order divides lambda(7) = 6; 3^6 = 1 and 3^(6/2) = 6, 3^(6/3) = 2
+  3 is a primitive root mod 7 (its order is phi(7) = 6)
+  additive order: 7
+  check: stepping through the powers, 3^k = 1 first at k = 6
+> crt 2 mod 3, 3 mod 5
+the system
+  2 mod 3: x = 2
+    x = 2 (mod 3)
+  3 mod 5: x = 3
+    x = 3 (mod 5)
+x = 8 (mod 15)
+  how: the Chinese remainder theorem, pairwise (moduli that share factors must agree mod their gcd)
+  check: the solution substituted into every congruence: it holds; brute force over 0..14: 1 solution
+> ring Z/12 zerodivisors
+  zero divisors: 7 nonzero (every nonzero non-unit of a finite ring): 2, 3, 4, 6, 8, 9, 10
+> factorint 561
+561 = 3 * 11 * 17 (not prime)
+  a Carmichael number: a^(n-1) = 1 for every a coprime to it (lambda(561) = 80 divides n - 1), so Fermat's test is fooled
+  how: trial division by the primes below 50, then Pollard-Brent rho; primality by Miller-Rabin with the first 12 prime bases (deterministic below 2^64)
+  check: the product is 561; each factor is prime
