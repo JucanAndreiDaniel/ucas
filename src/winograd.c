@@ -155,36 +155,60 @@ winograd_run(const struct func *f, long rows, long cols, double tol)
 		rep_bool("proved", ok);
 		rep_str("proof", ok ? "algebra" : "none");
 	} else {
-		/* the derived bound over the domain */
-		double s = 0, u = ldexp(1.0, TYW(N.ty[f->body]) == 64 ? -53 :
-		    TYW(N.ty[f->body]) == 16 ? -11 : -24), g, a;
-		int k = h + 3;
+		/* The real-valued bound below is only meaningful while every
+		 * intermediate of the computed expression stays in the format's
+		 * finite range: past it the operations produce inf/NaN, so
+		 * |computed - exact| is not bounded by the real derivation. */
+		int w = TYW(N.ty[f->body]);
+		double s = 0, u = ldexp(1.0, w == 64 ? -53 : w == 16 ? -11 : -24),
+		    fpmax = w == 64 ? 1.7976931348623157e308 : w == 16 ? 65504.0 :
+		    3.4028234663852886e38, g, a, mx = 0;
+		int k = h + 3, ovf = 0;
+		const char *why = NULL;
 		for (j = 0; j < h && s >= 0; j++) {
 			a = amax(f, mk_bin(O_ADD, x[2 * j], y[2 * j + 1]));
 			g = amax(f, mk_bin(O_ADD, x[2 * j + 1], y[2 * j]));
 			if (a < 0 || g < 0)
 				s = -1;
-			else
+			else {
+				if (a > mx) mx = a;
+				if (g > mx) mx = g;
 				s += a * g;
+				if (a * g > mx) mx = a * g;
+			}
 			a = amax(f, xx[j]);
 			g = amax(f, yy[j]);
 			if (s >= 0 && (a < 0 || g < 0))
 				s = -1;
-			else if (s >= 0)
+			else if (s >= 0) {
 				s += a + g;
+				if (a > mx) mx = a;
+				if (g > mx) mx = g;
+				if (s > mx) mx = s;
+			}
 		}
-		if (s >= 0)
+		/* mx bounds each intermediate; once it exceeds fpmax the f32/f16
+		 * expression overflows (e.g. inf - inf = NaN), so no finite error
+		 * bound holds over the parameters' ranges. */
+		if (s < 0)
+			why = ": the parameters' ranges do not bound it";
+		else if (mx > fpmax) {
+			why = ": the intermediates overflow the float format over "
+			    "the parameters' ranges";
+			ovf = 1;
+		} else
 			bound = k * u / (1 - k * u) * s;
 		printf("  floats: the same algebra, not the same roundings; "
 		    "|computed - exact| <= gamma_%d (sum |x_2j + y_2j+1| |x_2j+1 + "
-		    "y_2j| + sum |x x| + sum |y y|)%s", k, bound >= 0 ? "" :
-		    ": the parameters' ranges do not bound it\n");
+		    "y_2j| + sum |x x| + sum |y y|)%s", k, why ? why : "");
 		if (bound >= 0)
-			printf(" <= %.6g over the parameters' ranges\n", bound);
+			printf(" <= %.6g over the parameters' ranges", bound);
+		printf("\n");
 		ok = bound >= 0 && bound <= tol;
 		if (!ok)
-			printf("  not offered: %s\n", tol > 0 ? "the bound is past "
-			    "the tolerance" : "floats need a tolerance (tol T)");
+			printf("  not offered: %s\n", ovf ? "the computation overflows "
+			    "the float format" : tol > 0 ? "the bound is past the "
+			    "tolerance" : "floats need a tolerance (tol T)");
 		rep_num("bound", bound);
 		rep_bool("within_tol", ok);
 	}

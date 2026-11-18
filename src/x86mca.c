@@ -270,6 +270,16 @@ mca_run(const struct mblock *b, int ua, struct mres *r)
 						best = p;
 				if (best < 0)
 					break;
+				if (done[i] >= HUGE_VAL / 2)
+					/* the result is ready `lat` after the
+					 * instruction first issues, not after its
+					 * last uop: a divider (or microcoded op)'s
+					 * trailing uops are only front-end/port
+					 * pressure and may issue much later.  Basing
+					 * `done` on the last uop made the simulated
+					 * cycles exceed the printed critical-path
+					 * bound for a single division. */
+					done[i] = cyc + (c->lat > 0 ? c->lat : 1);
 				if (mainleft[i]) {
 					/* the unit's own uop on the first port */
 					for (p = 0; p < MAXPORT; p++)
@@ -291,8 +301,6 @@ mca_run(const struct mblock *b, int ua, struct mres *r)
 				pload[best] += occ;
 				left[i]--;
 			}
-			if (left[i] == 0)
-				done[i] = cyc + (c->lat > 0 ? c->lat : 1);
 		}
 		cyc += 1;
 	}

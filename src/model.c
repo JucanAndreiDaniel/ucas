@@ -1590,6 +1590,17 @@ cmd_cost(struct func *f, struct model *m)
 {
 	struct func v = *f;
 
+	/*
+	 * A bare identifier that is not a defined function is turned by
+	 * cmd_func into an anonymous one-parameter function whose body is
+	 * just that auto parameter.  Left alone it prices as a free variable
+	 * (cost 0), so a typo in a function name silently looks like a free
+	 * function.  Report it instead.  (parse.c's equiv path already does
+	 * this with cmd_named_func; cost has no equivalent hook there.)
+	 */
+	if (f->anon && f->np == 1 && N.op[f->body] == O_VAR &&
+	    N.ki[f->body] == 0 && N.a[f->body] == f->p[0].name)
+		fail("undefined function %s", sym_str(f->p[0].name));
 	v.body = fold_apply(m, f->body);
 	cost_report(v.body != f->body ? &v : f, m, f);
 }

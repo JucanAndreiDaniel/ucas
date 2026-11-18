@@ -25,10 +25,14 @@
  * pit.  Schwartz-Zippel polynomial identity testing: two polynomials of
  * total degree at most d that differ agree at a point drawn uniformly
  * from S^n with probability at most d/|S|.  S is the field of 2^61 - 1
- * elements.  Equality over the integers implies equality in a wrapping
- * type (reduction mod 2^w is a ring homomorphism); the converse fails,
- * so a difference over the integers is not a verdict on machine
- * functions.  equiv uses it when enumeration and SAT cannot decide.
+ * elements.  Equality mod P alone is not equality over the integers (a
+ * difference that is a multiple of P folds to 0 at every point), so the
+ * test is repeated over the independent field of 2^61 - 31 elements
+ * before an integer verdict.  Equality over the integers implies equality
+ * in a wrapping type (reduction mod 2^w is a ring homomorphism); the
+ * converse fails, so a difference over the integers is not a verdict on
+ * machine functions.  equiv uses it when enumeration and SAT cannot
+ * decide.
  *
  * Expected divergence (diverge_stats, for cost): how often a warp splits
  * on a condition, from the probability that it holds over the domain
@@ -48,6 +52,7 @@
 #include "texenc.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -117,10 +122,29 @@ runif(void)
 uint64_t
 stoch_seed(void)
 {
-	const char *e = getenv("UCAS_SEED");
+	const char *e = getenv("UCAS_SEED"), *p;
+	char *end;
+	unsigned long long v;
 
-	if (e != NULL && *e)
-		return strtoull(e, NULL, 10);
+	if (e == NULL || !*e)
+		return 1;
+	p = e;
+	while (isspace((unsigned char)*p))
+		p++;
+	/* Only a plain, unsigned decimal number is a seed.  strtoull() alone
+	 * silently maps "abc" to 0, wraps a leading '-' to 2^64-n, saturates
+	 * on overflow and ignores trailing junk, which lets a typo change a
+	 * probabilistic verdict without any diagnostic. */
+	if (!isdigit((unsigned char)*p))	/* rejects sign and empty */
+		goto bad;
+	errno = 0;
+	v = strtoull(p, &end, 10);
+	if (errno == ERANGE || *end != '\0')
+		goto bad;
+	return (uint64_t)v;
+bad:
+	fprintf(stderr, "ucas: warning: ignoring malformed UCAS_SEED=\"%s\" "
+	    "(using seed 1)\n", e);
 	return 1;
 }
 
@@ -184,7 +208,8 @@ rebind(const struct func *f, const struct func *g)
 
 /* ---- Schwartz-Zippel ---- */
 
-#define PIT_P 2305843009213693951ULL	/* 2^61 - 1 */
+#define PIT_P 2305843009213693951ULL	/* 2^61 - 1, a prime */
+#define PIT_Q 2305843009213693921ULL	/* 2^61 - 31, a prime, != PIT_P */
 
 static uint64_t
 mulp(uint64_t a, uint64_t b)
@@ -196,12 +221,26 @@ mulp(uint64_t a, uint64_t b)
 	return s >= PIT_P ? s - PIT_P : s;
 }
 
+/* the second, independent field: a plain __int128 reduction is enough */
 static uint64_t
-redp(int64_t v)
+mulq(uint64_t a, uint64_t b)
+{
+	return (uint64_t)(((unsigned __int128)a * b) % PIT_Q);
+}
+
+static uint64_t
+mulmod(uint64_t a, uint64_t b, int field)
+{
+	return field ? mulq(a, b) : mulp(a, b);
+}
+
+/* reduce a signed 64-bit integer into the chosen prime field */
+static uint64_t
+redc(int64_t v, uint64_t p)
 {
 	if (v >= 0)
-		return (uint64_t)v % PIT_P;
-	return (PIT_P - ((uint64_t)(-(v + 1)) + 1) % PIT_P) % PIT_P;
+		return (uint64_t)v % p;
+	return (p - ((uint64_t)(-(v + 1)) + 1) % p) % p;
 }
 
 /* e is a polynomial over the integers; its total degree bound */
@@ -218,6 +257,19 @@ poly_deg(nid e, int *deg, int depth)
 		if (TY_FP(t) && N.kr[e] != floor(N.kr[e]))
 			return 0;
 		if (TY_FP(t) && fabs(N.kr[e]) > 9e15)
+			return 0;
+		/*
+		 * The field has PIT_P elements.  An integer constant whose
+		 * magnitude reaches PIT_P folds to a different residue in
+		 * redp(): a difference polynomial that is a nonzero multiple
+		 * of PIT_P then vanishes at every sampled point, and pit would
+		 * falsely claim "equal over the integers" (and equiv "equal
+		 * for every input").  Refuse such polynomials; the S-Z bound
+		 * only licenses the integer verdict when reduction mod PIT_P
+		 * is injective on the constants.
+		 */
+		if (!TY_FP(t) &&
+		    (N.ki[e] >= (int64_t)PIT_P || N.ki[e] <= -(int64_t)PIT_P))
 			return 0;
 		*deg = 0;
 		return 1;
@@ -268,44 +320,50 @@ poly_deg(nid e, int *deg, int depth)
 static uint64_t *pv;
 static uint32_t *pstamp, pcur, plim;
 
+/* field 0: PIT_P; field 1: PIT_Q */
 static uint64_t
-poly_eval(nid e, const uint64_t *x)
+poly_eval(nid e, const uint64_t *x, int field)
 {
-	uint64_t r, a;
+	uint64_t r, a, p = field ? PIT_Q : PIT_P;
 	int k;
 
 	if (e < plim && pstamp[e] == pcur)
 		return pv[e];
 	switch (N.op[e]) {
 	case O_CONST:
-		r = TY_FP(N.ty[e]) ? redp((int64_t)N.kr[e]) : redp(N.ki[e]);
+		r = TY_FP(N.ty[e]) ? redc((int64_t)N.kr[e], p) :
+		    redc(N.ki[e], p);
 		break;
 	case O_VAR:
 		r = x[N.ki[e]];
 		break;
 	case O_NEG:
-		r = (PIT_P - poly_eval(N.a[e], x)) % PIT_P;
+		r = (p - poly_eval(N.a[e], x, field)) % p;
 		break;
 	case O_ADD:
-		r = (poly_eval(N.a[e], x) + poly_eval(N.b[e], x)) % PIT_P;
+		r = (poly_eval(N.a[e], x, field) +
+		    poly_eval(N.b[e], x, field)) % p;
 		break;
 	case O_SUB:
-		r = (poly_eval(N.a[e], x) + PIT_P - poly_eval(N.b[e], x)) % PIT_P;
+		r = (poly_eval(N.a[e], x, field) + p -
+		    poly_eval(N.b[e], x, field)) % p;
 		break;
 	case O_MUL:
-		r = mulp(poly_eval(N.a[e], x), poly_eval(N.b[e], x));
+		r = mulmod(poly_eval(N.a[e], x, field),
+		    poly_eval(N.b[e], x, field), field);
 		break;
 	case O_POW:
-		a = poly_eval(N.a[e], x);
+		a = poly_eval(N.a[e], x, field);
 		r = 1;
 		for (k = 0; k < (int)N.ki[N.b[e]]; k++)
-			r = mulp(r, a);
+			r = mulmod(r, a, field);
 		break;
 	case O_SHL:
-		r = mulp(poly_eval(N.a[e], x), redp((int64_t)1 << N.ki[N.b[e]]));
+		r = mulmod(poly_eval(N.a[e], x, field),
+		    redc((int64_t)1 << N.ki[N.b[e]], p), field);
 		break;
 	default:	/* a cast */
-		r = poly_eval(N.a[e], x);
+		r = poly_eval(N.a[e], x, field);
 	}
 	if (e < plim) {
 		pv[e] = r;
@@ -318,8 +376,9 @@ int
 pit_check(const struct func *f, nid a, nid b, int trials, uint64_t seed,
     double *bound, struct sbuf *text)
 {
-	uint64_t x[MAXP], va = 0, vb = 0;
-	int da, db, d, t, j, differ = 0;
+	uint64_t x[MAXP], va = 0, vb = 0, qa = 0, qb = 0;
+	const char *mod;
+	int da, db, d, t, j, differ = 0, qdiffer = 0;
 
 	if (!poly_deg(a, &da, 0) || !poly_deg(b, &db, 0))
 		return -1;
@@ -336,23 +395,53 @@ pit_check(const struct func *f, nid a, nid b, int trials, uint64_t seed,
 		for (j = 0; j < f->np; j++)
 			x[j] = rnd() % PIT_P;
 		pcur++;
-		va = poly_eval(a, x);
-		vb = poly_eval(b, x);
+		va = poly_eval(a, x, 0);
+		vb = poly_eval(b, x, 0);
 		if (va != vb)
 			differ = 1;
+	}
+
+	/*
+	 * Equality mod PIT_P alone is not equality over the integers.  A
+	 * difference polynomial every coefficient of which is a multiple of
+	 * PIT_P vanishes at every point: e.g. (x + 2^60) - (x - (2^60 - 1))
+	 * is exactly PIT_P, so redc() folds both sides to the same residue
+	 * and the Schwartz-Zippel bound is meaningless.  The constant guard
+	 * in poly_deg() only catches a PIT_P-multiple written as one literal;
+	 * the same multiple arises from two literals each well below it.
+	 * Check a second, independent prime before licensing the integer
+	 * verdict: a difference in either field is certain (an integer that
+	 * differs mod p differs), so only agreement over both leaves the
+	 * probabilistic "equal" standing.
+	 */
+	if (!differ) {
+		memset(pstamp, 0, plim * sizeof *pstamp);
+		pcur = 0;
+		rseed(seed);
+		for (t = 0; t < trials && !qdiffer; t++) {
+			for (j = 0; j < f->np; j++)
+				x[j] = rnd() % PIT_Q;
+			pcur++;
+			qa = poly_eval(a, x, 1);
+			qb = poly_eval(b, x, 1);
+			if (qa != qb)
+				qdiffer = 1;
+		}
 	}
 	free(pv);
 	free(pstamp);
 	pv = NULL;
 	pstamp = NULL;
-	if (differ) {
+	if (differ || qdiffer) {
+		mod = differ ? "2^61 - 1" : "2^61 - 31";
 		sb_printf(text, "they differ as polynomials over the integers: "
 		    "at ");
 		for (j = 0; j < f->np; j++)
 			sb_printf(text, "%s%s = %llu", j ? ", " : "",
 			    sym_str(f->p[j].name), (unsigned long long)x[j]);
-		sb_printf(text, " (mod 2^61 - 1) the values are %llu and %llu",
-		    (unsigned long long)va, (unsigned long long)vb);
+		sb_printf(text, " (mod %s) the values are %llu and %llu",
+		    mod, (unsigned long long)(differ ? va : qa),
+		    (unsigned long long)(differ ? vb : qb));
 		*bound = 0;
 		return 0;
 	}

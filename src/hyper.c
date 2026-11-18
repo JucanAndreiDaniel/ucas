@@ -156,6 +156,22 @@ h_close(const double *a, const double *b, int d)
 	return h_dist(a, b, d) <= 1e-9 * (m > 1 ? m : 1);
 }
 
+/* have the two products of an associator rounded to the same value?  The
+ * error is relative to each component's own size: a large scalar part must
+ * not hide a real failure in a small unit component, and rounding noise in
+ * a large component must not be read as non-associativity. */
+static int
+h_assoc(const double *a, const double *b, int d)
+{
+	int k;
+
+	for (k = 0; k < d; k++)
+		if (fabs(a[k] - b[k]) > 1e-9 * fmax(fabs(a[k]), fabs(b[k])) +
+		    1e-12)
+			return 0;
+	return 1;
+}
+
 /* ---- complex functions: principal values, as forms.c takes them ---- */
 
 static cplx
@@ -1175,9 +1191,20 @@ hy_scan(const struct toks *t, uint32_t a, uint32_t b, struct hscan *S)
 			tok_text(t, i, w, sizeof w);
 			{
 				char *e = strchr(w, 'e');
-				if (e && isdigit((unsigned char)e[1]) && !strchr(w, '.') &&
-				    e_unit(e) > 0)
-					S->oct_num = 1;
+				if (e && isdigit((unsigned char)e[1]) && !strchr(w, '.')) {
+					int eu = e_unit(e);
+					if (eu > 0) {
+						S->oct_num = 1;
+						/* A bare 2e1/3e2/4e3 is a coefficient on a
+						 * unit and must make the algebra hyper even
+						 * with no other unit in the expression (e.g.
+						 * conj(1+2e1)).  Canonical scientific forms
+						 * (1e3, 2e10, 7e20) stay numbers. */
+						if (eu <= 3 && strtol(w, NULL, 10) > 1 &&
+						    eu > S->emax)
+							S->emax = eu;
+					}
+				}
 			}
 		}
 		if (kd != T_ID)
@@ -1384,7 +1411,14 @@ hy_prep(const char *in, struct sbuf *o, const struct hscan *S)
 				sb_putc(o, in[i++]);
 			if ((in[i] == 'e' || in[i] == 'E') &&
 			    isdigit((unsigned char)in[i + 1])) {
-				if (S->lg >= 3) {
+				int eu = 0;
+				size_t q = i + 1;
+				while (isdigit((unsigned char)in[q]))
+					eu = eu * 10 + (in[q++] - '0');
+				/* only a unit that exists in this algebra may take
+				 * the coefficient reading: 2e1 in the octonions,
+				 * but 1e8 is the number 10^8, not a free variable */
+				if (S->lg >= 3 && eu > 0 && eu < (1 << S->lg)) {
 					sb_putc(o, ' ');	/* 2e1 = 2*e1 */
 					continue;
 				}
@@ -1949,6 +1983,39 @@ hy_bare(const struct toks *t, uint32_t b)
 		if (ok) {
 			free(text);
 			return 0;
+		}
+		/*
+		 * The complex fallback is for a bare partial operation:
+		 * sqrt(-1), log(-1), asin(2), (-8)^(1/3).  When the undefined
+		 * subterm is nested in other arithmetic, its undefinedness
+		 * must propagate (F_UNDEF) instead of being resolved in the
+		 * complex plane: sqrt(-1)*0 is undefined, not the complex
+		 * number 0, and sqrt(-1)/sqrt(-1) is not 1.  Only take the
+		 * fallback when every operand of the whole expression is
+		 * itself defined; otherwise report the expression undefined.
+		 */
+		{
+			nid arg[3] = {N.a[e], N.b[e], N.c[e]};
+			int ar = opinfo[N.op[e]].arity, j, nested = 0;
+
+			if (ar > 3)
+				ar = 3;
+			for (j = 0; j < ar; j++) {
+				int aok = 0;
+				if (!arg[j])
+					continue;
+				eval_const_at(arg[j], 0, 0, &aok);
+				if (!aok) {
+					nested = 1;
+					break;
+				}
+			}
+			if (nested) {
+				free(text);
+				notes_drop();
+				printf("undefined\n");
+				return 1;
+			}
 		}
 		S.lg = 1;
 		memset(&tmp, 0, sizeof tmp);
@@ -2729,6 +2796,25 @@ snap(cplx z)
 	return re + I * im;
 }
 
+/* Newton on a multiple zero stops a little short of the exact pole */
+static cplx
+snap_pole(cplx z)
+{
+	cplx w = snap(z);
+	double re = creal(w), im = cimag(w), s = cabs(w) > 1 ? cabs(w) : 1;
+	double r;
+
+	r = nearbyint(re * 1e6) / 1e6;
+	if (fabs(r - re) < 1e-8 * s)
+		re = r;
+	r = nearbyint(im * 1e6) / 1e6;
+	if (fabs(r - im) < 1e-8 * s)
+		im = r;
+	if (fabs(im) < 1e-8 * s)
+		im = 0;
+	return re + I * im;
+}
+
 /* Newton from a grid: zeros of f (or of 1/f) in |Re|, |Im| <= R */
 static int
 newton_zeros(double R, int inv, struct zr *out, int max)
@@ -2741,8 +2827,11 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 			cplx z = -R + 2 * R * (a + 0.37) / G + I * (-R + 2 * R *
 			    (b + 0.61) / G), w, w1;
 			int ok = 0, k;
-			for (it = 0; it < 60; it++) {
-				double h = 1e-7 * (cabs(z) > 1 ? cabs(z) : 1);
+			/* a multiple zero of 1/f needs more steps: m=4 approaches
+			 * it at only 3/4 of the distance per iteration */
+			for (it = 0; it < (inv ? 240 : 60); it++) {
+				double h = (inv ? 1e-12 : 1e-7) *
+				    (cabs(z) > 1 ? cabs(z) : 1);
 				cplx d;
 				if (!fz(z, &w) || !fz(z + h, &w1))
 					break;
@@ -2758,7 +2847,14 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 				if (d == 0)
 					break;
 				z -= w / d;
-				if (cabs(w / d) < 1e-14 * (cabs(z) + 1)) {
+				/* A zero of 1/f of order m > 1 is approached only linearly:
+				 * the step cannot shrink to 1e-14 in 60 iterations and a
+				 * finite-difference derivative stalls near such a zero.  For
+				 * poles accept once 1/f is small and the step is small; the
+				 * check after the loop still confirms |f| is large (so an
+				 * analytic function that merely grows is not a pole). */
+				if (cabs(w / d) < (inv ? 1e-9 : 1e-14) * (cabs(z) + 1) &&
+				    (!inv || cabs(w) < 1e-8)) {
 					ok = 1;
 					break;
 				}
@@ -2772,9 +2868,10 @@ newton_zeros(double R, int inv, struct zr *out, int max)
 					continue;
 			} else if (fz(z, &w) && cabs(w) < 1e8)
 				continue;
-			z = snap(z);
+			z = inv ? snap_pole(z) : snap(z);
 			for (k = 0; k < n; k++)
-				if (cabs(out[k].z - z) < 1e-7 * (cabs(z) + 1))
+				if (cabs(out[k].z - z) < (inv ? 1e-6 : 1e-7) *
+				    (cabs(z) + 1))
 					break;
 			if (k == n && n < max) {
 				out[n].z = z;
@@ -3881,7 +3978,11 @@ cmd_assoc(const struct toks *t, uint32_t a, uint32_t b, int comm)
 		r[k] = r1[k] - r2[k];
 	printf("[a, b, c] = (ab)c - a(bc) = %s - (%s) = %s\n", hv_str(r1, d, lg),
 	    hv_str(r2, d, lg), hv_str(r, d, lg));
-	printf("  %s (in the %s)\n", h_n2(r, d) < 1e-24 ? "the product of "
+	/* component by component: an absolute |r| cutoff mistakes ordinary
+	 * rounding for a failure of associativity once the coefficients are
+	 * large, while comparing whole products hides a genuine failure in a
+	 * small component when other components are huge. */
+	printf("  %s (in the %s)\n", h_assoc(r1, r2, d) ? "the product of "
 	    "these three is associative" : "not associative: the grouping "
 	    "changes the product", alg_pl[lg]);
 }
@@ -4042,6 +4143,8 @@ angle_of(const struct toks *t, uint32_t a, uint32_t b)
 	}
 	if (!hy_const(t, a, b, 1, v, NULL) || !h_isreal(v, 2))
 		fail("the angle must be a real number");
+	if (!isfinite(v[0]))
+		fail("the angle must be finite");
 	if (deg == 0 && fabs(v[0]) > 2 * M_PI && v[0] == floor(v[0])) {
 		note("the angle %s is read as degrees (say %s rad for radians)",
 		    rnum(v[0]), rnum(v[0]));
@@ -4096,20 +4199,27 @@ cmd_rotate(const struct toks *t, uint32_t a, uint32_t b)
 		v3[k] = v[k][0];
 	}
 	ab = find_word(t, by + 1, b, ab_w);
-	printf("rotate (%s, %s, %s)", rnum(v3[0]), rnum(v3[1]), rnum(v3[2]));
 	if (ab < b) {
+		char hb[256];
+		/* validate before printing: a bad angle/axis must not leave a
+		 * half-written header in front of the error message */
 		ang = angle_of(t, by + 1, ab);
 		axis_of(t, ab + 1, b, ax);
 		quat_axis_angle(ax, ang, q);
-		printf(" by %s about (%s, %s, %s):\n", rnum(ang), rnum(ax[0]),
-		    rnum(ax[1]), rnum(ax[2]));
+		snprintf(hb, sizeof hb, " by %s about (%s, %s, %s):\n", rnum(ang),
+		    rnum(ax[0]), rnum(ax[1]), rnum(ax[2]));
+		printf("rotate (%s, %s, %s)%s", rnum(v3[0]), rnum(v3[1]),
+		    rnum(v3[2]), hb);
 		printf("  q = cos(theta/2) + sin(theta/2) u, u the unit axis\n");
 	} else {
+		char hb[256];
 		if (!hy_const(t, by + 1, b, 2, q, &lg))
 			fail("rotate: the quaternion is undefined");
 		if (lg > 2)
 			fail("rotate: q must be a quaternion");
-		printf(" by the quaternion %s:\n", hv_str(q, 4, 2));
+		snprintf(hb, sizeof hb, " by the quaternion %s:\n", hv_str(q, 4, 2));
+		printf("rotate (%s, %s, %s)%s", rnum(v3[0]), rnum(v3[1]),
+		    rnum(v3[2]), hb);
 	}
 	notes_flush();
 	do_rotate(v3, q);

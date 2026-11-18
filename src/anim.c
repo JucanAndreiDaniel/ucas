@@ -37,12 +37,15 @@
 #include <string.h>
 #include <strings.h>
 #include <time.h>
+#include <unistd.h>
 
 #define MAXN 100
 #define MAXCELLS 128		/* Blelloch pads to a power of two */
 #define MAXLV MAXN		/* sequential: one per element; parallel: 2 log n + 1 */
 #define MAXGIF (6 << 20)	/* fits the bot's 8 MiB output as base64, and
 				 * Discord's 10 MB attachments */
+#define MAXMCPGIF (3 << 20)	/* MCP/--json carry base64 inline and cap it
+				 * at 4 MiB: base64 is 4/3 of these bytes */
 
 enum { AL_HILLIS, AL_BLELLOCH, AL_SEQ };
 static const char *const alname[] = {"Hillis-Steele", "Blelloch",
@@ -1410,11 +1413,12 @@ xr_finish(int fps, double seconds, const char *name, int nofile)
 			gif_frame(&g, D.px, d);
 		}
 		gif_end(&g);
-		/* too large for the chat: fewer frames rather than none */
-		if (!(nlp_defer || rep_small_files) || g.out.n <= MAXGIF || fps <= 5)
+		/* too large for inline/chat: fewer frames rather than none */
+		if (!(nlp_defer || rep_small_files) ||
+		    g.out.n <= (rep_small_files ? MAXMCPGIF : MAXGIF) || fps <= 5)
 			break;
-		printf("  note: at %d fps the GIF is %zu bytes, over the chat's "
-		    "limit: rendering at %d fps\n", fps, g.out.n, fps / 2);
+		printf("  note: at %d fps the GIF is %zu bytes, over the inline "
+		    "image limit: rendering at %d fps\n", fps, g.out.n, fps / 2);
 		fps /= 2;
 		free(g.out.p);
 	}
@@ -1608,10 +1612,12 @@ deliver(struct gif *gp, const char *name, int nofile)
 		char path[80];
 		FILE *fp;
 		snprintf(path, sizeof path, "%s.gif", name);
-		if ((fp = fopen(path, "wb")) == NULL ||
-		    fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
-			if (fp)
-				fclose(fp);
+		fp = fopen(path, "wb");
+		if (fp == NULL)
+			fail("cannot write %s", path);
+		if (fwrite(g.out.p, 1, g.out.n, fp) != g.out.n) {
+			fclose(fp);
+			unlink(path);   /* do not leave a truncated GIF behind */
 			fail("cannot write %s", path);
 		}
 		fclose(fp);
@@ -1652,9 +1658,11 @@ deliver_file(const char *name, const char *type, const char *data, size_t n,
 		    out.p);
 	} else {
 		FILE *fp = fopen(name, "wb");
-		if (fp == NULL || fwrite(data, 1, n, fp) != n) {
-			if (fp)
-				fclose(fp);
+		if (fp == NULL)
+			fail("cannot write %s", name);
+		if (fwrite(data, 1, n, fp) != n) {
+			fclose(fp);
+			unlink(name);   /* do not leave a truncated file behind */
 			fail("cannot write %s", name);
 		}
 		fclose(fp);
