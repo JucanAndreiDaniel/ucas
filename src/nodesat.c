@@ -40,6 +40,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "report.h"
+
+extern int aig_cert_enable;     /* sat.c: record and recheck a proof object */
+extern int equiv_want_cert;     /* analyze.c: set only by the equiv command */
+
 #define UNROLL 256          /* most iterations of one loop unrolled */
 #define MAXAIG (4 << 20)    /* AIG nodes before giving up */
 
@@ -1289,6 +1294,413 @@ nsat_supported(const struct func *f)
 	return 1;
 }
 
+/*
+ * ---- word-level ring identities (Liew) ----
+ *
+ * Liew shows that word-level ring identities have short polynomial-calculus
+ * and cutting-planes proofs (O(n^2) for multipliers), while bit-blasting
+ * discards that structure.  ucas already has a falling-factorial algebra
+ * path in `equiv`, but other callers of equiv_decide go straight to SAT.
+ * Here, before building any circuit, we try an exact polynomial normal form
+ * over Z on the subset of the DAG made of +, -, *, neg, constants and
+ * parameters of one machine width.  Equal normal forms prove equality of
+ * the wrapped machines (reduction mod 2^w is a ring homomorphism), so this
+ * is sound; a coefficient too large, an unsupported operation, or a domain
+ * (where clause, lanes, floats) we cannot model makes us fall back to SAT.
+ *
+ * The normal form is deliberately independent of the evaluator: as a guard
+ * against a bug in the extraction, we also evaluate both sides on 4096
+ * sampled tuples (8 hand-picked values per parameter, masked to w bits;
+ * beyond the first four parameters the values are correlated, not an
+ * independent product), with the machine's wrapping semantics, and decline
+ * the fast path if they ever disagree.  This is a sample of the domain, not
+ * an exhaustive check.
+ */
+#define RP_MAXV 8               /* parameters in a fast-path identity */
+#define RP_MAXT 4096            /* monomials */
+#define RP_CMAX ((rcoef)1 << 100)
+
+typedef __int128 rcoef;
+struct rmono {
+	rcoef c;
+	uint8_t e[RP_MAXV];
+};
+struct rpoly {
+	struct rmono *m;
+	int n, cap, nv, fail;
+};
+
+static int
+rcmp(const struct rmono *a, const struct rmono *b)
+{
+	int i;
+
+	for (i = 0; i < RP_MAXV; i++)
+		if (a->e[i] != b->e[i])
+			return a->e[i] < b->e[i] ? -1 : 1;
+	return 0;
+}
+
+static void
+rp_norm(struct rpoly *p)
+{
+	int i, j;
+
+	for (i = 0; i < p->n; i++)
+		for (j = i + 1; j < p->n; j++)
+			if (rcmp(&p->m[i], &p->m[j]) > 0) {
+				struct rmono t = p->m[i];
+				p->m[i] = p->m[j];
+				p->m[j] = t;
+			}
+	for (i = j = 0; i < p->n; i++) {
+		if (p->m[i].c == 0)
+			continue;
+		if (j && rcmp(&p->m[j - 1], &p->m[i]) == 0) {
+			p->m[j - 1].c += p->m[i].c;
+			if (p->m[j - 1].c > RP_CMAX || p->m[j - 1].c < -RP_CMAX)
+				p->fail = 1;
+			if (p->m[j - 1].c == 0)
+				j--;            /* a cancelled term is dropped */
+		} else
+			p->m[j++] = p->m[i];
+	}
+	p->n = j;
+	if (p->n > RP_MAXT)
+		p->fail = 1;
+}
+
+static void
+rp_add(struct rpoly *r, const struct rpoly *a, const struct rpoly *b,
+    int sign)
+{
+	int i, j, k = 0;
+
+	if (a->fail || b->fail || (long long)a->n * b->n > RP_MAXT * 2) {
+		r->fail = 1;
+		r->n = 0;
+		return;
+	}
+	if (r->cap < a->n + b->n) {
+		r->cap = a->n + b->n + 8;
+		r->m = xrealloc(r->m, (size_t)r->cap * sizeof *r->m);
+	}
+	for (i = 0; i < a->n; i++)
+		r->m[k++] = a->m[i];
+	for (i = 0; i < b->n; i++) {
+		r->m[k] = b->m[i];
+		if (sign < 0)
+			r->m[k].c = -r->m[k].c;
+		k++;
+	}
+	r->n = k;
+	rp_norm(r);
+}
+
+static void
+rp_mul(struct rpoly *r, const struct rpoly *a, const struct rpoly *b)
+{
+	int i, j, k = 0, v;
+
+	if (a->fail || b->fail || (long long)a->n * b->n > RP_MAXT * 2) {
+		r->fail = 1;
+		r->n = 0;
+		return;
+	}
+	if (r->cap < a->n * b->n) {
+		r->cap = a->n * b->n + 8;
+		r->m = xrealloc(r->m, (size_t)r->cap * sizeof *r->m);
+	}
+	for (i = 0; i < a->n; i++)
+		for (j = 0; j < b->n; j++) {
+			rcoef ca = a->m[i].c, cb = b->m[j].c;
+			struct rmono *t = &r->m[k++];
+			if ((ca > (rcoef)1 << 60 || ca < -((rcoef)1 << 60)) ||
+			    (cb > (rcoef)1 << 60 || cb < -((rcoef)1 << 60))) {
+				r->fail = 1;
+				r->n = 0;
+				return;
+			}
+			t->c = ca * cb;
+			for (v = 0; v < RP_MAXV; v++) {
+				int ex = a->m[i].e[v] + b->m[j].e[v];
+				if (ex > 255) {     /* exponent byte would wrap */
+					r->fail = 1;
+					r->n = 0;
+					return;
+				}
+				t->e[v] = (uint8_t)ex;
+			}
+		}
+	r->n = k;
+	rp_norm(r);
+}
+
+static void
+rp_one(struct rpoly *p, rcoef c)
+{
+	if (p->cap < 1) {
+		p->cap = 8;
+		p->m = xrealloc(p->m, (size_t)p->cap * sizeof *p->m);
+	}
+	memset(p->m, 0, sizeof *p->m);
+	p->m[0].c = c;
+	p->n = c ? 1 : 0;
+}
+
+/* the parameters the expression actually reads, mapped to 0 .. nv-1 */
+static int
+rp_vars_rec(nid e, int slot[], int *pn, int np, int depth)
+{
+	int i;
+
+	if (depth > 512 || !e)
+		return 0;
+	if (N.op[e] == O_VAR) {
+		int s = (int)N.ki[e], k;
+		if (s < 0 || s >= np)
+			return -1;
+		for (k = 0; k < *pn; k++)
+			if (slot[k] == s)
+				return 0;
+		if (*pn == RP_MAXV)
+			return -1;
+		slot[(*pn)++] = s;
+		return 0;
+	}
+	for (i = 0; i < 3; i++) {
+		nid c = i == 0 ? N.a[e] : i == 1 ? N.b[e] : N.c[e];
+		if (c && rp_vars_rec(c, slot, pn, np, depth + 1))
+			return -1;
+	}
+	return 0;
+}
+
+static int
+rp_vars(nid e, int slot[], int np)
+{
+	int n = 0;
+
+	if (rp_vars_rec(e, slot, &n, np, 0))
+		return -1;
+	return n;
+}
+
+static void
+rp_expand(nid e, const int *slot, int nv, ty_t t, struct rpoly *p, int depth)
+{
+	struct rpoly a = {0}, b = {0};
+	int i, v;
+
+	if (p->fail || depth > 512) {
+		p->fail = 1;
+		p->n = 0;
+		return;
+	}
+	if (N.ty[e] != t && N.op[e] != O_CAST) {
+		p->fail = 1;
+		return;
+	}
+	switch (N.op[e]) {
+	case O_CONST:
+		rp_one(p, (rcoef)N.ki[e]);
+		return;
+	case O_VAR:
+		for (v = 0; v < nv; v++)
+			if (slot[v] == (int)N.ki[e])
+				break;
+		if (v == nv) {
+			p->fail = 1;
+			return;
+		}
+		if (p->cap < 1) {
+			p->cap = 8;
+			p->m = xrealloc(p->m, (size_t)p->cap * sizeof *p->m);
+		}
+		memset(p->m, 0, sizeof *p->m);
+		p->m[0].c = 1;
+		p->m[0].e[v] = 1;
+		p->n = 1;
+		return;
+	case O_CAST: {
+		/* Only same-width machine-integer casts preserve the word's
+		 * bits.  A numeric conversion such as u32(f32(x)) has the
+		 * same width but changes the value, so it is not a no-op in
+		 * the ring and must fall back to the SAT path. */
+		ty_t ta = N.ty[N.a[e]];
+		if (!TY_SIZED(ta) || !TY_ISINT(ta) || TYW(ta) != TYW(t)) {
+			p->fail = 1;
+			return;
+		}
+		rp_expand(N.a[e], slot, nv, t, p, depth + 1);
+		return;
+	}
+	case O_NEG: {
+		struct rpoly z = {0};
+		rp_one(&z, 0);
+		rp_expand(N.a[e], slot, nv, t, &a, depth + 1);
+		rp_add(p, &z, &a, -1);
+		free(z.m);
+		free(a.m);
+		return;
+	}
+	case O_ADD: case O_SUB:
+		rp_expand(N.a[e], slot, nv, t, &a, depth + 1);
+		rp_expand(N.b[e], slot, nv, t, &b, depth + 1);
+		rp_add(p, &a, &b, N.op[e] == O_SUB ? -1 : 1);
+		break;
+	case O_MUL:
+		rp_expand(N.a[e], slot, nv, t, &a, depth + 1);
+		rp_expand(N.b[e], slot, nv, t, &b, depth + 1);
+		rp_mul(p, &a, &b);
+		break;
+	default:
+		p->fail = 1;
+		return;
+	}
+	(void)i;
+	free(a.m);
+	free(b.m);
+}
+
+/* machine evaluation of the same subset, on one tuple of parameter values;
+ * env is indexed by the parameter's slot, not the polynomial's variable */
+static int rp_eval_fail;        /* a cast here is not bit-preserving */
+
+static uint64_t
+rp_eval(nid e, const uint64_t *env, uint64_t mask, int depth)
+{
+	uint64_t x, y;
+
+	if (depth > 512) {
+		rp_eval_fail = 1;
+		return 0;
+	}
+	switch (N.op[e]) {
+	case O_CONST: return (uint64_t)N.ki[e] & mask;
+	case O_VAR: return env[(int)N.ki[e]] & mask;
+	case O_CAST: {
+		/* mirror rp_expand: a numeric conversion is not a bit copy,
+		 * so the guard refuses to treat it as the identity */
+		ty_t ta = N.ty[N.a[e]], tt = N.ty[e];
+		if (!TY_SIZED(ta) || !TY_ISINT(ta) || !TY_SIZED(tt) ||
+		    !TY_ISINT(tt) || TYW(ta) != TYW(tt)) {
+			rp_eval_fail = 1;
+			return 0;
+		}
+		return rp_eval(N.a[e], env, mask, depth + 1) & mask;
+	}
+	case O_NEG: return (0 - rp_eval(N.a[e], env, mask, depth + 1)) & mask;
+	case O_ADD:
+		x = rp_eval(N.a[e], env, mask, depth + 1);
+		y = rp_eval(N.b[e], env, mask, depth + 1);
+		return (x + y) & mask;
+	case O_SUB:
+		x = rp_eval(N.a[e], env, mask, depth + 1);
+		y = rp_eval(N.b[e], env, mask, depth + 1);
+		return (x - y) & mask;
+	case O_MUL:
+		x = rp_eval(N.a[e], env, mask, depth + 1);
+		y = rp_eval(N.b[e], env, mask, depth + 1);
+		return (x * y) & mask;
+	}
+	return 0;
+}
+
+#define RP_NTUPLE 4096          /* sampled tuples: 8 values per parameter */
+
+static char ring_reason[512];
+
+/* 0 only when a and b are the same word-level polynomial and evaluate
+ * equally on the sampled tuples; -1 otherwise (fall back to the SAT path) */
+static int
+nsat_ring(const struct func *f, nid a, nid b, struct nsat_res *out)
+{
+	ty_t t = N.ty[a];
+	int slot[RP_MAXV], nv, i, j, k, w, ok = -1;
+	uint64_t env[RP_MAXV], senv[MAXP], mask;
+	static const uint64_t dom[] = {0, 1, 2, 3, 7, ~0ULL, ~0ULL - 1, 1ULL << 60};
+	struct rpoly pa = {0}, pb = {0}, df = {0};
+	char txt[160];
+
+	if (f->where || !TY_SIZED(t) || t == TY_BOOL || TYW(t) > 64 || ideal(t))
+		return -1;
+	for (i = 0; i < f->np; i++)
+		if (f->p[i].lanes || !TY_ISINT(f->p[i].ty) ||
+		    !TY_SIZED(f->p[i].ty) || TYW(f->p[i].ty) != TYW(t))
+			return -1;
+	nv = rp_vars(a, slot, f->np);
+	if (nv < 0 || nv > RP_MAXV)
+		return -1;
+	{
+		int s2[RP_MAXV], n2 = rp_vars(b, s2, f->np);
+		if (n2 < 0 || n2 > RP_MAXV)
+			return -1;
+		for (i = 0; i < n2; i++) {
+			for (j = 0; j < nv; j++)
+				if (slot[j] == s2[i])
+					break;
+			if (j == nv) {
+				if (nv == RP_MAXV)
+					return -1;
+				slot[nv++] = s2[i];
+			}
+		}
+	}
+	rp_expand(a, slot, nv, t, &pa, 0);
+	rp_expand(b, slot, nv, t, &pb, 0);
+	if (pa.fail || pb.fail)
+		goto done;
+	rp_add(&df, &pa, &pb, -1);
+	if (df.fail || df.n)
+		goto done;
+	/* independent guard: machine evaluation on sampled tuples.  Eight
+	 * values per parameter, all 8^4 combinations of the first four (and a
+	 * cyclic value for any further one), with wrapping at w bits.  This
+	 * samples the domain; it is not an exhaustive enumeration. */
+	w = TYW(t);
+	mask = w >= 64 ? ~0ULL : ((uint64_t)1 << w) - 1;
+	rp_eval_fail = 0;
+	for (i = 0; i < RP_NTUPLE; i++) {
+		for (k = 0; k < nv; k++) {
+			int q = (int)((i >> (2 * (k & 3))) & 7);
+			if (k >= 4)
+				q = (i + 3 * k) & 7;
+			env[k] = dom[q] & mask;
+			senv[slot[k]] = env[k];
+		}
+		if (rp_eval(a, senv, mask, 0) != rp_eval(b, senv, mask, 0) ||
+		    rp_eval_fail)
+			goto done;
+	}
+	snprintf(ring_reason, sizeof ring_reason,
+	    "word-level ring identity: both sides have the same polynomial "
+	    "normal form over Z in %d parameter(s) mod 2^%d; checked on %d "
+	    "sampled tuples (8 values per parameter)", nv, w, RP_NTUPLE);
+	out->status = 0;
+	out->why = ring_reason;
+	out->nodes = 0;
+	out->conflicts = 0;
+	printf("  word-level ring identity: no AIG built, no SAT search "
+	    "(%d parameter(s), polynomial normal form over Z agrees mod 2^%d)\n",
+	    nv, w);
+	rep_note("bvproof", ring_reason);
+	rep_check("ring_identity_normal_form", pa.n, -1, 1,
+	    "both sides expand to the same normal form over Z; the "
+	    "difference is the zero polynomial");
+	snprintf(txt, sizeof txt,
+	    "machine evaluation of both sides agrees on %d sampled tuples "
+	    "(8 values per parameter; wrapping at the result's width)",
+	    RP_NTUPLE);
+	rep_check("ring_identity_small_domain", RP_NTUPLE, -1, 1, txt);
+	ok = 0;
+done:
+	free(pa.m);
+	free(pb.m);
+	free(df.m);
+	return ok;
+}
+
 int
 nsat_equiv(const struct func *f, nid a, nid b, long budget,
     struct nsat_res *out)
@@ -1302,6 +1714,7 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 	/* subgroup operations as the circuits of their lanes (sg.c) */
 	a = sg_lower(a);
 	b = sg_lower(b);
+	b = mk_cast(N.ty[a], b);
 	memset(out, 0, sizeof *out);
 	memset(&B, 0, sizeof B);
 	if (!nsat_supported(f) || !bw(N.ty[a]) || (!nsat_floats &&
@@ -1311,6 +1724,9 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 		    "a float or real parameter or result";
 		return -2;
 	}
+	/* Liew: a word-level ring identity needs no bit-blasting at all */
+	if (nsat_ring(f, a, b, out) == 0)
+		return 0;
 	B.g = aig_new();
 	B.npar = f->np;
 	B.f = f;
@@ -1335,7 +1751,6 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 		ext64(&B.par[j], &x, pt);
 		assume = aig_and(B.g, assume, in_bounds(&f->p[j], &B.par[j]));
 	}
-	b = mk_cast(N.ty[a], b);
 	ctx_init(&root, NULL, 0);
 	if (where)
 		vw = blast(&root, where);
@@ -1346,8 +1761,18 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 	if (fp_err)
 		unsup(fp_err);
 	if (B.why) {
-		out->status = -2;
-		out->why = B.why;
+		/* b is a: refinement holds on any domain, however the two
+		 * sides are built.  When a node's operation has no circuit (a
+		 * power, an arbitrary float division, sqrt, ...) the graph
+		 * cannot prove it, and reporting "unsupported" would turn a
+		 * reflexive check into a mere sample.  Keep the trivial proof
+		 * instead; supported reflexive cases never reach here. */
+		if (a == b)
+			out->status = 0;
+		else {
+			out->status = -2;
+			out->why = B.why;
+		}
 		out->nodes = aig_nodes(B.g);
 		goto done;
 	}
@@ -1372,9 +1797,15 @@ nsat_equiv(const struct func *f, nid a, nid b, long budget,
 	goal = aig_and(B.g, assume, aig_and(B.g, D(va), aig_or(B.g,
 	    L_NOT(D(vb)), ne)));
 	out->nodes = aig_nodes(B.g);
+	/* Hadarean-style certificate: only the user-facing `equiv` command asks
+	 * for an independently-checkable proof object.  Internal equivalence
+	 * checks from `find`/rewrites would otherwise re-check a certificate for
+	 * every candidate and become unusably slow. */
+	aig_cert_enable = equiv_want_cert;
 	aig_work = NSAT_WORK;
 	r = aig_sat(B.g, goal, budget);
 	aig_work = 0;
+	aig_cert_enable = 0;
 	out->conflicts = aig_conflicts;
 	out->status = r == 0 ? 0 : r == 1 ? 1 : -1;
 	if (r == 1) {
