@@ -1,5 +1,6 @@
 > c optimize cfront/bridge.c nofile budget 120
-c optimize: 22 functions, 19 rewrites proved (4 exhaustive, 8 by SAT, 5 by algebra, 2 by induction) for x86-64-v3
+  word-level ring identity: no AIG built, no SAT search (2 parameter(s), polynomial normal form over Z agrees mod 2^32)
+c optimize: 22 functions, 19 rewrites proved (4 exhaustive, 9 by SAT, 4 by algebra, 2 by induction) for x86-64-v3
   estimated cost of the rewritten values on x86-64-v3: 190.2 -> 61.2 cycles (loops in closed form not counted)
   engines: find 3 gates 1 alg 1 ring 4 dio 3 gf2 2 loops 2 (+1 proposed) synth 1
   cong (line 7): (3 x + 5) % 7 == 2 as x % 7 == 6
@@ -27,7 +28,7 @@ c optimize: 22 functions, 19 rewrites proved (4 exhaustive, 8 by SAT, 5 by algeb
     engine: dio; Diophantine certificate: E: y^2 = x^3 - x has rank 0 (2-isogeny descent, ecq.c) and torsion of order 4: E(Q) = {O, (-1, 0), (0, 0), (1, 0)}, each with y = 0; the values are integers where defined
     before: { return y != 0 && y * y == x * x * x - x; }
   dsq (line 25): the polynomial factored
-    proof: algebra (derivation: a^2 - b^2 = (a + b)*(a - b) over Z (alg.c's factor, multiplied back); only + - * and constants: the same mod 2^32); cost 7.0 -> 5.0
+    proof: sat (proved by algebra (no SAT): word-level ring identity: both sides have the same polynomial normal form over Z in 2 parameter(s) mod 2^32; checked on 4096 sample); cost 7.0 -> 5.0
     engine: alg; derivation: a^2 - b^2 = (a + b)*(a - b) over Z (alg.c's factor, multiplied back); only + - * and constants: the same mod 2^32
     before: { return a * a - b * b; }
   cancel_q (line 28): affine fit
@@ -42,7 +43,7 @@ c optimize: 22 functions, 19 rewrites proved (4 exhaustive, 8 by SAT, 5 by algeb
     engine: loops; derivation: sum r^j = (r^T - 1)/(r - 1) for r = 3: r - 1 = 2^1*1, 1^-1 = 0x1 mod 2^64 (checked), exact in the low 63 >= 32 bits
   rev_each (line 62): intrinsic: synthesised: nibble LUT pair (two pshufb, xor_si128)
     proof: sat (proved by SAT: 2440 AIG nodes, 579 conflicts); cost 15.0 -> 10.0
-    engine: synth; synthesis: CEGIS: 1000 of 80421 sketches under cost 11.0 tried, 1015 SAT calls, 741 counterexamples, 0 linear solves; winner nibble LUT pair (two pshufb, xor_si128) (cost 10.0 with the moves); beat the value as written (cost 15.0)
+    engine: synth; synthesis: CEGIS: 200 of 80421 sketches under cost 11.0 tried, 215 SAT calls, 45 counterexamples, 0 linear solves; winner nibble LUT pair (two pshufb, xor_si128) (cost 10.0 with the moves); beat the value as written (cost 15.0)
   shl3_bytes (line 80): store 0: exact
     proof: sat (proved by SAT: 137 AIG nodes, 0 conflicts; per stored value, over the loads); cost 1.5 -> 1.0 per element (loads and stores kept, in order)
     before: d[i] = (uint8_t)(s[i] << 3);

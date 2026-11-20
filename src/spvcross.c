@@ -14,14 +14,31 @@
  * says so and simplify goes on without the view.
  */
 #include <ctype.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "ucas.h"
 #include "json.h"
 #include "report.h"
+
+/* Check once, close to use, and pin a symlink to the file it named.
+ * access(X_OK) on its own is the classic check-then-exec race (CWE-367)
+ * and also succeeds for a directory; resolve a regular executable file to
+ * a canonical path so check and later exec refer to the same target. */
+static const char *
+tool_path(const char *p)
+{
+	static char real[PATH_MAX];
+	struct stat st;
+
+	if (access(p, X_OK) != 0 || stat(p, &st) != 0 || !S_ISREG(st.st_mode))
+		return NULL;
+	return realpath(p, real) ? real : p;
+}
 
 /* the spirv-cross to run, or NULL (*silent: turned off on purpose) */
 const char *
@@ -38,16 +55,18 @@ spvcross_tool(int *silent)
 			return NULL;
 		}
 		if (strchr(env, '/'))	/* a path; else a name on PATH */
-			return access(env, X_OK) == 0 ? env : NULL;
+			return tool_path(env);
 		name = env;
 	}
 	for (p = getenv("PATH"); p && *p; p = *e ? e + 1 : e) {
+		const char *r;
+
 		e = strchr(p, ':');
 		if (e == NULL)
 			e = p + strlen(p);
 		snprintf(path, sizeof path, "%.*s/%s", (int)(e - p), p, name);
-		if (e > p && access(path, X_OK) == 0)
-			return path;
+		if (e > p && (r = tool_path(path)) != NULL)
+			return r;
 	}
 	return NULL;
 }

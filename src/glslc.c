@@ -16,6 +16,7 @@
 #include <sys/wait.h>
 
 #include <ctype.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,8 +75,18 @@ tool_run(char *const argv[], struct sbuf *out)
 		sb_printf(out, "%.*s", (int)r, tmp);
 	}
 	close(fd[0]);
-	while (waitpid(pid, &st, 0) < 0)
-		;
+	/* Retry only on EINTR.  Other failures (notably ECHILD when a
+	 * SIGCHLD handler reaped the child) never succeed, so retrying them
+	 * forever hangs the caller. */
+	{
+		pid_t w;
+
+		do {
+			w = waitpid(pid, &st, 0);
+		} while (w < 0 && errno == EINTR);
+		if (w < 0)
+			return -1;
+	}
 	if (over)
 		return -2;
 	return WIFEXITED(st) ? WEXITSTATUS(st) : -1;

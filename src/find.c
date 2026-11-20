@@ -24,6 +24,7 @@
 #include "stoch.h"
 
 #include "fdot.h"
+#include <limits.h>
 #include <math.h>
 #include <setjmp.h>
 #include <stdlib.h>
@@ -1160,6 +1161,14 @@ icost(nid e)
 {
 	float c = expr_cost(e);
 
+	/* expr_cost can be NaN/Inf (or simply too large) for a pathological
+	 * expression: a float outside an int's range is UB to cast. */
+	if (!isfinite(c))
+		return INT_MAX;
+	if (c >= (float)INT_MAX)
+		return INT_MAX;
+	if (c <= 0.f)
+		return 0;
 	return (int)(c + 0.5f);
 }
 
@@ -1256,9 +1265,17 @@ cmp_pcand(const void *x, const void *y)
 {
 	const struct pcand *a = x, *b = y;
 
-	if (a->cost != b->cost)
-		return a->cost - b->cost;
-	return (int)a->e - (int)b->e;
+	/* compare rather than subtract: cost - cost can overflow, which
+	 * traps with -ftrapv */
+	if (a->cost < b->cost)
+		return -1;
+	if (a->cost > b->cost)
+		return 1;
+	if ((int)a->e < (int)b->e)
+		return -1;
+	if ((int)a->e > (int)b->e)
+		return 1;
+	return 0;
 }
 
 /*

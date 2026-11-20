@@ -331,6 +331,11 @@ cs_parse_frag(const char *src, struct func *fn, ty_t autoty, uint32_t bname,
 		memcpy(fail_jmp, saved, sizeof saved);
 		diag_toks = saved_toks;
 		diag_tok = saved_tok;
+		/* the tokens and parser state are ours: release the partial
+		 * parse before propagating the failure to the caller */
+		toks_free(t);
+		free(t);
+		free(q);
 		longjmp(fail_jmp, 1);
 	}
 	r = parse_expr(q, 0);

@@ -3139,7 +3139,20 @@ fit_obj(struct fitctx *c, const double *k, uint32_t stride)
 				in_r[(size_t)j * CH + np] = c->pin_r[(size_t)i * MAXP + j];
 			}
 			for (j = 0; j < c->nk; j++) {
-				in_i[(size_t)(c->nin + j) * CH + np] = (int64_t)k[j];
+				double kj = k[j];
+				int64_t ki;
+
+				/* a fitted constant can be NaN, Inf, or outside
+				 * int64: guard before the conversion */
+				if (!isfinite(kj))
+					ki = 0;
+				else if (kj >= 9223372036854775808.0)
+					ki = INT64_MAX;
+				else if (kj <= -9223372036854775808.0)
+					ki = INT64_MIN;
+				else
+					ki = (int64_t)kj;
+				in_i[(size_t)(c->nin + j) * CH + np] = ki;
 				in_r[(size_t)(c->nin + j) * CH + np] = k[j];
 			}
 		}

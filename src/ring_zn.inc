@@ -1009,7 +1009,9 @@ cmd_primroot_int(u64 n, int test, u64 a)
 			    U(nt_phi(ph)));
 	}
 	if (nt_order(g, n) == ph && ph <= (1u << 22)) {
-		u64 cnt = 0, e = 1;
+		/* e is indexed into seen[] (n bytes): 1 is a valid residue only
+		 * when n > 1.  For n == 1 every residue is 0. */
+		u64 cnt = 0, e = n > 1 ? 1 : 0;
 		uint8_t *seen = xcalloc(n, 1);
 		for (x = 0; x < ph; x++) {
 			if (!seen[e])

@@ -1951,7 +1951,15 @@ parse_bound(struct P *p, int64_t *iv, double *rv, int *isreal, int *past)
 	if (TY_FP(N.ty[v])) {
 		*isreal = 1;
 		*rv = N.kr[v];
-		*iv = (int64_t)*rv;
+		/* a real bound need not fit in int64 (or even be finite) */
+		if (!isfinite(*rv))
+			*iv = *rv > 0 ? INT64_MAX : INT64_MIN;
+		else if (*rv >= 9223372036854775808.0)
+			*iv = INT64_MAX;
+		else if (*rv <= -9223372036854775808.0)
+			*iv = INT64_MIN;
+		else
+			*iv = (int64_t)*rv;
 	} else {
 		*iv = N.ki[v];
 		*rv = (double)*iv;

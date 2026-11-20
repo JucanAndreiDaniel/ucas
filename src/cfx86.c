@@ -1590,12 +1590,25 @@ vsynth(nid value, double bound)
 			ld = k;
 	if (ld < 0 || !cf_engine_on(CF_ENG_SYNTH))
 		return -1;
-	if (!cf_synth_bytes(X.t, mk_cast(TY(K_UINT, 8), value), s, bound, steps,
-	    &R))
+	/*
+	 * The synthesis cache in cf_synth.c is keyed by the specification
+	 * node.  A cast to u8 is a no-op when the store value is already u8
+	 * (mk_cast returns the node unchanged), so repeated attempts at
+	 * this same store value hit that cache instead of re-running the
+	 * (1000-step, SAT-heavy) CEGIS search.  Hoist the cast so the key is
+	 * obviously stable across those attempts.
+	 *
+	 * A byte map costs at least one catalogue instruction, so there is
+	 * nothing to search when the translation already costs no more than
+	 * that: skip the search rather than enumerate an empty sketch space.
+	 */
+	if (bound <= 0)
 		return -1;
-	/* the program's features at this width */
-	for (k = 0; k < R.best.n; k++)
-		;
+	{
+		nid cv = mk_cast(TY(K_UINT, 8), value);
+		if (!cf_synth_bytes(X.t, cv, s, bound, steps, &R))
+			return -1;
+	}
 	if ((ld = vload(ld)) < 0)
 		return -1;
 	if ((r = new_vv('i', 8, X.VL)) < 0)

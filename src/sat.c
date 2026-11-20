@@ -1164,7 +1164,9 @@ void
 w_sub(struct aig *g, struct word *r, const struct word *a,
     const struct word *b)
 {
-	struct word nb;
+	/* w_not only fills bits up to b->w; a wider a->w in addc would read
+	 * the rest of nb uninitialised (MSan) */
+	struct word nb = {0};
 
 	w_not(g, &nb, b);
 	addc(g, r, a, &nb, L_TRUE);

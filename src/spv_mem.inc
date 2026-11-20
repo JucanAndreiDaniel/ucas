@@ -38,6 +38,7 @@
 
 /* 1 uniform across a warp, 0 varying */
 static char *mem_uni;
+static size_t mem_uni_n;	/* number of entries allocated in mem_uni */
 
 static int
 mem_base_var(int ptr, int *chain)
@@ -266,6 +267,10 @@ mem_uni_at(int id, int k)
 {
 	int d, l, bd, bu;
 
+	/* mem_uni was sized at the start of the analysis; memg_build can
+	 * create fresh ids with idx() afterwards, past that allocation. */
+	if (!mem_uni || id < 0 || (size_t)id >= mem_uni_n)
+		return 1;	/* a fresh id has no definition: still uniform */
 	if (!mem_uni[id])
 		return 0;
 	d = SP.def[id];
@@ -374,8 +379,9 @@ mem_uniformity(void)
 	int k, i, b, ch = 1, more = 1;
 
 	/* everything starts uniform and falls: the greatest fixed point */
-	mem_uni = xmalloc((size_t)V.nid + 1);
-	memset(mem_uni, 1, (size_t)V.nid + 1);
+	mem_uni_n = (size_t)V.nid + 1;
+	mem_uni = xmalloc(mem_uni_n);
+	memset(mem_uni, 1, mem_uni_n);
 	mem_cfg();
 	while (more) {
 		ch = 1;
@@ -4461,6 +4467,7 @@ mem_pass(const char *text, int *changed)
 	free(decl.p);
 	free(mem_uni);
 	mem_uni = NULL;
+	mem_uni_n = 0;
 	mem_cfg_free();
 	free(SP.def);
 	SP.def = NULL;

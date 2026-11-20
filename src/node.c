@@ -1820,8 +1820,16 @@ pr(struct sbuf *b, nid n, int minp, const struct pctx *pc, int hex)
 			pr(b, N.a[n], 9, pc, 0);
 			if (TYK(N.ty[n]) == K_REAL)
 				sb_printf(b, " - %.10g", -N.kr[N.b[n]]);
-			else
-				sb_printf(b, " - %lld", -(long long)N.ki[N.b[n]]);
+			else {
+				int64_t ci = N.ki[N.b[n]];
+				/* Negating INT64_MIN overflows.  In two's complement
+				 * -INT64_MIN is INT64_MIN, so print ci itself in that
+				 * case -- byte-identical to the old wrapped result. */
+				if (ci == INT64_MIN)
+					sb_printf(b, " - %lld", (long long)ci);
+				else
+					sb_printf(b, " - %lld", -(long long)ci);
+			}
 			break;
 		}
 		pr_bin(b, n, " + ", 9, 9, 10, pc, 0);

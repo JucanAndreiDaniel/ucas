@@ -796,7 +796,9 @@ acc_sym(const char *s)
 static int
 isw(int i, const char *w)
 {
-	return W[i].k == W_WORD && !strcmp(W[i].s, w);
+	/* A sentence starting with a verb such as "differentiate" makes
+	 * callers look at s-1 or s-2 with s == 0.  Do not read before W[]. */
+	return i >= 0 && W[i].k == W_WORD && !strcmp(W[i].s, w);
 }
 
 /* ---- functions known to ucas ---- */

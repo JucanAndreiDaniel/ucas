@@ -27,8 +27,13 @@
  * from running for minutes on inputs whose intermediate expressions grow
  * without bound (e.g. 4-variable quadratic systems in lex order, or dense
  * 6x6 polynomial matrices).  Both become a documented LIMIT instead of a
- * hang.  The default is a few seconds; UCAS_GB_LIMIT / UCAS_PM_LIMIT (in
- * seconds) let the tests and callers raise or lower it. */
+ * hang.  The GB default is 20 s: 5 s was too tight for legitimately
+ * computable large inputs (e.g. 256/257 identical generators, whose
+ * 32640/32896 pairs need ~5-8 s of CPU under load) and made them flip
+ * between a completed basis and the guard; the genuinely hard guard repros
+ * (4-variable quadratic systems) still take far longer than 20 s.  The PM
+ * default stays at 5 s.  UCAS_GB_LIMIT / UCAS_PM_LIMIT (in seconds) let
+ * the tests and callers raise or lower either limit. */
 static double
 cpu_limit(const char *env, double def)
 {
@@ -889,7 +894,7 @@ mpl_groebner(const struct mring *R, const struct mpl *f, int k,
 	uint8_t *pend = NULL;
 	int pendcap = 0;
 	clock_t t0 = clock();
-	double budget = cpu_limit("UCAS_GB_LIMIT", 5.0);
+	double budget = cpu_limit("UCAS_GB_LIMIT", 20.0);
 
 	memset(&w, 0, sizeof w);
 	memset(gb, 0, sizeof *gb);

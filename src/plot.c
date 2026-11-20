@@ -1293,6 +1293,11 @@ pi_frac(double v, char *buf, size_t n)
 	buf[0] = 0;
 	for (k = 0; k < 5; k++) {
 		double q = v / M_PI * den[k];
+
+		/* only |m| <= 64 can ever be printed: keep the float->int
+		 * cast (and abs(m)) away from values that overflow int */
+		if (!isfinite(q) || fabs(q) > 65)
+			continue;
 		m = (int)floor(q + 0.5);
 		if (m != 0 && abs(m) <= 64 && fabs(q - m) < 1e-7) {
 			char num[24];

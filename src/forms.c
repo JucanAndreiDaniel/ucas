@@ -253,7 +253,8 @@ cfmt(double v, struct cf *c)
 					continue;
 				p = a * q - kk * sqrt((double)ms[i]);
 				pi = llround(p);
-				if (llabs(pi) > 200 || pi == 0 ||
+				if (pi == INT64_MIN || llabs(pi) > 200 ||
+				    pi == 0 ||
 				    fabs(p - (double)pi) > 1e-10 * q)
 					continue;
 				g = gcd64(gcd64(llabs(pi), llabs(kk)), q);
@@ -308,7 +309,7 @@ cfmt(double v, struct cf *c)
 		}
 		if (small_q(l / M_PI, 12, 48, &n, &d)) {
 			char t[48];
-			if (llabs(n) == 1)
+			if (n != INT64_MIN && llabs(n) == 1)
 				snprintf(t, sizeof t, "%spi", n < 0 ? "-" : "");
 			else
 				snprintf(t, sizeof t, "%lldpi", (long long)n);

@@ -39,6 +39,30 @@
 #define PI_L 3.14159265358979323846264338327950288L
 #define LN2_L 0.693147180559945309417232121458176568L
 
+/* float keys are int64.  These helpers reproduce the two's-complement wrap
+ * the old (UB) signed operations relied on, using defined arithmetic, so a
+ * key at an int64 boundary still behaves the same way under -ftrapv. */
+static int64_t
+key_add(int64_t ka, int64_t off)
+{
+	return (int64_t)((uint64_t)ka + (uint64_t)off);
+}
+
+static int64_t
+key_lerp(int64_t ka, int64_t kb, uint64_t i, uint64_t den)
+{
+	ld off = ((ld)kb - (ld)ka) * (ld)i / (ld)den;
+	int64_t o;
+
+	/* a float->int cast outside int64 is UB; the hardware conversion
+	 * yields INT64_MIN for an out-of-range operand.  Keep that result. */
+	if (off >= (ld)INT64_MAX || off < (ld)INT64_MIN)
+		o = INT64_MIN;
+	else
+		o = (int64_t)off;
+	return key_add(ka, o);
+}
+
 /* ---- options and run state ---- */
 
 struct aopt {
@@ -568,8 +592,7 @@ core_sample(struct core *k)
 	if (k->w) {
 		int64_t ka = fkey(k->w, (double)a), kb = fkey(k->w, (double)b);
 		for (i = 0; i < m; i++)
-			k->sx[n++] = fromkey(k->w, ka + (int64_t)(((ld)kb - (ld)ka) *
-			    i / (m - 1)));
+			k->sx[n++] = fromkey(k->w, key_lerp(ka, kb, i, m - 1));
 	}
 	for (i = 0; i < k->pb.nkeep; i++)
 		k->sx[n++] = rnd(k->w, k->pb.keep[i]);
@@ -1133,12 +1156,11 @@ build_sample(void)
 		if (A.total <= m) {
 			A.exhaustive = 1;
 			for (i = 0; i < A.total; i++)
-				xs[n++] = fromkey(A.w, ka + (int64_t)i);
+				xs[n++] = fromkey(A.w, key_add(ka, (int64_t)i));
 		} else {
 			uint32_t h = m / 2;
 			for (i = 0; i < h; i++)
-				xs[n++] = fromkey(A.w, ka + (int64_t)(((ld)kb - (ld)ka) *
-				    i / (h - 1)));
+				xs[n++] = fromkey(A.w, key_lerp(ka, kb, i, h - 1));
 			for (i = 0; i < h; i++)
 				xs[n++] = rnd(A.w, A.lo + (A.hi - A.lo) * i /
 				    (h - 1));

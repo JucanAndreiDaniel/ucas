@@ -1910,10 +1910,19 @@ dio_solve_eq(struct dio_eq *D, const struct dio_opts *o)
 		int a, b, want = o->want > 0 ? o->want : 1;
 		if (o->want < 0)
 			nvec = 0;
-		for (i = 0; i < r; i++)
-			nvec *= 2 * K + 1;
-		if (nvec > 200000)
-			fail("too many combinations (lower maxmult)");
+		{
+			int64_t base = (int64_t)2 * K + 1;   /* K is an int */
+
+			if (base < 1)
+				fail("bad maxmult");
+			for (i = 0; i < r; i++) {
+				/* check before multiplying: int64 can wrap (and
+				 * trap with -ftrapv) before the size limit is seen */
+				if (nvec > 200000 / base)
+					fail("too many combinations (lower maxmult)");
+				nvec *= base;
+			}
+		}
 		vec = xmalloc(sizeof(int64_t) * (size_t)(nvec * (r ? r : 1) + 1));
 		qv = xmalloc(sizeof(double) * ((size_t)nvec + 1));
 		for (a = 0; a < r; a++)

@@ -1484,7 +1484,7 @@ poly_scheme(const struct model *m, struct func *f, int more)
 			D[j] = vals[j];
 		for (k = 1; k <= d; k++)
 			for (j = d; j >= k; j--)
-				D[j] -= D[j - 1];
+				D[j] = (int64_t)((uint64_t)D[j] - (uint64_t)D[j - 1]);
 		printf("  differences, for %s = %lld, %lld, ...: start", sym_str(
 		    f->p[s].name), (long long)lo, (long long)lo + 1);
 		for (j = 0; j <= d; j++)
@@ -1503,7 +1503,7 @@ poly_scheme(const struct model *m, struct func *f, int more)
 			if (fabs(acc) < 9e15 && (int64_t)acc != D[0])
 				bad++;
 			for (j = 0; j < d; j++)
-				D[j] += D[j + 1];
+				D[j] = (int64_t)((uint64_t)D[j] + (uint64_t)D[j + 1]);
 		}
 		if (bad)
 			printf("    check: differs at %lld of %lld points\n",

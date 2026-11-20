@@ -13,10 +13,10 @@ c optimize: 22 functions, 10 rewrites proved (0 exhaustive, 4 by SAT, 2 by induc
     engine: loops; derivation: sum r^j = (r^T - 1)/(r - 1) for r = 3: r - 1 = 2^1*1, 1^-1 = 0x1 mod 2^64 (checked), exact in the low 63 >= 32 bits
   rev_each (line 62): intrinsic: synthesised: gf2p8affine_epi64_epi8
     proof: sat (proved by SAT: 65 AIG nodes, 0 conflicts); cost 15.0 -> 6.8
-    engine: synth; synthesis: CEGIS: 1000 of 192559 sketches under cost 11.0 tried, 1000 SAT calls, 508 counterexamples, 1 linear solves; winner gf2p8affine_epi64_epi8 (cost 6.8 with the moves); beat the value as written (cost 15.0)
+    engine: synth; synthesis: CEGIS: 200 of 192559 sketches under cost 11.0 tried, 200 SAT calls, 38 counterexamples, 1 linear solves; winner gf2p8affine_epi64_epi8 (cost 6.8 with the moves); beat the value as written (cost 15.0)
   pop_each (line 69): intrinsic: synthesised: nibble LUT pair (two pshufb, add_epi8)
     proof: sat (proved by SAT: 3406 AIG nodes, 2483 conflicts); cost 10.0 -> 8.5
-    engine: synth; synthesis: CEGIS: 1000 of 174891 sketches under cost 6.0 tried, 1001 SAT calls, 505 counterexamples, 1 linear solves; winner nibble LUT pair (two pshufb, add_epi8) (cost 8.5 with the moves); beat the value as written (cost 10.0)
+    engine: synth; synthesis: CEGIS: 200 of 174891 sketches under cost 6.0 tried, 201 SAT calls, 39 counterexamples, 1 linear solves; winner nibble LUT pair (two pshufb, add_epi8) (cost 8.5 with the moves); beat the value as written (cost 10.0)
   shl3_bytes (line 80): 512-bit vectors, 64 lanes of 8 bits (avx512f avx512bw); 64 lanes proved (0 equal DAGs, 0 exhaustive, 64 SAT); synthesised and_si128; slli_epi16 3 (of t) (CEGIS: 111 of 192613 sketches, 112 SAT calls, 38 counterexamples)
     proof: lanes (lane semantics of each intrinsic, per lane); cost 1.5 -> 0.1
   rotr2_bytes (line 86): 512-bit vectors, 64 lanes of 8 bits (gfni avx512f); 64 lanes proved (0 equal DAGs, 64 exhaustive, 0 SAT); synthesised gf2p8affine_epi64_epi8 (CEGIS: 1000 of 192613 sketches, 1000 SAT calls, 508 counterexamples)

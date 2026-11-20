@@ -1495,7 +1495,7 @@ rp_vars(nid e, int slot[], int np)
 		    (size_t)(nc - rp_seen_cap) * sizeof *rp_seen);
 		rp_seen_cap = nc;
 	}
-	if (++rp_gen == 0) {
+	if (++rp_gen == 0) {                 /* generation wrap: clear once */
 		memset(rp_seen, 0, (size_t)rp_seen_cap * sizeof *rp_seen);
 		rp_gen = 1;
 	}

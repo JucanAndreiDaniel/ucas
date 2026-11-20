@@ -39,8 +39,12 @@ ity_of(struct ity *it, ty_t t, int ideal)
 		w = 1;
 	it->k = (uint8_t)k;
 	it->w = (uint8_t)w;
-	it->mask = w >= 64 ? ~0ULL : (1ULL << w) - 1;
-	if (k == K_SINT || k == K_INT) {
+	it->mask = w >= 64 ? ~0ULL : (w <= 0 ? 0 : (1ULL << w) - 1);
+	if (w <= 0) {
+		/* a zero-width type has no value but 0: avoid 1ULL << -1 */
+		it->smin = 0;
+		it->smax = 0;
+	} else if (k == K_SINT || k == K_INT) {
 		it->smin = w >= 64 ? INT64_MIN : -(int64_t)(1ULL << (w - 1));
 		it->smax = w >= 64 ? INT64_MAX : (int64_t)((1ULL << (w - 1)) - 1);
 	} else {
@@ -65,6 +69,8 @@ ass(const struct ity *t, int64_t v)
 
 	if (t->w >= 64)
 		return v;
+	if (t->w <= 0)
+		return 0;	/* zero width: avoid 1ULL << -1 */
 	m = 1ULL << (t->w - 1);
 	x = (uint64_t)v & t->mask;
 	return (int64_t)((x ^ m) - m);

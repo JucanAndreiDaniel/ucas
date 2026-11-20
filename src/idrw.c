@@ -837,8 +837,17 @@ map_keys(struct ivc *c, nid root, const struct mapinfo *mi, uint8_t *took,
 			continue;
 		memset(&m, 0, sizeof m);
 		if (!irw_range(c, k, INT64_MIN, &lo, &hi, m.why, sizeof m.why) ||
-		    hi - lo < 1 || hi - lo >= MAP_POINTS)
+		    lo > hi)
 			continue;
+		/* hi - lo overflows int64 for the whole int64 range (and traps
+		 * with -ftrapv); compute the span as an unsigned difference as
+		 * map_seed() above does.  A range this wide is too big to map. */
+		{
+			int64_t span = (int64_t)((uint64_t)hi - (uint64_t)lo);
+
+			if (span < 1 || span >= MAP_POINTS)
+				continue;
+		}
 		nkey++;
 		/* what is a function of k alone, above it */
 		memset(fk, 0, lim);

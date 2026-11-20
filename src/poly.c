@@ -1102,11 +1102,15 @@ up_mul(struct up *r, const struct up *a, const struct up *b)
 	int i, j;
 
 	if (a->d < 0 || b->d < 0) {
+		/* callers (e.g. kronecker) may read c[0] even for the zero
+		 * polynomial: leave it defined. */
+		r->c[0] = qi(0);
 		r->d = -1;
 		return;
 	}
 	if (a->d + b->d > UD) {
 		alg_ovf = 1;
+		r->c[0] = qi(0);
 		r->d = -1;
 		return;
 	}

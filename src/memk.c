@@ -125,7 +125,9 @@ degree_of(const int64_t *idx, int n, int elem, int bbytes, int banks)
 	int i, j, best = 1;
 
 	for (i = 0; i < n; i++) {
-		int64_t bi = (idx[i] * elem / bbytes) % banks, cnt = 1;
+		/* idx[i] * elem can exceed int64: widen before multiplying. */
+		int64_t bi = (int64_t)(((__int128)idx[i] * elem / bbytes) %
+		    banks), cnt = 1;
 		for (j = 0; j < i; j++)
 			if (idx[j] == idx[i])
 				break;
@@ -133,7 +135,8 @@ degree_of(const int64_t *idx, int n, int elem, int bbytes, int banks)
 			continue;	/* the same address: served together */
 		for (j = i + 1; j < n; j++) {
 			int k;
-			if ((idx[j] * elem / bbytes) % banks != bi || idx[j] == idx[i])
+			if ((int64_t)(((__int128)idx[j] * elem / bbytes) %
+			    banks) != bi || idx[j] == idx[i])
 				continue;
 			for (k = i + 1; k < j; k++)
 				if (idx[k] == idx[j])

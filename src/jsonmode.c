@@ -1902,9 +1902,15 @@ render_inputs(struct req *r, struct sbuf *b, const struct jv *v,
 			sb_printf(b, " %s", s);
 		}
 		if ((s = jv_gets(e, "file")) != NULL) {
-			if (!s[0] || strpbrk(s, " \t\n\x1e"))
-				return bad(r, "bad_request", "%s[%d].file: a path "
-				    "without blanks", name, k);
+			/* This is spliced into a command script, so keep it a
+			 * bare file name: no directory traversal, no command
+			 * separator, no shell metacharacter. */
+			if (!s[0] || strpbrk(s,
+			    " \t\n\r\x1b\x1e/\\;|&$`><'\"()[]{}#*?!~") ||
+			    strstr(s, ".."))
+				return bad(r, "bad_request", "%s[%d].file: a plain "
+				    "file name (no path or shell characters)",
+				    name, k);
 			sb_printf(b, " file %s", s);
 		}
 		if ((s = jv_gets(e, "png_base64")) != NULL ||
